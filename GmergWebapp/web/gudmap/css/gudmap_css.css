@@ -1,0 +1,935 @@
+.errorMessage {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: red;
+	text-decoration: none;
+	border-color:red;
+}
+/*******************************************/
+.noSideMargin {
+	margin-left:0px !important; 
+	margin-right:0px !important;
+	padding-left:0px !important;
+	padding-right:0px !important;
+	border-spacing:0px !important;
+}		
+.noMargin {
+	margin:0px !important; 
+	padding:0px !important;
+	border-spacing:0px !important;
+}		
+.noBorder{
+	border:0 !important;
+}
+.leftAlign {
+	text-align: left;
+	margin-left:0; 
+	margin-right:auto;
+}		
+.rightAlign {
+	text-align: right;
+	margin-left:auto; 
+	margin-right:0;
+}		
+.centreAlign {
+	text-align: center;
+	margin:auto; 
+	vertical-align:middle;
+}		
+.topAlign {
+	margin-top:0; 
+	margin-bottom:auto;
+	vertical-align:top;
+}		
+.bottomAlign {
+	margin-top:auto; 
+	margin-bottom:0;
+	vertical-align:middle;
+}
+.headerTitle {
+	padding-right:12em;
+	white-space:nowrap;
+	text-align: left;
+	margin-left:0; 
+	margin-right:auto;
+}
+/*******************************************/
+.defaultWidth {
+	width: 750px;
+}
+.defaultWidth1 {
+	width: 746px;
+}
+.stripey {
+	background-color: #E6E8FA !important;
+}
+.header-stripey
+{
+  background-color: #E6E8FA !important;
+  text-align:left;
+}
+.header-nostripe {
+    background-color: #ffffff !important;
+    text-align:left;
+}
+.table-stripey
+{
+    background-color: #E6E8FA !important;
+    text-align:center;
+}
+.table-nostripe 
+{
+  background-color: #ffffff !important;
+  text-align:center;
+}
+.text-top {
+    vertical-align:text-top;
+}
+.text-normal {
+    vertical-align:middle;
+}
+.text-bottom {
+    vertical-align:bottom;
+}
+.geneCol {
+    width:50%;
+    text-align:left;
+}
+.geneCol1 {
+    width:30%;
+    text-align:left;
+}
+.geneCol2 {
+    width:35%;
+    text-align:left;
+}
+.geneCol3 {
+    width:35%;
+    text-align:left;
+}
+.geneCol1-1 {
+    width:33%;
+    padding-left:20px;
+}
+.leftCol {
+    width:15%;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight: bold;
+    font-variant: normal;
+    text-transform: none;
+    color: #000000;
+    text-decoration: none;
+    vertical-align:top;
+     
+}
+.rightCol {
+    width:85%;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+        vertical-align:top;
+}
+.queryLeft {
+    width:85%;
+    background-color: #E6E8FA;
+    text-align: left;
+    vertical-align: middle;
+}
+.queryRight {
+    width:15%;
+    background-color: #E6E8FA;
+    text-align: center;
+    vertical-align: middle;
+}
+.arrayLCol {
+    width:13%;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight: bold;
+    font-variant: normal;
+    text-transform: none;
+    color: #000000;
+    text-decoration: none;
+    vertical-align:top;
+     
+}
+.arrayRCol {
+    width:87%;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+.data-titleCol {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    color: #000000;
+    text-decoration: none;
+    vertical-align: top;
+}
+.data-textCol {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    font-variant: normal;
+    color: #22316C;
+    text-decoration: none;
+}
+.treeCol {
+    width:178px;
+    vertical-align:top;
+}
+.componentCol {
+    vertical-align:top;
+}
+.align-top-stripey {
+	background-color: #E6E8FA;
+    vertical-align:top;
+    text-align:center;
+}
+.align-top-left-stripey {
+	background-color: #E6E8FA;
+    vertical-align:top;
+    text-align:left;
+}
+.align-left {
+    text-align:left;
+}
+.align-left-query {
+    vertical-align:top;
+}
+.align-left-header {
+    text-align:left;
+    width:25%;
+}
+.align-right {
+    text-align:right;
+}
+.align-top-65 {
+    vertical-align:top;
+    width:50%;
+}
+.align-top-35 {
+    vertical-align:top;
+    width:50%;
+}
+.align-left-20 {
+    text-align:left;
+    width:20%;
+}
+.align-left-57 {
+    text-align:left;
+    width:57%;
+}
+.align-right-20 {
+    text-align:right;
+    width:20%;
+}
+.align-left-3 {
+    text-align:left;
+    width:3%;
+}
+.icon
+{
+  border: 0px;
+}
+
+.plaintext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-decoration: none;
+	color: #000000;
+}
+
+
+.superbigplaintext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #22316C;
+	text-decoration: none;
+	text-align:left;
+}
+
+a.superbigplaintext:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+	text-decoration: none;
+}
+a.superbigplaintext:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+	text-decoration: underline;
+}
+a.superbigplaintext:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+}
+
+.bigplaintext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #22316C;
+	text-decoration: none;
+	text-align:left;
+}
+
+a.bigplaintext:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+	text-decoration: none;
+}
+a.bigplaintext:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+	text-decoration: underline;
+}
+a.bigplaintext:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+}
+
+.plaintextseq {
+	font-family: Courier;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #22316C;
+	text-decoration: none;
+}
+
+.plaintextleft {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+	text-align:right;
+}
+
+a.plaintext:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+/*	color: #5C5C5C;*/
+	color:#0066CC;
+	text-decoration: none;
+}
+a.plaintext:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+/*	color: #5C5C5C; */
+	color: #0066CC;
+	text-decoration: underline;
+}
+a.plaintext:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+}
+.plainred {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #FF0000;
+	text-decoration: none;
+}
+.plaingreen {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #00FF00;
+	text-decoration: none;
+}
+.plaintextbold {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	text-decoration: none;
+	color: #000000;
+}
+
+.plaintextboldleft {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #000000;
+	text-decoration: none;
+	text-align:left;
+}
+.plaintextboldgrey {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: gray;
+	text-decoration: none;
+}
+a.plaintextbold:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+/*	color: #5C5C5C; */
+	color: #0066CC;
+	text-decoration: none;
+}
+a.plaintextbold:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+/*	color: #5C5C5C; */
+	color: #0066CC;
+	text-decoration: underline;
+}
+a.plaintextbold:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+}
+
+.nav3 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+a.nav3:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+a.nav3:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: underline;
+}
+a.nav3:visited {
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+
+.navbartext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+        line-height:normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+	text-decoration: none;
+}
+a.navbartext:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+	text-decoration: none;
+}
+a.navbartext:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: #5C5C5C;
+	text-decoration: none;
+}
+a.navbartext:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+}
+.titletext {
+        font-size: 21px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        color:#000000;
+}
+.greytext {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #BEBEBE;
+	text-decoration: none;
+}
+.datatext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	font-variant: normal;
+	color: #22316C;
+	text-decoration: none;
+}
+.datatextbold {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	font-variant: normal;
+	color: #22316C;
+	text-decoration: none;
+}
+.datatexttop {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	font-variant: normal;
+	color: #22316C;
+	text-decoration: none;
+	vertical-align:text-top;
+}
+a.datatext:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+/*	color: #5C5C5C; */
+	color: #0066CC;
+	text-decoration: none;
+}
+a.datatext:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+/*	color: #5C5C5C; */
+	color: #0066CC;
+	text-decoration: underline;
+}
+a.datatext:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+
+}
+.notetext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+/* progress-indicator panel */
+#progress{
+	position:absolute; 
+	top:600px; 
+	left:300px; 
+	background-color:lightyellow; 
+	border:1px solid gray; 
+	margin:5px; 
+	visibility:hidden; 
+	padding:3px; 
+	text-align:center; 
+	z-index:1000; 
+}
+.loginPanel {
+	position:absolute;
+	z-index:2000;
+	visibility:hidden; 
+	vertical-align:top;
+}
+label {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+
+
+/***************************** ISH expression bars *******************************/
+div.exprGraph {
+	border:0px solid #E3E3E3;
+	width:110px;
+	margin:auto;
+	padding:2px 0;
+}
+
+table.exprGraphTable {
+	border:0px solid #C3C3C3;
+	border-collapse:collapse;
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+td.exprGraphCell {
+	height:22px;
+	margin:0px;
+	padding:0px;
+	vertical-align:bottom;
+}
+
+div.exprGraphBarSpacer {
+	background-color:#C3DBC3;
+	border:1px dotted #969696;
+	font-size:0pt;
+	margin:0px;
+	padding:0px;
+	width:8px;
+	visibility:hidden;
+}
+
+div.exprGraphBar {
+	border:1px solid #969696;
+	cursor:pointer;
+	font-size:0pt;
+	margin:0px;
+	padding:0px;
+	width:8px;
+}
+
+div.zeroExprGraphBar {
+	border-bottom:1px solid black;
+	font-size:0pt;
+	margin:0 0 -1px 0;
+	padding:0px;
+	width:8px;
+	height:0px;
+}
+
+div:hover.exprGraphBar {
+	border:1px solid #000000;
+}
+
+/************ light plaintexts ************/
+.plaintextlight {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-decoration: none;
+	color: #606060;
+}
+a.plaintextlight:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color:#0066CC;
+	text-decoration: none;
+}
+a.plaintextlight:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #0066CC;
+	text-decoration: underline;
+}
+a.plaintextlight:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+}
+.plaintextboldlight {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	text-decoration: none;
+	color: #606060;
+}
+
+a.plaintextboldlight:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #0066CC;
+	text-decoration: none;
+}
+a.plaintextboldlight:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: #0066CC;
+	text-decoration: underline;
+}
+a.plaintextboldlight:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+}
+
+/******************* genelist folder tree view styles *********************/
+.treeTableHeader{
+	border-right:2px solid white;
+	border-bottom:2px solid white;
+	padding: 2px;
+}
+.treeTable{
+	border-top:2px solid white;
+	border-left:2px solid white;
+}
+.treeTableColumn{
+	border-right:2px solid white;
+	padding:2px;
+	white-space:nowrap;
+	text-align:left;
+}
+.treeTableNode{
+	padding:2px;
+	border-right:2px solid white;
+	text-align:left;
+	white-space:nowrap;
+}
+.treeTableIcon{
+	border:0;
+	padding:0;
+}
+
+/*** boolean anatomy styles ***/
+.topAlign45{
+	vertical-align: top;
+	width:45%;
+}
+.topAlign55{
+	vertical-align: top;
+	width:55%;
+}
+.topAlign50{
+	vertical-align: top;
+	width:50%;
+}
+
+/*** master table browse (array) style ***/
+.panelFirstColumn{
+	vertical-align:top;
+	margin-top:0;
+	margin-left:auto;
+	margin-right:auto;
+	width:11em;
+}
+
+/*** ish submission detail style ***/
+.width95 {
+	width:95%;
+}
+.width5 {
+	width:5%;
+}
+td.width5 {
+	text-align:right;
+	vertical-align:bottom;
+}
+.width85 {
+	width:85%;
+}
+.width15 {
+	width:15%;
+}
+
+/*** quick search block style ***/
+.search_top, .search_bottom { background-color: #c0c0c0; border: 2px solid white; padding: 6px; padding-left: 8px; }
+
+/*** xingjun - 29/09/2010 ***/
+.italictext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	font-weight: normal;
+	font-variant: normal;
+	text-decoration: none;
+	color: #000000;
+}
+
+/*** used in timeout.jsp - xingjun - 30/09/2010 ****/
+.centreAlign {
+	text-align: center;
+	align: center;
+}
+
+/*** used in lab summary page - 5 columns in total - xingjun - 18/04/2011 - start ***/
+.columnWidth201 {/* Submission Date */
+    width:20%;
+    text-align:left;
+}
+.columnWidth202 {/* Archive ID */
+    width:20%;
+    text-align:left;
+}
+.columnWidth203 {/* Number of Submissions */
+    width:20%;
+    text-align:left;
+}
+.columnWidth204 {/* Assay Type */
+    width:20%;
+    text-align:left;
+}
+.columnWidth205 {/* Status */
+    width:20%;
+    text-align:left;
+}
+.align-left-header-lab-sum {
+    text-align:left;
+    width:20%;
+}
+/*** used in lab summary page - 5 columns in total - xingjun - 18/04/2011 - end ***/
+

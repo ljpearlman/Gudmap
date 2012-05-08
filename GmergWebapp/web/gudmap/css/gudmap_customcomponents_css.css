@@ -1,0 +1,78 @@
+.gudmap_tabbedPanel{
+	border-style: none;
+	padding: 0;
+	border-spacing: 0;
+	empty-cells: show;
+}
+
+.gudmap_tabbedPanel_activeTabHeader{
+	border-top: 2px outset silver;
+	border-right: 2px outset silver;
+	border-bottom: 0px none;
+	border-left: 2px outset silver;
+	text-align: center;
+}
+.gudmap_tabbedPanel_inactiveTabHeader,
+.gudmap_tabbedPanel_disabledTabHeader{
+	border-top: 1px outset silver;
+	border-right: 1px outset silver;
+	border-bottom: 0px none;
+	border-left: 1px outset silver;
+	text-align: center;
+	background-color: silver;
+}
+.gudmap_tabbedPanel_activeTabHeader input,
+.gudmap_tabbedPanel_inactiveTabHeader input,
+.gudmap_tabbedPanel_disabledTabHeader label{
+	border-style: none;
+	width: 100%;
+}
+.gudmap_tabbedPanel_activeTabHeader input{
+	cursor: pointer;
+    background-color: transparent !important;
+    /* background-color: inherit; */
+}
+.gudmap_tabbedPanel_inactiveTabHeader input{
+	cursor: pointer;
+	background-color: silver;
+}
+.gudmap_tabbedPanel_disabledTabHeader label{
+	cursor: default;
+	background-color: silver;
+}
+.gudmap_tabbedPanel_emptyTabHeader{
+	border-style: none;
+}
+.gudmap_tabbedPanel_activeTabHeader input:hover,
+.gudmap_tabbedPanel_inactiveTabHeader input:hover{
+	/* border-top: orange solid 2px; */
+}
+
+.gudmap_tabbedPanel_subTabHeader{
+ 	height: 2px;
+	font-size: 0;
+	border-bottom: 0px none;
+}
+.gudmap_tabbedPanel_subTabHeader_active{
+	border-top: 0px none;
+}
+.gudmap_tabbedPanel_subTabHeader_inactive{
+	border-top: 2px outset silver;
+}
+.gudmap_tabbedPanel_subTabHeader_first{
+	border-left: 2px outset silver;
+}
+.gudmap_tabbedPanel_subTabHeader_last{
+	border-top: 2px outset silver;
+	border-right: 2px outset silver;
+}
+
+.gudmap_tabbedPanel_pane{
+	border-top: 0px none;
+	border-right: 2px outset silver;
+	border-bottom: 2px outset silver;
+	border-left: 2px outset silver;
+	padding: 0px;
+}
+
+

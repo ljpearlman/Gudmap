@@ -1,0 +1,133 @@
+.tab0{
+	width:10px;
+}
+
+/*******************************************/
+.heatmapHeader{ 
+	border-left: 1px solid white;
+	border-bottom: 2px solid white;
+	border-top: 2px solid white;
+}
+.noneHeatmapHeader{ 
+	border-left: 2px solid white;
+	border-bottom: 2px solid white;
+	border-top: 2px solid white;
+}
+.noneHeatmapHeaderFirst{ 
+	border-bottom: 2px solid white;
+	border-top: 2px solid white;
+}
+.none{ 
+}
+
+/*******************************************/
+.selectDeselectCol{
+	text-align: left;
+}
+.columSelectionCol{
+	text-align: center;
+}
+.messageCol{
+	text-align: center;
+}
+.displayPerPageCol{
+	text-align: right;
+}
+.entriesPerPageCol{
+	text-align: left;
+}
+
+/*******************************************/
+.filterPanel{
+	position:absolute;
+	text-align:right;
+	background-color:white;
+	border:1px solid black;
+	width:500px;
+	max-width:600px;
+	overflow:hidden; /*	overflow:auto;  **** this removed and applyed in javascript to fix a bug in firefox on MAC */
+	overflow-x:hidden;
+}
+
+/*******************************************/
+.columnSelection1{
+	text-align: left;
+	width: 30px;
+}
+.columnSelection2{
+	text-align: left;
+}
+.columnSelectionPanel{
+	text-align:right;
+	background-color:white;
+	border:1px solid black;
+	width:250px;
+	overflow:hidden; /*	overflow:auto;  **** this is removed and applyed in javascript to fix a bug in firefox on MAC */
+	overflow-x:hidden;
+}
+
+/*******************************************/
+.navPageNoCol{
+	text-align: left;
+}
+.navGotoBoxCol{
+	text-align:right;
+	white-space: nowrap;
+}
+.navGotoButtonCol{
+	text-align: left;
+}
+.navScrollCol{
+	text-align: right;
+	margin-right:0px;
+}
+
+/*******************************************/
+.collectionButtonsCol3{
+	width: 1%;
+	text-align: left;
+	margin-left:0; 
+	margin-right:auto;
+}
+
+/*******************************************/
+.bodySection {
+	overflow: hidden;
+	overflow-x: auto;
+	padding: 0;
+	margin: auto;
+	border-spacing: 0px;
+	width:100%;
+	text-align:center;
+	float:left;
+}
+.bodySectionContainer {
+	padding:0;
+	margin:0;
+	border-spacing:0px;
+	width:100%;
+	overflow:hidden;
+}
+div.bodySectionDumy {
+	z-index:9;
+	margin:auto;
+	overflow:auto;
+	overflow-x:hidden;
+	visibility:hidden;
+/*	width:16px;*/	
+	float:right;
+}
+thead.bodySectionTable tr	{
+	position:relative;
+	background-color:white;
+}
+/*
+.bodySectionFlexible { /* not used with the new template * /
+	overflow: auto;
+	overflow-x: auto;
+	padding: 0px;
+	margin: auto;
+	border-spacing: 0px;
+}
+*/
+

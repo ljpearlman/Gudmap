@@ -1,0 +1,166 @@
+@charset "UTF-8";
+
+td { font-size: 100%; }
+
+.twoColHybLtHdr #container { 
+	position:relative;
+	width:100%;
+} 
+
+.twoColHybLtHdr #headernew { 
+	padding: 0;  /* this padding matches the left alignment of the elements in the divs that appear beneath it. If an image is used in the #header instead of text, you may want to remove the padding. */
+	/*background:#B0B0B0;*/
+	background:#CCC;
+	width:100%;
+	position:relative;
+	z-index: 3000;
+} 
+
+.twoColHybLtHdr #headernew h1 {
+	margin: 0; /* zeroing the margin of the last element in the #header div will avoid margin collapse - an unexplainable space between divs. If the div has a border around it, this is not necessary as that also avoids the margin collapse */
+	padding: 10px 0; /* using padding instead of margin will allow you to keep the element away from the edges of the div */
+}
+
+.twoColHybLtHdr #mainlogo {
+	margin:0 auto;
+} 
+
+.twoColHybLtHdr #underlogo { 
+	margin:0 auto;
+	width:62em;
+	padding:0 85px;
+}
+
+.twoColHybLtHdr #sidebar1 {
+	width: 10em; /* 12em since this element is floated, a width must be given */
+	background: #BAD0DA; /* the background color will be displayed for the length of the content in the column, but no further */
+	position:absolute;
+	left:0;
+	bottom:10px;
+	top:0px;
+	padding-top:3em;
+	margin:0;	/* Only to overwrite server main.css */
+	padding-bottom:0; 	/* Only to Overwrite server main.css */
+}
+
+.twoColHybLtHdr #sidebarinner{
+	padding-top: 70px;
+}
+
+.twoColHybLtHdr #sidebar2 {
+	width: 1px;
+	height:1px;
+	float:left;
+	padding-top:10px;
+	padding-bottom:16em;
+	margin-bottom:55px;
+}
+
+.twoColHybLtHdr #mainContent { 
+	position: relative;
+	margin: 0 0 3em 10em;  /*10em allows space for the sidebar ; -7.5 is bottom and was 0. the right margin can be given in percentages or pixels. It creates the space down the right side of the page. */
+	padding:10px 10px 55px 8px;
+/*	
+	display:table;
+*/
+} 
+
+.mainContentInnerTable {
+	margin-bottom:3em;
+}
+* html .mainContentInnerTable  {margin-bottom:0;} /*override the above for IE */
+
+
+/* Hides from IE5-mac \*/
+* html .twoColHybLtHdr #mainContent {height: 1%;}
+* html .twoColHybLtHdr #container {height: 100%;}
+* html .twoColHybLtHdr #sidebar1 {height: 99%;}
+/* End hide from IE5-mac */
+
+.twoColHybLtHdr #footernew { 
+	position: absolute;
+	padding: 0; /*10px; /* this padding matches the left alignment of the elements in the divs that appear above it. */
+	background:#B0B0B0;
+	bottom:0px;
+	left:0px;
+	width:100%;
+}
+
+.twoColHybLtHdr #footernew a {
+	color:#FFFFFF;
+	text-decoration:none;
+	
+}
+
+.twoColHybLtHdr #footernew a:hover, #footernew a:focus {
+	color:#0099CC;
+	text-decoration:underline;
+}
+
+.twoColHybLtHdr #footerinner { 
+	background:#B0B0B0;
+	width:62em;
+	padding:0 85px;
+	margin:0 auto;
+}
+
+
+/*
+html {
+	height:100%;
+}
+
+body  {
+	font: 100% Verdana, Arial, Helvetica, sans-serif;
+	background: #FFFFFF;
+	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults * /
+	padding: 0;
+	text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector * /
+	color: #000000;
+	width:100%;
+	height:100%;
+}
+
+.twoColHybLtHdr #container { 
+	background: #FFFFFF;
+	/*margin: 0 auto -6em;  FOOTER STILL SEEMS TO WORK WITHOUT THIS. -- ADD -6em references margin-top of footer. the auto margins (in conjunction with a width) center the page * /
+	text-align: left; /* this overrides the text-align: center on the body element. * /
+	min-height:100%; /*ADDED necessary to make the footer stick to the bottom of the container* /
+	position:relative;
+	width:100%;
+} 
+
+.twoColHybLtHdr #mainlogo {
+	background-image: url(http://www.gudmap.org/Images/BannerBack.gif);
+	margin:0 auto;
+} 
+
+.twoColHybLtHdr #underlogo { 
+	background-color: #B0B0B0;
+	margin:0 auto;
+	width:62em;
+}
+
+.twoColHybLtHdr #sidebar1 h3, .twoColHybLtHdr #sidebar1 p {
+	margin-left: 10px; /* the left and right margin should be given to every element that will be placed in the side columns * /
+	margin-right: 10px;
+	margin-top:10px;
+}
+
+.twoColHybLtHdr #mainContent li
+{
+	
+	font-size:85%;
+	color:#999999;
+	list-style-image:url(http://www.gudmap.org/Images/list_1.png);
+	
+}
+.twoColHybLtHdr #footer { 
+	position: absolute;
+	padding: 0; /*10px; /* this padding matches the left alignment of the elements in the divs that appear above it. * /
+	background:#B0B0B0;
+	bottom:0px;
+	left:0px;
+	width:100%;
+}
+*/

@@ -1,0 +1,133 @@
+options {
+      STATIC = false ;
+}
+PARSER_BEGIN(BooleanQueryParser)
+	package gmerg.model.BooleanQueryParser;
+	
+	public class BooleanQueryParser {
+		static void main( String[] args ) throws ParseException, TokenMgrError {
+			BooleanQueryParser parser = new BooleanQueryParser( System.in ) ;
+			parser.parseQuery();
+		}
+	}
+PARSER_END(BooleanQueryParser)
+
+SKIP : {
+	" " | "\n" | "\r" | "\r\n" 
+}
+TOKEN : {
+	< COMMA: "," >	|
+	< COLON: ":" >	|
+	< DOT: "." >	|
+	<OPEN_BRACKET : "{" >	|
+	<CLOSE_BRACKET : "}">
+}
+TOKEN : { < EXPRESSION : "p" | "nd" | "u" > }
+TOKEN : { <POSITION : "in" | "adjacent to"> }
+//TOKEN : { <ORGAN : "\""((~[])+(" ")*)+"\"" > }
+TOKEN[IGNORE_CASE] : { < TYPE : "GUDMAP" | "GENE" > }
+TOKEN[IGNORE_CASE] : { <STAGE : "TS"["1"-"2"]["0"-"9"] > }
+TOKEN[IGNORE_CASE] : { <PATTERN : "pt=" ("graded" | "regional" | "restricted" | "single cell" | "spotted" | "ubiquitous") > }
+TOKEN[IGNORE_CASE] : { <LOCATION : "lc="("caudal" | "deep" | "distal" | "dorsal" | "lateral" | "medial" | "proximal" | "radial" | "rostral" | "surface" | "ventral") > }
+TOKEN[IGNORE_CASE] : { <OPERATOR : "and" | "or" > }
+MORE : {
+  "\"" : OrganString
+}
+<OrganString> TOKEN : {
+  <ORGAN: "\"">  : DEFAULT
+}
+<OrganString> MORE : {
+  <~[]>
+}
+
+String parseQuery() : 
+{
+	Token nextToken;
+	String code;
+	String temp;
+}
+{
+	nextToken = <TYPE>
+	{code = nextToken.image;}
+	nextToken = <COLON>
+	{code += nextToken.image;}
+	temp = term() 
+	{code += " " + temp; }
+	(
+		nextToken = <OPERATOR>
+		{code += " " + nextToken.image;}
+		temp = term()
+		{code += " | " + temp; }
+	)*
+	<EOF>
+	{return  code; }
+}
+
+String term() :
+{
+	Token nextToken;
+	String code;
+}
+{
+	code = expression()
+	nextToken = <OPEN_BRACKET>
+	{code += nextToken.image;}
+	nextToken = <POSITION>
+	{code += nextToken.image;}
+	nextToken = <ORGAN>
+	{code += " " + nextToken.image;}
+	nextToken = <STAGE>
+	{code += " " + nextToken.image;}
+	<DOT><DOT>
+	nextToken = <STAGE>
+	{code += ".." + nextToken.image;}
+	(nextToken = <PATTERN>
+		{code += " " + nextToken.image;}
+	)?
+	(nextToken = <LOCATION>
+		{code += " " + nextToken.image;}
+	)?
+	nextToken = <CLOSE_BRACKET>
+	{
+		code += nextToken.image;
+		return  code;
+	}
+}
+
+String expression() :
+{
+	Token nextToken;
+	String e1=null;
+	String e2=null;
+	String e3=null;
+	String code = "";
+}
+{
+	nextToken = <EXPRESSION>
+	{code = nextToken.image;}
+	{e1 = nextToken.image;}
+	[	
+		<COMMA>
+		nextToken = <EXPRESSION>
+		{
+			e2 = nextToken.image; 
+			code += "," + nextToken.image;
+		}
+		[
+			<COMMA>
+			nextToken  = <EXPRESSION>
+			{
+				e3 = nextToken.image;
+				code += "," + nextToken.image;
+			}
+		]
+	]
+	{
+		if (e2!=null && e2.equals(e1) || e3!=null && (e3.equals(e1) || e3.equals(e2))) { 		/*semantic test for types*/
+			String exp = (e3!=null && e3.equals(e2))? e3 : e1;
+			throw new ParseException("Multiple \"expression\" clause \"" + exp + "\" is used.");
+		}
+		else
+			return code;
+	}
+}

@@ -1,0 +1,465 @@
+.border_tl {
+    background:url(../images/corner_tp_lft.gif) top left no-repeat;	
+}
+.border_tr {
+    background:url(../images/corner_tp_rt.gif) top right no-repeat;
+}
+.border_bl { 
+    background:url(../images/corner_btm_lft.gif) bottom left no-repeat;;
+}
+.border_br {
+    background:url(../images/corner_btm_rt.gif) bottom right no-repeat;	
+}
+.border_t {
+    background:url(../images/px.gif) top repeat-x;
+}
+.border_b {
+    background:url(../images/px.gif) bottom repeat-x;
+}
+.border_l {
+    background:url(../images/px.gif) left repeat-y;
+}
+.border_r {
+    background:url(../images/px.gif) right repeat-y;
+}
+.boxContent{
+	padding:10px;
+}
+.navTree{
+	padding-bottom:5px;	
+}
+.box1 {
+    width:48%;
+	float:left;
+}
+.box2 {
+    width:48%;
+	float:right;
+	vertical-align:top;
+}
+.subBox {
+	background-color:#E6E8FE;
+}
+.innerBHeader {
+	margin-bottom:10px;
+}
+.miniHelp {
+	float:right;
+}
+.breaker {
+	position:relative;
+}
+
+.suggestion_list
+{
+	background: white;
+	border: 1px solid;
+	padding: 4px;
+}	
+.suggestion_list ul
+{
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}	
+.suggestion_list a
+{
+	text-decoration: none;
+	color: navy;
+	white-space: nowrap;
+}	
+.suggestion_list .selected
+{
+	background: navy;
+	color: white;
+}	
+.suggestion_list .selected a
+{
+	color: white;
+	white-space: nowrap;
+}
+#autosuggest
+{
+	display: none;	
+}
+/*******************************************/
+.noMargin {
+	margin-left:0; 
+	margin-right:0;
+	padding-left:0px;
+	padding-right:0px;
+	border-spacing:0px;
+}		
+.leftAlign {
+	text-align: left;
+	margin-left:0; 
+	margin-right:auto;
+}		
+.rightAlign {
+	text-align: right;
+	margin-left:auto; 
+	margin-right:0;
+}		
+.centreAlign {
+	text-align: center;
+	margin:auto; 
+}		
+/*******************************************/
+.header-stripey
+{
+  background-color: #E6E8FA;
+  text-align:left;
+}
+.header-nostripe {
+    background-color: #ffffff;
+    text-align:left;
+}
+.table-stripey
+{
+    background-color: #E6E8FA;
+    text-align:center;
+}
+.table-nostripe 
+{
+  background-color: #ffffff;
+  text-align:center;
+}
+.text-top {
+    vertical-align:text-top;
+}
+.text-normal {
+    vertical-align:middle;
+}
+.text-bottom {
+    vertical-align:bottom;
+}
+.leftCol {
+    width:15%;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:14px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: bold;
+    font-variant: normal;
+    text-transform: none;
+    color: #475874;
+    text-decoration: none;
+    vertical-align:top;
+     
+}
+.rightCol {
+    width:85%;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+        vertical-align:top;
+}
+.queryLeft {
+    width:85%;
+    background-color: #E6E8FA;
+    text-align: left;
+    vertical-align: middle;
+}
+.queryRight {
+    width:15%;
+    background-color: #E6E8FA;
+    text-align: center;
+    vertical-align: middle;
+}
+.arrayLCol {
+    width:13%;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    font-weight: bold;
+    font-variant: normal;
+    text-transform: none;
+    color: #000000;
+    text-decoration: none;
+    vertical-align:top;
+     
+}
+.arrayRCol {
+    width:87%;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+.data-titleCol {
+    width: 20%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    color: #475874;
+    text-decoration: none;
+    vertical-align: top;
+}
+.data-textCol {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: normal;
+    font-variant: normal;
+    color: #000000;
+    text-decoration: none;
+}
+
+.treeCol {
+    width:178px;
+    vertical-align:top;
+}
+.componentCol {
+    vertical-align:top;
+}
+.align-top-stripey {
+	background-color: #E6E8FA;
+    vertical-align:top;
+    text-align:center;
+}
+.align-left {
+    text-align:left;
+}
+.align-left-header {
+    text-align:left;
+    width:25%;
+}
+.align-right {
+    text-align:right;
+}
+.icon
+{
+  border: 0px;
+}
+.textsmall {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #475874;
+	text-decoration: none;
+}
+.plaintext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #475874;
+	text-decoration: none;
+
+}
+.plaintextseq {
+	font-family: Courier;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+.plaintextbold {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #475874;
+	text-decoration: none;
+
+}
+a.plaintext:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #000033;
+	text-decoration: none;
+}
+a.plaintext:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #000033;
+	text-decoration: underline;
+}
+a.plaintextbold:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #475874;
+	text-decoration: none;
+}
+a.plaintextbold:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	color: #475874;
+	text-decoration: underline;
+}
+a.plaintext:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #800000;
+}
+.nav3 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+a:nav3:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: underline;
+}
+a:nav3:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: underline;
+}
+.topbar {
+        font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.stripey {
+	background-color: #E6E8FA;
+}
+.nostripe {
+        background-color: #FFFFFF;
+}
+.plainred {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #FF0000;
+	text-decoration: none;
+}
+.datatext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+a.datatext:link {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+	text-decoration: none;
+}
+a.datatext:hover {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #5C5C5C;
+	text-decoration: underline;
+}
+a.datatext:visited {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	line-height: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	color: #800000;
+
+}
+.notetext {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+}
+h3 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-transform: none;
+	color: #475874;
+	text-decoration: none;
+}
+a {
+    color: #274D80;
+    text-decoration:none;
+}
+
+a:visited {
+    color: #526680;
+}
+a:hover {
+    color: #274D80;
+    text-decoration: underline;
+}

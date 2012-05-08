@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee web-jsptaglibrary_2_1.xsd"
+		version="2.1" >
+		
+	<!-- ============== Tag Library Description Elements =============== -->
+    <tlib-version>1.3</tlib-version>
+    <jsp-version>2.1</jsp-version>
+    <short-name>Tabbed Panel</short-name>
+    <uri>http://gudmap.org/jsf/core</uri>
+	<description>This tag library contains tags for a custom tabbed panel.</description>
+
+	<!-- ================ tag for tabbed panel component =============== -->
+    <tag>
+        <name>tabbedPanel</name>
+        <tag-class>gmerg.custom.components.taglib.TabbedPanelTag</tag-class>
+        <body-content>JSP</body-content>
+        <description></description>
+        <attribute>
+        	<description></description>
+        	<name>id</name>
+        	<rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>binding</name>
+        	<deferred-value>
+        		<type>javax.faces.component.UIComponent</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>rendered</name>
+        	<deferred-value>
+        		<type>boolean</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>value</name>
+        	<deferred-value>
+        		<type>int</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>activeTabStyleClass</name>
+        	<deferred-value>
+        		<type>java.lang.String</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>inactiveTabStyleClass</name>
+        	<deferred-value>
+        		<type>java.lang.String</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>activeSubStyleClass</name>
+        	<deferred-value>
+        		<type>java.lang.String</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>inactiveSubStyleClass</name>
+        	<deferred-value>
+        		<type>java.lang.String</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>tabContentStyleClass</name>
+        	<deferred-value>
+        		<type>java.lang.String</type>
+        	</deferred-value>
+        </attribute>
+    </tag>
+	<!-- ================== tag for tab pane component ================= -->
+    <tag>
+        <name>tabPane</name>
+        <tag-class>gmerg.custom.components.taglib.TabPaneTag</tag-class>
+        <body-content>JSP</body-content>
+        <description></description>
+        <attribute>
+        	<description></description>
+        	<name>id</name>
+        	<rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>binding</name>
+        	<deferred-value>
+        		<type>javax.faces.component.UIComponent</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>rendered</name>
+        	<deferred-value>
+        		<type>boolean</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>styleClass</name>
+        	<deferred-value>
+        		<type>java.lang.String</type>
+        	</deferred-value>
+        </attribute>
+        <attribute>
+        	<description></description>
+        	<name>label</name>
+        	<deferred-value>
+        		<type>java.lang.String</type>
+        	</deferred-value>
+        </attribute>
+    </tag>
+</taglib>    

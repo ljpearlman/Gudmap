@@ -1,0 +1,15 @@
+<Context path="/gudmap"
+docBase="gudmap"
+debug="5"
+reloadable="true"
+crossContext="true">
+<Resource name="jdbc/mysql"
+auth="Container"
+type="javax.sql.DataSource"
+username="gudmap"
+password="patience"
+driverClassName="com.mysql.jdbc.Driver"
+url="jdbc:mysql://madbprodn:3306/GudmapGX"
+maxActive="8"
+maxIdle="4"/>
+</Context>
