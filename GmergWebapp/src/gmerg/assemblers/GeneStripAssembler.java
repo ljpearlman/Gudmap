@@ -22,7 +22,7 @@ import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryCollectionAssembler;
 import gmerg.entities.Globals;
 import gmerg.entities.submission.array.MasterTableInfo;
-
+import gmerg.entities.ChromeDetail;
 /**
  * @author xingjun
  *
@@ -83,7 +83,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 //		System.out.println("geneStripAssembler:retrieveData:required symbol number: " + requiredSymbols.size());
 //		System.out.println("geneStripAssembler:retrieveData:required symbols : " + requiredSymbols.toString());
 		
-		DataItem[][] data = new DataItem[geneStripArraySize][8];
+		DataItem[][] data = new DataItem[geneStripArraySize][9];
 
 		// connect to database
 		Connection conn = DBHelper.getDBConnection();
@@ -189,12 +189,52 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			
 			data[i][6] = new DataItem(complexValue, 81);	// 81 is complex & centre aligned
 			
+			/** 8 - RNA_SEQ */
+			// Bernie 5/7/2011 - added new column for RNA_SEQ
+			// requires link to USCS Browser
+			// xingjun - 21/07/2011 - make the link work
+			// xingjun - 28/07/2011 - modified to access ucsc website either by session id or by user name and session name
+			// ucsc url string and session id are hard-coded for time being, will make it dynamic once the process finalised
+//			String ucscUrlSampleWithSessionId = "http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr2:104966686-105013771&hgsid=203342519";
+//			String ucscUrlSampleWithoutSessionId = "http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr2:104966686-105013771&hgS_doOtherUser=submit&hgS_otherUserName=R.thiagarajan26&hgS_otherUserSessionName=UQGUDMAP";
+			String ucscUrlPrefix = "http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr";
+			
+			// used when accessed by session id
+			String ucscUrlSuffix = "&hgsid=";
+			String nextGenSeqString = "View on UCSC Browser";
+			String ucscSessionId = "203342519";
+			
+			// used when accessed by user name and session name
+			String ucscUrlHgS_doOtherUser = "hgS_doOtherUser=" + "submit";
+			//String ucscUrlHgS_OtherUserName= "hgS_doOtherUser" + "R.thiagarajan26";
+			String ucscUrlHgS_OtherUserName= "hgS_otherUserName=" + "Simon%20Harding";
+			//String ucscUrlHgs_OtherUserSessionName = "hgS_otherUserSessionName=" + "UQGUDMAP";
+			String ucscUrlHgs_OtherUserSessionName = "hgS_otherUserSessionName=" + "gudmap_1";
+			boolean ucscUrlWithSessionId = false;
 
-			/** 8 - geneset */
+			// get chrome info from the database
+			ChromeDetail chromeDetail = this.getChromeDetail(conn, symbol);
+			if (chromeDetail == null) {
+				data[i][7] = new DataItem(nextGenSeqString);
+			} else {
+				String ucscUrl = "";
+				if (ucscUrlWithSessionId) { // access by session id
+					ucscUrl = ucscUrlPrefix + chromeDetail.getChromeName() + ":" + 
+					chromeDetail.getChromeStart() + "-" + chromeDetail.getChromeEnd() + ucscUrlSuffix + ucscSessionId;
+				} else { // access by user name and session name
+					ucscUrl = ucscUrlPrefix + chromeDetail.getChromeName() + ":" + 
+					chromeDetail.getChromeStart() + "-" + chromeDetail.getChromeEnd() + "&" +
+					ucscUrlHgS_doOtherUser + "&" + ucscUrlHgS_OtherUserName + "&" + ucscUrlHgs_OtherUserSessionName;
+				}
+				data[i][7] = 
+					new DataItem(nextGenSeqString, "Click to see RNA-SEQ data on UCSC genome browser for " + symbol, ucscUrl, 10);
+			}
+
+			/** 9 - geneset */
 			// not decided yet, check with ED & duncan
 			// leave it for time being ///////////////
 //			String geneSetNumber = "0";
-			data[i][7] = new DataItem("Genesets(n)");
+			data[i][8] = new DataItem("Genesets(n)");
 		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -204,8 +244,8 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	public HeaderItem[] createHeader()	{
 		String headerTitles[] = {"Gene", "Synonyms", "Disease", "Theiler Stage", 
 								 "In situ expression profile",  
-								 "In situ expression images", "Microarray expression profile", "Genesets"};
-		boolean headerSortable[] = {true, false, false, false, false, false, false, false, false};
+								 "In situ expression images", "Microarray expression profile", "RNA-SEQ", "Genesets"};
+		boolean headerSortable[] = {true, false, false, false, false, false, false, false, false, false};
 		int colNum = headerTitles.length;
 		HeaderItem[] header = new HeaderItem[colNum];
 		for(int i=0; i<colNum; i++)
@@ -849,6 +889,29 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		
         // return value
         return diseaseNumber;
+	}
+
+	/**
+	 * @author xingjun - 21/07/2011
+	 */
+	private ChromeDetail getChromeDetail(Connection conn, String symbol) {
+		if (symbol == null || symbol.equals("")) {
+			return null;
+		}
+		ChromeDetail chromeDetail = null;
+		// create a dao
+//		Connection conn = DBHelper.getDBConnection();
+		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
+		
+        // get data from database
+		chromeDetail = geneStripDAO.getChromeDetailBySymbol(symbol);
+
+        // release resources
+//        DBHelper.closeJDBCConnection(conn);
+        geneStripDAO = null;
+
+        // return the value object
+        return chromeDetail;
 	}
 	
 }

@@ -102,6 +102,7 @@
            classpath="${servletJar}"/>
 -->
 	<javac srcdir="src"
+	       includeantruntime="false"
 		   optimize="${optimize}" debug="${debug}"
            destdir="${build}/WEB-INF/classes">
 		<classpath>
