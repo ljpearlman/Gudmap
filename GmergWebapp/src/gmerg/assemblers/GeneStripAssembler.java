@@ -227,7 +227,8 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 					ucscUrlHgS_doOtherUser + "&" + ucscUrlHgS_OtherUserName + "&" + ucscUrlHgs_OtherUserSessionName;
 				}
 				data[i][7] = 
-					new DataItem(nextGenSeqString, "Click to see RNA-SEQ data on UCSC genome browser for " + symbol, ucscUrl, 10);
+					new DataItem(nextGenSeqString, "Kidney 15.5 dpc data. See Thiagarajan et al. (2011). PMID: 21888672.", ucscUrl, 10);
+					//new DataItem(nextGenSeqString, "Click to see RNA-SEQ data on UCSC genome browser for " + symbol, ucscUrl, 10);
 			}
 
 			/** 9 - geneset */
