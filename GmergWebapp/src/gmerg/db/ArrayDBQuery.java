@@ -63,13 +63,13 @@ public class ArrayDBQuery {
 	  
 	// find the distribution of theiler stage of the microarray data
 	final static String name3 = "GENE_THEILER_STAGES_ARRAY";
-	final static String query3 = "SELECT DISTINCT MBC_STG_NAME FROM MIC_BROWSE_CACHE WHERE MBC_GNF_SYMBOL = ? ORDER BY NATURAL_SORT(MBC_STG_NAME)";
+	final static String query3 = "SELECT DISTINCT MBC_STG_NAME FROM MIC_BROWSE_CACHE WHERE MBC_GNF_SYMBOL = ? ORDER BY NATURAL_SORT(MBC_STG_NAME) ";
 	  
 	final static String name4 = "TOTAL_NUMBER_OF_SUBMISSION_ARRAY";
 	final static String query4 = "SELECT COUNT(DISTINCT MBC_SUB_ACCESSION_ID) " +
 			"FROM MIC_BROWSE_CACHE, ANA_TIMED_NODE, ANA_NODE " +
 			"WHERE ATN_PUBLIC_ID = MBC_COMPONENT_ID " +
-			"AND ATN_NODE_FK = ANO_OID";
+			"AND ATN_NODE_FK = ANO_OID ";
 	  
 	final static String name5 = "GET_GENE_BY_SYMBOL";
 	final static String query5 = "SELECT GNF_SYMBOL, GNF_NAME from REF_GENE_INFO WHERE GNF_SYMBOL = ";
@@ -80,15 +80,15 @@ public class ArrayDBQuery {
 			"JOIN ISH_PERSON ON ANG_SUBMITTER = PER_OID " +
 			"JOIN REF_URL " +
 			"WHERE ANG_IS_CLUSTERED = 0 " +
-			"AND URL_OID = 37";
+			"AND URL_OID = 37 ";
 	  
 	final static String name7 = "GET_PROBE_SET_ID_BY_ANALYSIS_GENELIST_ID";
 	final static String query7 = "SELECT GCT_PROBE_SET_ID FROM MIC_ANAL_GLST_COLUMN_ITEM " +
 			"JOIN MIC_ANAL_GENELIST_COLUMN ON GCT_GLST_COLUMN_FK = AGC_OID " +
 			"JOIN MIC_ANALYSIS_GENELIST ON AGC_ANAL_GENELIST_FK = ANG_OID " +
 			"WHERE ANG_OID = ? " +
-//			"ORDER BY NATURAL_SORT(GCT_PROBE_SET_ID)";
-			"ORDER BY GCT_OID";
+//			"ORDER BY NATURAL_SORT(GCT_PROBE_SET_ID) ";
+			"ORDER BY GCT_OID ";
 	  
 	final static String name25 = "GET_PROBE_SET_ID_BY_ANALYSIS_GENELIST_CLUSTER_ID";
 	final static String query25 = "SELECT GCT_PROBE_SET_ID FROM MIC_ANAL_GLST_COLUMN_ITEM  " +
@@ -99,7 +99,7 @@ public class ArrayDBQuery {
 			"ORDER BY GCT_OID ";
 	  
 	final static String name8 = "GET_ANALYSIS_GENELIST_TITLE";
-	final static String query8 = "SELECT ANG_TITLE FROM MIC_ANALYSIS_GENELIST WHERE ANG_OID = ?";
+	final static String query8 = "SELECT ANG_TITLE FROM MIC_ANALYSIS_GENELIST WHERE ANG_OID = ? ";
 	
 	final static String name26 = "GET_ANALYSIS_GENELIST_CLUSTER_TITLE";
 	final static String query26 = "SELECT AGC_TITLE FROM MIC_ANAL_GENELIST_COLUMN WHERE AGC_OID = ? ";
@@ -127,7 +127,7 @@ public class ArrayDBQuery {
                                    
     // xingjun - 03/03/2010 - added extra column: list of components
     final static String SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
-    		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') ";
+    		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ')  ";
     final static String SAMPLE_SERIES_TABS_BY_OID = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
                                              "WHERE SER_OID = ? " + 
                                              "AND SER_OID = SRM_SERIES_FK " + 
@@ -155,7 +155,7 @@ public class ArrayDBQuery {
 	final static String name19 = "TRANSGENIC_NOTE";
 	final static String query19 = "SELECT MTN_MUT_FK, MTN_VALUE " +
 			"FROM ISH_MUTANT_NOTE JOIN ISH_MUTANT ON MTN_MUT_FK = MUT_OID " +
-			"WHERE MUT_SUBMISSION_FK = ? ORDER BY MTN_MUT_FK, MTN_SEQ;";
+			"WHERE MUT_SUBMISSION_FK = ? ORDER BY MTN_MUT_FK, MTN_SEQ; ";
 	  
 	// xingjun - 03/02/2010 
 	// - added criteria to restrict the return to only master tables that are still be used
@@ -239,7 +239,7 @@ public class ArrayDBQuery {
 //	"AND PRS_PLATFORM_ID = AMT_PLATFORM_ID " +
 //	"AND AMH_A_MASTER_FK = ? " + // 1
 //	"AND ANG_OID = ? " + // 2
-//	"ORDER BY AME_M_HEADER_FK, GCT_OID";
+//	"ORDER BY AME_M_HEADER_FK, GCT_OID ";
 	  
 	final static String name27 = "GET_EXPRESSION_OF_GIVEN_PROBE_SET_IDS_CLUSTER";
 	final static String query27 = "SELECT AME_M_HEADER_FK, AME_PROBE_SET_FK, AME_VALUE, AMS_MEDIAN, AMS_STD FROM MIC_ANAL_MSTR_EXPRESSION " +
@@ -291,7 +291,7 @@ public class ArrayDBQuery {
 	final static String query28 = "SELECT DISTINCT ANO_COMPONENT_NAME FROM ANA_NODE " +
 	"JOIN ANA_TIMED_NODE ON ATN_NODE_FK = ANO_OID " +
 	"JOIN ISH_SP_TISSUE ON IST_COMPONENT  = ATN_PUBLIC_ID " +
-	"WHERE IST_SUBMISSION_FK = SUBSTR(?,8)";
+	"WHERE IST_SUBMISSION_FK = SUBSTR(?,8) ";
 	
 	// xingjun - 23/06/2011
 	final static String name29 = "ALL_SERIES";
@@ -307,7 +307,7 @@ public class ArrayDBQuery {
 			"AND PLT_OID = SER_PLATFORM_FK " +
 			"AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
 			"AND ATN_NODE_FK = ANO_OID " +
-			"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4" + // added by xingjun - 10/10/2011 - only retrieve public entries
+			"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + // added by xingjun - 10/10/2011 - only retrieve public entries
 			"AND SER_PLATFORM_FK " + // added by xingjun - 22/07/2011 - refer to sql ALL_SERIES in DBQuery.java
 			"GROUP BY SER_GEO_ID ";
 	
