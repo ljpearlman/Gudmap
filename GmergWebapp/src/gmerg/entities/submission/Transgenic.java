@@ -142,9 +142,15 @@ public class Transgenic {
 	     String str1 = notes.substring(0, index);
 	     String str2 = notes.substring(index + 1);
 	     index = str1.indexOf(">");
-	     notes = str1.substring(0, index + 1)+geneSymbol+" "+str1.substring(index+1)+"&nbsp;&#38;";
+	     if (-1 != index)
+		 notes = str1.substring(0, index + 1)+geneSymbol+" "+str1.substring(index+1)+"&nbsp;&#38;";
+	     else
+		 notes = str1+"&nbsp;&#38;";
 	     index = str2.indexOf(">");
-	     notes = notes + str2.substring(0, index + 1)+geneSymbol+" "+str2.substring(index+1);
+	     if (-1 != index)
+		 notes = notes + str2.substring(0, index + 1)+geneSymbol+" "+str2.substring(index+1);
+	     else
+		 notes = notes + str2;
 	   }
 	}
     }
