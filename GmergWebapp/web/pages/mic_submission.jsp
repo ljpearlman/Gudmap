@@ -289,14 +289,12 @@
 						<h:outputText value="#{transgenics.geneId}" />
 					</h:outputLink>
  					
-<%-- 
-					<h:outputText value="Allele Id:" />
-					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<h:outputText value="#{transgenics.mutatedAlleleId}" />
---%>
 					<h:outputText value="Reference for Allele Description:"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<h:outputText value="#{transgenics.mutatedAlleleId}" escape="false"/>
+					<h:outputText rendered="#{empty transgenics.mutatedAlleleIdUrl}" value="#{transgenics.mutatedAlleleId}" escape="false"/>
+					<h:outputLink rendered="#{not empty transgenics.mutatedAlleleIdUrl}"  styleClass="datatext" value="#{transgenics.mutatedAlleleIdUrl}" target="gmerg_external2">
+						<h:outputText value="#{transgenics.mutatedAlleleId}" />
+					</h:outputLink>
 
 					<h:outputText value="Allele Name:" rendered="#{transgenics.mutantType=='transgenic insertion'}" />
 					<h:outputText value="Allele Description:" rendered="#{transgenics.mutantType=='mutant allele'}" />

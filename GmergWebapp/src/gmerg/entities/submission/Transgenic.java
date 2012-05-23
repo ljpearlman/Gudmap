@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class Transgenic {
-    private boolean debug = true;
+    private boolean debug = false;
     private String geneSymbol;
     private String geneName;
     private String geneId;
@@ -88,8 +88,13 @@ public class Transgenic {
     	return this.mutatedAlleleId;
     }
     
-    public void setMutatedAlleleId(String mutatedAlleleId) {
-    	this.mutatedAlleleId = mutatedAlleleId;
+    public void setMutatedAlleleId(String input) {
+    	this.mutatedAlleleId = input;
+	// if input is MGI accession, hardwire its url
+	// otherwise, input cantains url
+	if (null != input && -1 != input.indexOf("MGI:"))
+    	    setMutatedAlleleIdUrl("http://www.informatics.jax.org/searchtool/Search.do?query=" + input);
+
     }
 
     // Bernie 25/11/2010 - added new getter (mantis 336)
