@@ -10,6 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class Transgenic {
+    private boolean debug = true;
     private String geneSymbol;
     private String geneName;
     private String geneId;
@@ -82,16 +83,19 @@ public class Transgenic {
     }
 
     public String getMutatedAlleleId() {
+	if (debug)
+	    System.out.println("Transgenic.mutatedAlleleId = "+mutatedAlleleId);
     	return this.mutatedAlleleId;
     }
     
-    public void setMutatedAlleleId(String mutatedAlleleIdUrl) {
-    	this.mutatedAlleleId = mutatedAlleleIdUrl;
-    	setMutatedAlleleIdUrl("http://www.informatics.jax.org/searchtool/Search.do?query=" + mutatedAlleleIdUrl);
+    public void setMutatedAlleleId(String mutatedAlleleId) {
+    	this.mutatedAlleleId = mutatedAlleleId;
     }
 
     // Bernie 25/11/2010 - added new getter (mantis 336)
     public String getMutatedAlleleIdUrl() {
+	if (debug)
+	    System.out.println("Transgenic.mutatedAlleleIdUrl = "+mutatedAlleleIdUrl);
         return this.mutatedAlleleIdUrl;
     }
 
@@ -125,11 +129,24 @@ public class Transgenic {
     }
 
     public String getNotes() {
+	if (debug)
+	    System.out.println("Transgenic.notes = "+notes);
         return this.notes;
     }
 
     public void setNotes(String nts) {
         this.notes = nts;
+        if (null != notes) {
+           int index = notes.indexOf(";");
+           if (-1 != index) {
+	     String str1 = notes.substring(0, index);
+	     String str2 = notes.substring(index + 1);
+	     index = str1.indexOf(">");
+	     notes = str1.substring(0, index + 1)+geneSymbol+" "+str1.substring(index+1)+"&nbsp;&#38;";
+	     index = str2.indexOf(">");
+	     notes = notes + str2.substring(0, index + 1)+geneSymbol+" "+str2.substring(index+1);
+	   }
+	}
     }
     
     public String getPromoter() {
