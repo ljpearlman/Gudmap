@@ -285,8 +285,6 @@
 
 					<h:outputText value="Mutated Gene Id:" rendered="#{transgenics.mutantType=='mutant allele'}" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{transgenics.mutantType=='mutant allele'}" />
-					<%-- Bernie 25/11/2010 - added link (mantis 336) --%>
- 					<%--<h:outputText value="#{transgenics.geneId}" rendered="#{transgenics.mutantType=='mutant allele'}" />--%>				 					
 					<h:outputLink styleClass="datatext" value="#{transgenics.geneIdUrl}" rendered="#{transgenics.mutantType=='mutant allele'}" target="gmerg_external1">
 						<h:outputText value="#{transgenics.geneId}" />
 					</h:outputLink>
@@ -298,11 +296,7 @@
 --%>
 					<h:outputText value="Reference for Allele Description:"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<%-- Bernie 25/11/2010 - added link (mantis 336) --%>
-					<%--<h:outputText value="#{transgenics.mutatedAlleleId}" escape="false"/>--%>					 				
-					<h:outputLink styleClass="datatext" value="#{transgenics.mutatedAlleleIdUrl}" target="gmerg_external2">
-						<h:outputText value="#{transgenics.mutatedAlleleId}" />
-					</h:outputLink>
+					<h:outputText value="#{transgenics.mutatedAlleleId}" escape="false"/>
 
 					<h:outputText value="Allele Name:" rendered="#{transgenics.mutantType=='transgenic insertion'}" />
 					<h:outputText value="Allele Description:" rendered="#{transgenics.mutantType=='mutant allele'}" />
@@ -341,7 +335,6 @@
 			
 					<h:outputText value="Notes:" rendered="#{transgenics.notes != null}" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<%-- Bernie 25/11/2010 - added link (mantis 336) --%>
 					<h:outputText value="#{transgenics.notes}" rendered="#{transgenics.notes != null}" escape="false" />
 					<%-- commented out by xingjun - 08/03/2011 - no need to use an extra method: added <a> tag into the content in DB then escape it
 					<h:outputText value="#{transgenics.notes}" rendered="#{transgenics.notes != null && transgenics.pubUrl == null}"/>					
