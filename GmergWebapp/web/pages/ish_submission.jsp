@@ -662,12 +662,8 @@
 	
 							<h:outputText value="Mutated Gene Id:" rendered="#{transgenics.mutantType=='mutant allele'}" />
 							<h:outputText value="#{transgenics.geneId}" rendered="#{transgenics.mutantType=='mutant allele'}" />
-<%-- 
-							<h:outputText value="Allele Id:" />
---%>
 							<h:outputText value="Reference for Allele Description:" />
-							<h:outputText value="#{transgenics.mutatedAlleleId}" />
-	
+						<h:outputText value="#{transgenics.mutatedAlleleId}" escape="false" />
 							<h:outputText value="Allele Name:" rendered="#{transgenics.mutantType=='transgenic insertion'}" />
 							<h:outputText value="Allele Description:" rendered="#{transgenics.mutantType=='mutant allele'}" />
 							<h:outputText value="#{transgenics.mutatedAlleleName}" />
@@ -685,7 +681,7 @@
 							<h:outputText value="#{transgenics.alleleSecondChrom}" rendered="#{transgenics.mutantType=='mutant allele'}" />
 			
 							<h:outputText styleClass="plaintext,text-top" value="Notes:" rendered="#{transgenics.notes != null}" />
-							<h:outputText styleClass="datatext" value="#{transgenics.notes}" />
+					<h:outputText value="#{transgenics.notes}" rendered="#{transgenics.notes != null}" escape="false" />
 						</h:panelGrid>
 						<h:outputLink id="editTransgenic" rendered="#{userBean.userLoggedIn && userBean.user.userPrivilege>=5 && userBean.user.userType!='EXAMINER'}"
 									onclick="var w=window.open('edit_probe.html?accessionId=#{ishSubmissionBean.submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
