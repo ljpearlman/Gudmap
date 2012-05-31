@@ -11,6 +11,7 @@ import gmerg.model.GenesCollectionBrowseHelper;
 import gmerg.model.ImagesCollectionBrowseHelper;
 import gmerg.model.ProbesCollectionBrowseHelper;
 import gmerg.utils.Utility;
+import gmerg.utils.Visit;
 import gmerg.utils.table.CollectionBrowseHelper;
 import gmerg.utils.table.FilterItem;
 import gmerg.utils.table.FilterItem.FilterType;
@@ -184,7 +185,7 @@ public class Globals {
 			case 2:	return new ImagesCollectionBrowseHelper(collectionItemsIds, 2, "imageIds", 0);
 			case 3:	return new ProbesCollectionBrowseHelper("GPL1261", masterTableId, collectionItemsIds, 3, "probeIds", 0); 
 //			case 4:	return new ProbesCollectionBrowseHelper("GPL6246", "3", collectionItemsIds, 4, "probeIds", 0);
-			case 4:	return new ProbesCollectionBrowseHelper("GPL6246", masterTableId, collectionItemsIds, 4, "probeIds", 0);
+			case 4:	return new ProbesCollectionBrowseHelper("GPL6246", "3_0", collectionItemsIds, 4, "probeIds", 0);
 		}	
 		return null;
 	}
