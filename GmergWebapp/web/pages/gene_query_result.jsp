@@ -5,10 +5,10 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 <%--
-	<h:outputText value="Gudmap #{geneQueryResultBean.title} results"  />
-	<h:outputText styleClass="plaintext" value="#{geneQueryResultBean.title}" escape="false" rendered="#{geneQueryResultBean.dumy}" />
+	<h:outputText value="Gudmap #{GeneQueryResultBean.title} results"  />
+	<h:outputText styleClass="plaintext" value="#{GeneQueryResultBean.title}" escape="false" rendered="#{GeneQueryResultBean.dumy}" />
  --%>
-	<h:outputText styleClass="plaintext" value="#{geneQueryResultBean.title}" escape="false" />
+	<h:outputText styleClass="plaintext" value="#{GeneQueryResultBean.title}" escape="false" />
 	<f:subview id="geneTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
