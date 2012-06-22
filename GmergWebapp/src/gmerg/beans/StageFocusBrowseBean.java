@@ -4,6 +4,8 @@ import gmerg.assemblers.FocusBrowseAssembler;
 import gmerg.utils.Visit;
 
 public class StageFocusBrowseBean {
+    private boolean debug = false;
+
 	private FocusBrowseAssembler assembler = null;
 	private String[] stage = new String[]{"17","18","19","20","21","22","23","24","25","26","27","28"};
 	private String[][] stageList;
@@ -15,6 +17,9 @@ public class StageFocusBrowseBean {
 	 *
 	 */
 	public StageFocusBrowseBean() {
+	if (debug)
+	    System.out.println("StageFocusBrowseBean.constructor");
+
 		String organ = Visit.getRequestParam("focusedOrgan");
 		gene = Visit.getRequestParam("gene");
 		assembler = new FocusBrowseAssembler();
