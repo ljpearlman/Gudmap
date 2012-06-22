@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
  *
  */
 public class MySQLAnatomyDAOImp implements AnatomyDAO {
-	
+    private boolean debug = false;
     private Connection conn;
 	
 	// default constructor
@@ -125,6 +125,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
         	conn = DBHelper.reconnect2DB(conn);
 
 			stmt = conn.createStatement();
+			if (debug)
+			    System.out.println("MySQLAnatomyDAOImp.sql = "+DBQuery.ANATOMY_PERSPECTIVE_TERMS.toLowerCase());
 			resSet = stmt.executeQuery(DBQuery.ANATOMY_PERSPECTIVE_TERMS);
 			if(resSet.first()){
 				resSet.last();
@@ -208,6 +210,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
         	conn = DBHelper.reconnect2DB(conn);
 
 			// execute query
+		if (debug) 
+		    System.out.println("MySQLAnatomyDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setString(1, startStage);
 			prepStmt.setString(2, endStage);
@@ -258,6 +262,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
         	conn = DBHelper.reconnect2DB(conn);
 
 			// execute query
+		if (debug) 
+		    System.out.println("MySQLAnatomyDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setString(1, startStage);
 			prepStmt.setString(2, endStage);
@@ -322,6 +328,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
         	conn = DBHelper.reconnect2DB(conn);
 
 			// execute query
+		if (debug) 
+		    System.out.println("MySQLAnatomyDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 
 			if (expressionState.equalsIgnoreCase("present")) {
