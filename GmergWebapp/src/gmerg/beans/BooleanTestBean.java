@@ -25,7 +25,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public class BooleanTestBean {
-    
+    private boolean debug = false;
+
     private String startStage1;
     private String endStage1;
     private String [] annotationTypes1;
@@ -67,6 +68,9 @@ public class BooleanTestBean {
     
     
     public BooleanTestBean() {
+	    if (debug)
+		System.out.println("BooleanTestBean.constructor");
+
         assembler = new AnatomyStructureAssembler();
         ArrayList stageRange = assembler.getStageRanges();
         displayStageRange = new SelectItem [stageRange.size()];
