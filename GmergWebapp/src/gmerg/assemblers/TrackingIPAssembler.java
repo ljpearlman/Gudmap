@@ -8,6 +8,12 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 public class TrackingIPAssembler {
+    private boolean debug = false;
+    public TrackingIPAssembler() {
+	if (debug)
+	    System.out.println("TrackingIPAssembler.constructor");
+
+    }
 	public boolean updateIPLog(String ip, String viewid, String browser, String platform) {
 		/** ---get data from dao---  */
 		// create a dao
