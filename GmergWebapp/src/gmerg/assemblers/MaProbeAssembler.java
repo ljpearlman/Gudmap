@@ -10,6 +10,11 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class MaProbeAssembler {
+    private boolean debug = false;
+    public MaProbeAssembler() {
+	if (debug)
+	    System.out.println("MaProbeAssembler.constructor");
+    }
 
 	public Probe getData(String probeId, String maprobeId) {
 
