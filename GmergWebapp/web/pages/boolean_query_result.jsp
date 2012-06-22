@@ -5,8 +5,8 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText value="Gudmap #{booleanQueryResultBean.title} results"  />
-	<h:outputText value="" rendered="#{booleanQueryResultBean.dumy}" />
+	<h:outputText value="Gudmap #{BooleanQueryResultBean.title} results"  />
+	<h:outputText value="" rendered="#{BooleanQueryResultBean.dumy}" />
 	<f:subview id="focusGeneTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
