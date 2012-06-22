@@ -8,7 +8,7 @@
 
   <td><h3>Molecular Marker Candidates</h3></td>
   <h:dataTable width="100%" styleClass="browseTable" rowClasses="table-stripey,table-nostripe" headerClass="align-top-stripey" 
-            value="#{molecularMarkerBean.markerList}" var="marker">
+            value="#{MolecularMarkerBean.markerList}" var="marker">
 	      <h:column>
             <f:facet name="header">
                 <h:outputText value="Tissue" />             
