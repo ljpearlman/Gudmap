@@ -11,7 +11,8 @@ import javax.mail.internet.InternetAddress;
 import gmerg.utils.Utility;
 
 public class FeedbackBean {
-	
+    private boolean debug = false;
+
 	private String name;
 	private String email;
 	private String comment;
@@ -23,7 +24,9 @@ public class FeedbackBean {
 	boolean submitted = false;
 	
 	public FeedbackBean() {
-		
+	    if (debug)
+		System.out.println("FeedbackBean.constructor");
+
 	}
 	
 	public String getName() {
