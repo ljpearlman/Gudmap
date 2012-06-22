@@ -14,6 +14,7 @@ import javax.faces.model.DataModel;
 
 
 public class MicroarraySingleSubmissionBean {
+    private boolean debug = false;
 
     private String submissionId;  //user-defined submission id
     private ArraySubmissionAssembler assembler; //used to interrogate db and return correct array data
@@ -28,7 +29,9 @@ public class MicroarraySingleSubmissionBean {
     private String geneSymbol; //assigned value of to user input when doing gene search
 
     public MicroarraySingleSubmissionBean() {
-        
+        	if (debug)
+	    System.out.println("MicroarraySingleSubmissionBean.constructor");
+
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> requestParams =
             context.getExternalContext().getRequestParameterMap();
