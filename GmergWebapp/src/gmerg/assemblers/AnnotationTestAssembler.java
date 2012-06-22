@@ -13,7 +13,13 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 public class AnnotationTestAssembler {
-	
+    private boolean debug = false;
+
+    public AnnotationTestAssembler() {
+	if (debug)
+	    System.out.println("AnnotationTestAssembler.constructor");
+    }
+
 	public ArrayList<String> getAnatomyTree() {
 		return null;
 	}
