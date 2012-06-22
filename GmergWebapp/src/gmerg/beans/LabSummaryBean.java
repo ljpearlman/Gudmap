@@ -14,6 +14,7 @@ import java.util.Locale;
 import javax.faces.context.FacesContext;
 
 public class LabSummaryBean {
+    private boolean debug = false;
 
     LabSummaryAssembler assembler = null;
     private LabSummary[] labs;
@@ -27,6 +28,9 @@ public class LabSummaryBean {
      */
 
     public LabSummaryBean() {
+	if (debug)
+	    System.out.println("LabSummaryBean.constructor");
+
     }
 
     /**
