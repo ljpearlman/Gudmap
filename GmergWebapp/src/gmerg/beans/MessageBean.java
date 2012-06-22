@@ -15,6 +15,7 @@ import gmerg.utils.Utility;
 */
 
 public class MessageBean {
+    private boolean debug = false;
 
 	String message;
 	String targetPage;
@@ -24,6 +25,9 @@ public class MessageBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public MessageBean() {
+	if (debug)
+	    System.out.println("MessageBean.constructor");
+
 		message = FacesUtil.getFacesRequestParamValue("message");
 		targetPage = FacesUtil.getFacesRequestParamValue("targetPage");
 		escape = Utility.getValue(FacesUtil.getFacesRequestParamValue("escape"), "false").equalsIgnoreCase("true");
