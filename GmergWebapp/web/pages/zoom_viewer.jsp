@@ -9,7 +9,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-		<title>Images for submission&nbsp;<h:outputText value="#{imageDetailBean.imageDetail.accessionId}" /></title>
+		<title>Images for submission&nbsp;<h:outputText value="#{ImageDetailBean.imageDetail.accessionId}" /></title>
 		
                 
                 <c:choose>
@@ -101,17 +101,17 @@
 			<h:outputText value="Assay Type" />
 			<h:outputText value="Specimen Type" />
 
-			<h:outputText value="#{imageDetailBean.imageDetail.accessionId}" />
-			<h:outputText value="#{imageDetailBean.imageDetail.geneSymbol}" />
-			<h:outputText value="#{imageDetailBean.imageDetail.stage}" />
-			<h:outputText value="#{imageDetailBean.imageDetail.geneName}" />
-			<h:outputText value="#{imageDetailBean.imageDetail.age}" />
-			<h:outputText value="#{imageDetailBean.imageDetail.assayType}" />
-			<h:outputText value="#{imageDetailBean.imageDetail.specimenType}" />
+			<h:outputText value="#{ImageDetailBean.imageDetail.accessionId}" />
+			<h:outputText value="#{ImageDetailBean.imageDetail.geneSymbol}" />
+			<h:outputText value="#{ImageDetailBean.imageDetail.stage}" />
+			<h:outputText value="#{ImageDetailBean.imageDetail.geneName}" />
+			<h:outputText value="#{ImageDetailBean.imageDetail.age}" />
+			<h:outputText value="#{ImageDetailBean.imageDetail.assayType}" />
+			<h:outputText value="#{ImageDetailBean.imageDetail.specimenType}" />
 		</h:panelGrid>
 		<h:outputText value="<br>"  escape="false" />
-		<h:outputText value='<input type="hidden" id="viewerFrameSrc" value="#{imageDetailBean.viewerFrameSourceName}?project=#{imageDetailBean.submissionName}&stack=#{imageDetailBean.imageDir}&x=1&y=1&thumbnail=#{imageDetailBean.thumbnail}&notes=#{imageDetailBean.allNotes}&pImgs=#{imageDetailBean.publicImages}" />' escape="false" />
-		<h:outputText value='<div id="zoomViewerSection" style="visibility:hidden"> <iframe id="zoomViewer" name="zoomViewer" src="#{imageDetailBean.viewerFrameSourceName}?project=#{imageDetailBean.submissionName}&stack=#{imageDetailBean.imageDir}&x=1&y=1&thumbnail=#{imageDetailBean.thumbnail}&notes=#{imageDetailBean.allNotes}&pImgs=#{imageDetailBean.publicImages}" height="744" width="100%" frameborder="no" scrolling="no" marginwidth="1"/></div>' escape="false"/>
+		<h:outputText value='<input type="hidden" id="viewerFrameSrc" value="#{ImageDetailBean.viewerFrameSourceName}?project=#{ImageDetailBean.submissionName}&stack=#{ImageDetailBean.imageDir}&x=1&y=1&thumbnail=#{ImageDetailBean.thumbnail}&notes=#{ImageDetailBean.allNotes}&pImgs=#{ImageDetailBean.publicImages}" />' escape="false" />
+		<h:outputText value='<div id="zoomViewerSection" style="visibility:hidden"> <iframe id="zoomViewer" name="zoomViewer" src="#{ImageDetailBean.viewerFrameSourceName}?project=#{ImageDetailBean.submissionName}&stack=#{ImageDetailBean.imageDir}&x=1&y=1&thumbnail=#{ImageDetailBean.thumbnail}&notes=#{ImageDetailBean.allNotes}&pImgs=#{ImageDetailBean.publicImages}" height="744" width="100%" frameborder="no" scrolling="no" marginwidth="1"/></div>' escape="false"/>
 		
 	</body>
 </html>
