@@ -6,8 +6,11 @@ import gmerg.utils.table.*;
 import gmerg.utils.*;
 
 public class LabArrayBrowseBean {
-
+    private boolean debug = false;
 	public LabArrayBrowseBean() {
+	if (debug)
+	    System.out.println("BLabArrayBrowseean.constructor");
+
 		String viewName = "labArrayBrowse";
 		
 		if (TableUtil.isTableViewInSession())
