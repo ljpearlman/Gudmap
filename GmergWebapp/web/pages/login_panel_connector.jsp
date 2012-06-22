@@ -12,9 +12,9 @@
 <body bgcolor="white" onload="loginFrameOnload()" >
 	<f:view >
 		<h:form id="loginPanelConnectorForm">
-			<h:inputHidden id="userLoggedIn" value="#{userBean.userLoggedIn}"/>
+			<h:inputHidden id="userLoggedIn" value="#{UserBean.userLoggedIn}"/>
 			<input type="hidden" id="loginOperation" value="${param.loginOperation}"/>
-			<h:commandLink value="refresh" id="refreshLoginPanelLink" action="#{userBean.refreshLoginPanel}" />
+			<h:commandLink value="refresh" id="refreshLoginPanelLink" action="#{UserBean.refreshLoginPanel}" />
 		</h:form>
 	</f:view>
 </body>
