@@ -24,7 +24,8 @@ import java.util.*;
  *
  */
 public class GeneAssembler extends OffMemoryTableAssembler{
-	
+    private boolean debug = false;
+
 	String geneId;
 	String probeset;
 	Gene gene;
@@ -32,6 +33,9 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 	
 	public GeneAssembler (HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("GeneAssembler.constructor");
+
 	}
 
 	public void setParams() {
