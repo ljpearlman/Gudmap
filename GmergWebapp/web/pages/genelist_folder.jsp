@@ -35,6 +35,7 @@
 </head>
 --%>
 <f:view>
+  <a4j:keepAlive beanName="GenelistFolderBean" />
 	<jsp:include page="/includes/header.jsp" />
 	<h:form id="mainForm" >
 		<t:tree id="tree" value="#{GenelistFolderBean.treeModel}"
