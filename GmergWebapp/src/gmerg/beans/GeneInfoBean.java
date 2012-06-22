@@ -12,7 +12,7 @@ import gmerg.utils.Utility;
  * the database in order to find relevant info on the gene matching the specified symbol and display it to the user
  */
 public class GeneInfoBean {
-
+    private boolean debug = false;
 private Gene gene;
 private String geneId;
 private String probeset;
@@ -24,6 +24,9 @@ private String arrayDataViewName;
 private String geneStripViewName;
 	
 public GeneInfoBean() {
+	    if (debug)
+		System.out.println("GeneInfoBean.constructor");
+
 	// get the gene symbol as a parameter
 	geneId = FacesUtil.getRequestParamValue("gene");
 	probeset = FacesUtil.getRequestParamValue("probeset");
