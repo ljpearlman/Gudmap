@@ -19,7 +19,7 @@ public class AdvancedSearchDBQuery {
 	  
  
 	  final static public String[] getISHDefaultTitle(){
-		  return new String[]{Utility.getProject()+" Entry Details", "Gene", Utility.getStageSeriesMed()+" Stage", 
+	      return new String[]{Utility.getProject()+" Entry Details", "Gene", Utility.getStageSeriesMed()+" Stage", 
 					 "Age", "Lab", "Submission Date", 
 					 "Assay Type", "Specimen Type", "Sex", 
 					 "Probe Name", "Genotype", "Probe Type", 
