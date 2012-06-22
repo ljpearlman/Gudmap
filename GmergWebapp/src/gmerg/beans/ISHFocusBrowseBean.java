@@ -7,11 +7,15 @@ import gmerg.utils.table.*;
 import gmerg.utils.Visit;
 
 public class ISHFocusBrowseBean {
+    private boolean debug = false;
 
 	private String organ;
 	private String stage;
 
 	public ISHFocusBrowseBean() {
+	if (debug)
+	    System.out.println("ISHFocusBrowseBean.constructor");
+
 		organ = Visit.getRequestParam("focusedOrgan");
 		stage = Visit.getRequestParam("stage");
 		String viewName = "focusBrowseISH";
