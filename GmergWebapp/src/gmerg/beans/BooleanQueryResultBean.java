@@ -17,9 +17,13 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class BooleanQueryResultBean {
+    private boolean debug = false;
 	private String searchResultOption; 
 	
 	public BooleanQueryResultBean() {
+	    if (debug)
+		System.out.println("BooleanQueryResultBean.constructor");
+
 		if (TableUtil.isTableViewInSession())
 			return;
 		searchResultOption ="entry";
