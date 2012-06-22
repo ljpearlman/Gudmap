@@ -15,7 +15,7 @@ import gmerg.utils.table.*;
  */
 
 public class AllComponentsGenelistsBean {
-
+    private boolean debug = false;
 	private GenericTableView tableView = null; // this should be used if using frame based wide tables
 
 	private String cdtFile;
@@ -28,6 +28,9 @@ public class AllComponentsGenelistsBean {
 	// Constructors
 	// ********************************************************************************
 	public AllComponentsGenelistsBean() {
+	    if (debug)
+		System.out.println("AllComponentsGenelistsBean.constructor");
+
 		String viewName = "processedGenelists";
 		
         if (TableUtil.isTableViewInSession()) {
