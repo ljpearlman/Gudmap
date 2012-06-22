@@ -8,7 +8,7 @@
 	<jsp:include page="/includes/header.jsp" />
 	
 	<h:outputText value="Gene List Table for:" styleClass="plaintextbold" />
-	<h:outputText value="#{GenelistDataBean.genelistName}" styleClass="plaintext" />
+	<h:outputText value="#{ProcessedGenelistDataBean.genelistName}" styleClass="plaintext" />
 	<f:subview id="processedGenelistData">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
@@ -16,8 +16,8 @@
 <%--
 	<h:form id="geneListDataForm">
 		<h:outputText value="Gene List Table for:" styleClass="plaintextbold" />
-		<h:outputText value="#{GenelistDataBean.genelistName}" styleClass="plaintext" />
-		<f:verbatim><iframe src="../includes/browse_wide_table.jsf?</f:verbatim><h:outputText value='#{GenelistDataBean.tableView.requestParam}" height="#{GenelistDataBean.tableView.height}"' />
+		<h:outputText value="#{ProcessedGenelistDataBean.genelistName}" styleClass="plaintext" />
+		<f:verbatim><iframe src="../includes/browse_wide_table.jsf?</f:verbatim><h:outputText value='#{ProcessedGenelistDataBean.tableView.requestParam}" height="#{ProcessedGenelistDataBean.tableView.height}"' />
 		<f:verbatim> width="100%" align="RIGHT" frameborder="no"> </iframe></f:verbatim>
 	</h:form>		
 --%>
