@@ -27,7 +27,7 @@
           <h:outputText styleClass="plaintext" value="Name: "/>
         </td>
         <td>
-          <h:inputText id="name" value="#{userBean.userName}" required="true" />
+          <h:inputText id="name" value="#{UserBean.userName}" required="true" />
         </td>
         <td>
           <h:message for="name" styleClass="plainred" />
@@ -38,7 +38,7 @@
           <h:outputText styleClass="plaintext" value="Password: "/>
         </td>
         <td>
-          <h:inputSecret id="pass" value="#{userBean.password}" required="true" />
+          <h:inputSecret id="pass" value="#{UserBean.password}" required="true" />
         </td>
         <td>
           <h:message for="pass" styleClass="plainred" />
@@ -47,13 +47,13 @@
 <%-- 
       <tr>
         <td>
-          <h:inputHidden id="loginCheck" validator="#{userBean.validateLogin}" value="validation" />
+          <h:inputHidden id="loginCheck" validator="#{UserBean.validateLogin}" value="validation" />
         </td>
       </tr>
 --%>
       <tr>
         <td>
-          <h:commandButton value="Login" action="#{userBean.validateLogin}" />
+          <h:commandButton value="Login" action="#{UserBean.validateLogin}" />
         </td>
       </tr>
     </table>
