@@ -21,34 +21,34 @@
       <title>Lab Detail</title>
     </head>
     <body>
-    	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" rendered="#{personBean.people == null}" >
+    	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" rendered="#{PersonBean.people == null}" >
     		<h:outputText value="Name:" />
-    		<h:outputText value="#{personBean.person.name}" />
+    		<h:outputText value="#{PersonBean.person.name}" />
     		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
     		
     		<h:outputText value="Institution:" />
-    		<h:outputText value="#{personBean.person.lab}" />
+    		<h:outputText value="#{PersonBean.person.lab}" />
     		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
     		
     		<h:outputText value="Address:" />
     		<h:panelGrid columns="1" border="0">
-    			<h:outputText styleClass="datatext" value="#{personBean.person.address}" />
-    			<h:outputText styleClass="datatext" value="#{personBean.person.city} #{personBean.person.postcode}" />
-    			<h:outputText styleClass="datatext" value="#{personBean.person.country}" />
+    			<h:outputText styleClass="datatext" value="#{PersonBean.person.address}" />
+    			<h:outputText styleClass="datatext" value="#{PersonBean.person.city} #{PersonBean.person.postcode}" />
+    			<h:outputText styleClass="datatext" value="#{PersonBean.person.country}" />
     		</h:panelGrid>
     		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
     		
     		<h:outputText value="Tel:" />
-    		<h:outputText value="#{personBean.person.phone}" />
+    		<h:outputText value="#{PersonBean.person.phone}" />
     		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
     		
     		<h:outputText value="Email:" />
-    		<h:outputText value="#{personBean.person.email}" />
+    		<h:outputText value="#{PersonBean.person.email}" />
     	</h:panelGrid>
     	
     	<%-- added by xingjun - there might be multiple People linked to one certain submission --%>
-    	<t:dataList id="peopleDataList" var="peopleInfo" value="#{personBean.people}" rowCountVar="count" rowIndexVar="index" layout="unorderedList"
-				rendered="#{personBean.people != null}">
+    	<t:dataList id="peopleDataList" var="peopleInfo" value="#{PersonBean.people}" rowCountVar="count" rowIndexVar="index" layout="unorderedList"
+				rendered="#{PersonBean.people != null}">
 				
 				<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" >
 					<h:outputText value="Name:" />
