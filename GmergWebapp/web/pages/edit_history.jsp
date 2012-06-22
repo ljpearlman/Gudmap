@@ -23,7 +23,7 @@
             </h:selectOneRadio>
           </td>
           <td align="right">
-            <h:commandLink action="#{queryBean.findGenes}">
+            <h:commandLink action="#{QueryBean.findGenes}">
               <h:graphicImage url="../images/gu_go.gif" alt="Go" styleClass="icon"/>
             </h:commandLink>
           </td>
@@ -32,17 +32,17 @@
     </h:form>
     <br/><br/>
     
-    <h:dataTable width="100%" rowClasses="header-stripey,header-nostripe" value="#{editHistoryBean.modifiedSubmissions}" var="history" border="0">
+    <h:dataTable width="100%" rowClasses="header-stripey,header-nostripe" value="#{EditHistoryBean.modifiedSubmissions}" var="history" border="0">
       <h:column>
         <h:panelGrid columns="1">
-          <h:outputText styleClass="plaintextbold" value="Modified Date: #{history[0]}" rendered="#{editHistoryBean.groupBy == 'date'}"/>
-          <h:outputText styleClass="plaintextbold" value="Person: #{history[0]}" rendered="#{editHistoryBean.groupBy == 'person'}"/>
+          <h:outputText styleClass="plaintextbold" value="Modified Date: #{history[0]}" rendered="#{EditHistoryBean.groupBy == 'date'}"/>
+          <h:outputText styleClass="plaintextbold" value="Person: #{history[0]}" rendered="#{EditHistoryBean.groupBy == 'person'}"/>
           <h:panelGroup>
             <h:dataTable value="#{history[1]}" var="person">
               <h:column>
                 <h:panelGrid columns="1">
-                  <h:outputText styleClass="plaintextbold" value="Person: #{person[0]}" rendered="#{editHistoryBean.groupBy == 'date'}"/>
-                  <h:outputText styleClass="plaintextbold" value="Modified Date: #{person[0]}" rendered="#{editHistoryBean.groupBy == 'person'}"/>
+                  <h:outputText styleClass="plaintextbold" value="Person: #{person[0]}" rendered="#{EditHistoryBean.groupBy == 'date'}"/>
+                  <h:outputText styleClass="plaintextbold" value="Modified Date: #{person[0]}" rendered="#{EditHistoryBean.groupBy == 'person'}"/>
                   <h:panelGroup>
                     <h:dataTable value="#{person[1]}" var="submissions">
                       <h:column>
