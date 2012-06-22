@@ -16,6 +16,8 @@ import java.util.ArrayList;
  *
  */
 public class MySQLTransgenicDAOImp implements TransgenicDAO {
+    private boolean debug = false;
+
     private Connection conn;
 
     // default constructor
@@ -57,6 +59,8 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 //        System.out.println("TransgenicDAOImp:getAllSubmission:sql (post filter): " + queryString);
         
         try {
+		    if (debug)
+			System.out.println("MySQLTransgenicDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
@@ -230,6 +234,8 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     	PreparedStatement prepStmt = null;
     	try {
     		for (int i = 0; i < queryNumber; i++) {
+		    if (debug)
+			System.out.println("MySQLTransgenicDAOImp.sql = "+queryString[i].toLowerCase());
     			prepStmt = conn.prepareStatement(queryString[i]);
     			//System.out.println("sql: " + queryString[i]);
     			if (param != null && param[i] != null) { // set query criteria if it's not null
