@@ -6,7 +6,7 @@
 	<jsp:include page="/includes/header.jsp" />
 	
 	<h:outputText value="Gudmap advanced query result"  />
-	<h:outputText value="" rendered="#{advancedQueryResultBean.dumy}" />
+	<h:outputText value="" rendered="#{AdvancedQueryResultBean.dumy}" />
 	<f:subview id="focusAdvancedTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
