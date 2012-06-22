@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 
 public class PersonBean {
-	
+    private boolean debug = false;
 	private String id;
     private Map requestParams;
 	private Person person;
@@ -16,6 +16,9 @@ public class PersonBean {
 	private ISHSubmissionAssembler ishSubmissionAssembler;
 
 	public PersonBean () {
+	if (debug)
+	    System.out.println("PersonBean.constructor");
+
 		FacesContext context = FacesContext.getCurrentInstance();
         this.requestParams = context.getExternalContext().getRequestParameterMap();
         this.id = (String)requestParams.get("id");
