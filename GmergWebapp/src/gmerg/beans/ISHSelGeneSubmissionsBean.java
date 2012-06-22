@@ -7,12 +7,13 @@ import gmerg.utils.table.TableUtil;
 //be turned to a multiple instance bean (queryType is a good candidate for distinguishing parameter).
 
 public class ISHSelGeneSubmissionsBean extends ISHSelSubmissionsBean {
-	
 	// ********************************************************************************
 	// Constructors & Initializers
 	// ********************************************************************************
     public ISHSelGeneSubmissionsBean() {
-		
+	if (debug)
+	    System.out.println("ISHSelGeneSubmissionsBean.constructor");
+
         if (TableUtil.isTableViewInSession())
 			return;
         
