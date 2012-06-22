@@ -17,7 +17,7 @@ import java.sql.ResultSetMetaData;
  *
  */
 public class MySQLArrayDevDAOImp implements ArrayDevDAO {
-	
+    private boolean debug = false;
 	private Connection conn; 
 
 	// default constructor
@@ -61,6 +61,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		// execute the query
 		try {
 //			parQ.setPrepStat(conn);
+		    if (debug)
+			System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			if(null != platform && !platform.equals("")) {
 				prepStmt.setString(1, platform);
@@ -106,6 +108,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 
         //try to execute the query
         try {
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
             prepStat = conn.prepareStatement(queryString);
             prepStat.setString(1, id);
 
@@ -140,6 +144,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
     	
     	//try to execute the query
     	try {
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
     		prepStat = conn.prepareStatement(queryString);
     		prepStat.setInt(1, Integer.parseInt(oid));
     		
@@ -387,6 +393,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
         PreparedStatement prepStmt = null;
         try {
             for (int i = 0; i < queryNumber; i++) {
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString[i].toLowerCase());
                 prepStmt = conn.prepareStatement(queryString[i]);
                 if (param != null &&
                     param[i] != null) { // set query criteria if it's not null
@@ -456,6 +464,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
             
             query = "SELECT COUNT(*) FROM (" + query + ") AS S_TABLE";
 //    		System.out.println("ArrayDevDAO:getTotalNumberOfSeries:sql: " + query);
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+query.toLowerCase());
             prepStmt = conn.prepareStatement(query);
             if(null != platform && !platform.equals("")) {
 				prepStmt.setString(1, platform);
@@ -648,6 +658,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		
 		PreparedStatement prepStmt = null;
 		try {
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			resSet = prepStmt.executeQuery();
 			if(resSet.first()){
@@ -687,6 +699,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		
 		PreparedStatement prepStmt = null;
 		try {
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setInt(1, subStatus);
 			resSet = prepStmt.executeQuery();
@@ -748,6 +762,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		
 		PreparedStatement prepStmt = null;
 		try {
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			resSet = prepStmt.executeQuery();
 			if(resSet.first()){
@@ -794,6 +810,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		
 		PreparedStatement prepStmt = null;
 		try {
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setInt(1, subStatus);
 			prepStmt.setInt(2, subStatus);
@@ -834,6 +852,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		
 		PreparedStatement prepStmt = null;
 		try {
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setString(1, platformId);
 			resSet = prepStmt.executeQuery();
@@ -873,6 +893,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		
 		PreparedStatement prepStmt = null;
 		try {
+	    if (debug)
+		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setInt(1, subStatus);
 			resSet = prepStmt.executeQuery();
