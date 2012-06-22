@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 
 public class MicroarrayDetailsBean {
+    private boolean debug = false;
 
 	private String name;
 	private String component;
@@ -30,6 +31,9 @@ public class MicroarrayDetailsBean {
 	
 	public MicroarrayDetailsBean () 
 	{
+	if (debug)
+	    System.out.println("MicroarrayDetailsBean.constructor");
+
         FacesContext context = FacesContext.getCurrentInstance();
         Map requestParams = context.getExternalContext().getRequestParameterMap();
         name = (String) requestParams.get("name");
