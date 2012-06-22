@@ -112,7 +112,7 @@
     
     
     <c:if test="${pageName == '/pages/anatomy_tree.jsp'}">
-    <c:forEach items="${anatomyBean.treeContent}" var="row">
+    <c:forEach items="${AnatomyBean.treeContent}" var="row">
       <c:out value="${row}" escapeXml="false"/>
     </c:forEach>
     </c:if>
