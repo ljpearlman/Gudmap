@@ -9,7 +9,7 @@
 
     <table border="0" width="100%">
       <tr>
-        <td colspan="2" align="left"><h3><c:out value="${micTutorialBean.title}" /></h3></td><td colspan="2" align="right"></td>
+        <td colspan="2" align="left"><h3><c:out value="${MicTutorialBean.title}" /></h3></td><td colspan="2" align="right"></td>
       </tr>
       <tr>
         <td colspan="2" align="left">&nbsp;</td>
@@ -21,7 +21,7 @@
             
 	          <tr>
                   <td align="left">
-		  <c:forEach items="${micTutorialBean.tutorial}" var="row" varStatus="current">
+		  <c:forEach items="${MicTutorialBean.tutorial}" var="row" varStatus="current">
                     <p><c:out value="${row}" /></p>
 		  </c:forEach>
                   </td>
@@ -37,7 +37,7 @@
         <td  valign="top" align="left" class="plaintextbold">Images</td>
         <td>
           <table border="0" cellspacing="2">
-            <c:forEach items="${micTutorialBean.subImages}" var="row" varStatus="current">
+            <c:forEach items="${MicTutorialBean.subImages}" var="row" varStatus="current">
 	          <tr>
                   <td align="left">
                     <img border="0" width="500" src="<c:out value="${row}" />" />
