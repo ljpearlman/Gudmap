@@ -28,6 +28,7 @@ import org.apache.myfaces.custom.tree.model.DefaultTreeModel;
  */
 public class GenelistFolderBean implements Serializable
 {
+    protected boolean debug = false;
 	private String cdtFile;
 	private String gtrFile;
 	private String genelistId;
@@ -39,6 +40,7 @@ public class GenelistFolderBean implements Serializable
 		private boolean containsGenelists;
 		
 		public GenelistTreeNode(String id, GenelistInfo info) {
+
 			this(id, info.getTitle(), info.getSubmitter(), info.getDescription(), info.getFilename(), 
 					info.getCdtFileName(), info.getGtrFileName(), 0, info.getPlatformId());
 			summary = info.getSummary();
@@ -242,7 +244,10 @@ public class GenelistFolderBean implements Serializable
 	// Contructor
 	// ********************************************************************************
 	public GenelistFolderBean() {
-		
+	    	    if (debug)
+		System.out.println("GenelistFolderBean.constructor");
+
+
 		displayTreeView = false;
 		
 		if ("appletStoped".equals(FacesUtil.getRequestParamValue("appletRequest"))) {  
