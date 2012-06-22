@@ -14,6 +14,7 @@ import gmerg.utils.FacesUtil;
  */
 
 public class ProcessedGenelistsBean {
+    private boolean debug = false;
 
 	private GenericTableView tableView = null; // this should be used if using frame based wide tables
 
@@ -22,6 +23,9 @@ public class ProcessedGenelistsBean {
 	// Constructors
 	// ********************************************************************************
 	public ProcessedGenelistsBean() {
+	if (debug)
+	    System.out.println("ProcessedGenelistsBean.constructor");
+
 		String viewName = "processedGenelists";
 		
         if (TableUtil.isTableViewInSession()) {
