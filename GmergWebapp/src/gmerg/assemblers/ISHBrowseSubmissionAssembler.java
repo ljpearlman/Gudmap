@@ -19,7 +19,12 @@ import gmerg.entities.submission.ish.ISHBrowseSubmission;
  *
  */
 public class ISHBrowseSubmissionAssembler {
-	
+    private boolean debug = false;
+    public ISHBrowseSubmissionAssembler() {
+	if (debug)
+	    System.out.println("ISHBrowseSubmissionAssembler.constructor");
+
+    }
 	/**
 	 * return a composite vo including all ish submissions info and total
 	 * number of listed columns
