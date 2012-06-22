@@ -4,7 +4,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 
-	<h:outputText value="" rendered="#{ishSelGeneSubmissionsBean.dumy}" />
+	<h:outputText value="" rendered="#{ISHSelGeneSubmissionsBean.dumy}" />
 	<f:subview id="ishGeneSubmissionsTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
