@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import javax.faces.context.FacesContext;
 
 public class ISHBatchListBean {
+    private boolean debug = false;
+
 	private ISHBatch[] batches;
 	private BatchAnnotationAssembler batchAnnotationAssembler;
 	private int status;
@@ -23,6 +25,9 @@ public class ISHBatchListBean {
 	
 	
 	public ISHBatchListBean() {
+	    if (debug)
+		System.out.println("ISHBatchListBean.constructor");
+
         Object object =
             FacesContext
                 .getCurrentInstance()
