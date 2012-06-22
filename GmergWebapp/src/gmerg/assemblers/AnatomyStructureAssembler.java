@@ -17,7 +17,13 @@ import java.util.ArrayList;
  *
  */
 public class AnatomyStructureAssembler {
-	
+    private boolean debug = false;
+
+    public AnatomyStructureAssembler() {
+	if (debug)
+	    System.out.println("AnatomyStructureAssembler.constructor");
+    }
+
 	/**
 	 * 
 	 * @return
