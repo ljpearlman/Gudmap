@@ -12,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 
 public class ISHBatchSubmissionBean {
+    private boolean debug = false;
+
 	private ISHBatchSubmission[] submissions;
 	private BatchAnnotationAssembler batchAnnotationAssembler;
 	private int status;
@@ -27,6 +29,9 @@ public class ISHBatchSubmissionBean {
 	 *
 	 */
 	public ISHBatchSubmissionBean() {
+	    if (debug)
+		System.out.println("ISHBatchSubmissionBean.constructor");
+
         Object object =
             FacesContext
                 .getCurrentInstance()
