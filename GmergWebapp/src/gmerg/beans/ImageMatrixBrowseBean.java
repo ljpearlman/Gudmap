@@ -7,10 +7,14 @@ import gmerg.assemblers.ImageMatrixBrowseAssembler;
 import gmerg.entities.Globals;
 
 public class ImageMatrixBrowseBean {
-	
+    private boolean debug = false;
+
 	String gene;
 	
 	public ImageMatrixBrowseBean() {
+	    if (debug)
+		System.out.println("ImageMatrixBrowseBean.constructor");
+
 	    gene = Visit.getRequestParam("gene");
 		String viewName = "imageMatrix_" + gene;
 		if (TableUtil.isTableViewInSession())
