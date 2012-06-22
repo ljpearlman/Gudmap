@@ -12,6 +12,8 @@ import java.util.Vector;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
+    private boolean debug = false;
+
 	private Connection conn; 
 	private int ColumnNumbers = 15;//14; // Bernie 06/03/2012 (Mantis 328) added column for Sex
 	
@@ -145,6 +147,8 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 //			resSet = prepStmt.executeQuery();
 			stmt = conn.createStatement();
 //			System.out.println("Boolean query sql: " + sql);
+		    if (debug)
+			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql.toLowerCase());
 			resSet = stmt.executeQuery(sql);
 			result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
 //			DBHelper.closePreparedStatement(prepStmt);
@@ -184,6 +188,8 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 //			prepStmt = conn.prepareStatement(sql);
 			stmt = conn.createStatement();
 //			resSet = prepStmt.executeQuery();
+		    if (debug)
+			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql.toLowerCase());
 			resSet = stmt.executeQuery(sql);
 			if(resSet.first()) {
 				total = Integer.parseInt(resSet.getString(1));
@@ -221,6 +227,8 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 
 		// query
 		try {
+		    if (debug)
+			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql.toLowerCase());
 			prepStmt = conn.prepareStatement(sql);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
