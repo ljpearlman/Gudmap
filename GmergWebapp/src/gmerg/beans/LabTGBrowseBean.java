@@ -18,7 +18,12 @@ import java.util.HashMap;
  *
  */
 public class LabTGBrowseBean {
+    private boolean debug = false;
+
 	public LabTGBrowseBean() {
+	if (debug)
+	    System.out.println("LabTGBrowseBean.constructor");
+
 		String viewName = "labTGBrowse";
 		
 		if (TableUtil.isTableViewInSession())
