@@ -11,11 +11,16 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class ImageMatrixBrowseAssembler extends OffMemoryCollectionAssembler {
+    private boolean debug = false;
+
 //	private String gene;
 	private ArrayList imageData = null;
 	
 	public ImageMatrixBrowseAssembler (HashMap<String,Object> params, CollectionBrowseHelper helper) {
 		super(params, helper);
+	if (debug)
+	    System.out.println("ImageMatrixBrowseAssembler.constructor");
+
 	}
 
 	public void setParams() {
