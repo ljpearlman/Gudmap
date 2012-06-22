@@ -24,11 +24,11 @@
 		<td width="50%" valign="top" align="left">				
 		
 	    <h:panelGroup>
-  	    <t:selectOneRadio id="radio1" layout="spread" forceId="true" forceIdIndex="false" value="#{imageMap.selectedOrgan}">
-    	    <f:selectItems value="#{imageMap.organRadioList}" />
+  	    <t:selectOneRadio id="radio1" layout="spread" forceId="true" forceIdIndex="false" value="#{ImageMap.selectedOrgan}">
+    	    <f:selectItems value="#{ImageMap.organRadioList}" />
 	      </t:selectOneRadio>
 
-        <t:dataTable value="#{imageMap.submissions}" var="submission" rowIndexVar="index" headerClass="plaintextboldleft">
+        <t:dataTable value="#{ImageMap.submissions}" var="submission" rowIndexVar="index" headerClass="plaintextboldleft">
           <h:column>
             <f:facet name="header">
                 <h:outputText value="Step 1: Click on an organ to see tutorial and list of results."/>             
@@ -101,8 +101,8 @@
           </tr> 
           <tr>
           <td align="right">
-            <h:commandButton value="Delete From Collection" action="#{imageMap.deleteCollection}"/>
-     		<h:commandButton value="  Empty My Collection   " action="#{imageMap.emptyCollection}"/> 
+            <h:commandButton value="Delete From Collection" action="#{ImageMap.deleteCollection}"/>
+     		<h:commandButton value="  Empty My Collection   " action="#{ImageMap.emptyCollection}"/> 
      	  </td>
      	  </tr>
      	  
@@ -112,11 +112,11 @@
      </tr>
 	      <tr>
 	     	<td align="left"  class="table-stripey">
-	     		<h:selectOneMenu value="#{imageMap.operation}">
+	     		<h:selectOneMenu value="#{ImageMap.operation}">
 	              <f:selectItem itemLabel="Select substructure from diagram" itemValue="showDiagram" /> 
 	              <f:selectItem itemLabel="Add to My Anatomy Collection" itemValue="addToCollection" /> 
 	            </h:selectOneMenu> 
-	        <h:commandButton value="GO" action="#{imageMap.chooseOrgan}"/>        		     		
+	        <h:commandButton value="GO" action="#{ImageMap.chooseOrgan}"/>        		     		
 	     	</td>
 	     	<td class="table-stripey" align="left">
 	     	
@@ -143,34 +143,34 @@
     </td></tr>
     <tr><td align="left">
       <h:outputText id="welcomeLabel" 
-                                    value="Selected substructure: #{imageMap.emapId}" />
+                                    value="Selected substructure: #{ImageMap.emapId}" />
     </td></tr>
 
     <tr><td>
-      <h:panelGroup rendered="#{imageMap.diagram}">
+      <h:panelGroup rendered="#{ImageMap.diagram}">
       </h:panelGroup>
       <h:graphicImage id="mapImage"
-                      url="#{imageMap.diagramURL}"
+                      url="#{ImageMap.diagramURL}"
                    usemap="#worldMap"/>
       
       <d:map           id="worldMap"
-        actionListener="#{imageMap.processAreaSelected}" 
+        actionListener="#{ImageMap.processAreaSelected}" 
                 immediate="false">
         <d:area        id="area1"
-                 value="#{imageMap.areaList[0]}"
-              onmouseover="#{imageMap.diagramURL}"
-               onmouseout="#{imageMap.diagramURL}"
+                 value="#{ImageMap.areaList[0]}"
+              onmouseover="#{ImageMap.diagramURL}"
+               onmouseout="#{ImageMap.diagramURL}"
                targetImage="form1:mapImage"/>
 
         <d:area        id="area2"
-                 value="#{imageMap.areaList[1]}"
-              onmouseover="#{imageMap.diagramURL}"
-               onmouseout="#{imageMap.diagramURL}"
+                 value="#{ImageMap.areaList[1]}"
+              onmouseover="#{ImageMap.diagramURL}"
+               onmouseout="#{ImageMap.diagramURL}"
                targetImage="form1:mapImage"/>
         <d:area        id="area3"
-                 value="#{imageMap.areaList[2]}"
-              onmouseover="#{imageMap.diagramURL}"
-               onmouseout="#{imageMap.diagramURL}"
+                 value="#{ImageMap.areaList[2]}"
+              onmouseover="#{ImageMap.diagramURL}"
+               onmouseout="#{ImageMap.diagramURL}"
                targetImage="form1:mapImage"/>                      
       </d:map>
       
