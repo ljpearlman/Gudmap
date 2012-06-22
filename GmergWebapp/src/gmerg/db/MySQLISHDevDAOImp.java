@@ -17,6 +17,7 @@ import java.util.ArrayList;
  *
  */
 public class MySQLISHDevDAOImp implements ISHDevDAO {
+    private boolean debug = false;
 
     private Connection conn;
 
@@ -445,6 +446,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         PreparedStatement prepStmt = null;
         try {
             for (int i = 0; i < queryNumber; i++) {
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+queryString[i].toLowerCase());
                 prepStmt = conn.prepareStatement(queryString[i]);
 //                System.out.println("sql: " + queryString[i]);
                 if (param != null &&
@@ -505,6 +508,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 //        System.out.println("ISHDevDAO:getTotalNumberOfSubmissions:sql: " + queryString);
 
         try {
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
             prepStmt = conn.prepareStatement(queryString);
 
             // execute
@@ -557,6 +562,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
        // execute query and assemble result
        try {
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
            resSet = prepStmt.executeQuery();
            result = formatBrowseResultSet(resSet);
@@ -656,6 +663,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
        // execute query and assemble result
        try {
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
            resSet = prepStmt.executeQuery();
            
@@ -751,6 +760,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
        // execute query and assemble result
        try {
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
            resSet = prepStmt.executeQuery();
            
@@ -849,6 +860,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
        // execute query and assemble result
        try {
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
            resSet = prepStmt.executeQuery();
            
@@ -1229,6 +1242,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
        // execute query and assemble result
        try {
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
 
            // execute
@@ -1256,6 +1271,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
        PreparedStatement prepStmt = null;
 
        try {
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
 
            // execute
