@@ -7,7 +7,7 @@
 <%-- 
 	<h:outputText styleClass="plaintextbold" value="Gene Strip" />
 --%>
-	<h:outputText value="" rendered="#{geneStripBrowseBean.dummy}" />
+	<h:outputText value="" rendered="#{GeneStripBrowseBean.dummy}" />
 	<f:subview id="geneStripTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
