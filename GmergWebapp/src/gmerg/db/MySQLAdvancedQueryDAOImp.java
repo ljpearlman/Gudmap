@@ -15,6 +15,7 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
+    private boolean debug = false;
     private Connection conn;
     private int ColumnNumbers = 15;// 14 //Bernie - 01/03/2012 - (Mantis 619) added 'sex column so increase from 14 to 15'
     private int ColumnQuickNumbers = 15; //14;
@@ -40,7 +41,12 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		PreparedStatement prepStmt = null;
     	if(null != query && null != geneSymbol && !geneSymbol.equals("")) {
     		try {
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query.toLowerCase());
+
     			prepStmt = conn.prepareStatement(query);
+			if (debug)
+			    System.out.println("MySQLAdvancedQueryDAOImp 1 arg = "+geneSymbol+"%");
     			prepStmt.setString(1, geneSymbol+"%");
     			resSet = prepStmt.executeQuery();
     			if (resSet.first()) {
@@ -72,14 +78,17 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     public ArrayList getOptionInDB(String option, Hashtable lookup) {
     	ResultSet resSet = null;
     	String query = null;
-//    	System.out.println("getOptionInDB option:"+ option);
-//    	System.out.println("getOptionInDB lookup:"+ ((String)lookup.get(option)));
+	if (debug) {
+   	System.out.println("getOptionInDB option:"+ option);
+   	System.out.println("getOptionInDB lookup:"+ ((String)lookup.get(option)));
+	}
     	if(((String)lookup.get(option)).equals("QSC_ISH_CACHE")) {
     		query = "Select distinct " + option + " from " + (String)lookup.get(option);
     	} else if(((String)lookup.get(option)).equals("QSC_MIC_CACHE")) {
     		query = "Select distinct " + option + " from " + (String)lookup.get(option);
     	} else if(((String)lookup.get(option)).equals("QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic")){
-//    		System.out.println("two tables!!!!!!!!!");
+	if (debug)
+    		System.out.println("two tables!!!!!!!!!");
     		String[] options = option.split(",");
     		String[] wheres = ((String)lookup.get(option)).split(",");
 //    		if(option.indexOf("CONCAT(ish.QIC_SPN_STAGE_FORMAT, ish.QIC_SPN_STAGE), CONCAT(mic.QMC_SPN_STAGE_FORMAT, mic.QMC_SPN_STAGE)") > -1) {
@@ -95,10 +104,13 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	} else if(((String)lookup.get(option)).equals("LKP_LOCATION")) {
     		query = "Select distinct " + option + " from " + (String)lookup.get(option);
     	}
-//    	System.out.println("getOptionInDB SQL:"+query);
+	if (debug)
+	    System.out.println("getOptionInDB SQL:"+query.toLowerCase());
     	PreparedStatement prepStmt = null;
     	if(null != query) {
     		try {
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query.toLowerCase());
     			prepStmt = conn.prepareStatement(query);
     			resSet = prepStmt.executeQuery();
     			
@@ -119,20 +131,28 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	ResultSet resSet = null;
     	ArrayList ishargs = new ArrayList();
     	ArrayList micargs = new ArrayList();
-//    	System.out.println("getQueryResult!!!!!!!!!!!!!!!!");
+	if (debug)
+    	System.out.println("getQueryResult!!!!!!!!!!!!!!!!");
     	String[] query = assembleSQL(option, ishargs, micargs, order, offset, resPerPage, total, sub);
     	
-//    	System.out.println("SQL:"+query);
+	if (debug)
+	    System.out.println("SQL:"+query);
     	PreparedStatement prepStmt = null;
     	if(null != query && null != sub) {
     		try {
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query[0].toLowerCase());
     			prepStmt = conn.prepareStatement(query[0]);
     			if(sub.equals("Both")) {
     				for(int i = 1; i <= ishargs.size(); i++){
     					
+			if (debug)
+			    System.out.println("MySQLAdvancedQueryDAOImp "+i+" arg = "+ishargs.get(i-1));
         				prepStmt.setString(i, (String)ishargs.get(i-1));
         			}
         			for(int i = 1; i <= micargs.size(); i++){
+			if (debug)
+			    System.out.println("MySQLAdvancedQueryDAOImp "+(ishargs.size()+i)+" arg = "+micargs.get(i-1));
         				prepStmt.setString(ishargs.size()+i, (String)micargs.get(i-1));
         				
         			}
@@ -165,17 +185,22 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	ResultSet resSet = null;
     	ArrayList ishargs = new ArrayList();
     	ArrayList micargs = new ArrayList();
-//    	System.out.println("getTotalNumbers!!!!!!!!!!!!!!!!");
+	if (debug)
+    	System.out.println("getTotalNumbers!!!!!!!!!!!!!!!!");
     	String[] query = assembleSQL(option, ishargs, micargs, order, offset, resPerPage, null, sub);
     	String ish = null;
     	String mic = null;
     	
-    	//System.out.println("SQL:"+query);
+	if (debug)
+	    System.out.println("SQL:"+query);
     	PreparedStatement prepStmt = null;
     	if(null != query) {
     		try {
     			if(null != query[1]) {
-//	    			System.out.println("query1:"+query[1]);
+	if (debug)
+	    System.out.println("query1:"+query[1].toLowerCase());
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query[1].toLowerCase());
 	    			prepStmt = conn.prepareStatement(query[1]);
 	    			for(int i = 1; i <= ishargs.size(); i++){
 	    				prepStmt.setString(i, (String)ishargs.get(i-1));
@@ -188,7 +213,10 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     			}
     			
     			if(null != query[2]) {
-//    				System.out.println("query2:"+query[2]);
+	if (debug)
+	    System.out.println("query2:"+query[2].toLowerCase());
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query[2].toLowerCase());
 	    			prepStmt = conn.prepareStatement(query[2]);
 	    			for(int i = 1; i <= micargs.size(); i++){
 	    				prepStmt.setString(i, (String)micargs.get(i-1));
@@ -200,7 +228,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    			DBHelper.closePreparedStatement(prepStmt);
     			}
     			int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic)),(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};
-//    			System.out.println("number:"+ish+":"+mic);
+	if (debug)
+    			System.out.println("number:"+ish+":"+mic);
     			return total;
     		} catch (Exception se) {
                 se.printStackTrace();
@@ -227,15 +256,17 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     public String[] assembleSQL(ArrayList option, ArrayList ishargs, 
     		ArrayList micargs, String[] order, String offset, 
     		String resPerPage, int[] total, String sub) {
-//    	System.out.println("entered assembleSQL!!!!!!!!!!!!!");
-//    	if (option != null && option.size() > 0) {
-//        	System.out.println("option size: " + option.size());
-//    	}
-//    	if (ishargs != null && ishargs.size()>0) {
-//    		for (int i=0;i<ishargs.size();i++) {
-//    			System.out.println("ishargs size:" + ishargs.get(i));
-//    		}
-//    	}
+	if (debug) {
+    	System.out.println("entered assembleSQL!!!!!!!!!!!!!");
+    	if (option != null && option.size() > 0) {
+        	System.out.println("option size: " + option.size());
+    	}
+    	if (ishargs != null && ishargs.size()>0) {
+    		for (int i=0;i<ishargs.size();i++) {
+    			System.out.println("ishargs size:" + ishargs.get(i));
+    		}
+    	}
+    }
     	
     	Object[] onerow = null;
     	Object[] value = null;
@@ -257,7 +288,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     		for(int i = 0; i < option.size(); i++) {
     			onerow = (Object[])option.get(i);
     			label = (String)onerow[0];
-//    			System.out.println("label value: " + label);
+	if (debug)
+    			System.out.println("label value: " + label);
     			
     			lookup = (String)AdvancedSearchDBQuery.getLookupInDB().get(label);
     			lookup2 = (String)AdvancedSearchDBQuery.getLookupTable().get(lookup);
@@ -281,24 +313,33 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     						|| label.indexOf("Sample GEO ID") > -1
     						|| label.indexOf("Clone Name") > -1
     						|| label.indexOf("Affymetrix ID") > -1) {
-//    					System.out.println("label is one of them&&&&&&&&&&&&&&&&");
-//    					System.out.println("item value: " + ((Object[])item)[0]);
+				    if (debug) {
+    					System.out.println("label is one of them&&&&&&&&&&&&&&&&");
+    					System.out.println("item value: " + ((Object[])item)[0]);
+				    }
     					if(null != ((Object[])item)[0] && !((Object[])item)[0].equals("")) {
-//    						System.out.println("split length: " + split.length);
+	if (debug)
+    						System.out.println("split length: " + split.length);
     						if(null != split) {
     							if(split.length == 1) {
-//    								System.out.println("lookup2: " + lookup2);
+	if (debug)
+    								System.out.println("lookup2: " + lookup2);
     								if(lookup2.indexOf("QSC_ISH_CACHE") > -1) {
-//    									System.out.println("QSC_ISH_CACHE");
+	if (debug)
+	    System.out.println("QSC_ISH_CACHE".toLowerCase());
     									ishwhere.add(new String(lookup+"='"+((Object[])item)[0])+"'");
-//    									System.out.println("ishwhere: " + ishwhere.get(0).toString());
+	if (debug)
+	    System.out.println("ishwhere: " + ishwhere.get(0).toString().toLowerCase());
     								} else if(lookup2.indexOf("QSC_MIC_CACHE") > -1) {
-//    									System.out.println("QSC_MIC_CACHE");
+	if (debug)
+	    System.out.println("QSC_MIC_CACHE".toLowerCase());
     									micwhere.add(new String(lookup+"='"+((Object[])item)[0])+"'");
-//    									System.out.println("micwhere: " + micwhere.get(0).toString());
+	if (debug)
+	    System.out.println("micwhere: " + micwhere.get(0).toString().toLowerCase());
     								} else if (lookup2.indexOf("MIC_BROWSE_CACHE") > -1) {
     									micwhere.add(new String(lookup+"='"+((Object[])item)[0])+"'");
-//    									System.out.println("micwhere: " + micwhere.get(0).toString());
+	if (debug)
+	    System.out.println("micwhere: " + micwhere.get(0).toString().toLowerCase());
     								}
     							} else if(split.length == 2) {
     								if(label.indexOf("Gene Name") > -1
@@ -309,11 +350,14 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     								} else {
     									bothwhere.add(new String(lookup3+"='"+((Object[])item)[0])+"'");
     									// added by xingjun - 06/12/2007 - start
-//    									System.out.println("bothwhere: "  + bothwhere);
+	if (debug)
+	    System.out.println("bothwhere: "  + bothwhere);
     									ishBothWhere.add(new String(split[0]+"='"+((Object[])item)[0])+"'");
-//    									System.out.println("ishBothWhere: "  + ishBothWhere);
+	if (debug)
+	    System.out.println("ishBothWhere: "  + ishBothWhere);
     									micBothWhere.add(new String(split[1]+"='"+((Object[])item)[0])+"'");
-//    									System.out.println("micBothWhere: "  + micBothWhere);
+	if (debug)
+	    System.out.println("micBothWhere: "  + micBothWhere);
     									// added by xingjun - 06/12/2007 - end
     								}
     								
@@ -341,14 +385,18 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     						|| label.indexOf("Sample Sex") > -1
     						|| label.indexOf("Sample Age") > -1
     						|| label.indexOf("Sample Stage") > -1) {
-//    					System.out.println("AGE:"+new String(lookup3+":"+label)+":"+split.length+":"+((Object[])item)[1]+":"+lookup);
-//    					System.out.println("label is one of them#########");
-//    					System.out.println("item value: " + ((Object[])item)[1]);
+				    if (debug) {
+    					System.out.println("AGE:"+new String(lookup3+":"+label)+":"+split.length+":"+((Object[])item)[1]+":"+lookup);
+    					System.out.println("label is one of them#########");
+    					System.out.println("item value: " + ((Object[])item)[1]);
+				}
     					if(null != ((Object[])item)[1] && !((Object[])item)[1].equals("")) {  
     						if(null != split) {
-//        						System.out.println("split length: " + split.length);
+	if (debug)
+        						System.out.println("split length: " + split.length);
     							if(split.length == 1) {
-//    								System.out.println("item value: " + ((Object[])item)[1]);
+	if (debug)
+    								System.out.println("item value: " + ((Object[])item)[1]);
     								if(lookup2.indexOf("QSC_ISH_CACHE") > -1) {
     									ishwhere.add(new String(lookup+"='"+((Object[])item)[1])+"'");
     								} else if(lookup2.indexOf("QSC_MIC_CACHE") > -1) {
@@ -357,20 +405,26 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     							} else if(split.length == 2) {
     								bothwhere.add(new String(lookup3+"='"+((Object[])item)[1])+"'");
     								// added by xingjun - 06/12/2007 - start
-//									System.out.println("bothwhere: "  + bothwhere);
+	if (debug)
+	    System.out.println("bothwhere: "  + bothwhere);
 									ishBothWhere.add(new String(split[0]+"='"+((Object[])item)[1])+"'");
-//									System.out.println("ishBothWhere: "  + ishBothWhere);
+	if (debug)
+	    System.out.println("ishBothWhere: "  + ishBothWhere);
 									micBothWhere.add(new String(split[1]+"='"+((Object[])item)[1])+"'");
-//									System.out.println("micBothWhere: "  + micBothWhere);
+	if (debug)
+	    System.out.println("micBothWhere: "  + micBothWhere);
 									// added by xingjun - 06/12/2007 - end
     							} else if (split.length == 4) {
     								bothwhere.add(new String(lookup3+"='"+((Object[])item)[1])+"'");
     								// added by xingjun - 06/12/2007 - start
-									//System.out.println("bothwhere: "  + bothwhere);
+	if (debug)
+	    System.out.println("bothwhere: "  + bothwhere);
 									ishBothWhere.add(split[0] + "," + split[1] + "='" + ((Object[])item)[1] + "'");
-									//System.out.println("ishBothWhere: "  + ishBothWhere);
+	if (debug)
+	    System.out.println("ishBothWhere: "  + ishBothWhere);
 									micBothWhere.add(split[2] + "," + split[3] + "='" + ((Object[])item)[1] + "'");
-//									System.out.println("micBothWhere: "  + micBothWhere);
+	if (debug)
+	    System.out.println("micBothWhere: "  + micBothWhere);
 									// added by xingjun - 06/12/2007 - end
     							}
     						}
@@ -432,7 +486,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     					}
     					
     				} else if(label.indexOf("Location") > -1){
-//    					System.out.println("LSLSLSLSLSLS:"+((Object[])item)[0]+":"+((Object[])item)[1]);	
+	if (debug)
+    					System.out.println("LSLSLSLSLSLS:"+((Object[])item)[0]+":"+((Object[])item)[1]);	
     					if(null != ((Object[])item)[1]) { 
     						if(((Object[])item)[1].equals("adjacent to ")) {
 	    						if(null != ((Object[])item)[0] && !((Object[])item)[0].equals("")) {
@@ -450,15 +505,18 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     						}
     					}
     				} else if(label.indexOf("Gene Symbol") > -1){
-//    					System.out.println("lable value is gene symbol!!!!!!!!!!");
+	if (debug)
+    					System.out.println("lable value is gene symbol!!!!!!!!!!");
     					if(null != ((Object[])item)[6] && !((Object[])item)[6].equals("")) {   						
     						if(null != split) {
 								String[] split2 = lookup.split(",");
 								
 								String[] symbols = getGeneSymbolArray((String)((Object[])item)[6], "equals");
-//								System.out.println("symbols size:"+ symbols.length);
-//								if (symbols != null && symbols.length > 0)
-//									System.out.println("symbols value:"+ symbols[0]);
+								if (debug) {
+								System.out.println("symbols size:"+ symbols.length);
+								if (symbols != null && symbols.length > 0)
+									System.out.println("symbols value:"+ symbols[0]);
+						}
 								if(null != symbols) {
 									for(int k = 0; k < symbols.length; k++) {
 										ishargs.add(symbols[k]);
@@ -476,7 +534,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     						}
     					}
     				}            				
-    				//System.out.println("item:"+((Object[])item)[0]+":"+((Object[])item)[1]+":"+((Object[])item)[6]);
+	if (debug)
+	    System.out.println("item:"+((Object[])item)[0]+":"+((Object[])item)[1]+":"+((Object[])item)[6]);
     				
     			}
     		}
@@ -575,12 +634,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 //	    		//+ new String(null == total?
 //	    			//	") ":" limit 0,"+total[2]+" ) ");
 //    		}
-//    		//System.out.println("HEIHEI:"+bothwhere.size()+":"+ishwhere.size());
-//    		if(bothwhere.size() > 0 || ishwhere.size() > 0) {
-//    			appendish = AdvancedSearchDBQuery.getISHSelect()+
-//	    		AdvancedSearchDBQuery.getISHFrom() + 
-//	    		ishoption + bothoption + " ) ";
-//    		}
     		if(micBothWhere.size() > 0 || micwhere.size() > 0) {
     			append = AdvancedSearchDBQuery.getMICSelect() +
     			(addBigTable == true?AdvancedSearchDBQuery.getMICFrom():AdvancedSearchDBQuery.getMICFromAdvanced()) +
@@ -643,10 +696,12 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    		micoption + micBothOption;
 	    		}
     		
-//    		System.out.println("GETIT:"+all[0]);
-//    		System.out.println("COUNTISH:"+all[1]);
-//    		System.out.println("COUNTMIC:"+all[2]);
-//    		System.out.println("SUBSUB:"+sub+":"+all[0]);
+			if (debug) {
+			    System.out.println("GETIT:"+all[0].toLowerCase());
+			    System.out.println("COUNTISH:"+all[1].toLowerCase());
+			    System.out.println("COUNTMIC:"+all[2].toLowerCase());
+			    System.out.println("SUBSUB:"+sub+":"+all[0].toLowerCase());
+	}
     		
     		return all;
     	}
@@ -817,11 +872,14 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	ResultSet resSet = null;
     	
     	try {
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+transitiveRelationsQ.toLowerCase());
     		stmt = conn.prepareStatement(transitiveRelationsQ);
     		for(int i=0;i<input.length;i++){
     			stmt.setString(i+1, input[i]);
     		}
-    		//System.out.println(stmt.toString());
+	if (debug)
+	    System.out.println(stmt.toString().toLowerCase());
     		resSet = stmt.executeQuery();
     		if(resSet.first()){
     			resSet.last();
@@ -866,6 +924,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		ResultSet resSet = null;
 		
 		try{
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+anaComponentsQ.toLowerCase());
 			stmt = conn.prepareStatement(anaComponentsQ);
 			ArrayList<String[]> resultContainer = new ArrayList<String []>();
 			//for each anatomy input, add the input to a query and execute the 
@@ -918,6 +978,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	PreparedStatement stmt = null;
 		ResultSet resSet = null;
 		try{
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+anaComponentsQ.toLowerCase());
 			stmt = conn.prepareStatement(anaComponentsQ);
 			
 			//there are 4 unions in the query so the input param will have to be set 4 times
@@ -964,6 +1026,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		ResultSet resSet = null;
 		
 		try {
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+anaComponentsQ.toLowerCase());
 			stmt = conn.prepareStatement(anaComponentsQ);
 			//since there are 4 queries combined with 'union' (ANA_SYNONYM, ANA_NODE (COMP_NAME), ANA_TIMED_NODE, ANA_NODE (PUBLIC_ID), 
 			//the parameters must be set 4 times, once for each query 
@@ -973,7 +1037,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				}
 				
 			}
-			//System.out.println(stmt.toString());
+	if (debug)
+	    System.out.println(stmt.toString().toLowerCase());
 			resSet = stmt.executeQuery();
 			if(resSet.first()){
 				resSet.last();
@@ -1035,6 +1100,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		
     		// need to execute query to get go id list here
     		String[] goIdList = null;
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+goIdListQ.toLowerCase());
     		stmt = conn.prepareStatement(goIdListQ);
     		//set each user input as a query parameter
     		for(int i=0;i<input.length;i++){
@@ -1067,6 +1134,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     			//create the query string from the GO id list and the components stored in symbolsQParts
     			String symbolsFromGoIdListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(goIdList,symbolsQParts[0], symbolsQParts[1], 1);
     			
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+symbolsFromGoIdListQ.toLowerCase());
     			stmt = conn.prepareStatement(symbolsFromGoIdListQ);
     			//set each GO id as a query parameter
     			for(i=0;i< goIdList.length;i++){
@@ -1194,6 +1263,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 
 			// need to execute query to get syn list here
 			String[] synList = null;
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+synonymListQ.toLowerCase());
 			stmt = conn.prepareStatement(synonymListQ);
 			for(int i=0;i<input.length;i++){
 				if(wildcard.equalsIgnoreCase("contains")) {
@@ -1248,6 +1319,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			}
 			
 			
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+allQueriesQ.toLowerCase());
 			stmt = conn.prepareStatement(allQueriesQ);
 			
 			//for the first 4 in 'union' query, set the parameters
@@ -1402,14 +1475,18 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	/** --- Quick Search --- */
 	public ArrayList<String[]> getQuickSearch(String type, String[] input, int orderby, boolean asc, String offset, String resPerPage, int[] total){
         String[] query = AssembleQuickSQL(type, input, orderby, asc, offset, resPerPage, total);
-//        for (int i=0;i<query.length;i++) System.out.println("getQuickSearch:sql: " + i + ": " + query[i]);
+	if (debug)
+	    for (int i=0;i<query.length;i++) System.out.println("getQuickSearch:sql: " + i + ": " + query[i].toLowerCase());
 		ResultSet resSet = null;
 		if(null != query && null != query[0]) {
 	    	PreparedStatement prepStmt = null;
 	    	
 	    		try {
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query[0].toLowerCase());
 	    			prepStmt = conn.prepareStatement(query[0]);
-	    			//System.out.println(prepStmt.toString());
+	if (debug)
+	    System.out.println(prepStmt.toString().toLowerCase());
 	    			resSet = prepStmt.executeQuery();
 	    			
 	    			ArrayList<String[]> list = DBHelper.formatResultSetToArrayList(resSet, ColumnQuickNumbers);
@@ -1436,10 +1513,14 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 //    	ArrayList result = new ArrayList();
     	
     	if(null != query && null != query[0]) {
-//    		System.out.println("SLOW:"+query[0]);
+	if (debug)
+	    System.out.println("SLOW:"+query[0].toLowerCase());
     		try {
     			if(null != query[1]) {
-//	    			System.out.println("query1:"+query[1]);
+	if (debug)
+	    System.out.println("query1:"+query[1].toLowerCase());
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query[1].toLowerCase());
 	    			prepStmt = conn.prepareStatement(query[1]);	    			
 	    			resSet = prepStmt.executeQuery();
 	    			if(resSet.first()) {
@@ -1449,9 +1530,13 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     			}
     			
     			if(null != query[2]) {
-//    				System.out.println("query2:"+query[2]);
+       
+		    
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query[2].toLowerCase());
 	    			prepStmt = conn.prepareStatement(query[2]);	  
-	    			//System.out.println(prepStmt.toString());
+	if (debug)
+	    System.out.println(prepStmt.toString().toLowerCase());
 	    			resSet = prepStmt.executeQuery();
 	    			if(resSet.first()) {
 	    				mic = resSet.getString(1);
@@ -1459,7 +1544,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    			DBHelper.closePreparedStatement(prepStmt);
     			}
     			int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic)),(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};
-//    			System.out.println("number:"+ish+":"+mic);
+      
     			return total;    			
     			/*prepStmt = conn.prepareStatement(query[0]);
     			
@@ -1495,9 +1580,11 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			String[] input, int orderby, boolean asc, 
 			String offset, String resperpage, String organ,
 			String sub, String exp, String[] queryCriteria, String transitiveRelations, GenericTableFilter filter) {
-//		System.out.println("=============getFocusQuery===============");
-//		System.out.println("sub1:" + sub);
-//		System.out.println("wildcard:" + queryCriteria[0]);
+	    if (debug) {
+		System.out.println("=============getFocusQuery===============");
+		System.out.println("sub1:" + sub);
+		System.out.println("wildcard:" + queryCriteria[0]);
+	    }
 
 		
 		String assayValue = filter.getActiveAssay();
@@ -1518,24 +1605,29 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		}
 		
 		String[] sql = (String [])list.get(0);
-//		for (int i=0;i<input.length;i++)
-//		System.out.println("input:" + input[i]);
-//		for (int i=0;i<sql.length;i++) System.out.println("AdvancedQueryDAO:getFocusQuery:sql:" + i + "###" + sql[i]);
-		
-		
-//		if (sql == null) System.out.println("SQLForFocusQuery is null:");
-//		System.out.println("SQLForFocusQuery size:"+ sql.length);
-//		for (int i=0;i<sql.length;i++) System.out.println("SQLForFocusQuery value:"+  i + " ##" + sql[i]);
-//		System.out.println("SQLForFocusQuery:"+ sql[0]);		
+		if (debug) {
+		    for (int i=0;i<input.length;i++)
+			System.out.println("input:" + input[i]);
+		    for (int i=0;i<sql.length;i++) System.out.println("AdvancedQueryDAO:getFocusQuery:sql:" + i + "###" + sql[i].toLowerCase());
+		    
+		    if (debug) {
+			if (sql == null) System.out.println("SQLForFocusQuery is null:");
+			System.out.println("SQLForFocusQuery size:"+ sql.length);
+			for (int i=0;i<sql.length;i++) System.out.println("SQLForFocusQuery value:"+  i + " ##" + sql[i].toLowerCase());
+			System.out.println("SQLForFocusQuery:"+ sql[0].toLowerCase());	
+		    }
+		}	
 		ArrayList<String[]> result = null;
 		ResultSet resSet = null;
     	PreparedStatement prepStmt = null;
-//    	System.out.println("SELECT:"+sql[0]);
+	if (debug)
+	    System.out.println("SELECT:"+sql[0].toLowerCase());
     	if(null != sql && null != sql[0]) {
     		try {
-//				System.out.println("\nSELECT1 (pre filter)====== sql[0]="+sql[0]);
 				sql[0] = filter.addFilterSql(sql[0]);
-//				System.out.println("\nSELECT11 (post filter)====== sql[0]= "+sql[0]);
+ 		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+sql[0].toLowerCase());
+      
     			prepStmt = conn.prepareStatement(sql[0]);
    				int ishIterations = 0;
        			ishIterations = Integer.parseInt(sql[3]);
@@ -1556,13 +1648,12 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
    						prepStmt.setString(i+j+1, micinput[j]);
    					}
    				}
-//   			System.out.println("\nSELECT111 (post filter)====== prepStmt= "+prepStmt);    			
+				
     			resSet = prepStmt.executeQuery();
-//   			System.out.println("~~executeQuery on prepStmt completed ");
     			
     			result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
     			DBHelper.closePreparedStatement(prepStmt);
-//    			System.out.println("GENE SEARCH:"+result.size());
+	
     			return result;
     		} catch (Exception se) {
                 se.printStackTrace();
@@ -1584,9 +1675,11 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	// Bernie - 9/5/2011 - Mantis 328 - added filter
 	public int getNumberOfRows(String type, String[] input, String organ,
     		String sub, String exp, String[] queryCriteria, String transitiveRelations, GenericTableFilter filter) {
-//		System.out.println("enter getNumberOfRows method!!!!!!!");
-//		for (int i=0;i<input.length;i++)
-//		System.out.println("input for getNumberOfRows:" + input[i]);
+	    if (debug) {
+		System.out.println("enter getNumberOfRows method!!!!!!!");
+		for (int i=0;i<input.length;i++)
+		System.out.println("input for getNumberOfRows:" + input[i]);
+	}
 
 		String assayValue = filter.getActiveAssay();
 		if (assayValue != null){
@@ -1603,8 +1696,9 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			return 0;
 		}
     	String[] sql = (String [])list.get(0);
-//		for (int i=0;i<sql.length;i++) System.out.println("SQLForgetNumberOfRows:"+  i + " ##" + sql[i]);
-//		System.out.println("SQLForgetNumberOfRows:"+ sql[0]);
+	if (debug) {
+	    for (int i=0;i<sql.length;i++) System.out.println("SQLForgetNumberOfRows:"+  i + " ##" + sql[i].toLowerCase());
+	}
 
 //		ArrayList result = new ArrayList();
 		ResultSet resSet = null;
@@ -1615,11 +1709,14 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	if(null != sql) {
     		try {
     			if(null != sql[1]) {
-//					System.out.println("\nSELECT2(ish)======sql[1]= "+sql[1]);					//sql[1] = filter.addFilterSql(sql[1]);
+	if (debug)
+	    System.out.println("\nSELECT2(ish)======sql[1]= "+sql[1].toLowerCase());					//sql[1] = filter.addFilterSql(sql[1]);
 					sql[1] = filter.addFilterCountSql(sql[1]);
-//					System.out.println("getNumberOfRows:sql[1] afterFilterAdded= "+sql[1]);
+	if (debug)
+	    System.out.println("getNumberOfRows:sql[1] afterFilterAdded= "+sql[1].toLowerCase());
 	    			prepStmt = conn.prepareStatement(sql[1]);
-	    			//System.out.println(prepStmt.toString());
+	if (debug)
+	    System.out.println(prepStmt.toString().toLowerCase());
 	    			//if(type.equalsIgnoreCase("Gene") || type.equalsIgnoreCase("GeneSymbol")){
 	    			int iterations = 0;
         			iterations = Integer.parseInt(sql[3]);
@@ -1630,7 +1727,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     					}
     				}
 	    			//}
-//    				System.out.println("SELECT222(ish)======prepStmt= "+prepStmt.toString());	    			
+	if (debug)
+	    System.out.println("SELECT222(ish)======prepStmt= "+prepStmt.toString().toLowerCase());	    			
 					resSet = prepStmt.executeQuery();
 	    			if(resSet.first()) {
 	    				ish = resSet.getString(1);
@@ -1638,9 +1736,11 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     			}
 
     			if(null != sql[2]) {
-//					System.out.println("\nSELECT3(mic)(prefilter)======sql[2]= "+sql[2]);//					sql[2] = filter.addFilterSql(sql[2]);
+	if (debug)
+	    System.out.println("\nSELECT3(mic)(prefilter)======sql[2]= "+sql[2].toLowerCase());//					sql[2] = filter.addFilterSql(sql[2]);
 					sql[2] = filter.addFilterCountSql(sql[2]);
-//					System.out.println("SELECT33(mic)(postfilter)======sql[2]= "+sql[2]);
+	if (debug)
+	    System.out.println("SELECT33(mic)(postfilter)======sql[2]= "+sql[2].toLowerCase());
 	    			prepStmt = conn.prepareStatement(sql[2]);
 	    			int iterations = 0;
         			iterations = Integer.parseInt(sql[4]);
@@ -1651,7 +1751,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     						prepStmt.setString((i*input.length)+j+1, input[j]);
     					}
     				}
-//    				System.out.println("SELECT333(mic)======prepStmt= "+prepStmt.toString());
+	if (debug)
+	    System.out.println("SELECT333(mic)======prepStmt= "+prepStmt.toString().toLowerCase());
 	    			resSet = prepStmt.executeQuery();
 	    			if(resSet.first()) {
 	    				mic = resSet.getString(1);
@@ -1659,7 +1760,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    			
     			}
     			int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic)),(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};
-//    			System.out.println("~~~~~~getNumberOfRows@total number: " + total[0]);
+	if (debug)
+    			System.out.println("~~~~~~getNumberOfRows@total number: " + total[0]);
 
     			return total[0];
    		
@@ -1670,7 +1772,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     			DBHelper.closePreparedStatement(prepStmt);
     		}
     	}
-//		System.out.println("getNumberOfRows@total number: " + 0);
+	if (debug)
+		System.out.println("getNumberOfRows@total number: " + 0);
     	return 0;
 	}
     
@@ -1682,17 +1785,20 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	 */
 	public int getNumberOfRowsOneQuery(String type, String[] input, String organ,
     		String sub, String exp, String[] queryCriteria, String transitiveRelations) {
-//		System.out.println("enter getNumberOfRowsOneQuery method!!!!!!!");
-//		for (int i=0;i<input.length;i++)
-//		System.out.println("input for getNumberOfRowsOneQuery:" + input[i]);		
+	    if (debug) {
+		System.out.println("enter getNumberOfRowsOneQuery method!!!!!!!");
+		for (int i=0;i<input.length;i++)
+		System.out.println("input for getNumberOfRowsOneQuery:" + input[i]);		
+	    }
 		
 		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, null, organ, sub, exp, queryCriteria, transitiveRelations);
 		if(list == null){
 			return 0;
 		}
     	String[] sql = (String [])list.get(0);
-//		for (int i=0;i<sql.length;i++) System.out.println("getNumberOfRowsOneQuery:"+  i + " ##" + sql[i]);
-//		System.out.println("getNumberOfRowsOneQuery:"+ sql[0]);
+	if (debug) {
+	    for (int i=0;i<sql.length;i++) System.out.println("getNumberOfRowsOneQuery:"+  i + " ##" + sql[i].toLowerCase());
+	}
 
 		int result = 0;
 		ResultSet resSet = null;
@@ -1717,7 +1823,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     				") + (" + 
     				arrayQueryString + 
     				")";
-//    				System.out.println("getNumberOfRowsOneQuery:queryString: " + queryString);
+	if (debug)
+	    System.out.println("getNumberOfRowsOneQuery:queryString: " + queryString.toLowerCase());
 	    			prepStmt = conn.prepareStatement(queryString);
 	    			int iterations = 0;
         			// set ish query params
@@ -1744,9 +1851,12 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    			}
     				
     			} else if (sql[1] != null && sql[2] == null) { // ish query
-    				//System.out.println(sql[1]);
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+sql[1].toLowerCase());
+	
 	    			prepStmt = conn.prepareStatement(sql[1]);
-	    			//System.out.println(prepStmt.toString());
+	if (debug)
+	    System.out.println(prepStmt.toString().toLowerCase());
 	    			int iterations = 0;
         			iterations = Integer.parseInt(sql[3]);
     				input = (String [])list.get(1);
@@ -1755,12 +1865,15 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     						prepStmt.setString((i*input.length)+j+1, input[j]);
     					}
     				}
-    				//System.out.println(prepStmt.toString());
+	if (debug)
+	    System.out.println(prepStmt.toString().toLowerCase());
 	    			resSet = prepStmt.executeQuery();
 	    			if(resSet.first()) {
 	    				result = resSet.getInt(1);
 	    			}
    				} else if (sql[1] == null && sql[2] != null) { // array query
+		    if (debug)
+			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+sql[2].toLowerCase());
 	    			prepStmt = conn.prepareStatement(sql[2]);
 	    			int iterations = 0;
         			iterations = Integer.parseInt(sql[4]);
@@ -1784,7 +1897,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     			DBHelper.closePreparedStatement(prepStmt);
     		}
     	}
-//		System.out.println("getNumberOfRowsOneQuery total number: " + result);
+	if (debug)
+		System.out.println("getNumberOfRowsOneQuery total number: " + result);
     	return result;
 	}
 
@@ -1803,7 +1917,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	// Bernie - 9/5/2011 - Mantis 328 - added filter
 	public int[] getNumberOfRowsInGroups(String type, String[] input, String organ,
     		String sub, String exp, String[] queryCriteria, String transitiveRelations, GenericTableFilter filter) {
-//		System.out.println("enter getNumberOfRowsInGroups method!!!!!!!");
+	if (debug)
+		System.out.println("enter getNumberOfRowsInGroups method!!!!!!!");
 		
 		String assayValue = filter.getActiveAssay();
 		if (assayValue != null){
@@ -1830,9 +1945,11 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	if(null != sql) {
     		try {
     			if(null != sql[1]) {
-//    				System.out.println("\nSELECT4(ish)======sql[1]= "+sql[1]);    				//String ishsql = filter.addFilterSql(sql[1]);
+	if (debug)
+	    System.out.println("\nSELECT4(ish)======sql[1]= "+sql[1].toLowerCase());    				//String ishsql = filter.addFilterSql(sql[1]);
     				String ishsql = filter.addFilterCountSql(sql[1]);
-//    				System.out.println("SELECT44(ish)======sql[1]= "+ishsql);
+	if (debug)
+	    System.out.println("SELECT44(ish)======sql[1]= "+ishsql.toLowerCase());
 	    			prepStmt = conn.prepareStatement(ishsql);
 
 	    			int iterations = 0;
@@ -1843,18 +1960,22 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     						prepStmt.setString((i*input.length)+j+1, input[j]);
     					}
     				}
-//    				System.out.println("SELECT444(ish)======prepStmt= "+prepStmt.toString());	    			
+	if (debug)
+	    System.out.println("SELECT444(ish)======prepStmt= "+prepStmt.toString().toLowerCase());	    	
 	    			resSet = prepStmt.executeQuery();
 	    			if(resSet.first()) {
 	    				ish = resSet.getString(1);
-//	    				System.out.println("~~~ish total = "+ish);
+	if (debug)
+	    				System.out.println("~~~ish total = "+ish);
 	    			}
     			}
     			
     			if(null != sql[2]) {
-//    				System.out.println("\nSELECT5(mic)======sql[2]= "+sql[2]);
+	if (debug)
+	    System.out.println("\nSELECT5(mic)======sql[2]= "+sql[2].toLowerCase());
     				sql[2] = filter.addFilterCountSql(sql[2]);
-//    				System.out.println("SELECT55(mic)======sql[2]= "+sql[2]);
+	if (debug)
+	    System.out.println("SELECT55(mic)======sql[2]= "+sql[2].toLowerCase());
 	    			prepStmt = conn.prepareStatement(sql[2]);	    			
 
 	    			int iterations = 0;
@@ -1866,11 +1987,13 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     						prepStmt.setString((i*input.length)+j+1, input[j]);
     					}
     				}
-//    				System.out.println("SELECT555(mic)======prepStmt= "+prepStmt.toString());	    			
+	if (debug)
+	    System.out.println("SELECT555(mic)======prepStmt= "+prepStmt.toString().toLowerCase());	    			
 	    			resSet = prepStmt.executeQuery();
 	    			if(resSet.first()) {
 	    				mic = resSet.getString(1);
-//	    				System.out.println("~~~mic total = "+mic);
+	if (debug)
+	    				System.out.println("~~~mic total = "+mic);
 	    			}
 	    			
     			}
@@ -1917,13 +2040,15 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     public ArrayList<String[]> assembleSQL(String queryType, String[] input, 
 			int orderby, boolean asc, String offset, String recordNumber, 
 			String organ, String subType, String expStrength, String[] queryCriteria, String transitiveRelations) {
-//    	System.out.println("assembleSQL############");
-//    	System.out.println("AssembleSQLForFocusQuery:queryType: " + queryType);
-//    	System.out.println("AssembleSQLForFocusQuery:subType: " + subType);
-//    	System.out.println("AssembleSQLForFocusQuery:transitiveRelations: " + transitiveRelations);
-//    	System.out.println("AssembleSQLForFocusQuery:organ: " + organ);
-//    	for (int i=0;i<input.length;i++) System.out.println("AdvancedQueryDAO:assembleSQL:input( " + i + "): " + input[i]); 
-//    	for (int i=0;i<queryCriteria.length;i++) System.out.println("AdvancedQueryDAO:assembleSQL:queryCriteria( " + i + "): " + queryCriteria[i]);
+	if (debug) {
+    	System.out.println("assembleSQL############");
+    	System.out.println("AssembleSQLForFocusQuery:queryType: " + queryType);
+    	System.out.println("AssembleSQLForFocusQuery:subType: " + subType);
+    	System.out.println("AssembleSQLForFocusQuery:transitiveRelations: " + transitiveRelations);
+    	System.out.println("AssembleSQLForFocusQuery:organ: " + organ);
+    	for (int i=0;i<input.length;i++) System.out.println("AdvancedQueryDAO:assembleSQL:input( " + i + "): " + input[i]); 
+    	for (int i=0;i<queryCriteria.length;i++) System.out.println("AdvancedQueryDAO:assembleSQL:queryCriteria( " + i + "): " + queryCriteria[i]);
+	}
     	
     	ArrayList<String[]> sqlAndParams = new ArrayList <String[]>();
     	
@@ -1962,7 +2087,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	
     	//specific focus organ has been selected so sql will have to be modified accordingly
     	if(null != organ && !organ.equals("") && !organ.equals("null")) {
-//    		System.out.println("OUTPUT ORGAN:"+organ+":"+organ);
+	if (debug)
+    		System.out.println("OUTPUT ORGAN:"+organ+":"+organ);
 	    	String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ);
 			String ids = "";
 			if(null != emapids) {
@@ -2447,7 +2573,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 					}
 				}
 	        	ishStr += " ) ";
-	        	//System.out.println("--------------AssembleQuickSQL ishStr4 = "+ishStr);
+	if (debug)
+	    System.out.println("--------------AssembleQuickSQL ishStr4 = "+ishStr);
 	            /*for(int i = 0; i < ish.length; i++) {
 	            	ishStr = ishStr + ish[i] + inputStr + " OR ";
 	            }
@@ -2521,7 +2648,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
         		all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
         		
         	}
-//    		System.out.println("MySQLAdvancedQueryDAOImp:Accession ID: " + all[0]);
+	if (debug)
+	    System.out.println("MySQLAdvancedQueryDAOImp:Accession ID: " + all[0].toLowerCase());
         	sqlAndParams.add(all);
     		sqlAndParams.add(input);
     		sqlAndParams.add(input);
@@ -2831,8 +2959,10 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 //						micQuery.append(AdvancedSearchDBQuery.getUnion());
 //					}
 					if(i > 0) {
-//						System.out.println("ishQuery: " + ishQuery.toString());
-//						System.out.println("micQuery: " + micQuery.toString());
+					    if (debug) {
+						System.out.println("ishQuery: " + ishQuery.toString().toLowerCase());
+						System.out.println("micQuery: " + micQuery.toString().toLowerCase());
+					    }
 						if (!ishQuery.toString().trim().equals("")) {
 							ishQuery.append(AdvancedSearchDBQuery.getUnion());
 						}
@@ -2929,7 +3059,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				all[4] = "1";
 				//input = allComps;
 			}
-//			System.out.println("anatomy search sql: " + all[0]);
+	if (debug)
+	    System.out.println("anatomy search sql: " + all[0].toLowerCase());
 			sqlAndParams.add(all);
 			sqlAndParams.add(allIshComps);
 			sqlAndParams.add(allMicComps);
