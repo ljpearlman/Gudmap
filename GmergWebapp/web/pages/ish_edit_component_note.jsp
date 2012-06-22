@@ -16,20 +16,20 @@
 	<f:view>
 	
 		<h:form id="editExpressionNoteForm">
-			<h:inputHidden id="hiddenSubId" value="#{editExpressionSupportBean.expressionDetail.submissionId}" />
+			<h:inputHidden id="hiddenSubId" value="#{EditExpressionSupportBean.expressionDetail.submissionId}" />
 <%-- 
-			<h:inputHidden id="originalStrength" value="#{editExpressionBean.primaryStrength}" />
-			<h:inputHidden id="tempStrength" value="#{editExpressionBean.primaryStrength}" />
+			<h:inputHidden id="originalStrength" value="#{EditExpressionBean.primaryStrength}" />
+			<h:inputHidden id="tempStrength" value="#{EditExpressionBean.primaryStrength}" />
 --%>
 			<h:outputText styleClass="titletext" value="Expression<br/>" escape="false" />
 			<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe" >
-				<h:outputText styleClass="plaintextbold" value="#{editExpressionBean.expressionDetail.submissionId}"/>
+				<h:outputText styleClass="plaintextbold" value="#{EditExpressionBean.expressionDetail.submissionId}"/>
 			</h:panelGrid>
 			<f:verbatim><br/></f:verbatim>
 
 			<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
 				<h:outputText value="Stage" />
-				<h:outputText value="#{editExpressionBean.expressionDetail.stage}" />
+				<h:outputText value="#{EditExpressionBean.expressionDetail.stage}" />
 
 				<f:verbatim>&nbsp;</f:verbatim>
 				<f:verbatim>&nbsp;</f:verbatim>
@@ -37,11 +37,11 @@
 				<h:outputText value="Component:" />
 				<h:panelGrid columns="2" columnClasses="text-top,data-textCol">
 					<h:outputText styleClass="plaintext" value="Name:" />
-					<h:outputText styleClass="datatext" value="#{editExpressionBean.expressionDetail.componentName}" />
+					<h:outputText styleClass="datatext" value="#{EditExpressionBean.expressionDetail.componentName}" />
 					<h:outputText styleClass="plaintext" value="ID:" />
-					<h:outputText styleClass="datatext" value="#{editExpressionBean.expressionDetail.componentId}" />
+					<h:outputText styleClass="datatext" value="#{EditExpressionBean.expressionDetail.componentId}" />
 					<h:outputText styleClass="plaintext" value="Main Path:" />
-					<h:dataTable style="vertical-align:bottom" value="#{editExpressionBean.expressionDetail.componentDescription}" var="component">
+					<h:dataTable style="vertical-align:bottom" value="#{EditExpressionBean.expressionDetail.componentDescription}" var="component">
 						<h:column>
 							<h:outputText styleClass="datatext" value="#{component}" />
 						</h:column>
@@ -53,26 +53,26 @@
 			</h:panelGrid>
 				<h:panelGrid columns="2" columnClasses="text-top,data-textCol">
 					<h:outputText value="Annotation Note:"/>
-					<h:inputTextarea id="note" cols="40" rows="5" styleClass="datatext" value="#{editExpressionBean.expressionDetail.expressionNote}" onchange="copyNote()"
-								disabled="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (editExpressionBean.expressionDetail.submissionDbStatus==3 || editExpressionBean.expressionDetail.submissionDbStatus==4 || editExpressionBean.expressionDetail.submissionDbStatus>19) 
-									|| userBean.user.userPrivilege==4 && (editExpressionBean.expressionDetail.submissionDbStatus==3 || editExpressionBean.expressionDetail.submissionDbStatus==4 || editExpressionBean.expressionDetail.submissionDbStatus>21) 
-									|| userBean.user.userPrivilege==5 && (editExpressionBean.expressionDetail.submissionDbStatus==3 || editExpressionBean.expressionDetail.submissionDbStatus>23)
+					<h:inputTextarea id="note" cols="40" rows="5" styleClass="datatext" value="#{EditExpressionBean.expressionDetail.expressionNote}" onchange="copyNote()"
+								disabled="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (EditExpressionBean.expressionDetail.submissionDbStatus==3 || EditExpressionBean.expressionDetail.submissionDbStatus==4 || EditExpressionBean.expressionDetail.submissionDbStatus>19) 
+									|| UserBean.user.userPrivilege==4 && (EditExpressionBean.expressionDetail.submissionDbStatus==3 || EditExpressionBean.expressionDetail.submissionDbStatus==4 || EditExpressionBean.expressionDetail.submissionDbStatus>21) 
+									|| UserBean.user.userPrivilege==5 && (EditExpressionBean.expressionDetail.submissionDbStatus==3 || EditExpressionBean.expressionDetail.submissionDbStatus>23)
 									}"/>
 				</h:panelGrid>
 			<f:verbatim><br/></f:verbatim>
 			<h:panelGrid width="100%" columns="2" styleClass="header-stripey" >
 				<h:commandButton id="closeButton" value="Close" onclick="window.opener.getById('annotationForm').submit(); self.close()" type="button" />
-				<h:commandLink id="updateButton" value="Save Modification" action="#{editExpressionSupportBean.updateExpressionNote}" 
-							rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| editExpressionBean.expressionDetail.submissionDbStatus==2
-									|| userBean.user.userPrivilege==3 && editExpressionBean.expressionDetail.submissionDbStatus>4 && editExpressionBean.expressionDetail.submissionDbStatus<=19 
-									|| userBean.user.userPrivilege==4 && editExpressionBean.expressionDetail.submissionDbStatus>4 && editExpressionBean.expressionDetail.submissionDbStatus<=21 
-									|| userBean.user.userPrivilege==5 && editExpressionBean.expressionDetail.submissionDbStatus>=4 && editExpressionBean.expressionDetail.submissionDbStatus<=23)}">
+				<h:commandLink id="updateButton" value="Save Modification" action="#{EditExpressionSupportBean.updateExpressionNote}" 
+							rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| EditExpressionBean.expressionDetail.submissionDbStatus==2
+									|| UserBean.user.userPrivilege==3 && EditExpressionBean.expressionDetail.submissionDbStatus>4 && EditExpressionBean.expressionDetail.submissionDbStatus<=19 
+									|| UserBean.user.userPrivilege==4 && EditExpressionBean.expressionDetail.submissionDbStatus>4 && EditExpressionBean.expressionDetail.submissionDbStatus<=21 
+									|| UserBean.user.userPrivilege==5 && EditExpressionBean.expressionDetail.submissionDbStatus>=4 && EditExpressionBean.expressionDetail.submissionDbStatus<=23)}">
 <%-- 
-					<f:param name="submissionId" value="#{editExpressionBean.expressionDetail.submissionId}" />
-					<f:param name="componentId" value="#{editExpressionBean.expressionDetail.componentId}" />				
+					<f:param name="submissionId" value="#{EditExpressionBean.expressionDetail.submissionId}" />
+					<f:param name="componentId" value="#{EditExpressionBean.expressionDetail.componentId}" />				
 --%>
 				</h:commandLink>
 			</h:panelGrid>
