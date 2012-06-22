@@ -18,14 +18,20 @@ import analysis.DataSet;
  *
  */
 public class GenelistExpressionAssembler {
-	
+    private boolean debug = false;
 	int genelistId;
     
 	public GenelistExpressionAssembler () {
+	if (debug)
+	    System.out.println("GenelistExpressionAssembler.constructor");
+
 		genelistId = 0;
 	}
 	
 	public GenelistExpressionAssembler (int genelistId) {
+	if (debug)
+	    System.out.println("GenelistExpressionAssembler.constructor");
+
 		this.genelistId = genelistId-2;
 	}
 
