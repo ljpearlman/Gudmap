@@ -27,7 +27,12 @@ import java.util.ArrayList;
  *
  */
 public class ISHSubmissionAssembler {
-	
+    private boolean debug = false;
+    public ISHSubmissionAssembler() {
+	if (debug)
+	    System.out.println("ISHSubmissionAssembler.constructor");
+
+    }
 	/**
 	 * <p>modified by xingjun - 27/08/2008 - added code linked to transgenic data</p>
 	 * <p>modified by xingjun - 27/08/2009 - modified ways to get transgenic data</p>
