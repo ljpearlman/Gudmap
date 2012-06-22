@@ -151,17 +151,17 @@ note that confirm box is not a good implementation because if the user doesn't a
 				<h:panelGroup><f:verbatim>
 					<div style="float:right"></f:verbatim>
 						<h:form id="loginLinkForm" >
-							<h:panelGroup rendered="#{userBean.userLoggedIn}">
-								<h:outputText value="User: #{userBean.userName}, " styleClass="plaintext" />
+							<h:panelGroup rendered="#{UserBean.userLoggedIn}">
+								<h:outputText value="User: #{UserBean.userName}, " styleClass="plaintext" />
 								<h:outputLink styleClass="plaintext" onclick="logoutClicked(); return false;" value="#">
 									<h:outputText value="LOGOUT" />
 								</h:outputLink>
-								<h:commandLink id="logoutLink" action="#{userBean.logout}" />
+								<h:commandLink id="logoutLink" action="#{UserBean.logout}" />
 							</h:panelGroup>				
-							<h:outputLink id="loginLink" styleClass="plaintext" value="#" onclick="onLoginClicked(); return false;" rendered="#{!userBean.userLoggedIn}">
+							<h:outputLink id="loginLink" styleClass="plaintext" value="#" onclick="onLoginClicked(); return false;" rendered="#{!UserBean.userLoggedIn}">
 								<h:outputText value="LOGIN" />
 							</h:outputLink>
-							<h:inputHidden id="displayLoginPanel" value="#{userBean.displayLoginPanel}" />		
+							<h:inputHidden id="displayLoginPanel" value="#{UserBean.displayLoginPanel}" />		
 						</h:form><f:verbatim>
 					</div>
 		
