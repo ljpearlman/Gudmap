@@ -16,12 +16,16 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 public class QuickSearchAssembler extends OffMemoryTableAssembler {
-	
+    private boolean debug = false;
+   
 	String[] input;
 	String query;
 	
 	public QuickSearchAssembler (HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("QuickSearchAssembler.constructor");
+
 	}
 
 	public void setParams() {
