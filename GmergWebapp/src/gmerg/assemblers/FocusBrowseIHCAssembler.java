@@ -14,14 +14,22 @@ import java.util.HashMap;
 
 public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	
+    private boolean debug = false;
+
 	String[] organs;
 	
 	public FocusBrowseIHCAssembler () {
 		super();
+	if (debug)
+	    System.out.println("FocusBrowseIHCAssembler.constructor");
+
 	}
 	
 	public FocusBrowseIHCAssembler (HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("FocusBrowseIHCAssembler.constructor");
+
 	}
 
 	public void setParams() {
