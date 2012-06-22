@@ -26,7 +26,7 @@ import javax.faces.application.NavigationHandler;
  *
  */
 public class BridgePageBean{
-	
+    private boolean debug = false;
 	private String geneTitle = "GENES";
 	private String probeTitle = "PROBES";
 	private String insituTitle = "IN SITU DATA";
@@ -75,6 +75,9 @@ public class BridgePageBean{
 	HashMap<String, NodeData> nodes = new HashMap<String, NodeData>();
 	// constructor
 	public BridgePageBean() {
+	    if (debug)
+		System.out.println("BridgePageBean.constructor");
+
 		input = Visit.getRequestParam("input");
 		System.out.println("BridgePageBean:input: " + input);
 		
