@@ -17,7 +17,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 public class BatchAnnotationTreeBean {
-	
+    private boolean debug = false;
 	private SelectItem [] stagesInPerspective;
 	private AnnotationTestAssembler annotationTestAssembler;
 	private String stage;
@@ -42,6 +42,9 @@ public class BatchAnnotationTreeBean {
 
     // xingjun - 20/07/2011 - need to check nullable situation for submission
 	public BatchAnnotationTreeBean() {
+	    if (debug)
+		System.out.println("BatchAnnotationTreeBean.constructor");
+
 		annotationTestAssembler = new AnnotationTestAssembler();
 		ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 		String subIdParam = getSubIdCookie();
