@@ -6,9 +6,12 @@ import gmerg.utils.Visit;
 import gmerg.utils.table.*;
 
 public class GeneStripBrowseBean {
-	
+    private boolean debug = false;
+
 	public GeneStripBrowseBean() {
-//		System.out.println("In GeneStripBrowseBean");    	
+	    if (debug)
+		System.out.println("GeneStripBrowseBean.constructor");
+
 		String geneSymbols = Visit.getRequestParam("gene");
 	    String viewName = "geneStrip_" + geneSymbols;
 		if (TableUtil.isTableViewInSession())
