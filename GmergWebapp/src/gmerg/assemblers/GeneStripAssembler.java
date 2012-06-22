@@ -28,10 +28,14 @@ import gmerg.entities.ChromeDetail;
  *
  */
 public class GeneStripAssembler extends OffMemoryCollectionAssembler {
-	
+    private boolean debug = false;
+
 	static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 	public GeneStripAssembler (HashMap params, CollectionBrowseHelper helper) {
 		super(params, helper);
+	if (debug)
+	    System.out.println("GeneStripAssembler.constructor");
+
 	}
 
 	/**
@@ -54,13 +58,17 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * 
 	 */
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	    if (debug)
+		System.out.println("GeneStripAssembler.retrieveData");
+
 		if (ascending || column <0) 
 			Collections.sort(ids);// natural sort the gene symbols
 		else
 			Collections.sort(ids, Collections.reverseOrder());// natural sort the gene symbols
-		
-//		System.out.println("geneStripAssembler:retrieveData:original symbol number: " + ids.size());
-//		System.out.println("geneStripAssembler:retrieveData:original symbols: " + ids.toString());
+    if (debug) {
+	System.out.println("geneStripAssembler:retrieveData:original symbol number: " + ids.size());
+	System.out.println("geneStripAssembler:retrieveData:original symbols: " + ids.toString());
+    }
 
 		int len = ids.size();
 		
@@ -87,7 +95,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 
 		// connect to database
 		Connection conn = DBHelper.getDBConnection();
-		
+    DataItem element = null;
 		for (int i=0;i<geneStripArraySize;i++) {
 			/** 1 - symbol */
 			String symbol = requiredSymbols.get(i);
@@ -112,7 +120,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			} else {
 				data[i][2] = 
 					new DataItem(diseaseString, "Click to see disease detail for "+symbol, 
-							"http://www.gudmap.org/gudmap_dis/Gene_Result.jsp?gene="+symbol+"&gene_text="+symbol, 10);
+							gmerg.utils.Utility.domainUrl+"gudmap_dis/Gene_Result.jsp?gene="+symbol+"&gene_text="+symbol, 10);
 			}
 
 			/** 4 - developmental stage */
@@ -181,10 +189,14 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				MasterTableInfo[] masterTableInfo = DbUtility.getAllMasterTablesInfo();
 				String geneSymbol = requiredSymbols.get(i);
 				for (MasterTableInfo item : masterTableInfo) 
-					if (DbUtility.retrieveGeneProbeIds(geneSymbol, item.getPlatform()) != null) //check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
-						complexValue.add(new DataItem("../dynamicimages/heatmap_" + geneSymbol + ".jpg?tile=5&masterTableId="+item.getId(), 
+				    if (DbUtility.retrieveGeneProbeIds(geneSymbol, item.getPlatform()) != null) {//check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
+						element = new DataItem("../dynamicimages/heatmap_" + geneSymbol + ".jpg?tile=5&masterTableId="+item.getId(), 
 														"Click to see " + item.getTitle() + " microarray expression profile for "+ symbol, 
-														"mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId(), 15));
+									      "mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId(), 15);
+						if (debug) 
+						    System.out.println("GeneStripAssembler.retrieveData value = "+element.getValue()+" title = "+element.getTitle()+" link = "+element.getLink());
+						complexValue.add(element);
+				    }
 			}
 			
 			data[i][6] = new DataItem(complexValue, 81);	// 81 is complex & centre aligned
@@ -427,6 +439,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 *         otherwise relevant stage range
 	 */
 	private String[] getGeneStages(String[] insituGeneStages, String[] arrayGeneStages) {
+
 		String[] stageRange = new String[2];
 		if (insituGeneStages == null || insituGeneStages.length == 0) { //  no insitu submission
 //			System.out.println("insitu stage value is null");
