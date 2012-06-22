@@ -20,7 +20,12 @@ import java.util.ArrayList;
  *
  */
 public class ISHBrowseAssembler extends OffMemoryTableAssembler{
-	
+    private boolean debug = false;
+    public ISHBrowseAssembler() {
+	if (debug)
+	    System.out.println("ISHBrowseAssembler.constructor");
+
+    }
 	/**
 	 * <p>modified by xingjun - 15/09/2009
 	 *  - invoke method getAllSubmissionInsitu (renamed from getAllSubmissionISH) </p>
@@ -230,8 +235,7 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 	     headerSortable = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, false};
 	     
 		 int colNum = headerTitles.length;
-		 
-		 
+
 		 HeaderItem[] tableHeader = new HeaderItem[colNum];
 		 for(int i=0; i<colNum; i++)
 			 tableHeader[i] = new HeaderItem(headerTitles[i], headerSortable[i]);
