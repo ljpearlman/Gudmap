@@ -13,7 +13,7 @@ import java.util.*;
  */
 
 public abstract class MultipleInstanceBean {
-
+    
 	//Abstract method to initialize the newly instantiated bean
 	public abstract void initInstance(String id);
 	public abstract String getDistinguishingParam();
