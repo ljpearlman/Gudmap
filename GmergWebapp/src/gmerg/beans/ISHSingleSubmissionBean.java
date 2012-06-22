@@ -9,6 +9,7 @@ import gmerg.utils.FacesUtil;
 import javax.faces.context.FacesContext;
 
 public class ISHSingleSubmissionBean {
+    private boolean debug = false;
 
     private ISHSubmission submission;
     private ISHSubmissionAssembler assembler;
@@ -23,6 +24,9 @@ public class ISHSingleSubmissionBean {
     private boolean expressionMapped;
     
     public ISHSingleSubmissionBean() {
+	if (debug)
+	    System.out.println("ISHSingleSubmissionBean.constructor");
+
 		assembler = new ISHSubmissionAssembler();
 		id = FacesUtil.getRequestParamValue("id");
 		if (id == null || id.equals("")) 
