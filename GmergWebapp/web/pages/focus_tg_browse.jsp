@@ -5,8 +5,8 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText value="Transgenic submissions #{transgenicBrowseBean.organTitle}" escape="false" />
-	<h:outputText value="--Gene: #{transgenicBrowseBean.gene}" rendered="#{transgenicBrowseBean.gene != ''}" escape="false" />
+	<h:outputText value="Transgenic submissions #{TransgenicBrowseBean.organTitle}" escape="false" />
+	<h:outputText value="--Gene: #{TransgenicBrowseBean.gene}" rendered="#{TransgenicBrowseBean.gene != ''}" escape="false" />
 	<f:subview id="focusGeneTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
