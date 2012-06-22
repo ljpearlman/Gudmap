@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 public class ImageDetailBean {
+    private boolean debug = false;
 
     private ImageDetail imageDetail;  //object containing details of a submitted image
     private ImageDetailAssembler imgAssembler;
@@ -25,10 +26,14 @@ public class ImageDetailBean {
 	String id;
 	
     public ImageDetailBean() {
+
         this (FacesUtil.getRequestParamValue("id"), FacesUtil.getRequestParamValue("serialNo"));
     }
     
     public ImageDetailBean(String id, String serialNo) {
+	    if (debug)
+		System.out.println(" ImageDetailBean.constructor");
+
     	this.id = id;
     	this.serialNo = serialNo;
         imgAssembler = new ImageDetailAssembler();
@@ -151,15 +156,10 @@ public class ImageDetailBean {
 	public String getViewerFrameSourceName() {
 		StringBuffer requestUrl = ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURL();
 		if(Utility.getProject().equalsIgnoreCase("gudmap")) {
-			if (requestUrl.indexOf("http://www.gudmap.org")==0)
-				return "http://www.gudmap.org/mrciip/mrciip_gudmap.html";
-			else
-				return "http://gudmap.hgu.mrc.ac.uk/mrciip/mrciip_gudmap.html";
-		} else {
-			if (requestUrl.indexOf("http://www.euregene.org")==0)
-				return "http://www.euregene.org/mrciip/mrciip_euregene.html";
-			else
-				return "http://euregene.hgu.mrc.ac.uk/mrciip/mrciip_euregene.html";
-		}
+		    return Utility.domainUrl+"mrciip/mrciip_gudmap.html";
+		} 
+		if(Utility.getProject().equalsIgnoreCase("euregene")) {
+		    return Utility.domainUrl+"mrciip/mrciip_euregene.html";
+		} 
 	}
 }
