@@ -18,7 +18,12 @@ import java.util.ArrayList;
  *
  */
 public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssembler{
-	
+    private boolean debug = false;
+    public ISHBrowseSubmissionNonRenalAssembler() {
+	if (debug)
+	    System.out.println("ISHBrowseSubmissionNonRenalAssembler.constructor");
+
+    }
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
 
 		/** ---get data from dao---  */
