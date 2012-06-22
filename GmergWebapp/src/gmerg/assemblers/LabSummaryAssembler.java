@@ -35,13 +35,18 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 	boolean labIshEdit;
 	String archiveId; // xingjun - 01/07/2011
 
-	
+    private boolean debug = false;
+
 	public LabSummaryAssembler () {
-		super();
+	if (debug)
+	    System.out.println("LabSummaryAssembler.constructor");
+	       
 	}
 	
 	public LabSummaryAssembler (HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("LabSummaryAssembler.constructor with param");
 	}
 
 	public void setParams() {
