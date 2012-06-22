@@ -8,14 +8,14 @@
 	
 	<h:form id="browseForm">
 		<h:outputText styleClass="superbigplaintext" value="Gene Index:" />
-		<t:dataList id="indexRow" var="index" value="#{focusGeneIndexBean.index}" layout="simple" styleClass="plaintextbold" >
+		<t:dataList id="indexRow" var="index" value="#{FocusGeneIndexBean.index}" layout="simple" styleClass="plaintextbold" >
 			<h:outputLink styleClass="superbigplaintext" id="submissionID" value="focus_gene_index_browse.html?index=#{index}&#{Visit.statusParam}">
 				<h:outputText styleClass="superbigplaintext" value="#{index}" />
 			</h:outputLink>
 		</t:dataList>
 		
 		<h:dataTable width="100%" styleClass="browseTable" columnClasses="geneCol1, geneCol2, geneCol3" rowClasses="table-stripey,table-nostripe" headerClass="align-top-left-stripey" 
-					 var="row" binding="#{focusGeneIndexBean.myDataTable}" >
+					 var="row" binding="#{FocusGeneIndexBean.myDataTable}" >
 			<h:column>
 				<f:facet name="header">
 					<h:outputText styleClass="bigplaintext" value="Gene Symbol" />
@@ -43,7 +43,7 @@
 				<h:panelGrid id="IshExpr" columns="3" width="100%" style="text-align:left" columnClasses="geneCol1-1" >
 				    <h:panelGroup>
 						<h:graphicImage styleClass="icon" height="20" width="20" value="../images/tree/DetectedRoundPlus20x20.gif"/>               
-						<h:commandLink action="#{focusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[1]!='0'}" >
+						<h:commandLink action="#{FocusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[1]!='0'}" >
 							<h:outputText styleClass="plaintext" value="#{row[1]}"/>
 							<f:param name="query" value="GeneSymbol" />
 							<f:param name="input" value="#{row[0]}" />
@@ -54,7 +54,7 @@
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:graphicImage styleClass="icon" height="20" width="20" value="../images/tree/NotDetectedRoundMinus20x20.gif"/>          	   
-						<h:commandLink action="#{focusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[2]!='0'}" >
+						<h:commandLink action="#{FocusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[2]!='0'}" >
 							<h:outputText styleClass="plaintext" value="#{row[2]}"/>
 							<f:param name="query" value="GeneSymbol" />
 							<f:param name="input" value="#{row[0]}" />
@@ -65,7 +65,7 @@
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:graphicImage styleClass="icon" height="20" width="20" value="../images/tree/PossibleRound20x20.gif"/>         	   
-						<h:commandLink action="#{focusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[3]!='0'}" >
+						<h:commandLink action="#{FocusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[3]!='0'}" >
 							<h:outputText styleClass="plaintext" value="#{row[3]}"/>
 							<f:param name="query" value="GeneSymbol" />
 							<f:param name="input" value="#{row[0]}" />
@@ -94,7 +94,7 @@
 				<h:panelGrid id="ArrayExpr" columns="3" width="100%" style="text-align:left" columnClasses="geneCol1-1" >
 				    <h:panelGroup>
 						<h:graphicImage styleClass="icon" height="20" width="20" value="../images/tree/DetectedRoundPlus20x20.gif"/>
-						<h:commandLink action="#{focusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[4]!='0'}" >
+						<h:commandLink action="#{FocusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[4]!='0'}" >
 							<h:outputText styleClass="plaintext" value="#{row[4]}"/>
 							<f:param name="query" value="GeneSymbol" />
 							<f:param name="input" value="#{row[0]}" />
@@ -105,7 +105,7 @@
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:graphicImage styleClass="icon" height="20" width="20" value="../images/tree/NotDetectedRoundMinus20x20.gif"/>
-						<h:commandLink action="#{focusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[5]!='0'}" >
+						<h:commandLink action="#{FocusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[5]!='0'}" >
 							<h:outputText styleClass="plaintext" value="#{row[5]}"/>
 							<f:param name="query" value="GeneSymbol" />
 							<f:param name="input" value="#{row[0]}" />
@@ -116,7 +116,7 @@
 					</h:panelGroup>
 					<h:panelGroup>
 						<h:graphicImage styleClass="icon" height="20" width="20" value="../images/tree/PossibleRound20x20.gif"/>
-						<h:commandLink action="#{focusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[6]!='0'}" >
+						<h:commandLink action="#{FocusGeneIndexBean.queryGenes}" styleClass="plaintext" rendered="#{row[6]!='0'}" >
 							<h:outputText styleClass="plaintext" value="#{row[6]}"/>
 							<f:param name="query" value="GeneSymbol" />
 							<f:param name="input" value="#{row[0]}" />
