@@ -22,7 +22,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 
-	<h:outputText value="" rendered="#{labIshEditBean.dumy}" />
+	<h:outputText value="" rendered="#{LabISHEditBean.dumy}" />
 	<f:subview id="labIshEdit">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
