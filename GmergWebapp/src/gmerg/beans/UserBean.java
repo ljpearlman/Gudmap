@@ -23,6 +23,7 @@ import gmerg.utils.FacesUtil;
  *
  */
 public class UserBean {
+    private boolean debug = false;
 
     private String userName;
     private String password;
@@ -40,6 +41,9 @@ public class UserBean {
 //	private int userRole;
   
     public UserBean(){
+	if (debug)
+	    System.out.println("UserBean.constructor");
+
     	clearValues();
     }
     
