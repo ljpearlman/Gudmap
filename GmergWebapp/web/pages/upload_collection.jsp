@@ -7,7 +7,7 @@
 
 	<jsp:include page="/includes/header.jsp" />
   
-	<h:outputText value="" rendered="#{uploadCollectionBean.dumy}" />
+	<h:outputText value="" rendered="#{UploadCollectionBean.dumy}" />
 	<h:outputText value="Your Uploaded Collection:" styleClass="plaintextbold" />
 	<f:subview id="CollectionTable">
 		<jsp:include page="../includes/browse_table.jsp" />
