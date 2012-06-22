@@ -5,7 +5,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 
-	<h:outputText value="" rendered="#{LabIshBrowseBean.dumy}" />
+	<h:outputText value="" rendered="#{LabISHBrowseBean.dumy}" />
 	<f:subview id="labIshBrowse">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
