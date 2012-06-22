@@ -28,8 +28,12 @@ public class BridgePageAssembler {
 	String exp = null ;
 	String transitiveRelations = null;
 	
-	
+    private boolean debug = false;
+
 	public BridgePageAssembler(HashMap params) {
+	if (debug)
+	    System.out.println("BridgePageAssembler.constructor");
+
 		inputs = (String[])params.get("inputs");
 		query = (String)params.get("query");
 		queryCriteria = (String[])params.get("wildcards");
