@@ -15,6 +15,8 @@ import javax.faces.model.SelectItem;
 
 public class AdvancedQueryBean 
 {
+    private boolean debug = false;
+
 	protected String selectedStepOne;
 	protected String selectedOutput;
 	private SelectItem[] stepOne;
@@ -35,6 +37,9 @@ public class AdvancedQueryBean
     private boolean renderOrNot;
     
 	public AdvancedQueryBean() {
+	    if (debug)
+		System.out.println("AdvancedQueryBean.constructor");
+
 		lookup = null;
 		lookup = AdvancedSearchDBQuery.getLookup();
 
