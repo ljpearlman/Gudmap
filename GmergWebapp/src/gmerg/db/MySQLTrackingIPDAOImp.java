@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MySQLTrackingIPDAOImp implements TrackingIPDAO{
+    private boolean debug = false;
+
 	private Connection conn;
 	
 	public MySQLTrackingIPDAOImp() {
@@ -38,11 +40,15 @@ public class MySQLTrackingIPDAOImp implements TrackingIPDAO{
 		int updatedOrInsertedNumber = 0;
 		if(null != ip && !ip.equals("") && null != viewid && !viewid.equals("")) {
 			try {
+		    if (debug)
+			System.out.println("MySQLTrackingIPDAOImp.sql = "+query.toLowerCase());
 				prepStmt = conn.prepareStatement(query);
 				prepStmt.setString(1, ip);
 				prepStmt.setString(2, viewid);
 				resSet = prepStmt.executeQuery();
 				if (resSet.first()) {//update
+		    if (debug)
+			System.out.println("MySQLTrackingIPDAOImp.sql = "+query2.toLowerCase());
 					prepStmt2 = conn.prepareStatement(query2);
 					prepStmt2.setString(1, browser);
 					prepStmt2.setString(2, platform);
@@ -50,6 +56,8 @@ public class MySQLTrackingIPDAOImp implements TrackingIPDAO{
 					prepStmt2.setString(4, viewid);
 					updatedOrInsertedNumber = prepStmt2.executeUpdate();
 				} else {//insert
+		    if (debug)
+			System.out.println("MySQLTrackingIPDAOImp.sql = "+query3.toLowerCase());
 					prepStmt2 = conn.prepareStatement(query3);
 					prepStmt2.setString(1, ip);
 					prepStmt2.setString(2, viewid);
