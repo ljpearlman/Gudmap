@@ -28,10 +28,11 @@
   <property name="luceneparserJar" value="lib/luceneHtmlParser.jar"/>
   <property name="digesterJar" value="lib/commons-digester.jar"/>
   <property name="jUnit" value="lib/junit-4.10.jar"/>
+  <property name="analysis" value="lib/analysis.jar"/>
 	
-  <property name="build" value="../webapps/${env.CONFIGURATION}"/>
+  <property name="build" value="../webapps/gudmap"/>
   <property name="dist" value="../webapps"/>
-  <property name="config" value="${env.CONFIGURATION}" />
+  <property name="config" value="gudmap" />
 
 
   <!-- ======================== Copy static files ========================= -->
@@ -46,8 +47,6 @@
       <copy todir="${build}">
           <fileset dir="web">
               <exclude name="gudmap/" />
-              <exclude name="euregenedb/"/>
-              <exclude name="xgebase/"/>
           </fileset>
       </copy>
 
@@ -58,8 +57,6 @@
       <copy todir="${build}/WEB-INF">
           <fileset dir="etc">
               <exclude name="gudmap/" />
-              <exclude name="euregenedb/" />
-              <exclude name="xgebase/" />
           </fileset>
       </copy>
 
@@ -95,12 +92,6 @@
     <copy todir="${build}/WEB-INF/classes">
       <fileset dir="src" includes="*.class"/>
     </copy>
-<!-- Modified by Mehran 4/09/2006    
-    <javac srcdir="src"
-           optimize="${optimize}" debug="${debug}"
-           destdir="${build}/WEB-INF/classes"
-           classpath="${servletJar}"/>
--->
 	<javac srcdir="src"
 	       includeantruntime="false"
 		   optimize="${optimize}" debug="${debug}"
@@ -129,6 +120,7 @@
 			<pathelement path="${luceneJar}"/>
 			<pathelement path="${digesterJar}"/>
 			<pathelement path="${jUnit}"/>
+			<pathelement path="${analysis}"/>
 		</classpath>
      </javac> 
   </target>
@@ -168,7 +160,7 @@
 
   <!-- ============================== Deploy ============================== -->
   <target name="deploy" depends="webapps">
-     <copy file="../webapps/${env.CONFIGURATION}.war" todir="${env.CATALINA_HOME}/webapps"/>
+     <copy file="../webapps/gudmap.war" todir="${env.CATALINA_HOME}/webapps"/>
   </target>
 
 	
