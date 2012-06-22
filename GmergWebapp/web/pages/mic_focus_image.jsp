@@ -35,8 +35,8 @@
 		<td width="100%" valign="top" align="left">				
 		
 	    <h:panelGroup>
-  	    <t:selectOneRadio id="radio1" layout="spread" forceId="true" forceIdIndex="false" value="#{imageMap.selectedOrgan}">
-    	    <f:selectItems value="#{imageMap.organRadioList}" />
+  	    <t:selectOneRadio id="radio1" layout="spread" forceId="true" forceIdIndex="false" value="#{ImageMap.selectedOrgan}">
+    	    <f:selectItems value="#{ImageMap.organRadioList}" />
 	      </t:selectOneRadio>
 
         <t:dataTable value="#{microarrayFocusBean.organs}" var="organ" rowIndexVar="index" headerClass="plaintextboldleft">
@@ -98,11 +98,11 @@
      </tr>
 	      <tr>
 	     	<td align="left"  class="table-stripey">
-	     		<h:selectOneMenu value="#{imageMap.operation}">
+	     		<h:selectOneMenu value="#{ImageMap.operation}">
 	              <f:selectItem itemLabel="Select substructure from diagram" itemValue="showDiagram" /> 
 	              <f:selectItem itemLabel="Add to My Anatomy Collection" itemValue="addToCollection" /> 
 	            </h:selectOneMenu> 
-	        <h:commandButton value="GO" action="#{imageMap.chooseOrgan}"/>        		     		
+	        <h:commandButton value="GO" action="#{ImageMap.chooseOrgan}"/>        		     		
 	     	</td>
 
 	     	
@@ -131,7 +131,7 @@
     <tr><td align="left">
       
       <h:dataTable
-		            value="#{imageMap.termList}" var="collection">
+		            value="#{ImageMap.termList}" var="collection">
 		          <h:column>
 		            <f:facet name="header">
 		                <h:outputText value="" styleClass="plaintextbold"/>             
@@ -147,27 +147,27 @@
 
     <tr><td>
       <h:graphicImage id="mapImage"
-                      url="#{imageMap.diagramURLThree}"
+                      url="#{ImageMap.diagramURLThree}"
                    usemap="#worldMap"/>
       
       <d:map           id="worldMap"
-        actionListener="#{imageMap.processAreaSelected}" 
+        actionListener="#{ImageMap.processAreaSelected}" 
                 immediate="false">
         <d:area        id="area1"
-                 value="#{imageMap.areaList[0]}"
-              onmouseover="#{imageMap.diagramURLThree}"
-               onmouseout="#{imageMap.diagramURLThree}"
+                 value="#{ImageMap.areaList[0]}"
+              onmouseover="#{ImageMap.diagramURLThree}"
+               onmouseout="#{ImageMap.diagramURLThree}"
                targetImage="form1:mapImage"/>
 
         <d:area        id="area2"
-                 value="#{imageMap.areaList[1]}"
-              onmouseover="#{imageMap.diagramURLThree}"
-               onmouseout="#{imageMap.diagramURLThree}"
+                 value="#{ImageMap.areaList[1]}"
+              onmouseover="#{ImageMap.diagramURLThree}"
+               onmouseout="#{ImageMap.diagramURLThree}"
                targetImage="form1:mapImage"/>
         <d:area        id="area3"
-                 value="#{imageMap.areaList[2]}"
-              onmouseover="#{imageMap.diagramURLThree}"
-               onmouseout="#{imageMap.diagramURLThree}"
+                 value="#{ImageMap.areaList[2]}"
+              onmouseover="#{ImageMap.diagramURLThree}"
+               onmouseout="#{ImageMap.diagramURLThree}"
                targetImage="form1:mapImage"/>                      
       </d:map>
       
