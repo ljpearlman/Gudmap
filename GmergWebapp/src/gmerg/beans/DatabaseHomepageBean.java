@@ -34,6 +34,8 @@ import gmerg.sample.lucene.search.SearchManager;
  */
 
 public class DatabaseHomepageBean {
+    private boolean debug = false;
+
 	private String focusedOrgan;
 	private String quickSearchInput;
 	private String anatomyInput;
@@ -66,6 +68,9 @@ public class DatabaseHomepageBean {
 	// Constructors
 	// ********************************************************************************
 	public DatabaseHomepageBean() {
+	    if (debug)
+		System.out.println("DatabaseHomepageBean.constructor");
+
 		focusedOrgan = Visit.getRequestParam("focusedOrgan");	// this is automatically picked from url param or current status
 		query = FacesUtil.getRequestParamValue("query"); 		// this is provided by action f:param
 		input = null;
@@ -709,5 +714,9 @@ public class DatabaseHomepageBean {
     
     public void setUploadGenes(String uploadedGenes) {
     	this.uploadedGenes = uploadedGenes;
+    }
+
+    public String getDomainUrl() {
+	return gmerg.utils.Utility.domainUrl;
     }
 }
