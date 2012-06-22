@@ -8,7 +8,8 @@ import gmerg.utils.Visit;
 import gmerg.utils.table.*;
 
 abstract public class CollectionOperationBrowseParentBean {
-    
+    protected boolean debug = false;
+
     protected int collectionType;
     protected String collectionOperation;
     protected String selectedCollectionsString;
@@ -19,7 +20,9 @@ abstract public class CollectionOperationBrowseParentBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public CollectionOperationBrowseParentBean() {
-//		System.out.println("CollectionOperationBrowseParentBean constructor");		
+	    if (debug)
+		System.out.println("CollectionOperationBrowseParentBean.constructor");
+		
 		GenericTableView tableView;
 		if (TableUtil.isTableViewInSession()) {
 			tableView = TableUtil.getTableViewFromSession();
