@@ -9,6 +9,8 @@ import gmerg.assemblers.EditExpressionAssembler;
 import gmerg.entities.User;
 
 public class DisplayLockTextInTreeBean {
+    private boolean debug = false;
+
 	private String lockingText;
     private String lockingTextDisplayStyle;
     private LockingInfo lockingInfo;
@@ -18,6 +20,9 @@ public class DisplayLockTextInTreeBean {
     private EditExpressionAssembler editExpressionAssembler;
     
     public DisplayLockTextInTreeBean() {
+	    if (debug)
+		System.out.println("DisplayLockTextInTreeBean.constructor");
+
     	editExpressionAssembler = new EditExpressionAssembler();
     	Object object = FacesUtil.getSessionValue("userBean");
         if (object != null) {
