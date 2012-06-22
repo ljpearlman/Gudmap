@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
  *
  */
 public final class DBHelper {
-	
+    private static boolean debug = false;
 	private static String browseColumnsISH[][] = {
 		{"0", ""}, {"1", ""},{"2", ""}
 	};
@@ -51,42 +51,30 @@ public final class DBHelper {
 	 * @return
 	 */
 	public static Connection getDBConnection() {
+	    Connection ret = null;
+
+	    try {
+		ResourceBundle bundle = ResourceBundle.getBundle("configuration");
+		Class.forName(bundle.getString("db_driver"));
+		String url = bundle.getString("host") + bundle.getString("database");
+		String userName = bundle.getString("user");
+		String passWord = bundle.getString("password");
+		ret = getDBConnection(url, userName, passWord);
+	    } catch (Exception se) {
+		se.printStackTrace();
+	    }
+
+	    return ret;
+
+	}
+	    public static Connection getDBConnection(String url, String userName, String passWord) {
 		
 		Connection conn = null;
-		/*try {
-			Context ctx = new InitialContext();
-			if(ctx==null){
-				throw new NamingException("No initial context");
-			}
-		 
-			Context envContext  = (Context)ctx.lookup("java:/comp/env");
-			if(envContext==null){
-				throw new NamingException("No environment context");
-			}
-		 
-			DataSource ds = (DataSource)envContext.lookup("jdbc/mysql");
-			
-			if(ds==null){
-				throw new NamingException("No data source");
-			}
-		  
-			conn = ds.getConnection();
-		    //System.out.println("URL:"+conn.getMetaData().getURL());
-		} catch(Exception e) {
-			e.printStackTrace();
-		}*/
 		try {
-			ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-			Class.forName(bundle.getString("db_driver"));
-			String url = bundle.getString("host") + bundle.getString("database");
-			String userName = bundle.getString("user");
-			String passWord = bundle.getString("password");
 			conn = DriverManager.getConnection(url, userName, passWord);
-		} catch (SQLException se) {
+		} catch (Exception se) {
 			se.printStackTrace();
-		} catch (ClassNotFoundException cfe) {
-			cfe.printStackTrace();
-		}
+		} 
 		
 		return conn;
 	}
@@ -981,18 +969,7 @@ public final class DBHelper {
      */
     public static Connection reconnect2DB(Connection conn) {
     	if (conn == null) {
-    		try {
-    			ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-    			Class.forName(bundle.getString("db_driver"));
-    			String url = bundle.getString("host") + bundle.getString("database");
-    			String userName = bundle.getString("user");
-    			String passWord = bundle.getString("password");
-    			conn = DriverManager.getConnection(url, userName, passWord);
-    		} catch (SQLException se) {
-    			se.printStackTrace();
-    		} catch (ClassNotFoundException cfe) {
-    			cfe.printStackTrace();
-    		}
+	    conn = getDBConnection();
     	}
 		return conn;
     }
