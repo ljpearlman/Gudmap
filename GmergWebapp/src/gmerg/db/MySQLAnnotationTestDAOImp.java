@@ -14,7 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
-	
+    private boolean debug = false;
+
 	private Connection conn;
 	
 	public MySQLAnnotationTestDAOImp() {
@@ -39,6 +40,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			AnnotationToolQuery.getParamQuery("INCOMPLETED_SUBMISSION_BATCH_ID");
 		String query = parQ.getQuerySQL();
 		try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+query.toLowerCase());
 			prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, pi);
 			
@@ -89,6 +92,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		
 		try {
 			// get max batch id
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryMaxBatchId.toLowerCase());
 			prepStmt = conn.prepareStatement(queryMaxBatchId);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
@@ -103,6 +108,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			
 			conn.setAutoCommit(false);
 			// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "update");
         	prepStmtLog.setString(2, userName);
@@ -130,6 +137,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	}
 
 			// increment batch id
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryUpdateMaxBatchId.toLowerCase());
 			prepStmt = conn.prepareStatement(queryUpdateMaxBatchId);
 			prepStmt.setInt(1, maxBatchId+1);
 			int updatedRecordNumber = prepStmt.executeUpdate();
@@ -179,6 +188,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         // perform the query
         try {
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "insert");
         	prepStmtLog.setString(2, userName);
@@ -188,6 +199,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println("createNewBatchUser: " + loggedRecordNumber + " records logged!");
         	
         	// insert
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, batchId);
         	prepStmt.setInt(2, pi);
@@ -217,10 +230,14 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		String queryM = parQM.getQuerySQL();
 		String queryC = parQC.getQuerySQL();
 		try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryM.toLowerCase());
 			prepStmt = conn.prepareStatement(queryM);
 			prepStmt.setInt(1, pi);
 			resSetM = prepStmt.executeQuery();
 			prepStmt = null;
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryC.toLowerCase());
 			prepStmt = conn.prepareStatement(queryC);
 			prepStmt.setInt(1, pi);
 			resSetC = prepStmt.executeQuery();
@@ -344,6 +361,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			AnnotationToolQuery.getParamQuery("GET_ISH_SUBMISSIONS_BY_BATCH_ID");
 		String query = parQ.getQuerySQL();
 		try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+query.toLowerCase());
 			prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, batchId);
 			resSet = prepStmt.executeQuery();
@@ -372,6 +391,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			AnnotationToolQuery.getParamQuery("GET_ISH_SUBMISSION_ID_BY_BATCH_ID");
 		String query = parQ.getQuerySQL();
 		try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+query.toLowerCase());
 			prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, batchId);
 			resSet = prepStmt.executeQuery();
@@ -475,6 +496,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		
 		try {
 			// get max submission temp id
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryMaxSubmissionTempId.toLowerCase());
 			prepStmt = conn.prepareStatement(queryMaxSubmissionTempId);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
@@ -504,6 +527,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
 
 			// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "insert");
         	prepStmtLog.setString(2, user.getUserName());
@@ -523,6 +548,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	// modified by xingjun 19/08/2008
         	// if it's the editor or sysuser create submission for other lab
         	// submitter and pi's value have to be get from pi parameter
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryInsertTempSubmission.toLowerCase());
 			prepStmt = conn.prepareStatement(queryInsertTempSubmission);
 			// xingjun - 14/08/2009 - start 
 			// - need to change to the string type - big submission id will exceed the range of the int type
@@ -563,6 +590,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
     			return 0;
 			} else {
 				// increment submission temp id
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryUpdateMaxSubmissionTempId.toLowerCase());
 				prepStmt = conn.prepareStatement(queryUpdateMaxSubmissionTempId);
 //				prepStmt.setInt(1, Integer.parseInt(tempIdStrng)); // sub temp id - xingjun - 11/12/2009
 				prepStmt.setString(1, tempIdStrng); // sub temp id
@@ -630,6 +659,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		
 		try {
 			// get max submission temp id
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryMaxSubmissionTempId.toLowerCase());
 			prepStmt = conn.prepareStatement(queryMaxSubmissionTempId);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
@@ -660,6 +691,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
 
 			// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "insert");
         	prepStmtLog.setString(2, userName);
@@ -676,6 +709,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	}
 
         	//insert temporary submission
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryInsertTempSubmission.toLowerCase());
 			prepStmt = conn.prepareStatement(queryInsertTempSubmission);
 			// xingjun - 14/08/2009 - start
 			// - big submission id will exceed the range of the int type
@@ -732,6 +767,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
     			return "0";
 			} else {
 				// increment submission temp id
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryUpdateMaxSubmissionTempId.toLowerCase());
 				prepStmt = conn.prepareStatement(queryUpdateMaxSubmissionTempId);
 //				prepStmt.setInt(1, Integer.parseInt(tempIdStrng));
 				prepStmt.setString(1, tempIdStrng);
@@ -780,6 +817,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
         	
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "update");
         	prepStmtLog.setString(2, userName);
@@ -789,6 +828,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(loggedRecordNumber + " records logged!");
         	
         	// update
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, status);
         	prepStmt.setInt(2, batchId);
@@ -834,6 +875,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
         	
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "update");
         	prepStmtLog.setString(2, userName);
@@ -847,6 +890,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:subDate: " + subDate);
 //    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:labId: " + labId);
 //    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:subState: " + subState);
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, status);
         	prepStmt.setInt(2, isPublicValue);
@@ -895,6 +940,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
         	
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "update");
         	prepStmtLog.setString(2, userName);
@@ -908,6 +955,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:subDate: " + subDate);
 //    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:labId: " + labId);
 //    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:subState: " + subState);
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, status);
         	prepStmt.setInt(2, isPublicValue);
@@ -958,6 +1007,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
         	
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "update");
         	prepStmtLog.setString(2, userName);
@@ -967,6 +1018,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(loggedRecordNumber + " records logged!");
         	
         	// update
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, status);
         	prepStmt.setInt(2, batchId);
@@ -1029,6 +1082,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //		System.out.println("AnnotationTestDAO:getSubmissionSummary:sql: " + queryString);
 		Submission submission  = null;
 		try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, submissionId);
 
@@ -1092,6 +1147,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         String queryString = parQ.getQuerySQL();
         
         try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, submissionId);
         	prepStmt.setString(2, submissionId);
@@ -1171,6 +1228,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         }
         
         try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
 //        	prepStmt.setInt(1, Integer.parseInt(subId)); // submission fk
         	prepStmt.setString(1, subId); // submission fk
@@ -1206,6 +1265,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
         	
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "delete");
         	prepStmtLog.setString(2, userName);
@@ -1215,6 +1276,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(loggedRecordNumber + " records logged!");
         	
         	// delete
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, submissionId);
         	prepStmt.setString(2, submissionId);
@@ -1259,6 +1322,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
         	
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "delete");
         	prepStmtLog.setString(2, userName);
@@ -1268,6 +1333,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(loggedRecordNumber + " records logged!");
         	
         	// delete
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, submissionId);
         	prepStmt.setString(2, submissionId);
@@ -1315,6 +1382,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
         	
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "update");
         	prepStmtLog.setString(2, userName);
@@ -1324,6 +1393,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(loggedRecordNumber + " records logged!");
         	
         	// update
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, stage.substring(2));
         	prepStmt.setString(2, submissionId);
@@ -1366,6 +1437,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
         	
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "delete");
         	prepStmtLog.setString(2, userName);
@@ -1375,6 +1448,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(loggedRecordNumber + " records logged!");
         	
         	// delete
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, submissionId);
         	deletedRecordNumber = prepStmt.executeUpdate();
@@ -1419,6 +1494,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	conn.setAutoCommit(false);
         	
         	// log
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryStringLog.toLowerCase());
         	prepStmtLog = conn.prepareStatement(queryStringLog);
         	prepStmtLog.setString(1, "delete");
         	prepStmtLog.setString(2, userName);
@@ -1428,6 +1505,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(loggedRecordNumber + " records logged!");
         	
         	// delete
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, batchId);
         	deletedRecordNumber = prepStmt.executeUpdate();
@@ -1486,6 +1565,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //		System.out.println("query: " +  queryString);
 		// query
 		try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
 			componentPS = conn.prepareStatement(queryString);
 			componentPS.setString(1, componentId);
 			componentPS.setString(2, stage);
@@ -1576,6 +1657,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //		System.out.println("AnnotationTestDAO:getStageRanges:sql " + queryString);
 		
 		try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			resSet = prepStmt.executeQuery();
 			ArrayList<String[]> stages = this.formatStageRangeResultSet(resSet);
@@ -1815,6 +1898,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		String queryString = parQ.getQuerySQL();
 //		System.out.println("AnnotationTestDAO:getBatchStatus:SQL: " + queryString);
 		try {
+		    if (debug)
+			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setInt(1, Integer.parseInt(batchId));
 			resSet = prepStmt.executeQuery();
