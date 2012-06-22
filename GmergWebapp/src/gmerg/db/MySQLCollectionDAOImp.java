@@ -22,7 +22,7 @@ import java.util.Locale;
  *
  */
 public class MySQLCollectionDAOImp implements CollectionDAO {
-	
+    private boolean debug = false;
     private Connection conn;
     
     // default constructor
@@ -69,6 +69,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
         PreparedStatement prepStmt = null;
         
         try {
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryString.toLowerCase());
             prepStmt = conn.prepareStatement(queryString);
             
             if (status == 0 || status == 1) { // own or others' shared collections
@@ -223,6 +225,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
         PreparedStatement prepStmt = null;
         
         try {
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+query.toLowerCase());
             prepStmt = conn.prepareStatement(query);
             
             if (status == 0 || status == 1) { // own or others' shared collections
@@ -271,6 +275,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		CollectionInfo collectionInfo = null;
 		
 		try {
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+query.toLowerCase());
 			PreparedStatement prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, collectionId);
 			resSet = prepStmt.executeQuery();
@@ -323,6 +329,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		CollectionInfo collectionInfo = null;
 		
 		try {
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+query.toLowerCase());
 			PreparedStatement prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, owner);
 			prepStmt.setString(2, collectionName);
@@ -388,6 +396,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		
 		try {
 			// obtain removed submission
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryRemovedSubmission.toLowerCase());
 			PreparedStatement prepStmt = conn.prepareStatement(queryRemovedSubmission);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
@@ -402,6 +412,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 			}
 			
 			// obtain collection items - if submission collection, delete removed submission
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryCollectionItem.toLowerCase());
 			prepStmt = conn.prepareStatement(queryCollectionItem);
 			prepStmt.setInt(1, collectionId);
 			resSet = prepStmt.executeQuery();
@@ -446,6 +458,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
         
         try {
         	// delete
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, collectionId);
         	deletedRecordNumber = prepStmt.executeUpdate();
@@ -490,6 +504,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 			conn.setAutoCommit(false);
 			
 			// get max collection id
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryStringCollectionId.toLowerCase());
 			prepStmt = conn.prepareStatement(queryStringCollectionId);
 			resSet = prepStmt.executeQuery();
 			int maxCollectionId = -1;
@@ -502,6 +518,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 			}
 
 			// insert collection info
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryStringCollectionValue.toLowerCase());
 			prepStmt = conn.prepareStatement(queryStringCollectionValue);
 			prepStmt.setInt(1, maxCollectionId+1); // id
 			prepStmt.setString(2, collectionInfo.getName());
@@ -529,6 +547,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 			}
 			
 			// get max collection item id
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryStringCollectionItemId.toLowerCase());
 			prepStmt = conn.prepareStatement(queryStringCollectionItemId);
 			resSet = prepStmt.executeQuery();
 			int maxCollectionItemId = -1;
@@ -547,6 +567,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 //				System.out.println("maxCollectionItemId: " + maxCollectionItemId);
 //				System.out.println("collection Id: " + maxCollectionId);
 //				System.out.println("item: " + items.get(i).toString());
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryStringCollectionItemValue.toLowerCase());
 				prepStmt = conn.prepareStatement(queryStringCollectionItemValue);
 				prepStmt.setInt(1, ++maxCollectionItemId); // id
 				prepStmt.setInt(2, (maxCollectionId+1)); // collection id
@@ -597,6 +619,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		int updatedRecordNumber = 0;
 		try {
 			// update
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setString(1, collectionInfo.getName()); // name
 			prepStmt.setInt(2, collectionInfo.getStatus()); // status
@@ -642,6 +666,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 //		System.out.println("CollectionDAO:getPublicSubmissionNumberBySubmissionId:sql: " + queryString);
 		
 		try {
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
@@ -677,6 +703,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 //		System.out.println("CollectionDAO:getPublicSubmissionNumberBySubmissionId:sql: " + queryString);
 		
 		try {
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
@@ -716,6 +744,8 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
         	// if disconnected from db, re-connected
         	conn = DBHelper.reconnect2DB(conn);
 
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, symbol);
         	resSet = prepStmt.executeQuery();
