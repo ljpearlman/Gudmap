@@ -14,6 +14,8 @@ import gmerg.utils.table.*;
 
 
 public class CollectionListBrowseBean {
+    private boolean debug = false;
+
     private boolean displayOwns;
     private boolean displayPublics;
     private int collectionType;
@@ -23,6 +25,9 @@ public class CollectionListBrowseBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public CollectionListBrowseBean() {
+	    if (debug)
+		System.out.println("CollectionListBrowseBean.constructor");
+
 		displayOwns = Boolean.parseBoolean(Visit.getRequestParam("displayOwns", "true"));
 		displayPublics = Boolean.parseBoolean(Visit.getRequestParam("displayPublics", "true"));
 		collectionType = Integer.parseInt(Visit.getRequestParam("collectionType", "0"));
