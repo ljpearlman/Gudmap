@@ -5,7 +5,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText value="IHC submissions #{iHCBrowseBean.organTitle}" escape="false" />
+	<h:outputText value="IHC submissions #{IHCBrowseBean.organTitle}" escape="false" />
 	<f:subview id="focusGeneTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
