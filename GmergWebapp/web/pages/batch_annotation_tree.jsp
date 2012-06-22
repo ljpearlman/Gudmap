@@ -88,29 +88,29 @@
 </head>
 <body>
 <f:view>
-	<h:outputText value="Temporary GUDMAP ID:#{annotationTestBean.subIdCookie}"/>
+	<h:outputText value="Temporary GUDMAP ID:#{BatchAnnotationTreeBean.subIdCookie}"/>
 	<h:form id="stageForm" styleClass="header-nostripe">
 		<h:outputText value="Please select a Theiler Stage: " />
-		<h:selectOneMenu id="stageMenu" value="#{annotationTestBean.stage}" styleClass="datatext" 
-						disabled="#{userBean.user.userType=='EXAMINER' 
-								|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-								|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-								|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+		<h:selectOneMenu id="stageMenu" value="#{BatchAnnotationTreeBean.stage}" styleClass="datatext" 
+						disabled="#{UserBean.user.userType=='EXAMINER' 
+								|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+								|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+								|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 								}">
-			<f:selectItems value="#{annotationTestBean.stagesInPerspective}"/>
+			<f:selectItems value="#{BatchAnnotationTreeBean.stagesInPerspective}"/>
 		</h:selectOneMenu>
 		<f:verbatim>&nbsp;</f:verbatim>
-		<h:commandButton id="displayTreeButton" action="#{annotationTestBean.displayTree}" 
+		<h:commandButton id="displayTreeButton" action="#{BatchAnnotationTreeBean.displayTree}" 
 						onclick="if(getCookie('STAGEINDB') != getById('stageForm:stageMenu').value) return confirm('You are about to change to a new stage, all the annotations of the old stage will be deleted, click yes to confirm.');" 
 						value="Display Tree"
-						disabled="#{userBean.user.userType=='EXAMINER' 
-								|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-								|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-								|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+						disabled="#{UserBean.user.userType=='EXAMINER' 
+								|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+								|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+								|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 								}"/>
 	</h:form>
 	
-	<h:panelGrid columns="1" rendered="#{annotationTestBean.status==2}">
+	<h:panelGrid columns="1" rendered="#{BatchAnnotationTreeBean.status==2}">
 		<h:outputText value="Confliction exists in your selected terms with annotated terms, Please re-select the correct terms." styleClass="plainred"/>
 	</h:panelGrid>
 	
@@ -118,142 +118,142 @@
 		<div id="ptnLcnNtMenu" style="display:none;position:absolute;visibility:hidden;z-index:1000;background-color:white;border:1px solid black">
 			<ul style="list-style:none;margin:0;padding:0;"/>
 		</div>
-		<h:inputHidden value="#{annotationTestBean.stage}" />
+		<h:inputHidden value="#{BatchAnnotationTreeBean.stage}" />
 		<h:panelGrid width="100%" columns="2" columnClasses="leftCol,rightCol">
 			<h:panelGroup>
 				<h:outputText value="Expression Key:" styleClass="plaintextbold" />
 				<h:panelGrid columns="1">
-					<h:commandLink actionListener="#{annotationTestBean.addExpressionAnnotation}" id="p"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addExpressionAnnotation}" id="p"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/DetectedRoundPlus20x20.gif" styleClass="icon" />
 						<h:outputText value="Present (unspecified strength)" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/DetectedRoundPlus20x20.gif" styleClass="icon" />
 						<h:outputText value="Present (unspecified strength)" styleClass="plaintext" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addExpressionAnnotation}" id="s"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addExpressionAnnotation}" id="s"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/StrongRoundPlus20x20.gif" styleClass="icon" />
 						<h:outputText value="Present (strong)" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/StrongRoundPlus20x20.gif" styleClass="icon" />
 						<h:outputText value="Present (strong)" styleClass="plaintext" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addExpressionAnnotation}" id="m"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addExpressionAnnotation}" id="m"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/ModerateRoundPlus20x20.gif" styleClass="icon" />
 						<h:outputText value="Present (moderate)" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/ModerateRoundPlus20x20.gif" styleClass="icon" />
 						<h:outputText value="Present (moderate)" styleClass="plaintext" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addExpressionAnnotation}" id="w"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addExpressionAnnotation}" id="w"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/WeakRoundPlus20x20.gif" styleClass="icon" />		
 						<h:outputText value="Present (weak)" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/WeakRoundPlus20x20.gif" styleClass="icon" />		
 						<h:outputText value="Present (weak)" styleClass="plaintext" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addExpressionAnnotation}" id="u"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addExpressionAnnotation}" id="u"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/PossibleRound20x20.gif" styleClass="icon" />
 						<h:outputText value="Uncertain" rendered="#{proj == 'GUDMAP'}" />
 						<h:outputText value="Possible" rendered="#{proj != 'GUDMAP'}" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/PossibleRound20x20.gif" styleClass="icon" />
 						<h:outputText value="Uncertain" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
 						<h:outputText value="Possible" styleClass="plaintext" rendered="#{proj != 'GUDMAP'}" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addExpressionAnnotation}" id="nd"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addExpressionAnnotation}" id="nd"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/NotDetectedRoundMinus20x20.gif" styleClass="icon" />
 						<h:outputText value="Not Detected" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/NotDetectedRoundMinus20x20.gif" styleClass="icon" />
 						<h:outputText value="Not Detected" styleClass="plaintext" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addExpressionAnnotation}" id="ne"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addExpressionAnnotation}" id="ne"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/Frame20x20.gif" styleClass="icon" />
 						<h:outputText value="Not Examined" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/Frame20x20.gif" styleClass="icon" />
 						<h:outputText value="Not Examined" styleClass="plaintext" />
@@ -263,116 +263,116 @@
 				
 				<h:outputText value="Expression Patterns Key:" styleClass="plaintextbold" />
 				<h:panelGrid columns="1" >
-					<h:commandLink actionListener="#{annotationTestBean.addPattern}" id="graded"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />			
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addPattern}" id="graded"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />			
 						<h:graphicImage value="/images/tree/GradedRound20x20.png" styleClass="icon" />
 						<h:outputText value="Graded" styleClass="plaintext" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/GradedRound20x20.png" styleClass="icon" />
 						<h:outputText value="Graded" styleClass="plaintext" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addPattern}" id="regional"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />				
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addPattern}" id="regional"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />				
 						<h:graphicImage value="/images/tree/RegionalRound20x20.png" styleClass="icon" />
 						<h:outputText value="Regional" styleClass="plaintext" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/RegionalRound20x20.png" styleClass="icon" />
 						<h:outputText value="Regional" styleClass="plaintext" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addPattern}" id="spotted"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />			
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addPattern}" id="spotted"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />			
 						<h:graphicImage value="/images/tree/SpottedRound20x20.png" styleClass="icon" />
 						<h:outputText value="Spotted" styleClass="plaintext" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/SpottedRound20x20.png" styleClass="icon" />
 						<h:outputText value="Spotted" styleClass="plaintext" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addPattern}" id="ubiquitous"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />		
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addPattern}" id="ubiquitous"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />		
 						<h:graphicImage value="/images/tree/UbiquitousRound20x20.png" styleClass="icon" />
 						<h:outputText value="Ubiquitous" styleClass="plaintext" />
 					</h:commandLink>		  			
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/UbiquitousRound20x20.png" styleClass="icon" />
 						<h:outputText value="Ubiquitous" styleClass="plaintext" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addPattern}" id="restricted"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addPattern}" id="restricted"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/RestrictedRound20x20.png" styleClass="icon" rendered="#{proj == 'GUDMAP'}" />
 						<h:outputText value="Restricted" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/RestrictedRound20x20.png" styleClass="icon" rendered="#{proj == 'GUDMAP'}" />
 						<h:outputText value="Restricted" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
 					</h:panelGroup>
-					<h:commandLink actionListener="#{annotationTestBean.addPattern}" id="sc"  styleClass="plaintext" 
-								rendered="#{userBean.userLoggedIn && userBean.user.userType!='EXAMINER' 
-								&& (userBean.user.userPrivilege>5 
-									|| annotationTestBean.submission.dbStatusId==2
-									|| userBean.user.userPrivilege==3 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=19 
-									|| userBean.user.userPrivilege==4 && annotationTestBean.submission.dbStatusId>4 && annotationTestBean.submission.dbStatusId<=21 
-									|| userBean.user.userPrivilege==5 && annotationTestBean.submission.dbStatusId>=4 && annotationTestBean.submission.dbStatusId<=23)}">
-						<f:param name="stage" value="#{annotationTestBean.stage}" />
+					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addPattern}" id="sc"  styleClass="plaintext" 
+								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
+								&& (UserBean.user.userPrivilege>5 
+									|| BatchAnnotationTreeBean.submission.dbStatusId==2
+									|| UserBean.user.userPrivilege==3 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=19 
+									|| UserBean.user.userPrivilege==4 && BatchAnnotationTreeBean.submission.dbStatusId>4 && BatchAnnotationTreeBean.submission.dbStatusId<=21 
+									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
+						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/SingleCellRound20x20.png" styleClass="icon" rendered="#{proj == 'GUDMAP'}" />
 						<h:outputText value="Single cell" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
 					</h:commandLink>
-					<h:panelGroup rendered="#{userBean.user.userType=='EXAMINER' 
-									|| userBean.user.userPrivilege==3 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>19) 
-									|| userBean.user.userPrivilege==4 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId==4 || annotationTestBean.submission.dbStatusId>21) 
-									|| userBean.user.userPrivilege==5 && (annotationTestBean.submission.dbStatusId==3 || annotationTestBean.submission.dbStatusId>23)
+					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
+									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
+									|| UserBean.user.userPrivilege==4 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>21) 
+									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/SingleCellRound20x20.png" styleClass="icon" rendered="#{proj == 'GUDMAP'}" />
 						<h:outputText value="Single cell" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
@@ -383,13 +383,13 @@
 					</h:panelGrid>
 				</h:panelGrid>
 			</h:panelGroup>
-			<h:panelGroup rendered="#{annotationTestBean.stage != null && annotationTestBean.stage != ''}">
+			<h:panelGroup rendered="#{BatchAnnotationTreeBean.stage != null && BatchAnnotationTreeBean.stage != ''}">
 				<h:outputLink style="font-size:7pt;text-decoration:none;color:silver" value="http://www.treemenu.net/" target="_blank">
 					<h:outputText value="Javascript Tree Menu" />
 				</h:outputLink>
 				<f:verbatim>
 					<script type="text/javascript">
-						<c:forEach items="${annotationTestBean.anatomyTreeContent}" var="row">
+						<c:forEach items="${BatchAnnotationTreeBean.anatomyTreeContent}" var="row">
 							<c:out value="${row}" escapeXml="false"/>
 						</c:forEach>
 					</script>
