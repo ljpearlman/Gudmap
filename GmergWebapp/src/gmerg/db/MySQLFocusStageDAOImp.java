@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MySQLFocusStageDAOImp implements FocusStageDAO{
+    private boolean debug = false;
+
     private Connection conn;
 
     // default constructor
@@ -43,6 +45,8 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 				for(int i = 0; i < stage.length; i++) {
 					queryString = sql + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
 					//System.out.println("FocusStageArray:"+queryString);
+		    if (debug)
+			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					
 					resSet = prepStmt.executeQuery();
@@ -53,6 +57,8 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 					queryString = sql2 + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
 //					System.out.println("FocusStageISH:"+queryString);
 					prepStmt = null;
+		    if (debug)
+			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = null;
 					resSet = prepStmt.executeQuery();
@@ -119,6 +125,8 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 						queryString = queryString.replace("LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
 					}
 //					System.out.println("FocusStageInsitu:"+queryString);
+		    if (debug)
+			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = prepStmt.executeQuery();
 					if (resSet.first()) {
@@ -157,6 +165,8 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 					}
 // 					System.out.println("FocusStageArray:"+queryString);
 					prepStmt = null;
+		    if (debug)
+			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = null;
 					resSet = prepStmt.executeQuery();
@@ -250,6 +260,8 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 //				System.out.println("FocusStageSummaryQuery:" + assayType + ": " +queryString);
 				// get the data
 				try {
+		    if (debug)
+			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = prepStmt.executeQuery();
 					if (resSet.first()) {
@@ -301,6 +313,8 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			String sql = parQ.getQuerySQL();
 // 			System.out.println("gene_index sql: " + sql);
 			try {
+		    if (debug)
+			System.out.println("MySQLFocusStageDAOImp.sql = "+sql.toLowerCase());
 				prepStmt = conn.prepareStatement(sql);
 				resSet = prepStmt.executeQuery();
 				list = formatBrowseSeriesResultSet(resSet);
@@ -442,6 +456,8 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 		String queryString = parQ.getQuerySQL();;
 //		System.out.println("getDpcValueQuery: " + queryString);
 		try {
+		    if (debug)
+			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setString(1, theilerStage);
 			resSet = prepStmt.executeQuery();
