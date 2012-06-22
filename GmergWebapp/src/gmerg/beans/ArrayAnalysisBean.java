@@ -19,6 +19,7 @@ import gmerg.model.ArrayAnalysisDelegate;
  */
 
 public class ArrayAnalysisBean {
+    private boolean debug = false;
 	boolean samplesLoaded = false;
 
 	String seriesGeoId = "";
@@ -79,7 +80,9 @@ public class ArrayAnalysisBean {
 	// Constructors
 	// ********************************************************************************
 	public ArrayAnalysisBean() {
-		super();
+	    if (debug)
+		System.out.println("ArrayAnalysisBean.constructor");
+
 		arrayAnalysisDelegate = new ArrayAnalysisDelegate();
 	}
 
