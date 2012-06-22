@@ -11,7 +11,7 @@
       <t:dataList id="labs"
                styleClass="plaintextbold"
                var="lab"
-               value="#{labSummaryBean.labs}"
+               value="#{LabSummaryBean.labs}"
                layout="simple"
                rowCountVar="count"
                rowIndexVar="index">
