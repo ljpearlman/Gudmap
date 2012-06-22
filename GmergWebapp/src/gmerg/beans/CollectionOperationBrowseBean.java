@@ -8,14 +8,16 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.*;
 
 public class CollectionOperationBrowseBean extends CollectionOperationBrowseParentBean{
-	
+
 	private String[] selectedIds;	// it has to be accesed using a lazy getter because of multiple populate tableViews when operation is difference
 	
 	// ********************************************************************************
 	// Constructors & Initializers
 	// ********************************************************************************
 	public CollectionOperationBrowseBean() {
-//		System.out.println("In CollectionOperationBrowseBean constructor.   collectionOperation=="+collectionOperation);
+	    if (debug)
+		System.out.println("CollectionOperationBrowseBean.constructor");
+
 		selectedIds = null;	// has a lasy getter
 		if (TableUtil.isTableViewInSession())
 			return;		// initialisation is performed in the super class constructor
