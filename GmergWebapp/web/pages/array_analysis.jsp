@@ -105,28 +105,28 @@
 			<h:outputText value="" />
 			<h:panelGroup>
 				<h:outputLabel for="seriesId" value="Series ID (GEO accession): " />
-				<h:selectOneMenu id="seriesId" value="#{AnalysisBean.seriesGeoId}" required="true" binding="#{AnalysisBean.seriesIdInput}" immediate="true">
-					<f:selectItems value="#{AnalysisBean.seriesGeoIds}" />
+				<h:selectOneMenu id="seriesId" value="#{ArrayAnalysisBean.seriesGeoId}" required="true" binding="#{ArrayAnalysisBean.seriesIdInput}" immediate="true">
+					<f:selectItems value="#{ArrayAnalysisBean.seriesGeoIds}" />
 				</h:selectOneMenu>
 				<f:verbatim>&nbsp;&nbsp;</f:verbatim>
-				<h:commandButton action="#{AnalysisBean.getSamplesWaiting}" value="Get Samples" immediate="true"/>
+				<h:commandButton action="#{ArrayAnalysisBean.getSamplesWaiting}" value="Get Samples" immediate="true"/>
 			</h:panelGroup>
 			<h:panelGroup>
-				<h:commandButton action="#{AnalysisBean.clearAll}" value="Clear All" rendered="#{AnalysisBean.samplesLoaded}" immediate="true"/>
+				<h:commandButton action="#{ArrayAnalysisBean.clearAll}" value="Clear All" rendered="#{ArrayAnalysisBean.samplesLoaded}" immediate="true"/>
 				<f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
 			</h:panelGroup>	
 		</h:panelGrid>
 
-		<h:panelGrid columns="5" rendered="#{AnalysisBean.samplesLoaded}" styleClass="stripey" cellpadding="5" width="100%" 
+		<h:panelGrid columns="5" rendered="#{ArrayAnalysisBean.samplesLoaded}" styleClass="stripey" cellpadding="5" width="100%" 
 																				 columnClasses="leftAlign27, align-left, centreAlign, centreAlign, centreAlign">
 			<h:outputText value="Number of samples:" styleClass="plaintextbold" />
-			<h:outputText value="#{AnalysisBean.numSamples}" />
+			<h:outputText value="#{ArrayAnalysisBean.numSamples}" />
 			<h:outputText value="" />
 			<h:outputText value="" />
 			<h:outputText value="" />
 
 			<h:outputText value=" Number of genes per sample:" styleClass="plaintextbold" />
-			<h:outputText value="#{AnalysisBean.numGenes}" />
+			<h:outputText value="#{ArrayAnalysisBean.numGenes}" />
 			<h:outputText value="" />
 			<h:outputText value="" />
 			<h:outputText value="" />
@@ -139,25 +139,25 @@
 
 			<h:outputText value="Signal value:" styleClass="plaintextbold" />
 			<h:outputText value="" />
-			<h:outputText value="#{AnalysisBean.minSignal}">
+			<h:outputText value="#{ArrayAnalysisBean.minSignal}">
 				<f:convertNumber pattern="####0.00" />
 			</h:outputText>
-			<h:outputText value="#{AnalysisBean.maxSignal}">
+			<h:outputText value="#{ArrayAnalysisBean.maxSignal}">
 				<f:convertNumber pattern="####0.00" />
 			</h:outputText>
-			<h:outputText value="#{AnalysisBean.avgSignal}">
+			<h:outputText value="#{ArrayAnalysisBean.avgSignal}">
 				<f:convertNumber pattern="####0.00" />
 			</h:outputText>
 
 			<h:outputText value="Standard deviation:" styleClass="plaintextbold" />
 			<h:outputText value="" />
-			<h:outputText value="#{AnalysisBean.minStdDev}">
+			<h:outputText value="#{ArrayAnalysisBean.minStdDev}">
 				<f:convertNumber pattern="####0.00" />
 			</h:outputText>
-			<h:outputText value="#{AnalysisBean.maxStdDev}">
+			<h:outputText value="#{ArrayAnalysisBean.maxStdDev}">
 				<f:convertNumber pattern="####0.00" />
 			</h:outputText>
-			<h:outputText value="#{AnalysisBean.avgStdDev}">
+			<h:outputText value="#{ArrayAnalysisBean.avgStdDev}">
 				<f:convertNumber pattern="####0.00" />
 			</h:outputText>
 		</h:panelGrid>
@@ -175,78 +175,78 @@
 			<!-- -------------------------------------------------------------------------------- -->
 
 			<h:panelGroup>
-				<h:selectBooleanCheckbox id="presenceFilter" value="#{AnalysisBean.presenceFilter}" 
-                                 valueChangeListener="#{AnalysisBean.filterListener}" onclick="submit()"/>
+				<h:selectBooleanCheckbox id="presenceFilter" value="#{ArrayAnalysisBean.presenceFilter}" 
+                                 valueChangeListener="#{ArrayAnalysisBean.filterListener}" onclick="submit()"/>
         <h:outputText value=" Filter genes that are <em>not present</em> in at least " escape="false"/>
-				<h:selectOneMenu id="presenceChoises" value="#{AnalysisBean.presence}" required="true" >
-					<f:selectItems value="#{AnalysisBean.presenceChoises}" />
+				<h:selectOneMenu id="presenceChoises" value="#{ArrayAnalysisBean.presence}" required="true" >
+					<f:selectItems value="#{ArrayAnalysisBean.presenceChoises}" />
 				</h:selectOneMenu>
 				<h:outputText value=" of samples" />
 			</h:panelGroup>
 			<h:panelGroup>
-				<h:outputText value="#{AnalysisBean.presenceFilterPass}" rendered="#{AnalysisBean.presenceFilterPass>=0}"/>
-				<h:outputText value="-" rendered="#{AnalysisBean.presenceFilterPass<0}"/>
+				<h:outputText value="#{ArrayAnalysisBean.presenceFilterPass}" rendered="#{ArrayAnalysisBean.presenceFilterPass>=0}"/>
+				<h:outputText value="-" rendered="#{ArrayAnalysisBean.presenceFilterPass<0}"/>
 			</h:panelGroup>
 
-			<h:outputText value="" rendered="#{AnalysisBean.samplesLoaded}" />
-			<h:outputText value="" rendered="#{AnalysisBean.samplesLoaded}" />
+			<h:outputText value="" rendered="#{ArrayAnalysisBean.samplesLoaded}" />
+			<h:outputText value="" rendered="#{ArrayAnalysisBean.samplesLoaded}" />
 
 			<!-- -------------------------------------------------------------------------------- -->
 			<h:panelGroup>
-				<h:selectBooleanCheckbox id="stdDevFilter" value="#{AnalysisBean.stdDevFilter}" 
-                                 valueChangeListener="#{AnalysisBean.filterListener}" onclick="submit()"/>
+				<h:selectBooleanCheckbox id="stdDevFilter" value="#{ArrayAnalysisBean.stdDevFilter}" 
+                                 valueChangeListener="#{ArrayAnalysisBean.filterListener}" onclick="submit()"/>
         <h:outputText value=" Filter genes with <em>standard deviation</em> less than " escape="false"/>
-				<h:inputText id="stdDev" value="#{AnalysisBean.stdDev}" binding="#{AnalysisBean.stdDevInput}" required="true" size="7" >
+				<h:inputText id="stdDev" value="#{ArrayAnalysisBean.stdDev}" binding="#{ArrayAnalysisBean.stdDevInput}" required="true" size="7" >
 				  <f:validateDoubleRange />
 				</h:inputText>  
 				<h:outputText value=" across the samples" />
 			</h:panelGroup>
 			<h:panelGroup>
-				<h:outputText value="#{AnalysisBean.stdDevFilterPass}" rendered="#{AnalysisBean.stdDevFilterPass>=0}" />
-				<h:outputText value="-" rendered="#{AnalysisBean.stdDevFilterPass<0}" />
+				<h:outputText value="#{ArrayAnalysisBean.stdDevFilterPass}" rendered="#{ArrayAnalysisBean.stdDevFilterPass>=0}" />
+				<h:outputText value="-" rendered="#{ArrayAnalysisBean.stdDevFilterPass<0}" />
 			</h:panelGroup>
 
 		  <h:message id="stdDevMessage" for="stdDev" styleClass="message" 
-		             rendered="#{AnalysisBean.samplesLoaded && AnalysisBean.stdDevFilter}" />
-			<h:outputText value="" rendered="#{AnalysisBean.samplesLoaded && AnalysisBean.stdDevFilter}" />
+		             rendered="#{ArrayAnalysisBean.samplesLoaded && ArrayAnalysisBean.stdDevFilter}" />
+			<h:outputText value="" rendered="#{ArrayAnalysisBean.samplesLoaded && ArrayAnalysisBean.stdDevFilter}" />
 			
 			<!-- -------------------------------------------------------------------------------- -->
 			<h:panelGroup>
-				<h:selectBooleanCheckbox id="signalFilter" value="#{AnalysisBean.signalFilter}" 
-                                 valueChangeListener="#{AnalysisBean.filterListener}" onclick="submit()"/>
+				<h:selectBooleanCheckbox id="signalFilter" value="#{ArrayAnalysisBean.signalFilter}" 
+                                 valueChangeListener="#{ArrayAnalysisBean.filterListener}" onclick="submit()"/>
         <h:outputText value=" Filter genes that have <em>signal value</em> above " escape="false"/>
-				<h:inputText id="signalThreshold" value="#{AnalysisBean.signalThreshold}" 
-				             binding="#{AnalysisBean.signalThresholdInput}" required="true" size="7" >
+				<h:inputText id="signalThreshold" value="#{ArrayAnalysisBean.signalThreshold}" 
+				             binding="#{ArrayAnalysisBean.signalThresholdInput}" required="true" size="7" >
 				  <f:validateDoubleRange />
 				</h:inputText>  
 				<f:verbatim>&nbsp; in at least &nbsp;</f:verbatim>
-				<h:selectOneMenu id="signalPresenceChoises" value="#{AnalysisBean.signalPresence}" required="true" >
-					<f:selectItems value="#{AnalysisBean.signalPresenceChoises}" />
+				<h:selectOneMenu id="signalPresenceChoises" value="#{ArrayAnalysisBean.signalPresence}" required="true" >
+					<f:selectItems value="#{ArrayAnalysisBean.signalPresenceChoises}" />
 				</h:selectOneMenu>
 				<h:outputText value=" of samples" />
 			</h:panelGroup>
 
 			<h:panelGroup>
-				<h:outputText value="#{AnalysisBean.signalFilterPass}" rendered="#{AnalysisBean.signalFilterPass>=0}" />
-				<h:outputText value="-" rendered="#{AnalysisBean.signalFilterPass<0}" />
+				<h:outputText value="#{ArrayAnalysisBean.signalFilterPass}" rendered="#{ArrayAnalysisBean.signalFilterPass>=0}" />
+				<h:outputText value="-" rendered="#{ArrayAnalysisBean.signalFilterPass<0}" />
 			</h:panelGroup>
 
 		  <h:message id="signalMessage" for="signalThreshold" styleClass="message" 
-		             rendered="#{AnalysisBean.samplesLoaded && AnalysisBean.signalFilter}" />
-			<h:outputText value="" rendered="#{AnalysisBean.samplesLoaded && AnalysisBean.signalFilter}" />
+		             rendered="#{ArrayAnalysisBean.samplesLoaded && ArrayAnalysisBean.signalFilter}" />
+			<h:outputText value="" rendered="#{ArrayAnalysisBean.samplesLoaded && ArrayAnalysisBean.signalFilter}" />
 
 			<!-- -------------------------------------------------------------------------------- -->
   		<h:panelGrid columnClasses="align-right" width="100%" >
 	  		<h:outputText styleClass="plaintextbold" value="Total number of genes passed:" />
   		</h:panelGrid>  
 			<h:panelGroup>
-				<h:outputText value="#{AnalysisBean.totalFilterPass}" rendered="#{AnalysisBean.totalFilterPass>=0}"/>
-				<h:outputText value="-" rendered="#{AnalysisBean.totalFilterPass<0}"/>
+				<h:outputText value="#{ArrayAnalysisBean.totalFilterPass}" rendered="#{ArrayAnalysisBean.totalFilterPass>=0}"/>
+				<h:outputText value="-" rendered="#{ArrayAnalysisBean.totalFilterPass<0}"/>
 			</h:panelGroup>
 
 			<h:panelGroup>
 				<f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
-				<h:commandButton id="filter" action="#{AnalysisBean.filter}" value="Filter" immediate="true"/>
+				<h:commandButton id="filter" action="#{ArrayAnalysisBean.filter}" value="Filter" immediate="true"/>
 				<f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
  			  <h:message id="filterMessage" for="filter" styleClass="message" />
 			</h:panelGroup>
@@ -263,13 +263,13 @@
 			<h:outputText value="" />
 
 			<h:outputText value="&nbsp;&nbsp;Clustering Method: &nbsp;" escape="false" />
-			<h:selectOneMenu id="clusteringMethodChoises" value="#{AnalysisBean.clusteringMethod}" required="true" >
-				<f:selectItems value="#{AnalysisBean.clusteringMethodChoises}" />
+			<h:selectOneMenu id="clusteringMethodChoises" value="#{ArrayAnalysisBean.clusteringMethod}" required="true" >
+				<f:selectItems value="#{ArrayAnalysisBean.clusteringMethodChoises}" />
 			</h:selectOneMenu>
 
 			<h:outputText value="&nbsp;&nbsp;Distance Measure: &nbsp;" escape="false" />
-			<h:selectOneMenu id="distanceChoises" value="#{AnalysisBean.distanceMeasure}" required="true" >
-				<f:selectItems value="#{AnalysisBean.distanceMeasureChoises}" />
+			<h:selectOneMenu id="distanceChoises" value="#{ArrayAnalysisBean.distanceMeasure}" required="true" >
+				<f:selectItems value="#{ArrayAnalysisBean.distanceMeasureChoises}" />
 			</h:selectOneMenu>
 		</h:panelGrid>
 
@@ -277,20 +277,20 @@
  			<h:panelGroup>
 				<f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
 	 			<h:panelGroup id="cluster">
-					<h:commandButton action="#{AnalysisBean.cluster}" value="Cluster" rendered="#{not AnalysisBean.samplesLoaded}" />
-					<h:commandButton action="#{AnalysisBean.cluster}" value="Cluster" rendered="#{AnalysisBean.samplesLoaded}" onclick="validateCluster('#{AnalysisBean.totalFilterPass}', '#{AnalysisBean.geneNumLimit}')" />
+					<h:commandButton action="#{ArrayAnalysisBean.cluster}" value="Cluster" rendered="#{not ArrayAnalysisBean.samplesLoaded}" />
+					<h:commandButton action="#{ArrayAnalysisBean.cluster}" value="Cluster" rendered="#{ArrayAnalysisBean.samplesLoaded}" onclick="validateCluster('#{ArrayAnalysisBean.totalFilterPass}', '#{ArrayAnalysisBean.geneNumLimit}')" />
 				</h:panelGroup>
 				<f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
 		  	<h:message id="clusterMessage" for="cluster" styleClass="message"/>
 			</h:panelGroup>
 		</h:panelGrid>
 		
-	  <h:inputHidden id="clusterWaiting" value="#{AnalysisBean.clusterWaiting}" />
+	  <h:inputHidden id="clusterWaiting" value="#{ArrayAnalysisBean.clusterWaiting}" />
 	  
 	</h:form>
 
 	<!-- ++++++++++++++++++++++++++++++ Applet +++++++++++++++++++++++++++++++++++++++++ -->
-	<h:panelGroup rendered="#{AnalysisBean.visualiseResult}">
+	<h:panelGroup rendered="#{ArrayAnalysisBean.visualiseResult}">
 		<f:verbatim>
 			<applet code="edu/stanford/genetics/treeview/applet/GudmapApplet.class" MAYSCRIPT archive="
 		</f:verbatim>
