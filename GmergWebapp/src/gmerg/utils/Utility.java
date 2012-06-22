@@ -32,7 +32,9 @@ import javax.faces.context.FacesContext;
 
 
 public class Utility {
-	
+    public static final String domainUrl="http://www.gudmap.org/";
+    public static final String appUrl=domainUrl+"gudmap/";
+
 	/**
 	 * modified by xingjun - 27/04/2009 - changed link for several help pages
 	 * @param queryType
@@ -42,33 +44,23 @@ public class Utility {
 	public static String getNoDataMessageForQueryPage(String queryType, String input){
 		String noDataMessage = "<p align='center' class='plainred'>Sorry, your query has produced no results.</p>" +
 				"<hr align='center' width='550' noshade='noshade' class='style1' />" +
-				//"<p align='center' class='plaintext'>Query: Search <em>"+ queryType +"</em> for term(s) <em>"+input+"</em></p>" +
-				//"<hr align='center' width='550' noshade='noshade' class='style1' />"+
-//				"<p class='plaintext'><a href='http://www.gudmap.org/Help/Query_Help.html' class='plaintextbold' target='_blank'>GUDMAP database query help</a><br />" +
-				"<p class='plaintext'><a href='http://www.gudmap.org/Help/Query_Help.html' class='plaintextbold'>GUDMAP database query help</a><br />" +
-				"Contains help on using the database query interface to search by <a href='http://www.gudmap.org/Help/Query_Help.html#gene'>gene</a>, <a href='http://www.gudmap.org/Help/Query_Help.html#anatomy'>anatomy</a>, <a href='http://www.gudmap.org/Help/Query_Help.html#accession'>accession ID</a>, or <a href='http://www.gudmap.org/Help/Query_Help.html#function'>function</a>." +
+				"<p class='plaintext'><a href='"+domainUrl+"Help/Query_Help.html' class='plaintextbold'>GUDMAP database query help</a><br />" +
+				"Contains help on using the database query interface to search by <a href='"+domainUrl+"Help/Query_Help.html#gene'>gene</a>, <a href='"+domainUrl+"Help/Query_Help.html#anatomy'>anatomy</a>, <a href='"+domainUrl+"Help/Query_Help.html#accession'>accession ID</a>, or <a href='"+domainUrl+"Help/Query_Help.html#function'>function</a>." +
 				"</p>" +
-//				"<p class='plaintext'><strong><a href='http://www.gudmap.org/Help/Boolean_Help.html' class='plaintextbold' target='_blank'>Boolean Anatomy Query help</a></strong><br />"+
-				"<p class='plaintext'><strong><a href='http://www.gudmap.org/Help/Boolean_Help.html' class='plaintextbold'>Boolean Anatomy Query help</a></strong><br />"+
+				"<p class='plaintext'><strong><a href='"+domainUrl+"Help/Boolean_Help.html' class='plaintextbold'>Boolean Anatomy Query help</a></strong><br />"+
                 "Search for genes expressed in structure X and/or/not in structure Y.</p>" +
-//				"<p class='plaintext'><strong><a href='http://www.gudmap.org/Help/Browse_Help.html' class='plaintextbold' target='_blank'>Browsing GUDMAP data help</a></strong><br />"+
-				"<p class='plaintext'><strong><a href='http://www.gudmap.org/Help/Browse_Help.html' class='plaintextbold'>Browsing GUDMAP data help</a></strong><br />"+
+				"<p class='plaintext'><strong><a href='"+domainUrl+"Help/Browse_Help.html' class='plaintextbold'>Browsing GUDMAP data help</a></strong><br />"+
                 "Help on browsing for microarray data, via series, sample and platform and accessing all ISH &amp; IHC submissions.</p>" +
-//                "<p class='plaintext'><strong>Analysis Help</strong> (not currently available)<br />"+
-//                "<p class='plaintext'><strong><a href='http://www.gudmap.org/Help/Analysis_Help.html' class='plaintextbold' target='_blank'>Analysis Help</a></strong> (not currently available)<br />"+
-                "<p class='plaintext'><strong><a href='http://www.gudmap.org/Help/Analysis_Help.html' class='plaintextbold'>Analysis Help</a></strong><br />"+
+                "<p class='plaintext'><strong><a href='"+domainUrl+"Help/Analysis_Help.html' class='plaintextbold'>Analysis Help</a></strong><br />"+
                 "Help on using GUMDAP analysis tools.</p>" +
-//				"<p class='plaintext'><strong><a href='http://www.gudmap.org/Help/Annotation_Tool_Help.html' class='plaintextbold' target='_blank'>Annotation Tool help</a></strong><br />" +
-				"<p class='plaintext'><strong><a href='http://www.gudmap.org/Help/Annotation_Tool_Help.html' class='plaintextbold'>Annotation Tool help</a></strong><br />" +
+				"<p class='plaintext'><strong><a href='"+domainUrl+"Help/Annotation_Tool_Help.html' class='plaintextbold'>Annotation Tool help</a></strong><br />" +
 				"Diagrams and guidance notes in using the annotation tool.</p>" +
-				"<p class='plaintext'><a class='plaintextbold' href='http://www.gudmap.org/Help/Submission_Help.html'>Submissions help</a><br />" +
+				"<p class='plaintext'><a class='plaintextbold' href='"+domainUrl+"Help/Submission_Help.html'>Submissions help</a><br />" +
 				"Guide to help users submit data.</p>" +
-				"<p class='plaintext'><a class='plaintextbold' href='http://www.gudmap.org/Help/Download_Help.html'>Downloads help</a><br />" +
+				"<p class='plaintext'><a class='plaintextbold' href='"+domainUrl+"Help/Download_Help.html'>Downloads help</a><br />" +
 				"Help in downloading data from GUDMAP.</p>" +
-//				"<p class='plaintext'><strong>Collections help</strong> (not currently available)<br />" +
-				"<p class='plaintext'><strong><a class='plaintextbold' href='http://www.gudmap.org/Help/Collection_Help.html'>Collections help</a></strong><br />" +
+				"<p class='plaintext'><strong><a class='plaintextbold' href='"+domainUrl+"Help/Collection_Help.html'>Collections help</a></strong><br />" +
 				"Help with collections.</p>" +
-//				"<p class='plaintext'><strong>Workflow help</strong> (not currently available)<br />" +
 				"</p>" +
 				"<hr align='center' width='550' noshade='noshade' class='style1' />";
 		return noDataMessage;
