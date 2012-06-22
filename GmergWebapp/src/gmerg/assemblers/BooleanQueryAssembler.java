@@ -12,10 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
+    private boolean debug = false;
+
 	String input;
-	
 	public BooleanQueryAssembler (HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("BooleanQueryAssembler.constructor");
+
 	}
 
 	public void setParams() {
