@@ -20,16 +20,21 @@ import java.util.HashMap;
  *
  */
 public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
-	
+    private boolean debug = false;
+
 	String organ;
 	String platform;
 	
 	public SeriesBrowseAssembler() {
-		super();
+	if (debug)
+	    System.out.println("SeriesBrowseAssembler.constructor");
+		
 	}
 	
 	public SeriesBrowseAssembler(HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("SeriesBrowseAssembler.constructor");
 	}
 
 	public void setParams() {
