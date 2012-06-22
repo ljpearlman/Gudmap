@@ -43,13 +43,19 @@ public class QueryAssembler extends OffMemoryTableAssembler {
     String geneSymbol;
     String stage;
     String componentID;
-	
+       
+    private boolean debug = false;
+
 	public QueryAssembler () {
-		super();
+	if (debug)
+	    System.out.println("QueryAssembler.constructor");
+		
 	}
 	
     public QueryAssembler (HashMap params) {
         super(params);
+	if (debug)
+	    System.out.println("QueryAssembler.constructor");
 	}
 	public void setParams() {
 		super.setParams();
