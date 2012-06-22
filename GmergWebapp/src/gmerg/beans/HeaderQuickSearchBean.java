@@ -16,6 +16,8 @@ import gmerg.utils.Visit;
  *
  */
 public class HeaderQuickSearchBean {
+    private boolean debug = false;
+
 	private String quickSearchInput;
 	private String query;
 	private String quickSearchType;
@@ -25,7 +27,10 @@ public class HeaderQuickSearchBean {
 	// ********************************************************************************
 	// Constructors
 	// ********************************************************************************
-	public HeaderQuickSearchBean() {//System.out.println("HeaderQuickSearchBean################");
+	public HeaderQuickSearchBean() {
+	    if (debug)
+		System.out.println("HeaderQuickSearchBean.constructor");
+
 		query = FacesUtil.getRequestParamValue("query"); 		// this is provided by action f:param
 		quickSearchInput = "";
 		quickSearchType = "Gene"; // default search option
