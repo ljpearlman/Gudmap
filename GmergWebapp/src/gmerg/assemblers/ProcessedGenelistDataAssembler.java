@@ -24,13 +24,17 @@ import java.util.ResourceBundle;
  *
  */
 public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
-	
+    private boolean debug = false;
+
     private ArrayList geneListSearchLinks;
 	private int genelistId;
 	private String projectString = ResourceBundle.getBundle("configuration").getString("project").trim();
     
 	public ProcessedGenelistDataAssembler (HashMap params) {
     	super(params);
+	if (debug)
+	    System.out.println("ProcessedGenelistDataAssembler.constructor");
+
 	}
 
 	public void setParams() {
