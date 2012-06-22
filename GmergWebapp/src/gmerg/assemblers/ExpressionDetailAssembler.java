@@ -17,7 +17,12 @@ import gmerg.entities.submission.ExpressionPattern;
  *
  */
 public class ExpressionDetailAssembler {
-	
+    private boolean debug = false;
+    public ExpressionDetailAssembler() {
+	if (debug)
+	    System.out.println("ExpressionDetailAssembler.constructor");
+    }
+
 	public ExpressionDetail getData(String submissionAccessionId, String componentId) {
 
         if (submissionAccessionId == null || submissionAccessionId.equals("")) {
