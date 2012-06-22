@@ -23,14 +23,19 @@ import gmerg.utils.DbUtility;
  */
 public class MasterTableAssembler {
 	
+    private boolean debug = false;
+
 	private String masterTableId;
 	private String platformId;
 
 	public MasterTableAssembler() {
-		this(null);
+	    this((String)null);
 	}
 	
 	public MasterTableAssembler(String masterTableId) {
+	if (debug)
+	    System.out.println("MasterTableAssembler.constructor");
+
 		this.masterTableId = masterTableId;
 		if (masterTableId != null)
 			platformId = DbUtility.getMasterTablePlatformId(masterTableId);
