@@ -7,12 +7,17 @@ import gmerg.entities.summary.DBSummary;
 import gmerg.utils.FacesUtil;
 
 public class FocusDBSummaryBean {
+    private boolean debug = false;
+
 	DBSummary dbSummary;
 
 	// ********************************************************************************
 	// Constructors
 	// ********************************************************************************
 	public FocusDBSummaryBean() {
+	    if (debug)
+		System.out.println("FocusDBSummaryBean.constructor");
+
 		String organ = FacesUtil.getRequestParamValue("focusedOrgan");
 		if(null == organ || organ.equals("")) {
 			DBSummaryAssembler dbSummaryAssembler = new DBSummaryAssembler();
