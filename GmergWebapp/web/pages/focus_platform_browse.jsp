@@ -5,7 +5,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText value="Microarray platform query result #{platformFocusBrowseBean.organTitle}" escape="false" />
+	<h:outputText value="Microarray platform query result #{PlatformFocusBrowseBean.organTitle}" escape="false" />
 	<f:subview id="PlatformBrowseTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
