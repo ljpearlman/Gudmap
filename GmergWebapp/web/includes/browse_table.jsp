@@ -19,7 +19,7 @@
 	<%-- this is useful if after log out staying in the same page
 		 this is used by the header to logout when there is a table in the page 
 		 ( it basically passes the parent distinguishing param if there is any ) --%>
-	<h:commandLink id="logoutLink" action="#{userBean.logout}" rendered="#{userBean.userLoggedIn}">
+	<h:commandLink id="logoutLink" action="#{UserBean.logout}" rendered="#{UserBean.userLoggedIn}">
 	</h:commandLink>
 
 	<%-- this is used to call an empty action method which returns null. the result is reloading the page --%>
@@ -561,11 +561,11 @@
 								  value="collection_browse.html?collectionType=#{TableBean.selectedCollection}">
 						<h:outputText value="View my #{TableBean.clipboardName} (or other selections)" />
 					</h:outputLink>
-					<h:outputLink id="ViewAllCollections1" value="collectionList_browse.html" styleClass="plaintextbold" rendered="#{userBean.userLoggedIn}" >
+					<h:outputLink id="ViewAllCollections1" value="collectionList_browse.html" styleClass="plaintextbold" rendered="#{UserBean.userLoggedIn}" >
 						<h:outputText value="View stored collections" />
 					</h:outputLink>
 					<h:commandLink id="deleteSelectedEntries" action="#{TableBean.deleteSelectedEntries}" onclick="saveSelections(event)"
-									rendered="#{userBean.userLoggedIn && userBean.user.userPrivilege>=5 && TableBean.tableView.table.deletable}" >
+									rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && TableBean.tableView.table.deletable}" >
 						<h:outputText value="Delete Selected Entries" />
 						<f:param name="tableOperation" value="deleteSelected" />
 					</h:commandLink>
@@ -592,11 +592,11 @@
 								  value="collection_browse.html?collectionType=#{TableBean.selectedCollection}">
 						<h:outputText value="View my #{TableBean.clipboardName} (or other selections)" />
 					</h:outputLink>
-					<h:outputLink id="ViewAllCollections2" value="collectionList_browse.html" styleClass="plaintextbold" rendered="#{userBean.userLoggedIn}" >
+					<h:outputLink id="ViewAllCollections2" value="collectionList_browse.html" styleClass="plaintextbold" rendered="#{UserBean.userLoggedIn}" >
 						<h:outputText value="View stored collections" />
 					</h:outputLink>
 					<h:commandLink id="deleteSelectedEntries2" action="#{TableBean.deleteSelectedEntries}" onclick="saveSelections(event)"
-									rendered="#{userBean.userLoggedIn && userBean.user.userPrivilege>=5 && TableBean.tableView.table.deletable}" >
+									rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && TableBean.tableView.table.deletable}" >
 						<h:outputText value="Delete Selected Entries" />
 						<f:param name="tableOperation" value="deleteSelected" />
 					</h:commandLink>
