@@ -3,8 +3,15 @@ package gmerg.beans;
 import java.util.ArrayList;
 
 public class MicroarrayFocusBean {
+    private boolean debug = false;
+
 	ArrayList organ1;
 	ArrayList organs;
+
+    public MicroarrayFocusBean() {
+	if (debug)
+	    System.out.println("MicroarrayFocusBean.constructor");
+    }
 
 	public ArrayList getOrgan1() {
 		ArrayList<String[]> list = new ArrayList<String[]>();
