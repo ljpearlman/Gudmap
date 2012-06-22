@@ -16,12 +16,14 @@ import gmerg.utils.table.GenericTableView;
 import gmerg.utils.table.TableUtil;
 
 public class FocusGeneBrowseBean {
+    private boolean debug = false;
     private String query;
     private String input;
     private String focusedOrgan;
 	
 	public FocusGeneBrowseBean() {
-//		System.out.println("FocusGeneBrowseBean constructor:");
+	    if (debug)
+		System.out.println("FocusGeneBrowseBean constructor:");
 	    query = Visit.getRequestParam("query");
 		input = Visit.getRequestParam("input");
 //		focusedOrgan = Visit.getRequestParam("focusedOrgan");		// changed by Mehran (23/11/09) - Anatomy search ignores any focus group
@@ -74,7 +76,8 @@ public class FocusGeneBrowseBean {
 	 * @return 
 	 */
 	private GenericTableView populateFocusGeneBrowseTableView(String viewName) {
-//		System.out.println("FocusGeneBrowseBean:populateFocusGeneBrowseTableView");
+	    if (debug)
+		System.out.println("FocusGeneBrowseBean:populateFocusGeneBrowseTableView");
 		String sub = Visit.getRequestParam("sub");
 		String exp = Visit.getRequestParam("exp");
 		String ttvRels = Visit.getRequestParam("ttvRels");
@@ -105,25 +108,31 @@ public class FocusGeneBrowseBean {
 				}
 			} else {
 				inputs = input.split("\t|\n|\r|\f|;");
-//				System.out.println("number of symbols: " + inputs.length);
+	    if (debug)
+				System.out.println("number of symbols: " + inputs.length);
 			}
 //			geneSymbols = input.split("[[\\s|,]&&[^ ]]");
 			/////// added by xingjun - 06/04/2009 - if the input by user comes like 'string*', it means wildcard search (start with) //////////////
-//			System.out.println("check input string###########: ");
+	    if (debug)
+			System.out.println("check input string###########: ");
 			int numberOfInputItems = inputs.length;
 			for (int i=0;i<numberOfInputItems;i++) {
-//				System.out.println("input string: " + inputs[i]);
+	    if (debug)
+				System.out.println("input string: " + inputs[i]);
 				int stringLen = inputs[i].length();
 				if (stringLen > 0) {
 					// got last character of the input string
 					String lastChar = inputs[i].substring(stringLen-1, stringLen);
-//					System.out.println("last char: " + lastChar);
+	    if (debug)
+					System.out.println("last char: " + lastChar);
 					if (lastChar.equals("*")) {
 						inputs[i] = inputs[i].substring(0, stringLen-1);
 						wildcards[0] = "starts with";
-//						System.out.println("input string removed wc: " + inputs[i]);
+	    if (debug)
+						System.out.println("input string removed wc: " + inputs[i]);
 					} else {
-//						System.out.println("not wild~~~~~~~~ ");
+	    if (debug)
+						System.out.println("not wild~~~~~~~~ ");
 						wildcards[0] = "equals";
 					}
 				}
@@ -132,21 +141,23 @@ public class FocusGeneBrowseBean {
 		}
 
 		if("GeneSymbol".equals(query) && (wildcards[0]==null || wildcards[0]=="") ) { //This is used for queries from focused_gene_index_browse page
-//			System.out.println("query gene symbol");
+	    if (debug)
+			System.out.println("query gene symbol");
 			wildcards[0] = "equals";
 			wildcards[1] = "ALL";
 			wildcards[2] = "0";
 		}
     	
-//System.out.println("FocusGeneBrowseBean:populateFocusGeneBrowseTableView:organ="+ focusedOrgan);        
-//System.out.println("input="+input);        	
-//System.out.println("query="+ query);        	
-//System.out.println("sub="+ sub);        	
-//System.out.println("exp="+ exp);        	
-//System.out.println("geneSymbols0="+ geneSymbols[0]);
-//System.out.println("widecard0="+ wildcards[0]);
-//System.out.println("widecard1="+ wildcards[1]);
-//System.out.println("widecard2="+ wildcards[2]);
+		if (debug) {
+System.out.println("FocusGeneBrowseBean:populateFocusGeneBrowseTableView:organ="+ focusedOrgan);        
+System.out.println("input="+input);        	
+System.out.println("query="+ query);        	
+System.out.println("sub="+ sub);        	
+System.out.println("exp="+ exp);        	
+System.out.println("widecard0="+ wildcards[0]);
+System.out.println("widecard1="+ wildcards[1]);
+System.out.println("widecard2="+ wildcards[2]);
+		}
 		
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		queryParams.put("organ", focusedOrgan);
@@ -178,7 +189,8 @@ public class FocusGeneBrowseBean {
 	//Bernie 10/5/2011 - Mantis 328 - added method
 	//Bernie 01/03/2010 - Mantis 620 - added SEX to the filter options
 	private GenericTableFilter getFilter(int[] colMap) { 
-//		System.out.println("FocusGeneBrowseBean:getFilter(in)");
+	    if (debug)
+		System.out.println("FocusGeneBrowseBean:getFilter(in)");
 		GenericTableFilter filter = new GenericTableFilter();
 		filter.setTableToSqlColMap(colMap);
 		filter.addFilter(new FilterItem(0));
@@ -191,7 +203,8 @@ public class FocusGeneBrowseBean {
 		filter.addFilter(10, Globals.getPredefinedFilter(PredefinedFilters.DATE));
 		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
 		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
-//		System.out.println("FocusGeneBrowseBean:getFilter(out)");
+	    if (debug)
+		System.out.println("FocusGeneBrowseBean:getFilter(out)");
 		return filter;
 	}
 	
