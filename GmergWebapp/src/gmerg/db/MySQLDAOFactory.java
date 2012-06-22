@@ -16,39 +16,6 @@ import java.sql.SQLException;
  */
 public final class MySQLDAOFactory {
 	
-	private static String dbDriver;
-	private static String dbUrl;
-	private static String userName;
-	private static String passWord;
-	private static Connection conn;
-	
-	public MySQLDAOFactory(String dbDriver, String dbUrl, String userName, String passWord) {
-		MySQLDAOFactory.dbDriver = dbDriver;
-		MySQLDAOFactory.dbUrl = dbUrl;
-		MySQLDAOFactory.userName = userName;
-		MySQLDAOFactory.passWord = passWord;
-	}
-	
-	public MySQLDAOFactory() {
-		
-	}
-	
-	/**
-	 *  method to create MySQL connections
-	 */
-	public static Connection createConnection() {
-		
-		try {
-			Class.forName(dbDriver);
-			conn = DriverManager.getConnection(dbUrl, userName, passWord);
-		} catch (SQLException se) {
-			se.printStackTrace();
-		} catch (ClassNotFoundException cfe) {
-			cfe.printStackTrace();
-		}
-		return conn;
-	}
-	
 	/**
 	 * @author xingjun
 	 * @return
