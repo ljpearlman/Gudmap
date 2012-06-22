@@ -7,13 +7,16 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 
 public class ExpressionDetailBean {
-
+    private boolean debug = false;
     private ExpressionDetail expression;
     private ExpressionDetailAssembler expAssembler;
     private boolean hasSecondaryStrength;
     private boolean hasPatterns;
     
     public ExpressionDetailBean () {
+	    if (debug)
+		System.out.println("ExpressionDetailBean.constructor");
+
         FacesContext context = FacesContext.getCurrentInstance();
         Map requestParams =
             context.getExternalContext().getRequestParameterMap();
