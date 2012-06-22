@@ -5,8 +5,8 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText value="In Situ submissions #{insituFocusBrowseBean.organTitle} #{insituFocusBrowseBean.stageTitle}" escape="false" />
-	<h:outputText value="--Gene: #{insituFocusBrowseBean.gene}" rendered="#{insituFocusBrowseBean.gene != ''}" escape="false" />
+	<h:outputText value="In Situ submissions #{InsituFocusBrowseBean.organTitle} #{InsituFocusBrowseBean.stageTitle}" escape="false" />
+	<h:outputText value="--Gene: #{InsituFocusBrowseBean.gene}" rendered="#{InsituFocusBrowseBean.gene != ''}" escape="false" />
 	<f:subview id="focusGeneTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
