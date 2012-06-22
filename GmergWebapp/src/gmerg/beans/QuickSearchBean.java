@@ -8,11 +8,14 @@ import gmerg.utils.Utility;
 import gmerg.utils.Visit;
 
 public class QuickSearchBean {
-	
+    private boolean debug = false;
+
 	private String input;
 	
 	public QuickSearchBean() {
-//		System.out.println("In QuickSearchBean constructor");
+	    	if (debug)
+	    System.out.println("QuickSearchBean.constructor");
+
 		input = Visit.getRequestParam("input");
         String viewName = "focusQuick";
 		if (TableUtil.isTableViewInSession())
