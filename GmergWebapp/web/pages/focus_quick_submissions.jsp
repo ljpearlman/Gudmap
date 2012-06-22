@@ -5,8 +5,8 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText value="Gudmap quick query result for user input #{quickSearchBean.input}"  />
-	<h:outputText value="" rendered="#{quickSearchBean.dumy}" />
+	<h:outputText value="Gudmap quick query result for user input #{QuickSearchBean.input}"  />
+	<h:outputText value="" rendered="#{QuickSearchBean.dumy}" />
 	<f:subview id="focusQuickTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
