@@ -21,13 +21,16 @@ import gmerg.utils.table.TableUtil;
  *
  */
 public class GeneQueryResultBean {
+    private boolean debug = false;
 	private String input;// added by xingjun - 17/06/2010 - catch what the user search for
 	private String query;// added by xingjun - 17/06/2010 - catch what the user search for
 	private String focusedOrgan; // added by xingjun - 17/06/2010 - catch what the user search for
 //	private String searchResultOption;
 	
 	public GeneQueryResultBean() {
-		
+	    if (debug)
+		System.out.println("GeneQueryResultBean.constructor");
+
 		input = Visit.getRequestParam("input");
 	    query = Visit.getRequestParam("query");
 		if (query.equalsIgnoreCase("")) {
