@@ -5,7 +5,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 
-	<h:outputText value="" rendered="#{ishSelSubmissionsBean.dumy}" />
+	<h:outputText value="" rendered="#{ISHSelSubmissionsBean.dumy}" />
 	<f:subview id="QueryPageResultTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
