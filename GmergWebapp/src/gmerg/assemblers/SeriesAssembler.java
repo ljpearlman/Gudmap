@@ -23,16 +23,21 @@ import gmerg.db.ArrayDevDAO;
  *
  */
 public class SeriesAssembler extends OffMemoryTableAssembler {
+    private boolean debug = false;
 
 	String seriesId;
 	boolean geoId;
 	
 	public SeriesAssembler () {
-		super();
+	if (debug)
+	    System.out.println("SeriesAssembler.constructor");
+		
 	}
 	
 	public SeriesAssembler (HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("SeriesAssembler.constructor");
 	}
 
 	public void setParams() {
