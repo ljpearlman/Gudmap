@@ -27,7 +27,7 @@
               <f:facet name="header">
                 <h:outputText value="Edit" styleClass="plaintextbold" />
               </f:facet>
-              <h:selectBooleanCheckbox value="#{editImageBean.editable}" onclick="submit()" />
+              <h:selectBooleanCheckbox value="#{EditImageBean.editable}" onclick="submit()" />
             </h:column>
             <h:column>
               <f:facet name="header">
