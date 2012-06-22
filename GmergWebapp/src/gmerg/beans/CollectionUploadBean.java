@@ -12,7 +12,8 @@ import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.apache.myfaces.custom.fileupload.HtmlInputFileUpload;
 
 public class CollectionUploadBean {
-	
+    private boolean debug = false;
+
     private UploadedFile uploadedFile;
 	private boolean renderOverwrite;
 	private String collectionName;
@@ -23,6 +24,9 @@ public class CollectionUploadBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public CollectionUploadBean() {
+	    if (debug)
+		System.out.println("CollectionUploadBean.constructor");
+
 		renderOverwrite = false;
 		collectionName = "";
 	}
