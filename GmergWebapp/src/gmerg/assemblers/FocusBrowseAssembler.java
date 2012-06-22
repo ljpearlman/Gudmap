@@ -28,12 +28,19 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	String stage;
 	String gene;
 	
+    private boolean debug = false;
+
 	public FocusBrowseAssembler () {
-		super();
+	      	if (debug)
+	    System.out.println("FocusBrowseAssembler.constructor");
+
 	}
 	
 	public FocusBrowseAssembler (HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("FocusBrowseAssembler.constructor");
+
 	}
 
 	public void setParams() {
