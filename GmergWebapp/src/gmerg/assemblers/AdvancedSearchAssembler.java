@@ -13,17 +13,20 @@ import java.util.Hashtable;
 import java.util.HashMap;
 
 public class AdvancedSearchAssembler extends OffMemoryTableAssembler {
-	
+    private boolean debug = false;
 	String sub;
 	ArrayList options;
 	int[] totals;
 	
 	public AdvancedSearchAssembler () {
-		super();
+	    if (debug)
+		System.out.println("AdvancedSearchAssembler.constructor");
 	}
 	
 	public AdvancedSearchAssembler (HashMap params) {
 		super(params);
+	    if (debug)
+		System.out.println("AdvancedSearchAssembler.constructor with param");
 	}
 
 	public void setParams() {
