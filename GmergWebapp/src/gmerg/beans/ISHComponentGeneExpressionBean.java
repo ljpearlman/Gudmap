@@ -13,7 +13,7 @@ import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
 
 public class ISHComponentGeneExpressionBean  {
-    
+    private boolean debug = false;
     private ArrayDataModel model = null;
     String [][] subs;
     private QueryAssembler queryAssembler;
@@ -24,7 +24,9 @@ public class ISHComponentGeneExpressionBean  {
     private Hashtable params;
     
     public ISHComponentGeneExpressionBean () {
-        super();
+	if (debug)
+	    System.out.println("ISHComponentGeneExpressionBean.constructor");
+
         queryAssembler = new QueryAssembler();
         resultExists = true;
     }
