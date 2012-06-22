@@ -15,8 +15,11 @@ import java.util.ArrayList;
  *
  */
 public class PredictiveTextSearchAssembler {
-	
+    private boolean debug = false;
+
 	public PredictiveTextSearchAssembler() {
+	if (debug)
+	    System.out.println("PredictiveTextSearchAssembler.constructor");
 		
 	}
 	
