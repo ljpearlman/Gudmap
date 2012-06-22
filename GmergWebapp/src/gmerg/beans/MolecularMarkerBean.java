@@ -4,10 +4,16 @@ import gmerg.assemblers.MolecularMarkerAssembler;
 import java.util.ArrayList;
 
 public class MolecularMarkerBean {
+    private boolean debug = false;
+
 	ArrayList markerList;
 	ArrayList header;
 	MolecularMarkerAssembler mmAssembler;
-	
+    public MolecularMarkerBean() {
+	if (debug)
+	    System.out.println("MolecularMarkerBean.constructor");
+
+    }
 	public ArrayList getMarkerList() {
 		
 		mmAssembler = new MolecularMarkerAssembler();
