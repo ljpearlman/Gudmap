@@ -107,7 +107,7 @@
               <h:panelGroup><h:message for="geneSymbol" styleClass="plainred" /><f:verbatim>&nbsp;</f:verbatim></h:panelGroup>
               <h:panelGrid columns="4">
                 <h:graphicImage value="../images/gene.gif" alt="" />
-                  <h:inputText id="geneSymbol" value="#{queryBean.geneSymbol}" size="12" />
+                  <h:inputText id="geneSymbol" value="#{QueryBean.geneSymbol}" size="12" />
                   <h:panelGroup>
                   <h:outputLink styleClass="plaintext" value="#" onclick="showGenePanel(event);return false;">      
                     <h:outputText value="options"/>								
@@ -118,7 +118,7 @@
                     <h:panelGrid id="geneTableOuterFrame" width="200" cellspacing="2" cellpadding="2" bgcolor="white">
                       <h:panelGrid cellpadding="2" cellspacing="2">
                         <h:panelGroup>
-                          <h:selectOneMenu id="inputType" value="#{queryBean.inputType}">
+                          <h:selectOneMenu id="inputType" value="#{QueryBean.inputType}">
                                 <f:selectItem itemLabel="Gene Symbol" itemValue="symbol"/>
                                 <f:selectItem itemLabel="Gene Name" itemValue="name"/>
                                 <f:selectItem itemLabel="Gene Synonym" itemValue="synonym"/>
@@ -127,7 +127,7 @@
                             </h:panelGroup>
                             <h:panelGroup>
               			  <h:outputText styleClass="plaintext" value="Gene "/>
-              			  <h:selectOneMenu id="criteria" value="#{queryBean.criteria}">
+              			  <h:selectOneMenu id="criteria" value="#{QueryBean.criteria}">
                                     <f:selectItem itemLabel="contains" itemValue="wildcard"/>
                                     <f:selectItem itemLabel="equals" itemValue="equals"/>
                                     <f:selectItem itemLabel="starts with" itemValue="begins"/>
@@ -135,12 +135,12 @@
 			  </h:panelGroup>
                           <h:panelGroup>
                             <h:outputText styleClass="plaintext" value="NF Stage "/>
-              		    <h:selectOneMenu id="stage" value="#{queryBean.stage}">
-                              <f:selectItems value="#{anatomyBean.availableStagesForQuery}"/>
+              		    <h:selectOneMenu id="stage" value="#{QueryBean.stage}">
+                              <f:selectItems value="#{AnatomyBean.availableStagesForQuery}"/>
                             </h:selectOneMenu></span><span class="plaintext">
                           </h:panelGroup>
                           <h:panelGroup>
-              		    <h:selectOneMenu id="output" value="#{queryBean.output}">
+              		    <h:selectOneMenu id="output" value="#{QueryBean.output}">
 	                      <f:selectItem itemLabel="List all entries" itemValue="gene"/>
 	                      <f:selectItem itemLabel="List annotated entries only" itemValue="anatomy"/>
                             </h:selectOneMenu>
@@ -152,7 +152,7 @@
                       </h:panelGrid>
                     </h:panelGrid>
                 </h:panelGroup>
-                <h:commandButton image="../images/go.gif" alt="Go" styleClass="icon" action="#{queryBean.findGenes}" />
+                <h:commandButton image="../images/go.gif" alt="Go" styleClass="icon" action="#{QueryBean.findGenes}" />
               </h:panelGrid>
             </h:panelGrid>
           </h:form>
@@ -162,8 +162,8 @@
               <h:panelGroup><f:verbatim>&nbsp;</f:verbatim><h:outputText value="Enter ERGX ID:" styleClass="plaintext" /></h:panelGroup>
               <h:panelGrid columns="3">
                 <h:graphicImage value="../images/id.gif" alt="" />
-                <h:inputText id="accession" value="#{queryBean.submissionID}"/>
-                <h:commandButton image="../images/go.gif" styleClass="icon" alt="Go" action="#{queryBean.submissionInfo}" />
+                <h:inputText id="accession" value="#{QueryBean.submissionID}"/>
+                <h:commandButton image="../images/go.gif" styleClass="icon" alt="Go" action="#{QueryBean.submissionInfo}" />
               </h:panelGrid>
             </h:panelGrid>  
           </h:form>
@@ -180,21 +180,21 @@
                           <h:panelGrid cellpadding="2" cellspacing="2" width="100%" columns="1">
                             <h:panelGroup>
                               <h:outputText styleClass="plaintextbold" value="Search for gene expression patterns in selected components of the pronephros " />
-                              <h:commandButton value="Search" id="submitbutton" action="#{anatomyBean.annotSubsFromPronephBrowse}" />
+                              <h:commandButton value="Search" id="submitbutton" action="#{AnatomyBean.annotSubsFromPronephBrowse}" />
                             </h:panelGroup>
                             
                             <h:panelGrid columns="2" columnClasses="topAlign">
                               <h:panelGroup>
                               <h:outputText value="Expression occurs in " styleClass="plaintext" />
-                              <h:selectOneMenu value="#{anatomyBean.criteria}" required="true" binding="#{anatomyBean.criteriaInput}">
+                              <h:selectOneMenu value="#{AnatomyBean.criteria}" required="true" binding="#{AnatomyBean.criteriaInput}">
                                 <f:selectItem itemLabel="all" itemValue="all"/>
                                 <f:selectItem itemLabel="any" itemValue="any"/>
                               </h:selectOneMenu>
                               <h:outputText value=" selected components. " styleClass="plaintext" />
                               <h:outputText value="Expression is:" styleClass="plaintext" />
                               </h:panelGroup>
-                              <h:selectManyCheckbox id="annotTypes" required="true" value="#{anatomyBean.expressionTypes}" styleClass="plaintext" layout="lineDirection" binding="#{anatomyBean.expressionInput}" >
-                                <f:selectItems value="#{anatomyBean.annotationVals}" />
+                              <h:selectManyCheckbox id="annotTypes" required="true" value="#{AnatomyBean.expressionTypes}" styleClass="plaintext" layout="lineDirection" binding="#{AnatomyBean.expressionInput}" >
+                                <f:selectItems value="#{AnatomyBean.annotationVals}" />
                               </h:selectManyCheckbox>
                             </h:panelGrid>
                             
