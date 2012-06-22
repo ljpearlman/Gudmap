@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FocusForAllAssembler extends OffMemoryTableAssembler {
-	
+    private boolean debug = false;
 	String organ;
 	String[] input;
 	String query;
@@ -20,9 +20,12 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	String exp;
 	String[] widecard;
 	String transitiveRelations;
-	
+
 	public FocusForAllAssembler (HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("FocusForAllAssembler.constructor");
+
 	}
 
 	public void setParams() {
@@ -37,7 +40,8 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
-//		System.out.println("+++FocusForAllAssembler:retrieveData");
+	    if (debug)
+		System.out.println("+++FocusForAllAssembler:retrieveData");
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO advancedQDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		////////////////////////////////////////////////////////
@@ -51,12 +55,17 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public int retrieveNumberOfRows() {
-//		System.out.println("+++FocusForAllAssembler:retrieveNumberOfRows");
+	    if (debug)
+		System.out.println("+++FocusForAllAssembler:retrieveNumberOfRows");
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO advancedDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		// Bernie - 9/5/2011 - Mantis 328 - added filter
 		int n =  advancedDAO.getNumberOfRows(query, input, organ, sub, exp, widecard, transitiveRelations, filter);
 		DBHelper.closeJDBCConnection(conn);
+
+		if (debug)
+		System.out.println("FocusForAllAssembler:retrieveNumberOfRows return = "+n);
+		    
 		return n;
 	}
 	
@@ -66,7 +75,8 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	 * @return
 	 */
 	public int[] retrieveNumberOfRowsInGroups() {
-//		System.out.println("+++FocusForAllAssembler:retrieveNumberOfRowsInGroups");
+	    if (debug)
+		System.out.println("+++FocusForAllAssembler:retrieveNumberOfRowsInGroups");
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO advancedQueryDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		// Bernie - 9/5/2011 - Mantis 328 - added filter
