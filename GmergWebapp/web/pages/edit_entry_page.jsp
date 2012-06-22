@@ -53,12 +53,12 @@
           </h:selectOneMenu> = 
           <h:inputText id="filterItemValue" value="filterItemValue" required="true"/> AND status is 
           <h:selectOneMenu id="dbStatus">
-            <f:selectItems value="#{editorQueryBean.databaseStatus}"/>
+            <f:selectItems value="#{EditorQueryBean.databaseStatus}"/>
           </h:selectOneMenu><f:verbatim>
         </span>
         </td>
         <td align="right"></f:verbatim>
-          <h:commandLink action="#{editorQueryBean.getSubmissions}">
+          <h:commandLink action="#{EditorQueryBean.getSubmissions}">
             <h:graphicImage url="../images/gu_go.gif" alt="Go" styleClass="icon"/>
           </h:commandLink><f:verbatim>
         </td>
