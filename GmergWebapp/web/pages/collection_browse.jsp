@@ -114,7 +114,7 @@
 		</h:panelGrid>
 	
 		<h:panelGrid columns="2" styleClass="header-stripey" width="100%" columnClasses="align-left,align-right" 
-					 rendered="#{userBean.userLoggedIn && CollectionBrowseBean.clipboard}">
+					 rendered="#{UserBean.userLoggedIn && CollectionBrowseBean.clipboard}">
 			<h:commandLink id="saveCollection" action="#{CollectionBrowseBean.saveCollection}" styleClass="plaintextbold">
 				<h:outputText value="Store #{CollectionBrowseBean.collectionName} in database" />
 				<f:param name="actionMethodCalled" value="true" />
