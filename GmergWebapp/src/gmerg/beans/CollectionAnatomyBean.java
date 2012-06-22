@@ -12,11 +12,19 @@ import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
 
 public class CollectionAnatomyBean {
+    private boolean debug = false;
+
     protected ArrayAnatomyCollection[] collection;	
-    String prefix = "http://www.gudmap.org/Gudmap/arrayData";
+    String prefix = gmerg.utils.Utility.domainUrl+"Gudmap/arrayData";
 	protected boolean collectionsAvailable;
 	protected ArrayDataModel collectionModel;
     
+    public CollectionAnatomyBean() {
+	    if (debug)
+		System.out.println("CollectionAnatomyBean.constructor");
+
+    }
+
 	public boolean getCollectionsAvailable() {
 
         String subIds = CookieOperations.getCookieValue("MicFocusEmapID");
