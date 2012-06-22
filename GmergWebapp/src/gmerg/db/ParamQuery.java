@@ -3,7 +3,8 @@ package gmerg.db;
 import java.sql.*;
 
 public class ParamQuery{
-	
+    private boolean debug = false;
+
 	private PreparedStatement prepStat;
 	private String queryName; // descriptive name fo rquery retrieval
 	private String querySQL;  // SQL for query
@@ -19,6 +20,8 @@ public class ParamQuery{
 	}
 	
 	public void setPrepStat(Connection conn) throws SQLException {
+		if (debug) 
+		    System.out.println("ParamQuery.sql = "+querySQL.toLowerCase());
 		prepStat = conn.prepareStatement(querySQL);
 	}
 	
@@ -28,6 +31,9 @@ public class ParamQuery{
 	}
 	
 	public String getQuerySQL() {
+		    if (debug)
+			System.out.println("ParamQuery.sql = "+querySQL.toLowerCase());
+
 		return this.querySQL;
 	}
 	
