@@ -67,22 +67,22 @@
     <h:inputHidden id="treeType" value="{applicationVar.perspective}" />
     <p class="plaintext">
       Select Stage range:&nbsp;
-      <h:selectOneMenu binding="#{booleanBean.startInput}" value="#{booleanBean.startStage}">
-        <f:selectItems value="#{booleanBean.availableStages}"/>
+      <h:selectOneMenu binding="#{BooleanTestBean.startInput}" value="#{BooleanTestBean.startStage}">
+        <f:selectItems value="#{BooleanTestBean.availableStages}"/>
       </h:selectOneMenu>
       &nbsp;
       to:
-      <h:selectOneMenu binding="#{booleanBean.endInput}" value="#{booleanBean.endStage}">
-        <f:selectItems value="#{booleanBean.availableStages}"/>
+      <h:selectOneMenu binding="#{BooleanTestBean.endInput}" value="#{BooleanTestBean.endStage}">
+        <f:selectItems value="#{BooleanTestBean.availableStages}"/>
       </h:selectOneMenu>
       &nbsp;
-      <h:inputHidden id="stagesCheck" validator="#{booleanBean.validateStages}" value="required" />
-      <h:commandButton value="Display Tree" actionListener="#{booleanBean.displayTree}" />
+      <h:inputHidden id="stagesCheck" validator="#{BooleanTestBean.validateStages}" value="required" />
+      <h:commandButton value="Display Tree" actionListener="#{BooleanTestBean.displayTree}" />
     </p>
   </h:form>
 --%>  
   
-  <p><h:outputText styleClass="plaintext" value="Current anatomy display is for stage range #{booleanBean.startStage} to #{booleanBean.endStage}."/></p>
+  <p><h:outputText styleClass="plaintext" value="Current anatomy display is for stage range #{BooleanTestBean.startStage} to #{BooleanTestBean.endStage}."/></p>
 <%--
   <p><h:outputText styleClass="plaintext" value="Find components:" />&nbsp;<input type="text" id="componentSearchField" size="30" />&nbsp;<input type="button" onclick="openNodesMatchingSearchString(document.getElementById('componentSearchField').value)" value="Search" /></p>
 --%>
@@ -118,7 +118,7 @@
             </h:panelGrid>
             <f:verbatim>
               <script type="text/javascript">
-                <c:forEach items="${booleanBean.treeContent}" var="row">
+                <c:forEach items="${BooleanTestBean.treeContent}" var="row">
                   <c:out value="${row}" escapeXml="false"/>
                 </c:forEach>
                 initializeDocument();
@@ -153,7 +153,7 @@
     <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
       <h:outputText value="Search for: " styleClass="plaintext"/>
       <h:selectOneMenu onchange="setQueryBuilderText()" id="resultFormat" value="">
-        <f:selectItems value="#{booleanBean.resultFormat}" />
+        <f:selectItems value="#{BooleanTestBean.resultFormat}" />
       </h:selectOneMenu>
       <h:panelGroup>
       <f:verbatim>
@@ -164,8 +164,8 @@
     
     <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
       <h:outputText value="Expression is:" styleClass="plaintext" />
-      <h:selectManyCheckbox id="annotTypes1" onchange="setQueryBuilderText()" value="#{booleanBean.annotationTypes1}" styleClass="plaintext" layout="lineDirection" >
-        <f:selectItems value="#{booleanBean.annotationVals}" />
+      <h:selectManyCheckbox id="annotTypes1" onchange="setQueryBuilderText()" value="#{BooleanTestBean.annotationTypes1}" styleClass="plaintext" layout="lineDirection" >
+        <f:selectItems value="#{BooleanTestBean.annotationVals}" />
       </h:selectManyCheckbox>
       <h:panelGroup>
         <f:verbatim>
@@ -176,109 +176,109 @@
     
     <h:panelGrid columns="7">
       <f:verbatim>&nbsp;</f:verbatim>
-      <h:selectOneMenu onchange="setQueryBuilderText()" id="location1" value="#{booleanBean.location1}">
-        <f:selectItems value="#{booleanBean.locationVals}" />
+      <h:selectOneMenu onchange="setQueryBuilderText()" id="location1" value="#{BooleanTestBean.location1}">
+        <f:selectItems value="#{BooleanTestBean.locationVals}" />
       </h:selectOneMenu>
       <h:panelGroup>
       <f:verbatim><div id="bool1"></f:verbatim>
       <f:verbatim></div></f:verbatim>
       </h:panelGroup>
       <f:verbatim>&nbsp;</f:verbatim>
-      <h:selectOneMenu onchange="setQueryBuilderText()" id="startStage1" value="#{booleanBean.startStage1}">
-        <f:selectItems value="#{booleanBean.rangeOfSelectedStages}"/>
+      <h:selectOneMenu onchange="setQueryBuilderText()" id="startStage1" value="#{BooleanTestBean.startStage1}">
+        <f:selectItems value="#{BooleanTestBean.rangeOfSelectedStages}"/>
       </h:selectOneMenu>
       <h:outputText styleClass="plaintext" value=" to: " />
-      <h:selectOneMenu onchange="setQueryBuilderText()" id="endStage1" value="#{booleanBean.endStage1}">
-        <f:selectItems value="#{booleanBean.rangeOfSelectedStages}"/>
+      <h:selectOneMenu onchange="setQueryBuilderText()" id="endStage1" value="#{BooleanTestBean.endStage1}">
+        <f:selectItems value="#{BooleanTestBean.rangeOfSelectedStages}"/>
       </h:selectOneMenu>
     </h:panelGrid>
     <h:panelGrid columns="5" style="padding-bottom:10px">
     <f:verbatim>&nbsp;</f:verbatim>
       <h:outputText styleClass="plaintext" value="with" />
       <h:selectOneMenu onchange="setQueryBuilderText()" id="pattern1" value="">
-        <f:selectItems value="#{booleanBean.patternVals}" />
+        <f:selectItems value="#{BooleanTestBean.patternVals}" />
       </h:selectOneMenu>
       <h:outputText styleClass="plaintext" value="at" />
       <h:selectOneMenu onchange="setQueryBuilderText()" id="locations1" value="">
-        <f:selectItems value="#{booleanBean.locationsVals}" />
+        <f:selectItems value="#{BooleanTestBean.locationsVals}" />
       </h:selectOneMenu>
     </h:panelGrid>
-    <h:selectOneMenu onchange="setQueryBuilderText()" id="operator1" value="#{booleanBean.operator1}">
+    <h:selectOneMenu onchange="setQueryBuilderText()" id="operator1" value="#{BooleanTestBean.operator1}">
       <f:selectItem itemValue="AND" itemLabel="AND" />
       <f:selectItem itemValue="OR" itemLabel="OR" />
     </h:selectOneMenu>
     <h:panelGrid columns="2">
     <h:outputText value="Expression is:" styleClass="plaintext" />
-    <h:selectManyCheckbox onchange="setQueryBuilderText()" id="annotTypes2" value="#{booleanBean.annotationTypes2}" styleClass="plaintext" layout="lineDirection" >
-      <f:selectItems value="#{booleanBean.annotationVals}" />
+    <h:selectManyCheckbox onchange="setQueryBuilderText()" id="annotTypes2" value="#{BooleanTestBean.annotationTypes2}" styleClass="plaintext" layout="lineDirection" >
+      <f:selectItems value="#{BooleanTestBean.annotationVals}" />
     </h:selectManyCheckbox>
     </h:panelGrid>
     <h:panelGrid columns="7">
       <f:verbatim>&nbsp;</f:verbatim>
-      <h:selectOneMenu onchange="setQueryBuilderText()" id="location2" value="#{booleanBean.location2}">
-        <f:selectItems value="#{booleanBean.locationVals}" />
+      <h:selectOneMenu onchange="setQueryBuilderText()" id="location2" value="#{BooleanTestBean.location2}">
+        <f:selectItems value="#{BooleanTestBean.locationVals}" />
       </h:selectOneMenu>
       <h:panelGroup>
       <f:verbatim><div id="bool2"></f:verbatim>
       <f:verbatim></div></f:verbatim>
       </h:panelGroup>
       <f:verbatim>&nbsp;</f:verbatim>
-      <h:selectOneMenu onchange="setQueryBuilderText()" id="startStage2" value="#{booleanBean.startStage2}">
-        <f:selectItems value="#{booleanBean.rangeOfSelectedStages}"/>
+      <h:selectOneMenu onchange="setQueryBuilderText()" id="startStage2" value="#{BooleanTestBean.startStage2}">
+        <f:selectItems value="#{BooleanTestBean.rangeOfSelectedStages}"/>
       </h:selectOneMenu>
       <h:outputText styleClass="plaintext" value=" to: " />
-      <h:selectOneMenu onchange="setQueryBuilderText()" id="endStage2" value="#{booleanBean.endStage2}">
-        <f:selectItems value="#{booleanBean.rangeOfSelectedStages}"/>
+      <h:selectOneMenu onchange="setQueryBuilderText()" id="endStage2" value="#{BooleanTestBean.endStage2}">
+        <f:selectItems value="#{BooleanTestBean.rangeOfSelectedStages}"/>
       </h:selectOneMenu>
     </h:panelGrid>
     <h:panelGrid columns="5" style="padding-bottom:10px">
     <f:verbatim>&nbsp;</f:verbatim>
       <h:outputText styleClass="plaintext" value="with" />
       <h:selectOneMenu onchange="setQueryBuilderText()" id="pattern2" value="">
-        <f:selectItems value="#{booleanBean.patternVals}" />
+        <f:selectItems value="#{BooleanTestBean.patternVals}" />
       </h:selectOneMenu>
       <h:outputText styleClass="plaintext" value="at" />
       <h:selectOneMenu onchange="setQueryBuilderText()" id="locations2" value="">
-        <f:selectItems value="#{booleanBean.locationsVals}" />
+        <f:selectItems value="#{BooleanTestBean.locationsVals}" />
       </h:selectOneMenu>
     </h:panelGrid>
-    <h:selectOneMenu onchange="setQueryBuilderText()" id="operator2" value="#{booleanBean.operator2}">
+    <h:selectOneMenu onchange="setQueryBuilderText()" id="operator2" value="#{BooleanTestBean.operator2}">
       <f:selectItem itemValue="AND" itemLabel="AND" />
       <f:selectItem itemValue="OR" itemLabel="OR" />
     </h:selectOneMenu>
     <h:panelGrid columns="2">
     <h:outputText value="Expression is:" styleClass="plaintext" />
-    <h:selectManyCheckbox onchange="setQueryBuilderText()" id="annotTypes3" value="#{booleanBean.annotationTypes3}" styleClass="plaintext" layout="lineDirection" >
-      <f:selectItems value="#{booleanBean.annotationVals}" />
+    <h:selectManyCheckbox onchange="setQueryBuilderText()" id="annotTypes3" value="#{BooleanTestBean.annotationTypes3}" styleClass="plaintext" layout="lineDirection" >
+      <f:selectItems value="#{BooleanTestBean.annotationVals}" />
     </h:selectManyCheckbox>
     </h:panelGrid>
     <h:panelGrid columns="7">
       <f:verbatim>&nbsp;</f:verbatim>
-      <h:selectOneMenu onchange="setQueryBuilderText()" id="location3" value="#{booleanBean.location3}">
-      <f:selectItems value="#{booleanBean.locationVals}" />
+      <h:selectOneMenu onchange="setQueryBuilderText()" id="location3" value="#{BooleanTestBean.location3}">
+      <f:selectItems value="#{BooleanTestBean.locationVals}" />
       </h:selectOneMenu>
       <h:panelGroup>
       <f:verbatim><div id="bool3"></f:verbatim>
       <f:verbatim></div></f:verbatim>
       </h:panelGroup>
       <f:verbatim>&nbsp;</f:verbatim>
-      <h:selectOneMenu onchange="setQueryBuilderText()" id="startStage3" value="#{booleanBean.startStage3}">
-        <f:selectItems value="#{booleanBean.rangeOfSelectedStages}"/>
+      <h:selectOneMenu onchange="setQueryBuilderText()" id="startStage3" value="#{BooleanTestBean.startStage3}">
+        <f:selectItems value="#{BooleanTestBean.rangeOfSelectedStages}"/>
       </h:selectOneMenu>
       <h:outputText styleClass="plaintext" value=" to: " />
-      <h:selectOneMenu onchange="setQueryBuilderText()" id="endStage3" value="#{booleanBean.endStage3}">
-        <f:selectItems value="#{booleanBean.rangeOfSelectedStages}"/>
+      <h:selectOneMenu onchange="setQueryBuilderText()" id="endStage3" value="#{BooleanTestBean.endStage3}">
+        <f:selectItems value="#{BooleanTestBean.rangeOfSelectedStages}"/>
       </h:selectOneMenu>
     </h:panelGrid>
     <h:panelGrid columns="5" style="padding-bottom:10px">
     <f:verbatim>&nbsp;</f:verbatim>
       <h:outputText styleClass="plaintext" value="with" />
       <h:selectOneMenu onchange="setQueryBuilderText()" id="pattern3" value="">
-        <f:selectItems value="#{booleanBean.patternVals}" />
+        <f:selectItems value="#{BooleanTestBean.patternVals}" />
       </h:selectOneMenu>
       <h:outputText styleClass="plaintext" value="at" />
       <h:selectOneMenu onchange="setQueryBuilderText()" id="locations3" value="">
-        <f:selectItems value="#{booleanBean.locationsVals}" />
+        <f:selectItems value="#{BooleanTestBean.locationsVals}" />
       </h:selectOneMenu>
     </h:panelGrid>
     <f:verbatim><br /><br /></f:verbatim>
@@ -287,10 +287,10 @@
   <h:panelGrid>
     <h:form id="booleanQForm2">
       <h:panelGrid columns="4" cellpadding="2" cellspacing="2">
-        <h:inputText value="#{booleanBean.input}"  onkeyup="checkButtonStatus()" size="70" id="queryBuilder" />
-        <h:commandButton value="Run Query" id="submitQBuilder" action="#{booleanBean.goSearch}">	
+        <h:inputText value="#{BooleanTestBean.input}"  onkeyup="checkButtonStatus()" size="70" id="queryBuilder" />
+        <h:commandButton value="Run Query" id="submitQBuilder" action="#{BooleanTestBean.goSearch}">	
         </h:commandButton>
-        <h:commandButton value="Save Query" id="saveQ" actionListener="#{booleanBean.saveQuery}" />
+        <h:commandButton value="Save Query" id="saveQ" actionListener="#{BooleanTestBean.saveQuery}" />
         <h:panelGroup>
         <f:verbatim>
         <a href="#Link263895Context" name="Link263895Context" id="Link263895Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID263895', 'Execute the Built Query', 'Click \'Run Query\' box to execute query or \'Save Query\' box to save. The query can be modified or extended using the same syntax (see &lt;a href=\&quot;http://www.gudmap.org/Help/Boolean_Syntax_Help.html\&quot;&gt;Help&lt;/a&gt;). In queries with more than one term, precedence is given to the first operator and all other operators are treated independently.', 'Link263895Context')"> <img src="../images/focus/n_information.gif" alt="information" width="22" height="24" border="0" /></a>
