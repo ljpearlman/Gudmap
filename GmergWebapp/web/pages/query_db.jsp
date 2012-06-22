@@ -14,7 +14,7 @@
           <span class="plaintextbold">
             <h:form>
               Search expression in components using 
-              <h:commandLink action="#{anatomyBean.anatomyQueryPage}" styleClass="plaintext">
+              <h:commandLink action="#{AnatomyBean.anatomyQueryPage}" styleClass="plaintext">
                 <h:outputText value="anatomy ontology" />
               </h:commandLink>
               tree structure
@@ -23,7 +23,7 @@
         </td>
         <td align="center" width="15%">
           <h:form>
-            <h:commandLink action="#{anatomyBean.anatomyQueryPage}">
+            <h:commandLink action="#{AnatomyBean.anatomyQueryPage}">
               <h:graphicImage url="../images/gu_go.gif" alt="Go" styleClass="icon"/>
             </h:commandLink>
           </h:form>
@@ -40,18 +40,18 @@
         <td width=85% align="left">
         &nbsp;<h:message for="geneSymbol" styleClass="plainred"/><br/>
         <span class="plaintextbold">Search DB for
-              <h:selectOneMenu id="inputType" value="#{queryBean.inputType}">
+              <h:selectOneMenu id="inputType" value="#{QueryBean.inputType}">
                 <f:selectItem itemLabel="Gene Symbol" itemValue="symbol"/>
                 <f:selectItem itemLabel="Gene Name" itemValue="name"/>
                 <f:selectItem itemLabel="Gene Synonym" itemValue="synonym"/>
                 <f:selectItem itemLabel="All" itemValue="all"/>
               </h:selectOneMenu> which 
-              <h:selectOneMenu id="criteria" value="#{queryBean.criteria}">
+              <h:selectOneMenu id="criteria" value="#{QueryBean.criteria}">
                 <f:selectItem itemLabel="contains" itemValue="wildcard"/>
                 <f:selectItem itemLabel="equals" itemValue="equals"/>
                 <f:selectItem itemLabel="starts with" itemValue="begins"/>
               </h:selectOneMenu>
-              <h:inputText id="geneSymbol" value="#{queryBean.geneSymbol}" /> in
+              <h:inputText id="geneSymbol" value="#{QueryBean.geneSymbol}" /> in
               </span>
           <span class="plaintextbold">
 <%-- 
@@ -63,19 +63,19 @@
           <h:outputLink styleClass="plaintext" value="http://xenbase.org/xenbase/original/atlas/NF/NF-all.html"  rendered="#{siteSpecies == 'Xenopus laevis'}">
             <h:outputText value="#{stageSeriesMedium} Stage" styleClass="plaintextbold" />
           </h:outputLink>
-              <h:selectOneMenu id="stage" value="#{queryBean.stage}">
-                <f:selectItems value="#{anatomyBean.availableStagesForQuery}"/>
+              <h:selectOneMenu id="stage" value="#{QueryBean.stage}">
+                <f:selectItems value="#{AnatomyBean.availableStagesForQuery}"/>
               </h:selectOneMenu></span><span class="plaintext">
             </span>
             
                   <span class="plaintextbold">
-                  <h:selectOneMenu id="output" value="#{queryBean.output}">
+                  <h:selectOneMenu id="output" value="#{QueryBean.output}">
 	                <f:selectItem itemLabel="List all entries" itemValue="gene"/>
 	                <f:selectItem itemLabel="List annotated entries only" itemValue="anatomy"/>
                   </h:selectOneMenu>
                   </span>
         </td>
-        <td width=15% align="center"><h:commandButton image="../images/gu_go.gif" alt="Go" styleClass="icon" action="#{queryBean.findGenes}" /></td>
+        <td width=15% align="center"><h:commandButton image="../images/gu_go.gif" alt="Go" styleClass="icon" action="#{QueryBean.findGenes}" /></td>
       </tr>
       </table>
       </h:form>
@@ -86,9 +86,9 @@
         <h:panelGroup>
           <h:message for="component" styleClass="plainred"/><f:verbatim><br /></f:verbatim>
           <h:outputText styleClass="plaintextbold" value="Enter Component ID (e.g. EMAP:2220):" />
-          <h:inputText id="component" value="#{queryBean.componentID}" />
+          <h:inputText id="component" value="#{QueryBean.componentID}" />
         </h:panelGroup>
-        <h:commandLink action="#{queryBean.findComponent}">        
+        <h:commandLink action="#{QueryBean.findComponent}">        
           <h:graphicImage url="../images/gu_go.gif" alt="Go"  styleClass="icon"/>
           <f:param value="query" name="component" />
         </h:commandLink>
@@ -106,11 +106,11 @@
         &nbsp;<h:message for="subid" styleClass="plainred"/><br />
         <span class="plaintextbold">
           Enter Submission ID:
-          <h:inputText id="subid" value="#{queryBean.submissionID}" />
+          <h:inputText id="subid" value="#{QueryBean.submissionID}" />
         </span>
         </td>
         <td align="center" width=15%>
-        <h:commandButton image="../images/gu_go.gif" styleClass="icon" alt="Go" action="#{queryBean.submissionInfo}" />
+        <h:commandButton image="../images/gu_go.gif" styleClass="icon" alt="Go" action="#{QueryBean.submissionInfo}" />
         </td>
       </tr>
       </table>
