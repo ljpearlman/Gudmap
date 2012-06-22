@@ -6,43 +6,43 @@
 	<jsp:include page="/includes/header.jsp" />
 
 	<h3>Gene Details</h3>
-	<h:outputText value="There is no available data on the selected gene." styleClass="plaintext" rendered="#{geneInfoBean.gene == null}" />
-	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{geneInfoBean.gene != null}">
+	<h:outputText value="There is no available data on the selected gene." styleClass="plaintext" rendered="#{GeneInfoBean.gene == null}" />
+	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null}">
 		<h:outputText value="Symbol" />
-		<h:outputText styleClass="plaintextbold" value="#{geneInfoBean.gene.symbol}" />
+		<h:outputText styleClass="plaintextbold" value="#{GeneInfoBean.gene.symbol}" />
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		<h:outputText value="Name" />
-		<h:outputText styleClass="datatext" value="#{geneInfoBean.gene.name}" />
+		<h:outputText styleClass="datatext" value="#{GeneInfoBean.gene.name}" />
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		<h:outputText value="Synonyms" />
-		<h:outputText styleClass="datatext" value="#{geneInfoBean.gene.synonyms}" />
+		<h:outputText styleClass="datatext" value="#{GeneInfoBean.gene.synonyms}" />
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		<h:outputText value="Chromosome" rendered="#{siteSpecies != 'Xenopus laevis'}" />
 		<h:panelGrid columns="2" columnClasses="plaintext,datatext" rendered="#{siteSpecies != 'Xenopus laevis'}">
 			<h:outputText value="Chromosome:" />
-			<h:outputText value="#{geneInfoBean.gene.xsomeName}" />
+			<h:outputText value="#{GeneInfoBean.gene.xsomeName}" />
 			<h:outputText value="Start:" />
-			<h:outputText value="#{geneInfoBean.gene.xsomeStart}" />
+			<h:outputText value="#{GeneInfoBean.gene.xsomeStart}" />
 			<h:outputText value="End:" />
-			<h:outputText value="#{geneInfoBean.gene.xsomeEnd}" />
+			<h:outputText value="#{GeneInfoBean.gene.xsomeEnd}" />
 			<h:outputText value="Genome Build:" />
-			<h:outputText value="#{geneInfoBean.gene.genomeBuild}" />
+			<h:outputText value="#{GeneInfoBean.gene.genomeBuild}" />
 		</h:panelGrid>
 		<f:verbatim rendered="#{siteSpecies != 'Xenopus laevis'}" >&nbsp;</f:verbatim><f:verbatim rendered="#{siteSpecies != 'Xenopus laevis'}" >&nbsp;</f:verbatim>
 	</h:panelGrid>
 
-	<f:subview id="geneStripTable" rendered="#{geneInfoBean.gene!=null}">
-		<h:outputText value="" rendered="#{geneInfoBean.setTableViewNameToGeneStrip}" />
+	<f:subview id="geneStripTable" rendered="#{GeneInfoBean.gene!=null}">
+		<h:outputText value="" rendered="#{GeneInfoBean.setTableViewNameToGeneStrip}" />
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
 
-	<h:panelGrid columns="2" rowClasses="header-nostripe,header-stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{proj != 'EuReGene' && geneInfoBean.gene != null}">
+	<h:panelGrid columns="2" rowClasses="header-nostripe,header-stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null}">
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		<h:outputText value="Probes Linked to Gene" />
 		<h:panelGrid columns="2" columnClasses="datatext,datatext">
 		<%--  Bernie 30/06/2011 Mantis 558 Task2 - mod to display the maprobe id --%>
 		<%--  Bernie 4/7/2011 Mantis 558 Task4 - mod to provide hyperlinks --%>
-		<h:dataTable value="#{geneInfoBean.gene.assocProbes}" var="probe">
+		<h:dataTable value="#{GeneInfoBean.gene.assocProbes}" var="probe">
 			<h:column>
 				<h:outputLink styleClass="datatext" value="#{probe[3]}" rendered="#{probe[3] != 'probe.html'}">
 					<h:outputText value="#{probe[1]}"/>
@@ -64,101 +64,66 @@
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 	</h:panelGrid>
 
-	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{geneInfoBean.gene != null}">
+	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null}">
 		<h:outputText value="Links" />
 		<h:panelGrid columns="2" columnClasses="plaintext,datatext">
 			<h:outputText value="MGI:" rendered="#{siteSpecies != 'Xenopus laevis'}" />
 			<h:outputText value="HGNC:" rendered="#{siteSpecies == 'Xenopus laevis'}" />
-			<h:outputLink styleClass="plaintext" value="#{geneInfoBean.gene.mgiURL}" rendered="#{!geneInfoBean.xenbaseEntryExists}" target="_blank">
-				<h:outputText value="#{geneInfoBean.gene.mgiAccID}" />
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.mgiURL}" rendered="#{!GeneInfoBean.xenbaseEntryExists}" target="_blank">
+				<h:outputText value="#{GeneInfoBean.gene.mgiAccID}" />
 			</h:outputLink>
-			<h:outputLink styleClass="plaintext" rendered="#{siteSpecies == 'Xenopus laevis' && geneInfoBean.xenbaseEntryExists}" value="#{geneInfoBean.gene.hgncSearchSymbolURL}" target="_blank">
+			<h:outputLink styleClass="plaintext" rendered="#{siteSpecies == 'Xenopus laevis' && GeneInfoBean.xenbaseEntryExists}" value="#{GeneInfoBean.gene.hgncSearchSymbolURL}" target="_blank">
 				<h:outputText value="Search HGNC" />
 			</h:outputLink>
 			
-			<h:outputText value="Xenbase:" rendered="#{siteSpecies == 'Xenopus laevis' && geneInfoBean.xenbaseEntryExists}" />
-			<h:outputLink rendered="#{siteSpecies == 'Xenopus laevis' && geneInfoBean.xenbaseEntryExists}" styleClass="plaintext" value="#{geneInfoBean.gene.mgiURL}" target="_blank">
-				<h:outputText value="#{geneInfoBean.gene.mgiAccID}" />
+			<h:outputText value="Xenbase:" rendered="#{siteSpecies == 'Xenopus laevis' && GeneInfoBean.xenbaseEntryExists}" />
+			<h:outputLink rendered="#{siteSpecies == 'Xenopus laevis' && GeneInfoBean.xenbaseEntryExists}" styleClass="plaintext" value="#{GeneInfoBean.gene.mgiURL}" target="_blank">
+				<h:outputText value="#{GeneInfoBean.gene.mgiAccID}" />
 			</h:outputLink>
 			
 			<h:outputText value="Ensembl:" rendered="#{siteSpecies != 'Xenopus laevis'}" />
-			<h:outputLink rendered="#{siteSpecies != 'Xenopus laevis'}" styleClass="plaintext" value="#{geneInfoBean.gene.ensemblURL}" target="_blank">
-				<h:outputText value="#{geneInfoBean.gene.ensemblID}" />
+			<h:outputLink rendered="#{siteSpecies != 'Xenopus laevis'}" styleClass="plaintext" value="#{GeneInfoBean.gene.ensemblURL}" target="_blank">
+				<h:outputText value="#{GeneInfoBean.gene.ensemblID}" />
 			</h:outputLink>
 <%-- 
 			<h:outputText value="RefSeq:" rendered="#{siteSpecies != 'Xenopus laevis'}" />
-			<h:outputLink rendered="#{siteSpecies != 'Xenopus laevis'}" styleClass="plaintext" value="#{geneInfoBean.gene.refSeqURL}" target="_blank">
-				<h:outputText value="#{geneInfoBean.gene.refSeqID}" />
+			<h:outputLink rendered="#{siteSpecies != 'Xenopus laevis'}" styleClass="plaintext" value="#{GeneInfoBean.gene.refSeqURL}" target="_blank">
+				<h:outputText value="#{GeneInfoBean.gene.refSeqID}" />
 			</h:outputLink>
 --%>						
 			<h:outputText value="UCSC:" rendered="#{siteSpecies != 'Xenopus laevis'}" />
-			<h:outputLink rendered="#{siteSpecies != 'Xenopus laevis'}" styleClass="plaintext" value="#{geneInfoBean.gene.ucscURL}" target="_blank">
+			<h:outputLink rendered="#{siteSpecies != 'Xenopus laevis'}" styleClass="plaintext" value="#{GeneInfoBean.gene.ucscURL}" target="_blank">
 				<h:outputText value="View probes for this gene in UCSC Browser" />
 			</h:outputLink>
 			
 			<h:outputText value="OMIM:" />
-			<h:outputLink styleClass="plaintext" value="#{geneInfoBean.gene.omimURL}" target="_blank">
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.omimURL}" target="_blank">
 				<h:outputText value="Search OMIM" />
 			</h:outputLink>
 			
 			<h:outputText value="Entrez:" />
-			<h:outputLink styleClass="plaintext" value="#{geneInfoBean.gene.entrezURL}" target="_blank">
-				<h:outputText rendered="#{geneInfoBean.entrezIdExists}" value="#{geneInfoBean.gene.entrezID}" />
-				<h:outputText rendered="#{!geneInfoBean.entrezIdExists}" value="Search entrez" />
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.entrezURL}" target="_blank">
+				<h:outputText rendered="#{GeneInfoBean.entrezIdExists}" value="#{GeneInfoBean.gene.entrezID}" />
+				<h:outputText rendered="#{!GeneInfoBean.entrezIdExists}" value="Search entrez" />
 			</h:outputLink>
 			
 			<h:outputText value="Genecards:" />
-			<h:outputLink styleClass="plaintext" value="#{geneInfoBean.gene.geneCardURL}" target="_blank">
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.geneCardURL}" target="_blank">
 				<h:outputText value="Search GeneCards" />
 			</h:outputLink>
 			
 			<h:outputText value="GO:" />
-			<h:outputLink styleClass="plaintext" value="#{geneInfoBean.gene.goURL}#tabular" rendered="#{siteSpecies != 'Xenopus laevis'}" target="_blank">
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.goURL}#tabular" rendered="#{siteSpecies != 'Xenopus laevis'}" target="_blank">
 				<h:outputText value="MGI GO Annotations" />
 			</h:outputLink>
-			<h:outputLink styleClass="plaintext" value="#{geneInfoBean.gene.goURL}" rendered="#{siteSpecies == 'Xenopus laevis'}" target="_blank">
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.goURL}" rendered="#{siteSpecies == 'Xenopus laevis'}" target="_blank">
 				<h:outputText value="Search GO" />
-			</h:outputLink>
-			
-			<h:outputText value="GUDMAP:" rendered="#{proj == 'EuReGene'}"/>
-			<h:outputLink styleClass="plaintext" value="http://gudmap.hgu.mrc.ac.uk/gudmap/pages/ish_submissions.html" target="_blank" rendered="#{proj == 'EuReGene'}">
-				<f:param name="inputType" value="symbol" />
-				<f:param name="stage" value="" />
-				<f:param name="criteria" value="equals" />
-				<f:param name="output" value="gene" />
-				<f:param name="ignoreExpression" value="true" />
-				<f:param value="#{geneInfoBean.gene.symbol}" name="geneSymbol" />
-				<f:param value="geneQueryISH" name="queryType" />
-				<h:outputText value="Search GUDMAP" />
-			</h:outputLink>
-			
-			<h:outputText value="EuReGene:" rendered="#{proj == 'EuReGene'}"/>
-			<h:outputLink styleClass="plaintext" value="/euregenedb/pages/ish_submissions.html" target="_blank" rendered="#{proj == 'EuReGene' && siteSpecies == 'Xenopus laevis'}">
-				<f:param name="inputType" value="symbol" />
-				<f:param name="stage" value="" />
-				<f:param name="criteria" value="equals" />
-				<f:param name="output" value="gene" />
-				<f:param name="ignoreExpression" value="true" />
-				<f:param value="#{geneInfoBean.gene.symbol}" name="geneSymbol" />
-				<f:param value="geneQueryISH" name="queryType" />
-				<h:outputText value="Search EuReGene mouse" />
-			</h:outputLink>
-
-			<h:outputLink styleClass="plaintext" value="/xgebase/pages/ish_submissions.html" target="_blank" rendered="#{proj == 'EuReGene' && siteSpecies == 'mouse'}">
-				<f:param name="inputType" value="symbol" />
-				<f:param name="stage" value="" />
-				<f:param name="criteria" value="equals" />
-				<f:param name="output" value="gene" />
-				<f:param name="ignoreExpression" value="true" />
-				<f:param value="#{geneInfoBean.gene.symbol}" name="geneSymbol" />
-				<f:param value="geneQueryISH" name="queryType" />
-				<h:outputText value="Search XGEbase" />
 			</h:outputLink>
 		</h:panelGrid>
 
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		<h:outputText value="In-Situs" />
-		<h:dataTable cellspacing="5" value="#{geneInfoBean.gene.ishSubmissions}" var="sub">
+		<h:dataTable cellspacing="5" value="#{GeneInfoBean.gene.ishSubmissions}" var="sub">
 			<h:column>
 				<h:outputLink styleClass="datatext" value="#{sub[1]}">
 					<f:param value="#{sub[0]}" name="id" />
@@ -201,12 +166,12 @@
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 	</h:panelGrid>
 	
-	<h:panelGrid columns="1" rowClasses="header-stripey" columnClasses="leftCol" width="100%" cellpadding="0" cellspacing="0" rendered="#{geneInfoBean.gene != null}">
+	<h:panelGrid columns="1" rowClasses="header-stripey" columnClasses="leftCol" width="100%" cellpadding="0" cellspacing="0" rendered="#{GeneInfoBean.gene != null}">
 		<h:outputText value="Microarrays"/>
 	</h:panelGrid>
 
-   	<f:subview id="GeneArrayTable" rendered="#{geneInfoBean.gene.numMicArrays != null && geneInfoBean.gene.numMicArrays > 0}">
-		<h:outputText value="" rendered="#{geneInfoBean.setTableViewNameToArrayData}" />
+   	<f:subview id="GeneArrayTable" rendered="#{GeneInfoBean.gene.numMicArrays != null && GeneInfoBean.gene.numMicArrays > 0}">
+		<h:outputText value="" rendered="#{GeneInfoBean.setTableViewNameToArrayData}" />
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
 	<h:outputText value="" rendered="#{UtilityBean.setActiveTableViewName}" />
