@@ -24,8 +24,12 @@ import java.util.Set;
 public class CollectionAssembler { //Singleton 
 		   
 	static private CollectionAssembler _instance = null;
+    private boolean debug = false;
 
 	protected CollectionAssembler() {
+	if (debug)
+	    System.out.println("CollectionAssembler.constructor");
+
 	}
 
 	/**
