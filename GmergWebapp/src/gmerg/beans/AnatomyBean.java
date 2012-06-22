@@ -23,6 +23,8 @@ import javax.faces.validator.ValidatorException;
  */
 public class AnatomyBean {
 
+    private boolean debug = false;
+
     private SelectItem[] displayStageRange;
     
     private AnatomyStructureAssembler assembler;
@@ -47,7 +49,9 @@ public class AnatomyBean {
 
     public AnatomyBean() {
 
-        
+        	    if (debug)
+		System.out.println("AnatomyBean.constructor");
+
         assembler = new AnatomyStructureAssembler();
         ArrayList stageRange = assembler.getStageRanges();
         displayStageRange = new SelectItem [stageRange.size()];
