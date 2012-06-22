@@ -75,8 +75,8 @@
             <h:form>
               <h:panelGrid columns="3">
               <h:outputText styleClass="nav3" value="Find a specific gene in the list: " />
-              <h:inputText value="#{micSubmissionBean.geneSymbol}" />
-              <h:commandButton actionListener="#{micSubmissionBean.findPageNumberForGeneSymbol}" image="../images/gu_go.gif" />
+              <h:inputText value="#{MicroarraySingleSubmissionBean.geneSymbol}" />
+              <h:commandButton actionListener="#{MicroarraySingleSubmissionBean.findPageNumberForGeneSymbol}" image="../images/gu_go.gif" />
               </h:panelGrid>
             </h:form>
           </h:panelGrid>
@@ -85,7 +85,7 @@
       <tr>
       <td>
         <h:panelGrid columns="3" styleClass="header-stripey" cellpadding="2" cellspacing="0" width="100%">
-          <h:outputText value="Page #{micSubmissionBean.geneListPageNum} of #{micSubmissionBean.numGeneListPages}" styleClass="nav3" />
+          <h:outputText value="Page #{MicroarraySingleSubmissionBean.geneListPageNum} of #{MicroarraySingleSubmissionBean.numGeneListPages}" styleClass="nav3" />
           <h:panelGrid columns="4">
             <h:outputLink value="gene_list.html">
               <h:graphicImage url="/images/first.png" alt="" title="First Page" styleClass="icon" />
@@ -93,21 +93,21 @@
             </h:outputLink>
             <h:outputLink value="gene_list.html">
               <h:graphicImage url="../images/previous.png" alt="" title="Previous Page" styleClass="icon" />
-              <f:param value="#{micSubmissionBean.geneListPageNum-1}" name="pgeNum" />
+              <f:param value="#{MicroarraySingleSubmissionBean.geneListPageNum-1}" name="pgeNum" />
             </h:outputLink>
             <h:outputLink value="gene_list.html">
               <h:graphicImage url="../images/next.png" alt="" title="Next Page" styleClass="icon" />
-              <f:param value="#{micSubmissionBean.geneListPageNum+1}" name="pgeNum" />
+              <f:param value="#{MicroarraySingleSubmissionBean.geneListPageNum+1}" name="pgeNum" />
             </h:outputLink>
             <h:outputLink value="gene_list.html">
               <h:graphicImage url="../images/last.png" alt="" title="Last Page" styleClass="icon" />
-              <f:param value="#{micSubmissionBean.numGeneListPages}" name="pgeNum" />
+              <f:param value="#{MicroarraySingleSubmissionBean.numGeneListPages}" name="pgeNum" />
             </h:outputLink>
           </h:panelGrid>
           <h:panelGroup>
             <h:form>
               <h:panelGrid columns="3">
-                <h:outputLabel styleClass="nav3" for="pgeNum" value="Go to page: " /><h:inputText value="#{micSubmissionBean.geneListPageNum}" id="pgeNum" size="3" />
+                <h:outputLabel styleClass="nav3" for="pgeNum" value="Go to page: " /><h:inputText value="#{MicroarraySingleSubmissionBean.geneListPageNum}" id="pgeNum" size="3" />
                 <h:commandButton image="../images/gu_go.gif" />
               </h:panelGrid>  
             </h:form>
@@ -119,7 +119,7 @@
       
       <h:form id="browseForm" target="_self">
         <h:dataTable cellpadding="2" cellspacing="2" border="0" styleClass="browseTable" rowClasses="table-stripey,table-nostripe" headerClass="table-stripey" width="600"
-                     value="#{micSubmissionBean.geneList}" var="geneListRow">
+                     value="#{MicroarraySingleSubmissionBean.geneList}" var="geneListRow">
           <h:column>
            <f:facet name="header">
               <h:outputText value="Select"/>
@@ -128,7 +128,7 @@
           </h:column>
           <h:column>
             <f:facet name="header">
-              <h:commandLink target="_self" actionListener="#{micSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
+              <h:commandLink target="_self" actionListener="#{MicroarraySingleSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
                 <f:attribute value="byGene" name="sortBy" />
                 <h:outputText value="Gene Symbol" />
               </h:commandLink>
@@ -139,7 +139,7 @@
           </h:column>
           <h:column>
            <f:facet name="header">
-              <h:commandLink target="_self" actionListener="#{micSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
+              <h:commandLink target="_self" actionListener="#{MicroarraySingleSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
                 <f:attribute value="byProbeID" name="sortBy" />
                 <h:outputText value="Probe ID" />
               </h:commandLink>
@@ -148,7 +148,7 @@
           </h:column>
           <h:column>
            <f:facet name="header">
-              <h:commandLink target="_self" actionListener="#{micSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
+              <h:commandLink target="_self" actionListener="#{MicroarraySingleSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
                 <f:attribute value="bySignal" name="sortBy" />
                 <h:outputText value="Signal" />
               </h:commandLink>
@@ -158,7 +158,7 @@
 <%--
           <h:column>
            <f:facet name="header">
-              <h:commandLink target="_self" actionListener="#{micSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
+              <h:commandLink target="_self" actionListener="#{MicroarraySingleSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
                 <f:attribute value="byDetection" name="sortBy" />
                 <h:outputText value="Detection" />
               </h:commandLink>
@@ -168,7 +168,7 @@
 --%>          
           <h:column>
            <f:facet name="header">
-              <h:commandLink target="_self" actionListener="#{micSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
+              <h:commandLink target="_self" actionListener="#{MicroarraySingleSubmissionBean.sortByAny}" styleClass="plaintextbold"> 
                 <f:attribute value="byPValue" name="sortBy" />
                 <h:outputText value="P-Value" />
               </h:commandLink>
