@@ -12,6 +12,7 @@ import gmerg.assemblers.*;
 import gmerg.utils.CookieOperations;
 
 public class AuthenticationBean  {
+    private boolean debug = false;
 
     private String userName;
     private String password;
@@ -20,7 +21,9 @@ public class AuthenticationBean  {
     private UIInput passInput;
 
     public AuthenticationBean(){
-        
+        	    if (debug)
+		System.out.println("AuthenticationBean.constructor");
+
     }
     
     public UIInput getNameInput() {
