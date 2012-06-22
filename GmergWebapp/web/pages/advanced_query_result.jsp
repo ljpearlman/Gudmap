@@ -18,10 +18,10 @@
             
               <h:panelGrid width="100%" columns="3">           
                 <t:outputText value="Search:"/>   
-                <t:selectOneRadio id="radio1" forceId="true" forceIdIndex="false" layout="lineDirection" value="#{advancedQueryBean.selectedStepOne}">
-    	          <f:selectItems value="#{advancedQueryBean.stepOne}" />
+                <t:selectOneRadio id="radio1" forceId="true" forceIdIndex="false" layout="lineDirection" value="#{AdvancedQueryBean.selectedStepOne}">
+    	          <f:selectItems value="#{AdvancedQueryBean.stepOne}" />
 	        </t:selectOneRadio>      
-	        <h:commandButton value="GO" action="#{advancedQueryBean.advancedQuery}" />		        
+	        <h:commandButton value="GO" action="#{AdvancedQueryBean.advancedQuery}" />		        
               </h:panelGrid>
             
             
@@ -30,25 +30,25 @@
             
             
               <h:panelGroup>
-              <t:dataList id="boths" styleClass="plaintextbold" var="both" value="#{advancedQueryBean.both}" layout="simple" rowCountVar="count" rowIndexVar="index">
-                <h:panelGrid width="50%" columns="2" rendered="#{!advancedQueryBean.renderedMicroarray||!advancedQueryBean.renderedISH}">
-                  <h:commandLink action="#{advancedQueryBean.changeProbe}" rendered="#{!both[1]}">        
+              <t:dataList id="boths" styleClass="plaintextbold" var="both" value="#{AdvancedQueryBean.both}" layout="simple" rowCountVar="count" rowIndexVar="index">
+                <h:panelGrid width="50%" columns="2" rendered="#{!AdvancedQueryBean.renderedMicroarray||!AdvancedQueryBean.renderedISH}">
+                  <h:commandLink action="#{AdvancedQueryBean.changeProbe}" rendered="#{!both[1]}">        
 		    <h:graphicImage url="../images/min-box.gif" alt="minus"  styleClass="icon"/>
 		    <f:param value="#{both[3]}" name="section" />
 		    <f:param value="Y" name="expand" />
 		  </h:commandLink>
-		  <h:commandLink action="#{advancedQueryBean.changeProbe}" rendered="#{both[1]}">        
+		  <h:commandLink action="#{AdvancedQueryBean.changeProbe}" rendered="#{both[1]}">        
 		    <h:graphicImage url="../images/plus-box.gif" alt="plus"  styleClass="icon"/>
 		    <f:param value="#{both[3]}" name="section" />
 		    <f:param value="N" name="expand" />
 		  </h:commandLink>
 		  <t:outputText value="#{both[2]}"/> 
                 </h:panelGrid>
-                <h:panelGrid width="80%" columns="2" border="1" rules="groups" cellspacing="0" cellpadding="2" rendered="#{!both[1]&&(!advancedQueryBean.renderedMicroarray||!advancedQueryBean.renderedISH)}">
+                <h:panelGrid width="80%" columns="2" border="1" rules="groups" cellspacing="0" cellpadding="2" rendered="#{!both[1]&&(!AdvancedQueryBean.renderedMicroarray||!AdvancedQueryBean.renderedISH)}">
 		  <t:dataList id="items" styleClass="plaintextbold" var="item" value="#{both[0]}" layout="simple" rowCountVar="count" rowIndexVar="index">
-		    <h:panelGrid width="100%" columns="2" columnClasses="align-left,align-right" rendered="#{!both[1]&&(!advancedQueryBean.renderedISH||!advancedQueryBean.renderedMicroarray)}">
+		    <h:panelGrid width="100%" columns="2" columnClasses="align-left,align-right" rendered="#{!both[1]&&(!AdvancedQueryBean.renderedISH||!AdvancedQueryBean.renderedMicroarray)}">
 		      <h:outputText value="#{item[0]}" />
-                      <h:commandLink action="#{advancedQueryBean.addOption}">
+                      <h:commandLink action="#{AdvancedQueryBean.addOption}">
                         <h:outputText value="Add" />
                         <f:param value="#{item[1]}" name="name" />
                       </h:commandLink>
@@ -57,25 +57,25 @@
 	        </h:panelGrid>
               </t:dataList>
 
-              <t:dataList id="ishs" styleClass="plaintextbold" var="ish" value="#{advancedQueryBean.ish}" layout="simple" rowCountVar="count" rowIndexVar="index">
-                <h:panelGrid width="50%" columns="2" rendered="#{!advancedQueryBean.renderedISH}">
-                  <h:commandLink action="#{advancedQueryBean.changeProbe}" rendered="#{!ish[1]}">        
+              <t:dataList id="ishs" styleClass="plaintextbold" var="ish" value="#{AdvancedQueryBean.ish}" layout="simple" rowCountVar="count" rowIndexVar="index">
+                <h:panelGrid width="50%" columns="2" rendered="#{!AdvancedQueryBean.renderedISH}">
+                  <h:commandLink action="#{AdvancedQueryBean.changeProbe}" rendered="#{!ish[1]}">        
 		    <h:graphicImage url="../images/min-box.gif" alt="minus"  styleClass="icon"/>
 		    <f:param value="#{ish[3]}" name="section" />
 		    <f:param value="Y" name="expand" />
 		  </h:commandLink>
-		  <h:commandLink action="#{advancedQueryBean.changeProbe}" rendered="#{ish[1]}">        
+		  <h:commandLink action="#{AdvancedQueryBean.changeProbe}" rendered="#{ish[1]}">        
 		    <h:graphicImage url="../images/plus-box.gif" alt="plus"  styleClass="icon"/>
 		    <f:param value="#{ish[3]}" name="section" />
 		    <f:param value="N" name="expand" />
 		  </h:commandLink>
 		  <t:outputText value="#{ish[2]}"/> 
                 </h:panelGrid>
-                <h:panelGrid width="80%" columns="1" border="1" rules="groups" cellspacing="0" cellpadding="2" rendered="#{!ish[1]&&!advancedQueryBean.renderedISH}">
+                <h:panelGrid width="80%" columns="1" border="1" rules="groups" cellspacing="0" cellpadding="2" rendered="#{!ish[1]&&!AdvancedQueryBean.renderedISH}">
                   <t:dataList id="items" styleClass="plaintextbold" var="item" value="#{ish[0]}" layout="simple" rowCountVar="count" rowIndexVar="index">
-		    <h:panelGrid width="100%" columns="2" columnClasses="align-left,align-right" rendered="#{!ish[1]&&!advancedQueryBean.renderedISH}">
+		    <h:panelGrid width="100%" columns="2" columnClasses="align-left,align-right" rendered="#{!ish[1]&&!AdvancedQueryBean.renderedISH}">
                       <h:outputText value="#{item[0]}" />
-                      <h:commandLink action="#{advancedQueryBean.addOption}">        						        
+                      <h:commandLink action="#{AdvancedQueryBean.addOption}">        						        
                         <h:outputText value="Add" /> 
                         <f:param value="#{item[1]}" name="name" />						  		
 		      </h:commandLink>
@@ -84,25 +84,25 @@
 		</h:panelGrid>	
 	      </t:dataList>								
 	  	        
-              <t:dataList id="mics"  styleClass="plaintextbold"  var="mic"  value="#{advancedQueryBean.mic}" layout="simple" rowCountVar="count" rowIndexVar="index">
-                <h:panelGrid width="50%" columns="2" rendered="#{!advancedQueryBean.renderedMicroarray}">
-                  <h:commandLink action="#{advancedQueryBean.changeProbe}" rendered="#{!mic[1]}">        
+              <t:dataList id="mics"  styleClass="plaintextbold"  var="mic"  value="#{AdvancedQueryBean.mic}" layout="simple" rowCountVar="count" rowIndexVar="index">
+                <h:panelGrid width="50%" columns="2" rendered="#{!AdvancedQueryBean.renderedMicroarray}">
+                  <h:commandLink action="#{AdvancedQueryBean.changeProbe}" rendered="#{!mic[1]}">        
 		    <h:graphicImage url="../images/min-box.gif" alt="minus"  styleClass="icon"/>
                     <f:param value="#{mic[3]}" name="section" />
 		    <f:param value="Y" name="expand" />
 		  </h:commandLink>
-		  <h:commandLink action="#{advancedQueryBean.changeProbe}" rendered="#{mic[1]}">        
+		  <h:commandLink action="#{AdvancedQueryBean.changeProbe}" rendered="#{mic[1]}">        
 		    <h:graphicImage url="../images/plus-box.gif" alt="plus"  styleClass="icon"/>
 		    <f:param value="#{mic[3]}" name="section" />
 		    <f:param value="N" name="expand" />
 		  </h:commandLink>
 		  <t:outputText value="#{mic[2]}"/> 
                 </h:panelGrid>
-                <h:panelGrid width="80%" columns="2" border="1" rules="groups" cellspacing="0" cellpadding="2" rendered="#{!mic[1]&&!advancedQueryBean.renderedMicroarray}">
+                <h:panelGrid width="80%" columns="2" border="1" rules="groups" cellspacing="0" cellpadding="2" rendered="#{!mic[1]&&!AdvancedQueryBean.renderedMicroarray}">
 		  <t:dataList id="items" styleClass="plaintextbold" var="item" value="#{mic[0]}" layout="simple" rowCountVar="count" rowIndexVar="index">
-                    <h:panelGrid width="100%" columns="2" columnClasses="align-left,align-right" rendered="#{!mic[1]&&!advancedQueryBean.renderedMicroarray}">
+                    <h:panelGrid width="100%" columns="2" columnClasses="align-left,align-right" rendered="#{!mic[1]&&!AdvancedQueryBean.renderedMicroarray}">
                       <h:outputText value="#{item[0]}" />						
-                      <h:commandLink action="#{advancedQueryBean.addOption}">  
+                      <h:commandLink action="#{AdvancedQueryBean.addOption}">  
                         <h:outputText value="Add" />       						        
 		        <f:param value="#{item[1]}" name="name" />						  		
 		      </h:commandLink>												
@@ -126,14 +126,14 @@
       	          </tr>
       	      </f:verbatim>
               
-      	      <t:dataList id="labs" styleClass="plaintextbold" var="lab" value="#{advancedQueryBean.collection}" layout="simple" rowCountVar="count" rowIndexVar="index">
+      	      <t:dataList id="labs" styleClass="plaintextbold" var="lab" value="#{AdvancedQueryBean.collection}" layout="simple" rowCountVar="count" rowIndexVar="index">
                 <f:verbatim>
 	          <tr>
 	      	    <td>     
 	      	</f:verbatim>	
 	      	<h:outputText value="#{lab[0]}" />
                 <t:dataList id="ops" styleClass="plaintextbold" var="op" value="#{lab[1]}" layout="simple" rowCountVar="count1" rowIndexVar="index1">
-	          <h:commandLink action="#{advancedQueryBean.removeCollection}">  
+	          <h:commandLink action="#{AdvancedQueryBean.removeCollection}">  
                     <h:outputText value="Remove" />       						        
                     <f:param value="#{lab[0]}" name="collection" />						  		
 		  </h:commandLink>
@@ -161,18 +161,18 @@
 	      </f:verbatim>
 	           
 	      <h:outputText value="Output" />
-	      <t:selectOneRadio id="radio2" forceId="true" forceIdIndex="false" layout="lineDirection" value="#{advancedQueryBean.selectedOutput}">
+	      <t:selectOneRadio id="radio2" forceId="true" forceIdIndex="false" layout="lineDirection" value="#{AdvancedQueryBean.selectedOutput}">
 	        <f:selectItem itemLabel="Gene List" itemValue="gene" />
 	      </t:selectOneRadio>
-	      <h:commandLink action="#{advancedQueryBean.startSearch}">        		        		  
+	      <h:commandLink action="#{AdvancedQueryBean.startSearch}">        		        		  
                 <h:outputText value="Search" />
               </h:commandLink>
               <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
-              <h:commandLink action="#{advancedQueryBean.removeAll}">        		        		  
+              <h:commandLink action="#{AdvancedQueryBean.removeAll}">        		        		  
                 <h:outputText value="Remove All" />
               </h:commandLink>
               <f:verbatim>&nbsp;&nbsp;&nbsp;&nbsp;</f:verbatim>
-              <h:commandLink action="#{advancedQueryBean.clearAllValues}">        		        		  
+              <h:commandLink action="#{AdvancedQueryBean.clearAllValues}">        		        		  
                 <h:outputText value="Clear All" />
               </h:commandLink>
               <f:verbatim>
