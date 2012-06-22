@@ -15,9 +15,11 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 public class BatchAnnotationAssembler {
-	
+    private boolean debug = false;
 	public BatchAnnotationAssembler() {
-		
+	    if (debug)
+	    System.out.println("BatchAnnotationAssembler.constructor");
+
 	}
 	
 	/**
