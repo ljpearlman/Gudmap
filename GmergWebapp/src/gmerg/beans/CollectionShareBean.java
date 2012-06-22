@@ -15,6 +15,8 @@ import gmerg.utils.FacesUtil;
 import gmerg.utils.Utility;
 
 public class CollectionShareBean {
+    private boolean debug = false;
+
 	private String emailMessage;
 	private String toEmailAddress;
 	private String collectionId;
@@ -26,6 +28,9 @@ public class CollectionShareBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public CollectionShareBean() {
+	    if (debug)
+		System.out.println("CollectionShareBean.constructor");
+
 		collectionId = Utility.getValue(FacesUtil.getAnyRequestParamValue("collectionId"), "clipboard");
 		collectionType = Integer.parseInt(Utility.getValue(FacesUtil.getRequestParamValue("collectionType"), "0"));
 		sendErrorMessage = "";
