@@ -7,11 +7,15 @@ import gmerg.utils.FacesUtil;
 import gmerg.utils.Visit;
 
 public class FocusGeneIndexBean {
+    private boolean debug = false;
 	private String[] index;
 //	private ArrayDataModel rows;
 	private HtmlDataTable myDataTable = new HtmlDataTable();
 	
 	public FocusGeneIndexBean() {
+	    if (debug)
+		System.out.println("FocusGeneIndexBean.constructor");
+
 		index =new String[]{"A","B","C","D","E",
 							"F","G","H","I","J",
 							"K","L","M","N","O",
@@ -22,6 +26,7 @@ public class FocusGeneIndexBean {
 	}
     
     public String queryGenes() {
+
     	Visit.setStatusParam("query", FacesUtil.getRequestParamValue("query"));
     	Visit.setStatusParam("input", FacesUtil.getRequestParamValue("input"));
     	return "AdvancedQuery";
