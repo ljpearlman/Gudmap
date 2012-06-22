@@ -15,6 +15,7 @@ import java.util.HashMap;
  */
 
 public class SeriesBean {
+    private boolean debug = false;
 
     private SeriesAssembler assembler;
     private Series series;   //object to contain all series data (except sample data)
@@ -22,6 +23,9 @@ public class SeriesBean {
 
     
     public SeriesBean() {
+	if (debug)
+	    System.out.println("SeriesBean.constructor");
+
         //get the series id from the request parameters
         seriesId = FacesUtil.getRequestParamValue("seriesId");
         
