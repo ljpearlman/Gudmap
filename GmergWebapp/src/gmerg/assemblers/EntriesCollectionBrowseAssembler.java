@@ -22,9 +22,13 @@ import java.util.HashMap;
  *
  */
 public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembler {
+    private boolean debug = false;
 
 	public EntriesCollectionBrowseAssembler (HashMap params, CollectionBrowseHelper helper) {
 		super(params, helper);
+	if (debug)
+	    System.out.println("EntriesCollectionBrowseAssembler.constructor");
+
 	}
 	
 	/**
