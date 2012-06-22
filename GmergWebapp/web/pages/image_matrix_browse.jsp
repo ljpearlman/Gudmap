@@ -5,7 +5,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText value="<span class='plaintextbold'>Gene: </span> #{ImageMatrixBean.gene}" escape="false" />
+	<h:outputText value="<span class='plaintextbold'>Gene: </span> #{ImageMatrixBrowseBean.gene}" escape="false" />
 	<f:subview id="imageMatrix">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
