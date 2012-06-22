@@ -31,30 +31,30 @@
     <body>
       <h:panelGrid columns="2" rowClasses="odd,even">
         <h:outputText value="ID:" />
-        <h:outputText value="#{imageDetailBean.imageDetail.accessionId}" />
+        <h:outputText value="#{ImageDetailBean.imageDetail.accessionId}" />
         
         <h:outputText value="Gene Symbol:" />
-        <h:outputText value="#{imageDetailBean.imageDetail.geneSymbol}" />
+        <h:outputText value="#{ImageDetailBean.imageDetail.geneSymbol}" />
         
         <h:outputText value="Gene Name:" />
-        <h:outputText value="#{imageDetailBean.imageDetail.geneName}" />
+        <h:outputText value="#{ImageDetailBean.imageDetail.geneName}" />
         
         <h:outputText value="#{stageSeriesLong} Stage:" />
-        <h:outputText value="#{imageDetailBean.imageDetail.stage}" />
+        <h:outputText value="#{ImageDetailBean.imageDetail.stage}" />
         
         <h:outputText value="Age:" />
-        <h:outputText value="#{imageDetailBean.imageDetail.age}" />
+        <h:outputText value="#{ImageDetailBean.imageDetail.age}" />
         
         <h:outputText value="Assay Type:" />
-        <h:outputText value="#{imageDetailBean.imageDetail.assayType}" />
+        <h:outputText value="#{ImageDetailBean.imageDetail.assayType}" />
         
         <h:outputText value="Specimen Type:" />
-        <h:outputText value="#{imageDetailBean.imageDetail.specimenType}" />
+        <h:outputText value="#{ImageDetailBean.imageDetail.specimenType}" />
         
         <h:outputText value="Serial no.:" />
-        <h:outputText value="#{imageDetailBean.imageDetail.serialNo}" />
+        <h:outputText value="#{ImageDetailBean.imageDetail.serialNo}" />
       </h:panelGrid>
-      <h:graphicImage alt="" value="#{imageDetailBean.imageDetail.filePath}#{imageDetailBean.imageDetail.imageName}" />
+      <h:graphicImage alt="" value="#{ImageDetailBean.imageDetail.filePath}#{ImageDetailBean.imageDetail.imageName}" />
     </body>
   </html>
 </f:view>
