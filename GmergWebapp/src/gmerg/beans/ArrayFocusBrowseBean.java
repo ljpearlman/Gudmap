@@ -8,11 +8,15 @@ import gmerg.utils.Visit;
 import gmerg.utils.Utility;
 
 public class ArrayFocusBrowseBean {
-	
+    private boolean debug = false;
+
 	private String organ;
 	private String stage;
 	
 	public ArrayFocusBrowseBean() {
+	    if (debug)
+		System.out.println("ArrayFocusBrowseBean.constructor");
+
 		organ = Visit.getRequestParam("focusedOrgan");
 		stage = Visit.getRequestParam("stage");
 		String viewName = "focusBrowseArray";
