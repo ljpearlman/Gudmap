@@ -27,7 +27,11 @@ import java.util.ArrayList;
  *
  */
 public class ArraySubmissionAssembler {
-	
+    private boolean debug = false;
+    public ArraySubmissionAssembler() {
+	if (debug)
+	    System.out.println("ArraySubmissionAssembler.constructor");
+    }
 	/**
 	 * get array submission info excluding gene list info
 	 * 
