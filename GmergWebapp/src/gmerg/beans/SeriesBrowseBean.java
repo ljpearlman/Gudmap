@@ -13,6 +13,7 @@ import gmerg.utils.Utility;
 */
 
 public class SeriesBrowseBean  {
+    private boolean debug = false;
 
 	private String organ;
 	private String platform;
@@ -21,6 +22,9 @@ public class SeriesBrowseBean  {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public SeriesBrowseBean() {
+	if (debug)
+	    System.out.println("SeriesBrowseBean.constructor");
+
 		organ = Visit.getRequestParam("focusedOrgan");
 		platform = Visit.getRequestParam("platform");
 		String viewName = "seriesBrowse";
