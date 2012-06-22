@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javax.faces.context.FacesContext;
 
 public class QueryBean {
+    private boolean debug = false;
 
     private String inputType;
     private String criteria;
@@ -24,7 +25,9 @@ public class QueryBean {
 
 
     public QueryBean() {
-        
+        	if (debug)
+	    System.out.println("QueryBean.constructor");
+
     }
     
     public String getInputType() {
