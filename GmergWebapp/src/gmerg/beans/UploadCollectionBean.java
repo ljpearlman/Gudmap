@@ -17,7 +17,8 @@ import java.util.Vector;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 
 public class UploadCollectionBean {
-	
+    private boolean debug = false;
+
 	//added by ying
 	private UploadedFile myFile;
 	
@@ -25,7 +26,9 @@ public class UploadCollectionBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public UploadCollectionBean() {
-//    	System.out.println("in collection bean constructor");    	
+	if (debug)
+	    System.out.println("UploadCollectionBean.constructor");
+
 		String viewName = "uploadCollection";
 		
 		if (TableUtil.isTableViewInSession())
