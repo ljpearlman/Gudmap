@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class MySQLIHCDAOImp implements IHCDAO {
+
+    private boolean debug = false;
     private Connection conn;
 
     // default constructor
@@ -403,6 +405,8 @@ public class MySQLIHCDAOImp implements IHCDAO {
         PreparedStatement prepStmt = null;
         try {
             for (int i = 0; i < queryNumber; i++) {
+		    if (debug)
+			System.out.println("MySQLIHCDAOImp.sql = "+queryString[i].toLowerCase());
                 prepStmt = conn.prepareStatement(queryString[i]);
                 if (param != null &&
                     param[i] != null) { // set query criteria if it's not null
