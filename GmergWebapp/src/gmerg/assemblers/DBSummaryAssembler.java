@@ -16,7 +16,11 @@ import gmerg.entities.summary.DBSummary;
  *
  */
 public class DBSummaryAssembler {
-	
+    private boolean debug = false;
+    public DBSummaryAssembler() {
+	if (debug)
+	    System.out.println("DBSummaryAssembler.constructor");
+    }
 	/**
 	 * modified by xingjun - 02/02/2009
 	 * get public genes for ish, ihc, and tg data
