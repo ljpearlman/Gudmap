@@ -11,12 +11,15 @@ import gmerg.utils.Visit;
  *
  */
 public class InsituFocusBrowseBean {
-	
+    private boolean debug = false;
 	private String organ;
 	private String stage;
 	private String gene;
 	
 	public InsituFocusBrowseBean() {
+	    if (debug)
+		System.out.println("InsituFocusBrowseBean.constructor");
+
 		organ = Visit.getRequestParam("focusedOrgan");
 		stage = Visit.getRequestParam("stage");
 		gene = Visit.getRequestParam("gene");
