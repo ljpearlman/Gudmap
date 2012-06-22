@@ -16,7 +16,12 @@ import gmerg.db.MySQLDAOFactory;
  *
  */
 public class MolecularMarkerAssembler {
-	
+    private boolean debug = false;
+    public MolecularMarkerAssembler() {
+	if (debug)
+	    System.out.println("MolecularMarkerAssembler.constructor");
+
+    }
 	public ArrayList getMarkerCandidates() {
 		
 		/** ---get data from dao--- */
