@@ -17,6 +17,8 @@
 <c:set var="pageName" value="${pageContext.request.servletPath}" />
 
 <f:subview id="headersubview">
+  <a4j:keepAlive beanName="UserBean" />
+  <a4j:keepAlive beanName="HeaderQuickSearchBean" />
 <f:verbatim>
 
 <html>
@@ -325,14 +327,14 @@ note that confirm box is not a good implementation because if the user doesn't a
 	</f:verbatim>
 									<h:form id="loginLinkForm" >
 									<h:panelGrid columns="1">
-										<h:panelGroup rendered="#{userBean.userLoggedIn}">
-											<h:outputText value="User: #{userBean.nickName} " styleClass="italictext" />
+										<h:panelGroup rendered="#{UserBean.userLoggedIn}">
+											<h:outputText value="User: #{UserBean.nickName} " styleClass="italictext" />
 											<f:verbatim>&nbsp;&nbsp;</f:verbatim>
-											<h:commandLink styleClass="text_bottom" action="#{userBean.logout}" immediate="true">
+											<h:commandLink styleClass="text_bottom" action="#{UserBean.logout}" immediate="true">
 												<h:outputText value="Logout" />
 											</h:commandLink>
 										</h:panelGroup>
-										<h:panelGroup rendered="#{!userBean.userLoggedIn}" >
+										<h:panelGroup rendered="#{!UserBean.userLoggedIn}" >
 											<h:outputLink id="loginLink" styleClass="text_bottom" value="secure/login.html?#{Visit.statusParam}" >
 												<h:outputText value="Login" />
 											</h:outputLink>
@@ -388,7 +390,7 @@ note that confirm box is not a good implementation because if the user doesn't a
 						<li>
 							<a class="MenuBarItemSubmenu" href="http://www.gudmap.org/Menu_Index/Gene_Expression.html">Gene Expression</a>
 							<ul>
-								<li><a href="http://www.gudmap.org/gudmap/">Query/Browse Database</a>                </li>
+								<li><a href="/gudmap/">Query/Browse Database</a>                </li>
 <%-- xingjun - 10/11/2011 - as requested by Simon - 1. change text from 'Organ' to 'Tissue'; 2. change file extension from '.html' to '.php'
 								<li><a href="http://www.gudmap.org/Organ_Summaries/index.html">Organ Summaries</a></li>
 --%>
@@ -472,7 +474,7 @@ note that confirm box is not a good implementation because if the user doesn't a
 								<li>
 									<a class="MenuBarItemSubmenu" href="http://www.gudmap.org/Menu_Index/Gene_Expression.html">Gene Expression</a>
 									<ul>
-										<li><a href="http://www.gudmap.org/gudmap/">Query/Browse Database</a>                </li>
+										<li><a href="/gudmap/">Query/Browse Database</a>                </li>
 										<li><a href="http://www.gudmap.org/Organ_Summaries/index.html">Organ Summaries</a></li>
 										<li><a href="http://www.gudmap.org/Quality_Control/ISH/index.html">ISH Quality Control</a></li>
 									</ul>
@@ -649,13 +651,13 @@ note that confirm box is not a good implementation because if the user doesn't a
 							</f:verbatim>
 <%-- 
 							<h:form id="loginLinkForm" >
-								<h:panelGroup rendered="#{userBean.userLoggedIn}">
-									<h:outputText value="User: #{userBean.nickName}, " styleClass="plaintext" />
-									<h:commandLink styleClass="plaintext" action="#{userBean.logout}" immediate="true">
+								<h:panelGroup rendered="#{UserBean.userLoggedIn}">
+									<h:outputText value="User: #{UserBean.nickName}, " styleClass="plaintext" />
+									<h:commandLink styleClass="plaintext" action="#{UserBean.logout}" immediate="true">
 										<h:outputText value="LOGOUT" />
 									</h:commandLink>
 								</h:panelGroup>				
-								<h:outputLink id="loginLink" styleClass="plaintext" value="secure/login.html?#{Visit.statusParam}" rendered="#{!userBean.userLoggedIn}" >
+								<h:outputLink id="loginLink" styleClass="plaintext" value="secure/login.html?#{Visit.statusParam}" rendered="#{!UserBean.userLoggedIn}" >
 									<h:outputText value="LOGIN" />
 								</h:outputLink>
 							</h:form>
