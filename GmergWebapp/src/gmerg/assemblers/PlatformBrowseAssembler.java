@@ -13,15 +13,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlatformBrowseAssembler extends OffMemoryTableAssembler{
+    private boolean debug = false;
 
 	String organ;
 	
 	public PlatformBrowseAssembler() {
-		super();
+	if (debug)
+	    System.out.println("PlatformBrowseAssembler.constructor");
+	       
 	}
 	
 	public PlatformBrowseAssembler(HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("PlatformBrowseAssembler.constructor");
 	}
 
 	public void setParams() {
