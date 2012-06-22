@@ -7,30 +7,30 @@
 <f:view>
   <jsp:include page="/includes/header.jsp" />
     <h:panelGrid columns="1" width="100%" rowClasses="header-stripey,header-nostripe">
-    <h:outputText styleClass="plaintextbold" value="#{micSubmissionBean.submission.accID}" />
+    <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.submission.accID}" />
     <f:verbatim>&nbsp;</f:verbatim>
     </h:panelGrid>
     
     <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" rowClasses="header-stripey,header-nostripe">
     	<h:outputText value="#{stageSeriesLong} Stage" />
 <%-- 
-    	<h:outputLink styleClass="datatext" value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts#{micSubmissionBean.submission.stage}/">
+    	<h:outputLink styleClass="datatext" value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts#{MicroarraySingleSubmissionBean.submission.stage}/">
 --%>
-    	<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{micSubmissionBean.submission.stage}definition.html">
-    		<h:outputText value="#{stageSeriesShort}#{micSubmissionBean.submission.stage}" />
+    	<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{MicroarraySingleSubmissionBean.submission.stage}definition.html">
+    		<h:outputText value="#{stageSeriesShort}#{MicroarraySingleSubmissionBean.submission.stage}" />
     	</h:outputLink>
 
 		<%--  commented out until further decision about this page - (Bernie 17/11/2010 Mantis 506 )
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		
 		<h:outputText value="Tissue" />
-		<h:outputText value="#{micSubmissionBean.submission.tissue}" />
+		<h:outputText value="#{MicroarraySingleSubmissionBean.submission.tissue}" />
 		--%>
 		
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		
-		<h:outputText value="Images" rendered="#{micSubmissionBean.submission.originalImages != null}" />
-		<h:dataTable rendered="#{micSubmissionBean.submission.originalImages != null}" columnClasses="text-normal,text-top" value="#{micSubmissionBean.submission.originalImages}" var="image" >
+		<h:outputText value="Images" rendered="#{MicroarraySingleSubmissionBean.submission.originalImages != null}" />
+		<h:dataTable rendered="#{MicroarraySingleSubmissionBean.submission.originalImages != null}" columnClasses="text-normal,text-top" value="#{MicroarraySingleSubmissionBean.submission.originalImages}" var="image" >
 			<h:column>
 				<h:outputLink value="#" onclick="window.open('#{image[1]}', '', 'resizable=1,toolbar=0,scrollbars=1,width=600,height=600');return false;">
 					<h:graphicImage styleClass="icon" value="#{image[0]}" height="50" onclick=""/>
@@ -38,29 +38,29 @@
 			</h:column>
 		</h:dataTable>
 		
-		<f:verbatim rendered="#{micSubmissionBean.submission.originalImages != null}">&nbsp;</f:verbatim>
-		<f:verbatim rendered="#{micSubmissionBean.submission.originalImages != null}">&nbsp;</f:verbatim>
+		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.originalImages != null}">&nbsp;</f:verbatim>
+		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.originalImages != null}">&nbsp;</f:verbatim>
 		
 		<h:outputText value="Supplemental Data Files" />
 		<h:panelGrid columns="2" columnClasses="plaintext, datatext">
 			<h:outputText value="CEL file:" />
-			<h:outputLink styleClass="datatext" value="#{micSubmissionBean.submission.filesLocation}CEL/#{micSubmissionBean.submission.celFile}">
-				<h:outputText value="#{micSubmissionBean.submission.celFile}" />
+			<h:outputLink styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.filesLocation}CEL/#{MicroarraySingleSubmissionBean.submission.celFile}">
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.celFile}" />
 			</h:outputLink>
 			
 			<h:outputText value="CHP file:" />
-			<h:outputLink styleClass="datatext" value="#{micSubmissionBean.submission.filesLocation}CHP/#{micSubmissionBean.submission.chpFile}">
-				<h:outputText value="#{micSubmissionBean.submission.chpFile}" />
+			<h:outputLink styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.filesLocation}CHP/#{MicroarraySingleSubmissionBean.submission.chpFile}">
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.chpFile}" />
 			</h:outputLink>
 			
 			<h:outputText value="RPT file:" />
-			<h:outputLink styleClass="datatext" value="#{micSubmissionBean.submission.filesLocation}RPT/#{micSubmissionBean.submission.rptFile}">
-				<h:outputText value="#{micSubmissionBean.submission.rptFile}" />
+			<h:outputLink styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.filesLocation}RPT/#{MicroarraySingleSubmissionBean.submission.rptFile}">
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.rptFile}" />
 			</h:outputLink>
 			
 			<h:outputText value="TXT file:" />
-			<h:outputLink styleClass="datatext" value="#{micSubmissionBean.submission.filesLocation}TXT/#{micSubmissionBean.submission.txtFile}">
-				<h:outputText value="#{micSubmissionBean.submission.txtFile}" />
+			<h:outputLink styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.filesLocation}TXT/#{MicroarraySingleSubmissionBean.submission.txtFile}">
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.txtFile}" />
 			</h:outputLink>
 		</h:panelGrid>
 		
@@ -76,29 +76,29 @@
       </f:verbatim>
 --%>
 
-		<h:outputText value="Archive ID" rendered="#{micSubmissionBean.submission.archiveId != null}" />
-		<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{micSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{micSubmissionBean.submission.archiveId != null}">
-			<h:outputText value="#{micSubmissionBean.submission.archiveId}" />
+		<h:outputText value="Archive ID" rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}" />
+		<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{MicroarraySingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}">
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.archiveId}" />
 		</h:outputLink>
 		
-		<f:verbatim rendered="#{micSubmissionBean.submission.archiveId != null}">&nbsp;</f:verbatim>
-		<f:verbatim rendered="#{micSubmissionBean.submission.archiveId != null}">&nbsp;</f:verbatim>
+		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}">&nbsp;</f:verbatim>
+		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}">&nbsp;</f:verbatim>
 		
 		<h:outputText value="Principal Investigator(s)" />
-		<h:panelGroup rendered="#{micSubmissionBean.submission.principalInvestigators == null}">
-			<h:outputText styleClass="datatext" value="#{micSubmissionBean.submission.principalInvestigator.name}, " />
-<%-- 		<h:outputText styleClass="datatext" value="#{micSubmissionBean.submission.principalInvestigator.address}, " />--%>
-			<h:outputLink styleClass="datatext" value="javascript:showLabDetails(#{micSubmissionBean.submission.principalInvestigator.id})">
-				<h:outputText value="#{micSubmissionBean.submission.principalInvestigator.lab}, #{micSubmissionBean.submission.principalInvestigator.city}, #{micSubmissionBean.submission.principalInvestigator.country}, " />
+		<h:panelGroup rendered="#{MicroarraySingleSubmissionBean.submission.principalInvestigators == null}">
+			<h:outputText styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.name}, " />
+<%-- 		<h:outputText styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.address}, " />--%>
+			<h:outputLink styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.principalInvestigator.id})">
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.lab}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.city}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.country}, " />
 			</h:outputLink>
-			<h:outputLink styleClass="datatext" value="mailto:#{micSubmissionBean.submission.principalInvestigator.email}"> 
-				<h:outputText value="#{micSubmissionBean.submission.principalInvestigator.email}" />
+			<h:outputLink styleClass="datatext" value="mailto:#{MicroarraySingleSubmissionBean.submission.principalInvestigator.email}"> 
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.email}" />
 			</h:outputLink>
 		</h:panelGroup>
-		<h:panelGroup rendered="#{micSubmissionBean.submission.principalInvestigators != null}">
+		<h:panelGroup rendered="#{MicroarraySingleSubmissionBean.submission.principalInvestigators != null}">
 			<t:dataList id="piDataList" 
 				var="piInfo"
-				value="#{micSubmissionBean.submission.principalInvestigators}"
+				value="#{MicroarraySingleSubmissionBean.submission.principalInvestigators}"
 				rowCountVar="count"
 				rowIndexVar="index"
 				layout="unorderedList">
@@ -119,13 +119,13 @@
 		
 		<h:outputText value="Submitted By" />
 		<h:panelGroup>
-			<h:outputText styleClass="datatext" value="#{micSubmissionBean.submission.submitter.name}, " />
-<%--		<h:outputText styleClass="datatext" value="#{micSubmissionBean.submission.submitter.address}, " /> --%>
-			<h:outputLink styleClass="datatext" value="javascript:showLabDetails(#{micSubmissionBean.submission.submitter.id})">
-				<h:outputText value="#{micSubmissionBean.submission.submitter.lab}, #{micSubmissionBean.submission.submitter.city}, #{micSubmissionBean.submission.submitter.country}, " />			
+			<h:outputText styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.submitter.name}, " />
+<%--		<h:outputText styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.submitter.address}, " /> --%>
+			<h:outputLink styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.submitter.id})">
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.submitter.lab}, #{MicroarraySingleSubmissionBean.submission.submitter.city}, #{MicroarraySingleSubmissionBean.submission.submitter.country}, " />			
 			</h:outputLink>
-			<h:outputLink styleClass="datatext" value="mailto:#{micSubmissionBean.submission.submitter.email}"> 
-				<h:outputText value="#{micSubmissionBean.submission.submitter.email}" />
+			<h:outputLink styleClass="datatext" value="mailto:#{MicroarraySingleSubmissionBean.submission.submitter.email}"> 
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.submitter.email}" />
 			</h:outputLink>
 		</h:panelGroup>
 		
@@ -137,70 +137,70 @@
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 			<h:panelGroup>
 				<h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
-					<f:param value="#{micSubmissionBean.submission.sample.geoID}" name="acc" />
-					<h:outputText value="#{micSubmissionBean.submission.sample.geoID}" />
+					<f:param value="#{MicroarraySingleSubmissionBean.submission.sample.geoID}" name="acc" />
+					<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.geoID}" />
 				</h:outputLink>
 			</h:panelGroup>
 			
 			<h:outputText value="Sample Description:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.description}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.description}" />
 			
 			<h:outputText value="Title:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.title}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.title}" />
 			
 			<h:outputText value="Component(s) Sampled:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.source}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.source}" />
 			
 			<h:outputText value="Organism:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.organism}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.organism}" />
 
-			<h:outputText value="Tissue:" rendered="#{micSubmissionBean.submission.tissue != null}"/>
-			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{micSubmissionBean.submission.tissue != null}"/>
-			<h:outputText value="#{micSubmissionBean.submission.tissue}" rendered="#{micSubmissionBean.submission.tissue != null}"/>
+			<h:outputText value="Tissue:" rendered="#{MicroarraySingleSubmissionBean.submission.tissue != null}"/>
+			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{MicroarraySingleSubmissionBean.submission.tissue != null}"/>
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.tissue}" rendered="#{MicroarraySingleSubmissionBean.submission.tissue != null}"/>
 			
 			<h:outputText value="Strain:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.strain}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.strain}" />
 <%-- 
           <h:outputText value="Mutation:" />
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{micSubmissionBean.submission.sample.mutation}" />
+          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.mutation}" />
 --%>        
 			<h:outputText value="Sex:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.sex}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.sex}" />
 			
 			<h:outputText value="Development Age:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.devAge}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.devAge}" />
 			
 			<h:outputText value="#{stageSeriesLong} Stage:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.stage}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.stage}" />
 
-			<h:outputText value="Developmental Landmark:" rendered="#{micSubmissionBean.submission.sample.developmentalLandmarks != null}"/>
-			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{micSubmissionBean.submission.sample.developmentalLandmarks != null}"/>
-			<h:outputText value="#{micSubmissionBean.submission.sample.developmentalLandmarks}" rendered="#{micSubmissionBean.submission.sample.developmentalLandmarks != null}"/>
+			<h:outputText value="Developmental Landmark:" rendered="#{MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks != null}"/>
+			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks != null}"/>
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}" rendered="#{MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks != null}"/>
 
 			<h:outputText value="Pool Size:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.poolSize}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.poolSize}" />
 			
 			<h:outputText value="Pooled Sample:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.pooledSample}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.pooledSample}" />
 			
 			<h:outputText value="Dissection Method:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.dissectionMethod}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.dissectionMethod}" />
 			
 			<h:outputText value="Experimental Design:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.experimentalDesign}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.experimentalDesign}" />
 		</h:panelGrid>
 		
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
@@ -209,72 +209,72 @@
 		<h:panelGrid columns="3" columnClasses="data-titleCol,data-textCol, data-textCol">
 			<h:outputText value="Extracted Molecule:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.molecule}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.molecule}" />
 			
 			<h:outputText value="A260:280 Ratio:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.a_260_280}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.a_260_280}" />
 			
 			<h:outputText value="RNA Extraction Protocol:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.extractionProtocol}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.extractionProtocol}" />
 			
 			<h:outputText value="Target Amplification Manufacturer/kit:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.amplificationKit}" escape="false" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.amplificationKit}" escape="false" />
 			
 			<h:outputText value="Target Amplification Protocol:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.amplificationProtocol}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.amplificationProtocol}" />
 			
 			<h:outputText value="Rounds of Amplification:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.amplificationRounds}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.amplificationRounds}" />
 			
 			<h:outputText value="Amount Labeled Target Hybridized To Array:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.volTargHybrid}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.volTargHybrid}" />
 			
 			<h:outputText value="Label:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.label}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.label}" />
 			
 			<h:outputText value="Label Protocol:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.labelProtocol}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.labelProtocol}" />
 
 			<h:outputText value="Array Hyb/Wash Protocol:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.washScanHybProtocol}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.washScanHybProtocol}" />
 			
 			<h:outputText value="Scan Protocol:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.scanProtocol}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.scanProtocol}" />
 			
 			<h:outputText value="GCOS Tgt Value:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.gcosTgtVal}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.gcosTgtVal}" />
 			
 			<h:outputText value="Data Analysis Method:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.dataAnalProtocol}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.dataAnalProtocol}" />
 			
 			<h:outputText value="Reference:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.sample.reference}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.reference}" />
 		</h:panelGrid>
 		
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 
         <%-- added by xingjun - 21/07/2009 - end --%>
-		<h:outputText value="#{micSubmissionBean.transgenicTitle}" rendered="#{micSubmissionBean.submission.transgenics != null}" />
+		<h:outputText value="#{MicroarraySingleSubmissionBean.transgenicTitle}" rendered="#{MicroarraySingleSubmissionBean.submission.transgenics != null}" />
 		<t:dataTable id="transgenicTable" rowClasses="header-stripey" columnClasses="leftCol,rightCol" headerClass="align-top-stripey"
-		             value="#{micSubmissionBean.submission.transgenics}" var="transgenics" rowIndexVar="row" rendered="#{micSubmissionBean.submission.transgenics != null}" >
+		             value="#{MicroarraySingleSubmissionBean.submission.transgenics}" var="transgenics" rowIndexVar="row" rendered="#{MicroarraySingleSubmissionBean.submission.transgenics != null}" >
 			<t:column>
 				<f:verbatim rendered="#{row>0}"> 
 					<hr width="100%" align="center"/>
 				</f:verbatim>
-				<h:outputText value="Allele #{transgenics.serialNo}" styleClass="plaintextbold" rendered="#{micSubmissionBean.submission.multipleTransgenics}"/>
+				<h:outputText value="Allele #{transgenics.serialNo}" styleClass="plaintextbold" rendered="#{MicroarraySingleSubmissionBean.submission.multipleTransgenics}"/>
 				<h:panelGrid border="0" columns="3" columnClasses="data-titleCol,data-textCol,data-textCol">
 					<h:outputText value="Gene Reported:" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
@@ -354,8 +354,8 @@
 			</t:column>
 		</t:dataTable>
 
-		<f:verbatim rendered="#{micSubmissionBean.submission.transgenics != null}">&nbsp;</f:verbatim>
-		<f:verbatim rendered="#{micSubmissionBean.submission.transgenics != null}">&nbsp;</f:verbatim>
+		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.transgenics != null}">&nbsp;</f:verbatim>
+		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.transgenics != null}">&nbsp;</f:verbatim>
         
         <h:outputText value="Series Details" />
         <h:panelGrid columns="3" columnClasses="data-titleCol,data-textCol, data-textCol">
@@ -363,8 +363,8 @@
         	<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
         	<h:panelGroup>
         		<h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
-        			<f:param value="#{micSubmissionBean.submission.series.geoID}" name="acc" />
-        			<h:outputText value="#{micSubmissionBean.submission.series.geoID}" />
+        			<f:param value="#{MicroarraySingleSubmissionBean.submission.series.geoID}" name="acc" />
+        			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.geoID}" />
         		</h:outputLink>
         	</h:panelGroup>
         	
@@ -373,28 +373,28 @@
         	<h:panelGroup>
         		<h:outputLink styleClass="datatext" value="series.html">
 <%-- changed to pass series oids to get series info in stead of the series geo ids
-          <f:param value="#{micSubmissionBean.submission.series.geoID}" name="seriesId" />
+          <f:param value="#{MicroarraySingleSubmissionBean.submission.series.geoID}" name="seriesId" />
 --%>
-					<f:param value="#{micSubmissionBean.submission.series.oid}" name="seriesId" />
-					<h:outputText value="#{micSubmissionBean.submission.series.numSamples} samples" />
+					<f:param value="#{MicroarraySingleSubmissionBean.submission.series.oid}" name="seriesId" />
+					<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.numSamples} samples" />
 				</h:outputLink>
 			</h:panelGroup>
 			
 			<h:outputText value="Title:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.series.title}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.title}" />
 			
 			<h:outputText value="Summary:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.series.summary}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.summary}" />
 			
 			<h:outputText value="Type:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.series.type}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.type}" />
 			
 			<h:outputText value="Overall Design:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-			<h:outputText value="#{micSubmissionBean.submission.series.design}" />
+			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.design}" />
 		</h:panelGrid>
         
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
@@ -405,43 +405,43 @@
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
           <h:panelGroup>
             <h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
-              <f:param value="#{micSubmissionBean.submission.platform.geoID}" name="acc"/>
-              <h:outputText value="#{micSubmissionBean.submission.platform.geoID}" />
+              <f:param value="#{MicroarraySingleSubmissionBean.submission.platform.geoID}" name="acc"/>
+              <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.geoID}" />
             </h:outputLink>
           </h:panelGroup>
           
           <h:outputText value="Title:" />
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{micSubmissionBean.submission.platform.title}" />
+          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.title}" />
 
 <%-- 
           <h:outputText value="Name:" />
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{micSubmissionBean.submission.platform.name}" />
+          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.name}" />
 --%>
           <h:outputText value="Distribution:" />
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{micSubmissionBean.submission.platform.distribution}" />
+          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.distribution}" />
           
           <h:outputText value="Technology:" />
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{micSubmissionBean.submission.platform.technology}" />
+          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.technology}" />
           
           <h:outputText value="Organism:" />
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{micSubmissionBean.submission.platform.organism}" />
+          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.organism}" />
           
           <h:outputText value="Manufacturer:" />
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{micSubmissionBean.submission.platform.manufacturer}" />
+          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.manufacturer}" />
           
           <h:outputText value="Manufacturer Protocol:" />
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{micSubmissionBean.submission.platform.manufactureProtocol}" />
+          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.manufactureProtocol}" />
           
           <h:outputText value="Catalogue Number:" />
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{micSubmissionBean.submission.platform.catNo}" />
+          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.catNo}" />
         </h:panelGrid>
         
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
@@ -452,8 +452,8 @@
               <h:outputText value="Stage:" />
             </h:outputLink>
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-            <h:outputLink styleClass="datatext" value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts#{micSubmissionBean.submission.stage}">
-              <h:outputText value="#{stageSeriesShort}#{micSubmissionBean.submission.stage}" />
+            <h:outputLink styleClass="datatext" value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts#{MicroarraySingleSubmissionBean.submission.stage}">
+              <h:outputText value="#{stageSeriesShort}#{MicroarraySingleSubmissionBean.submission.stage}" />
             </h:outputLink>  
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
@@ -463,8 +463,8 @@
             <h:outputText value="Other Staging System:" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
             <h:panelGroup>
-            <h:outputText value="#{micSubmissionBean.submission.specimen.stageFormat} " />
-            <h:outputText value="#{micSubmissionBean.submission.specimen.otherStageValue}" />
+            <h:outputText value="#{MicroarraySingleSubmissionBean.submission.specimen.stageFormat} " />
+            <h:outputText value="#{MicroarraySingleSubmissionBean.submission.specimen.otherStageValue}" />
             </h:panelGroup>
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
@@ -473,7 +473,7 @@
             
             <h:outputText value="Strain:" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-            <h:outputText value="#{micSubmissionBean.submission.specimen.strain}" />
+            <h:outputText value="#{MicroarraySingleSubmissionBean.submission.specimen.strain}" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
@@ -481,7 +481,7 @@
             
             <h:outputText value="Sex:" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-            <h:outputText value="#{micSubmissionBean.submission.specimen.sex}" />
+            <h:outputText value="#{MicroarraySingleSubmissionBean.submission.specimen.sex}" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
@@ -489,7 +489,7 @@
             
             <h:outputText value="Genotype:" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-            <h:outputText value="#{micSubmissionBean.submission.specimen.genotype}" />
+            <h:outputText value="#{MicroarraySingleSubmissionBean.submission.specimen.genotype}" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
@@ -497,11 +497,11 @@
             
             <h:outputText value="Specimen Preparation:" />
             <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-              <h:outputText styleClass="datatext" value="#{micSubmissionBean.submission.specimen.assayType}" />
+              <h:outputText styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.specimen.assayType}" />
                 <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
                 <h:outputText value="Fixation Method:" />
                 <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-                <h:outputText value="#{micSubmissionBean.submission.specimen.fixMethod}" />
+                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.specimen.fixMethod}" />
                 
                 <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
                 <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
@@ -509,7 +509,7 @@
                 <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
                 <h:outputText value="Embedding:" />
                 <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-                <h:outputText value="#{micSubmissionBean.submission.specimen.embedding}" />
+                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.specimen.embedding}" />
           </h:panelGrid>
 --%>          
     </h:panelGrid>
