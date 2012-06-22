@@ -161,5 +161,6 @@ public class ImageDetailBean {
 		if(Utility.getProject().equalsIgnoreCase("euregene")) {
 		    return Utility.domainUrl+"mrciip/mrciip_euregene.html";
 		} 
+		return null;
 	}
 }
