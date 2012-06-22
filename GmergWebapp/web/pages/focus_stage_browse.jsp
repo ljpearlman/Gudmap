@@ -5,10 +5,10 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText value="Gene: #{stageFocusBrowseBean.gene}" rendered="#{stageFocusBrowseBean.gene != ''}" escape="false" />
+	<h:outputText value="Gene: #{StageFocusBrowseBean.gene}" rendered="#{StageFocusBrowseBean.gene != ''}" escape="false" />
 	<h:form id="stageBrowseForm">
 		<h:dataTable width="100%" styleClass="browseTable" rowClasses="table-stripey,table-nostripe" headerClass="align-top-stripey" 
-		             value="#{stageFocusBrowseBean.submissions}" var="submission">
+		             value="#{StageFocusBrowseBean.submissions}" var="submission">
 			<h:column>
 				<f:facet name="header">
 					<h:outputText styleClass="plaintextbold" value="Theiler Stage" />
