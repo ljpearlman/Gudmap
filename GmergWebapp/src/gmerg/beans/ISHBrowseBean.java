@@ -22,14 +22,15 @@ import gmerg.utils.table.TableUtil;
 */
 
 public class ISHBrowseBean extends MultipleInstanceBean {
+    private boolean debug = false;
 
 	// ********************************************************************************
 	// Constructors & Initializers
 	// ********************************************************************************
 	public void initInstance (String browseId) {
-//		System.out.println("initInstance ISHBrowseBean; browseId="+browseId);
+	    if (debug)
+      		System.out.println("initInstance ISHBrowseBean; browseId="+browseId);
 		
-//		if (TableBean.isTableViewInSession(browseId)) 
 		if (TableUtil.isTableViewInSession()) 
 			return;
 
