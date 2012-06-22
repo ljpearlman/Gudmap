@@ -21,13 +21,18 @@ import java.util.HashMap;
  */
 public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 	String[] organs;
+    private boolean debug = false;
 	
 	public FocusBrowseTransgenicAssembler () {
-		super();
+	if (debug)
+	    System.out.println("FocusBrowseTransgenicAssembler.constructor");
+	       
 	}
 	
 	public FocusBrowseTransgenicAssembler (HashMap params) {
 		super(params);
+	if (debug)
+	    System.out.println("FocusBrowseTransgenicAssembler.constructor");
 	}
 
 	public void setParams() {
