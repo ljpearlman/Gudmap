@@ -15,7 +15,13 @@ import gmerg.entities.submission.ImageDetail;
  *
  */
 public class ImageDetailAssembler {
-	
+    private boolean debug = false;
+    public ImageDetailAssembler() {
+	if (debug)
+	    System.out.println("ImageDetailAssembler.constructor");
+
+    }
+
 	public ImageDetail getData(String submissionAccessionId, String serialNum) {
 		
 		if (submissionAccessionId == null || submissionAccessionId.equals("")) {
