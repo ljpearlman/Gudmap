@@ -16,7 +16,12 @@ import analysis.DataSet;
  *
  */
 public class ArrayAnalysisAssembler {
-	
+    private boolean debug = false;
+    public ArrayAnalysisAssembler() {
+	if (debug)
+	    System.out.println("ArrayAnalysisAssembler.constructor");
+    }
+
 	/**
 	 * 
 	 * @param seriesGEOId
