@@ -8,6 +8,12 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 public class SuggestionBoxAssembler {
+    private boolean debug = false;
+    public SuggestionBoxAssembler () {
+	if (debug)
+	    System.out.println("SuggestionBoxAssembler.constructor");
+
+    }
 	public ArrayList getAllAnatomyTerms(String geneSymbol)
 	{
 		Connection conn = DBHelper.getDBConnection();
