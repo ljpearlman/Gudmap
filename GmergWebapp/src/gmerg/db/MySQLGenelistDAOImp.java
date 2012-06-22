@@ -21,6 +21,7 @@ import gmerg.utils.Utility;
  *
  */
 public class MySQLGenelistDAOImp implements GenelistDAO {
+    private boolean debug = false;
 
 	private Connection conn;
 	
@@ -1207,6 +1208,8 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         try {
+		    if (debug)
+			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	String masterTableAndSectionId[] = Utility.parseMasterTableId(masterTableId);
         	
@@ -1240,6 +1243,8 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         try {
+		    if (debug)
+			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, platformId);
         	resSet = prepStmt.executeQuery();
@@ -1305,6 +1310,8 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
 //        System.out.println("MTAnnotation query string (full): " + queryString);
         PreparedStatement prepStmt = null;
         try {
+		    if (debug)
+			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	resSet = prepStmt.executeQuery();
         	annotations = this.formatAnnotationResultSet(resSet);
@@ -1337,6 +1344,8 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
 //        System.out.println("MTAnnotation query string (full): " + queryString);
         PreparedStatement prepStmt = null;
         try {
+		    if (debug)
+			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	resSet = prepStmt.executeQuery();
         	annotations = this.formatAnnotationResultSet(resSet);
@@ -1538,6 +1547,8 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         String queryString = parQ.getQuerySQL();
 //        System.out.println("getAllAnalysisGeneLists sql: " + queryString);
         try {
+		    if (debug)
+			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	resSet = prepStmt.executeQuery();
         	genelists = this.formatAllAnalysisGeneListsResultSet(resSet);
@@ -1605,6 +1616,8 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         String queryString = parQ.getQuerySQL();
 //        System.out.println("getAllAnalysisGeneLists sql: " + queryString);
         try {
+		    if (debug)
+			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	if (clstId == null) {
             	prepStmt.setString(1, glstId);
@@ -1648,6 +1661,8 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         String queryString = parQ.getQuerySQL();
 //        System.out.println("getAllAnalysisGeneLists sql: " + queryString);
         try {
+		    if (debug)
+			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
             if (clstId == null) {
             	prepStmt.setInt(1, Integer.parseInt(glstId));
@@ -1705,6 +1720,8 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         String queryString = parQ.getQuerySQL();
 //        System.out.println("getAllAnalysisGenelistsWithFolderIds sql: " + queryString);
         try {
+		    if (debug)
+			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	resSet = prepStmt.executeQuery();
         	genelists = this.formatGenelistResultSet(resSet);
@@ -1801,6 +1818,8 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         String queryString = parQ.getQuerySQL();
 //        System.out.println("retrieveClustersForGenelist:sql: " + queryString);
         try {
+		    if (debug)
+			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, Integer.parseInt(genelistId));
         	resSet = prepStmt.executeQuery();
