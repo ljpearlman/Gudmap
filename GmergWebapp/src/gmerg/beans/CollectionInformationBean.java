@@ -19,6 +19,8 @@ import gmerg.utils.FacesUtil;
 import gmerg.utils.Utility;
 
 public class CollectionInformationBean {
+    private boolean debug = false;
+
 	boolean renderOverwrite;
 	UIInput collectionTypeComponent;
 	UIInput collectionIdComponent;
@@ -28,6 +30,9 @@ public class CollectionInformationBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public CollectionInformationBean() {
+	    if (debug)
+		System.out.println("CollectionInformationBean.constructor");
+
 		collectionInfo = (CollectionInfo)FacesUtil.getFacesRequestParamObject("collectionInfo");
 		if (collectionInfo==null) {
 			collectionInfo =  new CollectionInfo();
