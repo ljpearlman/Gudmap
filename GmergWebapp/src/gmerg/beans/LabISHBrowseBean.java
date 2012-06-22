@@ -12,8 +12,12 @@ import java.util.HashMap;
 
 
 public class LabISHBrowseBean {
-	
+    private boolean debug = false;
+
 	public LabISHBrowseBean() {
+	if (debug)
+	    System.out.println("LabISHBrowseBean.constructor");
+
 		String viewName = "labIshBrowse";
 		
 		if (TableUtil.isTableViewInSession())
