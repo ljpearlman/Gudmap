@@ -44,9 +44,9 @@
 		</g:tabPane>
 <%--
 		<g:tabPane id="tab2" >
-			<h:outputText styleClass="plaintext" value="#{arrayFocusBrowseBean.title}" escape="false" />
+			<h:outputText styleClass="plaintext" value="#{ArrayFocusBrowseBean.title}" escape="false" />
 			<f:subview id="focusGeneTable">
-				<h:outputText value="" rendered="#{arrayFocusBrowseBean.setTableViewName}" />
+				<h:outputText value="" rendered="#{ArrayFocusBrowseBean.setTableViewName}" />
 				<jsp:include page="../includes/browse_table.jsp" />
 			</f:subview>
 		</g:tabPane>
