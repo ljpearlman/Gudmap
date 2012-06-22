@@ -16,6 +16,7 @@ import java.util.HashMap;
  *
  */
 public class TransgenicBrowseBean {
+    private boolean debug = false;
 
 	private String organ;
 	private String gene;
@@ -24,6 +25,9 @@ public class TransgenicBrowseBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public TransgenicBrowseBean() {
+	if (debug)
+	    System.out.println("TransgenicBrowseBean.constructor");
+
 		organ = Visit.getRequestParam("focusedOrgan");
 		gene = Visit.getRequestParam("gene");
 		String viewName = "focusBrowseTransgenic";
