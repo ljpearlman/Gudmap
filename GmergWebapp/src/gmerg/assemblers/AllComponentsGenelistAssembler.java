@@ -27,9 +27,13 @@ import gmerg.entities.Globals;
  *
  */
 public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
-	
+    private boolean debug = false;
+
     public AllComponentsGenelistAssembler () {
-    	super();
+	
+	if (debug)
+	    System.out.println("AllComponentsGenelistAssembler.constructor");
+
 	}
 
     public DataItem[][] retrieveData() {
