@@ -9,6 +9,11 @@ import java.sql.Connection;
 import java.util.ResourceBundle;
 
 public class FocusDBSummaryAssembler {
+    private boolean debug = false;
+    public FocusDBSummaryAssembler() {
+	if (debug)
+	    System.out.println("FocusDBSummaryAssembler.constructor");
+    }
 	/**
 	 * 
 	 * @return
