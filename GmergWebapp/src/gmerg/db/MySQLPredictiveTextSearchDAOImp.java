@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  */
 public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO {
-	
+    private boolean debug = false;
     private Connection conn;
 
     // default constructor
@@ -49,6 +49,8 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         	
         }
         try {
+		    if (debug)
+			System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, geneString);
         	prepStmt.setString(2, geneString);
@@ -89,6 +91,8 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         	
         }
         try {
+		    if (debug)
+			System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, annatomyTermString);
         	prepStmt.setInt(2, num);
@@ -126,6 +130,8 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         	
         }
         try {
+		    if (debug)
+			System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, goTermString);
         	prepStmt.setInt(2, num);
