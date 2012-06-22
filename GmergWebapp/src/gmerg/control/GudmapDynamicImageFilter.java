@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class GudmapDynamicImageFilter implements Filter{
+    protected boolean debug = false;
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 		
@@ -62,6 +63,9 @@ public class GudmapDynamicImageFilter implements Filter{
 	}
 
 	public BufferedImage getDynamicImage(String name, HttpServletRequest request) {
+	    if (debug)
+		System.out.println("GudmapDynamicImageFilter.getDynamicImage name = "+name);
+
 		String name1 = name.substring(0, name.lastIndexOf('.'));
 		int index = name1.indexOf("_");
 		String prefix = "";
@@ -77,7 +81,12 @@ public class GudmapDynamicImageFilter implements Filter{
 		int height = Utility.getIntValue(request.getParameter("height"), 0);
 		int width = Utility.getIntValue(request.getParameter("width"), 0);
 		String masterTableId = request.getParameter("masterTableId");
-//System.out.println("nameParts[0]"+nameParts[0]+"    nameParts[1]"+nameParts[1]);		
+//System.out.println("nameParts[0]"+nameParts[0]+"    nameParts[1]"+nameParts[1]);
+		
+		if (debug)
+		    System.out.println("GudmapDynamicImageFilter.getDynamicImage prefix = "+prefix+" suffix = "+suffix+" height = "+height+" width = "+width+" masterTableId ="+masterTableId);
+
+		BufferedImage ret = null;
 		if (prefix.equalsIgnoreCase("heatmap")) {
 //			System.out.println("DynamicImagefilter-----> : masterTableId="+masterTableId);		
 			
@@ -88,7 +97,7 @@ public class GudmapDynamicImageFilter implements Filter{
 			int tileSize = Utility.getIntValue(request.getParameter("tile"), 0);
 			if (tileSize==0 && height==0 && width==0)
 				tileSize = 3;
-			return heatmapImageGenerator.getHeatmapImage(heatmapData.getExpression(), tileSize, width, height);
+			ret = heatmapImageGenerator.getHeatmapImage(heatmapData.getExpression(), tileSize, width, height);
 		}
 
 		if (prefix.equalsIgnoreCase("title")) {
@@ -104,12 +113,12 @@ public class GudmapDynamicImageFilter implements Filter{
 				vertical = true;
 				background = new Color(0xE6, 0xE8, 0xFA); //Stripy color from gudmap css
 			}
-//			return titleGenerator.getTitleImage(suffix, width, height, background, vertical);
-			return titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.PLAIN,  9), background, vertical, "left");
-//			return titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.BOLD,  12), background, vertical, "right");
+//			ret = titleGenerator.getTitleImage(suffix, width, height, background, vertical);
+			ret = titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.PLAIN,  9), background, vertical, "left");
+//			ret = titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.BOLD,  12), background, vertical, "right");
 		}
 		
-		return null;
+		return ret;
 	}
 
 }
