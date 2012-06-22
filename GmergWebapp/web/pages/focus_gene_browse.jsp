@@ -5,7 +5,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText styleClass="plaintext" value="#{focusGeneBrowseBean.title}" escape="false" />
+	<h:outputText styleClass="plaintext" value="#{FocusGeneBrowseBean.title}" escape="false" />
 	<f:subview id="focusGeneTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>
