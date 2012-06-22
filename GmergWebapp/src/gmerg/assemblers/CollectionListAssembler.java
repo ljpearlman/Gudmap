@@ -25,9 +25,13 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
     int userId;
     int collectionType; // 0 - submission collections; 1 - gene collections; 2 - query collections
     int status; // 0 - own collections; 1 - others' collections; 2 - both
-    
+    private boolean debug = false;
+
     public CollectionListAssembler (HashMap params) {
         super(params);
+	if (debug)
+	    System.out.println("CollectionListAssembler.constructor");
+
     }
 
     public void setParams() {
