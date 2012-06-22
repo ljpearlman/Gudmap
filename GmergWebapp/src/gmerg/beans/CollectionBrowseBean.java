@@ -17,6 +17,7 @@ import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
 public class CollectionBrowseBean {
+    private boolean debug = false;
 
     private String collectionId;
     private int collectionType;
@@ -24,6 +25,9 @@ public class CollectionBrowseBean {
     private CollectionBrowseHelper browseHelper;  //lasy getter
 	
 	public CollectionBrowseBean() {
+	    if (debug)
+		System.out.println("CollectionBrowseBean.constructor");
+
 		collectionInfo = null;
 		
 		if (Utility.isUserLoggedIn()) //not logged in users only able to see clipboard
