@@ -14,6 +14,7 @@ import gmerg.utils.FacesUtil;
  * 
 */
 public class ProcessedGenelistDataBean extends MultipleInstanceBean{
+    private boolean debug = false;
 
 	private String genelistName = null;
     private GenericTableView tableView = null; // this should be used if using frame based wide tables
@@ -22,6 +23,7 @@ public class ProcessedGenelistDataBean extends MultipleInstanceBean{
 	// Constructors & initializers
 	// ********************************************************************************
 	public void initInstance (String genelistId){
+	    if (debug)
 	System.out.println("in init instance ProcessedGenelistDataBean id="+genelistId);    
 
 		//get genelist name from request 
