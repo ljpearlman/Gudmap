@@ -18,49 +18,49 @@
     <p class="plaintext">
       View
       <h:outputText value="#{applicationScope.perspective}" /> anatomy over developmental stage range:&nbsp; 
-      <h:selectOneMenu binding="#{anatomyBean.startInput}" value="#{anatomyBean.startStage}">
-        <f:selectItems value="#{anatomyBean.availableStages}"/>
+      <h:selectOneMenu binding="#{AnatomyBean.startInput}" value="#{AnatomyBean.startStage}">
+        <f:selectItems value="#{AnatomyBean.availableStages}"/>
       </h:selectOneMenu>
       &nbsp;
       to:
-      <h:selectOneMenu binding="#{anatomyBean.endInput}" value="#{anatomyBean.endStage}">
-        <f:selectItems value="#{anatomyBean.availableStages}"/>
+      <h:selectOneMenu binding="#{AnatomyBean.endInput}" value="#{AnatomyBean.endStage}">
+        <f:selectItems value="#{AnatomyBean.availableStages}"/>
       </h:selectOneMenu>
       &nbsp;
-      <h:inputHidden id="stagesCheck" validator="#{anatomyBean.validateStages}" value="required" />
-      <h:commandButton value="Display Tree" actionListener="#{anatomyBean.displayTree}" />
+      <h:inputHidden id="stagesCheck" validator="#{AnatomyBean.validateStages}" value="required" />
+      <h:commandButton value="Display Tree" actionListener="#{AnatomyBean.displayTree}" />
     </p>
   </h:form>
-  <p class="plaintext"><h:outputText rendered="#{anatomyBean.stagesSelected}" value="Current anatomy display is for stage range #{anatomyBean.startStage} to #{anatomyBean.endStage}."/></p>
-  <h:form rendered="#{anatomyBean.stagesSelected}" id="anatomyTreeForm">
+  <p class="plaintext"><h:outputText rendered="#{AnatomyBean.stagesSelected}" value="Current anatomy display is for stage range #{AnatomyBean.startStage} to #{AnatomyBean.endStage}."/></p>
+  <h:form rendered="#{AnatomyBean.stagesSelected}" id="anatomyTreeForm">
     
-    <h:inputHidden id="start" value="#{anatomyBean.startStage}" required="true" />
-    <h:inputHidden id="end" value="#{anatomyBean.endStage}" required="true" />
+    <h:inputHidden id="start" value="#{AnatomyBean.startStage}" required="true" />
+    <h:inputHidden id="end" value="#{AnatomyBean.endStage}" required="true" />
     
     <h:outputText value="Query: Search for gene expression in selected anatomical components" styleClass="plaintextbold" />
     <br /><br/><h:message for="searchCriteriaCheck" styleClass="plainred" /><br />
     <h:panelGrid columns="2" width="100%">
     <h:panelGroup>
     <h:outputText value="Expression occurs in " styleClass="plaintext" />
-    <h:selectOneMenu id="criteria" value="#{anatomyBean.criteria}" required="true" binding="#{anatomyBean.criteriaInput}">
+    <h:selectOneMenu id="criteria" value="#{AnatomyBean.criteria}" required="true" binding="#{AnatomyBean.criteriaInput}">
       <f:selectItem itemLabel="all" itemValue="all"/>
       <f:selectItem itemLabel="any" itemValue="any"/>
     </h:selectOneMenu>
     <h:outputText value=" selected components" styleClass="plaintext" />
     </h:panelGroup>
-    <h:commandButton value="Search" id="submitbutton" action="#{anatomyBean.annotatedSubmissions}" />
+    <h:commandButton value="Search" id="submitbutton" action="#{AnatomyBean.annotatedSubmissions}" />
     </h:panelGrid>
     
     <h:panelGrid columns="2">
     <h:outputText value="Expression is:" styleClass="plaintext" />
-    <h:selectManyCheckbox id="annotTypes" required="true" value="#{anatomyBean.expressionTypes}" styleClass="plaintext" layout="lineDirection" binding="#{anatomyBean.expressionInput}" >
-      <f:selectItems value="#{anatomyBean.annotationVals}" />
+    <h:selectManyCheckbox id="annotTypes" required="true" value="#{AnatomyBean.expressionTypes}" styleClass="plaintext" layout="lineDirection" binding="#{AnatomyBean.expressionInput}" >
+      <f:selectItems value="#{AnatomyBean.annotationVals}" />
     </h:selectManyCheckbox>
     </h:panelGrid>
     
     
-    <h:inputHidden id="searchCriteriaCheck" validator="#{anatomyBean.validateSearchCriteria}" value="required" />
-    <h:panelGrid cellpadding="0" cellspacing="0" border="0" width="100%" columns="2" rendered="#{anatomyBean.stagesSelected}" columnClasses="treeCol,componentCol">
+    <h:inputHidden id="searchCriteriaCheck" validator="#{AnatomyBean.validateSearchCriteria}" value="required" />
+    <h:panelGrid cellpadding="0" cellspacing="0" border="0" width="100%" columns="2" rendered="#{AnatomyBean.stagesSelected}" columnClasses="treeCol,componentCol">
       <h:panelGrid columns="1" cellpadding="4" cellspacing="0" width="100%" border="0">
         <h:panelGrid columns="1" cellpadding="2" cellspacing="0" border="0" width="100%">
           <h:panelGroup>
@@ -71,7 +71,7 @@
             </h:panelGrid>
             <f:verbatim>
               <script type="text/javascript">
-                <c:forEach items="${anatomyBean.treeContent}" var="row">
+                <c:forEach items="${AnatomyBean.treeContent}" var="row">
                   <c:out value="${row}" escapeXml="false"/>
                 </c:forEach>
               
@@ -99,7 +99,7 @@
         </f:verbatim>
       </h:panelGrid>
     </h:panelGrid>
-    <h:panelGrid cellpadding="0" cellspacing="0" border="0" width="100%" columns="1" rendered="#{anatomyBean.stagesSelected}">
+    <h:panelGrid cellpadding="0" cellspacing="0" border="0" width="100%" columns="1" rendered="#{AnatomyBean.stagesSelected}">
       <h:panelGroup rendered="#{siteSpecies != 'Xenopus laevis'}">
         <h:outputText styleClass="plaintextbold" value="G " />
         <h:outputText styleClass="plaintext" value="Group or group descendent. Groups provide alternative groupings of terms." />
