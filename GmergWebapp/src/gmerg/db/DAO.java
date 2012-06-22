@@ -7,11 +7,11 @@ import java.util.List;
 import java.io.*;
 
 public class DAO {
+	private static boolean debug = false;
     public DAO() {
     }
 
     public static List getISHSubmissions() throws IOException {
-
 
         String browseAllQuery =
             "SELECT DISTINCT SUB_ACCESSION_ID," + " RPR_SYMBOL," +
@@ -31,17 +31,17 @@ public class DAO {
             "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 14" +
             " WHERE SUB_IS_PUBLIC=1 LIMIT 0, 20";
 
-        Connection conn = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://tamdhu/GudmapGX_test";
-            String username = "gudmap_test";
-            String password = "gudmap_test";
+	String url = "jdbc:mysql://tamdhu/GudmapGX_test";
+	String username = "gudmap_test";
+	String password = "gudmap_test";
+	Connection conn = DBHelper.getDBConnection(url, username, password);
 
-            conn = DriverManager.getConnection(url, username, password);
-
+	try {
             Statement stmt = conn.createStatement();
             ResultSet resSet = null;
+
+	    if (debug)
+		System.out.println("DAO.sql = "+browseAllQuery.toLowerCase());
 
             resSet = stmt.executeQuery(browseAllQuery);
 
@@ -65,9 +65,8 @@ public class DAO {
             return null;
         } catch (SQLException e) {
             // TODO
-        } catch (ClassNotFoundException e) {
-            // TODO
-        }
+        } 
+
         return null;
     }
 }
