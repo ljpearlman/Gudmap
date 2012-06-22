@@ -7,7 +7,8 @@ import gmerg.utils.Visit;
 import gmerg.utils.table.*;
 
 public class IHCBrowseBean {
-    
+    private boolean debug = false;
+
 	private String organ;
 	private String gene;
 
@@ -15,6 +16,9 @@ public class IHCBrowseBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public IHCBrowseBean() {
+	    if (debug)
+		System.out.println("IHCBrowseBean.constructor");
+
 		organ = Visit.getRequestParam("focusedOrgan");
 		gene = Visit.getRequestParam("gene");
 		String viewName = "focusBrowseIHC";
