@@ -8,11 +8,13 @@ import gmerg.utils.table.*;
 
 public class ClipboardOperationBrowseBean extends CollectionOperationBrowseParentBean {
     
-
 	// ********************************************************************************
 	// Constructors & Initializers
 	// ********************************************************************************
 	public ClipboardOperationBrowseBean() {
+	    if (debug)
+		System.out.println("ClipboardOperationBrowseBean.constructor");
+
 		if (TableUtil.isTableViewInSession())
 			return;		// initialisation is performed in the super class constructor
 			
