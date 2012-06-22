@@ -15,6 +15,8 @@ import javax.faces.event.ActionEvent;
  */
 
 public class EntryPageBean {
+    private boolean debug = false;
+
 	DBSummary dbSummary;
 	DBSummaryAssembler dbSummaryAssembler;
     private String xenopusImg;
@@ -25,6 +27,9 @@ public class EntryPageBean {
 	// Constructors
 	// ********************************************************************************
 	public EntryPageBean() {
+	    if (debug)
+		System.out.println("EntryPageBean.constructor");
+
 		dbSummaryAssembler = new DBSummaryAssembler();
 		dbSummary = dbSummaryAssembler.getData();
 	    xenopusImg = "../images/slc12a1_optStatic.gif";
