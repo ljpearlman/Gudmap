@@ -18,6 +18,7 @@ import gmerg.utils.Visit;
  * 
 */
 public class MasterTableBrowseBean {
+    static private boolean debug = false;
 
 	private String genelistId;
 	private String geneSymbol;
@@ -61,7 +62,8 @@ public class MasterTableBrowseBean {
 	// ********************************************************************************
 	
 	public MasterTableBrowseBean (){
-//		System.out.println("-------In MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol);
+	if (debug)
+	    System.out.println("-------In MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol);
 		displayTreeView = false;
 		viewMode = "0";
 		MasterTableInfo[] masterTables = DbUtility.getAllMasterTablesInfo();
@@ -158,9 +160,10 @@ public class MasterTableBrowseBean {
 		else 
 			if (geneSymbol != null) 
 				probeIds = DbUtility.retrieveGeneProbeIds(geneSymbol, platformId);
-
 		CollectionBrowseHelper helper = Globals.getCollectionBrowseHelper(probeIds, getCollectionType(platformId), masterTableId);
 		
+		if (debug) 
+		    System.out.println("MasterTableBrowseBean CollectionBrowseHekper class = "+helper.getClass().getName());
 		return getDefaultTableViewForMasterTable(viewName, helper.getCollectionBrowseAssembler(), platformId);
 	}
 
@@ -182,6 +185,9 @@ public class MasterTableBrowseBean {
 	// static methods
 	// ********************************************************************************
 	public static GenericTableView getDefaultTableViewForMasterTable(String viewName, GenericTableAssembler assembler, String platformId) {
+		if (debug)
+		    System.out.println("MasterTableBrowseBean.getDefaultTableViewForMasterTable viewName = "+viewName+" assembler class = "+assembler.getClass().getName()+" platformId = "+platformId);
+
 		BrowseTableTitle[] expressionTitles = (BrowseTableTitle[])assembler.getDataRetrivalParams().get("expressionTitles");
 		BrowseTableTitle[] annotationTitles = (BrowseTableTitle[])assembler.getDataRetrivalParams().get("annotationTitles");
 		GenericTable table = assembler.createTable();
