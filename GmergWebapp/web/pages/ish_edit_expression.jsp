@@ -73,12 +73,12 @@
 	
 	<h:form id="mainForm" rendered="#{ishSubmissionBean.renderPage}">
 <%-- 
-		<h:inputHidden id="hiddenSubmissionId" value="#{displayLockTextInTreeBean.submissionId}"/>
+		<h:inputHidden id="hiddenSubmissionId" value="#{DisplayLockTextInTreeBean.submissionId}"/>
 --%>
 	    <h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" >
 			<h:outputText styleClass="plaintextbold" value="#{ishSubmissionBean.submission.accID}" />
-			<h:outputText styleClass="#{displayLockTextInTreeBean.lockingTextDisplayStyle}" 
-						value="#{displayLockTextInTreeBean.lockingText}" />
+			<h:outputText styleClass="#{DisplayLockTextInTreeBean.lockingTextDisplayStyle}" 
+						value="#{DisplayLockTextInTreeBean.lockingText}" />
 		</h:panelGrid>
 		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
 			<h:panelGroup>
@@ -169,16 +169,16 @@
 			</h:panelGroup>
 			</h:panelGrid>
 <%--			
-			<h:panelGroup rendered="#{userBean.userLoggedIn && userBean.user.userPrivilege>=3}">
-						<h:commandButton value="Complete/Approve" actionListener="#{editExpressionBean.annotationSignOff}">
+			<h:panelGroup rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=3}">
+						<h:commandButton value="Complete/Approve" actionListener="#{EditExpressionBean.annotationSignOff}">
 						</h:commandButton>
 			</h:panelGroup>
-			<h:panelGroup rendered="#{userBean.userLoggedIn && userBean.user.userPrivilege>=4}">
-						<h:commandButton value="Return to annotator" actionListener="#{editExpressionBean.annotationReturnToAnnotator}">
+			<h:panelGroup rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=4}">
+						<h:commandButton value="Return to annotator" actionListener="#{EditExpressionBean.annotationReturnToAnnotator}">
 						</h:commandButton>
 			</h:panelGroup>
-			<h:panelGroup rendered="#{userBean.userLoggedIn && userBean.user.userPrivilege>=6}">
-						<h:commandButton value="Return to editor" actionListener="#{editExpressionBean.annotationReturnToEditor}">
+			<h:panelGroup rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=6}">
+						<h:commandButton value="Return to editor" actionListener="#{EditExpressionBean.annotationReturnToEditor}">
 						</h:commandButton>
 			</h:panelGroup>
 			<h:panelGroup>
@@ -189,17 +189,17 @@
 <%--	<h:form id="buttonsForm" target="lab_ish_edit_window" >--%>
 		<h:form id="buttonsForm">
 		<h:panelGrid columns="4" cellspacing="5" styleClass="centreAlign">
-			<h:commandButton value="Complete/Approve" action="#{editExpressionSupportBean.annotationSignOff}" 
+			<h:commandButton value="Complete/Approve" action="#{EditExpressionSupportBean.annotationSignOff}" 
 							onclick="setTimeout('window.opener.closeImageViewer()',100)"
-							rendered="#{userBean.userLoggedIn && userBean.user.userPrivilege>=3 && userBean.user.userType!='EXAMINER'}">
+							rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=3 && UserBean.user.userType!='EXAMINER'}">
 			</h:commandButton>
-			<h:commandButton value="Return to annotator" action="#{editExpressionSupportBean.annotationReturnToAnnotator}"
+			<h:commandButton value="Return to annotator" action="#{EditExpressionSupportBean.annotationReturnToAnnotator}"
 							onclick="setTimeout('window.opener.closeImageViewer()',100)"
-							rendered="#{userBean.userLoggedIn && userBean.user.userPrivilege>=4 && userBean.user.userType!='EXAMINER'}">
+							rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=4 && UserBean.user.userType!='EXAMINER'}">
 			</h:commandButton>
-			<h:commandButton value="Return to editor" action="#{editExpressionSupportBean.annotationReturnToEditor}"
+			<h:commandButton value="Return to editor" action="#{EditExpressionSupportBean.annotationReturnToEditor}"
 							onclick="setTimeout('window.opener.closeImageViewer()',100)"
-							rendered="#{userBean.userLoggedIn && userBean.user.userPrivilege>=6}">
+							rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=6}">
 			</h:commandButton>
 			<h:commandButton id="closeButton" value="Close" onclick="window.opener.closeImageViewer();return false;" type="button"/>
 		</h:panelGrid>
