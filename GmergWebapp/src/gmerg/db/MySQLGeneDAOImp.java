@@ -14,7 +14,7 @@ import java.sql.SQLException;
  *
  */
 public class MySQLGeneDAOImp implements GeneDAO {
-	
+    private boolean debug = false; 
 	Connection conn;
 
 	// default constructor
@@ -180,6 +180,8 @@ public class MySQLGeneDAOImp implements GeneDAO {
 
 			// need to execute query to get syn list here
 			String[] synList = null;
+		    if (debug)
+			System.out.println("MySQLGeneDAOImp.sql = "+synonymListQ.toLowerCase());
 			stmt = conn.prepareStatement(synonymListQ);
 			for(int i=0;i<input.length;i++){
 				if(wildcard.equalsIgnoreCase("contains")) {
@@ -230,6 +232,8 @@ public class MySQLGeneDAOImp implements GeneDAO {
 				allQueriesQ += union + symbolsFromSynListQ;
 			}
 //			System.out.println("geneDAO:getSymbolsFromGeneInput:symbolsFromrefGeneInfoSynonymQ: " + symbolsFromrefGeneInfoSynonymQ);
+		    if (debug)
+			System.out.println("MySQLGeneDAOImp.sql = "+allQueriesQ.toLowerCase());
 			stmt = conn.prepareStatement(allQueriesQ);
 			
 			//for the first 4 in 'union' query, set the parameters
