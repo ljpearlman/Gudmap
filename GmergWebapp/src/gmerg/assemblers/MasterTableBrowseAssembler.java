@@ -30,6 +30,8 @@ import gmerg.utils.table.OffMemoryCollectionAssembler;
  *
  */
 public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
+    private boolean debug = false;
+
     private ArrayList<SearchLink> genelistSearchLinks;
 	private BrowseTableTitle[] expressionTitles;
 	private BrowseTableTitle[] annotationTitles;
@@ -41,6 +43,9 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 	//********************************* Generic Assembler Methods *************************************
 	public MasterTableBrowseAssembler (HashMap params, CollectionBrowseHelper helper) {
     	super(params, helper);
+	if (debug)
+	    System.out.println("MasterTableBrowseAssembler.constructor");
+
 	}
 
 	public void setParams() {
@@ -98,7 +103,8 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 	 * - separate screen tips from titles - they used to be the same
 	 */
 	public HeaderItem[] createHeader() {
-//		System.out.println("MasterTableBrowseAssembler - createHeader");
+	    if (debug)
+		System.out.println("MasterTableBrowseAssembler - createHeader");
 		HeaderItem[] headers = new HeaderItem[expressionTitles.length + annotationTitles.length + genelistSearchLinks.size() + 4];
 		headers[0] = new HeaderItem("Probe Id", false);
 		headers[1] = new HeaderItem("Median", false);
@@ -106,11 +112,18 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 		// Bernie 12/4/2011 - Mantis 540 - add header for Gene Sybbol and change offset from 3 to 4
 		headers[3] = new HeaderItem(annotationTitles[0].getTitle(), false);
 		int offset = 4; //3;
-		
+		HeaderItem item = null;
+		String screenTip = null;
+		String title = null;
+
 		for (int i=0; i<expressionTitles.length; i++) {
-			String screenTip = expressionTitles[i].getGroupName()+expressionTitles[i].getTitle(); // used for screen tips
-			String title = (expressionTitles[i].getDescription() + "_" + expressionTitles[i].getTitle()).replaceAll("\\s", ""); // used for vertical image title display
-			headers[i+offset] = new HeaderItem(screenTip, false, 1, "../dynamicImages/title_"+title + ".jpg?masterTable=");
+			screenTip = expressionTitles[i].getGroupName()+expressionTitles[i].getTitle(); // used for screen tips
+			title = (expressionTitles[i].getDescription() + "_" + expressionTitles[i].getTitle()).replaceAll("\\s", ""); // used for vertical image title display
+			item  = new HeaderItem(screenTip, false, 1, "../dynamicImages/title_"+title + ".jpg?masterTable=");
+			if (debug)
+			    System.out.println("MasterTableBrowseAssembler.createHeader title = "+item.getTitle()+" image name = "+item.getImageName());
+
+			headers[i+offset] = item;
 		}
 		offset += expressionTitles.length;
 		
@@ -130,7 +143,8 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 	}
 	
 	public DataItem[][] getTableDataFormatFromMastertableData(ArrayList<String> onePageIds, HeatmapData data, String[][] annotations) {
-//		System.out.println("MasterTableBrowseAssembler - getTableDataFormatFromMastertableData");
+	    if (debug)
+		System.out.println("MasterTableBrowseAssembler - getTableDataFormatFromMastertableData");
 		
 		double[][] expressions = (data!=null)? data.getExpression() : null;
 		if (data==null || expressions == null || annotations == null){
