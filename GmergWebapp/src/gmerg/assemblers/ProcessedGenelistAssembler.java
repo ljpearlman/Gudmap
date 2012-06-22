@@ -24,12 +24,15 @@ import javax.faces.context.FacesContext;
  *
  */
 public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
-	
+    private boolean debug = false;
 	private String  component;
 	private String lab;
     
     public ProcessedGenelistAssembler (HashMap params) {
     	super(params);
+	if (debug)
+	    System.out.println("ProcessedGenelistAssembler.constructor");
+
 	}
 
 	public void setParams() {
@@ -150,7 +153,7 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 	    DataItem[][] tableData = new DataItem[rowNum][colNum];
 	    for(int i=0; i<rowNum; i++){
 	    	ProcessedGeneListHeader geneList = (ProcessedGeneListHeader)listOfGeneLists.get(i);  
-	    	tableData[i][0] = new DataItem(geneList.getFileName(), geneList.getFileName(), "http://www.gudmap.org/Gudmap/arrayData/potter/october_2006/potter_171006/data/"+geneList.getFileName(), 10);
+	    	tableData[i][0] = new DataItem(geneList.getFileName(), geneList.getFileName(), gmerg.utils.Utility.domainUrl+"Gudmap/arrayData/potter/october_2006/potter_171006/data/"+geneList.getFileName(), 10);
 	    	tableData[i][1] = new DataItem(geneList.getSurname(), geneList.getSurname(), "../pages/lab_detail.jsf?personId="+geneList.getLabName(), 4);
 	    	tableData[i][2] = new DataItem(geneList.getComponents());
 	    	tableData[i][3] = new DataItem(geneList.getStatistics());
