@@ -1,8 +1,4 @@
 /*
- * $Id: Util.java,v 1.1 2007/01/25 16:35:00 ycheng Exp $
- */
-
-/*
  * Copyright 2004-2005 Sun Microsystems, Inc.  All rights reserved.
  * Use is subject to license terms.
  */
@@ -25,7 +21,7 @@ import java.util.Locale;
  * <B>Util</B> is a class which houses common functionality used by
  * other classes.
  *
- * @version $Id: Util.java,v 1.1 2007/01/25 16:35:00 ycheng Exp $
+ * @version $Id: Util.java,v 1.2 2012/06/07 14:32:46 yiya Exp $
  */
 
 public class Util extends Object {
