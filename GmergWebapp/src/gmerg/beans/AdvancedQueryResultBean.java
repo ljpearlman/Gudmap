@@ -10,12 +10,16 @@ import java.util.HashMap;
 
 public class AdvancedQueryResultBean {
 
+    private boolean debug = false;
+
     protected Object[][] columns;
     protected Object[][] subs;
 
     protected ArrayList ibsd;
 
 	public AdvancedQueryResultBean() {
+	    if (debug)
+		System.out.println("AdvancedQueryResultBean.constructor");
 
     	String viewName = "AdvancedQueryResult";
     	if (TableUtil.isTableViewInSession())
