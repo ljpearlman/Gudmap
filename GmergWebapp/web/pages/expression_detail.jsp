@@ -22,7 +22,7 @@
       <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
         <h:outputText value="Stage" />
         <h:panelGroup>
-        <h:outputText value="#{expressionDetailBean.expressionDetail.stage}" />
+        <h:outputText value="#{ExpressionDetailBean.expressionDetail.stage}" />
         </h:panelGroup>
         
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
@@ -31,11 +31,11 @@
         <h:panelGroup>
           <h:panelGrid columns="2" columnClasses="text-top, data-textCol">
             <h:outputText styleClass="plaintext" value="Name:" />
-            <h:outputText styleClass="datatext" value="#{expressionDetailBean.expressionDetail.componentName}" />
+            <h:outputText styleClass="datatext" value="#{ExpressionDetailBean.expressionDetail.componentName}" />
             <h:outputText styleClass="plaintext" value="ID:" />
-            <h:outputText styleClass="datatext" value="#{expressionDetailBean.expressionDetail.componentId}" />
+            <h:outputText styleClass="datatext" value="#{ExpressionDetailBean.expressionDetail.componentId}" />
             <h:outputText styleClass="plaintext" value="Main Path:" />
-            <h:dataTable style="vertical-align:bottom" value="#{expressionDetailBean.expressionDetail.componentDescription}" var="component">
+            <h:dataTable style="vertical-align:bottom" value="#{ExpressionDetailBean.expressionDetail.componentDescription}" var="component">
             <h:column>
               <h:outputText styleClass="datatext" value="#{component}" />
             </h:column>
@@ -52,13 +52,13 @@
           <h:panelGrid columns="2" columnClasses="text-top, data-textCol">
             <h:outputText styleClass="plaintext" value="Strength:" />
             <h:panelGroup>
-              <h:outputText styleClass="datatext" value="#{expressionDetailBean.expressionDetail.primaryStrength}" />
-              <h:outputText styleClass="datatext" value=", #{expressionDetailBean.expressionDetail.secondaryStrength}" rendered="#{expressionDetailBean.hasSecondaryStrength}" />
+              <h:outputText styleClass="datatext" value="#{ExpressionDetailBean.expressionDetail.primaryStrength}" />
+              <h:outputText styleClass="datatext" value=", #{ExpressionDetailBean.expressionDetail.secondaryStrength}" rendered="#{ExpressionDetailBean.hasSecondaryStrength}" />
             </h:panelGroup>
           </h:panelGrid>  
-          <h:dataTable rendered="#{expressionDetailBean.hasPatterns && proj == 'GUDMAP'}" 
+          <h:dataTable rendered="#{ExpressionDetailBean.hasPatterns && proj == 'GUDMAP'}" 
                        bgcolor="white" cellpadding="5" rowClasses="table-stripey,table-nostripe" headerClass="align-top-stripey"
-                       value="#{expressionDetailBean.expressionDetail.pattern}" var="pattern">
+                       value="#{ExpressionDetailBean.expressionDetail.pattern}" var="pattern">
             <h:column>
               <f:facet name="header">
                 <h:outputText value="Pattern" styleClass="plaintext"/>
@@ -74,7 +74,7 @@
           </h:dataTable>
           <h:panelGrid columns="2" columnClasses="text-top, data-textCol">
           <h:outputText styleClass="plaintext" value="Pattern:" rendered="#{proj == 'EuReGene'}" />
-          <h:dataTable rendered="#{expressionDetailBean.hasPatterns && proj == 'EuReGene'}" cellpadding="0" value="#{expressionDetailBean.expressionDetail.pattern}" var="pattern">
+          <h:dataTable rendered="#{ExpressionDetailBean.hasPatterns && proj == 'EuReGene'}" cellpadding="0" value="#{ExpressionDetailBean.expressionDetail.pattern}" var="pattern">
             <h:column>
               <h:outputText styleClass="datatext" value="#{pattern.pattern}"  />
             </h:column>
@@ -82,7 +82,7 @@
           </h:panelGrid>
           <h:panelGrid columns="2" columnClasses="text-top">
             <h:outputText styleClass="plaintext" value="Note:" />
-            <h:outputText styleClass="datatext" value="#{expressionDetailBean.expressionDetail.expressionNote}" />
+            <h:outputText styleClass="datatext" value="#{ExpressionDetailBean.expressionDetail.expressionNote}" />
           </h:panelGrid>
           
         </h:panelGroup>
