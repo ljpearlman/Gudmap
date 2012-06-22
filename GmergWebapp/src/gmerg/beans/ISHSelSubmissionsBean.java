@@ -10,11 +10,14 @@ import gmerg.utils.table.TableUtil;
 import java.util.HashMap;
 
 public class ISHSelSubmissionsBean {
-	
+    protected boolean debug = false;
 	// ********************************************************************************
 	// Constructors & Initializers
 	// ********************************************************************************
 	public ISHSelSubmissionsBean() {
+	if (debug)
+	    System.out.println("ISHSelSubmissionsBean.constructor");
+
 		if (TableUtil.isTableViewInSession())
 			return;
 	
