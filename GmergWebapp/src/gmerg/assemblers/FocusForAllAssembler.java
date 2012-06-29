@@ -6,13 +6,16 @@ import gmerg.db.MySQLDAOFactory;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FocusForAllAssembler extends OffMemoryTableAssembler {
-    private boolean debug = false;
+    protected boolean debug = false; 
+    protected RetrieveDataCache cache = null;
+
 	String organ;
 	String[] input;
 	String query;
@@ -40,8 +43,14 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
-	    if (debug)
-		System.out.println("+++FocusForAllAssembler:retrieveData");
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("FocusForAllAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
+
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO advancedQDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		////////////////////////////////////////////////////////
@@ -51,7 +60,17 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 		////////////////////////////////////////////////////////
 		DBHelper.closeJDBCConnection(conn);
 		
-		return QuickSearchAssembler.getTableDataFormatFromArrayList(list);
+		DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(column);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+
+		return ret;
 	}
 	
 	public int retrieveNumberOfRows() {

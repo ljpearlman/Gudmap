@@ -12,6 +12,7 @@ import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryCollectionAssembler;
 import gmerg.utils.Utility;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import java.util.HashMap;
  */
 public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembler {
     private boolean debug = false;
+    protected RetrieveDataCache cache = null;
+
 
 	public EntriesCollectionBrowseAssembler (HashMap params, CollectionBrowseHelper helper) {
 		super(params, helper);
@@ -46,6 +49,15 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 //			System.out.println("entered EntriesCollectionBrowseAssembler:retrieveData:ids is null!!!!!!!!");
 			return null;
 		}
+
+		if (null != cache &&
+		    cache.isSameQuery(columnIndex, ascending, offset, num)) {
+		    if (debug)
+			System.out.println("EntriesCollectionBrowseAssembler.retriveData data not changed");
+		    
+		    return cache.getData();
+		}
+
 		// System.out.println("EntriesCollectionBrowseAssembler    ids==" + ids.toString());
 
 		// create dao
@@ -67,7 +79,17 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		ishDevDAO = null;
 		
 		/** ---return the value object--- */
-		return getTableDataFormatFromCollectionList(viewableSubmissions);
+		DataItem[][] ret = getTableDataFormatFromCollectionList(viewableSubmissions);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(columnIndex);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+
+		return ret;
 	}
 	
 	//Note: this is exceptionally overwrites the super class method; because multiple rows can be displayed for the same entry ID (due to different tissue types)

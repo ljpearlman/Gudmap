@@ -10,6 +10,7 @@ import gmerg.db.ISHEditDAO;
 import gmerg.db.MySQLDAOFactory;
 import gmerg.utils.table.*;
 import gmerg.utils.Utility;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -20,7 +21,9 @@ import java.util.ArrayList;
  *
  */
 public class ISHBrowseAssembler extends OffMemoryTableAssembler{
-    private boolean debug = false;
+    protected boolean debug = false;
+    protected RetrieveDataCache cache = null;
+
     public ISHBrowseAssembler() {
 	if (debug)
 	    System.out.println("ISHBrowseAssembler.constructor");
@@ -36,6 +39,13 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 	 * @return
 	 */
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("ISHBrowseAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
@@ -51,7 +61,17 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		/** ---return the value object---  */
 		
 //		System.out.println("============ BrowsIsh: Data retrieved")	;
-		return getTableDataFormatFromIshList(browseSubmissions);
+		DataItem[][] ret = getTableDataFormatFromIshList(browseSubmissions);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(column);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+	
+		return ret;
 	}
 	
 	/**

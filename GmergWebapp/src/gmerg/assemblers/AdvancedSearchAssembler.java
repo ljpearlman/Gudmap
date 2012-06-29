@@ -6,6 +6,7 @@ import gmerg.db.MySQLDAOFactory;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ public class AdvancedSearchAssembler extends OffMemoryTableAssembler {
 	String sub;
 	ArrayList options;
 	int[] totals;
-	
+	    protected RetrieveDataCache cache = null;
+
 	public AdvancedSearchAssembler () {
 	    if (debug)
 		System.out.println("AdvancedSearchAssembler.constructor");
@@ -37,6 +39,14 @@ public class AdvancedSearchAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("AdvancedSearchAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
+
 		String[] order = new String[2];
 		if(true == ascending) {
 			order[0] = "ASC";
@@ -47,7 +57,17 @@ public class AdvancedSearchAssembler extends OffMemoryTableAssembler {
 		
 		ArrayList list =  getQueryResult(options, order, String.valueOf(offset), String.valueOf(num), totals, sub);
 		
-        return QuickSearchAssembler.getTableDataFormatFromArrayList(list);
+        DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
+
+	if (null == cache)
+	    cache = new RetrieveDataCache();
+	cache.setData(ret);
+	cache.setColumn(column);
+	cache.setAscending(ascending);
+	cache.setOffset(offset);
+	cache.setNum(num);
+	
+        return ret;
 	}
 	
 	public int retrieveNumberOfRows() {

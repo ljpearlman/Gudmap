@@ -7,6 +7,7 @@ import gmerg.db.MySQLDAOFactory;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	
     private boolean debug = false;
+    protected RetrieveDataCache cache = null;
 
 	String[] organs;
 	
@@ -38,6 +40,13 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("FocusBrowseIHCAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
 
 		/** ---get data from dao---  */
 		// create a dao
@@ -52,7 +61,16 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 		ihcDAO = null;
 		
 		/** ---return the value object---  */
-		return ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+		DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(column);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+
+		return ret;
 	}
 	
 	public int retrieveNumberOfRows() {

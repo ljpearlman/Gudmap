@@ -7,6 +7,7 @@ import gmerg.db.ISHDevDAO;
 import gmerg.db.MySQLDAOFactory;
 import gmerg.db.FocusStageDAO;
 
+import gmerg.utils.RetrieveDataCache;
 import gmerg.utils.Utility;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
@@ -27,7 +28,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	String[] organs;
 	String stage;
 	String gene;
-	
+	protected RetrieveDataCache cache = null;
+
     private boolean debug = false;
 
 	public FocusBrowseAssembler () {
@@ -55,6 +57,14 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	 * <p>xingjun - 17/01/2009 - add gene parameter into the invocation method of the getting data</p>
 	 */
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("FocusBrowseAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
+
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
@@ -73,10 +83,21 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		focusForAllDAO = null;
 		
 		/** ---return the value object---  */
+		DataItem[][] ret = null;
 		if ("array".equals(getParam("assayType")))
-			return getTableDataFormatFromArrayList(submissions);
+			ret = getTableDataFormatFromArrayList(submissions);
 		else
-			return ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+			ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(column);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+
+		return ret;
 	}
 	
 	/**

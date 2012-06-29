@@ -6,6 +6,7 @@ import gmerg.db.MySQLDAOFactory;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 
 public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
     private boolean debug = false;
+    protected RetrieveDataCache cache = null;
 
 	String input;
 	public BooleanQueryAssembler (HashMap params) {
@@ -29,6 +31,14 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("BooleanQueryAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
+
 		Connection conn = DBHelper.getDBConnection();
 		BooleanQueryDAO booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
 		////////////////////////////////////////////////////////
@@ -37,7 +47,17 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 		DBHelper.closeJDBCConnection(conn);
 		booleanQueryDAO = null;
 		
-        return QuickSearchAssembler.getTableDataFormatFromArrayList(list);
+        DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
+
+	if (null == cache)
+	    cache = new RetrieveDataCache();
+	cache.setData(ret);
+	cache.setColumn(column);
+	cache.setAscending(ascending);
+	cache.setOffset(offset);
+	cache.setNum(num);
+
+	return ret;
 	}
 	
 	public int retrieveNumberOfRows() {

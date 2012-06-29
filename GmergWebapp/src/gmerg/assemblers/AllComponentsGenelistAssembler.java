@@ -15,6 +15,7 @@ import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.InMemoryTableAssembler;
 import gmerg.utils.table.TableUtil;
+import gmerg.utils.RetrieveDataCache;
 
 import gmerg.entities.GenelistInfo;
 import gmerg.entities.Globals;
@@ -28,6 +29,7 @@ import gmerg.entities.Globals;
  */
 public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
     private boolean debug = false;
+    protected RetrieveDataCache cache = null;
 
     public AllComponentsGenelistAssembler () {
 	
@@ -37,6 +39,12 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 	}
 
     public DataItem[][] retrieveData() {
+	if (null != cache) {
+		if (debug)
+		    System.out.println("AllComponentGenelistAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
@@ -72,6 +80,11 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
     	
 		/** ---return the composite value object---  */
     	DataItem[][] dataItems = getTableDataFormatFromListOfgenelists(data);
+
+	if (null == cache)
+	    cache = new RetrieveDataCache();
+	cache.setData(dataItems);
+
 		return dataItems;
 	}
     

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.sql.Connection;
 
+import gmerg.utils.RetrieveDataCache;
 import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.db.DBHelper;
 import gmerg.db.GeneStripDAO;
@@ -28,7 +29,8 @@ import gmerg.entities.ChromeDetail;
  *
  */
 public class GeneStripAssembler extends OffMemoryCollectionAssembler {
-    private boolean debug = false;
+    protected boolean debug = false;
+    protected RetrieveDataCache cache = null;
 
 	static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 	public GeneStripAssembler (HashMap params, CollectionBrowseHelper helper) {
@@ -58,8 +60,14 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * 
 	 */
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
-	    if (debug)
-		System.out.println("GeneStripAssembler.retrieveData");
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("GeneStripAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
+
 
 		if (ascending || column <0) 
 			Collections.sort(ids);// natural sort the gene symbols
@@ -251,6 +259,15 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(data);
+		cache.setColumn(column);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);	
+
 		return data;
 	}
 	
