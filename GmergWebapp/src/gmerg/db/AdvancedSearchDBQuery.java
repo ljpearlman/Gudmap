@@ -612,24 +612,24 @@ public class AdvancedSearchDBQuery {
           "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID ";
 	  }
 
-	  final static public String getISHSelectForAnatomy(){
+    final static public String getISHSelectForAnatomy(){
+	return "(select distinct QIC_RPR_SYMBOL col1, "+
+	    "'' col2,"+
+	    "QIC_EXP_STRENGTH col3,"+
+	    "QIC_PER_NAME col4,"+
+	    "QIC_SUB_SUB_DATE col5,"+
+	    "QIC_SUB_EMBRYO_STG col6,"+
+	    "QIC_SPN_ASSAY_TYPE col7,"+
+	    //            "concat(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) col8,"+
+	    "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
+               "QIC_SUB_THUMBNAIL col9,"+
+	    "QIC_SUB_ACCESSION_ID col10,"+
+	    "'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15  ";
+    }
+    
+    public static String getISHSelectForAnatomy(String anatomyTerm) {
 		  return "(select distinct QIC_RPR_SYMBOL col1, "+
-		"'' col2,"+
-        "QIC_EXP_STRENGTH col3,"+
-		"QIC_PER_NAME col4,"+
-		"QIC_SUB_SUB_DATE col5,"+
-		"QIC_SUB_EMBRYO_STG col6,"+
-		"QIC_SPN_ASSAY_TYPE col7,"+
-//		"concat(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) col8,"+
-		"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
-		"QIC_SUB_THUMBNAIL col9,"+
-		"QIC_SUB_ACCESSION_ID col10,"+
-		"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15  ";
-	  }
-	  
-	  public static String getISHSelectForAnatomy(String anatomyTerm) {
-		  return "(select distinct QIC_RPR_SYMBOL col1, '"+
-			anatomyTerm+"' col2,"+
+			"QIC_ANO_COMPONENT_NAME col2, "+
 	        "QIC_EXP_STRENGTH col3,"+
 			"QIC_PER_NAME col4,"+
 			"QIC_SUB_SUB_DATE col5,"+

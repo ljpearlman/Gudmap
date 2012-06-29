@@ -287,29 +287,14 @@ public class AnatomyBean {
      */
     public SelectItem[] getAvailableStagesForQuery() {
        
-        String species = bundle.getString("species");
-        
-        if(species!= null && species.equals("Xenopus laevis")) {
-            return new SelectItem[] { 
-                new SelectItem("", "ALL"), new SelectItem("20","NF20"), new SelectItem("24","NF24"), 
-                new SelectItem("25", "NF25"), new SelectItem("27", "NF27"),
-                new SelectItem("28","NF28"), new SelectItem("29-30", "NF29-30"),
-                new SelectItem("31","NF31"), new SelectItem("32", "NF32"), 
-                new SelectItem("33-34", "NF33-34"), new SelectItem("35-36", "NF35-36"), 
-                new SelectItem("37-38", "NF37-38"), new SelectItem("40", "NF40")
-            };
-            
-        }
-        else {
-            return new SelectItem[] { 
-                new SelectItem("", "ALL"), new SelectItem("17","TS17"), new SelectItem("18","TS18"), 
-                new SelectItem("19", "TS19"), new SelectItem("20", "TS20"),
-                new SelectItem("21","TS21"), new SelectItem("22", "TS22"),
-                new SelectItem("23","TS23"), new SelectItem("24", "TS24"), 
-                new SelectItem("25", "TS25"), new SelectItem("26", "TS26"), 
-                new SelectItem("27", "TS27"), new SelectItem("28", "TS28")
-            };
-        }
+	return new SelectItem[] { 
+	    new SelectItem("", "ALL"), new SelectItem("17","TS17"), new SelectItem("18","TS18"), 
+	    new SelectItem("19", "TS19"), new SelectItem("20", "TS20"),
+	    new SelectItem("21","TS21"), new SelectItem("22", "TS22"),
+	    new SelectItem("23","TS23"), new SelectItem("24", "TS24"), 
+	    new SelectItem("25", "TS25"), new SelectItem("26", "TS26"), 
+	    new SelectItem("27", "TS27"), new SelectItem("28", "TS28")
+	};
     }
     /**
      * returns a list of available annotation parameters for users to use when making queries

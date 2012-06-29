@@ -10,6 +10,7 @@ import gmerg.db.MySQLDAOFactory;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ import java.util.HashMap;
  *
  */
 public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
-    private boolean debug = false;
+    protected boolean debug = false;
+    protected RetrieveDataCache cache = null;
 
 	String organ;
 	String platform;
@@ -44,6 +46,13 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 	}
 	
 	public DataItem[][] retrieveData(int columnIndex, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(columnIndex, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("SeriesBrowseAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }	
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
@@ -66,7 +75,17 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 		DBHelper.closeJDBCConnection(conn);
 		
 		// return the value object
-		return getTableDataFormatFromSeriesList(seriesList);
+		DataItem[][] ret = getTableDataFormatFromSeriesList(seriesList);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(columnIndex);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+
+		return ret;
 	}
 	
 	public int retrieveNumberOfRows() {

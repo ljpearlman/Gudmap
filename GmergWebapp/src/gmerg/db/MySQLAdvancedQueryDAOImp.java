@@ -15,7 +15,8 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
-    private boolean debug = false;
+    protected boolean debug = false;
+
     private Connection conn;
     private int ColumnNumbers = 15;// 14 //Bernie - 01/03/2012 - (Mantis 619) added 'sex column so increase from 14 to 15'
     private int ColumnQuickNumbers = 15; //14;
@@ -2689,7 +2690,14 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			int totalMicComps = 0;
 			
 			//for each user-specified input
+			String worker = null;
+			String inputString = null;
+
 			for(int i=0;i<input.length;i++){
+			    inputString = Utility.normaliseApostrophe(input[i]);
+			    worker = AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ";
+			    //			    worker = AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+AdvancedSearchDBQuery.fromISHTissue()+" WHERE ";
+
 				//get a list of emap components based on the single input of the user
 				String [] comps = this.getTimedComponentIdsFromInput(input[i]);
 				//contains list of descendents of values in 'comps'
@@ -2770,27 +2778,16 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 						}
 						
 						//build the queries
-//						ishPresQuery.append(AdvancedSearchDBQuery.getISHSelectForAnatomy(input[i]) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-//						ishNotDetectedQuery.append(AdvancedSearchDBQuery.getUnion()+AdvancedSearchDBQuery.getISHSelectForAnatomy(input[i]) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-//						ishPossibleQuery.append(AdvancedSearchDBQuery.getUnion()+AdvancedSearchDBQuery.getISHSelectForAnatomy(input[i]) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-						// ###140709### modified by xingjun - 15/07/2009 - start
-						String inputString = Utility.normaliseApostrophe(input[i]);
-						ishPresQuery.append(AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-						ishNotDetectedQuery.append(AdvancedSearchDBQuery.getUnion()+AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-						ishPossibleQuery.append(AdvancedSearchDBQuery.getUnion()+AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-						// ###140709### modified by xingjun - 15/07/2009 - end
-						
-						/////////////////// added by xingjun - 08/05/2009
-//						ishUncertainQuery.append(AdvancedSearchDBQuery.getUnion()+AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-						/////////////////// added by xingjun - 08/05/2009
-						
-						// xingjun - 01/09/2011 - append stage criteria to ish query strings - start
+
+						ishPresQuery.append(worker);
+						ishNotDetectedQuery.append(AdvancedSearchDBQuery.getUnion()+worker);
+						ishPossibleQuery.append(AdvancedSearchDBQuery.getUnion()+worker);
+
 						if (!ishStageString.equals("")) {
 							ishPresQuery.append(ishStageString + "AND ");
 							ishNotDetectedQuery.append(ishStageString + "AND ");
 							ishPossibleQuery.append(ishStageString + "AND ");
 						}
-						// xingjun - 01/09/2011 - append stage criteria to ish query strings - start
 						
 						for(int j=0;j<ish.length;j++){
 							ishPresQuery.append(" (");
@@ -2846,17 +2843,12 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 						if(expStrength.equalsIgnoreCase("present")) {
 							totalIshComps += subComps.length;
 							allComps = subComps;
-//							ishPresQuery.append(AdvancedSearchDBQuery.getISHSelectForAnatomy(input[i]) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-							// ###140709### modified by xingjun - 15/07/2009 - start
-							String inputString = Utility.normaliseApostrophe(input[i]);
-							ishPresQuery.append(AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-							// ###140709### modified by xingjun - 15/07/2009 - end
-							
-							// xingjun - 01/09/2011 - append stage criteria to ish query strings - start
+
+							ishPresQuery.append(worker);
+
 							if (!ishStageString.equals("")) {
 								ishPresQuery.append(ishStageString + "AND ");
 							}
-							// xingjun - 01/09/2011 - append stage criteria to ish query strings - start
 							
 							for(int j=0;j<ish.length;j++){
 								ishPresQuery.append(" (");
@@ -2870,39 +2862,16 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 							ishPresQuery.append(" AND QIC_EXP_STRENGTH='present' ) ");
 							
 						}
-						/////////////////// added by xingjun - 08/05/2009
-//						else if (expStrength.equalsIgnoreCase("uncertain")) {
-//							totalIshComps += subComps.length;
-//							allComps = subComps;
-//							ishUncertainQuery.append(AdvancedSearchDBQuery.getISHSelectForAnatomy(input[i]) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-//							
-//							for(int j=0;j<ish.length;j++){
-//								ishUncertainQuery.append(" (");
-//								if(j == 0) {
-//									ishUncertainQuery.append(ish[j] + subParamsString);
-//								}
-//								else {
-//									ishUncertainQuery.append(" OR "+ish[j] + subParamsString);
-//								}
-//								ishUncertainQuery.append(") ");
-//							}
-//							ishUncertainQuery.append(" AND QIC_EXP_STRENGTH='uncertain' ) ");
-//						}
-						/////////////////// added by xingjun - 08/05/2009
+
 						else if(expStrength.equalsIgnoreCase("absent")) {
 							totalIshComps += superComps.length;
 							allComps = superComps;
-//							ishNotDetectedQuery.append(AdvancedSearchDBQuery.getISHSelectForAnatomy(input[i]) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-							// ###140709### modified by xingjun - 15/07/2009 - start
-							String inputString = Utility.normaliseApostrophe(input[i]);
-							ishNotDetectedQuery.append(AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-							// ###140709### modified by xingjun - 15/07/2009 - end
-							
-							// xingjun - 01/09/2011 - append stage criteria to ish query strings - start
+
+							ishNotDetectedQuery.append(worker);
+
 							if (!ishStageString.equals("")) {
 								ishNotDetectedQuery.append(ishStageString + "AND ");
 							}
-							// xingjun - 01/09/2011 - append stage criteria to ish query strings - start
 							
 							for(int j=0;j<ish.length;j++){
 								ishNotDetectedQuery.append(" (");
@@ -2918,17 +2887,11 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 						else if(expStrength.equalsIgnoreCase("unknown")) {
 							totalIshComps += comps.length;
 							allComps = comps;
-//							ishPossibleQuery.append(AdvancedSearchDBQuery.getISHSelectForAnatomy(input[i]) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-							// ###140709### modified by xingjun - 15/07/2009 - start
-							String inputString = Utility.normaliseApostrophe(input[i]);
-							ishPossibleQuery.append(AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ");
-							// ###140709### modified by xingjun - 15/07/2009 - end
-							
-							// xingjun - 01/09/2011 - append stage criteria to ish query strings - start
+
+							ishPossibleQuery.append(worker);
 							if (!ishStageString.equals("")) {
 								ishPossibleQuery.append(ishStageString + "AND ");
 							}
-							// xingjun - 01/09/2011 - append stage criteria to ish query strings - start
 							
 							for(int j=0;j<ish.length;j++){
 								ishPossibleQuery.append(" (");
@@ -2973,19 +2936,13 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 					// 'IF' statements below commented and modified by xingjun - 21/10/2010 - end
 					
 					ishQuery.append(ishPresQuery.toString() + ishNotDetectedQuery.toString() + ishPossibleQuery.toString());
-					/////////////////// modified by xingjun - 08/05/2009
-//					ishQuery.append(ishPresQuery.toString() + ishUncertainQuery.toString() + ishNotDetectedQuery.toString() + ishPossibleQuery.toString());
-					/////////////////// modified by xingjun - 08/05/2009
-					
 					
 					//contsturct the array query
 					micQuery.append(AdvancedSearchDBQuery.getMICSelectForAnatomy()+ AdvancedSearchDBQuery.getMICFromForAnatomy() + " WHERE ");
 					
-					// xingjun - 01/09/2011 - append stage criteria to array query strings - start
 					if (!micStageString.equals("")) {
 						micQuery.append(micStageString + "AND ");
 					}
-					// xingjun - 01/09/2011 - append stage criteria to array query strings - start
 					
 					//params addition
 					for(int j=0;j<mic.length;j++){
@@ -3200,32 +3157,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	 * @return built tree (an array list)
 	 */
 	public ArrayList getWholeAnatomyTree(String startStage, String endStage) {
-		
-	    /*ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-	    String treeType = bundle.getString("perspective");
-
-		ParamQuery parQ = DBQuery.getParamQuery("QUERY_TREE_CONTENT");
-		PreparedStatement prepStmt = null;
-		ResultSet resSet = null;
-		ArrayList treeStructure = null;
-		
-		try {
-			// execute query
-			parQ.setPrepStat(conn);
-			prepStmt = parQ.getPrepStat();
-			prepStmt.setString(1, treeType);
-			prepStmt.setString(2, treeType);
-			prepStmt.setString(3, startStage);
-			prepStmt.setString(4, endStage);
-			resSet = prepStmt.executeQuery();
-			
-			// build the tree
-			treeStructure = DBHelper.buildTreeStructure(resSet, 0, "", false, "showComponentIDForAutoComplete");
-			return treeStructure;
-			
-		} catch(Exception se) {
-			se.printStackTrace();
-		}*/
 		
 		return null;
 	}	

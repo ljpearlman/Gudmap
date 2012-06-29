@@ -56,7 +56,8 @@ public GeneInfoBean() {
 		gene = assembler.getGene();
 		entrezIdExists = false;
 		linkedArraysExist = false;
-		xenbaseEntryExists = true;
+		xenbaseEntryExists = false;
+		//xenbaseEntryExists = true;
 		
 		if(gene!=null){
 			if(gene.getEntrezID() != null)

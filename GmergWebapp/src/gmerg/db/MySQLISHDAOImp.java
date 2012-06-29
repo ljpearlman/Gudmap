@@ -1362,9 +1362,9 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_OID");
         PreparedStatement prepStmt = null;
         try {
-        	// if disconnected from db, re-connected
-        	conn = DBHelper.reconnect2DB(conn);
-
+	    // if disconnected from db, re-connected
+	    conn = DBHelper.reconnect2DB(conn);
+	    
             String subOid = "";
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -1372,28 +1372,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             resSet = prepStmt.executeQuery();
             if(resSet.first()) {
                 subOid = resSet.getString(1);
-            }
-            else {
+            } else {
                 return null;
             }
-            ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-            String species = bundle.getString("species");
-            
-            if(species != null && species.equals("Xenopus laevis")) {
-                parQ = DBQuery.getParamQuery("XLAEV_SUB_LINKED_SUBMISSIONS");
-            }
-            else {
-                parQ = DBQuery.getParamQuery("MUS_SUB_LINKED_SUBMISSIONS");
-            }
+            parQ = DBQuery.getParamQuery("MUS_SUB_LINKED_SUBMISSIONS");
             
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
-            if(species != null && species.equals("Xenopus laevis")) {
-            	prepStmt.setString(1, subOid);
-            } else {
-            	prepStmt.setString(1, submissionAccessionId);
-            	prepStmt.setString(2, subOid);
-            }
+	    prepStmt.setString(1, submissionAccessionId);
+	    prepStmt.setString(2, subOid);
+
             // execute
             resSet = prepStmt.executeQuery();
             linkedSubmissionInfo = DBHelper.formatResultSetToArrayList(resSet);

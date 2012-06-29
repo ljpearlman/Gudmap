@@ -54,6 +54,11 @@ public class MasterTableBrowseBean {
 			TableUtil.setTableViewNameParam(viewName); 
 			return false;
 		}
+	                public void print() {
+			    System.out.println("selected = "+selected);
+			    if (null != info)
+				info.print();
+	               }
 	};
 	private ArrayList<MasterTableDisplayInfo> allMasterTables;
 
@@ -89,17 +94,32 @@ public class MasterTableBrowseBean {
 
 		String masterTableId = Visit.getRequestParam("masterTableId");
 		if (masterTableId != null) // If a specific master table is requested
-			for (MasterTableDisplayInfo masterTableInfo : allMasterTables) 
-				masterTableInfo.selected = (masterTableInfo.getInfo().getId().equals(masterTableId));
+		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
+			masterTableInfo.selected = (masterTableInfo.getInfo().getId().equals(masterTableId));
+		    }
 		else if (genelistId != null) {
 				String platformId = DbUtility.getGenelistPlatformId(genelistId);
-				for (MasterTableDisplayInfo masterTableInfo : allMasterTables)
-					masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
+				for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
+				    masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
+				}
 		}
 		else 
 			for (MasterTableDisplayInfo masterTableInfo : allMasterTables)
 				masterTableInfo.selected = true;
 		initialseTables(null);
+		if (debug) {
+		    System.out.println("-------End MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol+" displayTreeView = "+displayTreeView+" tableTitle="+tableTitle+" viewMode="+viewMode);
+		    int iSize = 0;
+		    if (null != allMasterTables)
+			iSize = allMasterTables.size();
+		    int i = 0;
+		    MasterTableDisplayInfo item = null;
+		    for (i = 0; i < iSize; i++) {
+			item = (MasterTableDisplayInfo)allMasterTables.get(i);
+			System.out.println(i+"th MasterTableDisplayInfo");
+			item.print();
+		    }
+		}
 	}
 
 	// ********************************************************************************
@@ -125,9 +145,14 @@ public class MasterTableBrowseBean {
 	}
 	
 	private void initialseTables(String available) {
-//		System.out.println("MasterTableBrowseBean:initialseTables.   available ="+available);
-		String selectionString = getSelectionsString();	
-		for(int i=0; i<allMasterTables.size(); i++) {
+	    if (debug)
+		System.out.println("MasterTableBrowseBean:initialseTables.   available ="+available);
+		String selectionString = getSelectionsString();
+		int iSize = allMasterTables.size();
+		if (debug)
+		    System.out.println("MasterTableBrowseBean:initialseTables.   allMasterTables size = "+iSize);
+
+		for(int i=0; i<iSize; i++) {
 			MasterTableDisplayInfo masterTable = allMasterTables.get(i); 
 			String masterTableId = masterTable.info.getId();
 			if (masterTable.selected) {
@@ -147,7 +172,8 @@ public class MasterTableBrowseBean {
 	}
 	
 	private GenericTableView populateGenelistTableView(String viewName, String masterTableId) {
-//		System.out.println("===MasterTableBrowseBean===populateGenelistTableView = " + viewName + " " + masterTableId);
+	    if (debug)
+		System.out.println("===MasterTableBrowseBean===populateGenelistTableView = " + viewName + " " + masterTableId);
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		String platformId = DbUtility.getMasterTablePlatformId(masterTableId);
 		ArrayList<String> probeIds = new ArrayList<String>();
@@ -161,10 +187,13 @@ public class MasterTableBrowseBean {
 			if (geneSymbol != null) 
 				probeIds = DbUtility.retrieveGeneProbeIds(geneSymbol, platformId);
 		CollectionBrowseHelper helper = Globals.getCollectionBrowseHelper(probeIds, getCollectionType(platformId), masterTableId);
-		
+
+		GenericTableView ret = getDefaultTableViewForMasterTable(viewName, helper.getCollectionBrowseAssembler(), platformId);
+
 		if (debug) 
-		    System.out.println("MasterTableBrowseBean CollectionBrowseHekper class = "+helper.getClass().getName());
-		return getDefaultTableViewForMasterTable(viewName, helper.getCollectionBrowseAssembler(), platformId);
+		    System.out.println("MasterTableBrowseBean CollectionBrowseHekper class = "+helper.getClass().getName()+" ret = "+ret);
+
+		return ret;
 	}
 
 	private String getViewName(String id) {
@@ -190,6 +219,10 @@ public class MasterTableBrowseBean {
 
 		BrowseTableTitle[] expressionTitles = (BrowseTableTitle[])assembler.getDataRetrivalParams().get("expressionTitles");
 		BrowseTableTitle[] annotationTitles = (BrowseTableTitle[])assembler.getDataRetrivalParams().get("annotationTitles");
+
+		if (debug)
+		    System.out.println("MasterTableBrowseBean.getDefaultTableViewForMasterTable expressionTitles size = "+expressionTitles.length+" annotationTitles size = "+annotationTitles.length);
+
 		GenericTable table = assembler.createTable();
 		GenericTableView tableView = new GenericTableView(viewName, 20, 350, table);
 		tableView.setHeightLimittedFlexible();
@@ -201,27 +234,20 @@ public class MasterTableBrowseBean {
 		
 		for(int i=0; i<annotationTitles.length; i++) 
 			tableView.setColVisible(ontologisColOffset+i, false);	 
-		
+
 		int[] defaultOntologyCols = Globals.getDefaultOntologyCols(platformId);
 		if (defaultOntologyCols != null)
 			for (int i=0; i<defaultOntologyCols.length; i++) 
 				tableView.setColVisible(ontologisColOffset+defaultOntologyCols[i], true);
-
-		// Bernie 12/4/2011 - Mantis 540 - removed as these column settings are not required
-//		int[][] ontologiesColsWidth = Globals.getOntologyColsWidth(platformId);
-//		if (ontologiesColsWidth != null)
-//			for(int i=0; i<ontologiesColsWidth.length; i++)
-//				tableView.setColMaxWidth(ontologisColOffset+ontologiesColsWidth[i][0], ontologiesColsWidth[i][1], ontologiesColsWidth[i][2]!=0);
 
 		int[] leftAlignedOntologyCols = Globals.getLeftAlignedOntologyCols(platformId);
 		if (leftAlignedOntologyCols != null)
 			for (int i=0; i<leftAlignedOntologyCols.length; i++)
 				tableView.setColAlignment(ontologisColOffset+leftAlignedOntologyCols[i], 0);
 		
-		// Bernie 12/4/2011 - Mantis 540 - mod	to set heatmapcol index = 4			
 		tableView.setHeatmap(4, expressionTitles.length, true, false, false); 
-//		tableView.setHeatmap(3, expressionTitles.length, true, false, false);
-//		tableView.setHeatmap(3, expressionTitles.length, true, false); 
+		//		tableView.setHeatmap(3, expressionTitles.length, true, false, false);
+		//		tableView.setHeatmap(3, expressionTitles.length, true, false); 
 		tableView.setHeatmapMedianColumn(1); 	// specifies column number where median is stored 
 		tableView.setHeatmapStdDevColumn(2); 	// specifies column number where stand dev is stored
 		tableView.setColHidden(1, true);
@@ -230,9 +256,7 @@ public class MasterTableBrowseBean {
 		tableView.setRowsSelectable();
 		tableView.setCollectionBottons(1);
 		tableView.addCollection(getCollectionType(platformId), 0);
-
 		tableView.setColMaxWidth(3, 20, true);	//limit gene symbol colum width - xingjun - 20/04/2011
-
 		return  tableView;
 	}
 

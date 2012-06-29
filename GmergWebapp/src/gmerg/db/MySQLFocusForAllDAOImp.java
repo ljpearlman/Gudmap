@@ -11,7 +11,7 @@ import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
-    private boolean debug = false;
+    protected boolean debug = false;
 
     private Connection conn;
     private int MAX_COLUMNS = 12; // changed from 11 by xingjun - 07/12/2009 - added extra column MUT_GENE
@@ -624,7 +624,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			parQ = null;
 			parQ = new ParamQuery("FOCUS_ARRAY_BROWSE",sql);
 
-//			System.out.println("FocusForAllDAO:getFocusBrowseList:Arraybrowseall:"+sql);
+			if (debug)
+			    System.out.println("FocusForAllDAO:getFocusBrowseList:Arraybrowseall:"+sql);
 			try {
 				parQ.setPrepStat(conn);
 				prepStmt = parQ.getPrepStat();

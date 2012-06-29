@@ -29,6 +29,14 @@ public class MasterTableInfo {
     	this.platform = platform;
     }
     
+    public void print() {
+	System.out.println(" id = "+id);
+	System.out.println(" masterId = "+masterId);
+	System.out.println(" sectionId = "+sectionId);
+	System.out.println(" title = "+title);
+	System.out.println(" description = "+description);
+	System.out.println(" platform = "+platform);
+    }
 	public String getDescription() {
 		return description;
 	}

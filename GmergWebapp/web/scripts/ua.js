@@ -1,25 +1,3 @@
-/*
- * $Log: ua.js,v $
- * Revision 1.1.1.1  2007/01/08 13:19:40  ycheng
- * Added GmergWebapp
- *
- * Revision 1.1  2006/05/18 16:35:41  ctindal
- * anatomoy tree pages added to application. Javascripts moved to scripts directory, anatomy tree images moved to images/tree directory
- *
- * Revision 1.1  2006/04/05 10:16:34  ycheng
- * chris java script tree
- *
- * Revision 1.9  2002/07/22 14:06:21  bc6ix
- * fix license path, change version reporting to use 2 digits for each level
- *
- * Revision 1.8  2002/07/07 08:23:07  bc6ix
- * fix line endings
- *
- * Revision 1.7  2002/05/14 16:52:52  bc6ix
- * use CVS Log for revision history
- *
- *
- */
 
 /* ***** BEGIN LICENSE BLOCK *****
  * Licensed under Version: MPL 1.1/GPL 2.0/LGPL 2.1
