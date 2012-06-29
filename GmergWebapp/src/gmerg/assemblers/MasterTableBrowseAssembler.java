@@ -16,6 +16,7 @@ import gmerg.db.MySQLDAOFactory;
 import gmerg.entities.BrowseTableTitle;
 import gmerg.entities.HeatmapData;
 import gmerg.entities.submission.array.SearchLink;
+import gmerg.utils.RetrieveDataCache;
 import gmerg.utils.DbUtility;
 import gmerg.utils.table.CollectionBrowseHelper;
 import gmerg.utils.table.DataItem;
@@ -32,6 +33,10 @@ import gmerg.utils.table.OffMemoryCollectionAssembler;
 public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
     private boolean debug = false;
 
+    // due to JSP life cycle, fail to stop retrive data twice
+    // so use cache to avoid DB access twice
+    protected RetrieveDataCache cache = null;
+
     private ArrayList<SearchLink> genelistSearchLinks;
 	private BrowseTableTitle[] expressionTitles;
 	private BrowseTableTitle[] annotationTitles;
@@ -45,7 +50,7 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
     	super(params, helper);
 	if (debug)
 	    System.out.println("MasterTableBrowseAssembler.constructor");
-
+  
 	}
 
 	public void setParams() {
@@ -61,6 +66,14 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 	 * @author xingjun - 04/12/2008
 	 */
 	public DataItem[][] retrieveData(int columnId, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(columnId, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("MasterTableBrowseAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
+
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
@@ -87,15 +100,28 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 		HeatmapData expressions = arrayDAO.getExpressionByGivenProbeSetIds(onePageIds, masterTableId, genelistId);
 
 		String[][] annotations = genelistDAO.getAnnotationByProbeSetIds(onePageIds);
-		
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
         arrayDAO = null;
         genelistDAO = null;
         
-        
+        if (debug) 
+	    System.out.println("MasterTableBrowseAssembler.retrieveData  expression = "+expressions+" annotations = "+annotations);
+
 		// return value
-		return getTableDataFormatFromMastertableData(onePageIds, expressions ,annotations);
+		DataItem[][] ret = getTableDataFormatFromMastertableData(onePageIds, expressions ,annotations);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(columnId);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+
+		return ret;
+
 	}
 	
 	/**
@@ -151,7 +177,6 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 			System.out.println("No data is retrieved");
 			return null;
 		}
-		
 		double[] median = data.getMedian();
 		double[] stdDev = data.getStdDev();
 		int colNum1 = expressions[0].length + annotations[0].length + 2; // +2 is for median and stdDev columns 
@@ -171,7 +196,7 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 			// Bernie 12/4/2011 - Mantis 540
 			String geneSymbol = annotations[row][0];
 			tableData[row][col++] = new DataItem(geneSymbol);	// Gene Symbol
-						
+
 			//------- analysis data ----------
 			for (int i=0; i<expressions[0].length; i++) {
 				String value = String.format("%.2f", expressions[row][i]);
@@ -204,6 +229,18 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 			}
 		}
 		
+		if (debug) {
+		    int iSize = tableData.length;
+		    int i = 0;
+		    int jSize = 0;
+		    int j = 0;
+		    for (i = 0; i < iSize; i++) {
+			jSize = tableData[i].length;
+			for (j = 0; j < jSize; j++)
+			    if (null != tableData[i][j])
+				System.out.println("MasterTableBrowseAssembler.getTableDataFormatFromMastertableData tableData ("+i+", "+j+") = "+tableData[i][j].getValue());
+		    }
+		}
 		return tableData;
 	}
 

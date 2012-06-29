@@ -10,6 +10,7 @@ import gmerg.entities.submission.array.SearchLink;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -24,7 +25,8 @@ import java.util.ResourceBundle;
  *
  */
 public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
-    private boolean debug = false;
+    protected boolean debug = false;
+    protected RetrieveDataCache cache = null;
 
     private ArrayList geneListSearchLinks;
 	private int genelistId;
@@ -53,6 +55,13 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 	 * @return
 	 */
 	public DataItem[][] retrieveData(int columnId, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(columnId, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("ProcessedGenelistDataAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
 		
 		/** ---get data from dao---  */
 		// create a dao
@@ -67,7 +76,17 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 		arrayDAO = null;
 		
 		/** ---return the composite value object---  */
-		return getTableDataFormatFromGenelistData(genelistItems);
+		DataItem[][] ret = getTableDataFormatFromGenelistData(genelistItems);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(columnId);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+
+		return ret;
 	}
 
 	/**

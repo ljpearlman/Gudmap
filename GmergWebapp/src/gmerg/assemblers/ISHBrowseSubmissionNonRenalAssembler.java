@@ -9,6 +9,7 @@ import gmerg.db.MySQLDAOFactory;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
 import gmerg.utils.table.DataItem;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -18,14 +19,22 @@ import java.util.ArrayList;
  *
  */
 public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssembler{
-    private boolean debug = false;
+    protected boolean debug = false;
+    protected RetrieveDataCache cache = null;
+
     public ISHBrowseSubmissionNonRenalAssembler() {
 	if (debug)
 	    System.out.println("ISHBrowseSubmissionNonRenalAssembler.constructor");
 
     }
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
-
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("ISHBrowseSubmissionNonRenalAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
@@ -39,7 +48,17 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 		ishDevDAO = null;
 		
 		/** ---return the value object---  */
-		return ISHBrowseAssembler.getTableDataFormatFromIshList(browseSubmissionsNonRenal);
+		DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(browseSubmissionsNonRenal);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(column);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);	
+
+		return ret;
 	}
 	
 	/**

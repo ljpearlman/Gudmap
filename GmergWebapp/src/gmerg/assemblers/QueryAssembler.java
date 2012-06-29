@@ -17,6 +17,7 @@ import gmerg.entities.submission.ish.ISHBrowseSubmissionData;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -44,7 +45,8 @@ public class QueryAssembler extends OffMemoryTableAssembler {
     String stage;
     String componentID;
        
-    private boolean debug = false;
+    protected boolean debug = false;
+    protected RetrieveDataCache cache = null;
 
 	public QueryAssembler () {
 	if (debug)
@@ -84,6 +86,14 @@ public class QueryAssembler extends OffMemoryTableAssembler {
      * need consider submission browse result as well as component list result scenario
      */
     public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("QueryAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }	
+
         ArrayList  subs = null;
 //	System.out.println("qType: "+queryType);
         if (queryType.equals("genesInAnatomyISH")) 
@@ -106,7 +116,17 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 		else if (queryType.equals("componentSubsISH")) 
 			subs = getDataByComponentId(componentID, null, column, ascending, offset, num);
 		// return value
-		return ISHBrowseAssembler.getTableDataFormatFromIshList(subs);
+		DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(subs);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(column);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);	
+
+		return ret;
 	}
 
     /**

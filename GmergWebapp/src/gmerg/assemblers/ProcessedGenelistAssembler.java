@@ -10,6 +10,7 @@ import gmerg.entities.submission.array.ProcessedGeneListHeader;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.InMemoryTableAssembler;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -24,7 +25,9 @@ import javax.faces.context.FacesContext;
  *
  */
 public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
-    private boolean debug = false;
+    protected boolean debug = false;
+    protected RetrieveDataCache cache = null;
+
 	private String  component;
 	private String lab;
     
@@ -47,6 +50,13 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 	
     
     public DataItem[][] retrieveData() {
+	if (null != cache) {
+		if (debug)
+		    System.out.println("ProcessedGenelistAssembler.retriveData data not changed");
+		
+		return cache.getData();
+}
+
     	// populate list of genelists 
     	ArrayList listOfGenelists = null;
     	if (component!=null)
@@ -55,7 +65,13 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
     		if (lab!=null)
     			listOfGenelists = retrieveGenelistByLabName(lab);
     	}
-    	return getTableDataFormatFromListOfgenelists(listOfGenelists);
+    	DataItem[][] ret = getTableDataFormatFromListOfgenelists(listOfGenelists);
+
+	if (null == cache)
+	    cache = new RetrieveDataCache();
+	cache.setData(ret);
+
+	return ret;
     }
 
 	/********************************************************************************

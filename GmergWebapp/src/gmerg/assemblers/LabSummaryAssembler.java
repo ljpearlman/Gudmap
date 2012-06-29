@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import javax.faces.context.FacesContext;
 
+import gmerg.utils.RetrieveDataCache;
 import gmerg.db.ArrayDAO;
 import gmerg.db.DBHelper;
 import gmerg.db.FocusForAllDAO;
@@ -35,7 +36,8 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 	boolean labIshEdit;
 	String archiveId; // xingjun - 01/07/2011
 
-    private boolean debug = false;
+    protected boolean debug = false;
+    protected RetrieveDataCache cache = null;
 
 	public LabSummaryAssembler () {
 	if (debug)
@@ -65,6 +67,16 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 	 * <p>modified by xingjun - 01/07/2011 - need to pass the archive id into the dao</p>
 	 */
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	    if (null != cache &&
+		cache.isSameQuery(column, ascending, offset, num)) {
+		if (debug)
+		    System.out.println("LabSummaryAssembler.retriveData data not changed");
+		
+		return cache.getData();
+	    }
+
+	    DataItem[][] ret = null;
+
 		if ("Microarray".equals(assayType)) {
 			/** ---get data from dao---  */
 			// create a dao
@@ -81,8 +93,8 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 			DBHelper.closeJDBCConnection(conn);
 			
 			/** ---return the composite value object---  */
-			return FocusBrowseAssembler.getTableDataFormatFromArrayList(arrayBrowseSubmissions);
-		}
+			ret = FocusBrowseAssembler.getTableDataFormatFromArrayList(arrayBrowseSubmissions); 
+		} else {
 
 		//else they are ISH, IHC, or Tg data
 		
@@ -111,9 +123,21 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 		ishDAO = null;
 		
 		/** ---return the composite value object---  */
-        if(null != privilege && Integer.parseInt(privilege)>=3 && labIshEdit)
-        	return ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions, privilege);
-        return ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions);
+		if(null != privilege && Integer.parseInt(privilege)>=3 && labIshEdit)
+		    ret = ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions, privilege); 
+		else
+		    ret = ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions);
+		}
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(column);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+
+		return ret;
 	}
 	
 	/**

@@ -9,6 +9,7 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
+import gmerg.utils.RetrieveDataCache;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -16,8 +17,9 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 public class QuickSearchAssembler extends OffMemoryTableAssembler {
-    private boolean debug = false;
-   
+    protected boolean debug = false;
+    protected RetrieveDataCache cache = null;
+
 	String[] input;
 	String query;
 	
@@ -37,7 +39,15 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
 		if(input == null || input[0] == null || input[0].equals("")) 
 			return null;
-		
+
+		if (null != cache &&
+		    cache.isSameQuery(column, ascending, offset, num)) {
+		    if (debug)
+			System.out.println("QuickSearchAssembler.retriveData data not changed");
+		    
+		    return cache.getData();
+		}		
+
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO advancedQDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		
@@ -47,7 +57,17 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 		ArrayList list = advancedQDAO.getQuickSearch(type, input, column, ascending, String.valueOf(offset), String.valueOf(num), total);
 		DBHelper.closeJDBCConnection(conn);
 		
-        return getTableDataFormatFromArrayList(list);
+		DataItem[][] ret = getTableDataFormatFromArrayList(list);
+
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(column);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
+
+		return ret;
 	}
 	
 	public int retrieveNumberOfRows() {
