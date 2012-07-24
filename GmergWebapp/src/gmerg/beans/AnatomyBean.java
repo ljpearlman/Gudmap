@@ -229,7 +229,7 @@ public class AnatomyBean {
         }
                 
         String resultURLQString = "?queryType=genesInAnatomyISH&"+components+"&startStage="+this.getStartStage()+"&endStage="+this.getEndStage()+"&expressionTypes="+expressionType+"&criteria="+this.getCriteria();
-        resultURL = "/pages/ish_submissions.html" + resultURLQString;
+        resultURL = "ish_submissions.html" + resultURLQString;
                 
         return "success";
     }
@@ -269,7 +269,7 @@ public class AnatomyBean {
         }
                 
         String resultURLQString = "?queryType=genesInAnatomyISH&components="+components+"&startStage="+this.getStartStage()+"&endStage="+this.getEndStage()+"&expressionTypes="+expressionType+"&criteria="+this.getCriteria();
-        resultURL = "/pages/ish_submissions.html" + resultURLQString;
+        resultURL = "ish_submissions.html" + resultURLQString;
                 
         return "success";
     }

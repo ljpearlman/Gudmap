@@ -9,19 +9,23 @@ public class ParamQuery{
 	private String queryName; // descriptive name fo rquery retrieval
 	private String querySQL;  // SQL for query
 	
-	public ParamQuery(String name, String querySQL) {
+	public ParamQuery(String name, String SQL) {
 		this.queryName = name;
-		this.querySQL = querySQL;
+		this.querySQL = SQL;
+
+		if (debug) {
+		    if (null != querySQL) 
+			System.out.println("ParamQuery.sql = "+querySQL.toLowerCase());
+		}
 	}
 	
 	/*--key methods for getting SQL query--*/
 	public PreparedStatement getPrepStat() {
+
 		return prepStat;
 	}
 	
 	public void setPrepStat(Connection conn) throws SQLException {
-		if (debug) 
-		    System.out.println("ParamQuery.sql = "+querySQL.toLowerCase());
 		prepStat = conn.prepareStatement(querySQL);
 	}
 	
@@ -31,13 +35,18 @@ public class ParamQuery{
 	}
 	
 	public String getQuerySQL() {
-		    if (debug)
-			System.out.println("ParamQuery.sql = "+querySQL.toLowerCase());
-
 		return this.querySQL;
 	}
 	
-	public void setQuerySQL(String querySQL) {
-		this.querySQL = querySQL;
+	public void setQuerySQL(String SQL) {
+	    if (debug) {
+		if (null != SQL) {
+		    if (null == querySQL ||  !querySQL.equals(SQL)) {
+			System.out.println("ParamQuery.sql = "+SQL.toLowerCase());
+		    }
+		}
+	    }
+
+	    this.querySQL = SQL;
 	}
 }

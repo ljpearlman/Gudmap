@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
  *
  */
 public class ArrayDBQuery {
+    protected static boolean debug = false;
+
 	static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 
 	// xingjun - 28/05/2010 - exclude the column 'Systematic'(GPL1261)/'Systematic Name'(GPL6246) from the query  
@@ -162,14 +164,14 @@ public class ArrayDBQuery {
 	final static String name13 = "MASTER_TABLE_LIST";
 	final static String query13 = "SELECT AMT_OID, AMT_PLATFORM_ID, AMT_TITLE, AMT_DESCRIPTION FROM MIC_ANALYSIS_MASTER " +
 			"WHERE AMT_STATUS = 1 " +
-			"ORDER BY AMT_OID ";
+			"ORDER BY AMC_OID ";
 	
 	final static String name20 = "MASTER_SECTION_LIST";
 	final static String query20 = "SELECT AMT_OID, AMC_OID, AMC_TITLE, AMC_DESCRIPTION, AMT_PLATFORM_ID " +
 			"FROM MIC_ANALYSIS_MASTER " +
 			"JOIN MIC_ANAL_MASTER_SECTION ON AMC_A_MASTER_FK = AMT_OID " +
 			"WHERE AMT_STATUS = 1 " +
-			"ORDER BY AMT_OID DESC ";
+			"ORDER BY AMC_OID DESC ";
 	  
 	final static String name14 = "MASTER_TABLE_PLATFORM_ID";
 	final static String query14 = "SELECT AMT_PLATFORM_ID FROM MIC_ANALYSIS_MASTER WHERE AMT_OID = ? ";
@@ -338,11 +340,20 @@ public class ArrayDBQuery {
 	
 	// finds ParamQuery object by name and returns
 	public static ParamQuery getParamQuery(String name) {
-		for (int i = 0; i < pqList.length; i++) {
-			if (pqList[i].getQueryName().equals(name)) {
-				return pqList[i];
-			}
+
+	    ParamQuery ret = null;
+
+	    for (int i = 0; i < pqList.length; i++) {
+		if (pqList[i].getQueryName().equals(name)) {
+		    ret = pqList[i];
+
+		    if (debug)
+			System.out.println("sql = "+  ret.getQuerySQL().toLowerCase());
+		    
+		    break;
 		}
-	    return null;
+	    }
+
+	    return ret;
 	}	  
 }

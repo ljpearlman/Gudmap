@@ -3,6 +3,8 @@ package gmerg.db;
 import java.util.ResourceBundle;
 
 public class AnnotationToolQuery {
+    protected static boolean debug = false;
+
 	  static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 	  
 /** backup - start */
@@ -327,11 +329,18 @@ public class AnnotationToolQuery {
 	  
 	  // finds ParamQuery object by name and returns
 	  public static ParamQuery getParamQuery(String name) {
-		  for (int i = 0; i < pqList.length; i++) {
-			  if (pqList[i].getQueryName().equals(name)) {
-				  return pqList[i];
-			  }
+	      ParamQuery ret = null;
+	      
+	      for (int i = 0; i < pqList.length; i++) {
+		  if (pqList[i].getQueryName().equals(name)) {
+		      ret = pqList[i];
+		      
+		      if (debug)
+			  System.out.println("sql = "+  ret.getQuerySQL().toLowerCase());
+		      
+		      break;
+		  }
 	      }
-	      return null;
+	      return ret;
 	  }	  
 }

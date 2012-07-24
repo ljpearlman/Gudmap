@@ -609,7 +609,7 @@
    <to-view-id>/pages/collection_browse.jsp</to-view-id>
   </navigation-case>
   <navigation-case>
-   <from-action>#{userBean.logout}</from-action>
+   <from-action>#{UserBean.logout}</from-action>
    <from-outcome>success</from-outcome>
    <to-view-id>/pages/database_homepage.jsp</to-view-id>
    <redirect/>
@@ -715,9 +715,9 @@
  <navigation-rule>
   <from-view-id>/pages/ish_comp_gene_exp.jsp</from-view-id>
   <navigation-case>
-   <from-action>#{queryBean.findSubsExpressedInComponent}</from-action>
+   <from-action>#{QueryBean.findSubsExpressedInComponent}</from-action>
    <from-outcome>success</from-outcome>
-   <to-view-id>#{queryBean.resultURL}</to-view-id>
+   <to-view-id>/pages/#{QueryBean.resultURL}</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
@@ -725,13 +725,13 @@
   <display-name>searchGene</display-name>
   <from-view-id>/pages/query_db.jsp</from-view-id>
   <navigation-case>
-   <from-action>#{queryBean.findGenes}</from-action>
+   <from-action>#{QueryBean.findGenes}</from-action>
    <from-outcome>success_all</from-outcome>
-   <to-view-id>#{queryBean.resultURL}</to-view-id>
+   <to-view-id>/pages/#{QueryBean.resultURL}</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>
-   <from-action>#{queryBean.findGenes}</from-action>
+   <from-action>#{QueryBean.findGenes}</from-action>
    <from-outcome>success_annotated</from-outcome>
    <to-view-id>/pages/ish_comp_gene_exp.jsp</to-view-id>
   </navigation-case>
@@ -740,13 +740,13 @@
    <to-view-id>/pages/anatomy_tree.jsp</to-view-id>
   </navigation-case>
   <navigation-case>
-   <from-action>#{queryBean.findComponent}</from-action>
-   <to-view-id>#{queryBean.resultURL}</to-view-id>
+   <from-action>#{QueryBean.findComponent}</from-action>
+   <to-view-id>/pages/#{QueryBean.resultURL}</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>submissionDetail</from-outcome>
-   <to-view-id>#{queryBean.assayURL}</to-view-id>
+   <to-view-id>/pages/#{QueryBean.assayURL}</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>
@@ -757,32 +757,32 @@
  <navigation-rule>
   <from-view-id>/pages/ish_submission.jsp</from-view-id>
   <navigation-case>
-   <from-action>#{ishSubmissionBean.annotation}</from-action>
+   <from-action>#{ISHSingleSubmissionBean.annotation}</from-action>
    <from-outcome>success</from-outcome>
-   <to-view-id>#{ishSubmissionBean.originalURL}</to-view-id>
+   <to-view-id>/pages/#{ISHSingleSubmissionBean.originalURL}</to-view-id>
   </navigation-case>
   <navigation-case>
-   <from-action>#{ishSubmissionBean.displayOfAnnotatedGps}</from-action>
+   <from-action>#{ISHSingleSubmissionBean.displayOfAnnotatedGps}</from-action>
    <from-outcome>success</from-outcome>
-   <to-view-id>#{ishSubmissionBean.originalURL}</to-view-id>
+   <to-view-id>/pages/#{ISHSingleSubmissionBean.originalURL}</to-view-id>
   </navigation-case>
  </navigation-rule>
  <navigation-rule>
   <from-view-id>/pages/entry_page.jsp</from-view-id>
   <navigation-case>
-   <from-action>#{queryBean.findGenes}</from-action>
+   <from-action>#{QueryBean.findGenes}</from-action>
    <from-outcome>success_all</from-outcome>
-   <to-view-id>#{queryBean.resultURL}</to-view-id>
+   <to-view-id>/pages/#{QueryBean.resultURL}</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>
-   <from-action>#{queryBean.findGenes}</from-action>
+   <from-action>#{QueryBean.findGenes}</from-action>
    <from-outcome>success_annotated</from-outcome>
    <to-view-id>/pages/ish_comp_gene_exp.jsp</to-view-id>
   </navigation-case>
   <navigation-case>
    <from-outcome>submissionDetail</from-outcome>
-   <to-view-id>#{queryBean.assayURL}</to-view-id>
+   <to-view-id>/pages/#{QueryBean.assayURL}</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>
@@ -792,7 +792,7 @@
   <navigation-case>
    <from-action>#{AnatomyBean.annotSubsFromPronephBrowse}</from-action>
    <from-outcome>success</from-outcome>
-   <to-view-id>#{AnatomyBean.resultURL}</to-view-id>
+   <to-view-id>/pages/#{AnatomyBean.resultURL}</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
@@ -813,7 +813,7 @@
   <from-view-id>/pages/anatomy_tree.jsp</from-view-id>
   <navigation-case>
    <from-outcome>success</from-outcome>
-   <to-view-id>#{AnatomyBean.resultURL}</to-view-id>
+   <to-view-id>/pages/#{AnatomyBean.resultURL}</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>

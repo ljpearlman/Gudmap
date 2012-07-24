@@ -184,8 +184,7 @@ public class Globals {
 			case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneSymbols", 0);
 			case 2:	return new ImagesCollectionBrowseHelper(collectionItemsIds, 2, "imageIds", 0);
 			case 3:	return new ProbesCollectionBrowseHelper("GPL1261", masterTableId, collectionItemsIds, 3, "probeIds", 0); 
-//			case 4:	return new ProbesCollectionBrowseHelper("GPL6246", "3", collectionItemsIds, 4, "probeIds", 0);
-			case 4:	return new ProbesCollectionBrowseHelper("GPL6246", "3_0", collectionItemsIds, 4, "probeIds", 0);
+			case 4:	return new ProbesCollectionBrowseHelper("GPL6246", masterTableId, collectionItemsIds, 4, "probeIds", 0);
 		}	
 		return null;
 	}

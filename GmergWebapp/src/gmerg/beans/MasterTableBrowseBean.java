@@ -69,9 +69,21 @@ public class MasterTableBrowseBean {
 	public MasterTableBrowseBean (){
 	if (debug)
 	    System.out.println("-------In MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol);
+	int iSize = 0;
+	int i = 0;
 		displayTreeView = false;
 		viewMode = "0";
 		MasterTableInfo[] masterTables = DbUtility.getAllMasterTablesInfo();
+		if (debug) {
+		    iSize = 0;
+		    if (null != masterTables)
+			iSize = masterTables.length;
+		    for(i=0; i<iSize; i++) {
+			System.out.println(i+"th master table Id = "+ masterTables[i].getId()+"  Title = "+ masterTables[i].getTitle());
+		    }
+		}
+
+		    
 		allMasterTables = new ArrayList<MasterTableDisplayInfo>();
 		for (MasterTableInfo info : masterTables)
 			allMasterTables.add(new MasterTableDisplayInfo(info));
@@ -109,10 +121,9 @@ public class MasterTableBrowseBean {
 		initialseTables(null);
 		if (debug) {
 		    System.out.println("-------End MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol+" displayTreeView = "+displayTreeView+" tableTitle="+tableTitle+" viewMode="+viewMode);
-		    int iSize = 0;
+		    iSize = 0;
 		    if (null != allMasterTables)
 			iSize = allMasterTables.size();
-		    int i = 0;
 		    MasterTableDisplayInfo item = null;
 		    for (i = 0; i < iSize; i++) {
 			item = (MasterTableDisplayInfo)allMasterTables.get(i);
@@ -127,6 +138,7 @@ public class MasterTableBrowseBean {
 	// ********************************************************************************
 	public String updatePage() {
 		String prevSelections = FacesUtil.getRequestParamValue("prevSelectios");
+
 		initialseTables(prevSelections);
 		return null;
 	}
@@ -149,14 +161,23 @@ public class MasterTableBrowseBean {
 		System.out.println("MasterTableBrowseBean:initialseTables.   available ="+available);
 		String selectionString = getSelectionsString();
 		int iSize = allMasterTables.size();
-		if (debug)
-		    System.out.println("MasterTableBrowseBean:initialseTables.   allMasterTables size = "+iSize);
+		MasterTableDisplayInfo masterTable = null;
+		String masterTableId = null;
+		int i = 0;
+		GenericTableView tableView = null;
 
-		for(int i=0; i<iSize; i++) {
-			MasterTableDisplayInfo masterTable = allMasterTables.get(i); 
-			String masterTableId = masterTable.info.getId();
+		if (debug) {
+		    System.out.println("MasterTableBrowseBean:initialseTables.   allMasterTables size = "+iSize+" selectionString = "+selectionString);
+		    for(i=0; i<iSize; i++) {
+			masterTable = allMasterTables.get(i); 
+			System.out.println(i+"th master table Id = "+ masterTable.info.getId()+"  Title = "+ masterTable.info.getTitle());
+		    }
+		}
+		for(i=0; i<iSize; i++) {
+		                masterTable = allMasterTables.get(i); 
+			masterTableId = masterTable.info.getId();
 			if (masterTable.selected) {
-				GenericTableView tableView = null;
+				tableView = null;
 				if (available!= null && available.charAt(i)=='1') 
 					tableView = TableUtil.getTableViewFromSession(getViewName(masterTableId));
 				if (tableView == null){

@@ -10,6 +10,8 @@ import gmerg.utils.Utility;
 
 public class DBQuery {
 
+    static protected boolean debug = false;
+
   static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
   
   // for every fomat except DPC, which is what GUDMAP uses, the format goes first.
@@ -2381,12 +2383,19 @@ public class DBQuery {
 
   // finds ParamQuery object by name and returns
   public static ParamQuery getParamQuery(String name) {
+      ParamQuery ret = null;
+
 	  for (int i = 0; i < pqList.length; i++) {
 		  if (pqList[i].getQueryName().equals(name)) {
-			  return pqList[i];
+			  ret = pqList[i];
+
+			  if (debug)
+			      System.out.println("sql = "+  ret.getQuerySQL().toLowerCase());
+
+			  break;
 		  }
       }
-      return null;
+      return ret;
   }
 
   // query to find edit history of submissions

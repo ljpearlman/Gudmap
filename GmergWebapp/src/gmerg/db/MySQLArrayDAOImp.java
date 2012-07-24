@@ -558,10 +558,9 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase() + " 1 arg = "+submissionAccessionId);
+
 	    prepStmt = conn.prepareStatement(queryString);
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp.findSampleBySubmissionId 1 arg = "+submissionAccessionId);
 	    prepStmt.setString(1, submissionAccessionId);
 	    
 	    // execute
@@ -1138,11 +1137,14 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    prepStmt = conn.prepareStatement(queryString);
 	    
 	    if (submissionDate == null || submissionDate.equals("")) {
+		if (debug)
+		    System.out.println("MySQLArrayDAOImp 1 arg = "+lab);
 		prepStmt.setInt(1, lab);
 	    } else {
-		prepStmt.setInt(1, Integer.parseInt(labId));
 		if (debug)
-		    System.out.println("MySQLArrayDAOImp 2 arg = "+submissionDate);
+		    System.out.println("MySQLArrayDAOImp 1 arg = "+ labId+" 2 arg = "+submissionDate);
+
+		prepStmt.setInt(1, Integer.parseInt(labId));
 		prepStmt.setString(2, submissionDate);
 	    }
 	    
@@ -1213,7 +1215,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase()+" 1 arg = "+labId);
 	    prepStmt = conn.prepareStatement(queryString);
 	    
 	    prepStmt.setInt(1, Integer.parseInt(labId));
@@ -1224,6 +1226,8 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    }
 	    
 	    if (archiveId != null && !archiveId.trim().equals("")) {
+		if (debug)
+		    System.out.println("MySQLArrayDAOImp 3 arg = "+archiveId);
 		prepStmt.setInt(3, Integer.parseInt(archiveId));
 	    }
 	    
@@ -1933,7 +1937,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase()+" 1 arg = "+genelistId);
 	    prepStmt = conn.prepareStatement(queryString);
 	    prepStmt.setInt(1, genelistId);
 	    resSet = prepStmt.executeQuery();
@@ -2139,13 +2143,9 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase() + "1 arg = "+symbol+" 2 arg = "+platformId);
 	    prepStmt = conn.prepareStatement(queryString);
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp 1 arg = "+symbol);
 	    prepStmt.setString(1, symbol);
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp 2 arg = "+platformId);
 	    prepStmt.setString(2, platformId);
 	    resSet = prepStmt.executeQuery();
 	    if (resSet.first()) {
@@ -2213,12 +2213,16 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
 	    
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+	    if (debug) 
+		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase() +" 1 arg = "+glstId);
+
 	    prepStmt = conn.prepareStatement(queryString);
 	    if (clstId == null) {
 		prepStmt.setInt(1, Integer.parseInt(glstId));
 	    } else {
+		if (debug)
+		    System.out.println("MySQLArrayDAOImp.sql 2 arg = "+clstId);
+
 		prepStmt.setInt(1, Integer.parseInt(glstId));
 		prepStmt.setInt(2, Integer.parseInt(clstId));
 	    }
@@ -2304,8 +2308,12 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
 	    prepStmt = conn.prepareStatement(queryString);
 	    if (clstId == null) {
+		if (debug)
+		    System.out.println("MySQLArrayDAOImp.sql 1 arg = "+glstId);
 		prepStmt.setInt(1, Integer.parseInt(glstId));
 	    } else {
+			if (debug)
+			    System.out.println("MySQLArrayDAOImp.sql 1 arg = "+clstId);
 		prepStmt.setInt(1, Integer.parseInt(clstId));
 	    }
 	    resSet = prepStmt.executeQuery();
@@ -2383,7 +2391,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    if (debug) {
  	        System.out.println("getExpressionByGivenProbeSetIds master table id: " + masterTableId);
 	        System.out.println("getExpressionByGivenProbeSetIds genelist id: " + genelistId);
-	        System.out.println("getExpressionByGivenProbeSetIds query: " + queryString);
+	        System.out.println("getExpressionByGivenProbeSetIds query: " + queryString.toLowerCase());
 	    }
 	    
 	    // get data
@@ -2395,7 +2403,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		// get master table id and section id
 		String[] masterTableAndSectionId = Utility.parseMasterTableId(masterTableId);
 		if (debug)
-		    System.out.println("MySQLArrayDAOImp.sql = "+queryString+" 1 arg = "+masterTableAndSectionId[0]+" 2 arg = "+masterTableAndSectionId[1]);
+		    System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase()+" 1 arg = "+masterTableAndSectionId[0]+" 2 arg = "+masterTableAndSectionId[1]);
 		
 		if (genelistIdProvided) {
 		    if (clstId == null) { // only genelist id passed in
@@ -2586,7 +2594,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
             	conn = DBHelper.reconnect2DB(conn);
 		
 		if (debug)
-		    System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+		    System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase()+" 1 arg = "+columnId);
 		prepStmt = conn.prepareStatement(queryString);
 		prepStmt.setInt(1, columnId);
 		resSet = prepStmt.executeQuery();
@@ -2901,14 +2909,14 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
 	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+transgenicQueryString.toLowerCase());
+		System.out.println("MySQLArrayDAOImp.sql = "+transgenicQueryString.toLowerCase()+" 1 arg = "+subId);
 	    prepStmtTransgenic = conn.prepareStatement(transgenicQueryString);
 	    prepStmtTransgenic.setInt(1, subId);
 	    resSetTransgenic = prepStmtTransgenic.executeQuery();
 	    
             // Transgenic note
 	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+transgenicNoteQueryString.toLowerCase());
+		System.out.println("MySQLArrayDAOImp.sql = "+transgenicNoteQueryString.toLowerCase()+" 1 arg = "+subId);
             prepStmtTransgenicNote = conn.prepareStatement(transgenicNoteQueryString);
             prepStmtTransgenicNote.setInt(1, subId);
             resSetTransgenicNote = prepStmtTransgenicNote.executeQuery();
@@ -3348,10 +3356,9 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase()+" 1 arg = "+platformId);
+
 	    prepStmt = conn.prepareStatement(queryString);
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp 1 arg = "+platformId);
 	    prepStmt.setString(1, platformId);
 	    resSet = prepStmt.executeQuery();
 	    if (resSet.first()) {

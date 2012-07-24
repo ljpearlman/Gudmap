@@ -23,7 +23,7 @@
 
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
-
+                <a4j:keepAlive beanName="MasterTableBrowseBean" />
 <%--
 	<h:form rendered="genelist"> 	
 		<h:commandLink value="View gene list in JavaTreeView" id="treeViewActionLink" action="#{MasterTableBrowseBean.startTreeView}" >
@@ -102,30 +102,51 @@
 		
 		<g:tabbedPanel id="masterTablePanels" value="0"  activeTabStyleClass="header-stripey" activeSubStyleClass="header-stripey" tabContentStyleClass="header-stripey">
 
-			<g:tabPane id="Kidney_MOE430" label="#{MasterTableBrowseBean.allMasterTables[0].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[0].selected}" >
+			<g:tabPane id="type0" label="#{MasterTableBrowseBean.allMasterTables[0].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[0].selected}" >
 				<f:subview id="masterTableBrowse_t0">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[0].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</g:tabPane>
 
-			<g:tabPane id="LUT_MOE430" label="#{MasterTableBrowseBean.allMasterTables[1].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[1].selected}">
+			<g:tabPane id="type1" label="#{MasterTableBrowseBean.allMasterTables[1].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[1].selected}">
 				<f:subview id="masterTableBrowse_t1">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[1].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</g:tabPane>
 
-			<g:tabPane id="Reproductive_MOE430" label="#{MasterTableBrowseBean.allMasterTables[2].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[2].selected}">
+			<g:tabPane id="type2" label="#{MasterTableBrowseBean.allMasterTables[2].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[2].selected}">
 				<f:subview id="masterTableBrowse_t2">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[2].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</g:tabPane>
 
-			<g:tabPane id="Kidney_ST1" label="#{MasterTableBrowseBean.allMasterTables[3].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[3].selected}">
+			<g:tabPane id="type3" label="#{MasterTableBrowseBean.allMasterTables[3].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[3].selected}">
 				<f:subview id="masterTableBrowse_t3">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[3].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</g:tabPane>
+
+			<g:tabPane id="type4" label="#{MasterTableBrowseBean.allMasterTables[4].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[4].selected}">
+				<f:subview id="masterTableBrowse_t4">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[4].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</g:tabPane>
+
+			<g:tabPane id="type5" label="#{MasterTableBrowseBean.allMasterTables[5].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[5].selected}">
+				<f:subview id="masterTableBrowse_t5">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[5].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</g:tabPane>
+
+			<g:tabPane id="type6" label="#{MasterTableBrowseBean.allMasterTables[6].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[6].selected}">
+				<f:subview id="masterTableBrowse_t6">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[6].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</g:tabPane>
@@ -187,6 +208,46 @@
 			</f:subview>
 			<br><br>
 		</h:panelGroup>
+
+		<h:panelGroup rendered="#{MasterTableBrowseBean.allMasterTables[4].selected}" >
+			<h:outputText value="#{MasterTableBrowseBean.allMasterTables[4].info.title} Microarray Expression Profile for: " styleClass="plaintextbold" />
+			<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
+			<h:outputLink styleClass="plaintextbold" value ="http://www.gudmap.org/Help/Microarray_Help.html">
+				<h:outputText value= "  (View Microarray Analysis Help)" />
+			</h:outputLink>			
+			<f:subview id="masterTableBrowse_4">
+				<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[4].setTableViewName}" />
+				<jsp:include page="../includes/browse_table.jsp" />
+			</f:subview>
+			<br><br>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{MasterTableBrowseBean.allMasterTables[5].selected}" >
+			<h:outputText value="#{MasterTableBrowseBean.allMasterTables[5].info.title} Microarray Expression Profile for: " styleClass="plaintextbold" />
+			<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
+			<h:outputLink styleClass="plaintextbold" value ="http://www.gudmap.org/Help/Microarray_Help.html">
+				<h:outputText value= "  (View Microarray Analysis Help)" />
+			</h:outputLink>			
+			<f:subview id="masterTableBrowse_5">
+				<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[5].setTableViewName}" />
+				<jsp:include page="../includes/browse_table.jsp" />
+			</f:subview>
+			<br><br>
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{MasterTableBrowseBean.allMasterTables[6].selected}" >
+			<h:outputText value="#{MasterTableBrowseBean.allMasterTables[6].info.title} Microarray Expression Profile for: " styleClass="plaintextbold" />
+			<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
+			<h:outputLink styleClass="plaintextbold" value ="http://www.gudmap.org/Help/Microarray_Help.html">
+				<h:outputText value= "  (View Microarray Analysis Help)" />
+			</h:outputLink>			
+			<f:subview id="masterTableBrowse_6">
+				<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[6].setTableViewName}" />
+				<jsp:include page="../includes/browse_table.jsp" />
+			</f:subview>
+			<br><br>
+		</h:panelGroup>
+
 	</h:panelGroup>	
 
 

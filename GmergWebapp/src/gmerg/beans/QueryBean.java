@@ -114,7 +114,7 @@ public class QueryBean {
         else {
         
             String resultURLQString = "?queryType=geneQueryISH&inputType="+inputType+"&geneSymbol="+geneSymbol+"&stage="+stage+"&criteria="+criteria+"&output="+output+"&ignoreExpression=true";
-            resultURL = "/pages/ish_submissions.html" + resultURLQString;
+            resultURL = "ish_submissions.html" + resultURLQString;
             return "success_all";
         }
 
@@ -136,7 +136,7 @@ public class QueryBean {
         }
         
         String resultURLQString = "?queryType=componentSubsISH&componentID="+componentID;
-        resultURL = "/pages/ish_submissions.html" + resultURLQString;
+        resultURL = "ish_submissions.html" + resultURLQString;
         
         return "success";
     }
@@ -155,7 +155,7 @@ public class QueryBean {
         }
         
         String resultURLQString = "?queryType=componentGeneSubsISH&inputType="+inputType+"&geneSymbol="+geneSymbol+"&stage="+stage+"&component="+componentID+"&criteria="+criteria+"&output="+output+"&ignoreExpression=false";
-        resultURL = "/pages/ish_submissions.html" + resultURLQString;
+        resultURL = "ish_submissions.html" + resultURLQString;
         
         return "success";
         
@@ -218,9 +218,9 @@ public class QueryBean {
         if (null == detail) {
             return "emptyResult";
         } else if (detail.getSubmissionType() == 0) {
-            this.setAssayURL("/pages/ish_submission.html?id=" + submissionID);
+            this.setAssayURL("ish_submission.html?id=" + submissionID);
         } else {
-            this.setAssayURL("/pages/mic_submission.html?id=" + submissionID);
+            this.setAssayURL("mic_submission.html?id=" + submissionID);
         }
         return "submissionDetail";
     }
