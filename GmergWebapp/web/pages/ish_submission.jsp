@@ -397,7 +397,6 @@
 						</h:outputLink>
 --%>
 						<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.name}" />
-						<h:outputText styleClass="datatext" rendered="#{!ISHSingleSubmissionBean.renderPrbNameURL}" value="#{ISHSingleSubmissionBean.submission.antibody.name}" />
 					</h:panelGroup>
 			
 					<h:outputText value="Accession ID:" rendered="#{proj == 'GUDMAP'}" />
