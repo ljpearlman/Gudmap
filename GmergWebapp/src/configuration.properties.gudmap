@@ -1,19 +1,19 @@
 db_driver=com.mysql.jdbc.Driver
 
-host=jdbc:mysql://madbprodn/
-user=gudmap
-password=patience
-database=GudmapGX
+#host=jdbc:mysql://madbprodn/
+#user=gudmap
+#password=patience
+#database=GudmapGX
 
 #user=koosum
 #password=submission_admin$$88
 #database=EureGudmap
 
-#host=jdbc:mysql://clynelish/
+host=jdbc:mysql://clynelish/
 #host=jdbc:mysql://tamdhu/
-#user=gudmaptest
-#password=gudmaptest
-#database=GudmapGX_test
+user=gudmaptest
+password=gudmaptest
+database=GudmapGX_test
 
 #user=koosum
 #password=koosum_admin

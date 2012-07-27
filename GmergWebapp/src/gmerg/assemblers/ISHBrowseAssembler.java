@@ -206,9 +206,12 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		formatedRow[ 6] = new DataItem(row[6]);										// Assay Type
 		formatedRow[ 7] = new DataItem(row[7]);										// Specimen Type
 		formatedRow[ 8] = new DataItem(row[8]);															// Sex
-		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
-			formatedRow[ 9] = new DataItem(row[9], "Probe Details", "probe.html?probe="+row[9], 10);																// Probe Name
-		else 
+		if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
+			if ("IHC".equalsIgnoreCase(row[6]))
+				formatedRow[ 9] = new DataItem(row[9], "Antibody Details", "antibody.html?antibody="+row[9], 10);	
+			else
+				formatedRow[ 9] = new DataItem(row[9], "Probe Details", "probe.html?probe="+row[9], 10);
+		}// Probe Name
 			formatedRow[ 9] = new DataItem(row[9]);																// Probe Name
 		formatedRow[10] = new DataItem(row[10]);															// genotype
 		formatedRow[11] = new DataItem(row[11]);															// Probe Type

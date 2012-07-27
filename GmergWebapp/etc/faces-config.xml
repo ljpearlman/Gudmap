@@ -585,6 +585,11 @@
   <managed-bean-class>gmerg.beans.MicroarrayDetailsBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>AntibodyBean</managed-bean-name>
+  <managed-bean-class>gmerg.beans.AntibodyBean</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+ </managed-bean>
  
  <!-- *********************END SECTION: MANAGED BEAN************************** 
  =================== Initialize Image Map Hotspot Data ============== 

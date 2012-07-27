@@ -57,6 +57,7 @@ public interface ISHDAO {
 	
 	// added to allow display antibody data - xingjun 09-July-2007
 	public Antibody findAntibodyBySubmissionId(String submissionAccessionId);
+	public Antibody findAntibodyByAntibodyId(String antibodyId);
 	
 	// added to allow display transgenic data - xingjun 27/08/2008
 	public Transgenic findTransgenicBySubmissionId(String submissionId);

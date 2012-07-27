@@ -590,6 +590,66 @@ public class MySQLISHDAOImp implements ISHDAO {
         return probe;
     }
 
+    public Antibody findAntibodyByAntibodyId(String antibodyId) {
+        Antibody antibody = null;
+        ResultSet resSetAntibody = null;
+        ResultSet resSetAntibodyNote = null;
+        ResultSet resSetSpeciesSpecificity = null;
+        ResultSet resSetAntibodyVariant = null;
+        ParamQuery parQAntibody = DBQuery.getParamQuery("ANTIBODY_DETAILS");
+        ParamQuery parQAntibodyNote = DBQuery.getParamQuery("SUBMISSION_PRBNOTE");
+        ParamQuery parQSpeciesSpecificity = DBQuery.getParamQuery("ANTIBODY_SPECIES_SPECIFICITY");
+        ParamQuery parQAntibodyVariant = DBQuery.getParamQuery("ANTIBODY_VARIANTS");
+        PreparedStatement prepStmtAntibody = null;
+        PreparedStatement prepStmtAntibodyNote = null;
+        PreparedStatement prepStmtSpeciesSpecificity = null;
+        PreparedStatement prepStmtAntibodyVariant = null;
+//        System.out.println("sql for antibody: " + parQAntibody.getQuerySQL());
+        try {
+        	// if disconnected from db, re-connected
+        	conn = DBHelper.reconnect2DB(conn);
+
+            conn.setAutoCommit(false);
+
+            // antibody
+            parQAntibody.setPrepStat(conn);
+            prepStmtAntibody = parQAntibody.getPrepStat();
+            prepStmtAntibody.setString(1, antibodyId);
+            resSetAntibody = prepStmtAntibody.executeQuery();
+
+            // antibody note
+            parQAntibodyNote.setPrepStat(conn);
+            prepStmtAntibodyNote = parQAntibodyNote.getPrepStat();
+            prepStmtAntibodyNote.setString(1, antibodyId);
+            resSetAntibodyNote = prepStmtAntibodyNote.executeQuery();
+            
+            // species specificity 
+            parQSpeciesSpecificity.setPrepStat(conn);
+            prepStmtSpeciesSpecificity = parQSpeciesSpecificity.getPrepStat();
+            prepStmtSpeciesSpecificity.setString(1, antibodyId);
+            resSetSpeciesSpecificity = prepStmtSpeciesSpecificity.executeQuery();
+
+            // antibody variant
+            parQAntibodyVariant.setPrepStat(conn);
+            prepStmtAntibodyVariant = parQAntibodyVariant.getPrepStat();
+            prepStmtAntibodyVariant.setString(1, antibodyId);
+            resSetAntibodyVariant = prepStmtAntibodyVariant.executeQuery();
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            // assemble
+            antibody = formatAntibodyResultSet(resSetAntibody, resSetAntibodyNote, resSetSpeciesSpecificity, resSetAntibodyVariant);
+
+            // close the connection
+            DBHelper.closePreparedStatement(prepStmtAntibody);
+            DBHelper.closePreparedStatement(prepStmtAntibodyNote);
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return antibody;
+    }
+    
     /**
      * @return
      */
@@ -598,12 +658,15 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSetAntibody = null;
         ResultSet resSetAntibodyNote = null;
         ResultSet resSetSpeciesSpecificity = null;
+        ResultSet resSetAntibodyVariant = null;
         ParamQuery parQAntibody = DBQuery.getParamQuery("SUBMISSION_ANTIBODY");
         ParamQuery parQAntibodyNote = DBQuery.getParamQuery("SUBMISSION_PRBNOTE");
         ParamQuery parQSpeciesSpecificity = DBQuery.getParamQuery("ANTIBODY_SPECIES_SPECIFICITY");
+        ParamQuery parQAntibodyVariant = DBQuery.getParamQuery("ANTIBODY_VARIANTS");
         PreparedStatement prepStmtAntibody = null;
         PreparedStatement prepStmtAntibodyNote = null;
         PreparedStatement prepStmtSpeciesSpecificity = null;
+        PreparedStatement prepStmtAntibodyVariant = null;
 //        System.out.println("sql for antibody: " + parQAntibody.getQuerySQL());
         try {
         	// if disconnected from db, re-connected
@@ -628,12 +691,18 @@ public class MySQLISHDAOImp implements ISHDAO {
             prepStmtSpeciesSpecificity = parQSpeciesSpecificity.getPrepStat();
             prepStmtSpeciesSpecificity.setString(1, submissionAccessionId);
             resSetSpeciesSpecificity = prepStmtSpeciesSpecificity.executeQuery();
-            
+
+            // antibody variant
+            parQAntibodyVariant.setPrepStat(conn);
+            prepStmtAntibodyVariant = parQAntibodyVariant.getPrepStat();
+            prepStmtAntibodyVariant.setString(1, submissionAccessionId);
+            resSetAntibodyVariant = prepStmtAntibodyVariant.executeQuery();
+
             conn.commit();
             conn.setAutoCommit(true);
 
             // assemble
-            antibody = formatAntibodyResultSet(resSetAntibody, resSetAntibodyNote, resSetSpeciesSpecificity);
+            antibody = formatAntibodyResultSet(resSetAntibody, resSetAntibodyNote, resSetSpeciesSpecificity, resSetAntibodyVariant);
 
             // close the connection
             DBHelper.closePreparedStatement(prepStmtAntibody);
@@ -652,51 +721,63 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @throws SQLException
      */
     private Antibody formatAntibodyResultSet(ResultSet resSetAntibody, 
-    		ResultSet resSetAntibodyNote, ResultSet resSetSpeciesSpecificity) throws SQLException {
+    		ResultSet resSetAntibodyNote, ResultSet resSetSpeciesSpecificity, ResultSet resSetAntibodyVariant) throws SQLException {
     	Antibody antibody = null;
     	if (resSetAntibody.first()) {
     		antibody = new Antibody();
     		// set properties
-    		antibody.setName(resSetAntibody.getString(1));
-    		antibody.setAccessionId(resSetAntibody.getString(2));
-    		antibody.setGeneSymbol(resSetAntibody.getString(3));
-    		antibody.setGeneName(resSetAntibody.getString(4));
-    		antibody.setGeneId(resSetAntibody.getString(5));
-    		antibody.setSeqStatus(resSetAntibody.getString(6));
-    		antibody.setseqStartLocation(resSetAntibody.getInt(7));
-    		antibody.setSeqEndLocation(resSetAntibody.getInt(8));
-    		antibody.setUrl(resSetAntibody.getString(9));
-//    		antibody.setGenbankID(resSetAntibody.getString(1));
-//    		antibody.setGenbankURL(resSetAntibody.getString(1));
-    		antibody.setSupplier(resSetAntibody.getString(10));
-    		antibody.setCatalogueNumber(resSetAntibody.getString(11));
-    		antibody.setLotNumber(resSetAntibody.getString(12));
-    		// obtain production method based on antibody type
-    		String antibodyType = resSetAntibody.getString(13);
-    		antibody.setType(antibodyType);
+    		antibody.setMaProbeId(resSetAntibody.getString(1));
+    		antibody.setName(resSetAntibody.getString(2));
+    		antibody.setAccessionId(resSetAntibody.getString(3));
+    		antibody.setGeneSymbol(resSetAntibody.getString(4));
+    		antibody.setGeneName(resSetAntibody.getString(5));
+    		antibody.setLocusTag(resSetAntibody.getString(6));
+    		antibody.setUniprotId(resSetAntibody.getString(7));
+    		antibody.setseqStartLocation(resSetAntibody.getInt(8));
+    		antibody.setSeqEndLocation(resSetAntibody.getInt(9));
+    		
+    		String antibodyType = resSetAntibody.getString(10);
+    		antibody.setSubtype(antibodyType);
+    		// obtain host based on antibody type
     		if (antibodyType.trim().equalsIgnoreCase("monoclonal")) {
-    			String hybridomaValue = resSetAntibody.getString(14);
-    			String phageDisplayValue = resSetAntibody.getString(15);
-    			
-    			// check the production type
-    			if (hybridomaValue != null && !hybridomaValue.equals("")) {
-    				antibody.setHybridomaValue(hybridomaValue);
-        			antibody.setProductionMethod(hybridomaValue);
-    			} else if(phageDisplayValue != null && !phageDisplayValue.equals("")) {
-    				antibody.setPhageDisplayValue(phageDisplayValue);
-    				antibody.setProductionMethod(phageDisplayValue);
-    			} else {
-    				antibody.setProductionMethod("N/A");
-    			}
+    			String productionMethod = resSetAntibody.getString(11);
+    			String cloneId = resSetAntibody.getString(12);
+    			if (cloneId == null)
+    				antibody.setHost(productionMethod);
+    			else
+    				antibody.setHost(productionMethod + " " +cloneId);
     		} else { // antibody type = polyclonal
-    			String speciesImmunizedValue = resSetAntibody.getString(16);
-    			antibody.setSpeciesImmunizedValue(speciesImmunizedValue);
-    			antibody.setProductionMethod(speciesImmunizedValue);
+    			antibody.setHost(resSetAntibody.getString(13));
     		}
-    		antibody.setPurificationMethod(resSetAntibody.getString(17));
-    		antibody.setChainType(resSetAntibody.getString(18));
-    		antibody.setImmunoglobulinIsotype(resSetAntibody.getString(19));
-    		antibody.setDetectedVariantValue(resSetAntibody.getString(20));
+    		
+    		antibody.setPurificationMethod(resSetAntibody.getString(14));
+    		antibody.setImmunoglobulinIsotype(resSetAntibody.getString(15));
+    		antibody.setChainType(resSetAntibody.getString(16));
+    		antibody.setDirectLabel(resSetAntibody.getString(17));
+    		antibody.setDetectionNotes(resSetAntibody.getString(18));
+    		antibody.setDilution(resSetAntibody.getString(19));
+    		antibody.setLabProbeId(resSetAntibody.getString(20));
+    		
+    		// supplier
+    		antibody.setSupplier(resSetAntibody.getString(21));
+    		antibody.setCatalogueNumber(resSetAntibody.getString(22));
+    		antibody.setLotNumber(resSetAntibody.getString(23));
+    		
+    		antibody.setSecondaryAntibody(resSetAntibody.getString(24));
+    		antibody.setSignalDetectionMethod(resSetAntibody.getString(25));
+    		antibody.setNotes(resSetAntibody.getString(26));
+
+    		String antibodyVariants = null;
+    		if (resSetAntibodyVariant.first()) {
+    			resSetAntibodyVariant.beforeFirst();
+    			antibodyVariants = new String("");
+    			while (resSetAntibodyVariant.next()) {
+    				antibodyVariants += resSetAntibodyVariant.getString(2) + ", ";
+    			}
+    			// remove trailing ',' character
+    			antibodyVariants = antibodyVariants.substring(0, antibodyVariants.length()-2);
+    		}
+    		antibody.setDetectedVariantValue(antibodyVariants);
     		
     		String speciesSpecificities = null;
     		if (resSetSpeciesSpecificity.first()) {
@@ -704,26 +785,13 @@ public class MySQLISHDAOImp implements ISHDAO {
     			speciesSpecificities = new String("");
     			while (resSetSpeciesSpecificity.next()) {
     				speciesSpecificities += resSetSpeciesSpecificity.getString(2) + ", ";
-//    				System.out.println("ss: " + speciesSpecificities);
     			}
     			// remove trailing ',' character
     			speciesSpecificities = speciesSpecificities.substring(0, speciesSpecificities.length()-2);
     		}
     		antibody.setSpeciesSpecificity(speciesSpecificities);
+
     		
-    		antibody.setLabelProduct(resSetAntibody.getString(21));
-    		antibody.setFinalLabel(resSetAntibody.getString(22));
-    		antibody.setSignalDetectionMethod(resSetAntibody.getString(23));
-    		
-    		// get notes
-            if (resSetAntibodyNote.first()) {
-                resSetAntibodyNote.beforeFirst();
-                String notes = new String("");
-                while (resSetAntibodyNote.next()) {
-                    notes += resSetAntibodyNote.getString(1) + " ";
-                }
-                antibody.setNotes(notes.trim());
-            }
     	}
     	return antibody;
     }

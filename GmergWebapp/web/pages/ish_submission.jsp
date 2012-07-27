@@ -400,8 +400,18 @@
 						<h:outputText styleClass="datatext" rendered="#{!ISHSingleSubmissionBean.renderPrbNameURL}" value="#{ISHSingleSubmissionBean.submission.antibody.name}" />
 					</h:panelGroup>
 			
-					<h:outputText value="Accession:" rendered="#{proj == 'GUDMAP'}" />
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.accessionId}" rendered="#{proj == 'GUDMAP'}" />
+					<h:outputText value="Accession ID:" rendered="#{proj == 'GUDMAP'}" />
+						<h:panelGroup rendered="#{proj == 'GUDMAP'}">
+							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.accessionId}">
+								<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.accessionId} " />
+							</h:outputLink>	
+
+ 							<h:outputLink styleClass="datatext" value="antibody.html" target="_blank">
+								<f:param name="antibody" value="#{ISHSingleSubmissionBean.submission.antibody.maProbeId}" />
+								<h:outputText value=" (#{ISHSingleSubmissionBean.submission.antibody.maProbeId})" />
+							</h:outputLink>
+ 
+  						</h:panelGroup>
 			
 					<h:outputText value="Protein:" />
 					<h:panelGrid columns="1" border="0" columnClasses="text-top,text-normal">
@@ -415,20 +425,18 @@
 						<h:panelGroup>
 							<h:outputText styleClass="plaintext" value="Name: " />
 							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.geneName} " />
-							<h:outputText styleClass="datatext" value="(#{ISHSingleSubmissionBean.submission.antibody.geneId})" />
-						</h:panelGroup>
-					</h:panelGrid>
-			
-					<h:outputText value="Antigen Sequence:" rendered="#{ISHSingleSubmissionBean.submission.antibody.seqStatus != 'Unsequenced'}" />
-					<h:panelGrid  rowClasses="text-top" columns="2" border="0" rendered="#{ISHSingleSubmissionBean.submission.antibody.seqStatus != 'Unsequenced'}" >
-						<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.seqStatus} " />
-						<h:panelGroup rendered="#{ISHSingleSubmissionBean.renderPrbSeqInfo}" >
-							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.seqInfo} " />
-							<h:outputLink target="_blank" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.genbankURL}" >
-								<h:outputText  value="#{ISHSingleSubmissionBean.submission.antibody.genbankID}" />
+							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.locusTag}">
+								<h:outputText value="(#{ISHSingleSubmissionBean.submission.antibody.locusTag})" />
 							</h:outputLink>
 						</h:panelGroup>
 					</h:panelGrid>
+			
+					<h:outputText value="Epitope (Uniprot ID):"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.uniprotId}"/>
+					<h:outputText value="Amino-terminus (start):" rendered="#{ISHSingleSubmissionBean.submission.antibody.type == monoclonal}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.seqStartLocation}" rendered="#{ISHSingleSubmissionBean.submission.antibody.type == monoclonal}"/>
+					<h:outputText value="Carboxy-terminus (end):" rendered="#{ISHSingleSubmissionBean.submission.antibody.type == monoclonal}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.seqEndLocation}" rendered="#{ISHSingleSubmissionBean.submission.antibody.type == monoclonal}"/>
 			
 					<f:verbatim>&nbsp;</f:verbatim>
 					<f:verbatim>&nbsp;</f:verbatim>
@@ -448,29 +456,20 @@
 					<h:outputText value="Antibody Type: " />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.type}" />
 			
-					<h:outputText value="Production Method: " />
-					<h:panelGrid columns="1" cellspacing="5">
-						<h:panelGroup>
-							<h:outputText styleClass="plaintext" value="#{ISHSingleSubmissionBean.submission.antibody.productionMethod}"
-							 			rendered="#{ISHSingleSubmissionBean.submission.antibody.type == 'monoclonal' && ISHSingleSubmissionBean.submission.antibody.hybridomaValue != null}"/>
-							<h:outputText styleClass="plaintext" value="#{ISHSingleSubmissionBean.submission.antibody.productionMethod}"
-										rendered="#{ISHSingleSubmissionBean.submission.antibody.type == 'monoclonal' && ISHSingleSubmissionBean.submission.antibody.phageDisplayValue != null}"/>
-							<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.antibody.type == 'polyclonal'}">
-								<h:outputText styleClass="plaintext" value="Species Immunized - " />
-								<h:outputText styleClass="plaintext" value="#{ISHSingleSubmissionBean.submission.antibody.productionMethod}" />
-							</h:panelGroup>
-						</h:panelGroup>
-						<h:panelGroup>
-							<h:outputText styleClass="plaintext" value="Purification Method:&nbsp;&nbsp;" escape="false"/>
-							<h:outputText styleClass="plaintext" value="#{ISHSingleSubmissionBean.submission.antibody.purificationMethod}" />
-						</h:panelGroup>
-					</h:panelGrid>
+					<h:outputText value="Host: " />
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.host}"/>
 					
-					<h:outputText value="Chain Type:" />
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.chainType}" />
-			
+					<h:outputText value="Purification Method: "/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.purificationMethod}" />
+
+					<f:verbatim>&nbsp;</f:verbatim>
+					<f:verbatim>&nbsp;</f:verbatim>
+					
 					<h:outputText value="Immunoglobulin Isotype:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.immunoglobulinIsotype}" />
+					
+					<h:outputText value="Chain Subtype:" />
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.chainType}" />
 					
 					<h:outputText value="Variant Detected:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.detectedVariantValue}" />
@@ -478,21 +477,41 @@
 					<h:outputText value="Species Specificity:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.speciesSpecificity}" />
 					
-					<h:outputText value="Visualisation:" />
+					<h:outputText value="Detection System:" />
 					<h:panelGrid columns="1" border="0" columnClasses="text-top,text-normal">
 						<h:panelGroup>
-							<h:outputText styleClass="plaintext" value="Final Label: " />
-							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.finalLabel}" />
+							<h:outputText styleClass="plaintext" value="Direct Label: " />
+							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.directLabel}"/>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="plaintext" value="Secondary Antibody: " />
+							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.secondaryAntibody}"/>
 						</h:panelGroup>
 						<h:panelGroup>
 							<h:outputText styleClass="plaintext" value="Signal Detection Method: " />
-							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.signalDetectionMethod}" />
+							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.signalDetectionMethod}"/>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="plaintext" value="Detection Notes: " />
+							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.detectionNotes}"/>
 						</h:panelGroup>
 					</h:panelGrid>
 			
-					<h:outputText styleClass="plaintext,text-top" value="Notes:" rendered="#{ISHSingleSubmissionBean.submission.antibody.notes != null}" />
+					<f:verbatim>&nbsp;</f:verbatim>
+					<f:verbatim>&nbsp;</f:verbatim>
+			
+					<h:outputText styleClass="plaintext,text-top" value="Antibody Notes:" rendered="#{ISHSingleSubmissionBean.submission.antibody.notes != null}" />
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.notes}"
 								  rendered="#{ISHSingleSubmissionBean.submission.antibody.notes != null}" />
+
+					<h:outputText styleClass="plaintext,text-top" value="Antibody Dilution:" />
+					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.dilution}" />
+<%-- 
+					<h:outputText styleClass="plaintext,text-top" value="Experimental Notes:" />
+					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.experimentalNotes}" />
+--%>
+					<h:outputText styleClass="plaintext,text-top" value="Lab Probe ID:" />
+					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.labProbeId}" />
 				</h:panelGrid>
 				
 				<h:outputLink id="editAntibody" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}" 

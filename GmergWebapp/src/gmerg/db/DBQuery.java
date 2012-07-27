@@ -1775,30 +1775,19 @@ public class DBQuery {
 
   // find details of a antibody linked in a submission
   final static String name163 = "SUBMISSION_ANTIBODY";
-  final static String query163 = "SELECT DISTINCT RPR_MTF_JAX, RPR_JAX_ACC, RPR_SYMBOL, RPR_NAME, RPR_LOCUS_TAG, RPR_TYPE, " + /* 1-6 */
-  		"PRB_START_LOC, PRB_END_LOC, " + /* 7-8 */
-  		"CONCAT(URL_URL, CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RMP_ID ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END) as ANTIBODY_NAME_URL, " + /* 9 */
-  		"SUP_COMPANY, SUP_CAT_NUM,  SUP_LOT_NUM, " + /* 10-12 */
-  		"ABD_TYPE, ABD_HYBRIDOMA, ABD_PHAGE_DISPLAY, ABD_SP_IMMUNIZED, ABD_PURIFICATION_MD, ABD_CHAIN, ABD_IMM_ISOTYPE, " + /* 13-19 */
-  		"VAD_VARIANT_NAME, " + /* 20 */
-  		"PRB_LABEL_PRODUCT, PRB_FINAL_LABEL, PRB_VISUAL_METHOD " + /* 21-23 */
-  		"FROM ISH_PROBE " +
-  		"JOIN ISH_SUBMISSION ON PRB_SUBMISSION_FK = SUB_OID AND SUB_ACCESSION_ID = ? " + // 1
-  		"LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
-  		"LEFT JOIN REF_MGI_PRB ON RPR_JAX_ACC = RMP_MGIACC " +
-  		"LEFT JOIN REF_URL ON URL_OID = CASE substring(RPR_JAX_ACC from 1 for position(':' in RPR_JAX_ACC)) " +
-  		"WHEN 'MGI:' THEN  9 " +
-  		"WHEN 'GenBank:' THEN  4 " +
-  		"WHEN 'IMAGE:' THEN 25 " +
-  		"WHEN 'NIBB:' THEN 26 " +
-  		"WHEN 'maprobe:' THEN 13 " +
-  		"ELSE -1 " +
-  		"END " +
-  		"JOIN EBD_AB_DETAILS ON RPR_OID = ABD_RPR_FK " +
-//  		"JOIN LNK_SUPPLIER ON RPR_OID = LPL_DRG_FK AND SUB_OID = LPL_GUDMAP_ACC " +
+  final static String query163 = "SELECT DISTINCT  CONCAT(ATB_PREFIX,ATB_OID),ATB_NAME,ATB_JAX_ACC,ATB_PROTEIN_SYMBOL,ATB_PROTEIN_NAME,ATB_LOCUS_TAG,ATB_GENBANK,ATB_5_LOC,ATB_3_LOC," +
+		"ATB_TYPE,ATB_PROD_METHOD,ATB_CLONE_ID,ATB_SP_IMMUNIZED,ATB_PURIFICATION_MD,ATB_IMM_ISOTYPE,ATB_CHAIN," +
+		"ATB_DIRECT_LABEL,ATL_DETECTION_NOTES,ATL_DILUTION,ATL_LAB_ID, " +
+		"SUP_COMPANY,SUP_CAT_NUM,SUP_LOT_NUM, " +
+		"ATL_SEC_ANTIBODY,ATL_DETECTION_METHOD, " +
+		"ABN_VALUE " +
+		"FROM ISH_ANTIBODY " +
+		"JOIN LNK_SUB_ANTIBODY ON ATL_ATB_OID_FK = ATB_OID " +  
+		"JOIN ISH_ANTIBODY_NOTES ON ABN_ATB_OID_FK = ATB_OID " + 
+		"JOIN ISH_SUBMISSION ON SUB_OID = ATL_SUBMISSION_FK " +
   		"JOIN LNK_SUPPLIER ON SUB_OID = LPL_GUDMAP_ACC AND LPL_SUPPLIER_TYPE = 'detection reagent' " +
   		"JOIN GEN_SUPPLIER ON LPL_SUP_FK = SUP_OID " +
-  		"LEFT JOIN EBD_VARIANT_DETECTED ON RPR_OID = VAD_RPR_FK ";
+  		"WHERE (CONCAT('GUDMAP:',ATL_SUBMISSION_FK) = ?)";
   
   // find details of a transgenic report allele for given submission
   final static String name223 = "SUBMISSION_TRANSGENIC";
@@ -1836,11 +1825,35 @@ public class DBQuery {
 
   // find species specificity linked to the antibody
   final static String name164 = "ANTIBODY_SPECIES_SPECIFICITY";
-  final static String query164 = "SELECT SUB_OID, FIC_SPECIES " +
-  		"FROM ISH_SUBMISSION " +
-  		"JOIN ISH_PROBE ON SUB_OID = PRB_SUBMISSION_FK AND SUB_ACCESSION_ID = ? " + // 1
-  		"LEFT JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
-  		"JOIN EBD_SPECIFICITY ON RPR_OID = FIC_RPR_FK";
+  final static String query164 = "SELECT ATB_OID,ABP_SPECIES " +
+	  		"FROM ISH_ANTIBODY " +
+	  		"JOIN LNK_SUB_ANTIBODY ON ATL_ATB_OID_FK = ATB_OID " + 
+	  		"JOIN ISH_ATB_SPECIFICITY ON ABP_ATB_FK = ATB_OID " +
+	  		"WHERE (CONCAT('GUDMAP:',ATL_SUBMISSION_FK) = ?)";
+
+  // find species specificity linked to the antibody
+  final static String name240 = "ANTIBODY_VARIANTS";
+  final static String query240 = "SELECT ATB_OID,ABV_VARIANT_NAME " +
+  		"FROM ISH_ANTIBODY " +
+  		"JOIN LNK_SUB_ANTIBODY ON ATL_ATB_OID_FK = ATB_OID " + 
+  		"JOIN ISH_ATB_VARIANTS ON ABV_ATB_FK = ATB_OID " +
+  		"WHERE (CONCAT('GUDMAP:',ATL_SUBMISSION_FK) = ?)";
+
+  // find details of a antibody 
+  final static String name241 = "ANTIBODY_DETAILS";
+  final static String query241 = "SELECT DISTINCT  CONCAT(ATB_PREFIX,ATB_OID),ATB_NAME,ATB_JAX_ACC,ATB_PROTEIN_SYMBOL,ATB_PROTEIN_NAME,ATB_LOCUS_TAG,ATB_GENBANK,ATB_5_LOC,ATB_3_LOC," +
+		"ATB_TYPE,ATB_PROD_METHOD,ATB_CLONE_ID,ATB_SP_IMMUNIZED,ATB_PURIFICATION_MD,ATB_IMM_ISOTYPE,ATB_CHAIN," +
+		"ATB_DIRECT_LABEL,ATL_DETECTION_NOTES,ATL_DILUTION,ATL_LAB_ID, " +
+		"SUP_COMPANY,SUP_CAT_NUM,SUP_LOT_NUM, " +
+		"ATL_SEC_ANTIBODY,ATL_DETECTION_METHOD, " +
+		"ABN_VALUE " +
+		"FROM ISH_ANTIBODY " + 
+		"JOIN LNK_SUB_ANTIBODY ON ATL_ATB_OID_FK = ATB_OID " +  
+		"JOIN ISH_ANTIBODY_NOTES ON ABN_ATB_OID_FK = ATB_OID " + 
+		"JOIN ISH_SUBMISSION ON SUB_OID = ATL_SUBMISSION_FK " +
+  		"JOIN LNK_SUPPLIER ON SUB_OID = LPL_GUDMAP_ACC AND LPL_SUPPLIER_TYPE = 'detection reagent' " +
+  		"JOIN GEN_SUPPLIER ON LPL_SUP_FK = SUP_OID " +
+  		"WHERE (CONCAT(ATB_PREFIX,ATB_OID) = ?)";
   
   // find all image notes for one specific ISH submission
   // xingjun - 20/09/2011 - rewrite the sql to avoid returning empty result
@@ -2378,7 +2391,9 @@ public class DBQuery {
       new ParamQuery(name236,query236),
       new ParamQuery(name237,query237),
       new ParamQuery(name238,query238),
-      new ParamQuery(name239,query239)
+      new ParamQuery(name239,query239),
+      new ParamQuery(name240,query240),
+      new ParamQuery(name241,query241)
   };
 
   // finds ParamQuery object by name and returns

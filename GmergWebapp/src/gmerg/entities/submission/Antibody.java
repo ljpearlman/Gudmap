@@ -3,6 +3,7 @@
  */
 package gmerg.entities.submission;
 
+import java.util.ArrayList;
 /**
  * @author xingjun
  *
@@ -25,7 +26,7 @@ public class Antibody {
 	private String catalogueNumber;
 	private String lotNumber;
 	private String type;
-	private String productionMethod;
+	private String host;
 	private String hybridomaValue;
 	private String phageDisplayValue;
 	private String speciesImmunizedValue;
@@ -35,9 +36,19 @@ public class Antibody {
 	private String detectedVariantValue;
 	private String speciesSpecificity;
 	private String labelProduct;
-	private String finalLabel;
+	private String directLabel;
 	private String signalDetectionMethod;
 	private String notes;
+	private String uniprotId;
+	private String detectionNotes;
+	private String secondaryAntibody;
+	private String dilution;
+	private String experimentalNotes;
+	private String labProbeId;
+	private String maprobeId;
+	private String locusTag;
+    private ArrayList ishSubmissions; 
+    private ArrayList<String[]> ishFilteredSubmissions; 
 	
 	
 	public String getName() {
@@ -164,23 +175,26 @@ public class Antibody {
 	}
 	
 	public void setLotNumber(String lotNumber) {
-		this.lotNumber = lotNumber;
+		if (lotNumber.equalsIgnoreCase("na"))
+			this.lotNumber = "";
+		else
+			this.lotNumber = lotNumber;
 	}
 	
 	public String getType() {
 		return this.type;
 	}
 	
-	public void setType(String type) {
+	public void setSubtype(String type) {
 		this.type = type;
 	}
 	
-	public String getProductionMethod() {
-		return this.productionMethod;
+	public String getHost() {
+		return this.host;
 	}
 	
-	public void setProductionMethod(String productionMethod) {
-		this.productionMethod = productionMethod;
+	public void setHost(String host) {
+		this.host = host;
 	}
 	
 	public String getHybridomaValue() {
@@ -255,12 +269,12 @@ public class Antibody {
 		this.labelProduct = labelProduct;
 	}
 	
-	public String getFinalLabel() {
-		return this.finalLabel;
+	public String getDirectLabel() {
+		return this.directLabel;
 	}
 	
-	public void setFinalLabel(String finalLabel) {
-		this.finalLabel = finalLabel;
+	public void setDirectLabel(String directLabel) {
+		this.directLabel = directLabel;
 	}
 	
 	public String getSignalDetectionMethod() {
@@ -279,4 +293,86 @@ public class Antibody {
 		this.notes = notes;
 	}
 
+	public String getUniprotId(){
+		return this.uniprotId;
+	}
+	
+	public void setUniprotId(String uniprotId) {
+		this.uniprotId = uniprotId;
+	}
+
+	public String getDetectionNotes() {
+		return this.detectionNotes;
+	}
+	
+	public void setDetectionNotes(String detectionNotes) {
+		this.detectionNotes = detectionNotes;
+	}
+
+	public String getSecondaryAntibody() {
+		return this.secondaryAntibody;
+	}
+	
+	public void setSecondaryAntibody(String secondaryAntibody) {
+		this.secondaryAntibody = secondaryAntibody;
+	}
+
+	public String getDilution(){
+		return this.dilution;
+	}
+	
+	public void setDilution(String dilution) {
+		this.dilution = dilution;
+	}
+
+	public String getExperimentalNotes() {
+		return this.experimentalNotes;
+	}
+	
+	public void setExperimentalNotes(String experimentalNotes) {
+		this.experimentalNotes = experimentalNotes;
+	}
+
+	public String getLabProbeId() {
+		return this.labProbeId;
+	}
+	
+	public void setLabProbeId(String labProbeId) {
+		this.labProbeId = labProbeId;
+	}
+
+	public String getMaProbeId() {
+		return this.maprobeId;
+	}
+	
+	public void setMaProbeId(String maprobeId) {
+		this.maprobeId = maprobeId;
+	}
+
+	public String getLocusTag() {
+		return this.locusTag;
+	}
+	
+	public void setLocusTag(String locusTag) {
+		this.locusTag = locusTag;
+	}
+
+    public ArrayList getIshSubmissions() { 	  	
+        return this.ishSubmissions;
+    }
+	
+    public void setIshSubmissions(ArrayList<String[]> values) {
+        this.ishSubmissions = values;
+
+        this.ishFilteredSubmissions = new ArrayList<String[]>();        
+        for (int i=0; i<ishSubmissions.size(); i++){
+        	String[] arr = (String[]) ishSubmissions.get(i);
+        	if (arr[9].equalsIgnoreCase(maprobeId) || arr[6].equalsIgnoreCase(maprobeId))
+        		this.ishFilteredSubmissions.add(arr);
+        }
+    }
+	
+    public ArrayList<String[]> getIshFilteredSubmissions() { 	  	
+        return this.ishFilteredSubmissions;
+    }
 }
