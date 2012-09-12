@@ -590,10 +590,10 @@
 							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.seqStatus} " />
 							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.seqInfo} " rendered="#{ISHSingleSubmissionBean.renderPrbSeqInfo}" />
 							--%>
-							<h:outputLink target="_blank" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.genbankURL}" rendered="#{ISHSingleSubmissionBean.submission.probe.genbankID}" >
+							<h:outputLink target="_blank" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.genbankURL}" rendered="#{ISHSingleSubmissionBean.submission.probe.genbankID != ''}" >
 								<h:outputText  value="#{ISHSingleSubmissionBean.submission.probe.genbankID}" />
 							</h:outputLink>
-							<h:outputText styleClass="datatext" value="unknown" rendered="#{!ISHSingleSubmissionBean.submission.probe.genbankID}" />
+							<h:outputText styleClass="datatext" value="unknown" rendered="#{ISHSingleSubmissionBean.submission.probe.genbankID == ''}" />
 						</h:panelGroup>
 					</h:panelGrid>
 					
