@@ -523,6 +523,27 @@
 		    <h:outputText value="Probe" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)'}" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'ISH'  || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)'}">
 				<h:panelGrid border="0" columns="2" columnClasses="data-titleCol,data-textCol">
+				
+					<h:outputText value="Gene:" />
+					<h:panelGrid columns="1" border="0" columnClasses="text-top,text-normal">
+						<h:panelGroup>
+							<h:outputText styleClass="plaintext" value="Symbol: " />
+							<h:outputLink styleClass="datatext" value="gene.html">
+								<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.geneSymbol}" />
+								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.probe.geneSymbol}" />
+							</h:outputLink>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="plaintext" value="Name: " />
+							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.geneName} " />
+							<h:outputText styleClass="datatext" value="(" rendered="#{ISHSingleSubmissionBean.submission.probe.geneIdUrl != null && ISHSingleSubmissionBean.submission.probe.geneIdUrl != ''}" />
+							<h:outputLink styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.geneIdUrl}" >
+							<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.geneID}" />
+							</h:outputLink>
+							<h:outputText styleClass="datatext" value=")" rendered="#{ISHSingleSubmissionBean.submission.probe.geneIdUrl != null && ISHSingleSubmissionBean.submission.probe.geneIdUrl != ''}" />
+						</h:panelGroup>
+					</h:panelGrid>
+									
 					<h:outputText rendered="#{proj != 'EuReGene' || siteSpecies != 'mouse'}" value="Probe ID:" />
 					<h:panelGroup rendered="#{proj != 'EuReGene' || siteSpecies != 'mouse'}">
 						<h:outputLink styleClass="datatext" rendered="#{ISHSingleSubmissionBean.renderPrbNameURL}" value="#{ISHSingleSubmissionBean.submission.probe.probeNameURL}" target="_blank">
@@ -562,34 +583,17 @@
 					<h:outputText value="Additional Name of cDNA:" rendered="#{siteSpecies == 'mouse' && ISHSingleSubmissionBean.submission.probe.additionalCloneName != null && ISHSingleSubmissionBean.submission.probe.additionalCloneName != ''}"/>
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.additionalCloneName}" rendered="#{siteSpecies == 'mouse' && ISHSingleSubmissionBean.submission.probe.additionalCloneName != null && ISHSingleSubmissionBean.submission.probe.additionalCloneName != ''}" />
 					
-					<h:outputText value="Sequence:" />
+					<h:outputText value="Sequence ID:" />
 					<h:panelGrid  rowClasses="text-top" columns="1" border="0" >
 						<h:panelGroup>
+							<%-- 
 							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.seqStatus} " />
 							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.seqInfo} " rendered="#{ISHSingleSubmissionBean.renderPrbSeqInfo}" />
-							<h:outputLink target="_blank" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.genbankURL}" rendered="#{ISHSingleSubmissionBean.renderPrbSeqInfo}" >
+							--%>
+							<h:outputLink target="_blank" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.genbankURL}" rendered="#{ISHSingleSubmissionBean.submission.probe.genbankID}" >
 								<h:outputText  value="#{ISHSingleSubmissionBean.submission.probe.genbankID}" />
 							</h:outputLink>
-						</h:panelGroup>
-					</h:panelGrid>
-					
-					<h:outputText value="Gene:" />
-					<h:panelGrid columns="1" border="0" columnClasses="text-top,text-normal">
-						<h:panelGroup>
-							<h:outputText styleClass="plaintext" value="Symbol: " />
-							<h:outputLink styleClass="datatext" value="gene.html">
-								<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.geneSymbol}" />
-								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.probe.geneSymbol}" />
-							</h:outputLink>
-						</h:panelGroup>
-						<h:panelGroup>
-							<h:outputText styleClass="plaintext" value="Name: " />
-							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.geneName} " />
-							<h:outputText styleClass="datatext" value="(" rendered="#{ISHSingleSubmissionBean.submission.probe.geneIdUrl != null && ISHSingleSubmissionBean.submission.probe.geneIdUrl != ''}" />
-							<h:outputLink styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.geneIdUrl}" >
-							<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.geneID}" />
-							</h:outputLink>
-							<h:outputText styleClass="datatext" value=")" rendered="#{ISHSingleSubmissionBean.submission.probe.geneIdUrl != null && ISHSingleSubmissionBean.submission.probe.geneIdUrl != ''}" />
+							<h:outputText styleClass="datatext" value="unknown" rendered="#{!ISHSingleSubmissionBean.submission.probe.genbankID}" />
 						</h:panelGroup>
 					</h:panelGrid>
 					
