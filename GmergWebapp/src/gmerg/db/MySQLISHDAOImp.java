@@ -597,7 +597,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSetSpeciesSpecificity = null;
         ResultSet resSetAntibodyVariant = null;
         ParamQuery parQAntibody = DBQuery.getParamQuery("ANTIBODY_DETAILS");
-        ParamQuery parQAntibodyNote = DBQuery.getParamQuery("SUBMISSION_PRBNOTE");
+        ParamQuery parQAntibodyNote = DBQuery.getParamQuery("SUBMISSION_ANTIBODYNOTE");
         ParamQuery parQSpeciesSpecificity = DBQuery.getParamQuery("ANTIBODY_SPECIES_SPECIFICITY");
         ParamQuery parQAntibodyVariant = DBQuery.getParamQuery("ANTIBODY_VARIANTS");
         PreparedStatement prepStmtAntibody = null;
@@ -660,7 +660,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSetSpeciesSpecificity = null;
         ResultSet resSetAntibodyVariant = null;
         ParamQuery parQAntibody = DBQuery.getParamQuery("SUBMISSION_ANTIBODY");
-        ParamQuery parQAntibodyNote = DBQuery.getParamQuery("SUBMISSION_PRBNOTE");
+        ParamQuery parQAntibodyNote = DBQuery.getParamQuery("SUBMISSION_ANTIBODYNOTE");
         ParamQuery parQSpeciesSpecificity = DBQuery.getParamQuery("ANTIBODY_SPECIES_SPECIFICITY");
         ParamQuery parQAntibodyVariant = DBQuery.getParamQuery("ANTIBODY_VARIANTS");
         PreparedStatement prepStmtAntibody = null;
@@ -765,7 +765,14 @@ public class MySQLISHDAOImp implements ISHDAO {
     		
     		antibody.setSecondaryAntibody(resSetAntibody.getString(24));
     		antibody.setSignalDetectionMethod(resSetAntibody.getString(25));
-    		antibody.setNotes(resSetAntibody.getString(26));
+    		
+
+    		String antibodyNotes = null;
+    		if (resSetAntibodyNote.first()) {
+    			antibodyNotes = resSetAntibodyNote.getString(1);
+    			antibody.setNotes(antibodyNotes);
+    		}
+    		
 
     		String antibodyVariants = null;
     		if (resSetAntibodyVariant.first()) {

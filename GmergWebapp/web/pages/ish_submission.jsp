@@ -431,11 +431,12 @@
 					</h:panelGrid>
 			
 					<h:outputText value="Epitope (Uniprot ID):"/>
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.uniprotId}"/>
-					<h:outputText value="Amino-terminus (start):" rendered="#{ISHSingleSubmissionBean.submission.antibody.type == monoclonal}"/>
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.seqStartLocation}" rendered="#{ISHSingleSubmissionBean.submission.antibody.type == monoclonal}"/>
-					<h:outputText value="Carboxy-terminus (end):" rendered="#{ISHSingleSubmissionBean.submission.antibody.type == monoclonal}"/>
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.seqEndLocation}" rendered="#{ISHSingleSubmissionBean.submission.antibody.type == monoclonal}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.uniprotId}" rendered="#{ISHSingleSubmissionBean.submission.antibody.uniprotId != ''}"/>
+					<h:outputText value="unknown" rendered="#{ISHSingleSubmissionBean.submission.antibody.uniprotId == ''}"/>
+					<h:outputText value="Amino-terminus (start):" rendered="#{ISHSingleSubmissionBean.submission.antibody.seqStartLocation > 0 && ISHSingleSubmissionBean.submission.antibody.seqEndLocation > 0}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.seqStartLocation}" rendered="#{ISHSingleSubmissionBean.submission.antibody.seqStartLocation > 0 && ISHSingleSubmissionBean.submission.antibody.seqEndLocation > 0}"/>
+					<h:outputText value="Carboxy-terminus (end):" rendered="#{ISHSingleSubmissionBean.submission.antibody.seqStartLocation > 0 && ISHSingleSubmissionBean.submission.antibody.seqEndLocation > 0}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.seqEndLocation}" rendered="#{ISHSingleSubmissionBean.submission.antibody.seqStartLocation > 0 && ISHSingleSubmissionBean.submission.antibody.seqEndLocation > 0}"/>
 			
 					<f:verbatim>&nbsp;</f:verbatim>
 					<f:verbatim>&nbsp;</f:verbatim>
@@ -783,7 +784,7 @@
 					<h:outputText value="Experiment Notes:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.notes}" />
 				</h:panelGrid>  
-				<h:outputLink id="editSpecimen" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
+				<h:outputLink id="editSpecimen" rendered="#{UUserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
 							onclick="var w=window.open('edit_specimen.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
 					<h:outputText value="[Edit]" />
 				</h:outputLink>
