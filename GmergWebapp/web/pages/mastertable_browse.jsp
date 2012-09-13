@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<%@ taglib uri="http://gudmap.org/jsf/core" prefix="g"%>
+<%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%-- moved style definition to gudmap_css.css - xingjun - 30/07/2010 --%>
@@ -100,58 +100,57 @@
 			<h:outputText value= "  (View Microarray Analysis Help)" />
 		</h:outputLink>			
 		
-		<g:tabbedPanel id="masterTablePanels" value="0"  activeTabStyleClass="header-stripey" activeSubStyleClass="header-stripey" tabContentStyleClass="header-stripey">
-
-			<g:tabPane id="type0" label="#{MasterTableBrowseBean.allMasterTables[0].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[0].selected}" >
+		<rich:tabPanel  switchType="client" >
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[0].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[0].selected}" >
 				<f:subview id="masterTableBrowse_t0">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[0].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
-			</g:tabPane>
+			</rich:tab>
 
-			<g:tabPane id="type1" label="#{MasterTableBrowseBean.allMasterTables[1].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[1].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[1].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[1].selected}">
 				<f:subview id="masterTableBrowse_t1">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[1].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
-			</g:tabPane>
+			</rich:tab>
 
-			<g:tabPane id="type2" label="#{MasterTableBrowseBean.allMasterTables[2].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[2].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[2].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[2].selected}">
 				<f:subview id="masterTableBrowse_t2">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[2].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
-			</g:tabPane>
+			</rich:tab>
 
-			<g:tabPane id="type3" label="#{MasterTableBrowseBean.allMasterTables[3].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[3].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[3].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[3].selected}">
 				<f:subview id="masterTableBrowse_t3">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[3].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
-			</g:tabPane>
+			</rich:tab>
 
-			<g:tabPane id="type4" label="#{MasterTableBrowseBean.allMasterTables[4].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[4].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[4].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[4].selected}">
 				<f:subview id="masterTableBrowse_t4">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[4].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
-			</g:tabPane>
+			</rich:tab>
 
-			<g:tabPane id="type5" label="#{MasterTableBrowseBean.allMasterTables[5].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[5].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[5].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[5].selected}">
 				<f:subview id="masterTableBrowse_t5">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[5].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
-			</g:tabPane>
+			</rich:tab>
 
-			<g:tabPane id="type6" label="#{MasterTableBrowseBean.allMasterTables[6].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[6].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[6].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[6].selected}">
 				<f:subview id="masterTableBrowse_t6">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[6].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
-			</g:tabPane>
+			</rich:tab>
 
-		</g:tabbedPanel>
+		</rich:tabPanel>
 	</h:panelGroup>	
 
 	<%-- sequential display --%>

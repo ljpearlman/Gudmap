@@ -147,7 +147,7 @@
 				<h:inputHidden id="columnSelections" value="#{TableBean.columnSelections}"/>
 				<h:inputHidden id="defaultColumns" value="#{TableBean.defaultColumns}"/>
 				<h:graphicImage id="columnSelectionsImage" value="../images/ColumnSelection_btn.png" title="Click to add/remove Columns"
-								alt="Add/Remove Columns" styleClass="icon" style="cursor:pointer;" onclick="columnSelectionClicked(event)"/>
+								alt="Add/Remove Columns" styleClass="icon" style="cursor:pointer;" onclick="columnSelectionClicked(event)" rendered="#{!TableBean.tableView.inTabPane}" />
 				<h:outputText value="<div id='#{TableBean.tableViewName}:columnSelectionPanel' style='position:absolute;z-index:100;height:1px;visibility:hidden;border:1px solid black;' class='columnSelectionPanel' onmouseout='columnSelectionPanelMouseOut(event)'>" escape="false" />
 					<h:panelGrid id="columnSelectionTable" width="100%" cellspacing="2" cellpadding="2" styleClass="leftAlign" onmouseout="columnSelectionPanelMouseOut(event)" >
 						<h:dataTable id="columnSelectionColumnsList" width="100%" value="#{TableBean.columnList}" var="column" cellspacing="2" cellpadding="2"
@@ -315,7 +315,7 @@
 									<h:outputText rendered="#{!columnHeader.sortable}"
 												  value="#{columnHeader.title} #{TableBean.total}" styleClass="plaintextbold" escape="false" />
 									<h:commandLink rendered="#{columnHeader.sortable}" 
-												   action="#{TableBean.sort}"  title="#{columnHeader.mouseOver}"styleClass="plaintextbold" >
+												   action="#{TableBean.sort}"  title="#{columnHeader.mouseOver}" styleClass="plaintextbold" >
 										<h:outputText rendered="#{columnHeader.type==0}" value="#{columnHeader.title} #{TableBean.total}" escape="false" />
 										<f:param name="tableOperation" value="sort" />
 										<f:param name="title" value="#{columnHeader.title}" />

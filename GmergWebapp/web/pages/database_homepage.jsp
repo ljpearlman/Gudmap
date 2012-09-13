@@ -6,27 +6,8 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<%@ taglib prefix="rich" uri="http://richfaces.ajax4jsf.org/rich" prefix="rich"%>
+<%@ taglib prefix="rich" uri="http://richfaces.ajax4jsf.org/rich" %>
 <%@ taglib uri="https://ajax4jsf.dev.java.net/ajax" prefix="a4j"%>
-
-
-<%-- moved to header.js to avoid double headers - xingjun - 22/07/2010 --%>
-<%-- 
-<head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>dbhome</title>
-
-  <script language="JavaScript">
-    document.onkeydown = function (event){ processEnterKey(event) };
-    var searchLinkId=null;
-  </script>
-  <script type="text/javascript" src="../scripts/prototype.js"></script>
-  <script type="text/javascript" src="../scripts/rico.js"></script>
-  <script type="text/javascript" src="../scripts/suggest.js"></script>
-  
-</head>
---%>
 
 
 <f:view>
@@ -49,9 +30,17 @@
 						<img src="../images/focus/n_information.gif" alt="information" width="22" height="24" border="0" />
 					</a>
 				</TD>
-				<TD></f:verbatim>
-					<h:inputText id="geneInput" value="#{DatabaseHomepageBean.geneInput}" size="18" onkeydown="searchLinkId='go1'" styleClass="suggestGudmapGene"/>
-					<f:verbatim>
+				<TD>
+					</f:verbatim>	      
+			                                <h:inputText id="geneInput" value="#{DatabaseHomepageBean.geneInput}" size="18" />
+                                                                                     <a4j:region renderRegionOnly="true">
+                                                                                         <rich:suggestionbox for="geneInput" var="geneResult" suggestionAction="#{DatabaseHomepageBean.autocomplete}" >
+                                                                                           <h:column>
+                                                                                                <h:outputText value="#{geneResult}" />
+                                                                                           </h:column>
+                                                                                         </rich:suggestionbox>
+                                                                                     </a4j:region>
+					<f:verbatim>	      
 				</TD>
 				<TD>
 					</f:verbatim>	      
@@ -126,7 +115,14 @@
 				</TD>
 				<TD>
 					</f:verbatim>
-					<h:inputText id="anatomy" value="#{DatabaseHomepageBean.anatomyInput}" size="18" onkeydown="searchLinkId='go2'" styleClass="suggestGudmapAnatomy" />
+					<h:inputText id="anatomy" value="#{DatabaseHomepageBean.anatomyInput}" size="18" />
+                                                                                     <a4j:region renderRegionOnly="true">
+                                                                                         <rich:suggestionbox for="anatomy" var="anatomyResult" suggestionAction="#{DatabaseHomepageBean.autocomplete}" >
+                                                                                           <h:column>
+                                                                                                <h:outputText value="#{anatomyResult}" />
+                                                                                           </h:column>
+                                                                                         </rich:suggestionbox>
+                                                                                     </a4j:region>
 					<f:verbatim>
 				</TD>
 				<TD>&nbsp;</TD>
@@ -162,33 +158,6 @@
 					</a>
 				</TD>
 			</TR>
-<%--	    
-	  <TR>
-	    <TD>&nbsp;</TD>
-	    <TD>&nbsp;</TD>
-	    <TD class="left_border">&nbsp;</TD>
-	    <TD>&nbsp;</TD>
-	    <TD>&nbsp;</TD>
-	    <TD>&nbsp;</TD>
-	    <TD>&nbsp;</TD>
-	  </TR>
-	  <TR>
-	    <TD>&nbsp;</TD>
-	    <TD class="bottom_border">&nbsp;</TD>
-	    <TD class="top_left_border">&nbsp;</TD>
-	    <TD>
-	    </f:verbatim>
-	      <h:outputLink value="boolean_test.html">
-	        <h:graphicImage url="../images/focus/n_arraysForStructure.gif" alt="Go" styleClass="icon" />
-	      </h:outputLink>
-	    <f:verbatim>
-	    <img src="../images/focus/n_information.gif" width="22" height="24" alt="information" />
-	    </TD>
-	    <TD>&nbsp;</TD>
-	    <TD>&nbsp;</TD>
-	    <TD>&nbsp;</TD>
-	  </TR>
---%>	  
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
 			    <TD>&nbsp;</TD>
@@ -206,7 +175,14 @@
 				</TD>	
 				<TD>
 					</f:verbatim>
-					<h:inputText id="accession" value="#{DatabaseHomepageBean.accessionInput}" size="18" onkeydown="searchLinkId='go3'" />
+					<h:inputText id="accession" value="#{DatabaseHomepageBean.accessionInput}" size="18" />
+                                                                                     <a4j:region renderRegionOnly="true">
+                                                                                         <rich:suggestionbox for="accession" var="accessionResult" suggestionAction="#{DatabaseHomepageBean.autocomplete}" >
+                                                                                           <h:column>
+                                                                                                <h:outputText value="#{accessionResult}" />
+                                                                                           </h:column>
+                                                                                         </rich:suggestionbox>
+                                                                                     </a4j:region>
 					<f:verbatim>
 				</TD>
 				<TD>&nbsp;</TD>
@@ -239,7 +215,14 @@
 				</TD>
 				<TD>
 					</f:verbatim>
-					<h:inputText id="geneFn" value="#{DatabaseHomepageBean.geneFunctionInput}" size="18" onkeydown="searchLinkId='go5'" styleClass="suggestGudmapFunction"/>
+					<h:inputText id="geneFn" value="#{DatabaseHomepageBean.geneFunctionInput}" size="18" />
+                                                                                     <a4j:region renderRegionOnly="true">
+                                                                                         <rich:suggestionbox for="geneFn" var="geneFnResult" suggestionAction="#{DatabaseHomepageBean.autocomplete}" >
+                                                                                           <h:column>
+                                                                                                <h:outputText value="#{geneFnResult}" />
+                                                                                           </h:column>
+                                                                                         </rich:suggestionbox>
+                                                                                     </a4j:region>
 					<f:verbatim>
 				</TD>
 				<TD>
@@ -391,9 +374,6 @@
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-<%-- 
-					<a href="#Link209534Context" name="Link209534Context" id="Link209534Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID209534', 'Browse Theiler Stage', 'Theiler Stage returns a list of GUDMAP database entries organized by developmental (Theiler) stage. Theiler Stages are described &lt;a href=\&quot;http://genex.hgu.mrc.ac.uk/Databases/Anatomy/MAstaging.html\&quot;&gt;here&lt;/a&gt;; see also &lt;a href=\&quot;http://www.gudmap.org/About/Tutorial/index.html\&quot;&gt;Tutorial on genitourinary development.&lt;/a&gt;&lt;br&gt;', 'Link209534Context')">
---%>
 					<a href="#Link209534Context" name="Link209534Context" id="Link209534Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID209534', 'Browse Theiler Stage', 'Theiler Stage returns a list of GUDMAP database entries organized by developmental (Theiler) stage. Theiler Stages are described &lt;a href=\&quot;http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/stagecriteria.html\&quot;&gt;here&lt;/a&gt;; see also &lt;a href=\&quot;http://www.gudmap.org/About/Tutorial/index.html\&quot;&gt;Tutorial on genitourinary development.&lt;/a&gt;&lt;br&gt;', 'Link209534Context')">
 						<img src="../images/focus/n_information.gif" width="22" height="24" border="0" />
 					</a>

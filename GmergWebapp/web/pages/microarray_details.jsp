@@ -34,7 +34,10 @@
        		
        		<h:outputText value="Component:" />
 	        <h:panelGroup>
-	        <h:outputText value="#{MicroarrayDetailsBean.component}" />
+	               <h:outputText value="#{MicroarrayDetailsBean.component}" />
+	               <h:outputLink rendered="#{!MicroarrayDetailsBean.gudmapId}" value="#{MicroarrayDetailsBean.gudmapIdUrl}">
+			<h:outputText value="#{MicroarrayDetailsBean.gudmapId}" />
+	                </h:outputLink>
 	        </h:panelGroup>       
        		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
        		
@@ -49,14 +52,12 @@
 	    	<h:outputText value="Meta-data for probe:" />
 	        <h:panelGroup>
 	          <h:panelGrid columns="2" columnClasses="text-top, data-textCol">
-	            <h:outputText styleClass="plaintext" value="RefSeq:" />
+	            <h:outputText styleClass="plaintext" value="Probe Seq ID:" />
 	            <h:outputText styleClass="datatext" value="#{MicroarrayDetailsBean.refSeq}" />
-	            <h:outputText styleClass="plaintext" value="Chromosone:" />
-	            <h:outputText styleClass="datatext" value="#{MicroarrayDetailsBean.chromosone}" />
-	            <h:outputText styleClass="plaintext" value="Tr Start:" />
-	            <h:outputText styleClass="datatext" value="#{MicroarrayDetailsBean.trStart}" />
-	            <h:outputText styleClass="plaintext" value="Tr End:" />
-	            <h:outputText styleClass="datatext" value="#{MicroarrayDetailsBean.trEnd}" />
+	            <h:outputText styleClass="plaintext" value="Entrez Gene ID:" />
+	            <h:outputText styleClass="datatext" value="#{MicroarrayDetailsBean.entrezGeneId}" />
+	            <h:outputText styleClass="plaintext" value="MGI Gene ID:" />
+	            <h:outputText styleClass="datatext" value="#{MicroarrayDetailsBean.mgiGeneId}" />
 	            <h:outputText styleClass="plaintext" value="Human Ortholog Symbol:" />
 	            <h:outputText styleClass="datatext" value="#{MicroarrayDetailsBean.humanOrthologSymbol}" />
 	            <h:outputText styleClass="plaintext" value="Human Ortholog Entrez ID:" />

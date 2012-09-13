@@ -3,39 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
-<%-- moved to style sheet gudmap_css.css - xingjun - 22/07/2010
-<head>
-	<style>
-		.treeTableHeader{
-			border-right:2px solid white;
-			border-bottom:2px solid white;
-			padding: 2px;
-		}
-		.treeTable{
-			border-top:2px solid white;
-			border-left:2px solid white;
-		}
-		.treeTableColumn{
-			border-right:2px solid white;
-			padding:2px;
-			white-space:nowrap;
-			text-align:left;
-		}
-		.treeTableNode{
-			padding:2px;
-			border-right:2px solid white;
-			text-align:left;
-			white-space:nowrap;
-		}
-		.treeTableIcon{
-			border:0;
-			padding:0;
-		}
-	</style>
-</head>
---%>
 <f:view>
-  <a4j:keepAlive beanName="GenelistFolderBean" />
 	<jsp:include page="/includes/header.jsp" />
 	<h:form id="mainForm" >
 		<t:tree id="tree" value="#{GenelistFolderBean.treeModel}"
@@ -48,12 +16,6 @@
 				expandRoot="true" iconClass="treeTableIcon">
 			<t:treeColumn>
 				<f:facet name="header">
-<%-- xingjun - 22/04/2010 - remove the sorting function
-					<h:commandLink action="#{GenelistFolderBean.sortTreeAction}">
-						<h:outputText value="Gene List"/>
-						<f:param name="sortTreeCommand" value="yes" />
-					</h:commandLink>
---%>
 					<h:outputText value="Gene List"/>
 				</f:facet>
 				<h:outputText value="#{treeItem.title}" escape="false" rendered="#{!treeItem.heatmapAvailable && treeItem.title != 'Brunskill et al (Dev Cell(2008) 15(5):781-91)'}" styleClass="#{treeItem.styleClass}"/>
@@ -98,18 +60,9 @@
 					<h:outputText value="Treeview" escape="false" styleClass="centreAlign" />
 				</h:outputLink>
 
-<%--
-				<h:outputLink rendered="#{treeItem.genelistNode}" title="Click to launch Java&nbsp;Treeview to visualise this genelist" value=""
-								onclick="#{treeItem.treeviewLinkScript}; return false;" > <%--had to use a separate link to click because direct link did not work (didn't fire action)-- % >
-					<h:outputText value="Treeview" escape="false" />
-				</h:outputLink>
---%>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-<%-- xingjun - 22/04/2010
-					<h:outputText value="Download" />
---%>
 					<h:outputText value="Source File" />
 				</f:facet>
 				<h:outputText value="&nbsp;" escape="false" rendered="#{!treeItem.genelistNode}" />

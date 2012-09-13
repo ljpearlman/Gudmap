@@ -2,59 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%-- 
-<head>
-  <script type="text/javascript">
-    function disableFormElements() {
-      var queryForm = document.forms['booleanQForm'];
-      var qFormId = queryForm.id;
-      for(var i=0;i<queryForm.elements.length;i++){
-        if(queryForm.elements[i].id != qFormId+':resultFormat') {
-          queryForm.elements[i].disabled = true;
-        }
-        if(queryForm.elements[i].value == 'p') {
-          queryForm.elements[i].checked = true;
-        }
-      }
-      var queryForm2 = document.forms['booleanQForm2'];
-      var queryBuilder = queryForm2.elements['booleanQForm2:queryBuilder'];
-      var qbVal = queryBuilder.value;
-      if(qbVal == null && qbVal == "") {
-        queryForm2.elements['booleanQForm2:submitQBuilder'].disabled = true;
-        queryForm2.elements['booleanQForm2:saveQ'].disabled = true;
-      }
-      
-      
-    }
-  </script>
-   <script type="text/javascript" src="../scripts/prototype.js"></script>
-   <script type="text/javascript" src="../scripts/rico.js"></script>
-   <script type="text/javascript" src="../scripts/suggest.js"></script>
-  <style>
-		.leftAlign{
-		text-align: left;
-		}
-		.rightAlign{
-			text-align: right;
-		}
-		.topAlign45{
-			vertical-align: top;
-			width:45%;
-		}
-		.topAlign55{
-			vertical-align: top;
-			width:55%;
-		}
-		.topAlign{
-			vertical-align: top;
-		}
-        .topAlign50{
-            vertical-align: top;
-            width:50%;
-        }
-  </style>
-</head>
---%>
 
 <f:view>
   <jsp:include page="/includes/header.jsp" />
@@ -62,32 +9,10 @@
   <p class="plaintextbold">
     Search gene expression patterns in selected anatomical components.
   </p>
-<%--  
-  <h:form>
-    <h:inputHidden id="treeType" value="{applicationVar.perspective}" />
-    <p class="plaintext">
-      Select Stage range:&nbsp;
-      <h:selectOneMenu binding="#{BooleanTestBean.startInput}" value="#{BooleanTestBean.startStage}">
-        <f:selectItems value="#{BooleanTestBean.availableStages}"/>
-      </h:selectOneMenu>
-      &nbsp;
-      to:
-      <h:selectOneMenu binding="#{BooleanTestBean.endInput}" value="#{BooleanTestBean.endStage}">
-        <f:selectItems value="#{BooleanTestBean.availableStages}"/>
-      </h:selectOneMenu>
-      &nbsp;
-      <h:inputHidden id="stagesCheck" validator="#{BooleanTestBean.validateStages}" value="required" />
-      <h:commandButton value="Display Tree" actionListener="#{BooleanTestBean.displayTree}" />
-    </p>
-  </h:form>
---%>  
   
   <p><h:outputText styleClass="plaintext" value="Current anatomy display is for stage range #{BooleanTestBean.startStage} to #{BooleanTestBean.endStage}."/></p>
-<%--
-  <p><h:outputText styleClass="plaintext" value="Find components:" />&nbsp;<input type="text" id="componentSearchField" size="30" />&nbsp;<input type="button" onclick="openNodesMatchingSearchString(document.getElementById('componentSearchField').value)" value="Search" /></p>
---%>
   <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
-    <h:inputText id="componentSearchField" size="30" styleClass="suggestGudmapAnatomy" />
+    <h:inputText id="componentSearchField" size="30" />
     <h:commandButton onclick="openNodesMatchingSearchString(document.getElementById('componentSearchField').value, false)" value="Find Components in Tree" type="button" />
     <f:verbatim>
 	    <a href="#Link263891Context" name="Link263891Context" id="Link263891Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID263891', 'Find Components in Tree', 'To find structures in the anatomy tree, expand the tree or type all or part of the name of the structure in the text box and click - \'Find components in tree\' box.   TS = Theiler Stage.', 'Link263891Context')"> 

@@ -309,7 +309,7 @@
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{transgenics.mutantType=='mutant allele'}" />
 					<%-- Bernie 25/11/2010 - added link (mantis 336) --%>
 					<%--<h:outputText value="#{transgenics.alleleFirstChrom}" rendered="#{transgenics.mutantType=='mutant allele'}" />--%> 
-					<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/javawi2/servlet/WIFetch?page=alleleDetail&key=1654" rendered="#{transgenics.mutantType=='mutant allele'}"target="gmerg_external3" >
+					<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/javawi2/servlet/WIFetch?page=alleleDetail&key=1654" rendered="#{transgenics.mutantType=='mutant allele'}" target="gmerg_external3" >
 						<h:outputText value="#{transgenics.alleleFirstChrom}" />
 					</h:outputLink>	
 									
@@ -317,7 +317,7 @@
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{transgenics.mutantType=='mutant allele'}" />
 					<%-- Bernie 25/11/2010 - added link (mantis 336) --%>
 					<%--<h:outputText value="#{transgenics.alleleSecondChrom}" rendered="#{transgenics.mutantType=='mutant allele'}" />--%>					 
-					<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/javawi2/servlet/WIFetch?page=alleleDetail&key=1654" rendered="#{transgenics.mutantType=='mutant allele'}"target="gmerg_external4" >
+					<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/javawi2/servlet/WIFetch?page=alleleDetail&key=1654" rendered="#{transgenics.mutantType=='mutant allele'}" target="gmerg_external4" >
 						<h:outputText value="#{transgenics.alleleSecondChrom}" />
 					</h:outputLink>
 					
@@ -336,7 +336,7 @@
 					<h:outputText value="#{transgenics.notes}" rendered="#{transgenics.notes != null}" escape="false" />
 					<%-- commented out by xingjun - 08/03/2011 - no need to use an extra method: added <a> tag into the content in DB then escape it
 					<h:outputText value="#{transgenics.notes}" rendered="#{transgenics.notes != null && transgenics.pubUrl == null}"/>					
-					<h:outputLink styleClass="datatext" value="#{transgenics.pubUrl}" rendered="#{transgenics.pubUrl != null}"target="gmerg_external5" >
+					<h:outputLink styleClass="datatext" value="#{transgenics.pubUrl}" rendered="#{transgenics.pubUrl != null}" target="gmerg_external5" >
 						<h:outputText value="#{transgenics.notes}" />
 					</h:outputLink>
 					--%>
