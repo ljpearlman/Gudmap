@@ -23,10 +23,10 @@ import gmerg.utils.DbUtility;
  */
 public class MasterTableAssembler {
 	
-    private boolean debug = false;
+    protected boolean debug = false;
 
-	private String masterTableId;
-	private String platformId;
+	protected String masterTableId;
+	protected String platformId;
 
 	public MasterTableAssembler() {
 	    this((String)null);
@@ -44,51 +44,6 @@ public class MasterTableAssembler {
 			masterTableId = "1";
 		}
 	}
-	
-	//************************************* Retrieve DataSet ******************************************
-/*	
-	public DataSet retrieveGeneExpressionDataSet(String geneSymbol) {
-		ArrayList<String> probeIds = retrieveProbeIdsBySymbol(geneSymbol);
-		return retrieveProbelistExpressionDataSet(probeIds);
-	}
-	
-	public DataSet retrieveGenelistExpressionDataSet(String genelistId) {
-		ArrayList<String> probeIds = DbUtility.retrieveGenelistProbeIds(genelistId, masterTableId);
-		return retrieveProbelistExpressionDataSet(probeIds);
-	}
-	
-	public DataSet retrieveProbelistExpressionDataSet1(ArrayList<String> probeIds) {
-		double[][] data = retrieveProbelistExpressions(probeIds);
-		BrowseTableTitle[] expressionHeaders = retrieveExpressionTitles(masterTableId);
-		String[][] arrayAnnotation = new String[expressionHeaders.length][1];
-		for(int i=0; i<expressionHeaders.length; i++)
-			arrayAnnotation[i][0] = expressionHeaders[i].getGroupName()+ "_" + expressionHeaders[i].getTitle();
-		String[] expressionIds = new String[probeIds.size()];
-		expressionIds = probeIds.toArray(expressionIds);
-		String[][] geneAnnotations = new String[expressionIds.length][2];
-		
-		String[][] allOntologies = retrieveProbelistAnnotations(probeIds);
-		for(int i=0; i<expressionIds.length; i++) { 
-			geneAnnotations[i][0] = expressionIds[i];
-			String geneSymbols = allOntologies[i][2]; //should be retreived from database (now it is taken from ontology columns)
-			if (geneSymbols==null || geneSymbols=="")
-				geneSymbols = "-";
-			else
-				geneSymbols = geneSymbols.replace("///", ",");
-			geneAnnotations[i][1] = geneSymbols;  
-		}
-		DataSet dataSet = new DataSet(data, null, data.length, data[0].length, geneAnnotations, arrayAnnotation);
-
-		String[] arrayHeader = {"Sample ID"};
-		String[] geneHeader =  {"ProbeID", "GeneSymbol"};
-		boolean[] geneHeadersClickable = {false, true};
-		dataSet.setGeneHeaders(geneHeader);
-		dataSet.setArrayHeaders(arrayHeader);
-		dataSet.setGeneHeadersClickable(geneHeadersClickable);
-
-		return dataSet;
-	}
-*/
 	
 	//************************************ Retrieve Expressions ****************************************
 	public HeatmapData retrieveGeneExpressions(String geneSymbol) {
@@ -174,18 +129,22 @@ public class MasterTableAssembler {
 	 * @return
 	 */
 	public static BrowseTableTitle[] retrieveAnnotaionTitles(String platformId) {
-		// create a dao
-		Connection conn = DBHelper.getDBConnection();
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+	    BrowseTableTitle[] ret = new BrowseTableTitle[6];
 
-        // get data from database
-		BrowseTableTitle[] annotationTitles = genelistDAO.getMasterTableAnnotationTitles(platformId);
-		
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
+	    ret[0] = new BrowseTableTitle();
+	    ret[0].setTitle("Gene Symbol");
+	    ret[1] = new BrowseTableTitle();
+	    ret[1].setTitle("Probe Seq ID");
+	    ret[2] = new BrowseTableTitle();
+	    ret[2].setTitle("MGI Gene ID");
+	    ret[3] = new BrowseTableTitle();
+	    ret[3].setTitle("Entrez Gene ID");
+	    ret[4] = new BrowseTableTitle();
+	    ret[4].setTitle("Human Ortholog Symbol");
+	    ret[5] = new BrowseTableTitle();
+	    ret[5].setTitle("Human Ortholog Entez ID");
 
-        // return the value object
-		return annotationTitles;
+	    return ret;
 	}
 
 

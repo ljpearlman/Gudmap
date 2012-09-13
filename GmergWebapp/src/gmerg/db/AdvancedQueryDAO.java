@@ -14,7 +14,6 @@ public interface AdvancedQueryDAO {
 			String offset, String resPerPage, int[] total, String sub);
 	public int[] getTotalNumbers(ArrayList option, String[] order, 
 			String offset, String resPerPage, String sub);
-	public ArrayList getAllAnatomyTerms(String geneSymbol);
 	public ArrayList getWholeAnatomyTree(String startStage, String endStage);
 	// Bernie - 9/5/2011 - Mantis 328 - added filter
 	public ArrayList<String []> getFocusQuery(String type, String[] input, int orderby, 

@@ -115,15 +115,6 @@ public class AdvancedSearchAssembler extends OffMemoryTableAssembler {
         return list;
 	}
 
-	public ArrayList getAllAnatomyTerms(String geneSymbol)
-	{
-		Connection conn = DBHelper.getDBConnection();
-		AdvancedQueryDAO ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
-		ArrayList list =  ishDAO.getAllAnatomyTerms(geneSymbol);
-		DBHelper.closeJDBCConnection(conn);
-        return list;
-	}
-
 	public ArrayList getWholeAnatomyTree(String startStage, String endStage)
 	{
 		Connection conn = DBHelper.getDBConnection();

@@ -14,11 +14,6 @@ public class ArrayDBQuery {
 
 	static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 
-	// xingjun - 28/05/2010 - exclude the column 'Systematic'(GPL1261)/'Systematic Name'(GPL6246) from the query  
-	final static String name0 = "MIC_ANALYSIS_ANNOTATION_TITLES";
-//	final static String query0 = "SELECT BTT_VALUE, BTT_TYPE, BTT_DESCRIPTION, BTT_GROUP FROM REF_BROWSE_TABLE_TITLE WHERE BTT_TYPE = ? ORDER BY BTT_OID ";
-	final static String query0 = "SELECT BTT_VALUE, BTT_TYPE, BTT_DESCRIPTION, BTT_GROUP FROM REF_BROWSE_TABLE_TITLE WHERE BTT_TYPE = ? AND BTT_VALUE NOT LIKE 'Systematic%' ORDER BY BTT_OID ";
-	 
 	// xingjun - 04/02/2010
 	// - rewrote the sql to exclude the table MIC_ANALYSIS_MASTER from the sql
 	// - added criteria for sectionId
@@ -35,34 +30,17 @@ public class ArrayDBQuery {
 //	"JOIN MIC_ANAL_MASTER_GROUP ON AMH_AM_GROUP_FK = AMG_OID " +
 //	"WHERE AMT_OID = ? ";
 	
+                // the first one is not needed
+	final static int ANNOTATION_COLUMN_NUMBER = 6;
+
 	final static String name2 = "MIC_ANALYSIS_ANNOTATION";
-//	final static String query2 = "SELECT PRS_PROBE_SET_ID, MAN_GENE_SYMBOL, " +
-//			"MAN_GENBANK_ID, MAN_RECENT_SYN, MAN_MAP, MAN_DESC, MAN_PRODUCT, " +
-//			"MAN_DB_ID, MAN_GO_BIO_PROC_SUM, MAN_GO_CEL_COMP_SUM, MAN_GO_MOL_FUNC_SUM, " +
-//			"MAN_GENE_ONT_BIO_PRO, MAN_GENE_ONT_CEL_CMP, MAN_GENE_ONT_MOL_FNC, " +
-//			"MAN_PATHWAY, MAN_REFSEQ_ID, MAN_REFSEQ_PROTEIN_ID, MAN_REFSEQ_TRANS_ID, " +
-//			"MAN_UNIGENE, MAN_UNIGENE_ID, MAN_MOUSE_MGI_ACC_ID, MAN_ENTREZ_GENE_ID, " +
-//			"MAN_SWISSPROT, MAN_ALIGNMENTS, MAN_GENE_TITLE, MAN_ANNOTATION_DESC, " +
-//			"MAN_ANNO_TRANS_CLUST, MAN_TRANS_ASSIGN, MAN_ANNOTATION_NOTE, " +
-//			"MAN_ANNO_GRADE, MAN_CHR, MAN_CHROMOSOME, MAN_STRAND, MAN_MOUSE_CHRTX_STRT, " +
-//			"MAN_MOUSE_CHRTX_END, MAN_HMN_ORTH_SYMBOL, MAN_MGI_DATA_ATTR, " +
-//			"MAN_HMN_CHR_BAND, MAN_HMN_ENTREZ_GENE " +
-//			"FROM MIC_ANAL_MSTR_ANNOTATION " +
-//			"JOIN MIC_PROBE_SET ON PRS_OID = MAN_PROBE_SET_FK " +
-//			"WHERE PRS_PROBE_SET_ID ";
-	// modified by xingjun - 20/08/2009 - comply with the change of annotation tables
-	// xingjun  - 25/02/2010 - added ORDER BY clause to preserve the order in WHERE IN() clause
-	// xingjun - 30/07/2010 - exclude the column 'Systematic'(GPL1261)/'Systematic Name'(GPL6246) from the query
-//	final static String query2 = "SELECT MAN_PLATFORM_ID, MAN_PROBE_SET_ID, MAN_GENE_SYMBOL, MAN_GENE_DESC, MAN_GENBANK_ID, MAN_REFSEQ_ID, MAN_ENTREZ_GENE_ID, MAN_CHROMOSOME, MAN_STRAND, MAN_START, MAN_END, MAN_GO_BIO_PRO, MAN_GO_CEL_CMP, MAN_GO_MOL_FNC, MAN_MUL_GEN_IDS, " +
-	final static String query2 = "SELECT MAN_PLATFORM_ID, MAN_GENE_SYMBOL, MAN_GENE_DESC, MAN_GENBANK_ID, MAN_REFSEQ_ID, MAN_ENTREZ_GENE_ID, MAN_CHROMOSOME, MAN_STRAND, MAN_START, MAN_END, MAN_GO_BIO_PRO, MAN_GO_CEL_CMP, MAN_GO_MOL_FNC, MAN_MUL_GEN_IDS, " +
-			"AAM_ANNO_GRADE, AAM_PCT_PRB_IDT_2_GENOME, AAM_PRB_ANN_DATE, AAM_HMN_ORTH_SYMBOL, AAM_HMN_ENTREZ_GENE, " +
-			"AAS_UNIGENE_ID, AAS_SWISSPROT, AAS_CRS_HYB_TYPE, AAS_MRNA_ASS_SCR, AAS_ENS_TRANSCRIPT, AAS_HMN_ORTH_GEN_ID, AAS_HMN_ORTHOLOGY, AAS_TOT_PROBES " +
-			"FROM MIC_ANAL_ANNOTATION " +
-			"LEFT JOIN MIC_ANAL_ANNOTATION_M430 ON AAM_ANNOTATION_FK = MAN_OID " +
-			"LEFT JOIN MIC_ANAL_ANNOTATION_ST10 ON AAS_ANNOTATION_FK = MAN_OID " +
-			"WHERE MAN_PROBE_SET_ID " +
-			"ORDER BY FIELD(MAN_PROBE_SET_ID, PROBE_SET_ID_ARG) ";
-	  
+    final static String query2 = "SELECT MAN_PLATFORM_ID, MAN_GENE_SYMBOL, "+
+	" MAN_PROBE_SEQ_ID, MAN_MGI_ID,  MAN_ENTREZ_GENE_ID, " +
+	" MAN_HUMAN_ORTH_SYMBOL, MAN_HUMAN_ORTH_ENTREZ_ID "+
+	"FROM MIC_ANAL_ANNOTATION_NEW " +
+	"WHERE MAN_PROBE_SET_ID " +
+	"ORDER BY FIELD(MAN_PROBE_SET_ID, PROBE_SET_ID_ARG) ";
+
 	// find the distribution of theiler stage of the microarray data
 	final static String name3 = "GENE_THEILER_STAGES_ARRAY";
 	final static String query3 = "SELECT DISTINCT MBC_STG_NAME FROM MIC_BROWSE_CACHE WHERE MBC_GNF_SYMBOL = ? ORDER BY NATURAL_SORT(MBC_STG_NAME) ";
@@ -175,13 +153,7 @@ public class ArrayDBQuery {
 	  
 	final static String name14 = "MASTER_TABLE_PLATFORM_ID";
 	final static String query14 = "SELECT AMT_PLATFORM_ID FROM MIC_ANALYSIS_MASTER WHERE AMT_OID = ? ";
-	
-	// xingjun - 30/07/2010 - it's actually 14 but the probe set ids will not be used so down to 13
-//	final static int SHARED_PLATFORM_ANNOTATION_COLUMN_NUMBER = 14;
-	final static int SHARED_PLATFORM_ANNOTATION_COLUMN_NUMBER = 13;
-	final static int PLATFORM_SPECIFIC_ANNOTATION_COLUMN_NUMBER_GPL1261 = 5;
-	final static int PLATFORM_SPECIFIC_ANNOTATION_COLUMN_NUMBER_GPL6246 = 8;
-	  
+		  
 	final static String name15 = "GET_ANALYSIS_GENELIST_PLATFORM";
 	final static String query15 = "SELECT ANG_PLATFORM_ID FROM MIC_ANALYSIS_GENELIST WHERE ANG_OID = ? ";
 	  
@@ -306,7 +278,6 @@ public class ArrayDBQuery {
 	final static String query = "";
 	  
 	static ParamQuery pqList[] = {
-		new ParamQuery(name0, query0),
 		new ParamQuery(name1, query1),
 		new ParamQuery(name2, query2),
 		new ParamQuery(name3, query3),

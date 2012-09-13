@@ -7,4 +7,6 @@ Compliation of the code will produce a web archive (war) file which can be deplo
 *COMPILATION INSTRUCTIONS
 
 1. To complie the application, build.xml and build.sh files are provided. The build.sh shell script uses ant to run build.xml and compile the application.
-2. To compile successfully, a soft link called "tomcat" must be created under the directory /export/data0/ and must point to the tomcat's home directory ($CATALINA_HOME)
+2. To compile successfully, two soft linkS:
+    /opt/java ---- to java
+    /export/data0/tomcat ---- to tomcat

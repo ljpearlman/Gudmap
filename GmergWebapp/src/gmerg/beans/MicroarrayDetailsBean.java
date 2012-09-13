@@ -14,13 +14,14 @@ public class MicroarrayDetailsBean {
 
 	private String name;
 	private String component;
+                protected String gudmapId;
+                protected String gudmapIdUrl;
 	private String value;
 	private int row;
 	private String probeId;
 	private String refSeq;
-	private String chromosone;
-	private String trStart;
-	private String trEnd;
+	private String entrezGeneId;
+	private String mgiGeneId;
 	private String humanOrthologSymbol;
 	private String humanOrthologEntrezId;
 	
@@ -38,6 +39,19 @@ public class MicroarrayDetailsBean {
         Map requestParams = context.getExternalContext().getRequestParameterMap();
         name = (String) requestParams.get("name");
         component = (String) requestParams.get("component");
+	int index = -1;
+	if (null != component) 
+	    index = component.toLowerCase().indexOf("gudmap:");
+	if (-1 == index) {
+	    gudmapId = null;
+	    gudmapIdUrl = null;
+	} else {
+	    gudmapId = component.substring(index);
+	    component = component.substring(0, index);
+	    gudmapId = gudmapId.toUpperCase();
+	    gudmapIdUrl = gmerg.utils.Utility.appUrl+"pages/ish_submission.html?id="+gudmapId.replace(":", "%3A");
+	}
+
         value = (String) requestParams.get("value");
         row = Integer.parseInt((String) requestParams.get("row"));
         
@@ -49,31 +63,28 @@ public class MicroarrayDetailsBean {
 		table = tableView.getTable();
 		DataItem[][] tableData = tableView.getData();
 		
-		//Bernie - 13/4/2011 - Mantis 540 - mod to col index of tableData due to display changes
-		// Xingjun - 10/05/2011 - got java.lang.ArrayIndexOutOfBoundsException when the array size is less than given value; added check statements
-//		if (tableData != null) 	System.out.println("MicroarrayDetailsBean:tableData size: " + tableData[row].length);
-		if (tableData != null) 	{
-			probeId = tableData[row].length>0 ? (String)tableData[row][0].getValue() : "";
-			geneSymbol = tableData[row].length>3 ? (String)tableData[row][3].getValue() : "";
-			refSeq = tableData[row].length>79 ? (String)tableData[row][79].getValue() : "";
-			chromosone = tableData[row].length>81 ? (String)tableData[row][81].getValue() : "";
-			trStart = tableData[row].length>83 ? (String)tableData[row][83].getValue() : "";		
-			trEnd = tableData[row].length>84 ? (String)tableData[row][84].getValue() : "";  
-			humanOrthologSymbol = tableData[row].length>92 ? (String)tableData[row][92].getValue() : "";		
-			humanOrthologEntrezId = tableData[row].length>93 ? (String)tableData[row][93].getValue() : "";  
-			humanOrthologEntrezId = tableData[row].length>86 ? (String)tableData[row][86].getValue() : "";  
-		} else {
-			probeId = "";
-			geneSymbol = "";
-			refSeq = "";
-			chromosone = "";
-			trStart = "";		
-			trEnd = "";  
-			humanOrthologSymbol = "";		
-			humanOrthologEntrezId = "";  
-			humanOrthologEntrezId = "";  
+		probeId = "";
+		geneSymbol = "";
+		refSeq = "";
+		entrezGeneId = "";		
+		mgiGeneId = "";  
+		humanOrthologSymbol = "";		
+		humanOrthologEntrezId = "";  
+
+		if (tableData != null) {
+		    probeId = (String)tableData[row][0].getValue();
+		    geneSymbol = (String)tableData[row][3].getValue();
+		    if (tableData[row].length>60)
+			refSeq = (String)tableData[row][60].getValue();
+		    if (tableData[row].length>62)
+			entrezGeneId = (String)tableData[row][62].getValue();
+		    if (tableData[row].length>61)
+			mgiGeneId = (String)tableData[row][61].getValue();
+		    if (tableData[row].length>63)
+			humanOrthologSymbol = (String)tableData[row][63].getValue();	
+		    if (tableData[row].length>64)
+			humanOrthologEntrezId = (String)tableData[row][64].getValue();
 		}
-		
 	}
 
 	public String getName() {
@@ -104,16 +115,12 @@ public class MicroarrayDetailsBean {
         return refSeq;
     }
 	
-	public String getChromosone() {
-        return chromosone;
+	public String getEntrezGeneId() {
+        return entrezGeneId;
     }
 	
-	public String getTrStart() {
-        return trStart;
-    }
-	
-	public String getTrEnd() {
-        return trEnd;
+	public String getMgiGeneId() {
+        return mgiGeneId;
     }
 	
 	public String getHumanOrthologSymbol() {
@@ -124,4 +131,11 @@ public class MicroarrayDetailsBean {
         return humanOrthologEntrezId;
     }	
 	
+    public String getGudmapId() {
+	return gudmapId;
+    }
+	
+    public String getGudmapIdUrl() {
+	return gudmapIdUrl;
+    }
 }

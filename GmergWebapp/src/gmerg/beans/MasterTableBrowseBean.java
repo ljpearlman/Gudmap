@@ -208,11 +208,13 @@ public class MasterTableBrowseBean {
 			if (geneSymbol != null) 
 				probeIds = DbUtility.retrieveGeneProbeIds(geneSymbol, platformId);
 		CollectionBrowseHelper helper = Globals.getCollectionBrowseHelper(probeIds, getCollectionType(platformId), masterTableId);
-
 		GenericTableView ret = getDefaultTableViewForMasterTable(viewName, helper.getCollectionBrowseAssembler(), platformId);
 
 		if (debug) 
 		    System.out.println("MasterTableBrowseBean CollectionBrowseHekper class = "+helper.getClass().getName()+" ret = "+ret);
+
+		if (null != ret)
+		    ret.setInTabPane(true);
 
 		return ret;
 	}
@@ -250,22 +252,12 @@ public class MasterTableBrowseBean {
 	    tableView.setColWrap(false);
 	    
 		int ontologisColOffset = expressionTitles.length + 1;
-
 		tableView.setColHidden(ontologisColOffset, true);
-		
-		for(int i=0; i<annotationTitles.length; i++) 
-			tableView.setColVisible(ontologisColOffset+i, false);	 
+		int iSize = annotationTitles.length;
 
-		int[] defaultOntologyCols = Globals.getDefaultOntologyCols(platformId);
-		if (defaultOntologyCols != null)
-			for (int i=0; i<defaultOntologyCols.length; i++) 
-				tableView.setColVisible(ontologisColOffset+defaultOntologyCols[i], true);
+		for(int i=0; i<iSize; i++) 
+		    tableView.setColVisible(ontologisColOffset+i, true);	 
 
-		int[] leftAlignedOntologyCols = Globals.getLeftAlignedOntologyCols(platformId);
-		if (leftAlignedOntologyCols != null)
-			for (int i=0; i<leftAlignedOntologyCols.length; i++)
-				tableView.setColAlignment(ontologisColOffset+leftAlignedOntologyCols[i], 0);
-		
 		tableView.setHeatmap(4, expressionTitles.length, true, false, false); 
 		//		tableView.setHeatmap(3, expressionTitles.length, true, false, false);
 		//		tableView.setHeatmap(3, expressionTitles.length, true, false); 

@@ -6,13 +6,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.Iterator;
 
 import javax.faces.context.FacesContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 
+import gmerg.assemblers.PredictiveTextSearchAssembler;
 import gmerg.assemblers.DBSummaryAssembler;
 import gmerg.assemblers.FocusDBSummaryAssembler;
 import gmerg.db.AdvancedSearchDBQuery;
@@ -23,8 +26,6 @@ import gmerg.utils.Utility;
 import gmerg.utils.Visit;
 import java.util.List;
 import java.util.ArrayList;
-
-import gmerg.sample.lucene.search.SearchManager;
 
 /**
  * Managed Bean for gudmap database main page 
@@ -53,7 +54,6 @@ public class DatabaseHomepageBean {
 	private String query;
 	private DBSummary dbSummary;
 	private List searchResult = null;
-	private String luceneInput;
 	
 	private String geneSearchResultOption; // GUDMAP entries / Gene strip(s)/structure(s)
 	private String geneFunctionSearchResultOption; // GUDMAP entries / Gene strip(s)
@@ -87,7 +87,6 @@ public class DatabaseHomepageBean {
 		includeTransitiveRels = false;
 		dbSummary = null;	// load dbSummary when first getDbSummary is called
 		
-		luceneInput = "";
 //		geneSearchResultOption = "entry"; // GUDMAP entries by default
 		geneSearchResultOption = "genes"; // genes by default - xingjun - 12/05/2010
 //		uploadResultOption = "entry";
@@ -95,17 +94,71 @@ public class DatabaseHomepageBean {
 		geneFunctionSearchResultOption = "entry"; // GUDMAP entries by default
 	}
 
+    public List autocomplete (Object input) {
+
+	if (null == input)
+	    return null;
+	
+	String pattern =  ((String)input).trim();
+	if (pattern.equals(""))
+	    return null;
+	
+	String name = null;
+	String value = null;
+	String which = null;
+
+	ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+	Iterator it = context.getRequestParameterNames();
+
+	while (it.hasNext()) {
+	    name = (String)it.next();
+	    value = FacesUtil.getRequestParamValue(name);
+	    if (!name.equals("inputvalue") && value.equals(input)) {
+		if (-1 != name.indexOf("geneInput"))
+		    which = "Gene";
+		else {
+		    if (-1 != name.indexOf("anatomy"))
+			which = "Anatomy";
+		    else {
+			if (-1 != name.indexOf("accession"))
+			    which = "Accession ID";
+			else {
+			    if (-1 != name.indexOf("geneFn"))
+				which = "Gene Function";
+			}
+		    }
+		}
+		break;
+	    }
+	}
+	if (null == which)
+	    return null;
+
+	PredictiveTextSearchAssembler assembler = new PredictiveTextSearchAssembler();
+	List ret = null;
+	int limit = 20;
+
+	if (which.equals("Gene"))
+	    ret = assembler.getGenes(pattern, 1, limit);
+	else {
+	    if (which.equals("Anatomy"))
+		ret = assembler.getAnatomyStructures(pattern, 1, limit);
+	    else {
+		if (which.equals("Gene Function"))
+		    ret = assembler.getGeneFunctions(pattern, 1, limit);
+	    }
+	}
+
+	return ret;
+    }
+
+
 	// ********************************************************************************
 	// Action methods
 	// ********************************************************************************
 	// modified by xingjun - 11/01/2011 - added the input check statement to avoid exception
-	// xingjun - 02/06/2011 - added return for Euregene app
 	public String search() {
-		if (bundle.getString("project").equals("EuReGene")) {// xingjun - 02/06/2011
-			input = geneInput.trim();
-			return "AdvancedQuery";
-		}
-		
+
 		if("Gene".equals(query)) {
 			input = geneInput.trim();
 			if(input == null || input.equals("")) 
@@ -144,8 +197,6 @@ public class DatabaseHomepageBean {
 			params.put("ttvRels", "1");
 		}
 		HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);  
-		session.setAttribute("luceneGudmapIds", null);  
-		session.setAttribute("luceneSymbols", null); 
 
 		//////////// added by xingjun - 06/04/2009 ///////////
 //		params.put("searchResultOption", searchResultOption);
@@ -418,28 +469,11 @@ public class DatabaseHomepageBean {
 	}
 	
 	
-	public String goSearch() {
-		
-    	SearchManager searchManager = new SearchManager(luceneInput);
-    	
-    	searchResult = searchManager.search();
-
-		return null;
-	}
-    
 	public ArrayList getResult() {
 		
 		return (ArrayList)searchResult;
 	}
 
-	public String getLuceneInput() {
-		return luceneInput;
-	}
-
-	public void setLuceneInput(String input) {
-		luceneInput = input;
-	}
-	
 	//////// added by xingjun - 06/04/2009 /////////
 	// - give user options to display search result: gene strip/submission entries
 	public String getGeneSearchResultOption() {

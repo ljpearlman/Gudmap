@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import org.richfaces.Data;
 import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.utils.Utility;
 //import gmerg.utils.table.FilterItem;
@@ -32,50 +31,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
         this.conn = conn;
     }
     
-    /*return all anatomy terms for auto complete function*/
-	public ArrayList<Data> getAllAnatomyTerms(String geneSymbol)
-	{
-		ArrayList<Data> terms = null;
-		ResultSet resSet = null;
-		String query = AdvancedSearchDBQuery.getParamQuery("ALL_ANATOMY_TERMS").getQuerySQL();
-		
-		PreparedStatement prepStmt = null;
-    	if(null != query && null != geneSymbol && !geneSymbol.equals("")) {
-    		try {
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query.toLowerCase());
-
-    			prepStmt = conn.prepareStatement(query);
-			if (debug)
-			    System.out.println("MySQLAdvancedQueryDAOImp 1 arg = "+geneSymbol+"%");
-    			prepStmt.setString(1, geneSymbol+"%");
-    			resSet = prepStmt.executeQuery();
-    			if (resSet.first()) {
-    				
-//    				resSet.last();
-//    				int arraySize = resSet.getRow();
-    				terms = new ArrayList<Data>();
-    				
-    				int count = 0;
-    				resSet.beforeFirst();
-    				// set maxsize of result
-    				while (resSet.next() && terms.size() <= MAXROWS ) {
-    					terms.add(new Data(resSet.getString(1), String.valueOf(count+1)));
-    				    
-    				}
-    			}
-    			
-    			DBHelper.closePreparedStatement(prepStmt);
-    			return terms;
-    		} catch (Exception se) {
-                se.printStackTrace();
-            }
-    	    
-    	}
-	  
-	  return terms;
-	}
-
     public ArrayList getOptionInDB(String option, Hashtable lookup) {
     	ResultSet resSet = null;
     	String query = null;

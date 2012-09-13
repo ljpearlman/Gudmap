@@ -43,9 +43,6 @@ public interface GenelistDAO {
 	public String[][] getAllOntologies(int ref);
 	
 	public BrowseTableTitle[] getMasterTableExpressionTitles(String masterTableId);
-	public BrowseTableTitle[] getMasterTableAnnotationTitles(String platformId);
-	public String[][] getAnnotationByProbeSetIds(ArrayList probeSetIds, 
-			int columnId, boolean ascending, int offset, int num);
 	public String[][] getAnnotationByProbeSetIds(ArrayList probeSetIds);
 	public ArrayList<GenelistInfo> getAllAnalysisGeneLists();
 	

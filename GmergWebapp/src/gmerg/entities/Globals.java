@@ -312,14 +312,6 @@ public class Globals {
 	}
 
 	//************************************************* Master Table *********************************************************
-	// modified by xingjun - 29/07/2010 - removed the SECOND column (probe)
-	private static final int[][] defaultCols = {	
-//													{1, 3, 5, 8, 9, 10, 15, 18},
-//	 												{1, 3, 5, 8, 9, 10, 15, 18} 
-													{1, 2, 4, 7, 8, 9, 14, 17},
-													{1, 2, 4, 7, 8, 9, 14, 17}
-	 											};
-
 	private static final int[][][] colsWidth = {
 //													{{2,30,30}, {4,20,30}, {10,25,30}, {11,25,30}, {12,25,30}},
 													{{2,20,30}, {3,20,30}, {9,25,30}, {10,25,30}, {11,25,30}},
@@ -327,32 +319,11 @@ public class Globals {
 													{{2,20,30}, {3,20,30}, {9,25,30}, {10,25,30}, {11,25,30}, {13,25,30}, {14,25,30}, {16,25,30}, {17,25,30}}
 												};
 	
-	private static final int[][] leftAlignedCols = {
-//														{2, 10, 11, 12},
-														{9, 10, 11},
-//														{2, 10, 11, 12, 14, 15, 17, 18}
-														{9, 10, 11, 13, 14, 16, 17}
-													};
-	
-	public static int[] getDefaultOntologyCols(String platformId) {
-		int index = 0;
-		if ("GPL6246".equals(platformId))	//if ST1
-			index = 1;
-		return defaultCols[index];
-	}
-	
 	public static int[][] getOntologyColsWidth(String platformId) {
 		int index = 0;
 		if ("GPL6246".equals(platformId))	//if ST1
 			index = 1;
 		return colsWidth[index];
-	}
-	
-	public static int[] getLeftAlignedOntologyCols(String platformId) {
-		int index = 0;
-		if ("GPL6246".equals(platformId))	//if ST1
-			index = 1;
-		return leftAlignedCols[index];
 	}
 	
 	//************************* gene strip *******************************

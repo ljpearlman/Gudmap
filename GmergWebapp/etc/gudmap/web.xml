@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0"?>
 
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -13,34 +13,62 @@
 		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
 		<param-value>server</param-value>
 	</context-param>
-	<context-param>
-		<param-name>org.ajax4jsf.COMPRESS_SCRIPT</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<context-param>
-		<param-name>org.ajax4jsf.SKIN</param-name>
-		<param-value>#{skinBean.skin}</param-value>
-	</context-param>
+ 
+<!-- Plugging the "Blue Sky" skin into the project -->
+               <context-param>
+                  <param-name>org.richfaces.SKIN</param-name>
+                  <param-value>blueSky</param-value>
+               </context-param>
+               
+               <!-- Making the RichFaces skin spread to standard HTML controls -->
+               <context-param>
+                     <param-name>org.richfaces.CONTROL_SKINNING</param-name>
+                     <param-value>enable</param-value>
+               </context-param>
+               
+               <!-- Defining and mapping the RichFaces filter -->
+               <filter> 
+                  <display-name>RichFaces Filter</display-name> 
+                  <filter-name>richfaces</filter-name> 
+                  <filter-class>org.ajax4jsf.Filter</filter-class> 
+               </filter> 
+               <filter-mapping> 
+                  <filter-name>richfaces</filter-name> 
+                  <servlet-name>Faces Servlet</servlet-name>
+                  <dispatcher>REQUEST</dispatcher>
+                  <dispatcher>FORWARD</dispatcher>
+                  <dispatcher>INCLUDE</dispatcher>
+               </filter-mapping>
+               
+               	<context-param>
+               		<param-name>org.ajax4jsf.COMPRESS_SCRIPT</param-name>
+               		<param-value>false</param-value>
+               	</context-param>
+               
+               <listener>
+                  <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+               </listener>
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+
+<!--
 	<context-param>
         	<param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
         	<param-value>true</param-value>
   	</context-param>
-  	
-  	
-  	
-  	
-	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-  	
-	<listener>
-		<listener-class>gmerg.control.GudmapSessionListener</listener-class>
-	</listener>	
+-->
 
 	<filter>
 		<filter-name>GudmapSessionTimeoutFilter</filter-name>
@@ -66,19 +94,7 @@
 		<filter-name>GudmapDynamicImageFilter</filter-name>
 		<filter-class>gmerg.control.GudmapDynamicImageFilter</filter-class>
 	</filter>
-	<filter>
-		<filter-name>GudmapPredictiveTextFilter</filter-name>
-		<filter-class>gmerg.control.GudmapPredictiveTextFilter</filter-class>
-	</filter>
 	
-	<filter>
-		<filter-name>ajax4jsf</filter-name>
-		<filter-class>org.ajax4jsf.Filter</filter-class>
-		<init-param>
-			<param-name>forceparser</param-name>
-			<param-value>false</param-value>
-		</init-param>
-	</filter>
 	<filter>
 		<filter-name>MyFacesExtensionsFilter</filter-name>
 		<filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
@@ -92,11 +108,6 @@
 		</init-param>
 	</filter>
 	
-
-	<filter-mapping>
-		<filter-name>GudmapPredictiveTextFilter</filter-name>
-		<url-pattern>*.html</url-pattern>
-	</filter-mapping>
 	<filter-mapping>
 		<filter-name>GudmapSessionTimeoutFilter</filter-name>
 		<url-pattern>*.html</url-pattern>
@@ -126,13 +137,6 @@
 		<url-pattern>/dynamicImages/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
-		<filter-name>ajax4jsf</filter-name>
-		<servlet-name>Faces Servlet</servlet-name>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>REQUEST</dispatcher>
-	</filter-mapping>
-	<filter-mapping>
 		<filter-name>MyFacesExtensionsFilter</filter-name>
 		<servlet-name>Faces Servlet</servlet-name>
 	</filter-mapping>
@@ -141,21 +145,6 @@
 		<url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
 	</filter-mapping>
 
-	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.html</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.jsf</url-pattern>
-	</servlet-mapping>
- 
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
@@ -200,7 +189,5 @@
 	  <error-code>500</error-code>
 	  <location>/errordocs/server_error.html</location>
 	</error-page>
-	
-	
 
 </web-app>

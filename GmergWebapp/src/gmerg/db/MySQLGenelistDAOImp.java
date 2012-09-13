@@ -1232,36 +1232,6 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
 	}
 
 	/**
-	 * @author xingjun - 02/12/2008
-	 *####################################################### need modify 
-	 */
-	public BrowseTableTitle[] getMasterTableAnnotationTitles(String platformId) {
-		BrowseTableTitle[] annotationTitles = null;
-        ResultSet resSet = null;
-        ParamQuery parQ = 
-        	ArrayDBQuery.getParamQuery("MIC_ANALYSIS_ANNOTATION_TITLES");
-        String queryString = parQ.getQuerySQL();
-        PreparedStatement prepStmt = null;
-        try {
-		    if (debug)
-			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
-        	prepStmt = conn.prepareStatement(queryString);
-        	prepStmt.setString(1, platformId);
-        	resSet = prepStmt.executeQuery();
-        	annotationTitles = 
-        		this.formatBrowseTableTitleResultSet(resSet);
-        	
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeResultSet(resSet);
-        } catch (SQLException se) {
-        	se.printStackTrace();
-        }
-		// return value
-        return annotationTitles;
-	}
-	
-	/**
 	 * @author xingjun - 03/12/2008
 	 * <p>modified by xingjun - 22/12/2008 - renamed variable from 'value' to 'titleValue'</p>
 	 * @param resSet
@@ -1279,6 +1249,7 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
     			String type = resSet.getString(2);
     			String desc = resSet.getString(3);
     			String group = resSet.getString(4);
+
     			// set "" for empty properties
     			title.setTitle((titleValue==null||titleValue.length()==0)?"":titleValue);
     			title.setType(type==null?"":type);
@@ -1289,41 +1260,6 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         	return titles.toArray(new BrowseTableTitle[titles.size()]);
 		}
 		return null;
-	}
-	
-	/**
-	 * @author xingjun - 04/12/2008
-	 * @param probeSetIds
-	 * @return
-	 */
-	public String[][] getAnnotationByProbeSetIds(ArrayList probeSetIds,
-			int columnId, boolean ascending, int offset, int num) {
-		String[][] annotations = null;
-        ResultSet resSet = null;
-        ParamQuery parQ = 
-        	ArrayDBQuery.getParamQuery("MASTER_TABLE_ANNOTATIONS");
-        String querySQL = parQ.getQuerySQL();
-//        System.out.println("MTAnnotation query before add criteria: " + querySQL);
-
-        String queryString = this.assembleAnnotationQueryString(probeSetIds, querySQL, 
-        		columnId, ascending, offset, num);
-//        System.out.println("MTAnnotation query string (full): " + queryString);
-        PreparedStatement prepStmt = null;
-        try {
-		    if (debug)
-			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
-        	prepStmt = conn.prepareStatement(queryString);
-        	resSet = prepStmt.executeQuery();
-        	annotations = this.formatAnnotationResultSet(resSet);
-        	
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeResultSet(resSet);
-        } catch (SQLException se) {
-        	se.printStackTrace();
-        }
-		// return value
-		return annotations;
 	}
 	
 	/**
@@ -1341,7 +1277,7 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
 //        System.out.println("MTAnnotation query before add criteria: " + querySQL);
 
         String queryString = this.assembleAnnotationQueryString(probeSetIds, querySQL);
-//        System.out.println("MTAnnotation query string (full): " + queryString);
+        // System.out.println("MTAnnotation query string (full): " + queryString);
         PreparedStatement prepStmt = null;
         try {
 		    if (debug)
@@ -1462,43 +1398,13 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
 				// the first column (platform id) will not be included
 				String platformId = resSet.getString(1);
 //				System.out.println("formatAnnotationResultSet:platformId: " + platformId);
-				// different platforms have their own extra columns
-				int columnNumber = this.getSharedPlatformColumnNumber()
-					              + this.getPlatformSpecificColumnNumber(platformId);
-//				System.out.println("formatAnnotationResultSet:columnNumber: " + columnNumber);
+				int columnNumber = ArrayDBQuery.ANNOTATION_COLUMN_NUMBER;
 				String[] columns = new String[columnNumber];
 				
-				// common columns
-				int cLen = this.getSharedPlatformColumnNumber();
-//				System.out.println("formatAnnotationResultSet:cLen: " + cLen);
-				for (int i = 0; i < cLen; i++) {
+				for (int i = 0; i < columnNumber; i++) {
 					columns[i] = resSet.getString(i + 2);
 				}
 				
-				// platform specific columns
-				int mLen = cLen + this.getPlatformSpecificColumnNumber("GPL1261");
-				if (platformId.equalsIgnoreCase("GPL1261")) {
-//					System.out.println("formatAnnotationResultSet:mLen: " + mLen);
-					for (int i=cLen; i<mLen; i++) {
-						String colValue = resSet.getString(i + 2);
-						// for date type value, when data were loaded into the MySQL database
-						// if there's value for the date column, the default value of 1000-01-01 will be
-						// given to the column, need to set them as empty string when display the data
-						// ##### modified by xingjun - 25/08/2009 - sometimes colValue may be null
-						if (colValue == null || colValue.equals("1000-01-01")) {
-							columns[i] = "";
-						} else {
-							columns[i] = colValue;
-						}
-					}
-				} else if (platformId.equalsIgnoreCase("GPL6246")) {
-					int sLen = cLen 
-					+ this.getPlatformSpecificColumnNumber("GPL6246");
-//					System.out.println("formatAnnotationResultSet:sLen: " + sLen);
-					for (int i=cLen; i<sLen; i++) {
-						columns[i] = resSet.getString(i+2+this.getPlatformSpecificColumnNumber("GPL1261"));
-					}
-				}
 				results.add(columns);
 			}
 			// convert to 2-dimension array
@@ -1510,30 +1416,6 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
 			return annotations;
 		}
 		return null;
-	}
-	
-	/**
-	 * @author xingjun - 20/08/2009
-	 * @return
-	 */
-	private int getSharedPlatformColumnNumber() {
-		int result = ArrayDBQuery.SHARED_PLATFORM_ANNOTATION_COLUMN_NUMBER;
-		return result;
-	}
-	
-	/**
-	 * @author xingjun - 20/08/2009
-	 * @param platformId
-	 * @return
-	 */
-	private int getPlatformSpecificColumnNumber(String platformId) {
-		int result = 0;
-		if (platformId.equalsIgnoreCase("GPL1261")) {
-			result = ArrayDBQuery.PLATFORM_SPECIFIC_ANNOTATION_COLUMN_NUMBER_GPL1261;
-		} else if (platformId.equalsIgnoreCase("GPL6246")) {
-			result = ArrayDBQuery.PLATFORM_SPECIFIC_ANNOTATION_COLUMN_NUMBER_GPL6246;
-		}
-		return result;
 	}
 	
 	/**
