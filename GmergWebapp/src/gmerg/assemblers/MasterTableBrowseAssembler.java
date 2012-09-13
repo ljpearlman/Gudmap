@@ -23,6 +23,7 @@ import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryCollectionAssembler;
 
+
 /**
  * @author xingjun
  * 
@@ -30,8 +31,8 @@ import gmerg.utils.table.OffMemoryCollectionAssembler;
  * xingjun - 06/06/2011 - replace string 'GUDMAP' with projectString (could be GUDMAP or EuReGene) 
  *
  */
-public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
-    private boolean debug = false;
+public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
+    protected boolean debug = false;
 
     // due to JSP life cycle, fail to stop retrive data twice
     // so use cache to avoid DB access twice
@@ -50,8 +51,7 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
     	super(params, helper);
 	if (debug)
 	    System.out.println("MasterTableBrowseAssembler.constructor");
-  
-	}
+ 	}
 
 	public void setParams() {
 		super.setParams();
@@ -131,6 +131,11 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 	public HeaderItem[] createHeader() {
 	    if (debug)
 		System.out.println("MasterTableBrowseAssembler - createHeader");
+	    /* annotationTitles is "Gene Symbol", "Probe Seq ID", "MGI Gene ID", 
+	       "Entrez Gene ID", "Human Ortholog Symbol", "Human Ortholog Entez ID" from
+	       retrieveAnnotaionTitles
+	    */
+
 		HeaderItem[] headers = new HeaderItem[expressionTitles.length + annotationTitles.length + genelistSearchLinks.size() + 4];
 		headers[0] = new HeaderItem("Probe Id", false);
 		headers[1] = new HeaderItem("Median", false);
@@ -154,8 +159,9 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 		offset += expressionTitles.length;
 		
 		// Bernie 12/4/2011 - Mantis 540 - mod loop to start at 1 rather than 0 to take account of moving Gene Symbol
-		for(int i=1; i<annotationTitles.length; i++)
+		for(int i=1; i<annotationTitles.length; i++) {
 			headers[i+offset-1] = new HeaderItem(annotationTitles[i].getTitle(), false);
+		}
 		offset += annotationTitles.length-1;
 		
 //		headers[offset] = new HeaderItem("GUDMAP-ISH", false);
@@ -184,54 +190,56 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler{
 		int colNum = colNum1 + colNum2 + 2;
 		int rowNum = onePageIds.size();
 		DataItem[][] tableData = new DataItem[rowNum][colNum];
-		
+		int iSize = 0;
+		int i = 0;
+		String value = null;
+		int col=0;			
+		String geneSymbol = null;
+		SearchLink link = null;
+		String probeID = null;
+
 		for(int row=0; row<rowNum; row++) {
-			int col=0;			
-			tableData[row][col++] = new DataItem(onePageIds.get(row)); //Probe ID
+			col=0;		
+			probeID = onePageIds.get(row);
+			tableData[row][col++] = new DataItem(probeID); //Probe ID
 		
 			tableData[row][col++] = new DataItem(median[row]); // median
 			
 			tableData[row][col++] = new DataItem(stdDev[row]); // standard deviation
 			
 			// Bernie 12/4/2011 - Mantis 540
-			String geneSymbol = annotations[row][0];
+			geneSymbol = annotations[row][0];
 			tableData[row][col++] = new DataItem(geneSymbol);	// Gene Symbol
 
 			//------- analysis data ----------
-			for (int i=0; i<expressions[0].length; i++) {
-				String value = String.format("%.2f", expressions[row][i]);
-//				System.out.println("===tableData["+row+"]["+col+"] = "+value);
+			iSize = expressions[0].length;
+			for (i=0; i<iSize; i++) {
+				value = String.format("%.2f", expressions[row][i]);
 				tableData[row][col++] = new DataItem(value);				
 			}
 
-			//------- ontologies ----------
-			// Bernie 12/4/2011 - Mantis 540 - mod annotations[row][0] to annotations[row][1]
-			String geneDescription = (String)annotations[row][1];
-			if (geneDescription.equals("-") || geneDescription.equals(""))  // Gene Description 
-				tableData[row][col++] = new DataItem(geneDescription);	
-			else
-				tableData[row][col++] = new DataItem(geneDescription, geneDescription, "../pages/gene.jsf?gene="+geneDescription, 4); //url for Gudmap ISH
-			
-			for (int i=2; i<annotations[0].length; i++) //rest of the ontologies 
-				tableData[row][col++] = new DataItem(annotations[row][i]);
-			
+			//------- annotation ----------
+			iSize = annotations[0].length;  //rest of the ontologies 
+			for (i=1; i<iSize; i++) {
+			    tableData[row][col++] = new DataItem(annotations[row][i]);
+			}
 
 			//------- search links ----------
 			// Bernie 12/4/2011 - Mantis 540 - changed geneSymbol="+geneDescription to geneSymbol="+geneSymbol
 //			tableData[row][col++] = new DataItem("GUDMAP", "Click to view GUDMAP ISH", "ish_gene_submissions.jsf?queryType=geneQueryISH&ignoreExpression=true&output=gene&inputType=symbol&criteria=equals&geneSymbol="+geneSymbol, 4); //url for Gudmap ISH
 			tableData[row][col++] = new DataItem(projectString, "Click to view "+projectString+" ISH", "ish_gene_submissions.jsf?queryType=geneQueryISH&ignoreExpression=true&output=gene&inputType=symbol&criteria=equals&geneSymbol="+geneSymbol, 4); //url for Gudmap ISH
-			for(int i=0; i<colNum2; i++) {   //search links -- not including GO & OMIM  & MRC2
-				SearchLink link = (SearchLink)genelistSearchLinks.get(i);
-//				if (i == 3) 
-//					tableData[row][col++] = new DataItem("MRC", "MRC", "ish_gene_submissions.jsf?queryType=geneQueryISH&ignoreExpression=true&output=gene&inputType=symbol&criteria=equals&geneSymbol="+geneSymbol, 4); //url for Gudmap ISH
-				// Bernie 12/4/2011 - Mantis 540 - changed link.getUrl(geneDescription) to link.getUrl(geneSymbol)
+			for(i=0; i<colNum2 - 1; i++) {   //search links -- not including GO & OMIM  & MRC2
+				link = (SearchLink)genelistSearchLinks.get(i);
 				tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(geneSymbol), 4);  //Pass gene symbol
 			}
+			// last link uses probe not gene
+				link = (SearchLink)genelistSearchLinks.get(i);
+				tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(probeID), 4);  //Pass gene symbol
 		}
 		
 		if (debug) {
-		    int iSize = tableData.length;
-		    int i = 0;
+		    iSize = tableData.length;
+		    i = 0;
 		    int jSize = 0;
 		    int j = 0;
 		    for (i = 0; i < iSize; i++) {

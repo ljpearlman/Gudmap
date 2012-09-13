@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0"?>
 
 <!--
  Copyright 2004 Sun Microsystems, Inc. All rights reserved.
@@ -61,215 +61,244 @@
     </component-extension>
   </component>
   
-  <component>
-  	<component-type>gudmap.TabbedPanel</component-type>
-  	<component-class>gmerg.custom.components.components.UITabbedPanel</component-class>
-  </component>
-  <component>
-  	<component-type>gudmap.TabPane</component-type>
-  	<component-class>gmerg.custom.components.components.UITabPane</component-class>
-  </component>
-  
  <!--*********************START SECTION: MANAGED BEAN************************-->
  <managed-bean>
   <managed-bean-name>GenelistFolderBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.GenelistFolderBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>MasterTableBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.MasterTableBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>BatchAnnotationTreeBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.BatchAnnotationTreeBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>AdvancedQueryBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.AdvancedQueryBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>AdvancedQueryResultBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.AdvancedQueryResultBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>AllComponentsGenelistsBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.AllComponentsGenelistsBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ArrayAnalysisBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ArrayAnalysisBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+
  <!-- bean linked to anatomy tree related operations -->
  <managed-bean>
   <managed-bean-name>AnatomyBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.AnatomyBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ArrayFocusBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ArrayFocusBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <!--authenticationBean specific to euregene - required for login to web app-->
  <managed-bean>
   <managed-bean-name>AuthenticationBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.AuthenticationBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <!-- bean linked to anatomy tree related operations -->
  <managed-bean>
   <managed-bean-name>BooleanTestBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.BooleanTestBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>BooleanQueryResultBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.BooleanQueryResultBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>CollectionBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.CollectionBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>CollectionBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.CollectionBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>CollectionInformationBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.CollectionInformationBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>CollectionListBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.CollectionListBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>CollectionOperationBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.CollectionOperationBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ClipboardOperationBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ClipboardOperationBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>CollectionShareBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.CollectionShareBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>FeedbackBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.FeedbackBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>CollectionUploadBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.CollectionUploadBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>DatabaseHomepageBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.DatabaseHomepageBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>EntryPageBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.EntryPageBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>EditExpressionBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.EditExpressionBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+
  <!-- bean linked to the expression editing page -->
  <managed-bean>
   <managed-bean-name>EditExpressionSupportBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.EditExpressionSupportBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <!-- bean linked to the edit history page is to be displayed -->
  <managed-bean>
   <managed-bean-name>EditHistoryBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.EditHistoryBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+
  <!-- bean linked to the editor entry page is to be displayed -->
  <managed-bean>
   <managed-bean-name>EditorQueryBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.EditorQueryBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+
  <!-- bean linked to the probe editing page -->
  <managed-bean>
   <managed-bean-name>EditProbeBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.EditProbeBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <!-- bean used to edit submission detail when editor logged in -->
  <managed-bean>
   <managed-bean-name>EditSubmissionBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.EditSubmissionBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>EditSubmissionSupportBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.EditSubmissionSupportBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ExpressionDetailBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ExpressionDetailBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>FocusGeneBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.FocusGeneBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>FocusGeneIndexBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.FocusGeneIndexBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <!-- bean linked to 'gene' page -->
  <managed-bean>
   <managed-bean-name>GeneInfoBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.GeneInfoBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ProcessedGenelistDataBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ProcessedGenelistDataBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>IHCBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.IHCBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>TransgenicBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.TransgenicBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ImageDetailBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ImageDetailBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ImageMap</managed-bean-name>
   <managed-bean-class>gmerg.entities.focus.components.model.ImageMap</managed-bean-class>
@@ -284,22 +313,20 @@
    <property-class>java.lang.String</property-class>
    <value/>
   </managed-property>
-  <!--<managed-property>
-   <property-name>diagram</property-name>
-   <property-class>java.lang.Boolean</property-class>
-   <value/>
-  </managed-property>-->
+
  </managed-bean>
  <managed-bean>
   <managed-bean-name>InsituFocusBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.InsituFocusBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ISHBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ISHBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ISHComponentGeneExpressionBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ISHComponentGeneExpressionBean</managed-bean-class>
@@ -313,37 +340,44 @@
    <value>#{param.pgeNum}</value>
   </managed-property>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ISHFocusBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ISHFocusBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ISHSelGeneSubmissionsBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ISHSelGeneSubmissionsBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ISHSelSubmissionsBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ISHSelSubmissionsBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <!-- bean linked to 'ish submission' page -->
  <managed-bean>
   <managed-bean-name>ISHSingleSubmissionBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ISHSingleSubmissionBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>LabArrayBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.LabArrayBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>LabISHBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.LabISHBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>LabTGBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.LabTGBrowseBean</managed-bean-class>
@@ -356,16 +390,19 @@
   <managed-bean-class>gmerg.beans.LabSummaryBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>MessageBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.MessageBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>CollectionAnatomyBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.CollectionAnatomyBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>MicOrganDiscriptionBean</managed-bean-name>
   <managed-bean-class>gmerg.entities.focus.components.model.MicOrganDiscriptionBean</managed-bean-class>
@@ -406,11 +443,13 @@
    <value/>
   </managed-property>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>MicroarrayFocusBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.MicroarrayFocusBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <!-- bean linked to single array submission page -->
  <managed-bean>
   <managed-bean-name>MicroarraySingleSubmissionBean</managed-bean-name>
@@ -441,150 +480,153 @@
    <value/>
   </managed-property>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>MolecularMarkerBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.MolecularMarkerBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>PersonBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.PersonBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>PlatformFocusBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.PlatformFocusBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ProcessedGenelistsBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ProcessedGenelistsBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <!-- bean used to make page redirections on certain queries-->
  <managed-bean>
   <managed-bean-name>QueryBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.QueryBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>QuickSearchBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.QuickSearchBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>SeriesBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.SeriesBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>SeriesBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.SeriesBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
- <managed-bean>
-  <managed-bean-name>skinBean</managed-bean-name>
-  <managed-bean-class>org.richfaces.SkinBean</managed-bean-class>
-  <managed-bean-scope>session</managed-bean-scope>
- </managed-bean>
+
  <managed-bean>
   <managed-bean-name>StageFocusBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.StageFocusBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
- <managed-bean>
-  <managed-bean-name>suggestionBox</managed-bean-name>
-  <managed-bean-class>org.richfaces.SuggestionBox</managed-bean-class>
-  <managed-bean-scope>session</managed-bean-scope>
- </managed-bean>
+
  <managed-bean>
   <managed-bean-name>TableBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.TableBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>UploadCollectionBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.UploadCollectionBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <!--authenticationBean specific to gudmap - required for login to editor pages-->
  <managed-bean>
   <managed-bean-name>UserBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.UserBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>UtilityBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.UtilityBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>Visit</managed-bean-name>
   <managed-bean-class>gmerg.utils.Visit</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+
   <managed-bean>
   <managed-bean-name>LabISHEditBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.LabISHEditBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ISHBatchSubmissionBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ISHBatchSubmissionBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>MaProbeBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.MaProbeBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
   <managed-bean>
   <managed-bean-name>ISHBatchListBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ISHBatchListBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>DisplayLockTextInTreeBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.DisplayLockTextInTreeBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>ImageMatrixBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ImageMatrixBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>GeneStripBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.GeneStripBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>GeneQueryResultBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.GeneQueryResultBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>HeaderQuickSearchBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.HeaderQuickSearchBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
- <managed-bean>
-  <managed-bean-name>GlobalSearchBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.GlobalSearchBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
- </managed-bean>
- <managed-bean>
-  <managed-bean-name>BridgePageBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.BridgePageBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
- </managed-bean>
- 
- 
+
  <managed-bean>
   <managed-bean-name>MicroarrayDetailsBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.MicroarrayDetailsBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>AntibodyBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.AntibodyBean</managed-bean-class>
@@ -663,43 +705,8 @@
    <to-view-id>/pages/disease_redirect.jsp</to-view-id>
    <redirect/>
   </navigation-case>
-<!-- **************** for quick search - end *************** -->
-<!-- **************** for global search - start *************** -->
-  <navigation-case>
-   <from-action>#{GlobalSearchBean.search}</from-action>
-   <from-outcome>GlobalQuery</from-outcome>
-   <to-view-id>/pages/bridge_page.jsp#{GlobalSearchBean.searchParams}</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-action>#{GlobalSearchBean.search}</from-action>
-   <from-outcome>NoResult</from-outcome>
-   <to-view-id>/pages/empty_query_result.jsp</to-view-id>
-   <redirect/>
-  </navigation-case>
-<!-- **************** for global search - end *************** -->
-
-<!-- **************** for bridge page - start *************** -->
-  <navigation-case>
-   <from-outcome>GeneTree1</from-outcome>
-   <to-view-id>/pages/gene_query_result.jsp#{BridgePageBean.searchParams}</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>InsituTree1</from-outcome>
-   <to-view-id>/pages/focus_gene_browse.jsp#{BridgePageBean.searchParams}</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>MicroArrayTree1</from-outcome>
-   <to-view-id>/pages/focus_gene_browse.jsp#{BridgePageBean.searchParams}</to-view-id>
-   <redirect/>
-  </navigation-case>
-
-  
-<!-- **************** for bridge page - end *************** -->  
-
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/message.jsp</from-view-id>
   <navigation-case>
@@ -708,6 +715,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/user_login.jsp</from-view-id>
   <navigation-case>
@@ -726,6 +734,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <display-name>searchGene</display-name>
   <from-view-id>/pages/query_db.jsp</from-view-id>
@@ -759,19 +768,23 @@
    <to-view-id>/pages/empty_query_result.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/ish_submission.jsp</from-view-id>
   <navigation-case>
    <from-action>#{ISHSingleSubmissionBean.annotation}</from-action>
    <from-outcome>success</from-outcome>
-   <to-view-id>/pages/#{ISHSingleSubmissionBean.originalURL}</to-view-id>
+   <to-view-id>#{ISHSingleSubmissionBean.originalURL}</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-action>#{ISHSingleSubmissionBean.displayOfAnnotatedGps}</from-action>
    <from-outcome>success</from-outcome>
-   <to-view-id>/pages/#{ISHSingleSubmissionBean.originalURL}</to-view-id>
+   <to-view-id>#{ISHSingleSubmissionBean.originalURL}</to-view-id>
+   <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/entry_page.jsp</from-view-id>
   <navigation-case>
@@ -801,6 +814,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/mic_focus.jsp</from-view-id>
   <navigation-case>
@@ -814,6 +828,7 @@
    <to-view-id>/mic_focus.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/anatomy_tree.jsp</from-view-id>
   <navigation-case>
@@ -822,6 +837,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/includes/wide_table_navigation.jsp</from-view-id>
   <navigation-case>
@@ -829,6 +845,7 @@
    <to-view-id>/includes/browse_wide_table.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/includes/wide_table_body.jsp</from-view-id>
   <navigation-case>
@@ -836,6 +853,7 @@
    <to-view-id>/includes/browse_wide_table.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/array_analysis.jsp</from-view-id>
   <navigation-case>
@@ -847,12 +865,14 @@
    <to-view-id>/pages/array_analysis_waiting.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/array_analysis_waiting.jsp</from-view-id>
   <navigation-case>
    <to-view-id>/pages/array_analysis.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/secure/login.jsp</from-view-id>
   <navigation-case>
@@ -861,6 +881,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/secure/login_panel.jsp</from-view-id>
   <navigation-case>
@@ -874,6 +895,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/login_panel_connector.jsp</from-view-id>
   <navigation-case>
@@ -882,6 +904,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/edit_entry_page.jsp</from-view-id>
   <navigation-case>
@@ -889,6 +912,7 @@
    <to-view-id>/pages/edit_history.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/advanced_query_result.jsp</from-view-id>
   <navigation-case>
@@ -906,6 +930,7 @@
    <to-view-id>/pages/empty_query_result.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/database_homepage.jsp</from-view-id>
   <navigation-case>
@@ -929,6 +954,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/focus_gene_index_browse.jsp</from-view-id>
   <navigation-case>
@@ -936,18 +962,21 @@
    <to-view-id>/pages/focus_gene_browse.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/gene_query_waiting.jsp</from-view-id>
   <navigation-case>
    <to-view-id>/pages/focus_gene_browse.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/gene_query_waiting_per_organ.jsp</from-view-id>
   <navigation-case>
    <to-view-id>/pages/focus_gene_browse.jsp</to-view-id>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/mic_focus_frame.jsp</from-view-id>
   <navigation-case>
@@ -956,6 +985,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
  <navigation-rule>
   <from-view-id>/pages/boolean_test.jsp</from-view-id>
   <navigation-case>
@@ -964,6 +994,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+
 <navigation-rule>
 	<from-view-id>/pages/collectionList_browse.jsp</from-view-id>
 	<navigation-case>
@@ -971,6 +1002,7 @@
 		<to-view-id>/pages/collection_browse.jsp</to-view-id>
 	</navigation-case>
 </navigation-rule>
+
 <navigation-rule>
 	<from-view-id>/pages/collection_browse.jsp</from-view-id>
 	<navigation-case>
@@ -978,6 +1010,7 @@
 		<to-view-id>/pages/collection_information.jsp</to-view-id>
 	</navigation-case>
 </navigation-rule>
+
 <navigation-rule>
 	<from-view-id>/pages/collection_information.jsp</from-view-id>
 	<navigation-case>
@@ -985,6 +1018,7 @@
 		<to-view-id>/pages/collection_information.jsp</to-view-id>
 	</navigation-case>
 </navigation-rule>
+
 <navigation-rule>
 	<from-view-id>/pages/ish_edit_expression.jsp</from-view-id>
 	<navigation-case>
@@ -1048,6 +1082,7 @@
       </attribute>
     </renderer>
  </render-kit>
+
  <!--**********************END SECTION: CUSTOM RENDERERS*********************
 **********************START SECTION: APPLICATION************************-->
  <application>
@@ -1058,8 +1093,5 @@
  <lifecycle>
   <phase-listener id="RestoreViewPhaseTracker">gmerg.control.GudmapPhaseTracker</phase-listener>
   <phase-listener id="InvokeApplicationPhaseTracker">gmerg.control.GudmapInvokeApplicationPhaseTracker</phase-listener>
-<!--
-  <phase-listener id="RedirectPhaseListener">gmerg.control.GudmapRedirectPhaseListener</phase-listener>
--->
  </lifecycle>
 </faces-config>

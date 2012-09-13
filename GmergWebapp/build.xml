@@ -5,30 +5,12 @@
   <property environment="env" />
   <property name="debug" value="on"/>
   <property name="optimize" value="true" />
-  <property name="servletJar" value="${env.CATALINA_HOME}/common/lib/servlet-api.jar"/>
-  <property name="jspJar" value="${env.CATALINA_HOME}/common/lib/jsp-api.jar"/>
-  <property name="jsfImplJar" value="lib/jsf-impl.jar" />
-  <property name="jsfApiJar" value="lib/jsf-api.jar"/>
-  <property name="jstlJar" value="lib/jstl.jar"/>
-  <property name="tomJar" value="lib/tomahawk-1.1.6.jar"/>
-  <property name="elJar" value="lib/commons-el.jar"/>
-  <property name="richJar" value="lib/richfaces-3.0.1.jar"/>
-  <property name="ajaxJar" value="lib/ajax4jsf-1.1.1.jar"/>
-  <property name="analysisJar" value="web/analysis.jar"/>
-  <property name="uploadJar2" value="lib/commons-fileupload-1.2.jar"/>
-  <property name="javaxel" value="lib/el-api.jar"/>
-  <property name="lang" value="lib/commons-lang-2.4.jar"/>
-  <property name="idconsumer" value="lib/javax.servlet.jsp.jar"/>
-  <property name="javaee" value="lib/javaee.jar"/>  
-  <property name="uploadJar3" value="lib/commons-io-1.3.2.jar"/>
-  <property name="mail" value="lib/mail.jar"/>
-  <property name="activation" value="lib/activation.jar"/>
-  <property name="treeviewJar" value="lib/TreeView.jar"/>
-  <property name="luceneJar" value="lib/lucene-core-2.0.0.jar"/>
-  <property name="luceneparserJar" value="lib/luceneHtmlParser.jar"/>
-  <property name="digesterJar" value="lib/commons-digester.jar"/>
-  <property name="jUnit" value="lib/junit-4.10.jar"/>
-  <property name="analysis" value="lib/analysis.jar"/>
+
+  <path id="master-classpath">
+        <fileset dir="lib" includes="*.jar"/>
+        <fileset dir="/opt/tomcat/lib" includes="*.jar"/>
+        <fileset dir="/opt/tomcat/bin" includes="*.jar"/>
+  </path>
 	
   <property name="build" value="../webapps/gudmap"/>
   <property name="dist" value="../webapps"/>
@@ -79,8 +61,6 @@
       <copy file="src/configuration.properties.${config}"
             tofile="${build}/WEB-INF/classes/configuration.properties"/>
   	
-	  <copy file="${treeviewJar}" todir="${build}" />
-  	
   </target>
 
 
@@ -96,32 +76,7 @@
 	       includeantruntime="false"
 		   optimize="${optimize}" debug="${debug}"
            destdir="${build}/WEB-INF/classes">
-		<classpath>
-			<pathelement path="${servletJar}"/>
-			<pathelement path="${jspJar}"/>
-			<pathelement path="${jsfImplJar}"/>
-			<pathelement path="${jsfApiJar}"/>
-			<pathelement path="${jstlJar}"/>
-			<pathelement path="${analysisJar}"/> 
-			<pathelement path="${tomJar}"/>
-			<pathelement path="${elJar}"/>
-			<pathelement path="${richJar}"/>
-			<pathelement path="${ajaxJar}"/>
-			<pathelement path="${uploadJar2}"/>
-			<pathelement path="${uploadJar3}"/>  
-			<pathelement path="${javaxel}"/> 
-			<pathelement path="${idconsumer}"/>
-			<pathelement path="${javaee}"/>	      
-			<pathelement path="${mail}"/>
-			<pathelement path="${activation}"/>
-			<pathelement path="${treeviewJar}"/>
-			<pathelement path="${lang}"/>
-			<pathelement path="${luceneparserJar}"/>
-			<pathelement path="${luceneJar}"/>
-			<pathelement path="${digesterJar}"/>
-			<pathelement path="${jUnit}"/>
-			<pathelement path="${analysis}"/>
-		</classpath>
+		<classpath refid="master-classpath" />
      </javac> 
   </target>
 

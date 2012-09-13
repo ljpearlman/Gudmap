@@ -62,6 +62,7 @@ public class GenericTableView
 	protected HeatmapDisplayTransform heatmapDisplayTransform;
 	protected HashMap<String, Object> viewParams; 
 	
+    protected boolean inTabPane = false;
 	
 	// ********************************************************************************
 	// Constructors
@@ -841,6 +842,14 @@ public class GenericTableView
 
 	public int getHeatmapColumnIndex() {
 		return heatmapColumnIndex;
+	}
+
+	public boolean isInTabPane() {
+		return inTabPane;
+	}
+
+	public void setInTabPane(boolean input) {
+		inTabPane = input;
 	}
 
 	public boolean isDisplayHeatmap() {
