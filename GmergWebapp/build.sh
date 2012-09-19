@@ -3,7 +3,7 @@
 
 # set java and tomcat environment variables
 setenv JAVA_HOME '/opt/java'
-setenv CATALINA_HOME '/export/data0/tomcat'
+setenv CATALINA_HOME '/opt/tomcat'
 
 # Execute ANT to perform the requested build target
 ant $*

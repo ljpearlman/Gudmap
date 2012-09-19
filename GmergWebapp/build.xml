@@ -8,8 +8,8 @@
 
   <path id="master-classpath">
         <fileset dir="lib" includes="*.jar"/>
-        <fileset dir="/opt/tomcat/lib" includes="*.jar"/>
-        <fileset dir="/opt/tomcat/bin" includes="*.jar"/>
+        <fileset dir="${env.CATALINA_HOME}/lib" includes="*.jar"/>
+        <fileset dir="${env.CATALINA_HOME}/bin" includes="*.jar"/>
   </path>
 	
   <property name="build" value="../webapps/gudmap"/>
