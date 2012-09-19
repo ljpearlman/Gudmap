@@ -222,11 +222,12 @@
 					</td>
 				</tr><!-- main table, closing tr -->
 				<tr bgcolor="#CCCCCC">
-					<td style="margin-top:-1px;" bgcolor="#CCCCCC" colspan="3" align="center">
+					<td style="margin-top:-1px; vertical-align:middle; padding: 0.3em;" bgcolor="#CCCCCC" colspan="3" align="center">
 					<ul id="MenuBar1" class="MenuBarHorizontal" >
-						<li><a href="http://www.gudmap.org/index.html">Home</a></li>
+<!-- do not know the reason fonts become smaller without changing any css.  ==> add bignavtext class -->
+						<li><a class="bignavtext" href="http://www.gudmap.org/index.html">Home</a></li>
 						<li>
-							<a href="http://www.gudmap.org/About/index.html" class="MenuBarItemSubmenu">About GUDMAP</a>
+							<a href="http://www.gudmap.org/About/index.html" class="MenuBarItemSubmenu bignavtext">About GUDMAP</a>
 							<ul>
 								<li><a href="http://www.gudmap.org/About/Goal.html">Goals</a></li>
 								<li><a href="http://www.gudmap.org/About/Projects/index.html">Projects</a></li>
@@ -241,7 +242,7 @@
 							</ul>
 						</li>
 						<li>
-							<a class="MenuBarItemSubmenu" href="http://www.gudmap.org/Menu_Index/Gene_Expression.html">Gene Expression</a>
+							<a class="MenuBarItemSubmenu bignavtext" href="http://www.gudmap.org/Menu_Index/Gene_Expression.html">Gene Expression</a>
 							<ul>
 								<li><a href="/gudmap/">Query/Browse Database</a>                </li>
 								<li><a href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries</a></li>
@@ -249,7 +250,7 @@
 							</ul>
 						</li>
 						<li>
-							<a href="http://www.gudmap.org/Resources/index.html" class="MenuBarItemSubmenu">Resources</a>
+							<a  href="http://www.gudmap.org/Resources/index.html" class="MenuBarItemSubmenu bignavtext">Resources</a>
 							<ul>
 								<li><a href="http://www.gudmap.org/Submission_Archive/index.html">Submission Archive</a></li>
 								<li><a href="http://www.gudmap.org/Resources/Request_ISH.html">Request ISH</a></li>
@@ -262,7 +263,7 @@
 							</ul>
 						</li>
 						<li>
-							<a href="http://www.gudmap.org/About/Tutorial/index.html" class="MenuBarItemSubmenu">Tutorials</a>
+							<a  href="http://www.gudmap.org/About/Tutorial/index.html" class="MenuBarItemSubmenu bignavtext">Tutorials</a>
 							<ul>
 								<li><a href="http://www.gudmap.org/About/Tutorial/Overview.html">Overview</a></li>
 								<li><a href="http://www.gudmap.org/About/Tutorial/DevMUS.html">Urinary Development</a></li>
@@ -270,10 +271,10 @@
 							</ul>
 						</li>
 						<li>
-							<a href="http://www.gudmap.org/gudmap_dis/index.jsp">Disease</a>
+							<a class="bignavtext" href="http://www.gudmap.org/gudmap_dis/index.jsp">Disease</a>
 						</li>
 						<li>
-							<a href="http://www.gudmap.org/Menu_Index/Help.html" class="MenuBarItemSubmenu">Help</a>
+							<a  href="http://www.gudmap.org/Menu_Index/Help.html" class="MenuBarItemSubmenu bignavtext">Help</a>
 							<ul>
 								<li><a href="http://www.gudmap.org/Help/index.html">Using Database</a></li>
 								<li><a href="http://www.gudmap.org/Help/Website_Help.html">Website</a></li>
@@ -294,13 +295,15 @@
 		</div><!-- end #headernew -->
 		<div id="sidebar1"><!-- TemplateBeginEditable name="sidebarRegion" -->
 			<div id="sidebarinner" ><!-- #BeginLibraryItem "/Library/db_nav.lbi" -->
-				<p class="db_expression_database sidebar_first_item"><a href="${pageContext.request.contextPath}/pages/database_homepage.html">Expression Database</a></p>
-				<p class="organ_summaries"><a href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries </a></p>
-				<p class="db_analysis"><a href="${pageContext.request.contextPath}/pages/genelist_folder.html">Analysis </a></p>
-				<p class="db_annotate"><a href="${pageContext.request.contextPath}/pages/edit_entry_page_per_lab.html">Annotate</a></p>
-				<p class="db_downloads"><a href="http://www.gudmap.org/Submission_Archive/index.html">Downloads</a></p>
-				<p class="db_labs"><a href="${pageContext.request.contextPath}/pages/lab_summaries.html">Labs</a></p>
-				<p class="db_collections"><a href="${pageContext.request.contextPath}/pages/collectionList_browse.html">Collections</a></p>
+				<br/>
+				<br/>
+	                                                <p class="db_expression_database sidebar_first_item"><a href="${pageContext.request.contextPath}/pages/database_homepage.html">Expression Database</a></p>
+				<p><a href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries</a></p>
+				<p><a href="${pageContext.request.contextPath}/pages/genelist_folder.html">Analysis</a></p>
+				<p><a href="${pageContext.request.contextPath}/pages/edit_entry_page_per_lab.html">Annotate</a></p>
+				<p><a href="http://www.gudmap.org/Submission_Archive/index.html">Downloads</a></p>
+				<p><a href="${pageContext.request.contextPath}/pages/lab_summaries.html">Labs</a></p>
+				<p><a href="${pageContext.request.contextPath}/pages/collectionList_browse.html">Collections</a></p>
 			</div><!-- #EndLibraryItem -->
 			<h3>&nbsp; </h3>
 			<p>&nbsp;</p>
