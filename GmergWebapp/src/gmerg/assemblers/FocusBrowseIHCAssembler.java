@@ -98,6 +98,9 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	 * @return
 	 */
 	public int[] retrieveTotals() {
+	    // force new cache
+	    cache = null;
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);

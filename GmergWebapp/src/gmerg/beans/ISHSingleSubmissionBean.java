@@ -17,7 +17,6 @@ public class ISHSingleSubmissionBean {
     protected String id;
     private String annotationDisplayType;
     private String displayOfAnnoGps;
-    private String originalURL = "/pages/ish_submission.html";
     private boolean renderPage;
     private boolean renderPrbSeqInfo;
     private boolean renderPrbNameURL;
@@ -27,36 +26,33 @@ public class ISHSingleSubmissionBean {
 	if (debug)
 	    System.out.println("ISHSingleSubmissionBean.constructor");
 
-		assembler = new ISHSubmissionAssembler();
-		id = FacesUtil.getRequestParamValue("id");
-		if (id == null || id.equals("")) 
-			id = (String) FacesUtil.getSessionValue("id");
-		annotationDisplayType = null;
-		displayOfAnnoGps = null;
-		boolean displayCommand = false;
-		if (id != null && !id.equals("")) {
-			FacesUtil.setSessionValue("id", id);
-			// get the type of annotation display (tree or list)
-			annotationDisplayType = FacesUtil.getRequestParamValue("annotationDisplay");
-			if (annotationDisplayType == null)
-				annotationDisplayType = CookieOperations.getCookieValue("annotationDisplay");
-			else
-				displayCommand = true;
+	id = FacesUtil.getRequestParamValue("id");
+	if (id == null || id.equals("")) 
+	    id = (String) FacesUtil.getSessionValue("id");
+	
+	if (null == id || id.equals(""))
+	    return;
+	
+	FacesUtil.setSessionValue("id", id);
+	assembler = new ISHSubmissionAssembler();
+	
+	// get the type of annotation display (tree or list)
+	boolean initial = true;
+	annotationDisplayType = FacesUtil.getRequestParamValue("annotationDisplay");
+	if (annotationDisplayType == null || annotationDisplayType.equals(""))
+	    annotationDisplayType = CookieOperations.getCookieValue("annotationDisplay");
+	else
+	    initial = false;
 
-			displayOfAnnoGps = FacesUtil.getRequestParamValue("displayOfAnnoGps");
-			if (displayOfAnnoGps == null || displayOfAnnoGps.equals("")) {
-				displayOfAnnoGps = CookieOperations.getCookieValue("displayOfAnnoGps");
-				if (displayOfAnnoGps == null || displayOfAnnoGps.equals("")) {
-					displayOfAnnoGps = "show";
-					CookieOperations.setValueInCookie("displayOfAnnoGps", displayOfAnnoGps, -1, false);
-				}
-			} else
-				displayCommand = true;
-			if (!displayCommand) // If it is an display change actionlink then do setSubmission in the action method
-				// get a submission using the id provided
-				setSubmissionDetails(id);
-		}
-	}
+	displayOfAnnoGps = FacesUtil.getRequestParamValue("displayOfAnnoGps");
+	if (displayOfAnnoGps == null || displayOfAnnoGps.equals(""))
+	    displayOfAnnoGps = CookieOperations.getCookieValue("displayOfAnnoGps");
+	else
+	    initial = false;
+	
+	if (initial)
+	    setSubmissionDetails(id);
+    }
         
     /**
 	 * <p>
@@ -74,6 +70,7 @@ public class ISHSingleSubmissionBean {
     public void setSubmissionDetails(String subId){
        
 		boolean displayAsTree = false;
+
         if(annotationDisplayType == null || annotationDisplayType.equals("tree") || annotationDisplayType.equals(""))
             displayAsTree = true;
         
@@ -220,17 +217,6 @@ public class ISHSingleSubmissionBean {
         return submissionID;
     }
     
-    public void setOriginalURL(String value){
-        originalURL = value;
-    }
-    /**
-     * used by faces navigation to redirect from one URL to another
-     * @return a string containing a URL
-     */
-    public String getOriginalURL() {
-        return originalURL+"?id="+submissionID;
-    }
-
     public void setSubmissionID(String submissionID) {
         this.submissionID = submissionID;
     }
@@ -263,9 +249,10 @@ public class ISHSingleSubmissionBean {
 		else 
 			displayOfAnnoGps = "show";
 		setSubmissionDetails(id);
-        CookieOperations.setValueInCookie("displayOfAnnoGps", displayOfAnnoGps, -1, false);
+		CookieOperations.setValueInCookie("displayOfAnnoGps", displayOfAnnoGps, -1, false);
 
-        return "success";
+
+		return "success";
     }
 
 	public String getAnnotationDisplayType() {

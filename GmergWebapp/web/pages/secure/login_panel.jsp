@@ -19,19 +19,19 @@
 				<h:outputText value=" "/>
 				<h:panelGrid columns="2" cellpadding="3" cellspacing="3" >
 					<h:outputText styleClass="plaintext" value="Enter username: "/>
-					<h:inputText id="userName" value="#{userBean.userName}" />
+					<h:inputText id="userName" value="#{UserBean.userName}" />
 					<h:outputText value=" "/>
 					<h:outputText value=" "/>
 					<h:outputText styleClass="plaintext" value="Enter password: "/>
-					<h:inputSecret id="password" value="#{userBean.password}" />
+					<h:inputSecret id="password" value="#{UserBean.password}" />
 				</h:panelGrid>
 				<h:outputText value=" "/>
-				<h:outputText id="loginMessage" value="#{userBean.loginMessage} &nbsp" style="color:red" styleClass="plaintext" escape="false" />
+				<h:outputText id="loginMessage" value="#{UserBean.loginMessage} &nbsp" style="color:red" styleClass="plaintext" escape="false" />
 				<h:outputText value=" "/>
 				<h:panelGrid columns="3" width="100%" cellspacing="8" style="text-align:center" >
-					<h:commandButton value="Login" action="#{userBean.login}" />
-					<h:commandButton value="Reset" action="#{userBean.resetLogin}" />
-					<h:commandButton value="Cancel" action="#{userBean.cancelLogin}" />
+					<h:commandButton value="Login" action="#{UserBean.login}" />
+					<h:commandButton value="Reset" action="#{UserBean.resetLogin}" />
+					<h:commandButton value="Cancel" action="#{UserBean.cancelLogin}" />
 				</h:panelGrid>
 			</h:panelGrid>
 		</h:form>

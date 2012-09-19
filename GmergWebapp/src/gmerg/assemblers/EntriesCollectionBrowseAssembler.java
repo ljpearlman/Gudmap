@@ -124,6 +124,9 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 	 * <p>modified by xingjun - 14/10/2009 - invoke overloading method to get endingClause value</p>
 	 */
 	public int[] retrieveTotals() {
+	    // force new cache
+	    cache = null;
+
 		if (ids == null || ids.size() == 0) 
 			return null;
         

@@ -63,12 +63,10 @@
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
 
-<!--
 	<context-param>
         	<param-name>com.sun.faces.enableRestoreView11Compatibility</param-name>
         	<param-value>true</param-value>
   	</context-param>
--->
 
 	<filter>
 		<filter-name>GudmapSessionTimeoutFilter</filter-name>
@@ -145,10 +143,11 @@
 		<url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
 	</filter-mapping>
 
+<!--
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
- 
+ -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.jsp</welcome-file>

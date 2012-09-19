@@ -40,7 +40,6 @@
 
 	<link href="http://www.gudmap.org/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 	<link href="http://www.gudmap.org/SpryAssets/SpryValidationSelect.css" rel="stylesheet" type="text/css" />
-	<%-- added by xingjun - 15/07/2010 - feedback button - end --%>
 	<link href="http://www.gudmap.org/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
 	<link href="${pageContext.request.contextPath}/css/gudmap_css.css" type="text/css" rel="stylesheet" />
 	<link href="${pageContext.request.contextPath}/css/gudmap_customcomponents_css.css" type="text/css" rel="stylesheet" />
@@ -78,6 +77,8 @@
 		var searchLinkId=null;
 	</script>
   
+	<script type="text/javascript" src="../scripts/rico.js"></script>
+
 	<c:set var="refreshRequired" value="<%= gmerg.control.GudmapSessionTimeoutFilter.isRefreshRequired(request.getRequestURI()) %>" />
 	<c:set var="maxInactiveInterval" value="<%= session.getMaxInactiveInterval() %>" />
 	<c:if test="${refreshRequired}" >

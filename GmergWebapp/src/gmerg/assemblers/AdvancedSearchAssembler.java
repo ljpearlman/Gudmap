@@ -81,7 +81,10 @@ public class AdvancedSearchAssembler extends OffMemoryTableAssembler {
 		return QuickSearchAssembler.createHeaderForSearchResultTable();
 	}
 	
-	private int[] getTotalNumbers() {        
+	private int[] getTotalNumbers() {      
+	    // force new cache
+	    cache = null;
+
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		int[] list =  ishDAO.getTotalNumbers(options, null, null, null, sub);

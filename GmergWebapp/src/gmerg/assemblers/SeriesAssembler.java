@@ -120,6 +120,9 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
      * @return totalNumbers - an array of column totals for the sample table
      */
     public int[] retrieveTotals() {
+	    // force new cache 
+	    cache = null;
+
         // create a dao
         Connection conn = DBHelper.getDBConnection();
         ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);

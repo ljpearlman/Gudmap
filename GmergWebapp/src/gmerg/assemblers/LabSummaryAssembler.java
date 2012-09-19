@@ -165,6 +165,9 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 
 	// Bernie 25/3/2011 mod to return totals 
 	public int[] retrieveTotals() {
+	    // force new cache 
+	    cache = null;
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);

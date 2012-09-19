@@ -79,6 +79,8 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 	 * @return
 	 */
 	public int[] retrieveTotals() {
+	    // force new cache
+	    cache = null;
 
 		/** ---get data from dao---  */
 		// create a dao

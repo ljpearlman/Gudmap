@@ -104,6 +104,9 @@ public class GeneAssembler extends OffMemoryTableAssembler{
      * @return totalNumbers - an array of column totals for the sample table
      */
     public int[] retrieveTotals() {
+	// force nerw cache
+	cache = null;
+
         // create a dao
         Connection conn = DBHelper.getDBConnection();
         ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);

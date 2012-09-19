@@ -774,14 +774,12 @@
   <navigation-case>
    <from-action>#{ISHSingleSubmissionBean.annotation}</from-action>
    <from-outcome>success</from-outcome>
-   <to-view-id>#{ISHSingleSubmissionBean.originalURL}</to-view-id>
-   <redirect/>
+   <to-view-id>/pages/ish_submission.jsp?#{ISHSingleSubmissionBean.submissionID}</to-view-id>
   </navigation-case>
   <navigation-case>
    <from-action>#{ISHSingleSubmissionBean.displayOfAnnotatedGps}</from-action>
    <from-outcome>success</from-outcome>
-   <to-view-id>#{ISHSingleSubmissionBean.originalURL}</to-view-id>
-   <redirect/>
+   <to-view-id>/pages/ish_submission.jsp?#{ISHSingleSubmissionBean.submissionID}</to-view-id>
   </navigation-case>
  </navigation-rule>
 
