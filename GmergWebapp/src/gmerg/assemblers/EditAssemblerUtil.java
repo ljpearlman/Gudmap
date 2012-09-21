@@ -334,6 +334,9 @@ public final class EditAssemblerUtil {
 	 * @return
 	 */
 	public static int unlockSubmissions(User user) {
+	    if (null == user)
+		return 0;
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);

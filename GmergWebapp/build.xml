@@ -12,7 +12,8 @@
         <fileset dir="${env.CATALINA_HOME}/bin" includes="*.jar"/>
   </path>
 	
-  <property name="build" value="../webapps/gudmap"/>
+  <property name="name" value="gudmap"/>
+  <property name="build" value="../webapps/${name}"/>
   <property name="dist" value="../webapps"/>
   <property name="config" value="gudmap" />
 
@@ -85,7 +86,7 @@
   <target name="dist" depends="main">
 
     <!-- Create webapp WAR files -->
-    <jar   jarfile="${dist}/${config}.war"
+    <jar   jarfile="${dist}/${name}.war"
            basedir="${build}"
            includes="**" />
   </target>
@@ -115,7 +116,7 @@
 
   <!-- ============================== Deploy ============================== -->
   <target name="deploy" depends="webapps">
-     <copy file="../webapps/gudmap.war" todir="${env.CATALINA_HOME}/webapps"/>
+     <copy file="../webapps/${name}.war" todir="${env.CATALINA_HOME}/webapps"/>
   </target>
 
 	

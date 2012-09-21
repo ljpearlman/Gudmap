@@ -17,6 +17,12 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
     protected RetrieveDataCache cache = null;
 
 	String input;
+	public BooleanQueryAssembler () {
+	    if (debug)
+		System.out.println("BooleanQueryAssembler.constructor no param");
+	    
+	}
+
 	public BooleanQueryAssembler (HashMap params) {
 		super(params);
 	if (debug)
@@ -61,6 +67,12 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 	}
 	
 	public int retrieveNumberOfRows() {
+		if (debug)
+		    System.out.println("BooleanQueryAssembler.retrieveNumberOfRows");
+
+		// force new cache due to filter
+		cache = null;
+
 		Connection conn = DBHelper.getDBConnection();
 		BooleanQueryDAO booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
 		int n =  booleanQueryDAO.getTotalNumberOfSubmissions(input, filter);
