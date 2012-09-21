@@ -93,7 +93,7 @@ public class EditExpressionBean {
     	// get user name
 //    	this.userName = (String)FacesUtil.getSessionValue("loggedInUserName");
     	FacesUtil.setSessionValue("addingPattern", "false");
-        Object object = FacesUtil.getSessionValue("userBean");
+        Object object = FacesUtil.getSessionValue("UserBean");
         if (object != null) {
         	UserBean ub = (UserBean)object;
         	this.user = ub.getUser();// added by xingjun - 15/08/2008 - need pass userId to locking related method
@@ -670,7 +670,7 @@ public class EditExpressionBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         if (object != null) {
         	UserBean ub = (UserBean)object;
@@ -864,7 +864,7 @@ public class EditExpressionBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         if (object != null) {
         	UserBean ub = (UserBean)object;
@@ -1201,7 +1201,7 @@ public class EditExpressionBean {
 	 */
 	public boolean isUserAccessPermitted(String userType, int userPrivilege, int submissionDbStatus) {
 		boolean result = true;
-        Object object = FacesUtil.getSessionValue("userBean");
+        Object object = FacesUtil.getSessionValue("UserBean");
         if (object != null) {
     		if (userType.equals("EXAMINER")) {
     			result = false;
@@ -1222,7 +1222,7 @@ public class EditExpressionBean {
 	 */
 	public boolean isUserAccessPermitted() {
 		boolean result = true;
-        Object object = FacesUtil.getSessionValue("userBean");
+        Object object = FacesUtil.getSessionValue("UserBean");
         if (object != null) {
         	UserBean ub = (UserBean)object;
         	String userType = ub.getUser().getUserType();
@@ -1263,7 +1263,7 @@ public class EditExpressionBean {
 	public boolean isStrengthSelectionDisabled() {
 //		System.out.println("EditExpressionBean:strengthSelectionDisabled#####");
 		boolean disabled = false;
-        Object object = FacesUtil.getSessionValue("userBean");
+        Object object = FacesUtil.getSessionValue("UserBean");
         if (object != null) {
         	UserBean ub = (UserBean)object;
         	String userType = ub.getUser().getUserType();
@@ -1316,7 +1316,7 @@ public class EditExpressionBean {
 	 */
 	public boolean isExpressionNoteDisabled() {
 		boolean disabled = false;
-        Object object = FacesUtil.getSessionValue("userBean");
+        Object object = FacesUtil.getSessionValue("UserBean");
         if (object != null) {
         	UserBean ub = (UserBean)object;
         	String userType = ub.getUser().getUserType();
@@ -1342,7 +1342,7 @@ public class EditExpressionBean {
 	 */
 	public boolean isExpressionEditButtonRendered() {
 		boolean rendered = false;
-        Object object = FacesUtil.getSessionValue("userBean");
+        Object object = FacesUtil.getSessionValue("UserBean");
         if (object != null) {
         	UserBean ub = (UserBean)object;
         	boolean userLoggedIn = ub.isUserLoggedIn();
@@ -1372,7 +1372,7 @@ public class EditExpressionBean {
 	 */
 	public boolean isUnlockButtonRendered() {
 		boolean rendered = false;
-        Object object = FacesUtil.getSessionValue("userBean");
+        Object object = FacesUtil.getSessionValue("UserBean");
         if (object != null) {
         	UserBean ub = (UserBean)object;
         	boolean userLoggedIn = ub.isUserLoggedIn();

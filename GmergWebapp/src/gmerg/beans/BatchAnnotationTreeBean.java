@@ -80,7 +80,7 @@ public class BatchAnnotationTreeBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         UserBean ub = null;
         if (object != null) {
         	ub = (UserBean)object;
@@ -133,7 +133,7 @@ public class BatchAnnotationTreeBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         int pi = 0;
         UserBean ub = null;
@@ -158,22 +158,6 @@ public class BatchAnnotationTreeBean {
 	
 	public void addExpressionAnnotation(ActionEvent e) {
 		setStatus(0);
-//		Object object =
-//            FacesContext
-//                .getCurrentInstance()
-//                    .getExternalContext()
-//                        .getSessionMap()
-//                            .get("userBean");
-//        int privilege = 0;
-//        int pi = 0;
-//        UserBean ub = null;
-//        if (object != null) {
-//        	ub = (UserBean)object;
-//        	if(null != ub.getUser()) {
-//        		privilege = ub.getUser().getUserPrivilege();
-//        		pi = ub.getUser().getUserPi();
-//        	}
-//        }
 		// modified by xingjun - 05/08/2003 - get the user bean when the bean is initialised
 		int privilege = (this.user == null) ? 0:this.user.getUserPrivilege();
 		int pi = (this.user == null) ? 0:this.user.getUserPi();

@@ -103,7 +103,7 @@ public class GudmapPhaseTracker implements PhaseListener {
 		
 		//*** To avoid caching of secure pages when user is logged in. When logged out and click
 		//*** browser's back button user is prevented from being able to see previous contents.
-		UserBean userBean = (UserBean)FacesUtil.getSessionValue("userBean");
+		UserBean userBean = (UserBean)FacesUtil.getSessionValue("UserBean");
 		if (userBean != null && userBean.isUserLoggedIn() && GudmapSessionTimeoutFilter.isSessionControlRequired(context)) {
 			HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse();
 			try{

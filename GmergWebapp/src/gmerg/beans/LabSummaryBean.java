@@ -53,7 +53,7 @@ public class LabSummaryBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         if (object != null) {
         	UserBean ub = (UserBean)object;
@@ -176,7 +176,7 @@ public class LabSummaryBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         String PI = null;
         int privilege = 0;
         if (object != null) {
@@ -247,7 +247,7 @@ public class LabSummaryBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         String userName = null;
         if (object != null) {

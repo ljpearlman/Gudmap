@@ -204,7 +204,7 @@ public class QueryBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
                             
         // This only works if myBean2 is request scoped.
         UserBean myBean2 = null;

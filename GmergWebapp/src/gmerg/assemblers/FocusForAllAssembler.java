@@ -24,6 +24,12 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	String[] widecard;
 	String transitiveRelations;
 
+	public FocusForAllAssembler () {
+	    if (debug)
+		System.out.println("FocusForAllAssembler.constructor no argument");
+	    
+	}
+
 	public FocusForAllAssembler (HashMap params) {
 		super(params);
 	if (debug)
@@ -74,6 +80,9 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public int retrieveNumberOfRows() {
+	    // force new cache
+	    cache = null;
+
 	    if (debug)
 		System.out.println("+++FocusForAllAssembler:retrieveNumberOfRows");
 		Connection conn = DBHelper.getDBConnection();

@@ -186,12 +186,12 @@ public class Utility {
 	}
 
 	public static User getUser() {
-		UserBean userBean = (UserBean)FacesUtil.getSessionValue("userBean");
+		UserBean userBean = (UserBean)FacesUtil.getSessionValue("UserBean");
 		return userBean.getUser();
 	}
 
 	public static boolean isUserLoggedIn() {
-		UserBean userBean = (UserBean)FacesUtil.getSessionValue("userBean");
+		UserBean userBean = (UserBean)FacesUtil.getSessionValue("UserBean");
 		return userBean.isUserLoggedIn();
 	}
 

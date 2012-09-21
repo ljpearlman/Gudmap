@@ -33,7 +33,7 @@ public class ISHBatchListBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         int pi = 0;
         this.userName = null;
@@ -97,7 +97,7 @@ public class ISHBatchListBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         int pi = 0;
         this.userName = null;
@@ -176,7 +176,7 @@ public class ISHBatchListBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         int pi = 0;
         this.userName = null;
@@ -223,7 +223,7 @@ public class ISHBatchListBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         int pi = 0;
         this.userName = null;

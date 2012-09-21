@@ -40,7 +40,7 @@
 	<script src="${pageContext.request.contextPath}/scripts/ftiens4.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/scripts/header.js" type="text/javascript"></script>
 	<%--
-	<c:set var="userLoggedIn" value="<%= (session.getAttribute("userBean")==null)?false:((gmerg.beans.UserBean)session.getAttribute("userBean")).isUserLoggedIn() %>" />
+	<c:set var="userLoggedIn" value="<%= (session.getAttribute("UserBean")==null)?false:((gmerg.beans.UserBean)session.getAttribute("UserBean")).isUserLoggedIn() %>" />
 	--%>
 	<c:set var="refreshRequired" value="<%= gmerg.control.GudmapSessionTimeoutFilter.isRefreshRequired(request.getRequestURI()) %>" />
 	<c:set var="maxInactiveInterval" value="<%= session.getMaxInactiveInterval() %>" />

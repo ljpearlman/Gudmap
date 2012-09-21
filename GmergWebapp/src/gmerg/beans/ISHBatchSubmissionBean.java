@@ -37,7 +37,7 @@ public class ISHBatchSubmissionBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         
         int privilege = 0;
         int pi = 0;
@@ -102,7 +102,7 @@ public class ISHBatchSubmissionBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         int pi = 0;
         String userName = null;
@@ -130,7 +130,7 @@ public class ISHBatchSubmissionBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         int pi = 0;
         String userName = null;
@@ -226,7 +226,7 @@ public class ISHBatchSubmissionBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         //int pi = 0;
         String userName = null;
@@ -258,7 +258,7 @@ public class ISHBatchSubmissionBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         int pi = 0;
         String userName = null;
@@ -306,7 +306,7 @@ public class ISHBatchSubmissionBean {
 				.getCurrentInstance()
 					.getExternalContext()
 						.getSessionMap()
-							.get("userBean");
+							.get("UserBean");
 		int privilege = 0;
 		int pi = 0;
 		this.userName = null;

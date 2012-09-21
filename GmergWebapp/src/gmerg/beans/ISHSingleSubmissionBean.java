@@ -75,7 +75,7 @@ public class ISHSingleSubmissionBean {
             displayAsTree = true;
         
         // find if the editor is logged in
-        Object object = FacesUtil.getSessionValue("userBean");
+        Object object = FacesUtil.getSessionValue("UserBean");
 
         boolean isEditor = false;
         UserBean ub = null;

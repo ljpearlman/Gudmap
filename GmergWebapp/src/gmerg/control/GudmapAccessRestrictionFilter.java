@@ -24,7 +24,7 @@ public class GudmapAccessRestrictionFilter implements Filter{
 			HttpSession session = httpServletRequest.getSession();
 			boolean userLoggedIn = false;
 			if (session!=null) {
-				UserBean userBean = (UserBean)session.getAttribute("userBean");
+				UserBean userBean = (UserBean)session.getAttribute("UserBean");
 				if (userBean != null)
 					userLoggedIn  =userBean.isUserLoggedIn(); 
 			}

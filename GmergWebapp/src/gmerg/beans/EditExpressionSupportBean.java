@@ -159,7 +159,7 @@ public class EditExpressionSupportBean {
                 }
             	
         		// get user info
-                object = FacesUtil.getSessionValue("userBean");
+                object = FacesUtil.getSessionValue("UserBean");
                 if (object != null) {
                 	UserBean ub = (UserBean)object;
                 	this.user = ub.getUser();
@@ -178,7 +178,7 @@ public class EditExpressionSupportBean {
             		// xingjun - 28/07/2008
                     // get locking info
             		this.lockingInfo = editExpressionAssembler.getLockingInfo(submissionIdParam);
-//                    object = FacesUtil.getSessionValue("userBean");
+//                    object = FacesUtil.getSessionValue("UserBean");
 //                    if (object != null) {
 //                    	UserBean ub = (UserBean)object;
 //                    	this.user = ub.getUser();
@@ -241,7 +241,7 @@ public class EditExpressionSupportBean {
         // user may be in ish_edit_expression page and trying to approve/complete, reject the submission
         else {
 //        	System.out.println("EditExpressionSupportBean:expression is null");
-            object = FacesUtil.getSessionValue("userBean");
+            object = FacesUtil.getSessionValue("UserBean");
             if (object != null) {
             	UserBean ub = (UserBean)object;
             	this.user = ub.getUser();
@@ -359,7 +359,7 @@ public class EditExpressionSupportBean {
 //        		// xingjun - 28/07/2008
 //                // get locking info
 //        		lockingInfo = editExpressionAssembler.getLockingInfo(submissionIdParam);
-//                object = FacesUtil.getSessionValue("userBean");
+//                object = FacesUtil.getSessionValue("UserBean");
 //                if (object != null) {
 //                	UserBean ub = (UserBean)object;
 //                	this.user = ub.getUser();
@@ -746,7 +746,7 @@ public class EditExpressionSupportBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         if (object != null) {
         	UserBean ub = (UserBean)object;
@@ -959,7 +959,7 @@ public class EditExpressionSupportBean {
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("userBean");
+                            .get("UserBean");
         int privilege = 0;
         if (object != null) {
         	UserBean ub = (UserBean)object;

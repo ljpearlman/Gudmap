@@ -224,50 +224,50 @@
 				<tr bgcolor="#CCCCCC">
 					<td style="margin-top:-1px; vertical-align:middle; padding: 0.3em;" bgcolor="#CCCCCC" colspan="3" align="center">
 					<ul id="MenuBar1" class="MenuBarHorizontal" >
-<!-- do not know the reason fonts become smaller without changing any css.  ==> add bignavtext class -->
+<!-- do not know the reason fonts become smaller without changing any css. ==> individual tag setting -->
 						<li><a class="bignavtext" href="http://www.gudmap.org/index.html">Home</a></li>
 						<li>
 							<a href="http://www.gudmap.org/About/index.html" class="MenuBarItemSubmenu bignavtext">About GUDMAP</a>
 							<ul>
-								<li><a href="http://www.gudmap.org/About/Goal.html">Goals</a></li>
-								<li><a href="http://www.gudmap.org/About/Projects/index.html">Projects</a></li>
-								<li><a href="http://www.gudmap.org/Research/Pubs/index.html">Publications</a></li>
-								<li><a href="http://www.gudmap.org/Contact/index.html">Contacts</a></li>
-								<li><a href="http://www.gudmap.org/About/Positions.html">Positions</a></li>
-								<li><a href="http://www.gudmap.org/Links/Funding.html">Funding</a></li>
-								<li><a href="http://www.gudmap.org/Links/Events.html">Events</a></li>
-								<li><a href="http://www.gudmap.org/Links/index.html">Links</a></li>
-								<li><a href="http://www.gudmap.org/fcgi-bin/gudmap_bb/YaBB.pl">Message Board</a></li>
-								<li><a href="http://www.gudmap.org/About/Usage.html">Citing GUDMAP</a></li>
+								<li><a class="mediumnavtext" href="http://www.gudmap.org/About/Goal.html">Goals</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/About/Projects/index.html">Projects</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Research/Pubs/index.html">Publications</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Contact/index.html">Contacts</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/About/Positions.html">Positions</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Links/Funding.html">Funding</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Links/Events.html">Events</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Links/index.html">Links</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/fcgi-bin/gudmap_bb/YaBB.pl">Message Board</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/About/Usage.html">Citing GUDMAP</a></li>
 							</ul>
 						</li>
 						<li>
 							<a class="MenuBarItemSubmenu bignavtext" href="http://www.gudmap.org/Menu_Index/Gene_Expression.html">Gene Expression</a>
 							<ul>
-								<li><a href="/gudmap/">Query/Browse Database</a>                </li>
-								<li><a href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries</a></li>
-								<li><a href="http://www.gudmap.org/Quality_Control/ISH/index.html">ISH Quality Control</a></li>
+								<li><a  class="mediumnavtext" href="/gudmap/">Query/Browse Database</a>                </li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Quality_Control/ISH/index.html">ISH Quality Control</a></li>
 							</ul>
 						</li>
 						<li>
 							<a  href="http://www.gudmap.org/Resources/index.html" class="MenuBarItemSubmenu bignavtext">Resources</a>
 							<ul>
-								<li><a href="http://www.gudmap.org/Submission_Archive/index.html">Submission Archive</a></li>
-								<li><a href="http://www.gudmap.org/Resources/Request_ISH.html">Request ISH</a></li>
-								<li><a href="http://uqgudmap.imb.uq.edu.au" target="_blank">UQ GUDMAP - Probe Design</a></li>
-								<li><a href="http://www.gudmap.org/Research/Protocols/index.html">Project Protocols</a></li>
-								<li><a href="http://www.gudmap.org/Resources/MouseStrains/index.html">Mice/Cell Lines</a></li>
-								<li><a href="http://www.gudmap.org/Resources/Ontologies.html">Ontology</a></li>
-								<li><a href="http://www.gudmap.org/Website_Reports/index.html">Web Stats</a></li>
-								<li><a href="http://www.gudmap.org/Internal/index.html">Internal</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Submission_Archive/index.html">Submission Archive</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Resources/Request_ISH.html">Request ISH</a></li>
+								<li><a  class="mediumnavtext" href="http://uqgudmap.imb.uq.edu.au" target="_blank">UQ GUDMAP - Probe Design</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Research/Protocols/index.html">Project Protocols</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Resources/MouseStrains/index.html">Mice/Cell Lines</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Resources/Ontologies.html">Ontology</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Website_Reports/index.html">Web Stats</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Internal/index.html">Internal</a></li>
 							</ul>
 						</li>
 						<li>
 							<a  href="http://www.gudmap.org/About/Tutorial/index.html" class="MenuBarItemSubmenu bignavtext">Tutorials</a>
 							<ul>
-								<li><a href="http://www.gudmap.org/About/Tutorial/Overview.html">Overview</a></li>
-								<li><a href="http://www.gudmap.org/About/Tutorial/DevMUS.html">Urinary Development</a></li>
-								<li><a href="http://www.gudmap.org/About/Tutorial/DevMRS.html">Reproductive Development</a></li>
+								<li><a h class="mediumnavtext" ref="http://www.gudmap.org/About/Tutorial/Overview.html">Overview</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/About/Tutorial/DevMUS.html">Urinary Development</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/About/Tutorial/DevMRS.html">Reproductive Development</a></li>
 							</ul>
 						</li>
 						<li>
@@ -276,14 +276,14 @@
 						<li>
 							<a  href="http://www.gudmap.org/Menu_Index/Help.html" class="MenuBarItemSubmenu bignavtext">Help</a>
 							<ul>
-								<li><a href="http://www.gudmap.org/Help/index.html">Using Database</a></li>
-								<li><a href="http://www.gudmap.org/Help/Website_Help.html">Website</a></li>
-								<li><a href="http://www.gudmap.org/Help/Glossary.html">Glossary</a></li>
-								<li><a href="http://www.gudmap.org/Welcome/For_Clinicians.html">Clinicians</a></li>
-								<li><a href="http://www.gudmap.org/Welcome/For_Biologists.html">Biologists</a></li>
-								<li><a href="http://www.gudmap.org/Welcome/For_Bioinformaticians.html">Bioinformaticians</a></li>
-								<li><a href="http://www.gudmap.org/Welcome/For_Public.html">Public</a></li>
-								<li><a href="http://www.gudmap.org/Help/Sys_Requirements.html">System Requirements</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Help/index.html">Using Database</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Help/Website_Help.html">Website</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Help/Glossary.html">Glossary</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Welcome/For_Clinicians.html">Clinicians</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Welcome/For_Biologists.html">Biologists</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Welcome/For_Bioinformaticians.html">Bioinformaticians</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Welcome/For_Public.html">Public</a></li>
+								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Help/Sys_Requirements.html">System Requirements</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -297,13 +297,13 @@
 			<div id="sidebarinner" ><!-- #BeginLibraryItem "/Library/db_nav.lbi" -->
 				<br/>
 				<br/>
-	                                                <p class="db_expression_database sidebar_first_item"><a href="${pageContext.request.contextPath}/pages/database_homepage.html">Expression Database</a></p>
-				<p><a href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries</a></p>
-				<p><a href="${pageContext.request.contextPath}/pages/genelist_folder.html">Analysis</a></p>
-				<p><a href="${pageContext.request.contextPath}/pages/edit_entry_page_per_lab.html">Annotate</a></p>
-				<p><a href="http://www.gudmap.org/Submission_Archive/index.html">Downloads</a></p>
-				<p><a href="${pageContext.request.contextPath}/pages/lab_summaries.html">Labs</a></p>
-				<p><a href="${pageContext.request.contextPath}/pages/collectionList_browse.html">Collections</a></p>
+	                                                <p class="db_expression_database sidebar_first_item bignavtext"><a href="${pageContext.request.contextPath}/pages/database_homepage.html">Expression Database</a></p>
+				<p><a  class="mediumnavtext" href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries</a></p>
+				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/genelist_folder.html">Analysis</a></p>
+				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/edit_entry_page_per_lab.html">Annotate</a></p>
+				<p><a  class="mediumnavtext" href="http://www.gudmap.org/Submission_Archive/index.html">Downloads</a></p>
+				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/lab_summaries.html">Labs</a></p>
+				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/collectionList_browse.html">Collections</a></p>
 			</div><!-- #EndLibraryItem -->
 			<h3>&nbsp; </h3>
 			<p>&nbsp;</p>

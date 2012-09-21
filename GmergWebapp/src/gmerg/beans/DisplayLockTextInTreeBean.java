@@ -24,7 +24,7 @@ public class DisplayLockTextInTreeBean {
 		System.out.println("DisplayLockTextInTreeBean.constructor");
 
     	editExpressionAssembler = new EditExpressionAssembler();
-    	Object object = FacesUtil.getSessionValue("userBean");
+    	Object object = FacesUtil.getSessionValue("UserBean");
         if (object != null) {
         	UserBean ub = (UserBean)object;
         	this.user = ub.getUser();// added by xingjun - 15/08/2008 - need pass userId to locking related method

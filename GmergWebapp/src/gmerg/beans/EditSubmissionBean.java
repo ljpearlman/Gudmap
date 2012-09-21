@@ -31,7 +31,7 @@ public class EditSubmissionBean {
 //		System.out.println("EditSubmissionBean initialised########");
 		
     	// get user name
-        Object object = FacesUtil.getSessionValue("userBean");
+        Object object = FacesUtil.getSessionValue("UserBean");
         if (object != null) {
         	UserBean ub = (UserBean)object;
         	this.userName = ub.getUserName();
