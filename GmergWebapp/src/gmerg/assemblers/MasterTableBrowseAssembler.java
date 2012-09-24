@@ -148,8 +148,9 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 		String title = null;
 
 		for (int i=0; i<expressionTitles.length; i++) {
-			screenTip = expressionTitles[i].getGroupName()+expressionTitles[i].getTitle(); // used for screen tips
+			screenTip = expressionTitles[i].getGroupName()+" GUDMAP:"+expressionTitles[i].getTitle(); // used for screen tips
 			title = (expressionTitles[i].getDescription() + "_" + expressionTitles[i].getTitle()).replaceAll("\\s", ""); // used for vertical image title display
+
 			item  = new HeaderItem(screenTip, false, 1, "../dynamicImages/title_"+title + ".jpg?masterTable=");
 			if (debug)
 			    System.out.println("MasterTableBrowseAssembler.createHeader title = "+item.getTitle()+" image name = "+item.getImageName());
