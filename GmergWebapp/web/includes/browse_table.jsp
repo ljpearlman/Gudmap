@@ -273,18 +273,19 @@
 				<h:graphicImage value="../images/FlexS_Shrink_btn.png" title="click to shrink scroll area" styleClass="icon" style="cursor:pointer;"
 								onclick="shrinkTableBodyPanel(event)" onmousedown="continuousShrinkTableBodyPanel(event)" />
 				<f:verbatim>&nbsp;&nbsp;</f:verbatim>
+<!--
 				<h:commandLink id="fixedHeight" action="#{TableBean.heightModeChange}" styleClass="nav3" >
 					<h:graphicImage value="../images/FlexS_All_btn.png" title="click to display all" alt="all" styleClass="icon" />
 					<f:param name="tableOperation" value="unlimittedHeight" />
 				</h:commandLink>
 				<f:verbatim>&nbsp;</f:verbatim>
+-->
 			</h:panelGroup>
 			<h:commandLink id="flexibleHeight"  rendered="#{TableBean.tableView.heightUnlimittedFlexible}"
 							action="#{TableBean.heightModeChange}" styleClass="nav3" title="click to display data in a scrollable frame" >
 				<h:graphicImage value="../images/FlexibleScroll_btn.png" alt=" Flexible scroll " styleClass="icon" width="100" height="32" />
 				<f:param name="tableOperation" value="limittedHeight" />
 			</h:commandLink>
-
 		</h:panelGrid>
 
 		<%-- ==================================== Table Body Section ==================================== --%>

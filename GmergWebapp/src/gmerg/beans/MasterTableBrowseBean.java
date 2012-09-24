@@ -247,7 +247,7 @@ public class MasterTableBrowseBean {
 		    System.out.println("MasterTableBrowseBean.getDefaultTableViewForMasterTable expressionTitles size = "+expressionTitles.length+" annotationTitles size = "+annotationTitles.length);
 
 		GenericTable table = assembler.createTable();
-		GenericTableView tableView = new GenericTableView(viewName, 20, 350, table);
+		GenericTableView tableView = new GenericTableView(viewName, 100, 350, table);
 		tableView.setHeightLimittedFlexible();
 	    tableView.setColWrap(false);
 	    

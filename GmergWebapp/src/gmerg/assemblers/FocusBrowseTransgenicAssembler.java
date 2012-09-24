@@ -78,6 +78,12 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public int retrieveNumberOfRows() {
+	if (debug)
+	    System.out.println("FocusBrowseTransgenicAssembler.retrieveNumberOfRows");
+
+	    // force new cache
+	    cache = null;
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		TransgenicDAO transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
@@ -94,6 +100,9 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public int[] retrieveTotals() {
+	if (debug)
+	    System.out.println("FocusBrowseTransgenicAssembler.retrieveTotals");
+
 	    // force new cache
 	    cache = null;
 

@@ -114,7 +114,7 @@ public class GudmapDynamicImageFilter implements Filter{
 				background = new Color(0xE6, 0xE8, 0xFA); //Stripy color from gudmap css
 			}
 //			ret = titleGenerator.getTitleImage(suffix, width, height, background, vertical);
-			ret = titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.PLAIN,  9), background, vertical, "left");
+			ret = titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.PLAIN,  12), background, vertical, "left");
 //			ret = titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.BOLD,  12), background, vertical, "right");
 		}
 		

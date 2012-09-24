@@ -236,6 +236,11 @@ public class TableUtil {
 		HashSet<String> selectedIds = new HashSet<String>();
 		int colNum = tableView.getVisibleColNum();
  		int dataOffset = tableView.getFirstRowIndex(); //it is 0 for Offmemory tables and some offset for InMemory tables
+		/////////!!!!
+		if (-1 == columnId)
+		    columnId = 0;
+		//////!!!!!
+
 		for (int i=0; i<selectionString.length(); i++)
 			if (selectionString.charAt(i) == '1') {
 				DataItem item;

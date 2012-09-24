@@ -36,31 +36,49 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
      */
     public ArrayList getAllSubmission(int columnIndex, boolean ascending, int offset, int num, 
     		String[] organ, GenericTableFilter filter) {
-//    	System.out.println("TransgenicDAOImp:getAllSubmission entered#####");
+	if (debug)
+	    System.out.println("TransgenicDAOImp:getAllSubmission entered#####");
         ResultSet resSet = null;
         ArrayList result = null;
         ParamQuery parQ = null;
-//    	parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_TG");
     	parQ = InsituDBQuery.getParamQuery("ALL_ENTRIES_TG");
         PreparedStatement prepStmt = null;
 
         // assemble the query string
-//        String query = parQ.getQuerySQL();
         String query = parQ.getQuerySQL() + "AND SUB_ASSAY_TYPE = 'TG'";
         String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
         String queryString =
         	assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num, organ);
         
-//        System.out.println("TransgenicDAO:getAllSubmission:sql (pre filter): " + queryString);
+	if (debug)
+	    System.out.println("TransgenicDAO:getAllSubmission:sql (pre filter): " + queryString);
         
         if(filter!=null)
 	  	  	queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
         
-//        System.out.println("TransgenicDAOImp:getAllSubmission:sql (post filter): " + queryString);
+	if (debug)
+	    System.out.println("TransgenicDAOImp:getAllSubmission:sql (post filter): " + queryString);
         
         try {
-		    if (debug)
-			System.out.println("MySQLTransgenicDAOImp.sql = "+queryString.toLowerCase());
+	 ///////!!!!! poor databse table for different type of submissions
+	    ////////!!!! do not know why replaceAll does not work
+	    int index = queryString.lastIndexOf("MUT_GENE AS RPR_SYMBOL");
+	    String str = null;
+	    if (-1 != index) {
+		str = queryString;
+		queryString = str.substring(0, index) + "MUT_GENE "+str.substring(index + (new String("MUT_GENE AS RPR_SYMBOL")).length());
+	    }
+	    
+	    index = queryString.lastIndexOf("RPR_SYMBOL");
+	    while (-1 != index) {
+		str = queryString;
+		queryString = str.substring(0, index) + "MUT_GENE "+str.substring(index + (new String("RPR_SYMBOL")).length());
+		index = queryString.lastIndexOf("RPR_SYMBOL");
+	    }
+	    ////////!!!!!!
+
+	    if (debug)
+		System.out.println("MySQLTransgenicDAOImp.sql = "+queryString);
         	prepStmt = conn.prepareStatement(queryString);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
@@ -133,7 +151,8 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
      * <p></p>
      */
     private String getBrowseSubmissionOrderByColumn(int queryType, int columnIndex, boolean ascending) {
-//    	System.out.println("TransgenicDAO:getBrowseSubmissionOrderByColumn:columnIndex: " + columnIndex);
+	if (debug)
+	    System.out.println("TransgenicDAO:getBrowseSubmissionOrderByColumn:columnIndex: " + columnIndex);
     	String orderByString = new String("");
     	String order = (ascending == true ? "ASC": "DESC");
     	String[] ISHBrowseAllColumnList = {
@@ -201,6 +220,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
        			orderByString = geneSymbolCol + ", SUB_EMBRYO_STG ";
         	}
         }
+
     	return orderByString;
     }
     
@@ -221,10 +241,12 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     		if (endingClause != null && !endingClause.equals("")) {
     			queryString[i] += endingClause;
     		}
-//    		System.out.println("Q (preFilter): "  + queryString[i]);
+		if (debug)
+		    System.out.println("Q (preFilter): "  + queryString[i]);
     		if (filter!=null)
     			queryString[i] = filter.addFilterSql(queryString[i], InsituDBQuery.getTG_BROWSE_ALL_SQL_COLUMNS());
-//    		System.out.println("Q (postFilter): "  + queryString[i]);
+		if (debug)
+		    System.out.println("Q (postFilter): "  + queryString[i]);
     		result[i][0] = query[i];
     	}
     	
@@ -232,18 +254,38 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     	// Connection conn = DBUtil.getDBConnection();
     	ResultSet resSet = null;
     	PreparedStatement prepStmt = null;
+	int index = 0;
+	String str = null;
     	try {
     		for (int i = 0; i < queryNumber; i++) {
-		    if (debug)
-			System.out.println("MySQLTransgenicDAOImp.sql = "+queryString[i].toLowerCase());
+			if (debug)
+			    System.out.println("MySQLTransgenicDAOImp.sql = "+queryString[i]);
+
+			///////!!!!! poor databse table for different type of submissions
+			    ////////!!!! do not know why replaceAll does not work
+			    index = queryString[i].lastIndexOf("MUT_GENE AS RPR_SYMBOL");
+			    if (-1 != index) {
+				str = queryString[i];
+				queryString[i] = str.substring(0, index) + "MUT_GENE "+str.substring(index + (new String("MUT_GENE AS RPR_SYMBOL")).length());
+			    }
+			    
+			    index = queryString[i].lastIndexOf("RPR_SYMBOL");
+			    while (-1 != index) {
+				str = queryString[i];
+				queryString[i] = str.substring(0, index) + "MUT_GENE "+str.substring(index + (new String("RPR_SYMBOL")).length());
+				index = queryString[i].lastIndexOf("RPR_SYMBOL");
+			    }
+			    ////////!!!!!!
+
     			prepStmt = conn.prepareStatement(queryString[i]);
-    			//System.out.println("sql: " + queryString[i]);
+
     			if (param != null && param[i] != null) { // set query criteria if it's not null
     				int parameterNumber = param[i].length;
     				for (int j = 0; j < parameterNumber; j++) {
     					prepStmt.setString(j + 1, param[i][j]);
     				}
     			}
+
     			resSet = prepStmt.executeQuery();
     			result[i][1] = getStringValueFromIntegerResultSet(resSet);
     		}
@@ -352,13 +394,32 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 		}
          PreparedStatement prepStmt = null;
          query += organsql;
-//         System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (pre filter): " + query);
+	 if (debug)
+	     System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (pre filter): " + query);
          
          if(filter!=null)
  	  	  	query = filter.addFilterSql(query, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
          
-//         System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (post filter): " + query);
+	 if (debug)
+	     System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (post filter): " + query);
          
+	 ///////!!!!! poor databse table for different type of submissions
+	    ////////!!!! do not know why replaceAll does not work
+	    int index = query.lastIndexOf("MUT_GENE AS RPR_SYMBOL");
+	    String str = null;
+	    if (-1 != index) {
+		str = query;
+		query = str.substring(0, index) + "MUT_GENE "+str.substring(index + (new String("MUT_GENE AS RPR_SYMBOL")).length());
+	    }
+	    
+	    index = query.lastIndexOf("RPR_SYMBOL");
+	    while (-1 != index) {
+		str = query;
+		query = str.substring(0, index) + "MUT_GENE "+str.substring(index + (new String("RPR_SYMBOL")).length());
+		index = query.lastIndexOf("RPR_SYMBOL");
+	    }
+	    ////////!!!!!!
+
          parQ = null;
          parQ = new ParamQuery("TOTAL_COUNT", query);
          try {
