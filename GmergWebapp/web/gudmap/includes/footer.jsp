@@ -29,11 +29,11 @@
 								<tr>
 									<td align="center"><img src="http://www.gudmap.org/Images/Logo_DHHS.gif" width="48" height="48" alt="Department of Health and Human Services" /></td>
 									<td align="center"><img src="http://www.gudmap.org/Images/Logo_NIH.gif" width="48" height="48" alt="National Institutes of Health" /></td>
-									<td align="center"><a href="http://www.gudmap.org/Contact/index.html">Contacts</a></td>
+									<td align="center"><a class="mediumnavtext" href="http://www.gudmap.org/Contact/index.html">Contacts</a></td>
 <%-- changed by xingjun as requested by Editors - see below for modified version - 12/01/2011
-									<td align="center"><a href="http://www.gudmap.org/Resources/Request_ISH.html">Request ISH</a></td>
+									<td align="center"><a class="mediumnavtext" href="http://www.gudmap.org/Resources/Request_ISH.html">Request ISH</a></td>
 --%>
-									<td align="center"><a href="http://www.gudmap.org/About/Usage.html">Citing GUDMAP</a></td>
+									<td align="center"><a class="mediumnavtext" href="http://www.gudmap.org/About/Usage.html">Citing GUDMAP</a></td>
 									<td align="center"><img src="http://www.gudmap.org/Images/Logo_NIDDK.gif" width="48" height="48" alt="National Institute of Diabetes and " /></td>
 									<td align="center"><img src="http://www.gudmap.org/Images/Logo_NICHHD.gif" width="48" height="48" alt="National Institute of Child Health and Human Development" /></td>
 								</tr>

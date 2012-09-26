@@ -50,11 +50,17 @@ public class CollectionBrowseBean {
 	// Action methods
 	// ********************************************************************************
 	public String reload() {
+	    if (debug)
+		System.out.println("CollectionBrowseBean.reload");
+
 		initTemplate();
 		return null;
 	}
 	
 	public String emptyCollection() {
+	    if (debug)
+		System.out.println("CollectionBrowseBean.emptyCollection");
+
 		if (isClipboard()) {
 			ClipboardDelegateCookieImp.removeAllValuesFromClipboard(collectionType);
 			getBrowseHelper().setDynamicCollectionIds(null);
@@ -63,6 +69,9 @@ public class CollectionBrowseBean {
 	}
 	
 	public String removeSelectedItems() {
+	    if (debug)
+		System.out.println("CollectionBrowseBean.removeSelectedItems");
+
 		String[] selectedIds = TableUtil.getSelectedIdsForCollection(collectionType);
 		if (isClipboard()) {
 			ArrayList<String> newIds = ClipboardDelegateCookieImp.removeValuesFromClipboard(collectionType, selectedIds);
@@ -72,17 +81,26 @@ public class CollectionBrowseBean {
 	}
 
 	public String saveCollection() {
+	    if (debug)
+		System.out.println("CollectionBrowseBean.saveCollection");
+
 		FacesUtil.setFacesRequestParamValue("collectionType", String.valueOf(collectionType));
 		return "CollectionInformation";
 	}
 	
 	public String modifyCollection() {
+	    if (debug)
+		System.out.println("CollectionBrowseBean.modifyCollection");
+
 		FacesUtil.setFacesRequestParamValue("collectionInfo", collectionInfo);
 		FacesUtil.setFacesRequestParamValue("collectionType", String.valueOf(collectionType));
 		return "CollectionInformation";
 	}
 	
 	public String downloadCollection() {		// action method
+	    if (debug)
+		System.out.println("CollectionBrowseBean.downloadCollection");
+
 		downloadCollection(collectionId, collectionType);
 		return null;
 	}
@@ -95,6 +113,8 @@ public class CollectionBrowseBean {
 	}
 	
 	public static void downloadCollection(String collectionId, int collectionType) {
+		System.out.println("CollectionBrowseBean.downloadCollection");
+
 		String outputString = "";
 		String fileName;
 		if ("clipboard".equalsIgnoreCase(collectionId)) {
@@ -132,20 +152,6 @@ public class CollectionBrowseBean {
 		return categories;
 	}
 
-/*	Moved to Globals
- 
-	public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType) {
-		switch (collectionType) {
-			case 0:	return new EntriesCollectionBrowseHelper(collectionItemsIds);
-			case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds);
-			case 2:	return new ImagesCollectionBrowseHelper(collectionItemsIds);
-			case 3:	return new ProbesCollectionBrowseHelper(collectionItemsIds, "GPL1261"); 
-			case 4:	return new ProbesCollectionBrowseHelper(collectionItemsIds, "GPL6246");
-		}	
-		return null;
-	}
-*/
-	
 	// ********************************************************************************
 	// Private methods 
 	// ********************************************************************************

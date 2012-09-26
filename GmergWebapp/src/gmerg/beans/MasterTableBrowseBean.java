@@ -110,14 +110,25 @@ public class MasterTableBrowseBean {
 			masterTableInfo.selected = (masterTableInfo.getInfo().getId().equals(masterTableId));
 		    }
 		else if (genelistId != null) {
-				String platformId = DbUtility.getGenelistPlatformId(genelistId);
-				for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
-				    masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
-				}
+		    String platformId = DbUtility.getGenelistPlatformId(genelistId);
+		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
+			masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
+		    }
+		    // make only Developing Kidney (MOE430) shown initially to enhance user experience (fast)
+		    String str = null;
+		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
+			if (masterTableInfo.selected) {
+			    str = masterTableInfo.getInfo().getTitle().toLowerCase();
+			    if (-1 == str.indexOf("developing") &&
+				-1 == str.indexOf("kidney"))
+				masterTableInfo.selected = false;
+			}
+		    }
 		}
 		else 
 			for (MasterTableDisplayInfo masterTableInfo : allMasterTables)
 				masterTableInfo.selected = true;
+
 		initialseTables(null);
 		if (debug) {
 		    System.out.println("-------End MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol+" displayTreeView = "+displayTreeView+" tableTitle="+tableTitle+" viewMode="+viewMode);
@@ -213,8 +224,10 @@ public class MasterTableBrowseBean {
 		if (debug) 
 		    System.out.println("MasterTableBrowseBean CollectionBrowseHekper class = "+helper.getClass().getName()+" ret = "+ret);
 
-		if (null != ret)
+		if (null != ret) {
 		    ret.setInTabPane(true);
+		    ret.setHeightMode(1);
+		}
 
 		return ret;
 	}
