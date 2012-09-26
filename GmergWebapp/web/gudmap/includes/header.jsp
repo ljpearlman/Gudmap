@@ -296,7 +296,6 @@
 		<div id="sidebar1"><!-- TemplateBeginEditable name="sidebarRegion" -->
 			<div id="sidebarinner" ><!-- #BeginLibraryItem "/Library/db_nav.lbi" -->
 				<br/>
-				<br/>
 	                                                <p class="db_expression_database sidebar_first_item"><a class="bigboldnavtext" href="${pageContext.request.contextPath}/pages/database_homepage.html">Expression Database</a></p>
 				<p><a  class="mediumnavtext" href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries</a></p>
 				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/genelist_folder.html">Analysis</a></p>

@@ -9,21 +9,23 @@
       			</table>
 			</div><!-- end #mainContent -->
 			<!-- TemplateEndEditable -->
-			
+
+			<p>&nbsp;</p>
 			<div id="footernew">
 				<table width="100%" cellspacing="0" cellpadding="0" style="border-top:1px solid black" >
 					<tr><td align="center">
 						<div id="footerinner">
-							<table  cellspacing="0" cellpadding="1" border="0" width="100%" style="margin 0 auto;">
+							<table  cellspacing="0" cellpadding="6" border="0" width="100%" style="margin 0 auto">
 							
 <tr><td colspan="6" align="center"><form method="get" action="http://www.google.com/search">
       <input type="text" name="query" size="30" maxlength="255" value="" />
       <input type="submit" value="Search GUDMAP with Google" class="buttonLabelKLF"  />
       <input type="hidden" name="sitesearch" value="gudmap.org" />
     </form></td></tr>							
-							
+						
 							
 								<tr><td colspan="6" align="center">
+			
 									<span class="footerText">Disclaimer: Please note that the development of the GUDMAP website is an on-going process. Whilst we make every effort to ensure the quality of the information on these pages, the content cannot always be guaranteed to be accurate or complete. In addition, at certain times some functions may be restricted.</span>
 								</td></tr>
 								<tr>
@@ -43,6 +45,7 @@
 				</table>
 			</div><!-- end footernew -->
 		</div><!-- end #container -->
+			<p>&nbsp;</p>
 		
 		<script type="text/javascript">
 			var MenuBar1 = new Spry.Widget.MenuBar("MenuBar1", {imgDown:"${pageContext.request.contextPath}/SpryAssets/SpryMenuBarDownHover.gif", imgRight:"${pageContext.request.contextPath}/SpryAssets/SpryMenuBarRightHover.gif"});
