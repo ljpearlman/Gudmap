@@ -31,7 +31,7 @@
         <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.additionalCloneName}" rendered="#{MaProbeBean.maProbe.additionalCloneName != null && MaProbeBean.maProbe.additionalCloneName != ''}" />
         <f:verbatim rendered="#{MaProbeBean.maProbe.additionalCloneName != null && MaProbeBean.maProbe.additionalCloneName != ''}" >&nbsp;</f:verbatim>
         <f:verbatim rendered="#{MaProbeBean.maProbe.additionalCloneName != null && MaProbeBean.maProbe.additionalCloneName != ''}" >&nbsp;</f:verbatim>
-
+<%-- 
         <h:outputText value="Sequence Status" />
         <h:panelGroup>
           <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seqStatus} " />
@@ -40,7 +40,9 @@
             <h:outputText value="#{MaProbeBean.maProbe.genbankID}" />
           </h:outputLink>
         </h:panelGroup>
+       
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+--%>         
         <h:outputText value="Gene" />
         <h:panelGrid columns="2" columnClasses="plaintext,datatext">
           <h:outputText value="Symbol:" />

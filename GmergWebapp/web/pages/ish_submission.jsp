@@ -500,16 +500,14 @@
 					<f:verbatim>&nbsp;</f:verbatim>
 					<f:verbatim>&nbsp;</f:verbatim>
 			
-					<h:outputText styleClass="plaintext,text-top" value="Antibody Notes:" rendered="#{ISHSingleSubmissionBean.submission.antibody.notes != null}" />
-					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.notes}"
-								  rendered="#{ISHSingleSubmissionBean.submission.antibody.notes != null}" />
 
 					<h:outputText styleClass="plaintext,text-top" value="Antibody Dilution:" />
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.dilution}" />
-<%-- 
-					<h:outputText styleClass="plaintext,text-top" value="Experimental Notes:" />
-					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.experimentalNotes}" />
---%>
+
+					<h:outputText styleClass="plaintext,text-top" value="Antibody Notes:" rendered="#{ISHSingleSubmissionBean.submission.antibody.notes != null}" />
+					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.notes}"
+								  rendered="#{ISHSingleSubmissionBean.submission.antibody.notes != null}" />
+								  
 					<h:outputText styleClass="plaintext,text-top" value="Lab Probe ID:" />
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.labProbeId}" />
 				</h:panelGrid>
