@@ -14,7 +14,8 @@ import java.util.Arrays;
  *
  */
 public class HeatmapDisplayTransform {
-	
+    protected boolean debug = false;
+
 	private double scaleFactor;
 	private double upContrast;
 	private double downContrast;
@@ -23,20 +24,15 @@ public class HeatmapDisplayTransform {
 	private double scaledLimit;
 	    
 	public HeatmapDisplayTransform () {
-		this(1, 1, 1, 1, 0);
+		setDisplayAdjustParameters(1, 1, 1, 1, 0);
 	}
 	
 	public HeatmapDisplayTransform (double upContrast, double downContrast, double limit, double zeroOffset) {
-		this(1, upContrast, downContrast, limit, zeroOffset);
+		setDisplayAdjustParameters(1, upContrast, downContrast, limit, zeroOffset);
 	}
 	
 	public HeatmapDisplayTransform (double scaleFactor, double upContrast, double downContrast, double limit, double zeroOffset) {
-		this.scaleFactor = scaleFactor;
-		this.upContrast = upContrast;
-		this.downContrast = downContrast;
-		this.limit = limit;
-		this.zeroOffset = zeroOffset;
-		scaledLimit = Math.abs(limit * scaleFactor);;
+	    setDisplayAdjustParameters(scaleFactor, upContrast, downContrast, limit, zeroOffset);
 	}
 	
 
@@ -45,6 +41,9 @@ public class HeatmapDisplayTransform {
 	}
 	
 	public void setDisplayAdjustParameters(double scale, double upContrast, double downContrast, double limit, double zeroOffset) {
+	    if (debug)
+		System.out.println("HeatmapDisplayTransform.setDisplayAdjustParameters scale = "+scale+" upContrast = "+upContrast+" downContrast = "+downContrast+" limit = "+limit+" zeroOffset = "+zeroOffset);
+
 		this.scaleFactor = scale;
 		this.upContrast = upContrast;
 		this.downContrast = downContrast;
@@ -58,13 +57,18 @@ public class HeatmapDisplayTransform {
 	}
 
 	public double getAdjustedExpression(double value) {
-		value -= zeroOffset;
-		value *= scaleFactor;
-		value /= (value<0)? downContrast : upContrast;
-		if (value < -scaledLimit)
-			value = -scaledLimit;
-		if (value > scaledLimit)
-			value = scaledLimit;
+	    return getAdjustedExpression(value, scaleFactor, upContrast, downContrast, scaledLimit, zeroOffset);
+	}
+
+    public double getAdjustedExpression(double value, double scale, double up, double down, double limit, double offset) {
+
+		value -= offset;
+		value *= scale;
+		value /= (value<0)? down : up;
+		if (value < -limit)
+			value = -limit;
+		if (value > limit)
+			value = limit;
 		
 		return value;
 	}
@@ -74,17 +78,9 @@ public class HeatmapDisplayTransform {
 	}
 
 	public void adjustExpressionsForDisplay(HeatmapData expression,  double scaleFactor, double upContrast, double downContrast, double limit, double zeroOffset) {
-//		int upLimit = (int)Math.round(limit / upContrast);
-//		int downLimit = (int)Math.round(limit / downContrast);
-		double scaledLimit = Math.abs(limit * scaleFactor);
-//		double[][] data = expression.getExpression();
-//	System.out.println("BBB    "+scaleFactor+"   "+ upContrast+"   "+ downContrast+"   "+limit+"   "+ zeroOffset+"   "+scaledLimit);
-//		if (data==null) {
-//			System.out.println("warning!!!--- in adjustExpressionsForDisplay-- data is null");
-//			return;
-//		}
+	    if (debug)
+		System.out.println("HeatmapDisplayTransform.adjustExpressionsForDisplay scale = "+scaleFactor+" upContrast = "+upContrast+" downContrast = "+downContrast+" limit = "+limit+" zeroOffset = "+zeroOffset);
 
-		// xingjun - 20/07/2011 - may get empty expression value
 		double[][] data = null;
 		if (expression == null) {
 			System.out.println("warning!!!--- in adjustExpressionsForDisplay-- data is null");
@@ -116,6 +112,12 @@ public class HeatmapDisplayTransform {
 	}
 	
 	public void normalize(double[][] data, double[] rowMedian, double[] rowStdDev) {
+	    if (null == data || null == rowMedian || null == rowStdDev)
+		return;
+
+	    if (debug)
+		System.out.println("HeatmapDisplayTransform.normalize");
+
 		for(int i=0; i<data.length; i++) {
 			double median = (rowMedian==null)? findMedian(data[i]) : rowMedian[i];
 			double stdDev = (rowStdDev==null)? findStdDev(data[i]) : rowStdDev[i];
