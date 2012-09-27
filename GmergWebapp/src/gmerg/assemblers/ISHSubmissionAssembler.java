@@ -84,6 +84,7 @@ public class ISHSubmissionAssembler {
 		ishSubmission.setAnnotationTree(annotationTree);
 		ishSubmission.setAnnotatedComponents(annotComp);
 		ishSubmission.setLabId(submission.getLabId());// added by xingjun - 12/08/2010
+		ishSubmission.setProject(submission.getProject());
 			
 		if(onlyRetrieveTree) {
 			// release the db resources

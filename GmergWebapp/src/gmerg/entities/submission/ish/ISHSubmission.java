@@ -27,6 +27,7 @@ public class ISHSubmission extends Submission {
     private Transgenic[] transgenics = null; // added by xingjun - 09/11/2009
     private boolean multipleTransgenics; // added by xingjun - 09/11/2009
     private String tissue; // added by bernie - 15/09/2010
+    private String project; 
 
     public ISHSubmission() {
     
@@ -146,5 +147,14 @@ public class ISHSubmission extends Submission {
     
     public void setTissue(String tissue) {
     	this.tissue = tissue;
+    }  
+    
+    public String getProject() {
+    	return project;
+    }
+    
+    public void setProject(String project) {
+    	this.project = project;
     }    
+   
 }

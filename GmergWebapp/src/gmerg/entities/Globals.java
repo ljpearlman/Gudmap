@@ -269,7 +269,7 @@ public class Globals {
 	public static FilterItem getPredefinedFilter(PredefinedFilters filter) {
 		switch(filter){
 				case LAB:
-					return new FilterItem(FilterType.MULTIPLE, new String[]{"Lessard", "Little", "McMahon", "Potter", "Gaido", "Mendelsohn", "Southard-Smith", "Capel", "Vezina", "Cohn", "Keast"}, null); 
+					return new FilterItem(FilterType.MULTIPLE, new String[]{"Lessard", "Little", "McMahon", "Potter", "Gaido", "Mendelsohn", "Southard-Smith", "Capel", "Vezina", "Cohn", "Keast", "Eichele"}, null); 
 				case STAGE: 
 //					String[]options = new String[29]
 					String[]options = new String[12];

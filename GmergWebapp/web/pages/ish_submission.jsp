@@ -41,6 +41,7 @@
 			<f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
 
+		
 <%-- added by xingjun - 02/06/2008 - display status note if editor logged in - begin --%>
 <%-- xingjun - 24/11/2009
 		<h:inputHidden id="hiddenSubId" value="#{EditSubmissionSupportBean.subAccessionId}" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5}"/>
@@ -86,6 +87,15 @@
 <%-- added by xingjun - 02/06/2008 - display status note if editor logged in - end --%>
 
 		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
+
+            <h:outputText styleClass="plaintextbold" value="Data Source:" />
+                        
+            <h:graphicImage value="../images/GUDMAP_Logo.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
+            <h:graphicImage value="../images/button_euregene2.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}"/>
+            <f:verbatim>&nbsp;</f:verbatim>
+            <f:verbatim>&nbsp;</f:verbatim>
+
+
 			<h:outputText value="Gene"/>
 			<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)'}" >
 				<h:outputLink styleClass="plaintext" value="gene.html">
