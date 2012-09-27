@@ -57,13 +57,12 @@ public class EditSubmissionSupportBean {
             subAccessionId = FacesUtil.getRequestParamValue("submissionId");
         }
 		
-//		Object object = FacesUtil.getSessionValue("editSubmissionBean");
         Object object =
             FacesContext
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("editSubmissionBean");
+                            .get("EditSubmissionBean");
 		if (object != null) {
 //			System.out.println("got the editSubmissionBean!");
 			editSubmissionBean = (EditSubmissionBean)object;

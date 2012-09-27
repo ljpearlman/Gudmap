@@ -206,7 +206,7 @@ public class BatchAnnotationTreeBean {
 				                .getCurrentInstance()
 				                    .getExternalContext()
 				                        .getSessionMap()
-				                            .get("editExpressionBean");
+				                            .get("EditExpressionBean");
 
 				        if (object != null) {
 				    		EditExpressionBean eeBean = (EditExpressionBean) object;
