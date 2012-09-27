@@ -36,6 +36,7 @@ public class Submission {
     private int confidencLevel; // SUB_CONFIDENCE: 0
     private String localDbName; // SUB_LOCALDB_NAME:
     private String labId; // SUB_LAB_ID: 
+    private String localId; //SUB_LOCAL_ID
     
     // xingjun  - 14/06/2011 - might have more than one principal investigators
     private Person[] principalInvestigators;
@@ -318,4 +319,12 @@ public class Submission {
         return this.principalInvestigators;
     }
 
+    public String getLocalId() {
+    	return this.localId;
+    }
+    
+    public void setLocalId(String localId) {
+    	this.localId = localId;
+    }
+ 
 }

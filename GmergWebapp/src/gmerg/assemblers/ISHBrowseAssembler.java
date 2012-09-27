@@ -203,7 +203,10 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		    formatedRow[ 2] = new DataItem(row[2]);                                                                       // Theiler Stage
 		formatedRow[ 3] = new DataItem(row[3]);										// Age
 //		formatedRow[ 4] = new DataItem(row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 300, 500);	        // Lab               
-		formatedRow[ 4] = new DataItem(row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);	        // Lab               
+		if(Utility.getProject().equalsIgnoreCase("GUDMAP"))
+			formatedRow[ 4] = new DataItem("GUDMAP-" + row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);
+		if(Utility.getProject().equalsIgnoreCase("EUREGENE"))
+			formatedRow[ 4] = new DataItem("External-EuReGene", "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);
 		formatedRow[ 5] = new DataItem(Utility.convertToDisplayDate(row[5]));						// submission Date
 		formatedRow[ 6] = new DataItem(row[6]);										// Assay Type
 		formatedRow[ 7] = new DataItem(row[7]);										// Specimen Type

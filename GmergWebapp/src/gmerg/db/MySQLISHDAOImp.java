@@ -309,6 +309,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setLocalDbName((resSet.getString(26)==null)?"":resSet.getString(26));
 //            submissionInfo.setLabId((resSet.getString(28)==null)?"":resSet.getString(28));
             submissionInfo.setLabId((resSet.getString(27)==null)?"":resSet.getString(27));
+            submissionInfo.setLocalId((resSet.getString(28)==null)?"":resSet.getString(28));
             // xingjun - 15/07/2008
         }
         return submissionInfo;
