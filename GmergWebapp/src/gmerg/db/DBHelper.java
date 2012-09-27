@@ -344,19 +344,6 @@ public final class DBHelper {
             //create array to store each row of results in
             ArrayList<String[]> results = new ArrayList<String[]>();
             
-            /*Object object =
-                FacesContext
-                    .getCurrentInstance()
-                        .getExternalContext()
-                            .getSessionMap()
-                                .get("userBean");
-            int privilege = 0;
-            if (object != null) {
-            	UserBean ub = (UserBean)object;
-            	if(null != ub.getUser())
-            		privilege = ub.getUser().getUserPrivilege();
-            }*/
-            
             while (resSet.next()) {
             	String[] ishBrowseSubmission = null;
             	//if(privilege >= 3 && FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/lab_ish_edit.jsp")) {
