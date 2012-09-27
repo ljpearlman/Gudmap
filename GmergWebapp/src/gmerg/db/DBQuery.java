@@ -910,7 +910,7 @@ public class DBQuery {
   
   // query to build anatomy tree for displaying annotation
   final static String name47 = "ANNOT_TREE_CONTENT";
-  final static String query47 = "SELECT APO_DEPTH,APO_SEQUENCE, PATN.ATN_PUBLIC_ID, PARENT.ANO_COMPONENT_NAME, CONCAT('(',strt.STG_NAME,'-',end.sTG_NAME,')') AS RANGE, " +
+  final static String query47 = "SELECT APO_DEPTH,APO_SEQUENCE, PATN.ATN_PUBLIC_ID, PARENT.ANO_COMPONENT_NAME, CONCAT('(',strt.STG_NAME,'-',end.sTG_NAME,')') AS 'RANGE', " +
                                  "(select count(*) " +
                                  "from ANA_RELATIONSHIP, ANA_NODE CHILD, ANA_TIMED_NODE CATN, ANA_STAGE CSTG " +
                                  "where REL_PARENT_FK = PARENT.ANO_OID " +
@@ -940,35 +940,9 @@ public class DBQuery {
                                  "AND exp.EXP_COMPONENT_ID = ATN_PUBLIC_ID " +
                                "LEFT JOIN ISH_EXPRESSION_NOTE " +
                                  "ON exp.EXP_OID = ENT_EXPRESSION_FK " +
-                               "GROUP BY PARENT.ANO_COMPONENT_NAME,RANGE,PATN.ATN_PUBLIC_ID, APO_SEQUENCE, APO_DEPTH,strt.STG_NAME,end.STG_NAME " +
+                               "GROUP BY PARENT.ANO_COMPONENT_NAME,'RANGE',PATN.ATN_PUBLIC_ID, APO_SEQUENCE, APO_DEPTH,strt.STG_NAME,end.STG_NAME " +
                                "ORDER BY APO_SEQUENCE";
                                
-  // xingjun - 17/07/2009 - Use table ANA_RELATIONSHIP_PROJECT to replace table ANA_RELATIONSHIP
-//  final static String query47 = "SELECT APO_DEPTH,APO_SEQUENCE, PATN.ATN_PUBLIC_ID, PARENT.ANO_COMPONENT_NAME, CONCAT('(',strt.STG_NAME,'-',end.sTG_NAME,')') AS RANGE, " +
-//  "(select count(*) from ANA_RELATIONSHIP, ANA_RELATIONSHIP_PROJECT, ANA_NODE CHILD, ANA_TIMED_NODE CATN, ANA_STAGE CSTG " +
-//  " where REL_PARENT_FK = PARENT.ANO_OID " +
-//  " and REL_CHILD_FK  = CHILD.ANO_OID " +
-//  " AND RLP_RELATIONSHIP_FK = REL_OID " +
-//  " AND RLP_PROJECT_FK = 'GUDMAP' " +
-//  " and CATN.ATN_NODE_FK = CHILD.ANO_OID " +
-//  " and CSTG.STG_OID = CATN.ATN_STAGE_FK " +
-//  " and CSTG.STG_SEQUENCE = stg.STG_SEQUENCE) as kids," +
-//  "case when !APO_IS_PRIMARY_PATH OR ANO_IS_GROUP THEN 1 ELSE 0 END AS IP, " +
-//  "exp.EXP_STRENGTH AS EXP, exp.EXP_ADDITIONAL_STRENGTH, exp.EXP_OID, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE " +
-//  "FROM ANA_NODE PARENT " +
-//  "JOIN ANAD_PART_OF ON APO_NODE_FK = PARENT.ANO_OID AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' " +
-//  "JOIN ANAD_PART_OF_PERSPECTIVE ON POP_PERSPECTIVE_FK = '" + bundle.getString("perspective") + "' "+
-//  " AND POP_APO_FK = APO_OID " +
-//  "JOIN ANA_TIMED_NODE PATN ON PARENT.ANO_OID = PATN.ATN_NODE_FK " +
-//  "JOIN ANA_STAGE stg ON stg.STG_OID = PATN.ATN_STAGE_FK AND stg.STG_NAME = ? " +
-//  "JOIN ANA_STAGE strt ON APO_PATH_START_STAGE_FK = strt.STG_OID " +
-//  "JOIN ANA_STAGE end ON APO_PATH_END_STAGE_FK = end.STG_OID AND stg.STG_SEQUENCE BETWEEN strt.STG_SEQUENCE AND end.STG_SEQUENCE " +
-//  "LEFT JOIN ISH_EXPRESSION exp ON exp.EXP_SUBMISSION_FK = (select SUB_OID from ISH_SUBMISSION where SUB_ACCESSION_ID = ? ) " +
-//  " AND exp.EXP_COMPONENT_ID = ATN_PUBLIC_ID " +
-//  "LEFT JOIN ISH_EXPRESSION_NOTE ON exp.EXP_OID = ENT_EXPRESSION_FK " +
-//  "GROUP BY PARENT.ANO_COMPONENT_NAME,RANGE,PATN.ATN_PUBLIC_ID, APO_SEQUENCE, APO_DEPTH,strt.STG_NAME,end.STG_NAME " +
-//  "ORDER BY APO_SEQUENCE";
-
   final static String name127 = "ANNOT_LIST";
   final static String query127 = "SELECT DISTINCT EXP_OID, ATN_PUBLIC_ID, ANO_COMPONENT_NAME, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE "+
                                  "FROM ANA_NODE "+
