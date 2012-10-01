@@ -37,6 +37,7 @@ public class Submission {
     private String localDbName; // SUB_LOCALDB_NAME:
     private String labId; // SUB_LAB_ID: 
     private String localId; //SUB_LOCAL_ID
+    private String euregeneId; //SUB_ACCESSION_ID_2
     
     // xingjun  - 14/06/2011 - might have more than one principal investigators
     private Person[] principalInvestigators;
@@ -319,12 +320,12 @@ public class Submission {
         return this.principalInvestigators;
     }
 
-    public String getLocalId() {
-    	return this.localId;
+    public String getEuregeneId() {
+    	return this.euregeneId;
     }
     
-    public void setLocalId(String localId) {
-    	this.localId = localId;
+    public void setEuregeneId(String euregeneId) {
+    	this.euregeneId = euregeneId;
     }
- 
+    
 }

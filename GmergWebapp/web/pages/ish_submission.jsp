@@ -37,8 +37,8 @@
 		<h:panelGrid rendered="#{!UserBean.userLoggedIn}" width="100%" columns="1" rowClasses="header-stripey,header-nostripe">
 --%>
 		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe">
-			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" />
-			<f:verbatim>&nbsp;</f:verbatim>
+			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" rendered="#{ISHSingleSubmissionBean.submission.euregeneId == ''}" />
+			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID} (#{ISHSingleSubmissionBean.submission.euregeneId})" rendered="#{ISHSingleSubmissionBean.submission.euregeneId != ''}"/>
 		</h:panelGrid>
 
 		
