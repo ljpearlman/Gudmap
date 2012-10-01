@@ -157,7 +157,7 @@ public class DBQuery {
   		"SUB_DB_STATUS_FK, SUB_PROJECT_FK, SUB_AUTHOR_REF, SUB_BATCH, " +
   		"SUB_NAMESPACE, SUB_OS_ACCESSION, SUB_LOCAL_ID, SUB_SOURCE, SUB_VALIDATION, " +
   		"SUB_CONTROL, SUB_ASSESSMENT, SUB_CONFIDENCE, SUB_LOCALDB_NAME, " +
-  		"SUB_LAB_ID, SUB_LOCAL_ID FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID = ?";
+  		"SUB_LAB_ID, SUB_ACCESSION_ID_2 FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID = ?";
 
   // find details of a probe linked in a submission
   // xingjun - 19/01/2011 - added PRB_LAB_ID column (24) at the end of the query to introduce Lab Probe ID field for the probe information

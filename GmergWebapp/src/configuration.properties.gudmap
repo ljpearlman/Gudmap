@@ -9,16 +9,16 @@ db_driver=com.mysql.jdbc.Driver
 #password=submission_admin$$88
 #database=EureGudmap
 
-#host=jdbc:mysql://clynelish/
+host=jdbc:mysql://clynelish/
 #host=jdbc:mysql://tamdhu/
-#user=gudmaptest
-#password=gudmaptest
-#database=GudmapGX_test
+user=gudmaptest
+password=gudmaptest
+database=GudmapGX_test
 
-host=jdbc:mysql://clynelish:33061/
-user=gudmap
-password=patience
-database=GudmapGX
+#host=jdbc:mysql://clynelish:33061/
+#user=gudmap
+#password=patience
+#database=GudmapGX
 
 
 #user=koosum
