@@ -385,6 +385,8 @@
 		
 			<h:outputText value="&nbsp" escape="false"/>
 			<h:outputText value="&nbsp" escape="false"/>
+		</h:panelGrid>
+		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
 			
 			<h:outputText value="Antibody" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'IHC' || ISHSingleSubmissionBean.submission.assayType == 'OPT'}" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" rendered ="#{ISHSingleSubmissionBean.submission.assayType == 'IHC' || ISHSingleSubmissionBean.submission.assayType == 'OPT'}">
@@ -662,6 +664,10 @@
 					<h:outputText value="[Edit]" />
 				</h:outputLink>
 			</h:panelGrid>
+			
+			<h:outputText value="&nbsp" escape="false"/>
+			<h:outputText value="&nbsp" escape="false"/>
+						
        	</h:panelGrid>
        	
         <%-- added by xingjun - 27/08/2008 - end --%>

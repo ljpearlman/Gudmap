@@ -49,7 +49,7 @@
 				<h:outputLink target="_blank" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.genbankURL}" rendered="#{ISHSingleSubmissionBean.submission.probe.genbankID != ''}" >
 					<h:outputText  value="#{ISHSingleSubmissionBean.submission.probe.genbankID}" />
 				</h:outputLink>
-				<h:outputText styleClass="datatext" value="unknown" rendered="#{ISHSingleSubmissionBean.submission.probe.genbankID == ''}" />
+				<h:outputText styleClass="datatext" value="Unknown" rendered="#{ISHSingleSubmissionBean.submission.probe.genbankID == ''}" />
 			</h:panelGroup>
 		</h:panelGrid>
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
@@ -70,23 +70,41 @@
           </h:panelGroup>
         </h:panelGrid>
         
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-        <h:outputText value="5' primer sequence" rendered="#{MaProbeBean.maProbe.seq5Primer != '' || MaProbeBean.maProbe.seq5Loc != 'n/a'}"/>
-        <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seq5Primer}" rendered="#{MaProbeBean.maProbe.seq5Primer != '' || MaProbeBean.maProbe.seq5Loc != 'n/a'}"/>
- 
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-        <h:outputText value="3' primer sequence" rendered="#{MaProbeBean.maProbe.seq3Primer != '' || MaProbeBean.maProbe.seq3Loc != 'n/a'}"/>
-        <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seq3Primer}" rendered="#{MaProbeBean.maProbe.seq3Primer != '' || MaProbeBean.maProbe.seq3Loc != 'n/a'}"/>
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>
         
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-        <h:outputText value="5' primer location" rendered="#{MaProbeBean.maProbe.seq5Primer != '' || MaProbeBean.maProbe.seq5Loc != 'n/a'}"/>
-        <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seq5Loc}" rendered="#{MaProbeBean.maProbe.seq5Primer != '' || MaProbeBean.maProbe.seq5Loc != 'n/a'}"/>
-        
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-		<h:outputText value="3' primer location" rendered="#{MaProbeBean.maProbe.seq3Primer != '' || MaProbeBean.maProbe.seq3Loc != 'n/a'}"/>
-        <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seq3Loc}" rendered="#{MaProbeBean.maProbe.seq3Primer != '' || MaProbeBean.maProbe.seq3Loc != 'n/a'}"/>
-        
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+	  </h:panelGrid>
+	  
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{MaProbeBean.maProbe.seq5Primer != '' || MaProbeBean.maProbe.seq5Loc != 'n/a' || ISHSingleSubmissionBean.submission.probe.genbankID == ''}">        
+        <h:outputText value="5' primer sequence" />
+        <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seq5Primer}" /> 
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>       
+	  </h:panelGrid>
+	  
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{MaProbeBean.maProbe.seq3Primer != '' || MaProbeBean.maProbe.seq3Loc != 'n/a' || ISHSingleSubmissionBean.submission.probe.genbankID == ''}">
+        <h:outputText value="3' primer sequence" />
+        <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seq3Primer}" />                
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>        
+	  </h:panelGrid>
+
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{MaProbeBean.maProbe.seq5Primer != '' || MaProbeBean.maProbe.seq5Loc != 'n/a' || ISHSingleSubmissionBean.submission.probe.genbankID == ''}">
+        <h:outputText value="5' primer location" />
+        <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seq5Loc}" />
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>        
+	  </h:panelGrid>
+
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{MaProbeBean.maProbe.seq3Primer != '' || MaProbeBean.maProbe.seq3Loc != 'n/a' || ISHSingleSubmissionBean.submission.probe.genbankID == ''}">
+		<h:outputText value="3' primer location" />
+        <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seq3Loc}" />        
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>        
+	  </h:panelGrid>
+
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{MaProbeBean.maProbe != null}">
+
         <h:outputText value="Origin of Clone used to make the Probe" />
         <h:panelGrid columns="2" columnClasses="plaintext,datatext">
           <h:outputText value="Strain:" />
