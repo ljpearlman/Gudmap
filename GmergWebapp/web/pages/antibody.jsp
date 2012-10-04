@@ -46,18 +46,25 @@
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
         <h:outputText value="Epitope (Uniprot ID)" />
         <h:outputText styleClass="datatext" value="#{AntibodyBean.antibody.uniprotId}" />
-        
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>       
+	  </h:panelGrid>
+
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{AntibodyBean.antibody.seqStartLocation > 0}">        
         <h:outputText value="Amino-terminus(start)" />
-        <h:outputText styleClass="datatext" value="#{AntibodyBean.antibody.seqStartLocation}" rendered="#{AntibodyBean.antibody.seqStartLocation > 0}"/>
-        <h:outputText value="" rendered="#{AntibodyBean.antibody.seqStartLocation == 0}"/>
-        
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+        <h:outputText styleClass="datatext" value="#{AntibodyBean.antibody.seqStartLocation}"/>
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>       
+	  </h:panelGrid>
+
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{AntibodyBean.antibody.seqEndLocation > 0}">        
         <h:outputText value="Carboxy-terminus(end)" />
-        <h:outputText styleClass="datatext" value="#{AntibodyBean.antibody.seqEndLocation}" rendered="#{AntibodyBean.antibody.seqEndLocation > 0}"/>
-        <h:outputText value="" rendered="#{AntibodyBean.antibody.seqEndLocation == 0}"/>
-        
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+        <h:outputText styleClass="datatext" value="#{AntibodyBean.antibody.seqEndLocation}" />
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>       
+	  </h:panelGrid>
+
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%">                
         <h:outputText value="Antibody Type" />
         <h:panelGrid columns="2" columnClasses="plaintext,datatext">
           <h:outputText value="Type:" />
@@ -69,7 +76,8 @@
           <h:outputText value="Chain Subtype:" />
           <h:outputText value="#{AntibodyBean.antibody.chainType}" />
         </h:panelGrid>
-        
+
+
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
         <h:outputText value="Probe Type" />
         <h:outputText styleClass="datatext" value="antibody" />
