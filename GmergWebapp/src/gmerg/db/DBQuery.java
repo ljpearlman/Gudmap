@@ -1857,7 +1857,7 @@ public class DBQuery {
 		"JOIN ISH_SUBMISSION ON SUB_OID = ATL_SUBMISSION_FK " +
   		"JOIN LNK_SUP_ANTIBODY ON LAS_ATB_OID_FK = ATB_OID " +
   		"JOIN GEN_SUPPLIER ON LAS_SUP_FK = SUP_OID " +
-  		"WHERE (CONCAT('GUDMAP:',ATL_SUBMISSION_FK) = ?)";
+  		"WHERE (CONCAT(ATB_PREFIX,ATB_OID) = ?)";
   
   // find all image notes for one specific ISH submission
   // xingjun - 20/09/2011 - rewrite the sql to avoid returning empty result

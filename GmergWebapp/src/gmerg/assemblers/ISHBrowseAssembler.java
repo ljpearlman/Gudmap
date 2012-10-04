@@ -193,7 +193,7 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		else if ("TG".equalsIgnoreCase(row[6])) // added by xingjun - 27/08/2008 - transgenic data 
 			formatedRow[0] = new DataItem(row[0], row[0], "ish_submission.html?id="+row[0], 10);	  			// Id
 		else
-			formatedRow[0] = new DataItem(row[0]);	  			// Id
+			formatedRow[0] = new DataItem(row[0]);	// Id
 				
 		formatedRow[ 1] = new DataItem(row[1], "", "gene.html?gene="+row[1], 10);					// Gene Symbol
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
@@ -201,16 +201,18 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		    formatedRow[ 2] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);								// Theiler Stage
 		else 
 		    formatedRow[ 2] = new DataItem(row[2]);                                                                       // Theiler Stage
-		formatedRow[ 3] = new DataItem(row[3]);										// Age
-//		formatedRow[ 4] = new DataItem(row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 300, 500);	        // Lab               
-		if(Utility.getProject().equalsIgnoreCase("GUDMAP"))
-			formatedRow[ 4] = new DataItem("GUDMAP-" + row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);
-		if(Utility.getProject().equalsIgnoreCase("EUREGENE"))
-			formatedRow[ 4] = new DataItem("External-EuReGene", "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);
-		formatedRow[ 5] = new DataItem(Utility.convertToDisplayDate(row[5]));						// submission Date
-		formatedRow[ 6] = new DataItem(row[6]);										// Assay Type
-		formatedRow[ 7] = new DataItem(row[7]);										// Specimen Type
-		formatedRow[ 8] = new DataItem(row[8]);															// Sex
+		formatedRow[ 3] = new DataItem(row[3]);	// Age
+
+		// check for gudmap or euregene		
+		if(row[4].equalsIgnoreCase("Eichele"))
+			formatedRow[ 4] = new DataItem("External-EuReGene", "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);	// Lab 
+		else
+			formatedRow[ 4] = new DataItem("GUDMAP-" + row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);	// Lab 
+
+		formatedRow[ 5] = new DataItem(Utility.convertToDisplayDate(row[5]));	// submission Date
+		formatedRow[ 6] = new DataItem(row[6]);	// Assay Type
+		formatedRow[ 7] = new DataItem(row[7]);	// Specimen Type
+		formatedRow[ 8] = new DataItem(row[8]);	// Sex
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
 			if ("IHC".equalsIgnoreCase(row[6]))
 				formatedRow[ 9] = new DataItem(row[9], "Antibody Details", "antibody.html?antibody="+row[9], 10);	
