@@ -395,10 +395,31 @@
 		
 			<h:outputText value="&nbsp" escape="false"/>
 			<h:outputText value="&nbsp" escape="false"/>
+		</h:panelGrid>
+		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
 			
 			<h:outputText value="Antibody" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'IHC' || ISHSingleSubmissionBean.submission.assayType == 'OPT'}" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" rendered ="#{ISHSingleSubmissionBean.submission.assayType == 'IHC' || ISHSingleSubmissionBean.submission.assayType == 'OPT'}">
 				<h:panelGrid border="0" columns="2" columnClasses="data-titleCol,data-textCol">
+			
+					<h:outputText value="Protein:" />
+					<h:panelGrid columns="1" border="0" columnClasses="text-top,text-normal">
+						<h:panelGroup>
+							<h:outputText styleClass="plaintext" value="Symbol: " />
+							<h:outputLink styleClass="datatext" value="gene.html">
+								<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.geneSymbol}" />
+								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.antibody.geneSymbol}" />
+							</h:outputLink>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:outputText styleClass="plaintext" value="Name: " />
+							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.geneName} " />
+							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.locusTag}">
+								<h:outputText value="(#{ISHSingleSubmissionBean.submission.antibody.locusTag})" />
+							</h:outputLink>
+						</h:panelGroup>
+					</h:panelGrid>
+				
 					<h:outputText rendered="#{proj != 'EuReGene' || siteSpecies != 'mouse'}" value="Name:" />
 					<h:panelGroup rendered="#{proj != 'EuReGene' || siteSpecies != 'mouse'}">
 <%-- commented by Xingjun - 16/05/2008 - do not need have the link - antibody submissions are all linked to maprobe
@@ -421,24 +442,6 @@
 							</h:outputLink>
  
   						</h:panelGroup>
-			
-					<h:outputText value="Protein:" />
-					<h:panelGrid columns="1" border="0" columnClasses="text-top,text-normal">
-						<h:panelGroup>
-							<h:outputText styleClass="plaintext" value="Symbol: " />
-							<h:outputLink styleClass="datatext" value="gene.html">
-								<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.geneSymbol}" />
-								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.antibody.geneSymbol}" />
-							</h:outputLink>
-						</h:panelGroup>
-						<h:panelGroup>
-							<h:outputText styleClass="plaintext" value="Name: " />
-							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.geneName} " />
-							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.locusTag}">
-								<h:outputText value="(#{ISHSingleSubmissionBean.submission.antibody.locusTag})" />
-							</h:outputLink>
-						</h:panelGroup>
-					</h:panelGrid>
 			
 					<h:outputText value="Epitope (Uniprot ID):"/>
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.uniprotId}" rendered="#{ISHSingleSubmissionBean.submission.antibody.uniprotId != ''}"/>
@@ -671,6 +674,10 @@
 					<h:outputText value="[Edit]" />
 				</h:outputLink>
 			</h:panelGrid>
+			
+			<h:outputText value="&nbsp" escape="false"/>
+			<h:outputText value="&nbsp" escape="false"/>
+						
        	</h:panelGrid>
        	
         <%-- added by xingjun - 27/08/2008 - end --%>

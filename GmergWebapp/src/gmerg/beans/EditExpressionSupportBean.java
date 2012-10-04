@@ -60,17 +60,14 @@ public class EditExpressionSupportBean {
     	/** get parameters */
         submissionIdParam = FacesUtil.getRequestParamValue("submissionId");
         componentIdParam = FacesUtil.getRequestParamValue("componentId");
-//    	System.out.println("supportBean parm.subId: " + submissionIdParam);
-//    	System.out.println("supportBean parm.compId: " + componentIdParam);
 
     	/** get EditExpressionBean and submission and component ids in session */
-//      Object object = FacesUtil.getSessionValue("editExpressionBean");
         Object object =
             FacesContext
                 .getCurrentInstance()
                     .getExternalContext()
                         .getSessionMap()
-                            .get("editExpressionBean");
+                            .get("EditExpressionBean");
         if (object != null) {
         	this.eeBean = (EditExpressionBean) object;
         	ExpressionDetail expressionDetail = this.eeBean.getExpressionDetail();
@@ -102,7 +99,7 @@ public class EditExpressionSupportBean {
     	// get expression detail from db for user asked node
         this.expression = 
         	editExpressionAssembler.getExpression(submissionIdParam, componentIdParam);
-        
+
         if (this.expression != null) {
 //        	System.out.println("EditExpressionSupportBean:expression is not null");
             // get pattern infomation
@@ -123,21 +120,13 @@ public class EditExpressionSupportBean {
                 	this.eeBean.setPatterns(this.patterns);
                 	this.eeBean.setSubmissionId(submissionIdParam);
                 	this.eeBean.setComponentId(componentIdParam);
-//                	System.out.println("supportBean session.subId after switch: " + this.eeBean.getSubmissionId());
-//                	System.out.println("supportBean session.compId after switch: " + this.eeBean.getComponentId());
-                	
-    		        // reset the parameters -- added by xingjun - 06/06/2008
-                	// if user diverted to other submissions/nodes, parameters should be reset
+
                     FacesUtil.setSessionValue("addingPattern", "false");
     		        this.eeBean.setNoPatternCheckedForDeletion(false);
     		        this.eeBean.setErrorCode(0);
                 } else { // clicked on the same node
             		// if the params passed in, it means user clicked on the node in the tree
                 	if (paramsPassedIn) {
-                		// if expression info on page and in db are not identical, 
-                		// reset expression and pattern on page
-//                		System.out.println("expressionInDB: " + this.expression.getPrimaryStrength());
-//                		System.out.println("expressionOnPage: " + eeBean.getExpressionDetail().getPrimaryStrength());
                 		if (this.expression.getPrimaryStrength() != eeBean.getExpressionDetail().getPrimaryStrength()) {
                 			this.eeBean.setExpressionDetail(this.expression);
                 			this.eeBean.setPatterns(this.patterns);
@@ -178,15 +167,7 @@ public class EditExpressionSupportBean {
             		// xingjun - 28/07/2008
                     // get locking info
             		this.lockingInfo = editExpressionAssembler.getLockingInfo(submissionIdParam);
-//                    object = FacesUtil.getSessionValue("UserBean");
-//                    if (object != null) {
-//                    	UserBean ub = (UserBean)object;
-//                    	this.user = ub.getUser();
-//                    	this.userName = ub.getUserName();
-//                    } else {
-//                    	this.userName = null;
-//                    }
-//                	System.out.println("locking info obtained in edit expression support bean!");
+
                 	if (this.lockingInfo != null) {
             			this.eeBean.setLockingInfo(lockingInfo);
                 		String lb = this.lockingInfo.getLockedBy();
@@ -251,172 +232,6 @@ public class EditExpressionSupportBean {
             }
         }
     } // end of constructor
-    
-//    public EditExpressionSupportBean() {
-////    	System.out.println("----------initialise editExpressionSupportBean!!!!!----");
-//        String submissionIdParam = null;
-//        String componentIdParam = null;
-//    	EditExpressionBean eeBean = null;
-//    	String subIdOfSession = null;
-//    	String compIdOfSession = null;
-//        editExpressionAssembler = new EditExpressionAssembler();
-//    	
-//    	/** get parameters */
-//        submissionIdParam = FacesUtil.getRequestParamValue("submissionId");
-//        componentIdParam = FacesUtil.getRequestParamValue("componentId");
-////    	System.out.println("supportBean parm.subId: " + submissionIdParam);
-////    	System.out.println("supportBean parm.compId: " + componentIdParam);
-//
-//    	/** get EditExpressionBean and submission and component ids in session */
-////      Object object = FacesUtil.getSessionValue("editExpressionBean");
-//        Object object =
-//            FacesContext
-//                .getCurrentInstance()
-//                    .getExternalContext()
-//                        .getSessionMap()
-//                            .get("editExpressionBean");
-//        if (object != null) {
-//        	eeBean = (EditExpressionBean) object;
-//        	ExpressionDetail expressionDetail = eeBean.getExpressionDetail();
-//        	if(null != expressionDetail) {
-//	        	subIdOfSession = eeBean.getExpressionDetail().getSubmissionId();
-//	        	compIdOfSession = eeBean.getExpressionDetail().getComponentId();
-//        	} else {
-//        		subIdOfSession = eeBean.getSubmissionId();
-//	        	compIdOfSession = eeBean.getComponentId();
-//        	}
-//        }
-////    	System.out.println("supportBean session.subId: " + subIdOfSession);
-////    	System.out.println("supportBean session.compId: " + compIdOfSession);
-//
-//        // if the parameters are not passed in, go to EditExpressionBean to find the ids
-//        boolean paramsPassedIn = true;
-//        if (submissionIdParam == null || submissionIdParam.equals("")
-//        		|| componentIdParam == null || componentIdParam.equals("")) {
-////        	System.out.println("sub or com id is null");
-//            submissionIdParam = subIdOfSession;
-//            componentIdParam = compIdOfSession;
-//            paramsPassedIn = false;
-//        }
-////    	System.out.println("supportBean subIdParam: " + submissionIdParam);
-////    	System.out.println("supportBean compIdParam: " + componentIdParam);
-//
-//    	// get expression detail from db (for user asked node)
-//        this.expression = 
-//        	editExpressionAssembler.getExpression(submissionIdParam, componentIdParam);
-//        
-//        // get pattern infomation
-//        if (expression.isAnnotated()) {
-////        	System.out.println("expressed##################" + expression.getExpressionId());
-//        	patterns = 
-//        		editExpressionAssembler.getPatterns(String.valueOf(expression.getExpressionId()));
-//        }
-//
-//    	/** compare two sets of ids only if EditExpressionBean has been initialised */
-//    	if (subIdOfSession != null && !subIdOfSession.equals("") 
-//    			&& compIdOfSession != null && !compIdOfSession.equals("")) {
-//    		/** user clicked on different component node, 
-//    		 * need to reset current editExpressionBean */
-//    		if (!subIdOfSession.equals(submissionIdParam) 
-//    				|| !compIdOfSession.equals(componentIdParam)) {
-////       		System.out.println("user switched to different node");
-//            	eeBean.setExpressionDetail(this.expression);
-//            	eeBean.setPatterns(this.patterns);
-//            	
-//		        // reset the parameters -- added by xingjun - 06/06/2008
-//            	// when user diverted to other submissions,
-//            	// the parameter should be reset to their initial values
-//                FacesUtil.setSessionValue("addingPattern", "false");
-//		        eeBean.setNoPatternCheckedForDeletion(false);
-////		        eeBean.setUpdateButtonClicked(false);
-//		        eeBean.setErrorCode(0);
-//            }
-//    		
-//    		/** refresh the pattern if necessary */
-//    		// modified by xingjun - 02/10/2008 -
-//    		// if pattern info on page and in db are not consistent, update the pattern on page 
-//    		// modified by xingjun - 27/02/2009 - 
-//    		// need check if the params passed in, 
-//    		// if yes, it means user clicked on different nodes
-//    		// if no, use click on the same node with modification (strength, location, etc.),
-//   		    // refresh the page
-//    		ExpressionPattern[] patternOnPage = eeBean.getPatterns();
-//			if (this.comparePatterns(patternOnPage, this.patterns) == 0 && paramsPassedIn) {
-//				System.out.println("=====update pattern value on page by support bean!!!!!!!!");
-//            	eeBean.setExpressionDetail(this.expression);
-//    			eeBean.setPatterns(this.patterns);
-//                FacesUtil.setSessionValue("addingPattern", "false");
-//		        eeBean.setNoPatternCheckedForDeletion(false);
-//		        eeBean.setErrorCode(0);
-//			} else {
-//				System.out.println("=====pattern values are the same!!!!!!!!");
-//			}
-//        	
-//            /** locking */
-//        	String lockingSwitchOn = Utility.getLockingSwitchOn();
-//        	//modified by ying 20080909
-//            if (lockingSwitchOn.equals("true") && !FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/ish_edit_pattern.jsp")) { // locking function switched on
-//        		// xingjun - 28/07/2008
-//                // get locking info
-//        		lockingInfo = editExpressionAssembler.getLockingInfo(submissionIdParam);
-//                object = FacesUtil.getSessionValue("UserBean");
-//                if (object != null) {
-//                	UserBean ub = (UserBean)object;
-//                	this.user = ub.getUser();
-//                	this.userName = ub.getUserName();
-//                } else {
-//                	this.userName = null;
-//                }
-////            	System.out.println("locking info obtained in edit expression support bean!");
-//            	if (this.lockingInfo != null) {
-//        			eeBean.setLockingInfo(lockingInfo);
-//            		String lb = this.lockingInfo.getLockedBy();
-//            		int lockTime = this.lockingInfo.getLockTime();
-//            		int definedLockTimeOut = Integer.parseInt(Utility.getLockTimeOut());
-//            		if (!this.userName.equals(lb) 
-//            				&& (lockTime-definedLockTimeOut < 0 || lockTime-definedLockTimeOut == 0)) {
-////            			eeBean.setSubmissionLocked(true);
-//            			eeBean.setLockingText("LOCKED by " + lb + ". Cannot modify");
-//            			eeBean.setLockingTextDisplayStyle(Utility.getLockedTextDisplayStyle());
-//            		} else {
-//            			// update lock time if necessary
-//            			// if user is just unlocking the submission, dont update
-////            			System.out.println("support bean: submission is unlocking?: " + eeBean.isUnlocking());
-//            			if (!eeBean.isUnlocking()) {
-////                			int submissionLocked =
-////                				EditAssemblerUtil.relockSubmission(submissionIdParam, this.userName);
-//                			int submissionLocked =
-//                				EditAssemblerUtil.relockSubmission(submissionIdParam, this.user);
-//                			if (submissionLocked == 0) {
-//                				eeBean.setErrorCode(7);
-//                			} else {
-////                            	eeBean.setSubmissionLocked(false);
-//                    			eeBean.setErrorCode(0);
-//                    			eeBean.setLockingText("LOCKED by " + lb);
-//                    			eeBean.setLockingTextDisplayStyle(Utility.getLockedTextDisplayStyle());
-//                			}
-//                			eeBean.setUnlocking(false); // re-set the unlocking
-//            			}
-//            		}
-//            	} else { // unlocked - lock
-////            		System.out.println("support bean lockingInfo is null!");
-////           		System.out.println("XXX lock submission by support bean!"+submissionIdParam);
-////        			int submissionLocked =
-////        				EditAssemblerUtil.lockSubmission(submissionIdParam, this.userName);
-//        			int submissionLocked =
-//        				EditAssemblerUtil.lockSubmission(submissionIdParam, this.user);
-//        			if (submissionLocked == 0) {
-//        				eeBean.setErrorCode(7);
-//        			} else {
-//            			eeBean.setErrorCode(0);
-////                    	eeBean.setSubmissionLocked(false);
-//            			eeBean.setLockingText("LOCKED by " + this.userName);
-//            			eeBean.setLockingTextDisplayStyle(Utility.getLockedTextDisplayStyle());
-//        			}
-//            	}
-//        	} // locking
-//        } // pattern comparison
-//    } // end of constructor
     
     public ExpressionDetail getExpressionDetail() {
     	return this.expression;
@@ -791,16 +606,6 @@ public class EditExpressionSupportBean {
         		// update primary strength in database to 'present'
         		// update additional strength to db if there's a value
         		// log it
-//    			expressionUpdated =
-//    				editExpressionAssembler.addAnnotation(submissionId, componentId, this.expression.getStage(),
-//    						this.expression.getPrimaryStrength(),
-//    						this.expression.getSecondaryStrength(), this.patterns, userName);
-//    			if (expressionUpdated == false) { // updating failed, reset the strength value
-//    				this.expression.setPrimaryStrength(expressionInfoInDB.getPrimaryStrength());
-//    			}
-        		/*System.out.println("Add annotation:"+submissionId+":"+componentId+":"+this.expression.getStage()+":"+
-						this.expression.getPrimaryStrength()+":"+
-						this.expression.getSecondaryStrength()+":"+ this.patterns+":"+userName);*/
     			int errorCode =
     				editExpressionAssembler.addAnnotation(submissionId, componentId, 
     						this.eeBean.getExpressionDetail().getStage(),
@@ -819,26 +624,8 @@ public class EditExpressionSupportBean {
         		// update secondary strength as appropriate
         		// update pattern info
         		// log it
-//        		expressionUpdated =
-//        			editExpressionAssembler.updateAnnotation(submissionId, componentId, this.expression.getStage(),
-//        					this.expression.getPrimaryStrength(), expressionInfoInDB.getPrimaryStrength(),
-//        					this.expression.getSecondaryStrength(), expressionInfoInDB.getSecondaryStrength(),
-//        					this.patterns, patternInfoInDB, userName);
-        		/*System.out.println("Update annotation:"+submissionId+":"+componentId+":"+this.expression.getStage()+":"+
-    					this.expression.getPrimaryStrength()+":"+ expressionInfoInDB.getPrimaryStrength()+":"+
-    					this.expression.getSecondaryStrength()+":"+ expressionInfoInDB.getSecondaryStrength()+":"+
-    					this.patterns+":"+ patternInfoInDB+":"+ userName);*/
+
         		ExpressionPattern[] patternInfoOnPage = this.eeBean.getPatterns();
-//        		if (patterns == null || patterns.length == 0 
-//        				|| patterns[0] == null || patterns[0].getPattern() == null 
-//        				|| patterns[0].getPattern().equals("")) {
-//        			System.out.println("editExpressionBean@patternOnPage is null");
-//        		}
-//        		if (patternInfoInDB == null || patternInfoInDB.length == 0 
-//        				|| patternInfoInDB[0] == null || patternInfoInDB[0].getPattern() == null 
-//        				|| patternInfoInDB[0].getPattern().equals("")) {
-//        			System.out.println("editExpressionBean@patternInDB is null");
-//        		}
         		int errorCode =
         			editExpressionAssembler.updateAnnotation(submissionId, componentId, 
         					this.eeBean.getExpressionDetail().getStage(),

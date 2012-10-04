@@ -76,52 +76,14 @@ public class GenelistExpressionAssembler {
 	/**********************************************************************************************************
 	 * Adjustments for display of expression data 
 	 */
-	
-	double scaleFactor = 1;
-	double upContrast = 1;
-	double downContrast = 1;
-	double zeroOffset = 0;
-	double limit = 1;
-	double scaledLimit = Math.abs(limit * scaleFactor);;
-	
-	public void setDisplayAdjustParameters(double upContrast, double downContrast, double limit, double zeroOffset) {
-		setDisplayAdjustParameters(1, upContrast, downContrast, limit, zeroOffset);
-	}
-	
-	public void setDisplayAdjustParameters(double scale, double upContrast, double downContrast, double limit, double zeroOffset) {
-		this.scaleFactor = scale;
-		this.upContrast = upContrast;
-		this.downContrast = downContrast;
-		this.limit = limit;
-		this.zeroOffset = zeroOffset;
-		scaledLimit = Math.abs(limit * scale);
-	}
-	
-	public void adjustExpressionsForDisplay(double[][] data) {
-		adjustExpressionsForDisplay(data, scaleFactor, upContrast, downContrast, limit, zeroOffset);
-	}
 
-	public double getAdjustedExpression(double value) {
-		value -= zeroOffset;
-		value *= scaleFactor;
-		value /= (value<0)? downContrast : upContrast;
-		if (value < -scaledLimit)
-			value = -scaledLimit;
-		if (value > scaledLimit)
-			value = scaledLimit;
-		
-		return value;
-	}
-
-	public void adjustExpressionsForDisplay(double[][] data, double upContrast, double downContrast, double limit, double zeroOffset) {
-		adjustExpressionsForDisplay(data, 1, upContrast, downContrast, limit, zeroOffset);
-	}
-	
 	public void adjustExpressionsForDisplay(double[][] data, double scaleFactor, double upContrast, double downContrast, double limit, double zeroOffset) {
-//		int upLimit = (int)Math.round(limit / upContrast);
-//		int downLimit = (int)Math.round(limit / downContrast);
+	    if (debug) {
+		System.out.println("GenelistExpressionAssembler.adjustExpressionsForDisplay");
+		System.out.println(" scale = "+scaleFactor+" upContrast = "+upContrast+" downContrast = "+downContrast+" limit = "+limit+" zeroOffset = "+zeroOffset);
+	    }
 		double scaledLimit = Math.abs(limit * scaleFactor);
-//	System.out.println("BBB    "+scaleFactor+"   "+ upContrast+"   "+ downContrast+"   "+limit+"   "+ zeroOffset+"   "+scaledLimit);
+
 		for(int i=0; i<data.length; i++)
 			for(int j=0; j<data[0].length; j++) {
 				data[i][j] -= zeroOffset;
@@ -133,13 +95,4 @@ public class GenelistExpressionAssembler {
 					data[i][j] = scaledLimit;
 			}
 	}
-	
-	public String[][] getCluster() {
-		String[][] cluster = null;
-		
-		return cluster;
-	}
-	
-
-	
 }
