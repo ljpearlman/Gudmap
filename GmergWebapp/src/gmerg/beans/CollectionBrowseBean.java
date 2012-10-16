@@ -261,7 +261,7 @@ public class CollectionBrowseBean {
 	}
 
 	public CollectionBrowseHelper getBrowseHelper() {
-//		String fg = getFocusGroup();
+		int fg = getCollectionInfo().getFocusGroup();
 //		int focusGroup = 1;
 //		if (fg.equalsIgnoreCase("metanephros"))
 //			focusGroup = 1;
@@ -275,7 +275,7 @@ public class CollectionBrowseBean {
 //			focusGroup = 5;
 		
 		if (browseHelper == null)
-			return Globals.getCollectionBrowseHelper(getCollectionIds(), collectionType);//, focusGroup);
+			return Globals.getCollectionBrowseHelper(getCollectionIds(), collectionType, fg);//, focusGroup);
 		return browseHelper;
 	}
 

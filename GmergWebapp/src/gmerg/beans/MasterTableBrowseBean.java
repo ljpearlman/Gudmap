@@ -115,15 +115,15 @@ public class MasterTableBrowseBean {
 			masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
 		    }
 		    // make only Developing Kidney (MOE430) shown initially to enhance user experience (fast)
-		    String str = null;
-		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
-			if (masterTableInfo.selected) {
-			    str = masterTableInfo.getInfo().getTitle().toLowerCase();
-			    if (-1 == str.indexOf("developing") &&
-				-1 == str.indexOf("kidney"))
-				masterTableInfo.selected = false;
-			}
-		    }
+//		    String str = null;
+//		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
+//			if (masterTableInfo.selected) {
+//			    str = masterTableInfo.getInfo().getTitle().toLowerCase();
+//			    if (-1 == str.indexOf("developing") &&
+//				-1 == str.indexOf("kidney"))
+//				masterTableInfo.selected = false;
+//			}
+//		    }
 		}
 		else 
 			for (MasterTableDisplayInfo masterTableInfo : allMasterTables)
