@@ -227,7 +227,7 @@ public class MasterTableBrowseBean {
 		
 		
 		if (collectionId != null) {
-			// used when viewing collection
+			// used when viewing collection 
 			probeIds = CollectionAssembler.instance().getCollectionItems(Integer.parseInt(collectionId));
 		}
 		else if (genelistId != null) {
@@ -252,16 +252,6 @@ public class MasterTableBrowseBean {
 		return ret;
 	}
 	
-	protected ArrayList<String> getCollectionIds() {
-		ArrayList<String> collectionIds = new ArrayList<String>();
-//		if (isClipboard())
-//			collectionIds = ClipboardDelegateCookieImp.getClicpboardIds(collectionType);
-//		else //Stored collection
-			collectionIds = CollectionAssembler.instance().getCollectionItems(Integer.parseInt(collectionId));
-		
-		return collectionIds;
-	}
-
 	private String getViewName(String id) {
 		String viewName = "masterTable_";
 		if (genelistId!=null) 

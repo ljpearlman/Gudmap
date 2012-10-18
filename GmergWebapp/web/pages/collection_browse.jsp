@@ -124,7 +124,7 @@
 
 
 	<%-- only shown when the collection is not viewed in heat map - ie Entities, Genes or Images --%>
-	<h:panelGroup rendered="#{CollectionBrowseBean.collectionType=='1' || CollectionBrowseBean.collectionType=='2'}" >
+	<h:panelGroup rendered="#{CollectionBrowseBean.collectionType=='0' || CollectionBrowseBean.collectionType=='1' || CollectionBrowseBean.collectionType=='2'}" >
 		<f:subview id="collectionBrowse">
 			<jsp:include page="../includes/browse_table.jsp" />
 		</f:subview>

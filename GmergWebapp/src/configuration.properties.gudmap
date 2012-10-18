@@ -9,8 +9,8 @@ db_driver=com.mysql.jdbc.Driver
 #password=submission_admin$$88
 #database=EureGudmap
 
-host=jdbc:mysql://clynelish:33061/
-#host=jdbc:mysql://glenmoray:3306/
+#host=jdbc:mysql://clynelish:33061/
+host=jdbc:mysql://glenmoray:3306/
 user=gudmap
 password=patience
 database=GudmapGX
