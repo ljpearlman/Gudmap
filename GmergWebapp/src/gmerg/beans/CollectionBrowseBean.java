@@ -167,6 +167,12 @@ public class CollectionBrowseBean {
        	// saveStatus
 		Visit.setStatusParam("collectionId", collectionId);
 		Visit.setStatusParam("collectionType", collectionType);
+		
+				
+		if (collectionType == 3)
+			Visit.setStatusParam("platformId", "GPL1261");
+		if (collectionType == 4)
+			Visit.setStatusParam("platformId", "GPL6246");
 	}
 	
 	protected ArrayList<String> getCollectionIds() {
