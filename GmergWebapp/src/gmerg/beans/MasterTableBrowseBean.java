@@ -7,6 +7,7 @@ import gmerg.assemblers.CollectionAssembler;
 import gmerg.entities.BrowseTableTitle;
 import gmerg.entities.Globals;
 import gmerg.entities.submission.array.MasterTableInfo;
+import gmerg.model.ClipboardDelegateCookieImp;
 import gmerg.utils.table.*;
 import gmerg.utils.DbUtility;
 import gmerg.utils.FacesUtil;
@@ -30,7 +31,8 @@ public class MasterTableBrowseBean {
 	private String masterTableId;
 	private String platformId;
     private String collectionId;
-	
+    private int collectionType;
+
 	public class MasterTableDisplayInfo  {
 		boolean selected;
 		MasterTableInfo info;
@@ -111,8 +113,14 @@ public class MasterTableBrowseBean {
 		
 		collectionId = Visit.getRequestParam("collectionId");
 		platformId = Visit.getRequestParam("platformId");
-//		platformId = (String)FacesUtil.getSessionValue("PlatformId.value");
 
+		if (isClipboard())
+			collectionType = Integer.parseInt(Visit.getRequestParam("collectionType", "0"));
+//		else
+//			collectionType = getCollectionInfo().getType(); 
+		
+		
+		
 		masterTableId = Visit.getRequestParam("masterTableId");
 		if (masterTableId != null) // If a specific master table is requested
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
@@ -175,6 +183,11 @@ public class MasterTableBrowseBean {
 	// ********************************************************************************
 	// Private Methods
 	// ********************************************************************************
+	private boolean isClipboard() {
+		return  "clipboard".equals(collectionId);
+	}
+
+	
 	private void setVisibleMasterTables(String selectionString) {
 		for (int i=0; i<selectionString.length(); i++)
 			allMasterTables.get(i).selected  = (selectionString.charAt(i)=='1');
@@ -225,8 +238,10 @@ public class MasterTableBrowseBean {
 		
 		
 		if (collectionId != null) {
-			// used when viewing collection 
-			probeIds = CollectionAssembler.instance().getCollectionItems(Integer.parseInt(collectionId));
+			if (isClipboard())
+				probeIds = ClipboardDelegateCookieImp.getClicpboardIds(collectionType);
+			else // used when viewing Stored collection
+				probeIds = CollectionAssembler.instance().getCollectionItems(Integer.parseInt(collectionId));
 		}
 		else if (genelistId != null) {
 			probeIds = DbUtility.retrieveGenelistProbeIds(genelistId, platformId);

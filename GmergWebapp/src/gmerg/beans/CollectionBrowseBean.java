@@ -267,7 +267,10 @@ public class CollectionBrowseBean {
 	}
 
 	public CollectionBrowseHelper getBrowseHelper() {
-		int fg = getCollectionInfo().getFocusGroup();
+		
+		int fg = 0;
+		if (!isClipboard())			
+			fg = getCollectionInfo().getFocusGroup();
 
 		if (browseHelper == null)
 			return Globals.getCollectionBrowseHelper(getCollectionIds(), collectionType, fg);
