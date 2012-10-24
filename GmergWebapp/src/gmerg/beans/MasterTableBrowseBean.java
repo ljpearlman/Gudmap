@@ -21,7 +21,7 @@ import gmerg.utils.Visit;
  * 
 */
 public class MasterTableBrowseBean {
-    static private boolean debug = true;
+    static private boolean debug = false;
 
 	private String genelistId;
 	private String geneSymbol;

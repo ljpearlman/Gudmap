@@ -1517,7 +1517,7 @@ public class AdvancedSearchDBQuery {
 		      ret = pqList[i];
 		      
 		      if (debug)
-			  System.out.println("sql = "+  ret.getQuerySQL().toLowerCase());
+			  System.out.println("sql = "+  ret.getQuerySQL());
 		      
 		      break;
 		  }
