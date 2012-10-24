@@ -133,18 +133,20 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	
 	// offset and retrieval number
 	if (offset != null) {
-	    
 	    if (!offset.equalsIgnoreCase("ALL")) {
 		if (isValidInteger(offset)) {
 		    int os = Integer.parseInt(offset) - 1;
-		    queryString = queryString + " LIMIT " + Integer.toString(os);
+		    if (0 > os)
+			queryString = queryString + " LIMIT 0";
+		    else
+			queryString = queryString + " LIMIT " + os;
 		} else {
 		    queryString = queryString + " LIMIT 0";
 		}
 		if (isValidInteger(num)) {
-		    queryString = queryString + " ," + num;
+		    queryString = queryString + ", " + num;
 		} else {
-		    queryString = queryString + " ," + "100000000";
+		    queryString = queryString + ", " + "100000000";
 		}
 	    }
 	}
@@ -870,7 +872,9 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	String defaultOrder = new String(" ORDER BY MBC_GNF_SYMBOL");
 	String queryString = assembleBrowseSubmissionQueryStringArray(2, query, defaultOrder, order, offset, "500");
 	
-	//		System.out.println("genelist query: " + queryString);
+	if (debug)
+	    System.out.println("genelist offset = "+offset+" query: " + queryString);
+
 	parQ.setQuerySQL(queryString);
 	
 	// execute query and assemble result

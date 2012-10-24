@@ -37,7 +37,7 @@
         <td colspan="4" align="left" class="plaintext">Gene Query</td>
       </tr>
       <tr class="header-stripey">
-        <td width=85% align="left">
+        <td width="85%" align="left">
         &nbsp;<h:message for="geneSymbol" styleClass="plainred"/><br/>
         <span class="plaintextbold">Search DB for
               <h:selectOneMenu id="inputType" value="#{QueryBean.inputType}">
@@ -75,7 +75,7 @@
                   </h:selectOneMenu>
                   </span>
         </td>
-        <td width=15% align="center"><h:commandButton image="../images/gu_go.gif" alt="Go" styleClass="icon" action="#{QueryBean.findGenes}" /></td>
+        <td width="15%" align="center"><h:commandButton image="../images/gu_go.gif" alt="Go" styleClass="icon" action="#{QueryBean.findGenes}" /></td>
       </tr>
       </table>
       </h:form>
@@ -102,14 +102,14 @@
         <td align="left" class="plaintext" colspan="4">Find a specific submission</td>
       </tr>
       <tr class="header-stripey">
-        <td align="left" colspan="3" width=85%>
+        <td align="left" colspan="3" width="85%">
         &nbsp;<h:message for="subid" styleClass="plainred"/><br />
         <span class="plaintextbold">
           Enter Submission ID:
           <h:inputText id="subid" value="#{QueryBean.submissionID}" />
         </span>
         </td>
-        <td align="center" width=15%>
+        <td align="center" width="15%">
         <h:commandButton image="../images/gu_go.gif" styleClass="icon" alt="Go" action="#{QueryBean.submissionInfo}" />
         </td>
       </tr>

@@ -142,12 +142,6 @@
 		<filter-name>MyFacesExtensionsFilter</filter-name>
 		<url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
 	</filter-mapping>
-
-<!--
-	<session-config>
-		<session-timeout>60</session-timeout>
-	</session-config>
- -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
@@ -164,11 +158,15 @@
 			<is-xml>false</is-xml>
 		</jsp-property-group>
 	</jsp-config>
+
+                <session-config>
+                                <session-timeout>-1</session-timeout> 
+                </session-config>
 	
 	<login-config>
 		<auth-method>BASIC</auth-method>
 	</login-config>
-	
+  	
 	<error-page>
 	  <error-code>401</error-code>
 	  <location>/errordocs/unauthorised.html</location>

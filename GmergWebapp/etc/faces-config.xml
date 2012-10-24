@@ -18,22 +18,16 @@
       <description>
         Alternate text if we synthesize an ImageArea bean.
       </description>
-      <property-name>alt</property-name>
-      <property-class>java.lang.String</property-class>
     </property>
     <property>
       <description>
         Hotspot coordinates if we synthesize an ImageArea bean.
       </description>
-      <property-name>coords</property-name>
-      <property-class>java.lang.String</property-class>
     </property>
     <property>
       <description>
         Shape (default, rect, circle, poly) if we synthesize an ImageArea bean.
       </description>
-      <property-name>shape</property-name>
-      <property-class>java.lang.String</property-class>
     </property>
     
     <component-extension>
@@ -51,8 +45,6 @@
       <description>
         Alternate text for the currently selected child AreaComponent.
       </description>
-      <property-name>current</property-name>
-      <property-class>java.lang.String</property-class>
     </property>
     
     <component-extension>
@@ -303,18 +295,8 @@
   <managed-bean-name>ImageMap</managed-bean-name>
   <managed-bean-class>gmerg.entities.focus.components.model.ImageMap</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
-  <managed-property>
-   <property-name>emapId</property-name>
-   <property-class>java.lang.String</property-class>
-   <value/>
-  </managed-property>
-  <managed-property>
-   <property-name>selectedOrgan</property-name>
-   <property-class>java.lang.String</property-class>
-   <value/>
-  </managed-property>
-
  </managed-bean>
+
  <managed-bean>
   <managed-bean-name>InsituFocusBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.InsituFocusBrowseBean</managed-bean-class>
@@ -407,41 +389,6 @@
   <managed-bean-name>MicOrganDiscriptionBean</managed-bean-name>
   <managed-bean-class>gmerg.entities.focus.components.model.MicOrganDiscriptionBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
-  <managed-property>
-   <property-name>design</property-name>
-   <property-class>java.util.ArrayList</property-class>
-   <value/>
-  </managed-property>
-  <managed-property>
-   <property-name>genelist</property-name>
-   <property-class>ArrayList[]</property-class>
-   <value/>
-  </managed-property>
-  <managed-property>
-   <property-name>links</property-name>
-   <property-class>String[]</property-class>
-   <value/>
-  </managed-property>
-  <managed-property>
-   <property-name>pi</property-name>
-   <property-class>java.lang.String</property-class>
-   <value/>
-  </managed-property>
-  <managed-property>
-   <property-name>secondTitle</property-name>
-   <property-class>java.lang.String</property-class>
-   <value/>
-  </managed-property>
-  <managed-property>
-   <property-name>summary</property-name>
-   <property-class>java.util.ArrayList</property-class>
-   <value/>
-  </managed-property>
-  <managed-property>
-   <property-name>title</property-name>
-   <property-class>java.lang.String</property-class>
-   <value/>
-  </managed-property>
  </managed-bean>
 
  <managed-bean>
@@ -464,21 +411,6 @@
   <managed-bean-name>MicTutorialBean</managed-bean-name>
   <managed-bean-class>gmerg.entities.focus.components.model.MicTutorialBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
-  <managed-property>
-   <property-name>subImages</property-name>
-   <property-class>java.util.ArrayList</property-class>
-   <value/>
-  </managed-property>
-  <managed-property>
-   <property-name>title</property-name>
-   <property-class>java.lang.String</property-class>
-   <value/>
-  </managed-property>
-  <managed-property>
-   <property-name>tutorial</property-name>
-   <property-class>java.util.ArrayList</property-class>
-   <value/>
-  </managed-property>
  </managed-bean>
 
  <managed-bean>
@@ -904,14 +836,6 @@
  </navigation-rule>
 
  <navigation-rule>
-  <from-view-id>/pages/edit_entry_page.jsp</from-view-id>
-  <navigation-case>
-   <from-outcome>browseEditHistory</from-outcome>
-   <to-view-id>/pages/edit_history.jsp</to-view-id>
-  </navigation-case>
- </navigation-rule>
-
- <navigation-rule>
   <from-view-id>/pages/advanced_query_result.jsp</from-view-id>
   <navigation-case>
    <from-outcome>AdvancedQuery</from-outcome>
@@ -958,29 +882,6 @@
   <navigation-case>
    <from-outcome>AdvancedQuery</from-outcome>
    <to-view-id>/pages/focus_gene_browse.jsp</to-view-id>
-  </navigation-case>
- </navigation-rule>
-
- <navigation-rule>
-  <from-view-id>/pages/gene_query_waiting.jsp</from-view-id>
-  <navigation-case>
-   <to-view-id>/pages/focus_gene_browse.jsp</to-view-id>
-  </navigation-case>
- </navigation-rule>
-
- <navigation-rule>
-  <from-view-id>/pages/gene_query_waiting_per_organ.jsp</from-view-id>
-  <navigation-case>
-   <to-view-id>/pages/focus_gene_browse.jsp</to-view-id>
-  </navigation-case>
- </navigation-rule>
-
- <navigation-rule>
-  <from-view-id>/pages/mic_focus_frame.jsp</from-view-id>
-  <navigation-case>
-   <from-outcome>viewCollection</from-outcome>
-   <to-view-id>/pages/mic_focus_frame.jsp</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
 

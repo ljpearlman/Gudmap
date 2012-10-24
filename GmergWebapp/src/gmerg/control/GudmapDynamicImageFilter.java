@@ -106,16 +106,13 @@ public class GudmapDynamicImageFilter implements Filter{
 			TitleImageGenerator titleGenerator = new TitleImageGenerator();
 			if (request.getParameter("masterTable") != null) {
 				if (height==0)
-					height = 10;
-//					height = 14;
+					height = 12;
 				if (width==0)
-					width = 95;
+				    width = 170;
 				vertical = true;
 				background = new Color(0xE6, 0xE8, 0xFA); //Stripy color from gudmap css
 			}
-//			ret = titleGenerator.getTitleImage(suffix, width, height, background, vertical);
-			ret = titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.PLAIN,  12), background, vertical, "left");
-//			ret = titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.BOLD,  12), background, vertical, "right");
+			ret = titleGenerator.getTitleImage(suffix, width, height, 0, new Font("SansSerif", Font.PLAIN,  9), background, vertical, "center");
 		}
 		
 		return ret;

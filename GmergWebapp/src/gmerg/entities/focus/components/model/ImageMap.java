@@ -27,11 +27,11 @@ import javax.faces.model.SelectItem;
  */
 public class ImageMap {
 
-	String emapId;
+    protected String emapId="";
     protected ArrayDataModel model = null;
     protected Object[][] subs;
     protected SelectItem[] organRadioList;
-    protected String selectedOrgan;
+    protected String selectedOrgan="";
     protected String operation;
     protected String diagramURL;
     protected boolean diagram = false;

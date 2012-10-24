@@ -10,7 +10,7 @@
         <td><table border ="0">
 	  
           <tr>
-	  <td class="plaintext" width=20%>Series GEO ID:</td>
+	  <td class="plaintext" width="20%">Series GEO ID:</td>
           <td class="datatext">
 			<h:outputLink value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc=#{micSeriesBean.series.geoID}" styleClass="plaintext">
             <h:outputText value="#{micSeriesBean.series.geoID}" />

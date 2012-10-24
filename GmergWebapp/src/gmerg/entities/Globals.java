@@ -217,20 +217,31 @@ public class Globals {
 	}
 
 	//***********************************************************************************************************************************
-	private static final String[] noSessionControlPages = {	"database_homepage", 
-															"lab_summaries",
-															"focus_gene_index_browse",
-															"focus_stage_browse",
-															"analysis",
-															"requirement",
-															"download_help",
-															"entry_page",
-															"ish_edit_expression",
-															"edit_expression",
-															//"lab_ish_edit",
-															"edit_entry_page_per_lab",
-															"index",
-															"db_home"} ;
+	private static final String[] noSessionControlPages = {"database_homepage", 
+							       "analysis",
+							       "lab_summaries",
+							       "series_browse",
+							       "focus_mic_browse",
+							       "focus_platform_browse",
+							       "focus_stage_browse",
+							       "focus_ish_browse",
+							       "focus_ihc_browse",
+							       "focus_insitu_browse",
+							       "focus_tg_browse",
+							       "focus_gene_index_browse",
+							       "focus_stage_browse",
+							       "all_components_genelists",
+							       "anatomy_tree",
+							       "boolean_test",
+							       "genelist_folder",
+							       "mic_focus",
+							       "requirement",
+							       "query_db",
+							       "ontologydescription",
+							       "restricted_access_redirect",
+							       "series_browse",
+							       "entry_page",
+							       "index"};
 
 	public static String[] getNoSessionControlPages() {
 		return noSessionControlPages;

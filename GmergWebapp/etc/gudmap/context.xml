@@ -1,5 +1,6 @@
 <Context 
 debug="5"
+maxInactiveInterval="1800"
 privileged="true"
 reloadable="true"
 crossContext="true">

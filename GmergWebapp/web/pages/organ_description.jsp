@@ -20,14 +20,14 @@
         <td width="80%">
           <table border="0" cellspacing="2">
 	        <tr>
-              <td class="plaintextbold" align="center" width=30%></td>
+              <td class="plaintextbold" align="center" width="30%"></td>
               <td class="plaintextbold" align="center">
                 <c:out value="${MicOrganDiscriptionBean.genelist[0][0]}" />
               </td>		  
             </tr>	  
 		  <c:if test="${MicOrganDiscriptionBean.heading[0] != null}">
 	        <tr align="center" valign="middle" class="table-nostripe">
-              <td class="plaintextbold" align="left" width=30%>
+              <td class="plaintextbold" align="left" width="30%">
                 ${MicOrganDiscriptionBean.heading[0]}
               </td>
               <td align="center">
@@ -47,7 +47,7 @@
 		  
 		  <c:if test="${MicOrganDiscriptionBean.heading[1] != null}">
 	          <tr>
-                  <td class="plaintextbold" align="left" width=30%>
+                  <td class="plaintextbold" align="left" width="30%">
                     ${MicOrganDiscriptionBean.heading[1]}
                   </td>
                   <td align="center">
@@ -67,7 +67,7 @@
 		  
 		  <c:if test="${MicOrganDiscriptionBean.heading[2] != null}">
 	          <tr align="center" valign="middle" class="table-nostripe">
-                  <td class="plaintextbold" align="left" width=30%>
+                  <td class="plaintextbold" align="left" width="30%">
                     ${MicOrganDiscriptionBean.heading[2]}
                   </td>
                   <td align="center">
@@ -87,7 +87,7 @@
 		  
 		  <c:if test="${MicOrganDiscriptionBean.heading[3] != null}">
 	          <tr>
-                  <td class="plaintextbold" align="left" width=30%>
+                  <td class="plaintextbold" align="left" width="30%">
                     ${MicOrganDiscriptionBean.heading[3]}
                   </td>
                   <td align="center">
@@ -107,7 +107,7 @@
 		  
 		  <c:if test="${MicOrganDiscriptionBean.heading[4] != null}">
 	          <tr align="center" valign="middle" class="table-nostripe">
-                  <td class="plaintextbold" align="left" width=30%>
+                  <td class="plaintextbold" align="left" width="30%">
                     ${MicOrganDiscriptionBean.heading[4]}
                   </td>
                   <td align="center">
@@ -127,7 +127,7 @@
 		  
 		  <c:if test="${MicOrganDiscriptionBean.heading[5] != null}">
 	          <tr>
-                  <td class="plaintextbold" align="left" width=30%>
+                  <td class="plaintextbold" align="left" width="30%">
                     ${MicOrganDiscriptionBean.heading[5]}
                   </td>
                   <td align="center">

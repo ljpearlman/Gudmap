@@ -6,9 +6,9 @@ import javax.faces.context.FacesContext;
 
 public class MicTutorialBean {
 	
-	String title = null;
-	ArrayList tutorial = null;
-	ArrayList subImages = null;
+    String title = "";
+    ArrayList tutorial = new ArrayList();
+    ArrayList subImages = new ArrayList();
 	
 	 public ArrayList getSubImages() {
 		return subImages;

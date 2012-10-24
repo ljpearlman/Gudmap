@@ -7,13 +7,13 @@ import javax.faces.context.FacesContext;
 
 public class MicOrganDiscriptionBean {
 	String prefix = "http://www.gudmap.org/Gudmap/arrayData";
-    String title = null;
-    String pi = null;
-    String secondTitle = null;
-    ArrayList summary = null;
-    ArrayList design = null;
-    String[] links = null;
-    ArrayList[] genelist = null;
+    String title = "";
+    String pi = "";
+    String secondTitle = "";
+    ArrayList summary = new ArrayList();
+    ArrayList design = new ArrayList();
+    String[] links = new String[0];
+    ArrayList[] genelist = new ArrayList[0];
     ArrayList heading = null;
 	
 	public ArrayList getHeading() {

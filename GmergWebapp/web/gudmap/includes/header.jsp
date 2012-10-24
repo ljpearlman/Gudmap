@@ -78,12 +78,13 @@
 	</script>
   
 	<script type="text/javascript" src="../scripts/rico.js"></script>
-
+<!-- Do not know why it needs to be refreshed, comment it out to see whether it is needed
 	<c:set var="refreshRequired" value="<%= gmerg.control.GudmapSessionTimeoutFilter.isRefreshRequired(request.getRequestURI()) %>" />
 	<c:set var="maxInactiveInterval" value="<%= session.getMaxInactiveInterval() %>" />
 	<c:if test="${refreshRequired}" >
 		<meta http-equiv="refresh" content="${maxInactiveInterval}">
 	</c:if>
+-->
 	<c:set var="statusParams" value="<%= gmerg.utils.Visit.getStatus() %>" />
 	<script type="text/javascript">
 		function setCookie(c_name,value,expiredays)

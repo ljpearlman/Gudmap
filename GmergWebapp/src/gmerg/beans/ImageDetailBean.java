@@ -88,6 +88,9 @@ public class ImageDetailBean {
     }
     
     public String getImageDir () {
+	if (null == imageDetail)
+	    return "";
+
     	String path = imageDetail.getFilePath();
     	/*if (path.startsWith("/", path.length()-1));
     	  //path = path.substring(0, path.length()-2);
