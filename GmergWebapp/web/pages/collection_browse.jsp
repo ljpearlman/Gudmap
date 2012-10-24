@@ -46,7 +46,7 @@
 			</h:panelGrid>
 			<h:outputText value="&nbsp;" escape="false"/>
 		</h:panelGroup>
-	
+<%--  	
 		<h:panelGrid columns="2" columnClasses="plaintextbold, plaintext" rendered="#{CollectionBrowseBean.clipboard}" >
 			<h:outputText value="Display my: " />
 			<h:selectOneMenu value="#{CollectionBrowseBean.collectionType}"
@@ -58,7 +58,7 @@
 		<h:commandLink id="reload" value="" action="#{CollectionBrowseBean.reload}" >
 			<f:param name="actionMethodCalled" value="true" />
 		</h:commandLink>
-		
+--%>		
 	</h:form>
 
 	<%-- only shown when the collection is viewed in heat map - ie MOE430 or ST1 --%>

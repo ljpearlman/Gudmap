@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import gmerg.assemblers.CollectionAssembler;
 import gmerg.entities.BrowseTableTitle;
+import gmerg.entities.CollectionInfo;
 import gmerg.entities.Globals;
 import gmerg.entities.submission.array.MasterTableInfo;
 import gmerg.model.ClipboardDelegateCookieImp;
@@ -20,7 +21,7 @@ import gmerg.utils.Visit;
  * 
 */
 public class MasterTableBrowseBean {
-    static private boolean debug = false;
+    static private boolean debug = true;
 
 	private String genelistId;
 	private String geneSymbol;
@@ -32,7 +33,9 @@ public class MasterTableBrowseBean {
 	private String platformId;
     private String collectionId;
     private int collectionType;
-
+	private CollectionInfo collectionInfo = null;
+	
+	
 	public class MasterTableDisplayInfo  {
 		boolean selected;
 		MasterTableInfo info;
@@ -116,8 +119,8 @@ public class MasterTableBrowseBean {
 
 		if (isClipboard())
 			collectionType = Integer.parseInt(Visit.getRequestParam("collectionType", "0"));
-//		else
-//			collectionType = getCollectionInfo().getType(); 
+		else if (collectionId != null)
+			collectionType = getCollectionInfo().getType(); 
 		
 		
 		
@@ -178,6 +181,13 @@ public class MasterTableBrowseBean {
 	public String startTreeView() {
 		displayTreeView = true;
 		return null;
+	}
+	
+
+	public CollectionInfo getCollectionInfo() {
+		if (collectionInfo == null)
+			collectionInfo = CollectionAssembler.instance().getCollectionInfo(Integer.parseInt(collectionId));
+		return collectionInfo;
 	}
 	
 	// ********************************************************************************
