@@ -218,10 +218,10 @@ public final class DBHelper {
 			if (null != str)
 			    str = str.trim();
 			if (null != str && !str.equals(""))
-			    results.add(resSet.getString(1));
+			    results.add(str);
     		}
-    		if (results != null && results.size() != 0) {
-    			return results.toArray(new String[results.size()]);
+    		if (results != null && results.size() > 0) {
+    			return results.toArray(new String[0]);
     		}
     	}
 		return null;
