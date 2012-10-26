@@ -220,7 +220,8 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 //		System.out.println("BooleanQueryDAO:getGeneSymbols:input: " + input);
 		// get query string
 		String sql = this.getGeneBooleanQueryString(input);
-		System.out.println("geneBooleanQueryString:"+sql);
+//		System.out.println("geneBooleanQueryString:"+sql);
+
 		if (sql == null || sql.equals("")) { // user might provide empty search query string
 			return null;
 		}
