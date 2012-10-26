@@ -209,11 +209,16 @@ public final class DBHelper {
 	 * @throws SQLException
 	 */
     public static String[] formatResultSetToStringArray(ResultSet resSet) throws SQLException {
+	String str = null;
     	if (resSet.first()) {
     		resSet.beforeFirst();
 			ArrayList<String> results = new ArrayList<String>();
     		while (resSet.next()) {
-    			results.add(resSet.getString(1));
+    			str = resSet.getString(1);
+			if (null != str)
+			    str = str.trim();
+			if (null != str && !str.equals(""))
+			    results.add(resSet.getString(1));
     		}
     		if (results != null && results.size() != 0) {
     			return results.toArray(new String[results.size()]);
