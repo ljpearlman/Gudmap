@@ -22,7 +22,7 @@
       
       <h:panelGrid columns="1">
         <h:panelGroup styleClass="header-stripey">
-          <h:dataTable value="#{ishSubmissionBean.submission.acknowledgements}" var="ack">
+          <h:dataTable value="#{ISHSingleSubmissionBean.submission.acknowledgements}" var="ack">
             <h:column>
              <f:facet name="header">
                <h:outputText value="Edit" styleClass="plaintextbold" />

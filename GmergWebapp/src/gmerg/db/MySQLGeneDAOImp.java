@@ -233,7 +233,7 @@ public class MySQLGeneDAOImp implements GeneDAO {
 			}
 //			System.out.println("geneDAO:getSymbolsFromGeneInput:symbolsFromrefGeneInfoSynonymQ: " + symbolsFromrefGeneInfoSynonymQ);
 		    if (debug)
-		    	System.out.println("MySQLGeneDAOImp.allQueriesQ.sql = "+allQueriesQ.toLowerCase());
+			System.out.println("MySQLGeneDAOImp.sql = "+allQueriesQ.toLowerCase());
 			stmt = conn.prepareStatement(allQueriesQ);
 			
 			//for the first 4 in 'union' query, set the parameters
@@ -264,9 +264,6 @@ public class MySQLGeneDAOImp implements GeneDAO {
 			    	stmt.setString((7*input.length+1+i), synList[i].trim());// xingjun - 09/10/2009 - change from 6 to 7
 			    }
 			}
-			
-		    if (debug)
-		    	System.out.println("MySQLGeneDAOImp.stmt = "+stmt);
 
 			resSet = stmt.executeQuery();
 			if(resSet.first()){

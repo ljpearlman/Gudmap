@@ -26,7 +26,7 @@
 			<h:outputText value="&nbsp" escape="false"/>
    			<h:graphicImage id="progress" value="../images/spinnerBig.gif"  styleClass="icon" />
 		</h:panelGrid>			
- 		<h:commandButton id="getSamples" action="#{AnalysisBean.getSamples}" value="" immediate="true" style="visibility:hidden" />
+ 		<h:commandButton id="getSamples" action="#{ArrayAnalysisBean.getSamples}" value="" immediate="true" style="visibility:hidden" />
 	</h:form>
 
 	<jsp:include page="/includes/footer.jsp" />	

@@ -36,7 +36,7 @@
           </h:outputLink>
           <h:outputText value="Name:" />
           <h:panelGroup>
-            <h:outputText styleClass="datatext" value="#{mAntibodyBean.antibody.geneName}" />
+            <h:outputText styleClass="datatext" value="#{AntibodyBean.antibody.geneName}" />
             <h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{AntibodyBean.antibody.locusTag}" target="_blank">
               <h:outputText value="(#{AntibodyBean.antibody.locusTag})" />
             </h:outputLink>

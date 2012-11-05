@@ -132,14 +132,6 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			}
 
 			/** 4 - developmental stage */
-//			String[] insituSubmissionNumberAndStageInfo = 
-//				this.getInsituSubmissionNumberAndStageInfo(relatedInsituSubmissions);
-//			// stage string
-//			String stage = insituSubmissionNumberAndStageInfo[0];
-//			
-//			// submission numbers
-//			String submissionNumber = insituSubmissionNumberAndStageInfo[1];
-//			data[i][3] = new DataItem(stage + " (" + submissionNumber + ")");
 			// insitu stages
 			String[] insituGeneStages = this.getGeneStagesInsitu(conn, symbol);
 			// array stages
@@ -191,32 +183,23 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 */
 			// xingjun - 02/06/2011 - made change for euregene app
 			ArrayList<DataItem> complexValue = new ArrayList<DataItem>();
-			if (bundle.getString("project").equals("EuReGene")) {// xingjun - 02/06/2011
-				// do nothing for Euregene 
-			} else {
-				MasterTableInfo[] masterTableInfo = DbUtility.getAllMasterTablesInfo();
-				String geneSymbol = requiredSymbols.get(i);
-				for (MasterTableInfo item : masterTableInfo) 
-				    if (DbUtility.retrieveGeneProbeIds(geneSymbol, item.getPlatform()) != null) {//check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
-						element = new DataItem("../dynamicimages/heatmap_" + geneSymbol + ".jpg?tile=5&masterTableId="+item.getId(), 
-														"Click to see " + item.getTitle() + " microarray expression profile for "+ symbol, 
-									      "mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId(), 15);
-						if (debug) 
-						    System.out.println("GeneStripAssembler.retrieveData value = "+element.getValue()+" title = "+element.getTitle()+" link = "+element.getLink());
-						complexValue.add(element);
-				    }
-			}
+			MasterTableInfo[] masterTableInfo = DbUtility.getAllMasterTablesInfo();
+			String geneSymbol = requiredSymbols.get(i);
+			for (MasterTableInfo item : masterTableInfo) 
+			    if (DbUtility.retrieveGeneProbeIds(geneSymbol, item.getPlatform()) != null) {//check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
+				element = new DataItem("../dynamicimages/heatmap_" + geneSymbol + ".jpg?tile=5&masterTableId="+item.getId(), 
+						       "Click to see " + item.getTitle() + " microarray expression profile for "+ symbol, 
+						       "mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId(), 15);
+				if (debug) 
+				    System.out.println("GeneStripAssembler.retrieveData value = "+element.getValue()+" title = "+element.getTitle()+" link = "+element.getLink());
+				complexValue.add(element);
+			    }
 			
 			data[i][6] = new DataItem(complexValue, 81);	// 81 is complex & centre aligned
 			
 			/** 8 - RNA_SEQ */
 			// Bernie 5/7/2011 - added new column for RNA_SEQ
 			// requires link to USCS Browser
-			// xingjun - 21/07/2011 - make the link work
-			// xingjun - 28/07/2011 - modified to access ucsc website either by session id or by user name and session name
-			// ucsc url string and session id are hard-coded for time being, will make it dynamic once the process finalised
-//			String ucscUrlSampleWithSessionId = "http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr2:104966686-105013771&hgsid=203342519";
-//			String ucscUrlSampleWithoutSessionId = "http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr2:104966686-105013771&hgS_doOtherUser=submit&hgS_otherUserName=R.thiagarajan26&hgS_otherUserSessionName=UQGUDMAP";
 			String ucscUrlPrefix = "http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr";
 			
 			// used when accessed by session id
@@ -629,99 +612,6 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			return submissionId;
 		}
 
-        // failed
-		// find the largest stage smaller than 22
-//		int posDown = -1;
-//		for (int i=0;i<len;i++) {
-//			String stage = ((String[])insituSubmissions.get(i))[2];
-////			System.out.println("finding stage north: " + stage);
-//			if (Integer.parseInt(stage.substring(2)) > 21) { // there's no submisstion at stage < 22 at all
-////				System.out.println("no start position north: " + posDown);
-//				break;
-//			} else if (Integer.parseInt(stage.substring(2)) == 21 || i==(len-1)) {
-//				posDown = i;
-////				System.out.println("start position north: " + posDown);
-//				break;
-//			}
-//		}
-//		
-//		// find the smallest stage larger than 24
-//		int posUp = len;
-//		for (int i=len-1;i>-1;i--) {
-//			String stage = ((String[])insituSubmissions.get(i))[2];
-////			System.out.println("finding stage south: " + stage);
-//			if (Integer.parseInt(stage.substring(2)) < 25) { // there's no submission at stage > 24 at all
-////				System.out.println("no start position south: " + posUp);
-//				break;
-//			} else if (Integer.parseInt(stage.substring(2)) == 25 || i==0) {
-//				posUp = i;
-////				System.out.println("start position south: " + posUp);
-//				break;
-//			}
-//		}
-//		
-//		/** <TS22 **/
-//		// start from the submission with largest stage smaller than 22, head down to the start
-//		// try to find the first submission with assay type 'section'
-//		for (int i=posDown;i>0;i--) {
-//			String assayType = ((String[])insituSubmissions.get(i))[3];
-//			if (assayType.trim().equalsIgnoreCase("section")) {
-//				submissionId = ((String[])insituSubmissions.get(i))[0];
-////				String stage = ((String[])insituSubmissions.get(i))[2];
-////				System.out.println("submission id(" + submissionId +") chosen at " + stage + " - section!!");
-//				break;
-//			}
-//		}
-//		if (submissionId != null) { // found it!
-//			return submissionId;
-//		}
-//		
-//		// failed, start from the submission with largest stage smaller than 22, head down to the start
-//		// try to find the first submission with assay type 'wholemount'
-//		for (int i=posDown;i>0;i--) {
-//			String assayType = ((String[])insituSubmissions.get(i))[3];
-//			if (assayType.trim().equalsIgnoreCase("wholemount")) {
-//				submissionId = ((String[])insituSubmissions.get(i))[0];
-////				String stage = ((String[])insituSubmissions.get(i))[2];
-////				System.out.println("submission id(" + submissionId +") chosen at " + stage + " - wholemount!!");
-//				break;
-//			}
-//		}
-//		if (submissionId != null) { // found it!
-//			return submissionId;
-//		}
-//
-//		/** >TS24 **/
-//		// failed, start from the submission with smallest stage larger than 24, head up to the end
-//		// try to find the first submission with assay type 'section'
-//		for (int i=posUp;i<len;i++) {
-//			String assayType = ((String[])insituSubmissions.get(i))[3];
-//			if (assayType.trim().equalsIgnoreCase("section")) {
-//				submissionId = ((String[])insituSubmissions.get(i))[0];
-////				String stage = ((String[])insituSubmissions.get(i))[2];
-////				System.out.println("submission id(" + submissionId +") chosen at " + stage + " - section!!");
-//				break;
-//			}
-//		}
-//		if (submissionId != null) { // found it!
-//			return submissionId;
-//		}
-//		
-//		// failed, start from the submission with smallest stage smaller than 24, head up to the end
-//		// try to find the first submission with assay type 'wholemount'
-//		for (int i=posUp;i<len;i++) {
-//			String assayType = ((String[])insituSubmissions.get(i))[3];
-//			if (assayType.trim().equalsIgnoreCase("wholemount")) {
-//				submissionId = ((String[])insituSubmissions.get(i))[0];
-////				String stage = ((String[])insituSubmissions.get(i))[2];
-////				System.out.println("submission id(" + submissionId +") chosen at " + stage + " - section!!");
-//				break;
-//			}
-//		}
-//		if (submissionId != null) { // found it!
-//			return submissionId;
-//		}
-		
 		// failed, start from the submissions at stage ts17, head up to the end
 		// try to find the first submission with assay type 'section'
 		for (int i=0;i<len;i++) {
@@ -860,39 +750,6 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		
 		/** calculate expression profile for other structures */
 		//////// comment the code for time being - in case they will be used in future
-////		System.out.println("other structures");
-//		String[] componentArrayOfAllGivenStructures = 
-//			componentsOfAllGivenStructures.toArray(new String[componentsOfAllGivenStructures.size()]);
-//		
-//		// get expression
-//		ArrayList expressionOfOtherComponents = 
-//			geneStripDAO.getGeneExpressionForStructure(symbol, componentArrayOfAllGivenStructures, false);
-//		
-//		// calculate
-//		double indicator = 0;
-//		int compLen = expressionOfOtherComponents.size();
-//		// look for 'present'
-//		for (int j=0;j<compLen;j++) {
-//			String expression = ((String[])expressionOfOtherComponents.get(j))[1];
-//			if (expression.equalsIgnoreCase("present")) {
-//				indicator = 1.00;
-//				break;
-//			}
-//		}
-//		
-//		if (indicator == 0) { // there's no component with expression value of 'present'
-//			// look for 'not detected'
-//			for (int j=0;j<compLen;j++) {
-//				String expression = ((String[])expressionOfOtherComponents.get(j))[1];
-//				if (expression.equalsIgnoreCase("not detected")) {
-//					indicator = -1.00;
-//					break;
-//				}
-//			}
-//		}
-//		
-//		// put calculation result into expression profile array
-//		expressionProfiles[analen] = indicator*barHeight;
 		
 		/** return result */
 		return expressionProfiles;

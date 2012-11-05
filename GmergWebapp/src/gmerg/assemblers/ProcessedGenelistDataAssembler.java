@@ -180,8 +180,6 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 			String suffix = " entr" + ((entriesNum==1)? "y" : "ies" );
 			String title = ((entriesNum==0)?"no" : String.valueOf(entriesNum)) + suffix;
 			if(entriesNum > 0)
-//				tableData[row][colNum1] = new DataItem(title, title, "../pages/ish_selected_submissions.jsf?output=gene&inputType=symbol&criteria=equals&geneSymbol="+geneSymbol, 4); //url for Gudmap ISH
-//				tableData[row][colNum1] = new DataItem(title, title, "../pages/ish_submissions.jsf?queryType=geneQueryISH&output=gene&inputType=symbol&criteria=equals&geneSymbol="+geneSymbol, 4); //url for Gudmap ISH
 				tableData[row][colNum1] = new DataItem(title, title, "../pages/ish_gene_submissions.html?queryType=geneQueryISH&ignoreExpression=true&output=gene&inputType=symbol&criteria=equals&geneSymbol="+geneSymbol, 4); //url for Gudmap ISH
 			else
 				tableData[row][colNum1] = new DataItem(title);

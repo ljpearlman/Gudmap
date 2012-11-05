@@ -51,11 +51,7 @@ public class HeaderQuickSearchBean {
 			if (query.equals("Gene")) {
 //				System.out.println("return QuickGeneQuery");
 	   			return "QuickGeneQuery";
-			} else if (query.equals("Disease")) {
-//				FacesUtil.setSessionValue("query", "Disease");
-//				FacesUtil.setSessionValue("quickSearchInput", quickSearchInput);
-				return "QuickDisease";
-			}
+			} 
 		}
 //		System.out.println("return QuickAdvancedQuery");
 		return "QuickAdvancedQuery";
@@ -65,20 +61,6 @@ public class HeaderQuickSearchBean {
 //		System.out.println("HeaderQuickSearchBean:getQuickSearchParams#########");
 		HashMap<String, String> params = new HashMap<String, String>();
 		String urlParams = null;
-//		query = (String)FacesUtil.getSessionValue("query");
-//		quickSearchInput = (String)FacesUtil.getSessionValue("quickSearchInput");
-//		if (query == null) {
-//			System.out.println("HeaderQuickSearchBean:getQuickSearchParams:query is null");
-//			return "";
-//		}
-//		if (!query.equals("Disease")) {
-//			params.put("input", quickSearchInput);
-//			params.put("query", query);
-//			urlParams = Visit.packParams(params);
-//		} else {
-//			urlParams = "disease=&dis_text=" + quickSearchInput;
-//		}
-		
 		params.put("input", quickSearchInput);
 		params.put("query", query);
 		urlParams = Visit.packParams(params);
