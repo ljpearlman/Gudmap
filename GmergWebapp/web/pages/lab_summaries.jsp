@@ -25,7 +25,8 @@
         <h:panelGrid columns="6" rendered="#{! empty lab.summaryResults}">       
           <f:facet name="header">
             <h:panelGroup styleClass="plaintextbold">
-              <h:outputText  value="#{lab.labName}" />
+              <h:outputText  value="#{lab.labName}" rendered="#{lab.labName != 'Andrew P. McMahon'}"/>
+              <h:outputText  value="GUDMAP-#{lab.labName}" rendered="#{lab.labName == 'Andrew P. McMahon'}"/>
               <h:outputLink value="lab_ish_browse.html">
                 <h:outputText value=" (View All In situ) " />
                 <f:param name="labId" value="#{lab.labId}" />

@@ -302,7 +302,7 @@
 				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/genelist_folder.html">Analysis</a></p>
 				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/edit_entry_page_per_lab.html">Annotate</a></p>
 				<p><a  class="mediumnavtext" href="http://www.gudmap.org/Submission_Archive/index.html">Downloads</a></p>
-				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/lab_summaries.html">Labs</a></p>
+				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/lab_summaries.html">Data Source</a></p>
 				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/collectionList_browse.html">Collections</a></p>
 			</div><!-- #EndLibraryItem -->
 			<h3>&nbsp; </h3>
@@ -343,7 +343,7 @@
 										<a href="#Link703766Context" name="Link703766Context" id="Link703766Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID703766', 'Analyses', 'This page returns a list of analyses on the GUDMAP microarray data. Each row in the table represents a gene list. To view a gene list as a heatmap table or table of expression values, click on the gene list name. To view as an interactive heatmap display, click Treeview.', 'Link703766Context')"><img src="../images/focus/information_big.gif" width="42" height="44" border="0" /></a>
 									</c:if>
 									<c:if test="${pageName=='/pages/lab_summaries.jsp'}" >
-										&nbsp;>&nbsp;Lab Summary
+										&nbsp;>&nbsp;Data Source Summary
 										<a href="#Link790484Context" name="Link790484Context" id="Link790484Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID790484', 'Lab Summary', 'This page returns a list of In situ and microarray data submitted to the database, organized by Lab and submission date.  &lt;br&gt;Clicking on the Number of Submissions column where the status is Available will return that submission set.', 'Link790484Context')"><img src="../images/focus/information_big.gif" width="42" height="44" border="0" /></a>
 									</c:if>
 									<%-- xingjun - 22/04/2010 - start --%>

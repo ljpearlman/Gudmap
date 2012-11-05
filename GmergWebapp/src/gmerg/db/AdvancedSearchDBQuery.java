@@ -22,7 +22,7 @@ public class AdvancedSearchDBQuery {
  
 	  final static public String[] getISHDefaultTitle(){
 	      return new String[]{Utility.getProject()+" Entry Details", "Gene", Utility.getStageSeriesMed()+" Stage", 
-					 "Age", "Lab", "Submission Date", 
+					 "Age", "Source", "Submission Date", 
 					 "Assay Type", "Specimen Type", "Sex", 
 					 "Probe Name", "Genotype", "Probe Type", 
 					 "Images"};			  
@@ -43,7 +43,7 @@ public class AdvancedSearchDBQuery {
 		  return new String[]{ "Gene", Utility.getProject()+" Entry Details", "Assay Type", 
 				"In situ Expression", "Microarray Expression", 
 				"Tissue", "Theiler Stage", "Age","Sex",
-		      "Lab", "Submission Date", "Specimen Type", "Images"};		  
+		      "Source", "Submission Date", "Specimen Type", "Images"};		  
 	  }
 	  
 	  final static public String getMICDefaultSort(){

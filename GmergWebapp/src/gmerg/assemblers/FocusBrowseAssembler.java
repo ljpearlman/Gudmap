@@ -328,8 +328,14 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 				tableData[i][2] = new DataItem(row[2]);
 			}
 			tableData[i][3] = new DataItem(row[3]);
-//			tableData[i][4] = new DataItem(row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 300, 500);
-			tableData[i][4] = new DataItem(row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);
+
+			// check for gudmap or euregene		
+			if(row[4].equalsIgnoreCase("Eichele"))
+				tableData[i][4] = new DataItem("External-EuReGene", "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);		//lab
+			else 
+				tableData[i][4] = new DataItem("GUDMAP-" + row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);		//lab
+			
+
 			tableData[i][5] = new DataItem(row[5]);
 			tableData[i][6] = new DataItem(row[6]);
 			tableData[i][7] = new DataItem(row[7]);
