@@ -12,7 +12,7 @@
         <fileset dir="${env.CATALINA_HOME}/bin" includes="*.jar"/>
   </path>
 	
-  <property name="name" value="gudmap"/>
+  <property name="name" value="gudmap_demo"/>
   <property name="build" value="../webapps/${name}"/>
   <property name="dist" value="../webapps"/>
   <property name="config" value="gudmap" />
