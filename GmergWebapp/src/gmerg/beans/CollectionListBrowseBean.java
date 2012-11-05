@@ -128,6 +128,8 @@ public class CollectionListBrowseBean {
 	}
 
 	public void setCollectionType(int collectionType) {
+		FacesUtil.setFacesRequestParamValue("collectionType", String.valueOf(collectionType));
+		//Visit.setStatusParam("collectionType", collectionType);
 		this.collectionType = collectionType;
 	}
 

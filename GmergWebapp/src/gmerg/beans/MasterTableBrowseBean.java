@@ -3,9 +3,12 @@ package gmerg.beans;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gmerg.assemblers.CollectionAssembler;
 import gmerg.entities.BrowseTableTitle;
+import gmerg.entities.CollectionInfo;
 import gmerg.entities.Globals;
 import gmerg.entities.submission.array.MasterTableInfo;
+import gmerg.model.ClipboardDelegateCookieImp;
 import gmerg.utils.table.*;
 import gmerg.utils.DbUtility;
 import gmerg.utils.FacesUtil;
@@ -25,6 +28,13 @@ public class MasterTableBrowseBean {
 	private boolean displayTreeView;
 	private String tableTitle;
 	private String viewMode;
+	
+	private String masterTableId;
+	private String platformId;
+    private String collectionId;
+    private int collectionType;
+	private CollectionInfo collectionInfo = null;
+	
 	
 	public class MasterTableDisplayInfo  {
 		boolean selected;
@@ -103,26 +113,40 @@ public class MasterTableBrowseBean {
 		geneSymbol = Visit.getRequestParam("gene");
 		if (FacesUtil.getRequestParamValue("actionMethod") != null) 
 			return;
+		
+		collectionId = Visit.getRequestParam("collectionId");
+		platformId = Visit.getRequestParam("platformId");
 
-		String masterTableId = Visit.getRequestParam("masterTableId");
+		if (isClipboard())
+			collectionType = Integer.parseInt(Visit.getRequestParam("collectionType", "0"));
+		else if (collectionId != null)
+			collectionType = getCollectionInfo().getType(); 
+		
+		
+		
+		masterTableId = Visit.getRequestParam("masterTableId");
 		if (masterTableId != null) // If a specific master table is requested
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
 			masterTableInfo.selected = (masterTableInfo.getInfo().getId().equals(masterTableId));
 		    }
 		else if (genelistId != null) {
-		    String platformId = DbUtility.getGenelistPlatformId(genelistId);
+		    platformId = DbUtility.getGenelistPlatformId(genelistId);
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
-			masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
+		    	masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
 		    }
-		    // make only Developing Kidney (MOE430) shown initially to enhance user experience (fast)
 		    String str = null;
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
-			if (masterTableInfo.selected) {
-			    str = masterTableInfo.getInfo().getTitle().toLowerCase();
-			    if (-1 == str.indexOf("developing") &&
-				-1 == str.indexOf("kidney"))
-				masterTableInfo.selected = false;
-			}
+				if (masterTableInfo.selected) {
+				    str = masterTableInfo.getInfo().getTitle().toLowerCase();
+				    if (-1 == str.indexOf("developing") &&
+					-1 == str.indexOf("kidney"))
+					masterTableInfo.selected = false;
+				}
+		    }
+		}
+		else if (platformId != null) {    
+		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
+		    	masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
 		    }
 		}
 		else 
@@ -148,7 +172,7 @@ public class MasterTableBrowseBean {
 	// Action Methods
 	// ********************************************************************************
 	public String updatePage() {
-		String prevSelections = FacesUtil.getRequestParamValue("prevSelectios");
+		String prevSelections = FacesUtil.getRequestParamValue("prevSelections");
 
 		initialseTables(prevSelections);
 		return null;
@@ -159,9 +183,21 @@ public class MasterTableBrowseBean {
 		return null;
 	}
 	
+
+	public CollectionInfo getCollectionInfo() {
+		if (collectionInfo == null)
+			collectionInfo = CollectionAssembler.instance().getCollectionInfo(Integer.parseInt(collectionId));
+		return collectionInfo;
+	}
+	
 	// ********************************************************************************
 	// Private Methods
 	// ********************************************************************************
+	private boolean isClipboard() {
+		return  "clipboard".equals(collectionId);
+	}
+
+	
 	private void setVisibleMasterTables(String selectionString) {
 		for (int i=0; i<selectionString.length(); i++)
 			allMasterTables.get(i).selected  = (selectionString.charAt(i)=='1');
@@ -210,7 +246,14 @@ public class MasterTableBrowseBean {
 		String platformId = DbUtility.getMasterTablePlatformId(masterTableId);
 		ArrayList<String> probeIds = new ArrayList<String>();
 		
-		if (genelistId != null) {
+		
+		if (collectionId != null) {
+			if (isClipboard())
+				probeIds = ClipboardDelegateCookieImp.getClicpboardIds(collectionType);
+			else // used when viewing Stored collection
+				probeIds = CollectionAssembler.instance().getCollectionItems(Integer.parseInt(collectionId));
+		}
+		else if (genelistId != null) {
 			probeIds = DbUtility.retrieveGenelistProbeIds(genelistId, platformId);
 			if (platformId.equals(DbUtility.getGenelistPlatformId(genelistId)))  
 				queryParams.put("genelistId", genelistId);	// It will be null except for genelists when the same platform is probes are requested
@@ -231,7 +274,7 @@ public class MasterTableBrowseBean {
 
 		return ret;
 	}
-
+	
 	private String getViewName(String id) {
 		String viewName = "masterTable_";
 		if (genelistId!=null) 

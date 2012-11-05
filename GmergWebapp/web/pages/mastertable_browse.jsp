@@ -61,7 +61,7 @@
 					<h:commandLink id="updatePage" action="#{MasterTableBrowseBean.updatePage}">
 						<h:graphicImage value="../images/gotopage.gif" title="Update Page" alt="update" styleClass="icon"/>
 						<f:param name="actionMethod" value="updatePage" />
-						<f:param name="prevSelectios" value="#{MasterTableBrowseBean.selectionsString}" />
+						<f:param name="prevSelections" value="#{MasterTableBrowseBean.selectionsString}" />
 					</h:commandLink>
 				</h:panelGrid>
 			</h:panelGrid>

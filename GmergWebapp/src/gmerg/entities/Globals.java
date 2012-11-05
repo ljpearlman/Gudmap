@@ -164,18 +164,37 @@ public class Globals {
 	}
 	
 	public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType) {
-		return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_1"); // "4_1" is only used for collection of MOE430 porbes. When no value is specified default is AllKidney master table
+		if (collectionType == 3)
+			return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_5"); // "4_5" is only used for collection of MOE430 porbes. When no value is specified default is AllKidney master table
+		if (collectionType == 4)
+			return getCollectionBrowseHelper(collectionItemsIds, collectionType, "3_2"); // "3_2" is only used for collection of ST1 porbes. When no value is specified default is AllKidney master table
+
+		return getCollectionBrowseHelper(collectionItemsIds, collectionType, "3_2");
 	}
 
 	public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType, int focusGroup) {
-		if (focusGroup == 1 || focusGroup == 2)
-			return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_1");
-		else if (focusGroup == 3 || focusGroup == 4)
-			return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_3");
-		else if (focusGroup == 5)
-			return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_2");
-		else
-			return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_1");
+		if (collectionType == 3){
+			if (focusGroup == 1 || focusGroup == 2)
+				return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_5");
+			else if (focusGroup == 3 || focusGroup == 4)
+				return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_7");
+			else if (focusGroup == 5)
+				return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_6");
+			else
+				return getCollectionBrowseHelper(collectionItemsIds, collectionType, "4_5");
+		}
+		if (collectionType == 4){
+			if (focusGroup == 1 || focusGroup == 2)
+				return getCollectionBrowseHelper(collectionItemsIds, collectionType, "3_2");
+			else if (focusGroup == 3 || focusGroup == 4)
+				return getCollectionBrowseHelper(collectionItemsIds, collectionType, "3_1");
+			else if (focusGroup == 5)
+				return getCollectionBrowseHelper(collectionItemsIds, collectionType, "3_4");
+			else
+				return getCollectionBrowseHelper(collectionItemsIds, collectionType, "3_2");
+		}
+		
+		return getCollectionBrowseHelper(collectionItemsIds, collectionType, "3_2");
 	}
 
 	public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType, String masterTableId) {

@@ -12,6 +12,7 @@ import gmerg.model.HeatmapDisplayTransform;
 import gmerg.utils.table.*;
 import gmerg.utils.FacesUtil;
 import gmerg.utils.Utility;
+import gmerg.utils.Visit;
 
 /**
  * Managed Bean for Generic tables display. Because there might be multiple tables
@@ -1599,7 +1600,9 @@ return "background-color:" + htmlColor(150,150, 150);
 		FacesUtil.setFacesRequestParamValue("Clipboard"+selectedCollection, value);
 	}
 		
-	public String getClipboardName() {
+	public String getClipboardName() {	
+//		int collectionType = Integer.parseInt(Visit.getRequestParam("collectionType", "0"));
+//		return Globals.getCollectionCategoryName(collectionType);
 		return Globals.getCollectionCategoriesNames()[selectedCollection];
 	}
 

@@ -1,9 +1,12 @@
 <!-- Author: Mehran Sharghi				-->
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
+<%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
+
 	
 	<h:form id="collectionBrowseForm" >
 		<h:panelGroup rendered="#{!CollectionBrowseBean.clipboard}" >
@@ -43,7 +46,7 @@
 			</h:panelGrid>
 			<h:outputText value="&nbsp;" escape="false"/>
 		</h:panelGroup>
-	
+<%--  	
 		<h:panelGrid columns="2" columnClasses="plaintextbold, plaintext" rendered="#{CollectionBrowseBean.clipboard}" >
 			<h:outputText value="Display my: " />
 			<h:selectOneMenu value="#{CollectionBrowseBean.collectionType}"
@@ -55,14 +58,78 @@
 		<h:commandLink id="reload" value="" action="#{CollectionBrowseBean.reload}" >
 			<f:param name="actionMethodCalled" value="true" />
 		</h:commandLink>
-		
+--%>		
 	</h:form>
 
+	<%-- only shown when the collection is viewed in heat map - ie MOE430 or ST1 --%>
+	<h:panelGroup rendered="#{CollectionBrowseBean.collectionType=='3' || CollectionBrowseBean.collectionType=='4' && MasterTableBrowseBean.viewMode=='0'}" >
+		<h:outputText value=" Microarray Expression Profile for: " styleClass="plaintextbold" />
+		<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
+		<h:outputLink styleClass="plaintextbold" value ="http://www.gudmap.org/Help/Microarray_Help.html">
+			<h:outputText value= "  (View Microarray Analysis Help)" />
+		</h:outputLink>			
+		
+		<rich:tabPanel  switchType="client" >
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[0].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[0].selected}" >
+				<f:subview id="masterTableBrowse_t0">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[0].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</rich:tab>
 
-	<f:subview id="collectionBrowse">
-		<jsp:include page="../includes/browse_table.jsp" />
-	</f:subview>
-	
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[1].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[1].selected}">
+				<f:subview id="masterTableBrowse_t1">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[1].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</rich:tab>
+
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[2].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[2].selected}">
+				<f:subview id="masterTableBrowse_t2">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[2].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</rich:tab>
+
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[3].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[3].selected}">
+				<f:subview id="masterTableBrowse_t3">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[3].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</rich:tab>
+
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[4].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[4].selected}">
+				<f:subview id="masterTableBrowse_t4">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[4].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</rich:tab>
+
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[5].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[5].selected}">
+				<f:subview id="masterTableBrowse_t5">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[5].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</rich:tab>
+
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[6].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[6].selected}">
+				<f:subview id="masterTableBrowse_t6">
+					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[6].setTableViewName}" />
+					<jsp:include page="../includes/browse_table.jsp" />
+				</f:subview>
+			</rich:tab>
+
+		</rich:tabPanel>
+	</h:panelGroup>	
+
+
+	<%-- only shown when the collection is not viewed in heat map - ie Entities, Genes or Images --%>
+	<h:panelGroup rendered="#{CollectionBrowseBean.collectionType=='0' || CollectionBrowseBean.collectionType=='1' || CollectionBrowseBean.collectionType=='2'}" >
+		<f:subview id="collectionBrowse">
+			<jsp:include page="../includes/browse_table.jsp" />
+		</f:subview>
+	</h:panelGroup>
+
 
 	<%-- ==================================== Collection Buttons Section ==================================== --%>
 	<h:form id="CollectionBrowseButtonsForm" style="margin:0px" rendered="#{!TableBean.tableEmpty}">

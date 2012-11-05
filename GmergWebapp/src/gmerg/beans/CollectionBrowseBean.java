@@ -167,6 +167,12 @@ public class CollectionBrowseBean {
        	// saveStatus
 		Visit.setStatusParam("collectionId", collectionId);
 		Visit.setStatusParam("collectionType", collectionType);
+		
+				
+		if (collectionType == 3)
+			Visit.setStatusParam("platformId", "GPL1261");
+		if (collectionType == 4)
+			Visit.setStatusParam("platformId", "GPL6246");
 	}
 	
 	protected ArrayList<String> getCollectionIds() {
@@ -261,21 +267,13 @@ public class CollectionBrowseBean {
 	}
 
 	public CollectionBrowseHelper getBrowseHelper() {
-//		String fg = getFocusGroup();
-//		int focusGroup = 1;
-//		if (fg.equalsIgnoreCase("metanephros"))
-//			focusGroup = 1;
-//		if (fg.equalsIgnoreCase("early reproductive system"))
-//			focusGroup = 2;
-//		if (fg.equalsIgnoreCase("male reproductive system"))
-//			focusGroup = 3;
-//		if (fg.equalsIgnoreCase("female reproductive system"))
-//			focusGroup = 4;
-//		if (fg.equalsIgnoreCase("lower urinary tract"))
-//			focusGroup = 5;
 		
+		int fg = 0;
+		if (!isClipboard())			
+			fg = getCollectionInfo().getFocusGroup();
+
 		if (browseHelper == null)
-			return Globals.getCollectionBrowseHelper(getCollectionIds(), collectionType);//, focusGroup);
+			return Globals.getCollectionBrowseHelper(getCollectionIds(), collectionType, fg);
 		return browseHelper;
 	}
 
