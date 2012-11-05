@@ -24,40 +24,40 @@
       <h:outputText styleClass="plaintextbold" value="Stage:" />
       <h:panelGroup>
         <h:outputText value="#{stageSeriesShort}" />
-        <h:inputText value="#{ishSubmissionBean.submission.stage}" />
+        <h:inputText value="#{ISHSingleSubmissionBean.submission.stage}" />
       </h:panelGroup>
           
       <h:outputText styleClass="plaintextbold" value="Other Staging System:"/>
       <h:panelGroup>
-        <h:inputText value="#{ishSubmissionBean.submission.specimen.stageFormat} " />
-        <h:inputText value="#{ishSubmissionBean.submission.specimen.otherStageValue}" />
+        <h:inputText value="#{ISHSingleSubmissionBean.submission.specimen.stageFormat} " />
+        <h:inputText value="#{ISHSingleSubmissionBean.submission.specimen.otherStageValue}" />
       </h:panelGroup>
           
       <h:outputText styleClass="plaintextbold" value="Strain:" />
-      <h:inputText value="#{ishSubmissionBean.submission.specimen.strain}" />
+      <h:inputText value="#{ISHSingleSubmissionBean.submission.specimen.strain}" />
           
       <h:outputText styleClass="plaintextbold" value="Sex:" />
-      <h:inputText value="#{ishSubmissionBean.submission.specimen.sex}" />
+      <h:inputText value="#{ISHSingleSubmissionBean.submission.specimen.sex}" />
           
       <h:outputText styleClass="plaintextbold" value="Genotype:" />
-      <h:inputText value="#{ishSubmissionBean.submission.specimen.genotype}" />
+      <h:inputText value="#{ISHSingleSubmissionBean.submission.specimen.genotype}" />
           
       <h:outputText styleClass="plaintextbold" value="Specimen Preparation:" />
       <h:panelGrid columns="2" columnClasses="text-top, text-bottom">
-        <h:inputText value="#{ishSubmissionBean.submission.specimen.assayType}" />
+        <h:inputText value="#{ISHSingleSubmissionBean.submission.specimen.assayType}" />
         <h:panelGrid columns="3">
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
           <h:outputText styleClass="plaintextbold" value="Fixation Method:" />
-          <h:inputText value="#{ishSubmissionBean.submission.specimen.fixMethod}" />
+          <h:inputText value="#{ISHSingleSubmissionBean.submission.specimen.fixMethod}" />
         
           <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
           <h:outputText styleClass="plaintextbold" value="Embedding:" />
-          <h:inputText value="#{ishSubmissionBean.submission.specimen.embedding}" />
+          <h:inputText value="#{ISHSingleSubmissionBean.submission.specimen.embedding}" />
         </h:panelGrid>
       </h:panelGrid>
 
       <h:outputText styleClass="plaintextbold" value="Experiment Notes:" />
-      <h:inputTextarea value="#{ishSubmissionBean.submission.specimen.notes}"></h:inputTextarea>
+      <h:inputTextarea value="#{ISHSingleSubmissionBean.submission.specimen.notes}"></h:inputTextarea>
     </h:panelGrid>  
     </h:panelGroup>
       <br/>

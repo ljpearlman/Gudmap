@@ -22,7 +22,7 @@
 
       <h:panelGrid columns="1">
         <h:panelGroup>
-          <h:dataTable columnClasses="text-normal,text-top" value="#{ishSubmissionBean.submission.originalImages}" var="image">
+          <h:dataTable columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.originalImages}" var="image">
             <h:column>
               <h:selectBooleanCheckbox value="true" />
             </h:column>

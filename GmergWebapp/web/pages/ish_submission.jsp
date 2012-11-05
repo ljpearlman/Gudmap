@@ -515,10 +515,6 @@
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.labProbeId}" />
 				</h:panelGrid>
 				
-				<h:outputLink id="editAntibody" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}" 
-							  onclick="var w=window.open('edit_antibody.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
-					<h:outputText value="[Edit]" />
-				</h:outputLink>
 			</h:panelGrid>
 
 		    <h:outputText value="Probe" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)'}" />
@@ -793,7 +789,7 @@
 					<h:outputText value="Experiment Notes:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.notes}" />
 				</h:panelGrid>  
-				<h:outputLink id="editSpecimen" rendered="#{UUserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
+				<h:outputLink id="editSpecimen" rendered="#{UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
 							onclick="var w=window.open('edit_specimen.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
 					<h:outputText value="[Edit]" />
 				</h:outputLink>

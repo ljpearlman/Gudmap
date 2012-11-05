@@ -69,14 +69,14 @@
 
 <f:view>
 
-	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id" rendered="#{!ishSubmissionBean.renderPage}"/>
+	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id" rendered="#{!ISHSingleSubmissionBean.renderPage}"/>
 	
-	<h:form id="mainForm" rendered="#{ishSubmissionBean.renderPage}">
+	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage}">
 <%-- 
 		<h:inputHidden id="hiddenSubmissionId" value="#{DisplayLockTextInTreeBean.submissionId}"/>
 --%>
 	    <h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" >
-			<h:outputText styleClass="plaintextbold" value="#{ishSubmissionBean.submission.accID}" />
+			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" />
 			<h:outputText styleClass="#{DisplayLockTextInTreeBean.lockingTextDisplayStyle}" 
 						value="#{DisplayLockTextInTreeBean.lockingText}" />
 		</h:panelGrid>
@@ -139,11 +139,11 @@
 			<h:panelGroup>
 		<h:panelGrid columns="2" columnClasses="table-stripey" bgcolor="white" cellspacing="2" cellpadding="4">
 
-					<h:commandLink action="#{ishSubmissionBean.displayOfAnnotatedGps}" styleClass="plaintext">
-						<h:outputText styleClass="plaintext" value="#{ishSubmissionBean.displayOfAnnotatedGpsTxt}" rendered="#{siteSpecies != 'Xenopus laevis'}" />
+					<h:commandLink action="#{ISHSingleSubmissionBean.displayOfAnnotatedGps}" styleClass="plaintext">
+						<h:outputText styleClass="plaintext" value="#{ISHSingleSubmissionBean.displayOfAnnotatedGpsTxt}" rendered="#{siteSpecies != 'Xenopus laevis'}" />
 					</h:commandLink>
 				</h:panelGrid>								
-				<h:inputHidden value="#{ishSubmissionBean.submissionID}" />
+				<h:inputHidden value="#{ISHSingleSubmissionBean.submissionID}" />
 				
 				<h:panelGroup>
 					<h:outputLink style="font-size:7pt;text-decoration:none;color:silver" value="http://www.treemenu.net/" target="_blank">
@@ -151,7 +151,7 @@
 					</h:outputLink>
 					<f:verbatim>
 						<script type="text/javascript">
-							<c:forEach items="${ishSubmissionBean.submission.annotationTree}" var="row">
+							<c:forEach items="${ISHSingleSubmissionBean.submission.annotationTree}" var="row">
 								<c:out value="${row}" escapeXml="false"/>
 							</c:forEach>
 						</script>

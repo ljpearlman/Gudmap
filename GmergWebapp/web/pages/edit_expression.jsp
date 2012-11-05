@@ -92,7 +92,7 @@
 					<h:selectOneMenu id="additionalStrength" styleClass="datatext" 
 						value="#{EditExpressionBean.secondaryStrength}" 
 						rendered="#{EditExpressionBean.strengthSelectionRendered}" 
-						disabled="#{EditExpressonBean.strengthSelectionDisabled}">
+						disabled="#{EditExpressionBean.strengthSelectionDisabled}">
 						<f:selectItems value="#{EditExpressionBean.additionalStrengthItems}" />
 					</h:selectOneMenu>
 				</h:panelGrid>

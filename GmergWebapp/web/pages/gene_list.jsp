@@ -194,7 +194,7 @@
             <h:commandButton image="../images/gu_go.gif" />
             </h:panelGrid>
           </h:panelGroup>
-          <h:commandButton action="{geneCollectionBean.collection}" value="View My Gene Collection"/>
+          <h:commandButton action="{GeneCollectionBean.collection}" value="View My Gene Collection"/>
         </h:panelGrid>
       </h:form>
     </body>

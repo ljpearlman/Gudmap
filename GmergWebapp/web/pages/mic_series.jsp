@@ -12,30 +12,30 @@
           <tr>
 	  <td class="plaintext" width="20%">Series GEO ID:</td>
           <td class="datatext">
-			<h:outputLink value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc=#{micSeriesBean.series.geoID}" styleClass="plaintext">
-            <h:outputText value="#{micSeriesBean.series.geoID}" />
+			<h:outputLink value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc=#{MicSeriesBean.series.geoID}" styleClass="plaintext">
+            <h:outputText value="#{MicSeriesBean.series.geoID}" />
             </h:outputLink>          
           </td>
 	  </tr>
           <tr>
 	  <td class="plaintext">Number of Samples:</td>
-          <td class="datatext"><h:outputText value="#{micSeriesBean.series.numSamples}" /> samples</td>
+          <td class="datatext"><h:outputText value="#{MicSeriesBean.series.numSamples}" /> samples</td>
 	  </tr>
           <tr>
 	  <td class="plaintext">Title:</td>
-          <td class="datatext"><h:outputText value="#{micSeriesBean.series.title}" /></td>
+          <td class="datatext"><h:outputText value="#{MicSeriesBean.series.title}" /></td>
 	  </tr>
           <tr>
 	  <td class="plaintext" valign=top>Summary:</td>
-          <td class="datatext"><h:outputText value="#{micSeriesBean.series.summary}" /></td>
+          <td class="datatext"><h:outputText value="#{MicSeriesBean.series.summary}" /></td>
 	  </tr>
           <tr>
 	  <td class="plaintext">Type:</td>
-          <td class="datatext"><h:outputText value="#{micSeriesBean.series.type}" /></td>
+          <td class="datatext"><h:outputText value="#{MicSeriesBean.series.type}" /></td>
 	  </tr>
           <tr>
 	  <td class="plaintext">Overall Design:</td>
-          <td class="datatext"><h:outputText value="#{micSeriesBean.series.design}" /></td>
+          <td class="datatext"><h:outputText value="#{MicSeriesBean.series.design}" /></td>
 	  </tr>
 	  
         </table>
@@ -50,7 +50,7 @@
         <td>
 
         <h:form>
-        <h:dataTable width="100%" value="#{micSeriesBean.series.summaryResults}" var="series" styleClass="browseTable" rowClasses="table-nostripe,table-stripey" headerClass="table-stripey">
+        <h:dataTable width="100%" value="#{MicSeriesBean.series.summaryResults}" var="series" styleClass="browseTable" rowClasses="table-nostripe,table-stripey" headerClass="table-stripey">
           <h:column>
             <f:facet name="header">
                 <h:outputText styleClass="plaintextbold" value="Samples" />

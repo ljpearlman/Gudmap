@@ -22,7 +22,7 @@
       
       <h:panelGrid columns="1" styleClass="header-stripey">
         <h:panelGroup>
-          <h:dataTable value="#{ishSubmissionBean.submission.linkedSubmissions}" var="link">
+          <h:dataTable value="#{ISHSingleSubmissionBean.submission.linkedSubmissions}" var="link">
             <h:column>
               <f:facet name="header">
                 <h:outputText value="Edit" styleClass="plaintextbold" />

@@ -646,16 +646,6 @@ function initialisePage(statusParams) {				//adds status params, initialise tab 
 		adjustInitialCurrentTabWidth(currentTabItem.value)
 */		
 
-	var inputItems = document.getElementsByTagName("input");
-	for (var i=0; i<inputItems.length; i++) {
-		var styleClass = inputItems[i].className.toLowerCase();
-		var pattern = new RegExp('.*?suggestgudmap(\\w*)\\W*');	
-		var suggest = styleClass.match(pattern);
-		if (suggest && suggest[1]) {
-			var suggestOptions = {matchAnywhere: true, ignoreCase: true, inputType:suggest[1]};
-			var temp = new TextSuggest( inputItems[i].id, 'ajaxPredictiveText.html', suggestOptions);
-		}
-	}
 	adjustTableBodyPanels();
 }
 

@@ -19,12 +19,12 @@
   </head>
   <body class="database">
     <h:panelGrid columns="1">
-      <h:outputText styleClass="plaintext" value="Template Sequence for #{ishSubmissionBean.submission.probe.probeName}:" />
+      <h:outputText styleClass="plaintext" value="Template Sequence for #{ISHSingleSubmissionBean.submission.probe.probeName}:" />
       <t:dataList id="sequences" styleClass="plaintextseq"
                var="sequence"
-               value="#{ishSubmissionBean.submission.probe.fullSequence}"
+               value="#{ISHSingleSubmissionBean.submission.probe.fullSequence}"
                layout="simple" rowCountVar="count" rowIndexVar="index"
-               rendered="#{ishSubmissionBean.submission.probe.fullSequence != null}">
+               rendered="#{ISHSingleSubmissionBean.submission.probe.fullSequence != null}">
         <h:outputText styleClass="plaintextseq" value="#{sequence}" />
       </t:dataList>
     </h:panelGrid>
