@@ -10,11 +10,11 @@ db_driver=com.mysql.jdbc.Driver
 #database=EureGudmap
 
 
-host=jdbc:mysql://clynelish/
+host=jdbc:mysql://clynelish:3306/
 #host=jdbc:mysql://tamdhu/
-user=gudmaptest
-password=gudmaptest
-database=GudmapGX_test
+user=gudmap
+password=patience
+database=GudmapGX_beta
 
 #host=jdbc:mysql://clynelish:33061/
 #host=jdbc:mysql://glenmoray:3306/
