@@ -188,6 +188,14 @@
 			<f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
   
+		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}">
+			<h:panelGroup>
+				<h:outputText styleClass="plaintextbold" value="IMPORTANT NOTE ABOUT EUREGENE ANNOTATIONS:" />
+				<h:outputText styleClass="plaintext" value="Annotations within this entry are currently under review by the GUDMAP editorial office and Kylie Georgas (Little Lab, University of Queensland). In due course the annotations will be changed to reflect this review process. Original EuReGene annotations will continue to be available from www.euregene.org" />
+			</h:panelGroup>
+			<f:verbatim>&nbsp;</f:verbatim>
+		</h:panelGrid>
+  
 		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" >
 			<h:outputText value="Submitters" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
