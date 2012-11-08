@@ -3,7 +3,6 @@
  */
 package gmerg.db;
 
-//import gmerg.beans.UserBean;
 import gmerg.entities.submission.ish.ISHBrowseSubmission;
 import gmerg.utils.table.GenericTableFilter;
 
@@ -15,11 +14,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-//import javax.faces.context.FacesContext;
-//import javax.naming.Context;
-//import javax.naming.InitialContext;
-//import javax.naming.NamingException;
-//import javax.sql.DataSource;
 import java.sql.DriverManager;
 import java.util.ResourceBundle;
 
@@ -184,14 +178,12 @@ public final class DBHelper {
             while (resSet.next()) {
                 String[] columns = new String[length];
                 for(int i = 1; i <= length; i++) {
-//                	columns[i-1] = resSet.getString(i);
-					// try to display Tg data before array data - xingjun - 03/09/2008
-					String col = resSet.getString(i);
-					if (col == null || col.equalsIgnoreCase("null")) {
-						columns[i-1] = "";
-					} else {
-						columns[i-1] = col.equals("ITG")?"Tg":col;
-					}
+		    String col = resSet.getString(i);
+		    if (col == null || col.equalsIgnoreCase("null")) {
+			columns[i-1] = "";
+		    } else {
+			columns[i-1] = col.equals("ITG")?"Tg":col;
+		    }
                 }
                 if(null != columns)
                 results.add(columns);
@@ -254,9 +246,6 @@ public final class DBHelper {
 	 */
 	public static ISHBrowseSubmission[] formatISHBrowseResultSet(ResultSet resSet) throws SQLException {
 		
-//		ResultSetMetaData resSetMetaData = resSet.getMetaData();
-//		int columnCount = resSetMetaData.getColumnCount();
-		
 		if (resSet.first()) {
 			resSet.last();
 			int arraySize = resSet.getRow();
@@ -285,14 +274,6 @@ public final class DBHelper {
 				results[i] = ishBrowseSubmission;
 				i++;
 				 
-                // option 2: initialise an array and add it into the arraylist
-				// first cell used to indicate checkbox status: false is the default value
-//				String[] columns = new String[columnCount + 1];
-//				columns[0] = "false";
-//				for (int i = 1; i < columnCount; i++) {
-//					columns[i] = resSet.getString(i + 1);
-//		        }
-//		        results.add(columns);
 		    }
 		    return results;
 		}
@@ -351,11 +332,8 @@ public final class DBHelper {
             
             while (resSet.next()) {
             	String[] ishBrowseSubmission = null;
-            	//if(privilege >= 3 && FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/lab_ish_edit.jsp")) {
             		ishBrowseSubmission = new String[14];
-            	/*} else {
-            		ishBrowseSubmission = new String[13];
-            	}*/
+
                 ishBrowseSubmission[ 0] = resSet.getString(1); // id
                 ishBrowseSubmission[ 1] = resSet.getString(2); // symbol
                 ishBrowseSubmission[ 2] = resSet.getString(3); // ts
@@ -369,10 +347,8 @@ public final class DBHelper {
                 ishBrowseSubmission[10] = resSet.getString(13); // genotype
                 ishBrowseSubmission[11] = resSet.getString(14); // probe type
                 ishBrowseSubmission[12] = resSet.getString(9); // thumbnail
-                
-                //if(privilege >= 3 && FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/lab_ish_edit.jsp")) {
-                	ishBrowseSubmission[13] = resSet.getString(15); //SUB_IS_PUBLIC
-                //}
+                ishBrowseSubmission[13] = resSet.getString(15); //SUB_IS_PUBLIC
+
                 results.add(ishBrowseSubmission);
             }
             return results;
@@ -406,12 +382,8 @@ public final class DBHelper {
 			
 			queryString += column;
 			
-			// remove the trailing ',' character
-			//int len = queryString.length();
-			//queryString = queryString.substring(0, len-1);
 			
 		} else { // if don't specify order by column, order by gene symbol ascend by default
-//			queryString = query + " ORDER BY TRIM(RPR_SYMBOL)";
 			queryString = query + defaultOrder+ ", SUB_EMBRYO_STG";
 		}
 		
@@ -421,7 +393,6 @@ public final class DBHelper {
 				
 				if (isValidInteger(offset)) {
 					int os = Integer.parseInt(offset) - 1;
-//					System.out.println("offset: " + os);
 					queryString = queryString + " LIMIT " + Integer.toString(os);
 				} else {
 					queryString = queryString + " LIMIT 0";
@@ -562,7 +533,6 @@ public final class DBHelper {
 			} else if (order[0].equals("byStage")) {
 				column = "SUB_EMBRYO_STG" + " " + order[1] +", " + geneSymbolCol; 
 			} else if (order[0].equals("byAge")) {
-//				column = "CONCAT(SPN_STAGE,SPN_STAGE_FORMAT)" + " " + order[1] +", " + geneSymbolCol; 
 				column = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order[1] +", " + geneSymbolCol; 
 			} else if (order[0].equals("byLab")) {
 				column = "PER_SURNAME" + " " + order[1] +", " + geneSymbolCol; 
@@ -638,7 +608,6 @@ public final class DBHelper {
 			} else if (columnIndex == 2) { // stage 
 				column = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol; 
 			} else if (columnIndex == 3) { // age
-//				column = "CONCAT(SPN_STAGE,SPN_STAGE_FORMAT)" + " " + order +", " + geneSymbolCol; 
 				column = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol; 
 			} else if (columnIndex == 4) { // lab
 				column = "PER_SURNAME" + " " + order +", " + geneSymbolCol; 
@@ -822,7 +791,6 @@ public final class DBHelper {
 			} else if(col.equals("0")) { // by gene
 				orderStr = " order by col1 " + orderBy + ", col14, col3, col6, col2 ";
 			} else if(col.equals("1")) { // by gudmap id
-//				orderStr = " order by CAST(SUBSTRING(col10, INSTR(col10,'" + ":" + "')+1) AS SIGNED) " + orderBy + "," + AdvancedSearchDBQuery.getBothDefaultSort(); 
 				orderStr = " order by NATURAL_SORT(col10) " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort(); 
 			} else if(col.equals("2")) { // by assay type
 				orderStr = " order by col14 " + orderBy + ", col1, col3, col6, col2 ";
@@ -865,7 +833,6 @@ public final class DBHelper {
 			} else if(col.equals("0")) { // by gene
 				orderStr = " order by col1 " + order + ", col14, col3, col6, col2 ";
 			} else if(col.equals("1")) { // by gudmap id
-//				orderStr = " order by CAST(SUBSTRING(col10, INSTR(col10,'" + ":" + "')+1) AS SIGNED) " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort(); 
 				orderStr = " order by NATURAL_SORT(col10) " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort(); 
 			} else if(col.equals("2")) { // by assay type
 				orderStr = " order by col14 " + order + ", col1, col3, col6, col2 ";

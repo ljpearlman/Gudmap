@@ -39,7 +39,6 @@ public class AdvancedSearchDBQuery {
 	  }
 	  
 	  final static public String[] getBothDefaultTitle(){
-		  //Bernie - 01/03/2012 - (Mantis 619) added 'sex' and renamed 'stage' to 'theiler stage'
 		  return new String[]{ "Gene", Utility.getProject()+" Entry Details", "Assay Type", 
 				"In situ Expression", "Microarray Expression", 
 				"Tissue", "Theiler Stage", "Age","Sex",
@@ -47,13 +46,10 @@ public class AdvancedSearchDBQuery {
 	  }
 	  
 	  final static public String getMICDefaultSort(){
-//		  return "SMP_THEILER_STAGE ASC";
-//		  return "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED)";
 		  return "NATURAL_SORT(SUB_ACCESSION_ID) ";
 	  }
 	  
 	  final static public String getISHDefaultSort(){
-//		  return "RPR_SYMBOL ASC, SUB_EMBRYO_STG ASC";			  
 		  return "NATURAL_SORT(RPR_SYMBOL), SUB_EMBRYO_STG, SPN_SEX";			  
 	  }
 	  
@@ -66,9 +62,7 @@ public class AdvancedSearchDBQuery {
 	  }
 	  
 	  // order: assay type, gene, expression, theiler stage, tissue, sex
-	  // Bernie 06/03/2012 - (Mantis 327) mod to allow sort by sex column
 	  final static public String getBothDefaultSort(){
-//		  return "col14 ASC, col1 ASC, col6 ASC";
 		  return "col14, col1, col3, col6, col2, col15";
 	  }
 	  
@@ -146,15 +140,6 @@ public class AdvancedSearchDBQuery {
 					"EMAP:9553","EMAP:10913","EMAP:12273","EMAP:30416","EMAP:29475"});
 			// added by xingjun - used for in situ expression profile display - 17/11/2008
 			lookupsection.put("6", new String[]{// Mesonephros (11 all parts, all stages)
-//					 removed by xingjun - 12/01/2009 -required by editor - no correct
-//					"EMAP:1436", "EMAP:1961",
-//					"EMAP:1437", "EMAP:1962", "EMAP:1438", 
-//					"EMAP:1963", "EMAP:1439", "EMAP:1964", "EMAP:2577", 
-//					"EMAP:3230", "EMAP:2579", "EMAP:3232", "EMAP:27592", 
-//					"EMAP:27593", "EMAP:30563", "EMAP:30564", "EMAP:30566", 
-//					"EMAP:30567", "EMAP:30569", "EMAP:30570", "EMAP:30572", 
-//					"EMAP:30573", "EMAP:27660", "EMAP:27662", "EMAP:27664", 
-//					"EMAP:27666", "EMAP:30575", "EMAP:30577", "EMAP:30579", "EMAP:30581",
 					"EMAP:2576", "EMAP:3229", "EMAP:27645",
 					// added by xingjun - 12/01/2009 - suggested by editors
 					"EMAP:29139", "EMAP:28910", "EMAP:29140", "EMAP:28911", "EMAP:29141",
@@ -171,15 +156,6 @@ public class AdvancedSearchDBQuery {
 		  "Male reproductive system",
 		  "Female reproductive system", 
 		  "Others" // items down from this item will not be implemented for time being - 13/11/2008
-//		  "Nephrogenic interstitium",
-//		  "Cap mesenchyme",
-//		  "Pretubular aggregate",
-//		  "Early tubule",
-//		  "Collecting duct (all parts all stages, including primitive collecting duct)",
-//		  "Renal vascular system",
-//		  "urethra",
-//		  "Ureter",
-//		  "Bladder"
 	  };
 	  
 	  final static public String[] getInterestedAnatomyStructureIds () {
@@ -204,9 +180,6 @@ public class AdvancedSearchDBQuery {
 		  lookup.put("GeneSymbol", new String[]{"QIC_RPR_SYMBOL"});
 		  lookup.put("Gene Function", new String[]{"QIC_RPR_SYMBOL"});
 		  lookup.put("Anatomy", new String[]{"QIC_ATN_PUBLIC_ID"});
-		  // modified by xingjun - 22/10/2010 - added MTF option into the Accession ID search option
-//		  lookup.put("Accession ID", new String[]{"QIC_RPR_LOCUS_TAG", "QIC_RPR_GENBANK", "QIC_RPR_ENSEMBL", "QIC_RPR_JAX_ACC", "QIC_SUB_ACCESSION_ID"});
-		  // modified by Bernie - 25/3/2011 - added maprobe id option into the Accession ID search option
 		  lookup.put("Accession ID", new String[]{"QIC_RPR_LOCUS_TAG", "QIC_RPR_GENBANK", "QIC_RPR_ENSEMBL", "QIC_RPR_JAX_ACC", "QIC_SUB_ACCESSION_ID", "QIC_RPR_MTF_JAX", "QIC_MAPROBE_ID"});
 		  lookup.put("Probe", new String[]{"QIC_PRB_PROBE_NAME", "QIC_PRB_CLONE_NAME"});
 		  return lookup;
@@ -215,8 +188,6 @@ public class AdvancedSearchDBQuery {
 	  final static public Hashtable getMICQuickSearchColumns(){
 		  Hashtable<String, String[]> lookup = new Hashtable<String,String[]>();
 		  lookup.put("All", new String[]{"MBC_GNF_SYMBOL",
-				  //"RMM_NAME",
-				  //"RSY_SYNONYM",
 				  "QMC_ATN_PUBLIC_ID",
 				  "QMC_ANO_COMPONENT_NAME",
 				  "MBC_SUB_ACCESSION_ID",
@@ -224,8 +195,6 @@ public class AdvancedSearchDBQuery {
 				  "QMC_PLT_GEO_ID",
 				  "QMC_SMP_GEO_ID"});
 		  lookup.put("Gene", new String[]{"MBC_GNF_SYMBOL" 
-				  //"RMM_NAME", 
-				  //"RSY_SYNONYM"
 				  });
 		  lookup.put("GeneSymbol", new String[]{"MBC_GNF_SYMBOL"});
 		  lookup.put("Gene Function", new String[]{"MBC_GNF_SYMBOL"});
@@ -253,10 +222,7 @@ public class AdvancedSearchDBQuery {
 		  lookup.put("RefMgiMrk_MGIAcc", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK WHERE ","RMM_MGIACC"});
 		  lookup.put("RefEnsGene_EnsemblId", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK, REF_ENS_GENE WHERE RMM_MGIACC = REG_PRIMARY_ACC AND ","REG_STABLE"});
 		  lookup.put("RefSyn_Synonym", new String [] {"SELECT RSY_SYNONYM FROM REF_SYNONYM WHERE ","RSY_SYNONYM"});
-		  // xingjun - 09/10/2009 - start
 		  lookup.put("RefGeneInfo_synonym", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_SYNONYM JOIN REF_MGI_MRK ON RSY_REF = RMM_ID JOIN REF_GENE_INFO ON RMM_SYMBOL = GNF_SYMBOL WHERE ","RSY_SYNONYM"});
-		  // xingjun - 09/10/2009 - end
-//		  lookup.put("RefMgiMrkRefSyn_Synonym", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK,REF_SYNONYM WHERE RSY_REF = RMM_ID AND ","RSY_SYNONYM"});
 		  lookup.put("RefMgiMrkRefSyn_Synonym", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK,REF_SYNONYM WHERE RSY_REF = RMM_ID AND RMM_SYMBOL IN (SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE) AND ","RSY_SYNONYM"});
 		  lookup.put("RefProbe_MTFJax", new String [] {"SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE WHERE RPR_MTF_JAX LIKE 'MTF%' AND ","RPR_MTF_JAX"});
 		  lookup.put("RefGoTerm_GoId", new String [] {"SELECT DISTINCT GOT_ID FROM REF_GO_TERM WHERE ","GOT_TERM"});
@@ -285,12 +251,6 @@ public class AdvancedSearchDBQuery {
 		  lookup.put("4","3");
 		  lookup.put("5","2");
 		  lookup.put("6","6");
-//		  lookup.put("7","8");
-//		  lookup.put("8","4");
-//		  lookup.put("9", "5");
-//		  lookup.put("10", "7");
-//		  lookup.put("11", "9");
-		  // Bernie - 06/03/2012 - (Mantis 327) add sort for Sex column
 		  lookup.put("7","15");
 		  lookup.put("8","8");
 		  lookup.put("9", "4");
@@ -404,7 +364,6 @@ public class AdvancedSearchDBQuery {
 			Hashtable<String, String> lookupInDB = new Hashtable<String,String>();
 			lookupInDB.put("Tissue", "QIC_PRB_TISSUE");
 			lookupInDB.put("Probe Strain", "QIC_PRB_STRAIN");
-//			lookupInDB.put("Gene Type", "QSC_SPN_WILDTYPE");//??????????????/
 			lookupInDB.put("Gene Type", "QIC_SPN_WILDTYPE, QMC_SPN_WILDTYPE");
 			lookupInDB.put("Visualization Method", "QIC_PRB_VISUAL_METHOD");
 			lookupInDB.put("Assay Type", "QIC_SPN_ASSAY_TYPE, QMC_SPN_ASSAY_TYPE");
@@ -412,7 +371,6 @@ public class AdvancedSearchDBQuery {
 			lookupInDB.put("Specimen Strain", "QIC_SPN_STRAIN, QMC_SPN_STRAIN");
 			lookupInDB.put("Sex", "QIC_SPN_SEX, QMC_SPN_SEX");
 			lookupInDB.put("Stage", "QIC_SUB_EMBRYO_STG, QMC_SUB_EMBRYO_STG");
-//			lookupInDB.put("Age", "CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE), CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE)");
 			lookupInDB.put("Age", "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END), " +
 					"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END)");
 			lookupInDB.put("Genotype", "QIC_SPN_WILDTYPE, QMC_SPN_WILDTYPE");
@@ -434,11 +392,8 @@ public class AdvancedSearchDBQuery {
 			lookupInDB.put("MGI ID", "QIC_RPR_LOCUS_TAG");
 			lookupInDB.put("GenBank ID", "QIC_RPR_GENBANK");
 			lookupInDB.put("Ensembl ID", "QIC_RPR_ENSEMBL");
-//			lookupInDB.put("Ontology Terms", "ish.QSC_ANO_COMPONENT_NAME, mic.QSC_ANO_COMPONENT_NAME");
 			lookupInDB.put("Ontology Terms", "QIC_ANO_COMPONENT_NAME, QMC_ANO_COMPONENT_NAME");
-//			lookupInDB.put("EMAP ID", "ish.QSC_ATN_PUBLIC_ID, mic.QSC_ATN_PUBLIC_ID");
 			lookupInDB.put("EMAP ID", "QIC_ATN_PUBLIC_ID, QMC_ATN_PUBLIC_ID");
-//			lookupInDB.put("Submission Date", "ish.QSC_SUB_SUB_DATE, mic.QSC_SUB_SUB_DATE");
 			lookupInDB.put("Submission Date", "QIC_SUB_SUB_DATE, QMC_SUB_SUB_DATE");
 			lookupInDB.put("Series GEO ID", "QMC_SER_GEO_ID");
 			lookupInDB.put("Series Title", "QMC_SER_TITLE");
@@ -455,7 +410,6 @@ public class AdvancedSearchDBQuery {
 			Hashtable<String, String> lookupInDB = new Hashtable<String,String>();
 			lookupInDB.put("Tissue", "QIC_PRB_TISSUE");
 			lookupInDB.put("Probe Strain", "QIC_PRB_STRAIN");
-//			lookupInDB.put("Gene Type", "QSC_SPN_WILDTYPE");//?????????????
 			lookupInDB.put("Gene Type", "QIC_SPN_WILDTYPE");
 			lookupInDB.put("Visualization Method", "QIC_PRB_VISUAL_METHOD");
 			lookupInDB.put("Assay Type", "QSC_SPN_ASSAY_TYPE");//????????????????
@@ -464,7 +418,6 @@ public class AdvancedSearchDBQuery {
 			lookupInDB.put("Sex", "QSC_SPN_SEX");//??????????????????????
 			lookupInDB.put("Stage", "QSC_SUB_EMBRYO_STG"); //?????????????????
 			lookupInDB.put("Age", "CONCAT(QSC_SPN_STAGE_FORMAT,QSC_SPN_STAGE)");//??????????????
-//			lookupInDB.put("Genotype", "QSC_SPN_WILDTYPE"); //??????????????????
 			lookupInDB.put("Genotype", "QIC_SPN_WILDTYPE"); //??????????????????
 			lookupInDB.put("Lab Name", "QSC_PER_NAME");//????????????????
 			lookupInDB.put("Platform GEO ID", "QMC_PLT_GEO_ID");
@@ -502,45 +455,6 @@ public class AdvancedSearchDBQuery {
 	   */
 	  final static public Hashtable getLookupTable(){
 			Hashtable<String, String> lookupTable = new Hashtable<String,String>();
-//			lookupTable.put("QSC_RPR_NAME","QSC_ISH_CACHE");//Probe Name
-//			lookupTable.put("QSC_PRB_TISSUE","QSC_ISH_CACHE");//Tissue
-//			lookupTable.put("QSC_PRB_STRAIN","QSC_ISH_CACHE");//Probe Strain
-//			lookupTable.put("QSC_SPN_WILDTYPE","QSC_ISH_CACHE");//Gene Type
-//			lookupTable.put("QSC_PRB_VISUAL_METHOD","QSC_ISH_CACHE");//Visualization Method
-//			lookupTable.put("QSC_RPR_SYMBOL,MBC_GNF_SYMBOL","QSC_ISH_CACHE,MIC_BROWSE_CACHE");//Gene Symbol
-//			lookupTable.put("QSC_RPR_NAME","QSC_ISH_CACHE");//Gene Name
-//			lookupTable.put("QSC_RSY_SYNONYM","QSC_ISH_CACHE");//Gene Synonym
-//			lookupTable.put("QSC_RPR_LOCUS_TAG","QSC_ISH_CACHE");//MGI ID
-//			lookupTable.put("QSC_RPR_GENBANK","QSC_ISH_CACHE");//GenBank ID
-//			lookupTable.put("QSC_RPR_ENSEMBL","QSC_ISH_CACHE");//Ensembl ID
-//			lookupTable.put("ish.QSC_ANO_COMPONENT_NAME, mic.QSC_ANO_COMPONENT_NAME","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Ontology Terms
-//			lookupTable.put("ish.QSC_ATN_PUBLIC_ID, mic.QSC_ATN_PUBLIC_ID","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//EMAP ID
-//			lookupTable.put("ish.QSC_SPN_ASSAY_TYPE, mic.QSC_SPN_ASSAY_TYPE","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Assay Type
-//			lookupTable.put("ish.QSC_SPN_FIXATION_METHOD, mic.QSC_SPN_FIXATION_METHOD","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Fixation Method
-//			lookupTable.put("ish.QSC_SPN_STRAIN, mic.QSC_SPN_STRAIN","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Specimen Strain
-//			lookupTable.put("ish.QSC_SPN_SEX, mic.QSC_SPN_SEX","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Sex
-//			lookupTable.put("ish.QSC_SUB_EMBRYO_STG, mic.QSC_SUB_EMBRYO_STG","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Stage
-//			lookupTable.put("CONCAT(ish.QSC_SPN_STAGE_FORMAT, ish.QSC_SPN_STAGE), CONCAT(mic.QSC_SPN_STAGE_FORMAT, mic.QSC_SPN_STAGE)","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Age
-//			lookupTable.put("ish.QSC_SPN_WILDTYPE, mic.QSC_SPN_WILDTYPE","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Genotype
-//			lookupTable.put("ish.QSC_PER_NAME, mic.QSC_PER_NAME","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Lab Name
-//			lookupTable.put("ish.QSC_SUB_SUB_DATE, mic.QSC_SUB_SUB_DATE","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Submission Date
-//			lookupTable.put("QSC_PLT_GEO_ID","QSC_MIC_CACHE");//Platform GEO ID
-//			lookupTable.put("QSC_PLT_TITLE","QSC_MIC_CACHE");//Platform Title
-//			lookupTable.put("QSC_PLT_NAME","QSC_MIC_CACHE");//Platform Name
-//			lookupTable.put("QSC_SER_GEO_ID","QSC_MIC_CACHE");//Seires GEO ID
-//			lookupTable.put("QSC_SER_TITLE","QSC_MIC_CACHE");//Series Title
-//			lookupTable.put("QSC_SMP_GEO_ID","QSC_MIC_CACHE");//Sample GEO ID
-//			lookupTable.put("QSC_SMP_STRAIN","QSC_MIC_CACHE");//Sample Strain
-//			lookupTable.put("QSC_SMP_SEX","QSC_MIC_CACHE");//Sample Sex
-//			lookupTable.put("QSC_SMP_DEVELOPMENT_STAGE","QSC_MIC_CACHE");//Sample Age
-//			lookupTable.put("QSC_SMP_THEILER_STAGE","QSC_MIC_CACHE");//Sample Stage
-//			lookupTable.put("MBC_GLI_PROBE_SET_NAME","MIC_BROWSE_CACHE");//Affymetrix ID
-//			lookupTable.put("QSC_PRB_CLONE_NAME","QSC_ISH_CACHE");//Clone Name
-//			lookupTable.put("QSC_PTN_PATTERN","QSC_ISH_CACHE");//Pattern
-//			lookupTable.put("QSC_PRB_PROBE_NAME","QSC_ISH_CACHE");//Probe Name	
-//			lookupTable.put("DESCRIPTION_OID","LKP_LOCATION");//Ensembl ID
-//			lookupTable.put("QSC_RPR_MTF_JAX","QSC_ISH_CACHE");//Clone name
-
 			lookupTable.put("QIC_RPR_NAME","QSC_ISH_CACHE");//Probe Name
 			lookupTable.put("QIC_PRB_TISSUE","QSC_ISH_CACHE");//Tissue
 			lookupTable.put("QIC_PRB_STRAIN","QSC_ISH_CACHE");//Probe Strain
@@ -559,7 +473,6 @@ public class AdvancedSearchDBQuery {
 			lookupTable.put("QIC_SPN_STRAIN, QMC_SPN_STRAIN","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Specimen Strain
 			lookupTable.put("QIC_SPN_SEX, QMC_SPN_SEX","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Sex
 			lookupTable.put("QIC_SUB_EMBRYO_STG, QMC_SUB_EMBRYO_STG","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Stage
-//			lookupTable.put("CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE), CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE)","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Age
 			lookupTable.put("TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END), " +
 					"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END)",
 					"QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Age
@@ -585,25 +498,17 @@ public class AdvancedSearchDBQuery {
 			return lookupTable;
 	   }	  
 	  
-	  // xingjun - 10/05/2011 - should be QIC_ANO_COMPONENT_NAME not ANO_COMPONENT_NAME
-	  // xingjun - 05/09/2011 - should be ANO_COMPONENT_NAME - tissue for given assay actually stored in ISH_SP_TISSUE table, not cached in QSC_ISH_CACHE table
-	  // Bernie - 01/03/2012 - (Mantis 619) added col15 QIC_SPN_SEX & QMC_SPN_SEX to add column for sex
 	  final static public String getISHSelect(){
 		  return "(select distinct QIC_RPR_SYMBOL col1, "+
-		//"QIC_ANO_COMPONENT_NAME col2,"+
-                //"QIC_EXP_STRENGTH col3,"+
 		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') col2,"+  
-//		"GROUP_CONCAT(DISTINCT QIC_ANO_COMPONENT_NAME SEPARATOR ';') col2,"+  
 		"'' col3,"+
 		"QIC_PER_NAME col4,"+
 		"QIC_SUB_SUB_DATE col5,"+
 		"QIC_SUB_EMBRYO_STG col6,"+
 		"QIC_SPN_ASSAY_TYPE col7,"+
-//		"concat(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) col8,"+
 		"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
 		"QIC_SUB_THUMBNAIL col9,"+
 		"QIC_SUB_ACCESSION_ID col10,"+
-//		"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14 "; // XINGJUN - 03/09/2008
 		"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, REPLACE(QIC_ASSAY_TYPE,'TG','ITG') col14, " +
 		" QIC_SPN_SEX col15 ";
 	  }
@@ -622,7 +527,6 @@ public class AdvancedSearchDBQuery {
 	    "QIC_SUB_SUB_DATE col5,"+
 	    "QIC_SUB_EMBRYO_STG col6,"+
 	    "QIC_SPN_ASSAY_TYPE col7,"+
-	    //            "concat(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) col8,"+
 	    "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
                "QIC_SUB_THUMBNAIL col9,"+
 	    "QIC_SUB_ACCESSION_ID col10,"+
@@ -637,7 +541,6 @@ public class AdvancedSearchDBQuery {
 			"QIC_SUB_SUB_DATE col5,"+
 			"QIC_SUB_EMBRYO_STG col6,"+
 			"QIC_SPN_ASSAY_TYPE col7,"+
-//			"concat(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) col8,"+
 			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
 			"QIC_SUB_THUMBNAIL col9,"+
 			"QIC_SUB_ACCESSION_ID col10,"+
@@ -652,8 +555,6 @@ public class AdvancedSearchDBQuery {
 		"QIC_PER_NAME ,"+
 		"QIC_SUB_SUB_DATE ,"+
 		"QIC_SUB_EMBRYO_STG ,"+
-//		"QIC_SPN_ASSAY_TYPE ,"+
-//		"concat(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ,"+
 		"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) ,"+
 		"QIC_SUB_THUMBNAIL ,"+
 		"QIC_SUB_ACCESSION_ID ,"+
@@ -663,20 +564,17 @@ public class AdvancedSearchDBQuery {
 	  final static public String getMICSelect(){
 		  return "(select distinct "+
 		"'' col1,"+
-		//"MBC_GNF_SYMBOL col1,"+
 		"QMC_ANO_COMPONENT_NAME col2,"+
                 "'' col3,"+
 		"QMC_PER_NAME col4,"+
 		"QMC_SUB_SUB_DATE col5,"+
 		"QMC_SUB_EMBRYO_STG col6,"+
 		"QMC_SPN_ASSAY_TYPE col7,"+
-//		"concat(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) col8,"+
 		"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) col8,"+
 		"'' col9,"+
 		"QMC_SUB_ACCESSION_ID col10,"+
 		"'' col11,"+
 		"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15  ";
-		//"MBC_GLI_DETECTION col12, '' col13, 'Microarray' col14 ";	
 	  }
 	  
 	  
@@ -688,64 +586,52 @@ public class AdvancedSearchDBQuery {
 	   */
 	  final static public String getMICSelectForMerhan(){
 		  return "(select distinct "+
-		//"'' col1,"+
 		"MBC_GNF_SYMBOL col1,"+
 		"MBC_ANO_COMPONENT_NAME col2,"+
                 "'' col3,"+
-//		"MBC_PER_NAME col4,"+
 		"IF((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK=GRP_OID WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)), MBC_PER_NAME) col4,"+
 		"MBC_SUB_SUB_DATE col5,"+
 		"MBC_SUB_EMBRYO_STG col6,"+
 		"MBC_SPN_ASSAY_TYPE col7,"+
-//		"concat(MBC_SPN_STAGE_FORMAT, MBC_SPN_STAGE) col8,"+
 		"concat(TRIM(CASE MBC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(MBC_SPN_STAGE,' ',MBC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',MBC_SPN_STAGE) ELSE CONCAT(MBC_SPN_STAGE_FORMAT,MBC_SPN_STAGE) END)) col8,"+
 		"'' col9,"+
 		"MBC_SUB_ACCESSION_ID col10,"+
 		"'' col11,"+
 		"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15 ";
-//		"MBC_GLI_DETECTION col12, '' col13, 'Microarray' col14 ";
 	  }
 
 	  final static public String getMICSelectForAnatomy(){
 		  return "(select distinct "+
 			"'' col1,"+
-			//"MBC_GNF_SYMBOL col1,"+
 			"QMC_ANO_COMPONENT_NAME col2,"+
 	                "'' col3,"+
 			"QMC_PER_NAME col4,"+
 			"QMC_SUB_SUB_DATE col5,"+
 			"QMC_SUB_EMBRYO_STG col6,"+
 			"QMC_SPN_ASSAY_TYPE col7,"+
-//			"concat(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) col8,"+
 			"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) col8,"+
 			"'' col9,"+
 			"QMC_SUB_ACCESSION_ID col10,"+
 			"'' col11,"+
 			"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15 ";
-		//"MBC_GLI_DETECTION col12, '' col13, 'Microarray' col14 ";
 	  }	 
 	  
 	  final static public String getMICSelectForGEOID(){
 		  return "(select distinct "+
 		"'' col1,"+
-		//"MBC_GNF_SYMBOL col1,"+
 		"QMC_ANO_COMPONENT_NAME col2,"+
                 "'' col3,"+
 		"QMC_PER_NAME col4,"+
 		"QMC_SUB_SUB_DATE col5,"+
 		"QMC_SUB_EMBRYO_STG col6,"+
 		"QMC_SPN_ASSAY_TYPE col7,"+
-//		"concat(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) col8,"+
 		"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) col8,"+
 		"'' col9,"+
 		"QMC_SUB_ACCESSION_ID col10,"+
 		"'' col11,"+
 		"'' col12, '' col13, 'Microarray' col14 , QMC_SPN_SEX col15 ";
-		//"MBC_GLI_DETECTION col12, '' col13, 'Microarray' col14 ";
 	  }		  
 	  
-	  // xingjun - 31/03/2010 - added extra two column to make the column number
-	  // consistent with columns listed in method getISHSelect
 	  final static public String getISHCount(){
 		  return "select count(distinct QIC_RPR_SYMBOL, " +
 		  "'', " +
@@ -754,7 +640,6 @@ public class AdvancedSearchDBQuery {
 		  "QIC_SUB_SUB_DATE, " +
 		  "QIC_SUB_EMBRYO_STG, " +
 		  "QIC_SPN_ASSAY_TYPE, " +
-//		"concat(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ,"+
 		  "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END), " +
 		  "QIC_SUB_THUMBNAIL, " +
 		  "QIC_SUB_ACCESSION_ID, " +
@@ -767,20 +652,17 @@ public class AdvancedSearchDBQuery {
 	  final static public String getMICCount(){
 		  return "select count(distinct "+
 		"'' ,"+
-		//"MBC_GNF_SYMBOL ,"+
 		"QMC_ANO_COMPONENT_NAME ,"+
                 "'' ,"+
 		"QMC_PER_NAME ,"+
 		"QMC_SUB_SUB_DATE ,"+
 		"QMC_SUB_EMBRYO_STG ,"+
 		"QMC_SPN_ASSAY_TYPE ,"+
-//		"concat(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) ,"+
 		"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) ,"+
 		"'' ,"+
 		"'' ,"+
 		"QMC_SUB_ACCESSION_ID ,"+
 		"'' ), "+
-		//"MBC_GLI_DETECTION ) ";
 		" QMC_SPN_SEX "; 
 	  }
 	  
@@ -790,7 +672,6 @@ public class AdvancedSearchDBQuery {
 		  return " from QSC_ISH_CACHE ";
 	  }
 	  
-	  // added by ying - 12/12/2007
 	  final static public String getISHFromLocation(){
 		  return " from QSC_ISH_CACHE Left join QSC_ISH_LOCATION on QIL_SUB_ACCESSION_ID=QIC_SUB_ACCESSION_ID ";
 	  }
@@ -806,9 +687,6 @@ public class AdvancedSearchDBQuery {
 		  return 
 		" from MIC_BROWSE_CACHE as Gene "+
 		"join QSC_MIC_CACHE as Cache WHERE MBC_SUB_ACCESSION_ID=QMC_SUB_ACCESSION_ID ";
-		//"left join REF_MGI_MRK on RMM_SYMBOL=MBC_GNF_SYMBOL "+
-		//"left join REF_SYNONYM as Synonym on RSY_REF = RMM_ID "+
-//		" where ";
 	  }
 	  
 	  final static public String getMICFromQSCOnly(){
@@ -821,16 +699,12 @@ public class AdvancedSearchDBQuery {
 		  return 
 		" from "+
 		"QSC_MIC_CACHE as Cache "+
-		//"left join REF_MGI_MRK on RMM_SYMBOL=MBC_GNF_SYMBOL "+
-		//"left join REF_SYNONYM as Synonym on RSY_REF = RMM_ID "+
 		"where QMC_SUB_ACCESSION_ID is not null"+
 		" ";
 	  }	  
 	  
 	  final static public String getMICFromMerhan(){
 		  return " from MIC_BROWSE_CACHE as Gene "+	
-		//"left join REF_MGI_MRK on RMM_SYMBOL=MBC_GNF_SYMBOL "+
-		//"left join REF_SYNONYM as Synonym on RSY_REF = RMM_ID "+
 		" ";
 	  }
 	  
@@ -982,7 +856,6 @@ public class AdvancedSearchDBQuery {
 		         " ANAD_PART_OF "+
 		    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
 		      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-//		      " and RTR_ANCESTOR_FK        <> RTR_DESCENDENT_FK "+ // by xingjun 14/11/2007: should include descendent
 		      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
 		      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
 		      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
@@ -990,10 +863,8 @@ public class AdvancedSearchDBQuery {
 	  }
 	  
 	  // for every fomat except DPC, which is what GUDMAP uses, the format goes first.
-	  // modified by xingjun - 15/12/2008 - modified stage presentation format as required from EO
 	  public static String stageFormatConcat = bundle.getString("project").equals("GUDMAP") ? 
 			  "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) " +
-//			  "WHEN 'pnd' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" : 
 			  "WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" : 
 			  "CONCAT(SPN_STAGE_FORMAT, SPN_STAGE)";
 	  
@@ -1010,8 +881,7 @@ public class AdvancedSearchDBQuery {
 		  if(emapids.length >= 1) {
 			  ids = ids.substring(0, ids.length()-1);
 		  }
-//		  return " select count(DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE,concat(SPN_STAGE_FORMAT,SPN_STAGE), PER_SURNAME,SUB_SUB_DATE,SMP_SEX, " +
-		  return " select count(DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE," + stageFormatConcat + ", PER_SURNAME,SUB_SUB_DATE,SMP_SEX, " +
+		  return " select count(DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE," + stageFormatConcat + ", SUB_SOURCE,SUB_SUB_DATE,SMP_SEX, " +
 		         "SRM_SAMPLE_DESCRIPTION,SMP_TITLE, SER_GEO_ID, concat(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ') '), SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID) " +
 		         "FROM ISH_SUBMISSION,MIC_SAMPLE,ISH_SPECIMEN,MIC_SERIES_SAMPLE,MIC_SERIES,ISH_PERSON,ISH_EXPRESSION, ANA_TIMED_NODE, ANA_NODE ANA_NODE " +
 				 "WHERE SMP_SUBMISSION_FK = SUB_OID AND SRM_SAMPLE_FK = SMP_OID AND EXP_SUBMISSION_FK=SUB_OID AND SRM_SERIES_FK = SER_OID AND PER_OID = SUB_PI_FK " +
@@ -1021,7 +891,6 @@ public class AdvancedSearchDBQuery {
 				 "ANA_NODE, ANAD_PART_OF " +
 				 "where ANCES_ATN.ATN_PUBLIC_ID in (" + ids + ") " +
 				 "and ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
-//				 +" and RTR_ANCESTOR_FK        <> RTR_DESCENDENT_FK "+ // by xingjun 14/11/2007: should include descendent
 				 "and RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
 				 "and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK " +
 				 "and ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
@@ -1045,14 +914,12 @@ public class AdvancedSearchDBQuery {
 		         " ANAD_PART_OF "+
 		    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
 		      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-//		      " and RTR_ANCESTOR_FK        <> RTR_DESCENDENT_FK "+ // by xingjun 14/11/2007: should include descendent
 		      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
 		      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
 		      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
 		      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true)" ;
 	  }	  
 	  
-	  // added by xingjun - 28/08/2008
 	  final static public String getPublicTransgenicNumber(String[] emapids) {
 		  String ids = "";
 		  for(int i = 0; i < emapids.length; i++) {
@@ -1104,19 +971,6 @@ public class AdvancedSearchDBQuery {
 	  								"where ANO_COMPONENT_NAME like ? and  RTR_DESCENDENT_FK=ANO_OID and RTR_ANCESTOR_FK in "+
 	  								"(select NIP_NODE_FK from  ANA_NODE_IN_PERSPECTIVE where NIP_PERSPECTIVE_FK='Urogenital')"; 
 
-	  // xingjun - 07/12/2009 - rewrote the sql and added extra table join for ISH_MUTANT table
-//	  public static String endsBrowseSubmissionArray = "FROM ISH_SUBMISSION,MIC_SAMPLE,ISH_SPECIMEN," +
-//      "MIC_SERIES_SAMPLE,MIC_SERIES,ISH_PERSON,ISH_EXPRESSION, ANA_TIMED_NODE, ANA_NODE ANA_NODE " +
-//      "WHERE SMP_SUBMISSION_FK = SUB_OID " +
-//      "AND SRM_SAMPLE_FK = SMP_OID "+
-//      "AND EXP_SUBMISSION_FK=SUB_OID "+
-//      "AND SRM_SERIES_FK = SER_OID "+
-//      "AND PER_OID = SUB_PI_FK "+
-//      "AND SUB_OID = SPN_SUBMISSION_FK "+
-//      "AND SUB_ASSAY_TYPE = 'Microarray' "+
-//      "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 "+
-//      "AND ATN_PUBLIC_ID=EXP_COMPONENT_ID " +
-//      "AND ATN_NODE_FK = ANO_OID ";
 	  public static String endsBrowseSubmissionArray = "FROM ISH_SUBMISSION " +
 	  		"JOIN MIC_SAMPLE ON SMP_SUBMISSION_FK = SUB_OID " +
 	  		"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
@@ -1130,11 +984,8 @@ public class AdvancedSearchDBQuery {
 	  		"WHERE SUB_ASSAY_TYPE = 'Microarray' " +
 	  		"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 	  
-	  // added by xingjun - 25/09/2009 - appended to the query when use MySQL GROUP_CONCAT function
-//	  public static String groupBySubmissionArray = "GROUP BY SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE,concat(SPN_STAGE_FORMAT,SPN_STAGE), PER_SURNAME,SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, SER_GEO_ID, SPN_ASSAY_TYPE ";
-	  public static String groupBySubmissionArray = "GROUP BY SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE,"+ stageFormatConcat + ", PER_SURNAME,SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, SER_GEO_ID, SPN_ASSAY_TYPE ";
+	  public static String groupBySubmissionArray = "GROUP BY SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE,"+ stageFormatConcat + ", SUB_SOURCE, SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, SER_GEO_ID, SPN_ASSAY_TYPE ";
 	  
-	  // added by xingjun - 25/09/2009
 	  public static String findDescendant = " AND EXP_COMPONENT_ID IN (SELECT DISTINCT DESCEND_ATN.ATN_PUBLIC_ID " +
 	    "FROM ANA_TIMED_NODE ANCES_ATN, ANAD_RELATIONSHIP_TRANSITIVE, ANA_TIMED_NODE DESCEND_ATN, ANA_NODE, ANAD_PART_OF " +
 	    "WHERE ANCES_ATN.ATN_PUBLIC_ID in (COMPONENT_IDS) " +
@@ -1145,15 +996,10 @@ public class AdvancedSearchDBQuery {
 	    "AND APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) ";
 
       /* ---query to find summary info on every array entry in the db--- */
-	  // xingjun - 20/10/2009 changed from concat(SPN_STAGE_FORMAT,SPN_STAGE) into stageFormatConcat
-	  // xingjun - 23/06/2011 - changed PER_SURNAME to a subquery to pick up possible multiple PIs
 	  final static String name50 = "ALL_ENTRIES_ARRAY_FOCUS";
-//	  final static String query50 = "SELECT DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE,concat(SPN_STAGE_FORMAT,SPN_STAGE), " +
 	  final static String query50 = "SELECT DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE, " + stageFormatConcat +", " +
-//		   "PER_SURNAME,SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, " +
 		   "IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), PER_SURNAME) PER_SURNAME, " +
 		   "SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, " +
-//		   "SER_GEO_ID, concat(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ') '), SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID " + endsBrowseSubmissionArray;
 		   "SER_GEO_ID, GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', '), MUT_GENE, SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID " + endsBrowseSubmissionArray;
 
 	final static String[] ISH_BROWSE_ALL_SQL_COLUMNS = {"SUB_ACCESSION_ID", 
@@ -1191,9 +1037,7 @@ public class AdvancedSearchDBQuery {
       "PRB_PROBE_TYPE, CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME), "+
       "REPLACE(SUB_ACCESSION_ID, ':', 'no') ";
 */	  
-	  // modified by xingjun - 31/08/2009 
       // - commented out clause linked to expression table - no need to have and made the query far too slow
-      // modified by xingjun - 03/09/2009
       // - changed back and expression table join will be handled in the DAO code
       // - use LEFT JOIN instead of JOIN to include submissions without expression info - 22/09/2009
 	  final static String ISH_BROWSE_ALL_TABLES = "FROM ISH_SUBMISSION " +
@@ -1205,7 +1049,6 @@ public class AdvancedSearchDBQuery {
 	                                                  "AND I.IMG_OID = (SELECT MIN(IMG_OID) FROM ISH_ORIGINAL_IMAGE WHERE IMG_SUBMISSION_FK = SUB_OID) "+
 	                                                  "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = " + bundle.getString("img_url_oid") + " " +
 	                                                  "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " ;
-//	                                                  "JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " ;
 	                                                  
 	  final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 	  final static public String getAssayType(String type) {
@@ -1229,20 +1072,15 @@ public class AdvancedSearchDBQuery {
 	  
 	  /* ---query to find summary info on every ish entry in the db--- */
 	  final static String name0 = "ALL_ENTRIES_ISH";
-//	  final static String query0 = ISH_BROWSE_ALL_COLUMNS + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("ISH");
 	  final static String query0 = getISH_BROWSE_ALL_COLUMNS() + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("ISH");
 
 	  final static String name1 = "ALL_ENTRIES_IHC";
-//	  final static String query1 = ISH_BROWSE_ALL_COLUMNS + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("IHC");
 	  final static String query1 = getISH_BROWSE_ALL_COLUMNS() + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("IHC");
 
 	  final static String name2 = "ALL_ENTRIES_INSITU";
-//	  final static String query2 = ISH_BROWSE_ALL_COLUMNS + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType(new String[]{"ISH", "IHC"});
 	  final static String query2 = getISH_BROWSE_ALL_COLUMNS() + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType(new String[]{"ISH", "IHC"});
 	  
-	  // xingjun - 26/08/2008 - transgenic
 	  final static String name3 = "ALL_ENTRIES_TG";
-//	  final static String query3 = ISH_BROWSE_ALL_COLUMNS + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("TG");
 	  final static String query3 = getISH_BROWSE_ALL_COLUMNS() + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("TG");
 	  
 	  private static String endsBrowseSubmissionISH = ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("ISH");
@@ -1265,16 +1103,12 @@ public class AdvancedSearchDBQuery {
 	  final static String name41 = "TOTAL_NUMBER_OF_SUBMISSION_ARRAY";
 	  final static String query41 = NUMBER_OF_SUBMISSION + endsBrowseSubmissionArray;
 	  
-	  // xingjun - 26/08/2008 - transgenic
 	  final static String name42 = "TOTAL_NUMBER_OF_SUBMISSION_TG";
 	  final static String query42 = NUMBER_OF_SUBMISSION + endsBrowseSubmissionTG;
 	  
-	  // xingjun - 02/03/2010 - added extra column: list of component
-	  // xingjun - 23/06/2011 - changed PER_SURNAME to a subquery to pick up possible multiple PIs
 	  final static String name137 = "ALL_SERIES";
 	  final static String query137 = "SELECT distinct SER_TITLE, SER_GEO_ID, " +
 		"(SELECT COUNT(*) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID) SAMPLE_NUMBER, " +
-//		"PER_SURNAME, " +
 		"IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), PER_SURNAME) PER_SURNAME, " +
 		"PLT_GEO_ID, SER_OID, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') " +// added group_concat column - 02/03/2010
 		"FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, MIC_PLATFORM, ISH_PERSON, ANA_NODE, ANA_TIMED_NODE " +// added node and timed node table - 02/03/2010
@@ -1288,14 +1122,6 @@ public class AdvancedSearchDBQuery {
 		"AND EXP_COMPONENT_ID IN " + // newly added - 02/03/2010
 		"AND SER_PLATFORM_FK " + // newly added - 02/03/2010
 		"GROUP BY SER_GEO_ID ";// newly added - 02/03/2010
-//	  final static String query137 = "SELECT distinct SER_TITLE, SER_TYPE, SER_GEO_ID, (SELECT COUNT(*) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID) SAMPLE_NUMBER "+
-//	  "FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION "+
-//	  "where SRM_SERIES_FK = SER_OID and SRM_SAMPLE_FK= SMP_OID "+
-//	  "and SMP_SUBMISSION_FK=SUB_OID and EXP_SUBMISSION_FK=SUB_OID ";
-//	  SELECT distinct SER_TITLE, SER_TYPE, SER_GEO_ID, (SELECT COUNT(*) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID) SAMPLE_NUMBER, PLT_GEO_ID, PER_SURNAME, ANO_COMPONENT_NAME FROM MIC_SERIES, MIC_PLATFORM, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, ISH_PERSON, ANA_TIMED_NODE, ANA_NODE where PLT_OID = SER_PLATFORM_FK AND SRM_SERIES_FK = SER_OID and SRM_SAMPLE_FK= SMP_OID and SMP_SUBMISSION_FK=SUB_OID and EXP_SUBMISSION_FK=SUB_OID 
-//	  AND SUB_PI_FK = PER_OID
-//	  AND ATN_PUBLIC_ID = EXP_COMPONENT_ID
-//	  AND ATN_NODE_FK = ANO_OID
 	  
 	  final static String ORDER_BY_EXPERIMENT_NAME = " ORDER BY TRIM(SER_TITLE)";
 	  
@@ -1342,7 +1168,6 @@ public class AdvancedSearchDBQuery {
 	  }
 	  
 	  final static public String getISHGeneExpresssion1(String symbol, String organ) {
-		  //String sql = "select count(distinct SUB_ACCESSION_ID)  from ISH_PROBE,ISH_SUBMISSION,ISH_EXPRESSION where EXP_SUBMISSION_FK=SUB_OID and PRB_SUBMISSION_FK=SUB_OID and PRB_GENE_SYMBOL = '"+symbol+"' and EXP_STRENGTH='present' ";
 		  String sql = "select count(distinct QIC_SUB_ACCESSION_ID)  from QSC_ISH_CACHE where QIC_RPR_SYMBOL = '"+symbol+"' and QIC_EXP_STRENGTH='present' ";
 
 		  if(null != organ && !organ.equals("")) {
@@ -1352,7 +1177,6 @@ public class AdvancedSearchDBQuery {
 	  }
 	  
 	  final static public String getISHGeneExpresssion2(String symbol, String organ) {
-		  //String sql = "select count(distinct SUB_ACCESSION_ID)  from ISH_PROBE,ISH_SUBMISSION,ISH_EXPRESSION where EXP_SUBMISSION_FK=SUB_OID and PRB_SUBMISSION_FK=SUB_OID and PRB_GENE_SYMBOL = '"+symbol+"' and EXP_STRENGTH='not detected' ";
 		  String sql = "select count(distinct QIC_SUB_ACCESSION_ID)  from QSC_ISH_CACHE where QIC_RPR_SYMBOL = '"+symbol+"' and QIC_EXP_STRENGTH='not detected' ";
 
 		  if(null != organ && !organ.equals("")) {
@@ -1362,7 +1186,6 @@ public class AdvancedSearchDBQuery {
 	  }
 	  
 	  final static public String getISHGeneExpresssion3(String symbol, String organ) {
-		  //String sql = "select count(distinct SUB_ACCESSION_ID)  from ISH_PROBE,ISH_SUBMISSION,ISH_EXPRESSION where EXP_SUBMISSION_FK=SUB_OID and PRB_SUBMISSION_FK=SUB_OID and PRB_GENE_SYMBOL = '"+symbol+"' and EXP_STRENGTH not in ('present','not detected') ";
 		  String sql = "select count(distinct QIC_SUB_ACCESSION_ID)  from QSC_ISH_CACHE where QIC_RPR_SYMBOL = '"+symbol+"' and QIC_EXP_STRENGTH not in ('present','not detected') ";
 
 		  if(null != organ && !organ.equals("")) {
@@ -1508,7 +1331,7 @@ public class AdvancedSearchDBQuery {
 	      new ParamQuery(name145, query145)
 	  };
 
-	  // finds ParamQuery object by name and returns
+	  //  finds ParamQuery object by name and returns
 	  public static ParamQuery getParamQuery(String name) {
 	      ParamQuery ret = null;
 		

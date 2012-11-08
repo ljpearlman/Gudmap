@@ -14,21 +14,14 @@ public class ArrayDBQuery {
 
 	static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 
-	// xingjun - 04/02/2010
 	// - rewrote the sql to exclude the table MIC_ANALYSIS_MASTER from the sql
 	// - added criteria for sectionId
 	final static String name1 = "MASTER_TABLE_EXPRESSION_TITLES";
-//	final static String query1 = "SELECT AMH_ORDER, 'Master Expression', AMG_DESCRIPTION, AMG_DISPLAY_NAME " +
 	final static String query1 = "SELECT AMH_ORDER, 'Master Expression', AMG_DISPLAY_NAME, AMG_DESCRIPTION " +
 			"FROM MIC_ANAL_MSTR_GRP_HEADER " +
 			"JOIN MIC_ANAL_MASTER_GROUP ON AMH_AM_GROUP_FK = AMG_OID " +
 			"WHERE AMH_A_MASTER_FK = ? " +
 			"AND AMG_SECTION_FK = ? ";
-//	final static String query1 = "SELECT AMH_ORDER, 'Master Expression', AMG_DISPLAY_NAME, AMG_DESCRIPTION " +
-//	"FROM MIC_ANAL_MSTR_GRP_HEADER " +
-//	"JOIN MIC_ANALYSIS_MASTER ON AMH_A_MASTER_FK = AMT_OID " +
-//	"JOIN MIC_ANAL_MASTER_GROUP ON AMH_AM_GROUP_FK = AMG_OID " +
-//	"WHERE AMT_OID = ? ";
 	
                 // the first one is not needed
 	final static int ANNOTATION_COLUMN_NUMBER = 6;
@@ -67,7 +60,6 @@ public class ArrayDBQuery {
 			"JOIN MIC_ANAL_GENELIST_COLUMN ON GCT_GLST_COLUMN_FK = AGC_OID " +
 			"JOIN MIC_ANALYSIS_GENELIST ON AGC_ANAL_GENELIST_FK = ANG_OID " +
 			"WHERE ANG_OID = ? " +
-//			"ORDER BY NATURAL_SORT(GCT_PROBE_SET_ID) ";
 			"ORDER BY GCT_OID ";
 	  
 	final static String name25 = "GET_PROBE_SET_ID_BY_ANALYSIS_GENELIST_CLUSTER_ID";
@@ -91,7 +83,6 @@ public class ArrayDBQuery {
 	"AND AME_M_HEADER_FK = ? " +
 	"ORDER BY AME_VALUE_RMA ";
 	    
-    // xingjun - 02/03/2010 - added extra column: list of components
 	final static String name10 = "SERIES_DATA_BY_OID";
     final static String query10 = "SELECT SER_GEO_ID, COUNT(distinct SRM_SAMPLE_FK), " +
     		"SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN, SER_OID, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', '), SUB_ARCHIVE_ID " +
@@ -105,7 +96,6 @@ public class ArrayDBQuery {
             "AND ATN_NODE_FK = ANO_OID " +
     		"GROUP BY SER_GEO_ID, SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN ";
                                    
-    // xingjun - 03/03/2010 - added extra column: list of components
     final static String SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
     		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ')  ";
     final static String SAMPLE_SERIES_TABS_BY_OID = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
@@ -122,11 +112,6 @@ public class ArrayDBQuery {
     final static String query11 = SAMPLE_SERIES_COLS + SAMPLE_SERIES_TABS_BY_OID;
 
 	final static String name12 = "TRANSGENIC_INFO_BY_SUBMISSION_ID";
-//	final static String query12 = "SELECT MUT_ALLELE_ID, MUT_ALLELE_DESC, MUT_TYPE, MUT_LABEL, MUT_VISUALISATION, MUT_PROMOTER " +
-//			"FROM ISH_SUBMISSION " +
-//			"JOIN ISH_MUTANT ON SUB_OID = MUT_SUBMISSION_FK " +
-//			"WHERE SUB_ACCESSION_ID = ? ";
-	// xingjun - 09/11/2009
 	final static String query12 = "SELECT MUT_OID, MUT_TYPE, MUT_GENE,MUT_MUTATED_GENE_ID, MUT_ALLELE_ID, " +
 			"CASE MUT_TYPE WHEN 'mutant allele' THEN MUT_ALLELE_DESC WHEN 'transgenic insertion' THEN MUT_ALLELE_NAME END MUT_ALLELE_NAME, " +
 			"MUT_LABEL, MUT_VISUALISATION, MUT_ALLELE_FIRST_CHROM, MUT_ALLELE_SEC_CHROM " +
@@ -137,8 +122,6 @@ public class ArrayDBQuery {
 			"FROM ISH_MUTANT_NOTE JOIN ISH_MUTANT ON MTN_MUT_FK = MUT_OID " +
 			"WHERE MUT_SUBMISSION_FK = ? ORDER BY MTN_MUT_FK, MTN_SEQ; ";
 	  
-	// xingjun - 03/02/2010 
-	// - added criteria to restrict the return to only master tables that are still be used
 	final static String name13 = "MASTER_TABLE_LIST";
 	final static String query13 = "SELECT AMT_OID, AMT_PLATFORM_ID, AMT_TITLE, AMT_DESCRIPTION FROM MIC_ANALYSIS_MASTER " +
 			"WHERE AMT_STATUS = 1 " +
@@ -182,10 +165,6 @@ public class ArrayDBQuery {
 	  
 	
 	
-	// xingjun - 04/02/2010 
-	  //   - added extra criteria: section (master table can be delimited as sections, then groups)
-	  //   - extra column need to be retrieved: median of the expression values
-	// xingjun - 08/02/2010 - extra column std value added
 	final static String name17 = "GET_EXPRESSION_OF_GIVEN_PROBE_SET_IDS";
 	final static String query17 = "SELECT AME_M_HEADER_FK, AME_PROBE_SET_FK, AME_VALUE_RMA, AMS_MEDIAN, AMS_STD FROM MIC_ANAL_MSTR_EXPRESSION " +
 			"JOIN MIC_ANAL_MSTR_GRP_HEADER ON AME_M_HEADER_FK = AMH_OID " +
@@ -225,7 +204,6 @@ public class ArrayDBQuery {
 	final static String query18 = "SELECT PRS_PROBE_SET_ID FROM MIC_PROBE_SET WHERE PRS_PLATFORM_ID = ? AND PRS_PROBE_SET_ID IN ";
 	  
 	final static String name21 = "ALL_ANALYSIS_GENELISTS_WITH_FOLDER_IDS";
-//	final static String query21 = "SELECT ANG_OID, ANG_TITLE, PER_NAME, ANG_SUMMARY, IF (ANG_CDT_FILENAME = '', URL_URL, '') , ANG_FILEPATH, ANG_FILENAME, ANG_CDT_FILENAME, ANG_SUBMITTER, ANG_ENTRY_DATE, ANG_IS_CLUSTERED, ANG_NUMBER_OF_ENTRIES, AGF_FOLDER_ID, ANG_PLATFORM_ID " +
 	final static String query21 = "SELECT ANG_OID, ANG_TITLE, PER_NAME, ANG_SUMMARY, URL_URL, ANG_FILEPATH, ANG_FILENAME, ANG_CDT_FILENAME, ANG_SUBMITTER, ANG_ENTRY_DATE, ANG_IS_CLUSTERED, ANG_NUMBER_OF_ENTRIES, AGF_FOLDER_ID, ANG_PLATFORM_ID " +
 			"FROM MIC_ANALYSIS_GENELIST " +
 			"JOIN MIC_ANAL_GLST_FOLDER ON AGF_A_GLST_FK = ANG_OID " +
@@ -234,7 +212,6 @@ public class ArrayDBQuery {
 			"WHERE URL_OID = 37 " +
 			"ORDER BY ANG_OID, AGF_FOLDER_ID ";
 	  
-	// xingjun - 27/05/2010 - added extra column AGC_DISPLAY_ORDER
 	final static String name22 = "GET_CLUSTERS_FOR_GIVEN_GENELISTS";
 	final static String query22 = "SELECT AGC_OID, AGC_CLUSTER_FILENAME, AGC_ITEM_NUMBER, AGC_TITLE, AGC_DISPLAY_ORDER " +
 			"FROM MIC_ANAL_GENELIST_COLUMN " +
@@ -248,14 +225,12 @@ public class ArrayDBQuery {
 			"WHERE ANG_OID = ? " +
 			"AND AGC_OID = ? ";
 	  
-	// added by Bernie - 23/09/2010
 	final static String name28 = "GET_SUBMISSION_TISSUE";
 	final static String query28 = "SELECT DISTINCT ANO_COMPONENT_NAME FROM ANA_NODE " +
 	"JOIN ANA_TIMED_NODE ON ATN_NODE_FK = ANO_OID " +
 	"JOIN ISH_SP_TISSUE ON IST_COMPONENT  = ATN_PUBLIC_ID " +
 	"WHERE IST_SUBMISSION_FK = SUBSTR(?,8) ";
 	
-	// xingjun - 23/06/2011
 	final static String name29 = "ALL_SERIES";
 	final static String query29 = "SELECT DISTINCT SER_TITLE, SER_GEO_ID, (SELECT COUNT(distinct SRM_SAMPLE_FK) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID) SAMPLE_NUMBER, " +
 			"IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), PER_SURNAME) PER_SURNAME, " +

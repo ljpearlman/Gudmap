@@ -100,22 +100,6 @@ public class InsituDBQuery {
 	  
 	final static String name5 = "ANNATOMY_TERMS";
 	// query to find out anatomical terms in cache tables
-//	final static String query5 = "SELECT DISTINCT QIC_ANO_COMPONENT_NAME FROM QSC_ISH_CACHE " +
-//			"WHERE QIC_ANO_COMPONENT_NAME LIKE ? " +
-//			"ORDER BY QIC_ANO_COMPONENT_NAME " +
-//			"LIMIT ? ";
-	// query on base tables which only find the terms that have annotation against
-//	final static String query5 = "SELECT DISTINCT ANO_COMPONENT_NAME FROM ANA_NODE " +
-//			"JOIN ANA_TIMED_NODE ON ANO_OID = ATN_NODE_FK " +
-//			"JOIN ISH_EXPRESSION ON ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
-//			"WHERE ANO_COMPONENT_NAME LIKE ? " +
-//			"ORDER BY ANO_COMPONENT_NAME " +
-//			"LIMIT ? ";
-	// exhaust list of anatomical terms
-//	final static String query5 = "SELECT DISTINCT ANO_COMPONENT_NAME FROM ANA_NODE " +
-//			"WHERE ANO_COMPONENT_NAME LIKE ? " +
-//			"ORDER BY ANO_COMPONENT_NAME LIMIT ? ";
-	// xingjun - 07/12/2009 - only retrieve components of Urogenital system
 	final static String query5 = "SELECT DISTINCT ANO_COMPONENT_NAME FROM ANA_NODE " +
 			"JOIN ANAD_PART_OF_PERSPECTIVE ON ANO_OID = POP_NODE_FK " +
 			"WHERE POP_PERSPECTIVE_FK = '" + Utility.getPerspective() + "' " +
@@ -145,19 +129,16 @@ public class InsituDBQuery {
 	final static String query9 = "SELECT MIS_SOFT_VERSION FROM REF_MISC ";
 	  
 	final static String name10 = "GET_RELEVANT_SUBMISSION_IDS";
-//	final static String query10 = "SELECT SUB_ACCESSION_ID FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID IN AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 	final static String query10 = "SELECT SUB_ACCESSION_ID FROM ISH_SUBMISSION " +
 			"WHERE SUB_ACCESSION_ID IN AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK <= ? " +
 			"ORDER BY NATURAL_SORT(SUB_ACCESSION_ID)";
 	  
-	// xingjun - 21/07/2011
 	final static String name13 = "CHROME_DETAIL_BY_SYMBOL";
 	final static String query13 = "SELECT DISTINCT RPR_SYMBOL, REG_CHROME_NAME, REG_CHROM_START, REG_CHROM_END " +
 			"FROM REF_PROBE " +
 			"JOIN REF_ENS_GENE ON RPR_ENSEMBL = REG_STABLE " +
 			"WHERE RPR_SYMBOL = ? ";
 	
-	// xingjun - 22/09/2011 - omitted the join with expression table
 	final static String BROWSE_ALL_TABLES_TG = "FROM ISH_SUBMISSION " +
 	"JOIN ISH_MUTANT ON MUT_SUBMISSION_FK = SUB_OID " +
 	"JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
@@ -201,33 +182,9 @@ public class InsituDBQuery {
     
 	final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 
-	// xingjun - 12/08/2011
 	final static String name14 = "ALL_ENTRIES_TG";
 	final static String query14 = getTG_BROWSE_ALL_COLUMNS() + BROWSE_ALL_TABLES_TG + PUBLIC_ENTRIES_Q;
-//	final static String query14 = "SELECT DISTINCT SUB_ACCESSION_ID, " +
-//			"MUT_GENE AS RPR_SYMBOL, " +
-//			"SUB_EMBRYO_STG, " +
-//			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) AS AGE, " +
-//			"PER_SURNAME, " +
-//			"SPN_ASSAY_TYPE, " +
-//			"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE, " +
-//			"SUB_SUB_DATE, " +
-//			"CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME) AS THUMBNAIL, " +
-//			"REPLACE(SUB_ACCESSION_ID, ':', 'no'), " +
-//			"SPN_SEX, " +
-//			"'' AS RPR_JAX_ACC, /* TG data has no probe name*/ " +
-//			"(CASE WHEN SPN_WILDTYPE='true' THEN 'Wild Type' WHEN SPN_WILDTYPE='false' THEN 'Non-wild Type' ELSE '' END) SPN_WILDTYPE, '' AS SPN_WILDTYPE, " +
-//			"'' AS PRB_PROBE_TYPE " +
-//			"FROM ISH_SUBMISSION " +
-//			"JOIN ISH_MUTANT ON MUT_SUBMISSION_FK = SUB_OID " +
-//			"JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
-//			"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
-//			"JOIN ISH_ORIGINAL_IMAGE I ON SUB_OID = I.IMG_SUBMISSION_FK " +
-//			"	AND I.IMG_OID = (SELECT MIN(IMG_OID) FROM ISH_ORIGINAL_IMAGE WHERE IMG_SUBMISSION_FK = SUB_OID) " +
-//			"JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 31  " +
-//			"WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
-	
-	// backup sql - xingjun - 07/09/2011
+
 	final static String name00 = "ALL_ENTRIES_BROWSE_TG";
 	final static String query00 = "SELECT DISTINCT SUB_ACCESSION_ID, " +
 	"MUT_GENE AS RPR_SYMBOL, " +
