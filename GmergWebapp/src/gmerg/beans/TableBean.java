@@ -119,109 +119,8 @@ public class TableBean extends MultipleInstanceBean {
 //		System.out.println(selectedCollection+" idcol========"+idCol);
 		
 		return TableUtil.getSelectedIdsFromTableView(tableView, selectionsString, idCol, 0);//offset);
-			
-/*		
-		int offset = 0;
-		if (tableView.isCellsSelectable()) 
-			offset = 1 + ((tableView.isTopSelectionBox())? 1 : 0);	// to take care of complex check box anf dummy value in complex values
-			
-		TreeSet<String> selectedIds = new TreeSet<String>();
- 		int dataOffset = tableView.getFirstRowIndex(); //it is 0 for Offmemory tables and some offset for InMemory tables
-		for (int i=0; i<selectionsString.length(); i++)
-			if (selectionsString.charAt(i) == '1') {
-				DataItem item;
-				if (tableView.isRowsSelectable())
-					item = tableData[i+dataOffset][idCol];
-				else {
-					int colNum = tableView.getVisibleColNum();
-					int row = i / colNum + dataOffset;
-					int col = i % colNum;
-					int offset = 1 + ((tableView.isTopSelectionBox())? 1 : 0);
-						item = ((ArrayList<DataItem>)(tableData[row][col].getValue())).get(idCol + offset); 
-					item = ((ArrayList<DataItem>)(tableData[row][col].getValue())).get(idCol + offset); 
-				}
-				selectedIds.add((String)item.getValue());
-			}
-		String[] selections = new String[selectedIds.size()];
-		selectedIds.toArray(selections);
-		return (selections);
-*/		
 	}
 
-/*
-	private void loadDataModel() {
-		System.out.println("######## In loadDataModel  -- TableBean");
-		if(tableView==null)
-			System.out.println("######## Error in table bean init instance");
-
-		GenericTable table = tableView.getTable();
-
-System.out.println("######## In loadDataModel  -- Table="+table.getNumRows()+"  "+table.getNumCols());
-
-		boolean[] visible = tableView.getColVisible();
-
-		// create header info
-		ArrayList headerList = new ArrayList();
-		if (tableView.isSelectable())
-			headerList.add(new HeaderItem("Select", false));
-
-		HeaderItem[] headers = table.getHeader();
-		for (int i=0; i<headers.length; i++){
-			if(visible[i])
-				headerList.add(headers[i]);
-		}
-		columnHeaders = new ListDataModel(headerList);
-
-
-		// create data model
-		DataItem[][] tableData = tableView.getData();
-		ArrayList rowsList = new ArrayList();
-		for(int i=0; i<tableData.length; i++) {
-			ArrayList row = new ArrayList();
-			for (int j=0; i<tableData[i].length; i++){
-				if(visible[j])
-					row.add(tableData[i][j]);
-			}
-			rowsList.add(row);
-		}
-		data = new ArrayDataModel();
-		data.setWrappedData(rowsList);
-
-		// create visible column mapping (only headers for visible columns are considered)
-		int colNum = table.getNumCols();
-		int offset = 0;
-		if(tableView.isSelectable()) {
-			offset = 1;
-		  	visibleColumnMap = new int[colNum+1];
-		  	visibleColumnMap[0] = 0;
-		}
-		else
-			visibleColumnMap = new int[colNum];
-
-	  	for(int i=0, j=0; i<colNum; i++)
-			if (visible[i]){
-				visibleColumnMap[j+offset] = i+offset;
-				j++;
-			}
-	
-		if (tableView.isSelectable()) {
-			selections = new DataItem[tableView.getRowsPerPage()];
-			for (int i=0; i<selections.length; i++)
-				if (i%2==0)
-				selections[i] = new DataItem(false, "", "", 20);
-			else
-			selections[i] = new DataItem(true, "", "", 20);
-		}
-
-
-DataItem[][] displayedTable = (DataItem[][])(data.getWrappedData());
-ArrayList diplayedHeader = (ArrayList)(columnHeaders.getWrappedData());
-System.out.println("######## In loadDataModel  -- dataModel="+data.getRowCount()+"  "+displayedTable[1][1].getValue()+	"   header:"+columnHeaders.getRowCount()+"  "+((HeaderItem)diplayedHeader.get(1)).getTitle());
-
-		isDataModelLoaded = true;
-	}
-
-*/
 	static int logLevel=0; //0-2;
 	private void log(String message) {
 		log(message, 2);
@@ -296,11 +195,6 @@ System.out.println("######## In loadDataModel  -- dataModel="+data.getRowCount()
 				log("Error in table data. Inconsistenancy between data and number of rows;  ---actual rows="+tableData.length+"  rows="+rowNum, 0);
 			if (tableData[0] == null )
 				log("table column number is zero");
-/*			
-			else 
-				if (tableData[0].length != colNum) 
-					log("Error in table data. Inconsistenancy between data and number of cols;  ---actual cols="+tableData[0].length + "  cols="+colNum, 0);
-*/					
 		}
 		
 		log(selectionsString+"~~~~~~~rows="+rowNum+"	~~~~~~cols="+colNum+"	~~~~totalrows="+tableView.getTable().getNumRows()+"	   hetamapindex="+heatmapColumnIndex);
@@ -404,13 +298,6 @@ System.out.println("######## In loadDataModel  -- dataModel="+data.getRowCount()
 	  	visibleColumnMap = new int[colMapList.size()];
 	  	for(int i=0; i<colMapList.size(); i++)
 	  		visibleColumnMap[i] = colMapList.get(i);
-/*
-		if (tableView.isSelectable()) {
-			selections = new boolean[rowNum];
-			for (int i=0; i<rowNum; i++)
-				selections[i] = false;
-		}
-*/		
 	}
 
 	//==========================================================================
@@ -487,11 +374,7 @@ System.out.println("######## In loadDataModel  -- dataModel="+data.getRowCount()
 		tableView.sort(getColumnIndex(title));
 		if(!tableView.isDisplayInFrame())
 			loadDataModel();
-/*
-		if(tableView.getNumPages()>1)
-			return "refreshNavigation";
-		else
-*/
+
 			return null;
 	}
 
@@ -539,19 +422,6 @@ System.out.println("######## In loadDataModel  -- dataModel="+data.getRowCount()
 		rowsPerPage = Integer.parseInt(n);
 	}
 
-/*
-	public String getResultsPerPage() {
-	   	return String.valueOf(tableView.getRowsPerPage());
-	}
-
-	public void setResultsPerPage(String n) {
-		int newRowsPerPage = Integer.parseInt(n);
-		int currentRowsPerPage = tableView.getRowsPerPage();
-	   	tableView.setRowsPerPage(newRowsPerPage);
-	   	if (newRowsPerPage > currentRowsPerPage)
-	   		loadDataModel();
-	}
-*/
 	public List getPerPageOptions() {
 		int[] perPageOptions = tableView.getPerPageOptions();
 
@@ -565,19 +435,6 @@ System.out.println("######## In loadDataModel  -- dataModel="+data.getRowCount()
 	//***************************************** Apply Filter *****************************************
 	public String applyFilter() {
 	
-		GenericTableFilter filters = tableView.getTable().getAssembler().getFilter();
-		TreeMap<Integer, FilterItem> filterList = filters.getFilters();
-//		for (int i=0; i<filtersSelection.length(); i++) 
-//			filterList.get(i).setActive(filtersSelection.charAt(i++) == '1');
-/*		
-for (FilterItem filter: filterList.values())
-	if(filter.isActive()) 
-		System.out.println("Filter sql==========="+ filter.getSql(filter.getName()));
-*/
-//System.out.println("Filter sql==========="+ filters.getSql(columnNames);
- 
-//   		loadDataModel();
-		
 		tableView.refreshTable();
 		reload();
 		return null;
@@ -637,201 +494,7 @@ for (FilterItem filter: filterList.values())
 		setClipboardItemsNum(ClipboardDelegateCookieImp.replaceClicpboard(ids.toArray(tempArray), selectedCollection));
 		return null;
 	}
-/************************************************
-/* old methods not used any more
- * 
-************************************************* 
-	public String addToCollection1() {
-		System.out.println("In addToCollection");
-		String[] selectedSubs = getSelectedSubmissions();
-		
-		//send the values to 'CookieOperations' where they will be stored as cookies
-		CookieOperations.setValuesInCookie("submissionID", selectedSubs);
 
-		// This is to sent new selections to be used for populating collections table since cookies are not updated until
-		// the next request from client and I want to avoid redirect
-		String selectionIds = "";
-		for(int i=0; i<selectedSubs.length; i++)
-			selectionIds += selectedSubs[i] + "/";
-
-		if (!selectionIds.equals("")) {
-			FacesUtil.setFacesRequestParamValue("selectionIds", selectionIds);
-			FacesUtil.setFacesRequestParamValue("operation", "add");
-		}
-
-		setToCollectionPage("collection");
-
-		return "CollectionPage";
-	}
-
-	/*
-	 * Replace the current ISH/Microarray submission collection by a new list of selected submissions
-	 * /
-	public String replaceCollection1() {
-//		System.out.println("==========In replace Collection");
-		String[] selectedSubs = getSelectedSubmissions();
-		//send the values to 'CookieOperations' where they will be stored as cookies
-		CookieOperations.replaceCookieValues("submissionID", selectedSubs);
-
-		// This is to sent new selections to be used for populating collections table since cookies are not updated until
-		// the next request from client and I want to avoid redirect
-		String selectionIds = "";
-		for(int i=0; i<selectedSubs.length; i++)
-			selectionIds += selectedSubs[i] + "/";
-
-		if (!selectionIds.equals("")) {
-			FacesUtil.setFacesRequestParamValue("selectionIds", selectionIds);
-			FacesUtil.setFacesRequestParamValue("operation", "replace");
-		}
-
-		setToCollectionPage("collection");
-
-		return "CollectionPage";
-	}
-
-	/*
-	 * Prepare for navigation to collection page
-	 * /
-	public String viewCollection1() {
-//		System.out.println("==========In view Collection");
-
-		FacesUtil.setFacesRequestParamValue("operation", "view");
-
-		setToCollectionPage("collection");
-
-		return "CollectionPage";
-	}
-
-	/*
-	 * determine the user-selected submissions and forward, store submission ids
-	 * and type of operation performed.
-	 * /
-	public String intersectCollection() {
-//		System.out.println("==========In intersect Collection");
-
-		//array containing the user-selected submissions
-		String[] selectedSubs = getSelectedSubmissions();
-
-		ArrayList<String> subsInCookie = ClipboardDelegateCookieImp.getResultIdsOperationWithClipboard("intersection", selectedSubs, selectedCollection);
-		String intersectIds = "";
-		for (int i=0; i<subsInCookie.size(); i++)
-			intersectIds += subsInCookie.get(i) + "?";
-		//Store collection operation result in session - it should be session because of any possible table navigation/operation in collection operation page
-		FacesUtil.setSessionValue("collectionOperationResultIds", intersectIds);
-
-		setToCollectionPage("collectionOperation");
-
-		return "ClipboardOperationPage";
-	}
-
-	/*
-	 * Get a difference between My collection and a list of selected submissions
-	 * /
-	public String differenceCollection() {
-//		System.out.println("==========In difference  Collection");
-		String[] selectedSubs = getSelectedSubmissions();
-		ArrayList<String> subsInCookie = ClipboardDelegateCookieImp.getResultIdsOperationWithClipboard("difference", selectedSubs, selectedCollection);
-		String differenceIds = "";
-		for (int i=0; i<subsInCookie.size(); i++)
-			differenceIds += subsInCookie.get(i) + "/";
-		
-		//Store collection operation result in session - it should be session because of any possible table navigation/operation in collection operation page
-		FacesUtil.setSessionValue("collectionOperationResultIds", differenceIds);
-			
-		setToCollectionPage("collectionOperation");
-
-//		return "CollectionOperationPage";
-		return "ClipboardOperationPage";
-	}
-	/*
-	 * Remove all the items from the collectin set
-	 * /
-	public String emptyCollection() {
-//		System.out.println("==========In empty Collection");
-		String subId = "submissionID";
-		CookieOperations.removeAllValuesFromCookie(subId);
-
-		FacesUtil.setFacesRequestParamValue("selectionIds", "");
-		FacesUtil.setFacesRequestParamValue("operation", "replace");
-		tableView.getTable().getAssembler().resetDataRetrivalParams();
-	   	tableView.refreshTable();
-
-		setToCollectionPage("collection");
-
-		return "CollectionPage";
-	}
-
-	/*
-	 * Remove selected items from the collectin set
-	 * /
-	public String deleteFromCollection() {
-//		System.out.println("==========In delete from Collection");
-
-		String subsInCookie = CookieOperations.getCookieValue("submissionID");
-		if (subsInCookie == null || "".equals(subsInCookie))
-			return viewCollection1();
-
-		String[] selectedSubs = getSelectedSubmissions();
-
-		if (selectedSubs != null && selectedSubs.length > 0) {
-			// send the values to 'CookieOperations' where they will be stored
-			// as cookies
-			CookieOperations.removeSelectedValuesFromCookie("submissionID",	selectedSubs);
-
-			// This is to sent new selections to be used for populating
-			// collections table since cookies are not updated until
-			// the next request from client and I want to avoid redirect
-			String selectionIds = "";
-			for (int i = 0; i < selectedSubs.length; i++)
-				selectionIds += selectedSubs[i] + "/";
-			FacesUtil.setFacesRequestParamValue("selectionIds", selectionIds);
-			FacesUtil.setFacesRequestParamValue("operation", "del");
-
-			HashMap<String, Object> queryParams = new HashMap<String, Object>();
-			queryParams.put("collectionIds", CollectionBean.getCollectionIds());
-			tableView.getTable().getAssembler().setDataRetrivalParams(queryParams);
-			tableView.refreshTable();
-			loadDataModel();
-		}
-		setToCollectionPage("collection");
-
-		return "CollectionPage";
-	}
-
-	/*
-	 * Save collectin set to file
-	 * /
-	public void saveCollection(ActionEvent ae){
-		//get context first
-
-		String subId = "submissionID";
-		String allSubmissions = CookieOperations.getCookieValue(subId);
-//		System.out.println("******************************\n\n\n\n"+allSubmissions);
-		if(allSubmissions != null && !allSubmissions.equals("")){
-			String [] submissionsList = allSubmissions.split("/");
-			if(submissionsList != null && submissionsList.length > 0) {
-				String input = "";
-				for(int i=0;i<submissionsList.length;i++){
-					if(i == submissionsList.length-1) {
-						input += submissionsList[i];
-					}
-					else {
-						input += submissionsList[i] +"\t";
-					}
-				}
-//				System.out.println(input);
-				//have to get the Response where to write our file
-				HttpServletResponse response =
-						 ( HttpServletResponse ) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-
-				String contentType = "application/text;charset=iso-8859-1";
-				String header = "attachment;filename=\"savedCollection.txt\"";
-				FileHandler.saveStringToDesktop(response, input, header, contentType);
-			}
-		}
-		FacesContext.getCurrentInstance().responseComplete();
-	}
-*/
 	// ********************************************************************************
 	// Getters & Setter
 	// ********************************************************************************
@@ -862,76 +525,6 @@ for (FilterItem filter: filterList.values())
 		else
 			return "("+String.valueOf(totals[col])+")";
 	}
-
-/*
-	public void setTotal(String s) {
-		System.out.println("#set total#########################################################");	
-	}
-
-	void setData(ArrayDataModel datamodel) {
-		System.out.println("just here to see if the datamodel is updated ");
-	}
-
-*/
-
-//******************************************************************************	
-//******************************************************************************	
-//******************************************************************************	
-//******************************************************************************	
-/*
-	public DataItem getDataItem() {
-//		if(!isDataModelLoaded) System.out.println("WWWWWWWWWWWW DataItem");
-////		if(!isDataModelLoaded)
-////			return null;
-//			loadDataModel();
-	   	int dataCol = columnHeaders.getRowIndex();
-	
-	   	DataItem item = (DataItem)(((ArrayList)data.getRowData()).get(dataCol));
-//		System.out.println("col=="+dataCol+"		value="+item.getValue());	
-	   	int col = getColumnIndex();
-		if (tableView.isSelectable())
-			col--;
-	   	int maxWidth = tableView.getColMaxWidth(col);
-	   	if (maxWidth == 0)
-	   		return item;
-	   	if (item.getValue().getClass() != String.class)
-	   		return item;
-	
-	   	String currentValue =  (String)item.getValue();
-	   	if (currentValue.length() <= maxWidth)
-	   		return item;
-	
-	   	String shortValue = currentValue.substring(0, maxWidth-2) + "\205";
-	   	
-	   	if(tableView.getColShortFormType(col) > 0)
-	   		item = new DataItem(shortValue, currentValue, "", tableView.getColShortFormType(col)); //url to popup window to display full value
-	   	else
-	   		item = new DataItem(shortValue);
-	
-   		return item;
-	}
-	public Object getDataItemValue() {
-//		if(!isDataModelLoaded) System.out.println("WWWWWWWWWWWW DataItem");
-////		if(!isDataModelLoaded)
-////			return null;
-//			loadDataModel();
-	
-	   	return getDataItem().getValue();
-	}
-	
-	public int getDataItemtype() {
-//		if(!isDataModelLoaded) System.out.println("WWWWWWWWWWWW DataItemType");
-////		if(!isDataModelLoaded)
-////   			return 0;
-//   		loadDataModel();
-	   	int col = columnHeaders.getRowIndex();
-		if (tableView.isSelectable() && col == 0 )
-   			return 20;
-	
-//	   	DataItem item = (DataItem)( ((ArrayList)data.getRowData()).get(col));
-		return getDataItem().getType();
-	}
-*/
 
 	public DataItem getDataItem() {
 		DataItem item = getDataItem0();
@@ -1099,13 +692,7 @@ for (FilterItem filter: filterList.values())
 	   		case  0: textAlign = "text-align:left;"; break; 
 	   		case  2: textAlign = "text-align:right;"; break;
 	   	}
-/*	    
-		HeaderItem headerItem = (HeaderItem)columnHeaders.getRowData();
-	   	switch (headerItem.getTextAlignment()) {
-	   		case  0: textAlign = "text-align:left;"; break; 
-	   		case  2: textAlign = "text-align:right;"; break;
-	   	}
-*/
+
 	   	return borderStyle + getWrapStyle() + verticalAlignStyle + textAlign;
 	}
 
@@ -1151,50 +738,7 @@ for (FilterItem filter: filterList.values())
 	public boolean isFirstHeatmapCol() {
 		return (getColumnIndex() - (tableView.isRowsSelectable()? 1 : 0) == tableView.getHeatmapColumnIndex());
 	}
-/*
-	public boolean isHeatmapCol () {
-		if (!columnHeaders.isRowAvailable()) {
-			System.out.println("AAAAAAAAAAAAAAA++++++++");
-			return false;
-		}
-		int dataCol = columnHeaders.getRowIndex();
-		HeaderItem header = (HeaderItem)columnHeaders.getRowData();
-		boolean heatmapCol = (header.getType()==1);
-		System.out.println(dataCol+"AAAAAAAAAAAAAAA++++++++====="+header.getTitle()+"========="+header.getType()+"	   "+heatmapCol);
-		return heatmapCol;
-	}
 
-	public boolean isFirstHeatmapCol () {
-		if (!columnHeaders.isRowAvailable()) {
-//			System.out.println("AAAAAAAAAAAAAAA++++++++: isFirstHeatmapCol");
-			return false;
-		}
-		if(!tableView.isDisplayHeatmap())
-			return false;
-		return (columnHeaders.getRowIndex() == tableView.getHeatmapColumnIndex());
-	}
-
-	public boolean isLastHeatmapCol () {
-		if (!columnHeaders.isRowAvailable()) {
-//			System.out.println("AAAAAAAAAAAAAAA++++++++: isLastHeatmapCol");
-			return false;
-		}
-		if(!tableView.isDisplayHeatmap())
-			return false;
-		return (columnHeaders.getRowIndex() == tableView.getHeatmapColumnIndex()+tableView.getHeatmapColumns().length - 1);
-	}
-*/
-/*	
-	public boolean isLastCol () {
-		if (!columnHeaders.isRowAvailable()) {
-//			System.out.println("AAAAAAAAAAAAAAA++++++++: isLastCol");
-			return false;
-		}
-		if(!tableView.isDisplayHeatmap())
-			return false;
-		return (columnHeaders.getRowIndex() == columnHeaders.getRowCount()-1);
-	}
-*/
 //********************************************
 	public String getDataItemHeatmapStyle() {
 		double value = (Double)getDataItemValue();
@@ -1222,102 +766,8 @@ return "background-color:" + htmlColor(150,150, 150);
 	}
 
 
-//	********************************************
-/*
-
-	public Object getDataItem() {
-//		if(!isDataModelLoaded) System.out.println("WWWWWWWWWWWW DataItem");
-////		if(!isDataModelLoaded)
-////			return null;
-//			loadDataModel();
-	   	int col = columnHeaders.getRowIndex();
-//	   	System.out.print(data.getRowIndex()+"  "+columnHeaders.getRowIndex()+"	:" + ((ArrayList)data.getRowData()).get(col));
-	   	return ((ArrayList)data.getRowData()).get(col);
-	}
-
-	public Object getDataItemValue() {
-//		if(!isDataModelLoaded) System.out.println("WWWWWWWWWWWW DataItem");
-////		if(!isDataModelLoaded)
-////			return null;
-//			loadDataModel();
-	   	int dataCol = columnHeaders.getRowIndex();
-	   	Object value = ((DataItem)((ArrayList)data.getRowData()).get(dataCol)).getValue();
-	
-	   	int col = getColumnIndex();
-		if (tableView.isSelectable())
-			col--;
-	   	int maxWidth = tableView.getColMaxWidth(col);
-	   	if (maxWidth == 0)
-	   		return value;
-	   	if (value.getClass() != String.class)
-	   		return value;
-	
-	   	String currentValue =  (String)value;
-	   	if (currentValue.length() <= maxWidth)
-	   		return currentValue;
-	
-	   	return currentValue.substring(0, maxWidth-2) + "\205";
-	}
-
-	public int getDataItemtype() {
-//		if(!isDataModelLoaded) System.out.println("WWWWWWWWWWWW DataItemType");
-////		if(!isDataModelLoaded)
-////   			return 0;
-//   		loadDataModel();
-	   	int col = columnHeaders.getRowIndex();
-		if (tableView.isSelectable() && col == 0 )
-   			return 20;
-	
-	   	DataItem item = (DataItem)( ((ArrayList)data.getRowData()).get(col));
-		return item.getType();
-	}
-*/
-
-
-
-
-
-/*
-
-	public Object getDataItem1() {
-//		if(!isDataModelLoaded) System.out.println("WWWWWWWWWWWW DataItem");
-////		if(!isDataModelLoaded)
-////			return null;
-//			loadDataModel();
-
-		Object dataItem = null;
-	   	int col = getColumnIndex();
-		if (tableView.isSelectable())
-			dataItem = (col == 0 )? selections[data.getRowIndex()] : ((Object[]) data.getRowData())[col-1];
-		else
-	   		dataItem = ((Object[]) data.getRowData())[col];
-
-// 	System.out.println(data.getRowIndex()+"  "+(col-1)+"   "+columnHeaders.getRowIndex()+"	   "+((DataItem)dataItem).getValue());	
-
-		return dataItem;
-	}
-
-	public String getDataItemLinkUnique1() {
-		DataItem dataItem = null;
-	   	int col = getColumnIndex();
-		if (data.isRowAvailable() && col>=0){
-			if (tableView.isSelectable())
-				dataItem = (DataItem)((col == 0 )? selections[data.getRowIndex()] : ((Object[]) data.getRowData())[col-1]);
-			else
-		   		dataItem = (DataItem)((Object[]) data.getRowData())[col];
-		}
-		String link = dataItem.getLink();
-		if(link.indexOf('?')<0)
-			return link + "?unique=" + getTime();
-		else
-			return link + "&unique=" + getTime();
-	}
-*/
-
 	public void setDataItem(Object value) {
-//		System.out.println(tableView.getVisibleColNum()+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " + data.getRowIndex()+"  "+columnHeaders.getRowIndex()+"   "+value+"	 "+value.getClass());	
-//	 	if (data.isRowAvailable() && columnHeaders.isRowAvailable())
-// System.out.println("XXXXXXXXXXXXXXXXXXXXX Warnning check is selectable XXXXXXXXXXXXXXXXXXXXXXXX");
+//		System.out.println(tableView.getVisibleColNum()+"~~~~~~~~~~~~~~~~~~~~~~~ " + data.getRowIndex()+"  "+columnHeaders.getRowIndex()+"   "+value+"	 "+value.getClass());	
 		if (!tableView.isRowsSelectable())
 			return;
 		
@@ -1415,15 +865,7 @@ return "background-color:" + htmlColor(150,150, 150);
 			this.pageNum2 = 1;
 		}
 	}	
-/*
-	public String getOperation() {
-		return operation;
-	}
 
-	public void setOperation(String operation) {
-		this.operation = operation;
-	}
-*/
 	public String getTableBodyFormTarget() {
 		if (tableView.getNumPages()>1)
 			return "_parent";
@@ -1433,9 +875,7 @@ return "background-color:" + htmlColor(150,150, 150);
 
 	public boolean isTableEmpty() {
 //		System.out.println("TableBean: isTableEmpty viewName=="+((tableView==null)?"Null":tableView.getName()));
-//		System.out.println("11111111111=="+tableView.getTable());
-//		System.out.println("11111111111=="+tableView.getTable().getNumRows());
-//		return (tableView==null || tableView.getTable()==null || tableView.getTable().getNumRows()==0);
+
 		if (tableView==null || tableView.getTable()==null)
 			return true;
 		int numRows = tableView.getTable().getNumRows();
@@ -1552,38 +992,6 @@ return "background-color:" + htmlColor(150,150, 150);
 	
 	public void setActualRowsPerPage(int n) {	// Only to avoid page update problem for hidden field maxPageNum in the jsp page
 	}
-	
-	
-/*
-	public boolean isShowClipboardOperationsBottons() {	//collection operations with clipboard
-		int buttons = tableView.getCollectionBottons();
-		return (buttons==1 || buttons==2 || buttons==3 || buttons==4);
-	}
-
-	public boolean isShowRemoveBottons() {	//remove, empty
-		int buttons = tableView.getCollectionBottons();
-		if (buttons==3 || buttons==5 )
-			return true;
-
-		return false;
-	} //DisplayRowsPerPage
-
-	public boolean isShowDownloadBotton() {	//download
-		int buttons = tableView.getCollectionBottons();
-		if (buttons==3 || buttons==4 || buttons==5 || buttons==6 )
-			return true;
-
-		return false;
-	}
-
-	public boolean isShowshareBotton() {	//share
-		int buttons = tableView.getCollectionBottons();
-		if (buttons==3 || buttons==5 )
-			return true;
-
-		return false;
-	}
-*/
 
 	public int getClipboardItemsNum() {
 		Integer passedValue = (Integer)FacesUtil.getFacesRequestParamObject("Clipboard"+selectedCollection);
