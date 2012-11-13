@@ -232,18 +232,6 @@ public class AdvancedSearchDBQuery {
 	  
 	  final static public Hashtable getSortColumn(){
 		  Hashtable<String, String> lookup = new Hashtable<String,String>();
-		  /*lookup.put("Gene","1");
-		  lookup.put("Microarray Submission","11");
-		  lookup.put("ISH Submission","10");
-		  lookup.put("Microarray Expression","12");
-		  lookup.put("ISH Expression","3");
-		  lookup.put("Tissue","2");
-		  lookup.put("Stage","6");
-		  lookup.put("Age","8");
-		  lookup.put("Lab","4");
-		  lookup.put("Submission Date", "5");
-		  lookup.put("Specimen Type", "7");
-		  lookup.put("Images", "9");*/
 		  lookup.put("0","1");
 		  lookup.put("1","11");
 		  lookup.put("2","14");
@@ -998,7 +986,7 @@ public class AdvancedSearchDBQuery {
       /* ---query to find summary info on every array entry in the db--- */
 	  final static String name50 = "ALL_ENTRIES_ARRAY_FOCUS";
 	  final static String query50 = "SELECT DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE, " + stageFormatConcat +", " +
-		   "IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), PER_SURNAME) PER_SURNAME, " +
+		   "IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), SUB_SOURCE) SUB_SOURCE, " +
 		   "SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, " +
 		   "SER_GEO_ID, GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', '), MUT_GENE, SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID " + endsBrowseSubmissionArray;
 
@@ -1006,7 +994,7 @@ public class AdvancedSearchDBQuery {
 														  "RPR_SYMBOL",
 														  "SUB_EMBRYO_STG",
 														  stageFormatConcat,
-														  "PER_SURNAME",
+														  "SUB_SOURCE",
 														  "SUB_SUB_DATE",
 														  "IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE",
 														  "SPN_ASSAY_TYPE",
@@ -1030,13 +1018,7 @@ public class AdvancedSearchDBQuery {
     	  s += " ";
     	  return s;
       }
-/*      
-	  final static String ISH_BROWSE_ALL_COLUMNS = "SELECT DISTINCT SUB_ACCESSION_ID, RPR_SYMBOL, SUB_EMBRYO_STG, "+ stageFormatConcat +
-      ", PER_SURNAME, SUB_SUB_DATE, IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE, "+
-      "SPN_ASSAY_TYPE, SPN_SEX, RPR_JAX_ACC, (CASE WHEN SPN_WILDTYPE='true' THEN 'Wild Type' WHEN SPN_WILDTYPE='false' THEN 'Non-wild Type' ELSE '' END) SPN_WILDTYPE, "+
-      "PRB_PROBE_TYPE, CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME), "+
-      "REPLACE(SUB_ACCESSION_ID, ':', 'no') ";
-*/	  
+
       // - commented out clause linked to expression table - no need to have and made the query far too slow
       // - changed back and expression table join will be handled in the DAO code
       // - use LEFT JOIN instead of JOIN to include submissions without expression info - 22/09/2009
@@ -1109,7 +1091,7 @@ public class AdvancedSearchDBQuery {
 	  final static String name137 = "ALL_SERIES";
 	  final static String query137 = "SELECT distinct SER_TITLE, SER_GEO_ID, " +
 		"(SELECT COUNT(*) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID) SAMPLE_NUMBER, " +
-		"IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), PER_SURNAME) PER_SURNAME, " +
+		"IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), SUB_SOURCE) SUB_SOURCE, " +
 		"PLT_GEO_ID, SER_OID, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') " +// added group_concat column - 02/03/2010
 		"FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, MIC_PLATFORM, ISH_PERSON, ANA_NODE, ANA_TIMED_NODE " +// added node and timed node table - 02/03/2010
 		"WHERE SRM_SERIES_FK = SER_OID " +

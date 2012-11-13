@@ -50,22 +50,6 @@ public class MySQLIHCDAOImp implements IHCDAO {
 	        //*******************************************************************************************************************
 	        // Temporarily added by Mehran to implement Filter functionality 
 	        if (filter!=null) {
-/*	        	
-		    	String[] colNames={"SUB_ACCESSION_ID", 
-		    		"RPR_SYMBOL", 
-		    		"SUB_EMBRYO_STG", 
-		    		"CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'pnd' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END", 
-		    		"PER_SURNAME", 
-		    		"SUB_SUB_DATE", 
-					"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE", 
-					"SPN_ASSAY_TYPE", 
-					"SPN_SEX", 
-					"RPR_JAX_ACC", 
-					"(CASE WHEN SPN_WILDTYPE='true' THEN 'Wild Type' WHEN SPN_WILDTYPE='false' THEN 'Non-wild Type' ELSE '' END) SPN_WILDTYPE", 
-					"PRB_PROBE_TYPE", 
-					"CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME)", 
-					"REPLACE(SUB_ACCESSION_ID, ':', 'no')" };
-*/	        		
 				queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
 	        }	    		
 	        //*******************************************************************************************************************
@@ -147,14 +131,6 @@ public class MySQLIHCDAOImp implements IHCDAO {
 	        //*******************************************************************************************************************
 	        // Temporarily added by Mehran to implement Filter functionality 
 			if (filter!=null) {
-/*				
-				String[] colNames={"SUB_ACCESSION_ID", "RPR_SYMBOL", "SUB_EMBRYO_STG", 
-						"CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'pnd' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END", 
-						"PER_SURNAME", "SUB_SUB_DATE", 
-						"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE", "SPN_ASSAY_TYPE", "SPN_SEX", "RPR_JAX_ACC", 
-						"(CASE WHEN SPN_WILDTYPE='true' THEN 'Wild Type' WHEN SPN_WILDTYPE='false' THEN 'Non-wild Type' ELSE '' END) SPN_WILDTYPE", "PRB_PROBE_TYPE", 
-						"CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME)", "REPLACE(SUB_ACCESSION_ID, ':', 'no')" };
-*/						
 		  	  	query = filter.addFilterSql(query, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
 			}     
 	        //*******************************************************************************************************************
@@ -268,7 +244,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
     			"SUB_EMBRYO_STG", // 2
 //    			"CONCAT(SPN_STAGE,SPN_STAGE_FORMAT)", // 3
     			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", // 3
-    			"PER_SURNAME", // 4
+    			"SUB_SOURCE", // 4
     			"SUB_SUB_DATE", // 5
     			"SUB_ASSAY_TYPE", // 6
     			"SPN_ASSAY_TYPE", // 7
@@ -308,7 +284,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
 //        		orderByString = "CONCAT(SPN_STAGE,SPN_STAGE_FORMAT)" + " " + order +", " + geneSymbolCol;
         		orderByString = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 4) {
-        		orderByString = "PER_SURNAME" + " " + order +", " + geneSymbolCol;
+        		orderByString = "SUB_SOURCE" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 5) {
         		orderByString = "SUB_SUB_DATE" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 6) {

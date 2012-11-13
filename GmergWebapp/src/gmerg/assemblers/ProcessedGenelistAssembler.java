@@ -79,7 +79,7 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 	 *
 	 */
 	public HeaderItem[] createHeader() {
-		String headerTitles[] = {"Gene List File", "Lab",  "Components",   "Statistics",     "Data Transformation",
+		String headerTitles[] = {"Gene List File", "Source",  "Components",   "Statistics",     "Data Transformation",
 	                             "Tests", "Serial No", "Up Regulated", "Down Regulated", "GeneListData", "Summary" };
 	      
 	    boolean headerSortable[] = {true, true, true, true, true, false, true, true, true, false, false };

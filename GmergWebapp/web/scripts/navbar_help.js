@@ -1,4 +1,4 @@
-var topMenuItems = new Array('Browse All', 'Focus', 'Query', 'Lab Summary');
+var topMenuItems = new Array('Browse All', 'Focus', 'Query', 'Source Summary');
 var indexItems = topMenuItems.length-1;
 var subMenuItems = new Array();
 subMenuItems[0] = new Array('1','0px','Browse ISH Data','Browse Microarray Data');

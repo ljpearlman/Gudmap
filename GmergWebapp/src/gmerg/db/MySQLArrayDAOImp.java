@@ -207,7 +207,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	} else if (order[0].equals("byAge")) {
 	    column = "SPN_STAGE"; 
 	} else if (order[0].equals("byLab")) {
-	    column = "PER_SURNAME"; 
+	    column = "SUB_SOURCE"; 
 	} else if (order[0].equals("byDate")) {
 	    column = "SUB_SUB_DATE"; 
 	} else if (order[0].equals("byTissueType")) {
@@ -228,10 +228,6 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	
 	String column = new String("");
 	String order = (ascending == true ? "ASC": "DESC");
-	//		String[] arrayBrowseColumnList =
-	//		{"CAST(SUBSTRING(SUB_ACCESSION_ID,8) AS UNSIGNED)", "SMP_GEO_ID",
-	//				"SMP_THEILER_STAGE", "SPN_STAGE", "PER_SURNAME", "SUB_SUB_DATE",
-	//				"SMP_SOURCE", "SRM_SAMPLE_DESCRIPTION", "SMP_TITLE", "SER_GEO_ID"};
 	
 	// start to translate
 	if(columnIndex == 0) { // gudmap id
@@ -244,7 +240,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    //			column = "concat(SPN_STAGE_FORMAT,SPN_STAGE) " + order + ", " + defaultOrder;
 	    column = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) " + order + ", " + defaultOrder;
 	} else if (columnIndex == 4) { // lab
-	    column = "PER_SURNAME " + order + ", " + defaultOrder;
+	    column = "SUB_SOURCE " + order + ", " + defaultOrder;
 	} else if (columnIndex == 5) { // submission date
 	    column = "SUB_SUB_DATE " + order + ", " + "SMP_THEILER_STAGE DESC";
 	} else if (columnIndex == 6) {// tissue

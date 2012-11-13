@@ -160,7 +160,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     			"natural_sort(TRIM(RPR_SYMBOL))", // 1
     			"SUB_EMBRYO_STG", // 2
     			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", // 3
-    			"PER_SURNAME", // 4
+    			"SUB_SOURCE", // 4
     			"SUB_SUB_DATE", // 5
     			"SUB_ASSAY_TYPE", // 6
     			"SPN_ASSAY_TYPE", // 7
@@ -201,7 +201,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 //        		orderByString = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol;
         		orderByString = "AGE" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 4) {
-        		orderByString = "PER_SURNAME" + " " + order +", " + geneSymbolCol;
+        		orderByString = "SUB_SOURCE" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 5) {
         		orderByString = "SUB_SUB_DATE" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 6) {

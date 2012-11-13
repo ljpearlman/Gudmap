@@ -164,11 +164,7 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			//Bernie - 01/03/2012 - (Mantis 619) added new column for sex
 			tableData[i][8] = new DataItem(row[14]);	//sex	
 
-			// check for gudmap or euregene
-			if(row[3].equalsIgnoreCase("Eichele"))
-				tableData[i][9] = new DataItem("External-EuReGene", "Lab details", "lab_detail.html?id="+row[9], 6, 251, 500);		//lab
-			else 
-				tableData[i][9] = new DataItem("GUDMAP-" + row[3], "Lab details", "lab_detail.html?id="+row[9], 6, 251, 500);		//lab
+			tableData[i][9] = new DataItem(row[3], "Source details", "lab_detail.html?id="+row[9], 6, 251, 500);		//source
 
 			tableData[i][10] = new DataItem(row[4]);		//date
 			tableData[i][11] = new DataItem(row[6]);	//spe type

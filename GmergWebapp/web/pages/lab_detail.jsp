@@ -18,7 +18,7 @@
           <style type="text/css">@import("<c:out value="${pageContext.request.contextPath}" />/css/ie51.css");</style>
         </c:otherwise>
       </c:choose>
-      <title>Lab Detail</title>
+      <title>Source Detail</title>
     </head>
     <body>
     	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" rendered="#{PersonBean.people == null}" >

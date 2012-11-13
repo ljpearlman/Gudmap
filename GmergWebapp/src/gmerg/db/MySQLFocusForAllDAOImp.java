@@ -41,14 +41,10 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         ResultSet resSet = null;
         ParamQuery parQ =
         	new ParamQuery("NUM_ISH",AdvancedSearchDBQuery.getPublicISHNumber(emapids));
-//      PreparedStatement prepStmt = null;
         Statement stmt = null;
         try {
         	// if disconnected from db, re-connected
         	conn = DBHelper.reconnect2DB(conn);
-//            parQ.setPrepStat(conn);
-//            prepStmt = parQ.getPrepStat();
-//            resSet = prepStmt.executeQuery();
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
@@ -56,7 +52,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             }
 
             // close the db object
-//            DBHelper.closePreparedStatement(prepStmt);
             DBHelper.closeStatement(stmt);
         } catch (SQLException se) {
             se.printStackTrace();
@@ -76,7 +71,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	public int findNumberOfPublicSubmissionArray(String[] emapids) {
         int result = 0;
         ResultSet resultSet = null;
-//		PreparedStatement prepStmt = null;
 		Statement stmt = null;
         ParamQuery parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_ARRAY_FOCUS");
         
@@ -95,8 +89,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 		queryString += AdvancedSearchDBQuery.groupBySubmissionArray;
 //		System.out.println("FocusForAllDAO:findNumberOfPublicSubmissionArray:sql: " + queryString);
         try {
-//            prepStmt = conn.prepareStatement(queryString);
-//            resultSet = prepStmt.executeQuery();
 		    if (debug)
 			System.out.println("MySQLFocusFowAllDAOImp.sql = "+queryString.toLowerCase());
             stmt = conn.prepareStatement(queryString);
@@ -110,7 +102,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             }
 
             // close the db object
-//            DBHelper.closePreparedStatement(prepStmt);
             DBHelper.closeStatement(stmt);
 
         } catch (SQLException se) {
@@ -119,37 +110,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         return result;
 	}
 
-
-//	// get number of public ihc sumbissions
-//	public int findNumberOfPublicSubmissionArray(String[] emapids)
-//	{
-//        int result = 0;
-//        ResultSet resSet = null;
-//        ParamQuery parQ =
-//        	new ParamQuery("NUM_MIC",AdvancedSearchDBQuery.getPublicMICNumber(emapids));
-////        String query = parQ.getQuerySQL();
-////        System.out.println("query of submission number - array: " + query);
-//        
-//        PreparedStatement prepStmt = null;
-//
-//        try {
-//            parQ.setPrepStat(conn);
-//            prepStmt = parQ.getPrepStat();
-//            resSet = prepStmt.executeQuery();
-//
-//            if (resSet.first()) {
-//                result = resSet.getInt(1);
-//            }
-//
-//            // close the db object
-//            DBHelper.closePreparedStatement(prepStmt);
-//
-//        } catch (SQLException se) {
-//            se.printStackTrace();
-//        }
-//        return result;
-//	}
-
 	// get number of public ihc sumbissions
 	public int findNumberOfPublicSubmissionIHC(String[] emapids)
 	{
@@ -157,14 +117,10 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         ResultSet resSet = null;
         ParamQuery parQ =
         	new ParamQuery("NUM_IHC",AdvancedSearchDBQuery.getPublicIHCNumber(emapids));
-//        PreparedStatement prepStmt = null;
         Statement stmt = null;
         try {
         	// if disconnected from db, re-connected
         	conn = DBHelper.reconnect2DB(conn);
-//            parQ.setPrepStat(conn);
-//            prepStmt = parQ.getPrepStat();
-//            resSet = prepStmt.executeQuery();
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
@@ -172,7 +128,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             }
 
             // close the db object
-//            DBHelper.closePreparedStatement(prepStmt);
             DBHelper.closeStatement(stmt);
         } catch (SQLException se) {
             se.printStackTrace();
@@ -190,14 +145,10 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         ResultSet resSet = null;
         ParamQuery parQ =
         	new ParamQuery("NUM_TG",AdvancedSearchDBQuery.getPublicTransgenicNumber(emapids));
-//      PreparedStatement prepStmt = null;
         Statement stmt = null;
         try {
         	// if disconnected from db, re-connected
         	conn = DBHelper.reconnect2DB(conn);
-//            parQ.setPrepStat(conn);
-//            prepStmt = parQ.getPrepStat();
-//            resSet = prepStmt.executeQuery();
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
@@ -205,7 +156,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             }
 
             // close the db object
-//            DBHelper.closePreparedStatement(prepStmt);
             DBHelper.closeStatement(stmt);
         } catch (SQLException se) {
             se.printStackTrace();
@@ -220,26 +170,16 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	public int findNumberOfPublicGenes(String assayType, String[] emapIds) {
         int result = 0;
         ResultSet resSet = null;
-        // xingjun - 22/09/2011 - start
-//        ParamQuery parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE");
         ParamQuery parQ = null;
         if (assayType.equalsIgnoreCase("TG")) {
         	parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE_TG");
         } else {
         	parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE");
         }
-        // xingjun - 22/09/2011 - end
-        
-//        PreparedStatement prepStmt = null;
+
         Statement stmt = null;
         String componentString = "AND EXP_COMPONENT_ID IN " + DBHelper.assembleComponentString(emapIds);
         
-        // xingjun - 22/09/2011 - start
-//        String queryString = 
-//        	parQ.getQuerySQL().replace("JOIN ISH_SUBMISSION ON PRB_SUBMISSION_FK = SUB_OID", 
-//        			"JOIN ISH_SUBMISSION ON PRB_SUBMISSION_FK = SUB_OID " +
-//        			"JOIN ISH_EXPRESSION ON EXP_SUBMISSION_FK = SUB_OID ")
-//        			+ componentString;
         String queryString = null;
         if (assayType.equalsIgnoreCase("TG")) {
         	queryString = parQ.getQuerySQL().replace("JOIN ISH_SUBMISSION ON MUT_SUBMISSION_FK = SUB_OID", 
@@ -252,18 +192,12 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			"JOIN ISH_EXPRESSION ON EXP_SUBMISSION_FK = SUB_OID ")
 			+ componentString;
         }
-        // xingjun - 22/09/2011 - end
         
         queryString = queryString.replace("?", "'"+assayType+"'");
-//        System.out.println("findNumberOfPublicGenes query(" + assayType + "): "
-//        		+ queryString);
             
           try {
           	// if disconnected from db, re-connected
           	conn = DBHelper.reconnect2DB(conn);
-//              prepStmt = conn.prepareStatement(queryString);
-//              prepStmt.setString(1, assayType);
-//              resSet = prepStmt.executeQuery();
               stmt = conn.createStatement();
 		    if (debug)
 			System.out.println("MySQLFocusFowAllDAOImp.sql = "+queryString.toLowerCase());
@@ -274,7 +208,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
               }
 
               // close the db object
-//              DBHelper.closePreparedStatement(prepStmt);
               DBHelper.closeStatement(stmt);
               DBHelper.closeResultSet(resSet);
         } catch (SQLException se) {
@@ -284,14 +217,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	}
 	
 	/**
-	 * <p>xingjun - 20/11/2007: comply to the requirement of order of columns
-	 * - for ish, the default order is GENE, STAGE, SEX
-	 * - for microarray, the default order is gudmap id</p>
-	 * <p>xingjun - 31/08/2009 - changed the statement when orderby = 6 - refer to the code</p>
-	 * <p>xingjun - 23/09/2009 - when making sort on SMP_GEO_ID or SER_GEO_ID, use natural_sort</p>
-	 * <p>xingjun - 22/10/2009 - changed the rule for concatenating stage format and stage value</p>
-	 * <p>xingjun - 07/12/2009 - added extra column MUT_GENE</p>
-	 * <p>xingjun - 14/05/2010 - added natural_sort on column concat(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ') ')</p>
 	 * @param orderby
 	 * @param asc
 	 * @param query
@@ -306,40 +231,28 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				if(orderby < 0) {
 					orderStr = " order by " + AdvancedSearchDBQuery.getMICDefaultSort(); 
 				} else if(0 == orderby) {
-//					orderStr = " order by CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort(); 
 					orderStr = " order by " + AdvancedSearchDBQuery.getMICDefaultSort() + " " + order; 
 				} else if(1 == orderby){
 					orderStr = " order by natural_sort(SMP_GEO_ID) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(2 == orderby){
-//					orderStr = " order by SMP_THEILER_STAGE " + order;
 					orderStr = " order by SMP_THEILER_STAGE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(3 == orderby){
-//					orderStr = " order by concat(SPN_STAGE_FORMAT,SPN_STAGE) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 					orderStr = " order by TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(4 == orderby){
-					orderStr = " order by PER_SURNAME " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+					orderStr = " order by SUB_SOURCE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(5 == orderby){
 					orderStr = " order by SUB_SUB_DATE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(6 == orderby){// modified by xingjun - 31/08/2009 - change to sex column
-//					orderStr = " order by SMP_SOURCE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 					orderStr = " order by SMP_SEX " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(7 == orderby){
 					orderStr = " order by SRM_SAMPLE_DESCRIPTION " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(8 == orderby){
 					orderStr = " order by SMP_TITLE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				// xingjun - 07/12/2009 - added extra column MUT_GENE
-//				}  else if(9 == orderby){
-////					orderStr = " order by SER_GEO_ID " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-//					orderStr = " order by natural_sort(SER_GEO_ID) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-//				} else if(10 == orderby){
-//					orderStr = " order by concat(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ') ') " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(9 == orderby){
 					orderStr = " order by natural_sort(MUT_GENE) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				} else if(10 == orderby){
-//					orderStr = " order by SER_GEO_ID " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 					orderStr = " order by natural_sort(SER_GEO_ID) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				} else if(11 == orderby){
-//					orderStr = " order by concat(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ') ') " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 					orderStr = " order by GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', ') " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				} 
 			} else if(query.equals("ish") || query.equals("insitu")) {
@@ -348,17 +261,14 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				} else if(0 == orderby) {
 					orderStr = " order by CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort(); 
 				} else if(1 == orderby){
-//					orderStr = " order by RPR_SYMBOL " + order + "," + AdvancedSearchDBQuery.getISHStageDefaultSort();
 					orderStr = " order by NATURAL_SORT(RPR_SYMBOL) " + order + "," + "SUB_EMBRYO_STG, SPN_SEX";
 				}  else if(2 == orderby){
-//					orderStr = " order by SUB_EMBRYO_STG " + order + "," + AdvancedSearchDBQuery.getISHGeneDefaultSort();
 					orderStr = " order by SUB_EMBRYO_STG " + order + "," + "NATURAL_SORT(RPR_SYMBOL), SPN_SEX";
 				}  else if(3 == orderby){
-//					orderStr = " order by concat(SPN_STAGE, SPN_STAGE_FORMAT) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 					orderStr = " order by TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) " 
 						+ order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(4 == orderby){
-					orderStr = " order by PER_SURNAME " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+					orderStr = " order by SUB_SOURCE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(5 == orderby){
 					orderStr = " order by SUB_SUB_DATE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(6 == orderby){
@@ -366,7 +276,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}  else if(7 == orderby){
 					orderStr = " order by SPN_ASSAY_TYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(8 == orderby){
-//					orderStr = " order by SPN_SEX " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 					orderStr = " order by SPN_SEX " + order + "," + "NATURAL_SORT(RPR_SYMBOL), SUB_EMBRYO_STG, SPN_SEX";
 				}  else if(9 == orderby){
 					orderStr = " order by NATURAL_SORT(TRIM(RPR_JAX_ACC)) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
@@ -381,193 +290,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 		return orderStr;
     }	
 
-/*
-	public ArrayList getFocusBrowseList(String[] organ, int column, boolean ascending, 
-			String query, String stage, String offset, String resPerPage) {
-//		System.out.println("query type: " + query);
-		ResultSet resSet = null;
-		ArrayList result = null;
-		ParamQuery parQ = null;
-		PreparedStatement prepStmt = null;
-		if(query.equals("array")) {
-			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_ARRAY_FOCUS");
-			// assemble the query string
-			String sql = parQ.getQuerySQL();	
-			if(null != organ) {
-				String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ[0]);
-				String ids = "";
-				  for(int i = 0; i < emapids.length; i++) {
-					  ids += "'"+emapids[i] + "',";
-				  }
-				  if(emapids.length >= 1) {
-					  ids = ids.substring(0, ids.length()-1);
-				  }
-				
-				sql+=" AND EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
-			    " from ANA_TIMED_NODE ANCES_ATN, "+
-			         " ANAD_RELATIONSHIP_TRANSITIVE, "+
-			         " ANA_TIMED_NODE DESCEND_ATN, "+
-			         " ANA_NODE, "+
-			         " ANAD_PART_OF "+
-			    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
-			      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-//			      " and RTR_ANCESTOR_FK        <> RTR_DESCENDENT_FK "+ // by xingjun 14/11/2007: should include descendent
-			      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
-			      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
-			      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
-			      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) " ;
-			}
-			if(null == stage || stage.equals("") || stage.equals("null")) {
-				sql += orderResult(column, ascending, query);
-			} else {
-				sql += " and SUB_EMBRYO_STG='"+stage+"' " + orderResult(column, ascending, query);
-			}
-			
-			sql+= new String(null == resPerPage?
-    	    	    " ":" limit "+offset+","+resPerPage+"  ");
-			
-			parQ = null;
-			parQ = new ParamQuery("FOCUS_ARRAY_BROWSE",sql);
-
-//			System.out.println("Arraybrowseall:"+sql);
-			try {
-				parQ.setPrepStat(conn);
-				prepStmt = parQ.getPrepStat();
-				
-				// execute
-				resSet = prepStmt.executeQuery();
-				result = formatResultSet(resSet, MAX_COLUMNS);
-				
-				// close the connection
-				DBHelper.closePreparedStatement(prepStmt);
-				
-				
-			} catch(SQLException se) {
-				se.printStackTrace();
-			}			
-		} else if(query.equals("ish")) {
-			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_ISH");
-			// assemble the query string
-			String sql = parQ.getQuerySQL();	
-			if(null != organ) {
-				String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ[0]);
-				String ids = "";
-				  for(int i = 0; i < emapids.length; i++) {
-					  ids += "'"+emapids[i] + "',";
-				  }
-				  if(emapids.length >= 1) {
-					  ids = ids.substring(0, ids.length()-1);
-				  }
-				
-				sql+=" AND EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
-			    " from ANA_TIMED_NODE ANCES_ATN, "+
-			         " ANAD_RELATIONSHIP_TRANSITIVE, "+
-			         " ANA_TIMED_NODE DESCEND_ATN, "+
-			         " ANA_NODE, "+
-			         " ANAD_PART_OF "+
-			    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
-			      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-//			      " and RTR_ANCESTOR_FK        <> RTR_DESCENDENT_FK "+ // by xingjun 14/11/2007: should include descendent
-			      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
-			      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
-			      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
-			      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) " ;
-			}
-			
-			if(null == stage || stage.equals("") || stage.equals("null")) {
-				sql += orderResult(column, ascending, query);
-			} else {
-				sql += " and SUB_EMBRYO_STG='"+stage+"' " + orderResult(column, ascending, query);
-			}
-			
-			
-			sql+= new String(null == resPerPage?
-    	    	    " ":" limit "+offset+","+resPerPage+"  ");
-			
-			parQ = null;
-			parQ = new ParamQuery("FOCUS_ISH_BROWSE",sql);
-
-//			System.out.println("ISHbrowseall:"+sql);
-			try {
-				parQ.setPrepStat(conn);
-				prepStmt = parQ.getPrepStat();
-				
-				// execute
-				resSet = prepStmt.executeQuery();
-				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
-				
-				// close the connection
-				DBHelper.closePreparedStatement(prepStmt);
-				
-				
-			} catch(SQLException se) {
-				se.printStackTrace();
-			}			
-		} else if(query.equals("insitu")) {
-			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_INSITU");
-			// assemble the query string
-			String sql = parQ.getQuerySQL();	
-			if(null != organ) {
-				String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ[0]);
-				String ids = "";
-				  for(int i = 0; i < emapids.length; i++) {
-					  ids += "'"+emapids[i] + "',";
-				  }
-				  if(emapids.length >= 1) {
-					  ids = ids.substring(0, ids.length()-1);
-				  }
-				
-				sql+=" AND EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
-			    " from ANA_TIMED_NODE ANCES_ATN, "+
-			         " ANAD_RELATIONSHIP_TRANSITIVE, "+
-			         " ANA_TIMED_NODE DESCEND_ATN, "+
-			         " ANA_NODE, "+
-			         " ANAD_PART_OF "+
-			    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
-			      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-//			      " and RTR_ANCESTOR_FK        <> RTR_DESCENDENT_FK "+ // by xingjun 14/11/2007: should include descendent
-			      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
-			      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
-			      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
-			      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) " ;
-			}
-			if(null == stage || stage.equals("") || stage.equals("null")) {
-				sql += orderResult(column, ascending, query);
-			} else {
-				sql += " and SUB_EMBRYO_STG='"+stage+"' " + orderResult(column, ascending, query);
-			}
-			
-			sql+= new String(null == resPerPage?
-    	    	    " ":" limit "+offset+","+resPerPage+"  ");
-			
-			parQ = null;
-			parQ = new ParamQuery("FOCUS_INSITU_BROWSE",sql);
-
-//			System.out.println("INSITUbrowseall:"+sql);
-			try {
-				parQ.setPrepStat(conn);
-				prepStmt = parQ.getPrepStat();
-				
-				// execute
-				resSet = prepStmt.executeQuery();
-				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
-				
-				// close the connection
-				DBHelper.closePreparedStatement(prepStmt);
-				
-				
-			} catch(SQLException se) {
-				se.printStackTrace();
-			}			
-		}
-		return result;
-	}
-*/	
 	/**
 	 * overloaded version - xingjun - 15/01/2009
 	 * added an extra param - gene
-	 * <p>modified by xingjun - 25/09/2009 
-	 * - due to the introduction of MySQL GROUP_CONCAT function group by clause added into the query</p>
 	 * @return
 	 */
 	public ArrayList getFocusBrowseList(String[] organ, int column, boolean ascending, 
@@ -610,10 +335,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			
 			// stage group by and order by - xingjun - 25/09/2009 - added group by clause
 			if(null == stage || stage.equals("") || stage.equals("null")) {
-//				sql += orderResult(column, ascending, query);
 				sql += AdvancedSearchDBQuery.groupBySubmissionArray + orderResult(column, ascending, query);
 			} else {
-//				sql += " and SUB_EMBRYO_STG='"+stage+"' " + orderResult(column, ascending, query);
 				sql += " and SUB_EMBRYO_STG='"+stage+"' " + AdvancedSearchDBQuery.groupBySubmissionArray + orderResult(column, ascending, query);
 			}
 			
@@ -909,7 +632,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 		String order = (ascending == true ? "ASC": "DESC");
 		String[] browseSeriesColumnList = {
 				"NATURAL_SORT(TRIM(SER_TITLE))", "SAMPLE_NUMBER", "NATURAL_SORT(TRIM(SER_GEO_ID))", 
-				"PER_SURNAME", "PLT_GEO_ID"};
+				"SUB_SOURCE", "PLT_GEO_ID"};
 		
 		// start to translate
 		if (columnIndex == 0) {
@@ -919,11 +642,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 		} else if (columnIndex == 1) {
 			orderByString = "NATURAL_SORT(TRIM(SER_GEO_ID)) " + order + ", " + defaultOrder;
 		} else if (columnIndex == 3) {
-			orderByString = "PER_SURNAME " + order + ", " + defaultOrder;
+			orderByString = "SUB_SOURCE " + order + ", " + defaultOrder;
 		} else if (columnIndex == 4) {
 			orderByString = "PLT_GEO_ID " + order + ", " + defaultOrder;
-//		} else if (columnIndex == 5) {
-//			orderByString = "ANO_COMPONENT_NAME " + order + ", " + defaultOrder;
 		}
 		return orderByString;
 	}

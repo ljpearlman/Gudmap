@@ -258,7 +258,7 @@
 			<f:verbatim>&nbsp;</f:verbatim>
 			<h:panelGroup rendered="#{TableBean.tableView.numPages > 1}" >
 				<h:commandLink id="gotoPage" action="#{TableBean.tableNavigation}" onclick="return validatePageNum(event)" >
-					<h:graphicImage value="../images/Go_btn.png" title="Goto Page" alt="next" styleClass="icon" />
+					<h:graphicImage value="../images/Go_btn.png" title="Go to page" alt="next" styleClass="icon" />
 					<f:param name="tableOperation" value="gotoPage" />
 				</h:commandLink>
 			</h:panelGroup>
@@ -410,7 +410,7 @@
  				<f:verbatim>&nbsp;</f:verbatim>
 				<h:panelGroup rendered="#{TableBean.tableView.numPages > 1}" >
 					<h:commandLink id="gotoPage2" action="#{TableBean.tableNavigation}" onclick="return validatePageNum2(event)" >
-						<h:graphicImage value="../images/Go_btn.png" title="Goto Page" alt="next" styleClass="icon" />
+						<h:graphicImage value="../images/Go_btn.png" title="Go to page" alt="next" styleClass="icon" />
 						<f:param name="tableOperation" value="gotoPage" />
 					</h:commandLink>
 				</h:panelGroup>

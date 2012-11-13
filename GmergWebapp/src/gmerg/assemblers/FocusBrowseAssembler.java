@@ -194,7 +194,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	public static HeaderItem[] createHeaderForArrayBrowseTable() {
 		 String[] headerTitles = { Utility.getProject()+" Entry Details", "Sample", 
 				 				   Utility.getStageSeriesMed()+" Stage", "Age", 
-				 				   "Lab", "Date", "Sex",
+				 				   "Source", "Date", "Sex",
 				 				   "Sample Description", "Title", "Gene Reported", "Series", "Component(s) sampled" };
 		 
 		int colNum = headerTitles.length;
@@ -329,11 +329,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			}
 			tableData[i][3] = new DataItem(row[3]);
 
-			// check for gudmap or euregene		
-			if(row[4].equalsIgnoreCase("Eichele"))
-				tableData[i][4] = new DataItem("External-EuReGene", "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);		//lab
-			else 
-				tableData[i][4] = new DataItem("GUDMAP-" + row[4], "Lab details", "lab_detail.html?id="+row[0], 6, 251, 500);		//lab
+			tableData[i][4] = new DataItem(row[4], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);		//source
 			
 
 			tableData[i][5] = new DataItem(row[5]);

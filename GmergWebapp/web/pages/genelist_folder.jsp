@@ -33,7 +33,7 @@
 			</t:treeColumn>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Lab" />
+					<h:outputText value="Source" />
 				</f:facet>
 				<h:outputText value="#{treeItem.submitter}"  escape="false"/>
 			</h:column>

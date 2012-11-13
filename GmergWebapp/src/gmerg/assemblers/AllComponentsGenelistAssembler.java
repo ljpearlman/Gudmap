@@ -110,7 +110,7 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 	 */
 	public HeaderItem[] createHeader()
 	{
-		String headerTitles[] = {"ID (temporary)", "Gene List", "JavaTreeView", "Lab", "Summary", "Download" };
+		String headerTitles[] = {"ID (temporary)", "Gene List", "JavaTreeView", "Source", "Summary", "Download" };
 	      
 	    boolean headerSortable[] = {true, true, false, true, true, false};
 

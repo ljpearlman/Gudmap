@@ -256,7 +256,6 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 	}
 	
 	/**
-	 * <p>modified by xingjun - 12/04/2009 - orderByString for lab should be PER_SURNAME, not LAB</p>
 	 * @param columnIndex
 	 * @param ascending
 	 * @return
@@ -266,9 +265,6 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		String orderByString = new String("");
 		String defaultOrder = " NATURAL_SORT(TRIM(SER_TITLE)) ";
 		String order = (ascending == true ? "ASC": "DESC");
-//		String[] browseSeriesColumnList = {"NATURAL_SORT(TRIM(SER_TITLE))", "SER_TYPE", "NATURAL_SORT(TRIM(SER_GEO_ID))"};
-//		String[] browseSeriesColumnList = {"NATURAL_SORT(TRIM(SER_TITLE))", "LAB", 
-//				"NATURAL_SORT(TRIM(PLT_GEO_ID))", "NATURAL_SORT(TRIM(SER_GEO_ID))", "SAMPLE_NUMBER"};
 
 		// start to translate
 		if (columnIndex == 0) {
@@ -278,7 +274,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		} else if (columnIndex == 2) {
 			orderByString = "SAMPLE_NUMBER " + order + ", " + defaultOrder;
 		} else if (columnIndex == 3) {
-			orderByString = "PER_SURNAME " + order + ", " + defaultOrder;
+			orderByString = "SUB_SOURCE " + order + ", " + defaultOrder;
 		} else if (columnIndex == 4) {
 			orderByString = "NATURAL_SORT(TRIM(PLT_GEO_ID)) " + order + ", " + defaultOrder;
 		}

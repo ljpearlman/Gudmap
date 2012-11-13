@@ -302,7 +302,7 @@ public final class DBHelper {
                 ishBrowseSubmission[ 1] = resSet.getString(2); // symbol
                 ishBrowseSubmission[ 2] = resSet.getString(3); // ts
                 ishBrowseSubmission[ 3] = resSet.getString(4); // age
-                ishBrowseSubmission[ 4] = resSet.getString(5); // lab
+                ishBrowseSubmission[ 4] = resSet.getString(5); // source
                 ishBrowseSubmission[ 5] = resSet.getString(8); // date
                 ishBrowseSubmission[ 6] = resSet.getString(7); // assay
                 String assay = resSet.getString(7);
@@ -338,7 +338,7 @@ public final class DBHelper {
                 ishBrowseSubmission[ 1] = resSet.getString(2); // symbol
                 ishBrowseSubmission[ 2] = resSet.getString(3); // ts
                 ishBrowseSubmission[ 3] = resSet.getString(4); // age
-                ishBrowseSubmission[ 4] = resSet.getString(5); // lab
+                ishBrowseSubmission[ 4] = resSet.getString(5); // source
                 ishBrowseSubmission[ 5] = resSet.getString(8); // date
                 ishBrowseSubmission[ 6] = resSet.getString(7); // assay
                 ishBrowseSubmission[ 7] = resSet.getString(6); // specimen
@@ -535,7 +535,7 @@ public final class DBHelper {
 			} else if (order[0].equals("byAge")) {
 				column = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order[1] +", " + geneSymbolCol; 
 			} else if (order[0].equals("byLab")) {
-				column = "PER_SURNAME" + " " + order[1] +", " + geneSymbolCol; 
+				column = "SUB_SOURCE" + " " + order[1] +", " + geneSymbolCol; 
 			} else if (order[0].equals("byDate")) {
 				column = "SUB_SUB_DATE" + " " + order[1] +", " + geneSymbolCol; 
 			} else if (order[0].equals("byAssay")) {
@@ -609,8 +609,8 @@ public final class DBHelper {
 				column = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol; 
 			} else if (columnIndex == 3) { // age
 				column = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol; 
-			} else if (columnIndex == 4) { // lab
-				column = "PER_SURNAME" + " " + order +", " + geneSymbolCol; 
+			} else if (columnIndex == 4) { // source
+				column = "SUB_SOURCE" + " " + order +", " + geneSymbolCol; 
 			} else if (columnIndex == 5) { // submission date
 				column = "SUB_SUB_DATE" + " " + order +", " + geneSymbolCol; 
 			} else if (columnIndex == 6) { // assay type
@@ -804,7 +804,7 @@ public final class DBHelper {
 				orderStr = " order by col6 " + orderBy + ", col14, col1, col3, col2 ";
 			} else if(col.equals("7")) { // by age
 				orderStr = " order by col8 " + orderBy + "," + AdvancedSearchDBQuery.getBothDefaultSort();
-			} else if(col.equals("8")) { // by lab
+			} else if(col.equals("8")) { // by source
 				orderStr = " order by col4 " + orderBy + "," + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("9")) { // by submission date
 				orderStr = " order by col5 " + orderBy + "," + AdvancedSearchDBQuery.getBothDefaultSort();
@@ -848,7 +848,7 @@ public final class DBHelper {
 				orderStr = " order by col8 " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("8")) { // by sex
 				orderStr = " order by col15 " + order + ", col14, col1, col3, col6";
-			} else if(col.equals("9")) { // by lab
+			} else if(col.equals("9")) { // by source
 				orderStr = " order by col4 " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("10")) { // by submission date
 				orderStr = " order by col5 " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort();
