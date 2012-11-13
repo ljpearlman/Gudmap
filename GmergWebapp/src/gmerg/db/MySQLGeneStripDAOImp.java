@@ -14,8 +14,6 @@ import gmerg.entities.ChromeDetail;
 
 /**
  * @author xingjun
- * xingjun - 06/06/2011 - replace string 'GUDMAP' with projectString (could be GUDMAP or EuReGene) 
- *
  */
 public class MySQLGeneStripDAOImp implements GeneStripDAO {
     private Connection conn;
@@ -261,7 +259,6 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 	/**
 	 * @author xingjun - 17/02/2009
 	 * @param imageIds
-	 * <p>xingjun - 06/06/2011 - changed the code to make it work for EuReGene app as well</p>
 	 * @return
 	 */
 	public ArrayList<ImageDetail> getInsituSubmissionImagesByImageId(ArrayList<String> imageIds) {
@@ -286,8 +283,6 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         String imageIdWhereClause = null;
         if (projectString.equalsIgnoreCase("GUDMAP")) {
         	imageIdWhereClause = "WHERE CONCAT(SUB_ACCESSION_ID, '_', IMG_FILENAME) ";
-        } else if (projectString.equalsIgnoreCase("EuReGene")) {
-        	imageIdWhereClause = "WHERE CONCAT('ERG:', SUB_OID, '_', IMG_FILENAME) ";
         }
         if (len == 1) {
 //        	imageIdString = whereClause + "= 'GUDMAP:" + imageIds.get(0).toString() + "' ";

@@ -85,34 +85,11 @@ public class FocusGeneBrowseBean {
 		String[] inputs = null;
 		String [] tmp = null;
 		if (!(input==null || input.equals(""))) {
-			if(Utility.getProject().equalsIgnoreCase("EuReGene")) {
-				tmp = input.split("\t|\n|\r|\f|;");
-				if(tmp !=null){
-				    int numValidInputs = 0;
-				    for(int i=0;i<tmp.length;i++){
-					    if(tmp[i] != null && !tmp[i].trim().equals("")){
-						    numValidInputs ++;
-					    }
-				    }
-				    inputs = new String [numValidInputs];
-				    int tmpIndex = 0;
-				    int inputIndex = 0;
-				    
-					while(inputIndex < numValidInputs){
-						if(tmp[tmpIndex] != null && !tmp[tmpIndex].trim().equals("")){
-							inputs[inputIndex] = tmp[tmpIndex];
-							inputIndex++;
-						}
-						tmpIndex++;
-					}
-				}
-			} else {
-				inputs = input.split("\t|\n|\r|\f|;");
-	    if (debug)
-				System.out.println("number of symbols: " + inputs.length);
-			}
-//			geneSymbols = input.split("[[\\s|,]&&[^ ]]");
-			/////// added by xingjun - 06/04/2009 - if the input by user comes like 'string*', it means wildcard search (start with) //////////////
+		    inputs = input.split("\t|\n|\r|\f|;");
+		    if (debug)
+			System.out.println("number of symbols: " + inputs.length);
+		    //			geneSymbols = input.split("[[\\s|,]&&[^ ]]");
+		    /////// added by xingjun - 06/04/2009 - if the input by user comes like 'string*', it means wildcard search (start with) //////////////
 	    if (debug)
 			System.out.println("check input string###########: ");
 			int numberOfInputItems = inputs.length;

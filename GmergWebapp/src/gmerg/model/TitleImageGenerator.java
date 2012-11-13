@@ -94,7 +94,7 @@ public class TitleImageGenerator {
   
 		    for( int i=0 ; i < width ; i++ )  
 			for( int j=0 ; j < height ; j++ )  
-			    rotatedImage.setRGB( height-1-j, i, titleImage.getRGB(i,j) );  
+			    rotatedImage.setRGB(j, width - 1 - i, titleImage.getRGB(i,j) );  
 
 		    titleImage = rotatedImage;
 		}

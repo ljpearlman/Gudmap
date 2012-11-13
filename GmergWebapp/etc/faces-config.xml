@@ -692,36 +692,6 @@
  </navigation-rule>
 
  <navigation-rule>
-  <from-view-id>/pages/entry_page.jsp</from-view-id>
-  <navigation-case>
-   <from-action>#{QueryBean.findGenes}</from-action>
-   <from-outcome>success_all</from-outcome>
-   <to-view-id>/pages/#{QueryBean.resultURL}</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-action>#{QueryBean.findGenes}</from-action>
-   <from-outcome>success_annotated</from-outcome>
-   <to-view-id>/pages/ish_comp_gene_exp.jsp</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>submissionDetail</from-outcome>
-   <to-view-id>/pages/#{QueryBean.assayURL}</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>emptyResult</from-outcome>
-   <to-view-id>/pages/empty_query_result.jsp</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-action>#{AnatomyBean.annotSubsFromPronephBrowse}</from-action>
-   <from-outcome>success</from-outcome>
-   <to-view-id>/pages/#{AnatomyBean.resultURL}</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-
- <navigation-rule>
   <from-view-id>/pages/mic_focus.jsp</from-view-id>
   <navigation-case>
    <from-outcome>viewCollection</from-outcome>

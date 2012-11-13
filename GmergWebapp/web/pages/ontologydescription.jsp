@@ -2,14 +2,7 @@
 <html>
   <head>
     <title>Explanatory Note</title>
-    <c:choose>
-      <c:when test="${proj == 'EuReGene'}">
-        <link href="<c:out value="${pageContext.request.contextPath}" />/css/euregene_css.css" type="text/css" rel="stylesheet">
-      </c:when>
-      <c:otherwise>
         <link href="<c:out value="${pageContext.request.contextPath}" />/css/gudmap_css.css" type="text/css" rel="stylesheet">
-      </c:otherwise>
-    </c:choose>
     
     <style type="text/css">
     @import("<c:out value="${pageContext.request.contextPath}" />/css/ie51.css");

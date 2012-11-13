@@ -6,15 +6,8 @@
   <html>
     <head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-      <c:choose>
-        <c:when test="${proj == 'EuReGene'}">
-          <link href="<c:out value="${pageContext.request.contextPath}" />/css/euregene_css.css" type="text/css" rel="stylesheet">
-        </c:when>
-        <c:otherwise>
           <link href="<c:out value="${pageContext.request.contextPath}" />/css/gudmap_css.css" type="text/css" rel="stylesheet">
           <style type="text/css">@import("<c:out value="${pageContext.request.contextPath}" />/css/ie51.css");</style>
-        </c:otherwise>
-      </c:choose>
       
       <title>Gene Expression Detail</title>
     </head>
@@ -73,8 +66,6 @@
             </h:column>              
           </h:dataTable>
           <h:panelGrid columns="2" columnClasses="text-top, data-textCol">
-          <h:outputText styleClass="plaintext" value="Pattern:" rendered="#{proj == 'EuReGene'}" />
-          <h:dataTable rendered="#{ExpressionDetailBean.hasPatterns && proj == 'EuReGene'}" cellpadding="0" value="#{ExpressionDetailBean.expressionDetail.pattern}" var="pattern">
             <h:column>
               <h:outputText styleClass="datatext" value="#{pattern.pattern}"  />
             </h:column>

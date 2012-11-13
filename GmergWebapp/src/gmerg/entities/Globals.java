@@ -313,10 +313,7 @@ public class Globals {
 	case SEX:
 	    return new FilterItem(FilterType.RADIO, new String[]{"male", "female", "unknown"}, null);
 	case ASSAY: 
-	    if(Utility.getProject().equalsIgnoreCase("EuReGene")) 
-		return new FilterItem(FilterType.CHECKBOX, new String[]{"ISH", "Array"}, null);
-	    else
-		return new FilterItem(FilterType.CHECKBOX, new String[]{"ISH", "IHC", "Array", "TG"}, null);
+	    return new FilterItem(FilterType.CHECKBOX, new String[]{"ISH", "IHC", "Array", "TG"}, null);
 	case SPECIMEN: 
 	    return new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount"}, null);
 	case GENOTYPE: 

@@ -12,16 +12,8 @@
 		<title>Images for submission&nbsp;<h:outputText value="#{ImageDetailBean.imageDetail.accessionId}" /></title>
 		
                 
-                <c:choose>
-                  <c:when test="${proj == 'EuReGene'}">
-                    <link href="<c:out value="${pageContext.request.contextPath}" />/css/euregene_css.css" type="text/css" rel="stylesheet">
-                  </c:when>
-                  <c:otherwise>
                     <link href="<c:out value="${pageContext.request.contextPath}" />/css/gudmap_css.css" type="text/css" rel="stylesheet">
                     
-                  </c:otherwise>
-                </c:choose>
-                
 		<style>
 			.detailsTable{
 				border: solid 1px;

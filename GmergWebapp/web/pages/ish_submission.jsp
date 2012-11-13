@@ -177,7 +177,7 @@
 			<f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
 
-		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe" rendered="#{proj == 'GUDMAP' && (ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)') && ISHSingleSubmissionBean.submission.specimen.assayType == 'wholemount'}">
+		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP' && (ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)') && ISHSingleSubmissionBean.submission.specimen.assayType == 'wholemount'}">
 			<h:panelGroup>
 				<h:outputText styleClass="plaintextbold" value="Whole-mount in situ hybridization is subject to technical limitations that may influence accuracy of the data (" />
 				<h:outputLink styleClass="plaintext" value="#" onclick="var w=window.open('wish_moreInfo.jsf','wholemountPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;" >
@@ -220,12 +220,12 @@
 							<h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.email}"/>
 						</h:outputLink>
 					</h:panelGroup>
-					<h:outputText rendered="#{proj == 'GUDMAP'}" value="Archive ID:" />
-					<h:outputLink rendered="#{proj == 'GUDMAP'}" styleClass="datatext" value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" >
+					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" value="Archive ID:" />
+					<h:outputLink rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" styleClass="datatext" value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" >
 						<h:outputText value="#{ISHSingleSubmissionBean.submission.archiveId}" />
 					</h:outputLink>
-					<h:outputText rendered="#{proj == 'GUDMAP'}" value="Submission ID:" />
-					<h:outputText rendered="#{proj == 'GUDMAP'}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.labId}" />
+					<h:outputText value="Submission ID:" />
+					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.labId}" />
 				</h:panelGrid>
 				
 				<h:outputLink id="editSubmitters" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
@@ -255,8 +255,8 @@
 					<h:outputText value="Present (weak)" styleClass="plaintext" />
 					
 					<h:graphicImage value="/images/tree/PossibleRound20x20.gif" styleClass="icon" />
-					<h:outputText value="Uncertain" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
-					<h:outputText value="Possible" styleClass="plaintext" rendered="#{proj != 'GUDMAP'}" />
+					<h:outputText value="Uncertain" styleClass="plaintext" />
+					<h:outputText value="Possible" styleClass="plaintext" />
 					
 					<h:graphicImage value="/images/tree/NotDetectedRoundMinus20x20.gif" styleClass="icon" />
 					<h:outputText value="Not Detected" styleClass="plaintext" />
@@ -265,8 +265,8 @@
 					
 				<h:outputText value="Expression Patterns Key:" styleClass="plaintextbold" rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}" />
 				<h:panelGrid columns="2" rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}">
-					<h:graphicImage value="/images/tree/HomogeneousRound20x20.png" styleClass="icon" rendered="#{proj != 'GUDMAP'}" />
-					<h:outputText value="Homogeneous" styleClass="plaintext" rendered="#{proj != 'GUDMAP'}" />
+					<h:graphicImage value="/images/tree/HomogeneousRound20x20.png" styleClass="icon" />
+					<h:outputText value="Homogeneous" styleClass="plaintext" />
 					
 					<h:graphicImage value="/images/tree/GradedRound20x20.png" styleClass="icon" />
 					<h:outputText value="Graded" styleClass="plaintext" />
@@ -280,14 +280,14 @@
 					<h:graphicImage value="/images/tree/UbiquitousRound20x20.png" styleClass="icon" />
 					<h:outputText value="Ubiquitous" styleClass="plaintext" />
 					
-					<h:graphicImage value="/images/tree/OtherRound20x20.png" styleClass="icon" rendered="#{proj != 'GUDMAP'}" />
-					<h:outputText value="Other" styleClass="plaintext" rendered="#{proj != 'GUDMAP'}" />
+					<h:graphicImage value="/images/tree/OtherRound20x20.png" styleClass="icon" rendered="#{ISHSingleSubmissionBean.submission.project != 'GUDMAP'}" />
+					<h:outputText value="Other" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.project != 'GUDMAP'}" />
 					
-					<h:graphicImage value="/images/tree/RestrictedRound20x20.png" styleClass="icon" rendered="#{proj == 'GUDMAP'}" />
-					<h:outputText value="Restricted" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
+					<h:graphicImage value="/images/tree/RestrictedRound20x20.png" styleClass="icon" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}" />
+					<h:outputText value="Restricted" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}" />
 					
-					<h:graphicImage value="/images/tree/SingleCellRound20x20.png" styleClass="icon" rendered="#{proj == 'GUDMAP'}" />
-					<h:outputText value="Single cell" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
+					<h:graphicImage value="/images/tree/SingleCellRound20x20.png" styleClass="icon" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}" />
+					<h:outputText value="Single cell" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}" />
 					
 					<h:graphicImage value="/images/tree/note.gif" styleClass="icon" />
 					<h:outputText value="Contains note" styleClass="plaintext" />
@@ -347,7 +347,7 @@
 								</h:panelGroup>
 							</h:panelGrid>
 						</h:column>
-						<h:column rendered="#{proj == 'GUDMAP'}">
+						<h:column rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}">
 							<f:facet name="header">
 								<h:outputText value="Patterns/Locations" styleClass="plaintextbold"/>
 							</f:facet>
@@ -363,7 +363,7 @@
 								</h:column>
 							</h:dataTable>
 						</h:column>
-						<h:column rendered="#{proj == 'EuReGene'}">
+						<h:column rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}">
 							<f:facet name="header">
 								<h:outputText value="Pattern" styleClass="plaintextbold"/>
 							</f:facet>
@@ -428,18 +428,13 @@
 						</h:panelGroup>
 					</h:panelGrid>
 				
-					<h:outputText rendered="#{proj != 'EuReGene' || siteSpecies != 'mouse'}" value="Name:" />
-					<h:panelGroup rendered="#{proj != 'EuReGene' || siteSpecies != 'mouse'}">
-<%-- commented by Xingjun - 16/05/2008 - do not need have the link - antibody submissions are all linked to maprobe
-						<h:outputLink styleClass="datatext" rendered="#{ISHSingleSubmissionBean.renderPrbNameURL}" value="#{ISHSingleSubmissionBean.submission.antibody.url}" target="_blank">
-							<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.name}" />
-						</h:outputLink>
---%>
+					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE' || siteSpecies != 'mouse'}" value="Name:" />
+					<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE' || siteSpecies != 'mouse'}">
 						<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.name}" />
 					</h:panelGroup>
 			
-					<h:outputText value="Accession ID:" rendered="#{proj == 'GUDMAP'}" />
-						<h:panelGroup rendered="#{proj == 'GUDMAP'}">
+					<h:outputText value="Accession ID:" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}" />
+						<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}">
 							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.accessionId}">
 								<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.accessionId} " />
 							</h:outputLink>	
@@ -559,8 +554,8 @@
 						</h:panelGroup>
 					</h:panelGrid>
 									
-					<h:outputText rendered="#{proj != 'EuReGene' || siteSpecies != 'mouse'}" value="Probe ID:" />
-					<h:panelGroup rendered="#{proj != 'EuReGene' || siteSpecies != 'mouse'}">
+					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE' || siteSpecies != 'mouse'}" value="Probe ID:" />
+					<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE' || siteSpecies != 'mouse'}">
 						<h:outputLink styleClass="datatext" rendered="#{ISHSingleSubmissionBean.renderPrbNameURL}" value="#{ISHSingleSubmissionBean.submission.probe.probeNameURL}" target="_blank">
 							<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />
 						</h:outputLink>

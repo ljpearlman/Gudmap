@@ -21,7 +21,6 @@ import java.util.*;
 
 /**
  * @author xingjun
- * xingjun - 06/06/2011 - replace string 'GUDMAP' with projectString (could be GUDMAP or EuReGene) 
  *
  */
 public class GeneAssembler extends OffMemoryTableAssembler{
@@ -138,7 +137,6 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 	/**
 	* <p>Initializes browse all data table for array data, setting header titles
 	* and other additional parameters</p>
-	* <p>xingjun - 06/06/2011 - changed to make it work for EuReGene app as well</p>
 	* 
 	*/
 	public HeaderItem[] createHeader() {

@@ -303,10 +303,7 @@ public class AnatomyBean {
     public SelectItem [] getAnnotationVals() {
         String possOrUncertainParam = "";
         
-        if(bundle.getString("project").equals("EuReGene")){
-            possOrUncertainParam = "possible";
-        }
-        else if(bundle.getString("project").equals("GUDMAP")){
+        if(bundle.getString("project").equals("GUDMAP")){
             possOrUncertainParam = "uncertain";
         }
         

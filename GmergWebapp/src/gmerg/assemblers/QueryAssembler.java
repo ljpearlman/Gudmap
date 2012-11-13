@@ -860,7 +860,6 @@ public class QueryAssembler extends OffMemoryTableAssembler {
         }
 
 	/**
-	 * <p>xingjun - changed to make it work for EuReGene app as well</p>
 	 * @param accessionId
 	 * @return
 	 */
@@ -899,20 +898,10 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 			}
 			if (isAnInteger) {
 //				assayType = ishDAO.findAssayTypeBySubmissionId("GUDMAP:" + accessionId);
-				// xingjun - 06/06/2011 - make it work for EuReGene app - start
-				if (projectString.equalsIgnoreCase("GUDMAP")) {
 					assayType = ishDAO.findAssayTypeBySubmissionId("GUDMAP:" + accessionId);
-				} else if (projectString.equalsIgnoreCase("EuReGene")) {
-					assayType = ishDAO.findAssayTypeBySubmissionId("ERG:" + accessionId);
-				}
 //				System.out.println("assay type: " + assayType);
 //				submission = ishDAO.findSubmissionById("GUDMAP:" + accessionId);
-				if (projectString.equalsIgnoreCase("GUDMAP")) {
 					submission = ishDAO.findSubmissionById("GUDMAP:" + accessionId);
-				} else if (projectString.equalsIgnoreCase("EuReGene")) {
-					submission = ishDAO.findSubmissionById("ERG:" + accessionId);
-				}
-				// xingjun - 06/06/2011 - make it work for EuReGene app - end
 				
 			} else {// id is not valid
 				return null;

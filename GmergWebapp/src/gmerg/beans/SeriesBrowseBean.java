@@ -66,12 +66,7 @@ public class SeriesBrowseBean  {
 		
 			return "Gudmap microarray Series submissions in <em>" + DatabaseHomepageBean.getOrganName(organ) + "</em>";
 		}
-		else if(Utility.getProject().equalsIgnoreCase("EuReGene")) {
-			return "Microarray Experiments";
-		}
-		else {
-			return "";
-		}
+		return "";
 	}
 	
 }

@@ -28,7 +28,6 @@ import gmerg.utils.table.OffMemoryCollectionAssembler;
  * @author xingjun
  * 
  * used for processed gene list display page
- * xingjun - 06/06/2011 - replace string 'GUDMAP' with projectString (could be GUDMAP or EuReGene) 
  *
  */
 public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {

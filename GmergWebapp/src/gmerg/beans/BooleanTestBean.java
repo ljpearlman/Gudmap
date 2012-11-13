@@ -21,8 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
- * xingjun - 06/06/2011 - added EuReGene into the consideration: project could be GUDMAP or EuReGene 
- *
  */
 public class BooleanTestBean {
     private boolean debug = false;
@@ -295,10 +293,7 @@ public class BooleanTestBean {
     public SelectItem [] getAnnotationVals() {
         String possOrUncertainParam = "";
         
-        if(Utility.getProject().equals("EuReGene")){
-            possOrUncertainParam = "possible";
-        }
-        else if(Utility.getProject().equals("GUDMAP")){
+        if(Utility.getProject().equals("GUDMAP")){
             possOrUncertainParam = "uncertain";
         }
         

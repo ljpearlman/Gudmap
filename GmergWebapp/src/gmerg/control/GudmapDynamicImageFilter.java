@@ -108,7 +108,7 @@ public class GudmapDynamicImageFilter implements Filter{
 				if (height==0)
 					height = 12;
 				if (width==0)
-				    width = 170;
+				    width = 160;
 				vertical = true;
 				background = new Color(0xE6, 0xE8, 0xFA); //Stripy color from gudmap css
 			}
