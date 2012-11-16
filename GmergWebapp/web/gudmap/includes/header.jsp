@@ -266,9 +266,9 @@
 						<li>
 							<a  href="http://www.gudmap.org/About/Tutorial/index.html" class="MenuBarItemSubmenu bignavtext">Tutorials</a>
 							<ul>
-								<li><a h class="mediumnavtext" ref="http://www.gudmap.org/About/Tutorial/Overview.html">Overview</a></li>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/About/Tutorial/DevMUS.html">Urinary Development</a></li>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/About/Tutorial/DevMRS.html">Reproductive Development</a></li>
+								<li><a class="mediumnavtext" href="http://www.gudmap.org/About/Tutorial/Overview.html">Overview</a></li>
+								<li><a class="mediumnavtext" href="http://www.gudmap.org/About/Tutorial/DevMUS.html">Urinary Development</a></li>
+								<li><a class="mediumnavtext" href="http://www.gudmap.org/About/Tutorial/DevMRS.html">Reproductive Development</a></li>
 							</ul>
 						</li>
 						<li>
