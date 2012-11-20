@@ -16,8 +16,7 @@ public class MaProbeBean {
 
 		String probeId = FacesUtil.getRequestParamValue("probe");
 		String maprobeId = FacesUtil.getRequestParamValue("maprobe");
-		
-		if (maprobeId != null )
+		if (maprobeId != null && 8 < maprobeId.length())
 			maprobeId = maprobeId.substring(8);
 		
 		assembler = new MaProbeAssembler();

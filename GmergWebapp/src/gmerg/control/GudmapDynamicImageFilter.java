@@ -91,13 +91,15 @@ public class GudmapDynamicImageFilter implements Filter{
 //			System.out.println("DynamicImagefilter-----> : masterTableId="+masterTableId);		
 			
 			MasterTableAssembler assembler = new MasterTableAssembler(masterTableId);
-			HeatmapData heatmapData = assembler.retrieveGeneExpressions(suffix); //part1 is the gene symbol
-			MasterTableAssembler.getDisplayTransform().adjustExpressionsForDisplay(heatmapData);
-			HeatmapImageGenerator heatmapImageGenerator = new HeatmapImageGenerator();
-			int tileSize = Utility.getIntValue(request.getParameter("tile"), 0);
-			if (tileSize==0 && height==0 && width==0)
+			HeatmapData heatmapData = assembler.retrieveGeneExpressions(suffix); 
+			if (null != heatmapData) {
+			    MasterTableAssembler.getDisplayTransform().adjustExpressionsForDisplay(heatmapData);
+			    HeatmapImageGenerator heatmapImageGenerator = new HeatmapImageGenerator();
+			    int tileSize = Utility.getIntValue(request.getParameter("tile"), 0);
+			    if (tileSize==0 && height==0 && width==0)
 				tileSize = 3;
-			ret = heatmapImageGenerator.getHeatmapImage(heatmapData.getExpression(), tileSize, width, height);
+			    ret = heatmapImageGenerator.getHeatmapImage(heatmapData.getExpression(), tileSize, width, height);
+			}
 		}
 
 		if (prefix.equalsIgnoreCase("title")) {

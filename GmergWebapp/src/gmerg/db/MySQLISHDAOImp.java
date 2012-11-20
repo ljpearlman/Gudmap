@@ -18,6 +18,7 @@ import gmerg.entities.submission.StatusNote;
 import gmerg.entities.submission.LockingInfo;
 
 import java.util.ResourceBundle;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -956,13 +957,25 @@ public class MySQLISHDAOImp implements ISHDAO {
             specimen.setOtherStageValue(resSetSpecimen.getString(7));
             specimen.setSex(resSetSpecimen.getString(9));
 
+            List<String> notes = new ArrayList<String>();
+            String str = null;
             if (resSetSpecimenNote.first()) {
                 resSetSpecimenNote.beforeFirst();
-                String notes = new String("");
                 while (resSetSpecimenNote.next()) {
-                    notes += resSetSpecimenNote.getString(1) + " ";
+                    str = resSetSpecimenNote.getString(1);
+	    if (null != str) {
+		str = str.trim();
+		if (str.equals(""))
+		str = null;
+	    }
+	    if (null != str)
+		notes.add(str);
                 }
-                specimen.setNotes(notes.trim());
+
+	if (0 == notes.size())
+	    specimen.setNotes(null);
+	else
+	    specimen.setNotes((String[])notes.toArray(new String[0]));
             }
         }
         return specimen;

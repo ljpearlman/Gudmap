@@ -10,38 +10,39 @@ public class Specimen {
     private String assayType;
     private String fixationMethod;
     private String embedding;
-    private String notes;
+    private String[] notes;
+    protected boolean hasNotes = false;
 
     public String getStageFormat() {
-        return this.stageFormat;
+        return stageFormat;
     }
 
     public void setStageFormat(String value) {
-        this.stageFormat = value;
+        stageFormat = value;
     }
 
     public String getOtherStageValue() {
-        return this.otherStageValue;
+        return otherStageValue;
     }
 
     public void setOtherStageValue(String value) {
-        this.otherStageValue = value;
+        otherStageValue = value;
     }
 
     public String getStrain() {
-        return this.strain;
+        return strain;
     }
 
     public void setStrain(String value) {
-        this.strain = value;
+        strain = value;
     }
 
     public String getSex() {
-        return this.sex;
+        return sex;
     }
 
     public void setSex(String value) {
-        this.sex = value;
+        sex = value;
     }
 
 
@@ -55,42 +56,50 @@ public class Specimen {
         } else {
            genotype = "";
         }
-        return this.genotype;
+        return genotype;
     }
 
     public void setGenotype(String value) {
-        this.genotype = value;
+        genotype = value;
     }
 
     public String getAssayType() {
-        return this.assayType;
+        return assayType;
     }
 
     public void setAssayType(String value) {
-        this.assayType = value;
+        assayType = value;
     }
 
     public String getFixMethod() {
-        return this.fixationMethod;
+        return fixationMethod;
     }
 
     public void setFixMethod(String value) {
-        this.fixationMethod = value;
+        fixationMethod = value;
     }
 
     public String getEmbedding() {
-        return this.embedding;
+        return embedding;
     }
 
     public void setEmbedding(String value) {
-        this.embedding = value;
+        embedding = value;
     }
 
-    public String getNotes() {
-        return this.notes;
+    public String[] getNotes() {
+        return notes;
     }
 
-    public void setNotes(String value) {
-        this.notes = value;
+    public void setNotes(String[] value) {
+        notes = value;
+	if (null != notes && 0 < notes.length)
+	    hasNotes =  true;
+	else
+	    hasNotes =  false;
+    }
+
+    public boolean getHasNotes() {
+	return hasNotes;
     }
 }
