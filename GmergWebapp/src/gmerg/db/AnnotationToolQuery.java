@@ -122,16 +122,14 @@ public class AnnotationToolQuery {
 	  // xingjun - 06/11/2009 - take SUB_LOCAL_STATUS_FK out from the sql - DH need that column for storing xml file status
 	  final static String name7 = "INSERT_TEMP_SUBMISSION";
 	  final static String query7 = "INSERT INTO ISH_SUBMISSION (SUB_OID, SUB_SUBMITTER_FK, SUB_PI_FK, " +
-//	  		"SUB_ENTRY_BY_FK, SUB_MODIFIER_FK, SUB_LOCAL_STATUS_FK, SUB_DB_STATUS_FK, SUB_PROJECT_FK, " +
 	  		"SUB_ENTRY_BY_FK, SUB_MODIFIER_FK, SUB_DB_STATUS_FK, SUB_PROJECT_FK, " +
-	  		"SUB_AUTHOR_REF, SUB_BATCH, SUB_NAMESPACE, SUB_OS_ACCESSION, SUB_LOCAL_ID, SUB_SOURCE, " +
-	  		"SUB_VALIDATION, SUB_ASSAY_TYPE, SUB_CONTROL, SUB_AUTHORS, SUB_EMBRYO_STG, SUB_ASSESSMENT, " +
+	  		"SUB_BATCH, SUB_NAMESPACE, SUB_OS_ACCESSION, SUB_LOCAL_ID, SUB_SOURCE, " +
+	  		"SUB_VALIDATION, SUB_ASSAY_TYPE, SUB_CONTROL, SUB_EMBRYO_STG, SUB_ASSESSMENT, " +
 	  		"SUB_CONFIDENCE, SUB_SUB_DATE, SUB_ENTRY_DATE, SUB_MODIFIED_DATE  , SUB_LOCALDB_NAME, " +
 	  		"SUB_IS_PUBLIC, SUB_IS_DELETED, SUB_ACCESSION_ID, SUB_MODIFIED_BY, SUB_VERSION_NO, " +
 	  		"SUB_LAB_ID, SUB_ARCHIVE_ID) " +
-//	  		"VALUES (?, ?, ?, 1, 1, 3, 2, 'GUDMAP', 0, ?, 'http://www.gudmap.org', " + // 4 parameters
-	  		"VALUES (?, ?, ?, 1, 1, 2, 'GUDMAP', 0, ?, 'http://www.gudmap.org', " + // 4 parameters
-	  		"'UNASSIGNED', '', '', '', '', 0, '', '', '', 0, '1000-01-01', '1000-01-01', " +
+	  		"VALUES (?, ?, ?, 1, 1, 2, 'GUDMAP', ?, 'http://www.gudmap.org', " + // 4 parameters
+	  		"'UNASSIGNED', '', '', '', '', 0, '', '', 0, '1000-01-01', '1000-01-01', " +
 	  		"CURRENT_TIMESTAMP, '', 0, 0, ?, '', 1, ?, 0) "; // 2 parameters - modified by xingjun - 03/10/2008 -derek will use labid to store temp sub id 
 	  
 	  final static String name8 = "COMPONENT_AND_EXPRESSION_INFO";
@@ -172,12 +170,10 @@ public class AnnotationToolQuery {
 	  // xingjun - 06/11/2009 - take SUB_LOCAL_STATUS_FK out from the sql - DH need that column for storing xml file status
 	  final static String query12 = "INSERT INTO ISH_SUBMISSION (SUB_OID, SUB_ACCESSION_ID, SUB_EMBRYO_STG, " +
 	  		"SUB_ASSAY_TYPE, SUB_IS_PUBLIC, SUB_ARCHIVE_ID, SUB_IS_DELETED, SUB_SUBMITTER_FK, SUB_PI_FK, " +
-//	  		"SUB_ENTRY_BY_FK, SUB_MODIFIER_FK, SUB_LOCAL_STATUS_FK, SUB_DB_STATUS_FK, SUB_PROJECT_FK, " +
 	  		"SUB_ENTRY_BY_FK, SUB_MODIFIER_FK, SUB_DB_STATUS_FK, SUB_PROJECT_FK, " +
-	  		"SUB_AUTHOR_REF, SUB_BATCH, SUB_NAMESPACE, SUB_OS_ACCESSION, SUB_LOCAL_ID, SUB_SOURCE, " +
+	  		"SUB_BATCH, SUB_NAMESPACE, SUB_OS_ACCESSION, SUB_LOCAL_ID, SUB_SOURCE, " +
 	  		"SUB_VALIDATION, SUB_CONTROL, SUB_ASSESSMENT, SUB_CONFIDENCE, SUB_LOCALDB_NAME) " +
-//	  		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // 25 parameters
-	  		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // 25 parameters
+	  		"VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // 25 parameters
 	  
 	  final static String name13 = "DELETE_SUBMISSION";
 	  final static String query13 = "DELETE FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID = ?";

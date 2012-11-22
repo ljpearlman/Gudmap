@@ -3,9 +3,6 @@
  */
 package gmerg.db;
 
-//import entities.submission.Acknowledgement;
-//import gmerg.entities.submission.Component;
-//import gmerg.entities.submission.AnnotatedComponent;
 import gmerg.entities.submission.Antibody;
 import gmerg.entities.submission.ExpressionDetail;
 import gmerg.entities.submission.ExpressionPattern;
@@ -47,10 +44,7 @@ public interface ISHDAO {
 	public Person findSubmitterBySubmissionId(String submissionAccessionId); // q4
 	public ArrayList findImageBySubmissionId(String submissionAccessionId); // q6
 	public ArrayList findPublicationBySubmissionId(String submissionAccessionId); // q7
-//	public Acknowledgement findAcknowledgementBySubmissionId(String submissionAccessionId); // q8
-	public ArrayList findAcknowledgementBySubmissionId(String submissionAccessionId); // q8
-//	public String findAcknowledgementPersonBySubmissionId(String submissionAccessionId); // q30
-	public ArrayList findAcknowledgementPersonBySubmissionId(String submissionAccessionId); // q30
+	public String[] findAcknowledgementBySubmissionId(String submissionAccessionId); // q8
 
 	// added on 29th March 2007: Xingjun
 	public ArrayList findLinkedSubmissionBySubmissionId(String submissionAccessionId); // q9

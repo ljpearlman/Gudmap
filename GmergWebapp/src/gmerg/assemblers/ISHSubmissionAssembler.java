@@ -131,17 +131,9 @@ public class ISHSubmissionAssembler {
 		// get publication info
 		ArrayList publication = ishDAO.findPublicationBySubmissionId(accessionId);
 		
-		// get acknowledgement info
-		ArrayList acknowledgement = ishDAO.findAcknowledgementBySubmissionId(accessionId);
-		
-		// get people acknowledged
-//		String peopleAcknowledged = ishDAO.findAcknowledgementPersonBySubmissionId(accessionId);
-		ArrayList peopleAcknowledged = ishDAO.findAcknowledgementPersonBySubmissionId(accessionId);
-		
-		// assemble acknowledgement info -- added by XP 05 June 2007
-		ArrayList acknowledgements = getAcknowledgementInfo(acknowledgement, peopleAcknowledged);
-                
-        // get linked submission raw data -- implement on 29th March 2007: Xingjun
+		// get acknowledgement 
+		String[] acknowledgement = ishDAO.findAcknowledgementBySubmissionId(accessionId);
+
 		ArrayList linkedSubmissionsRaw = ishDAO.findLinkedSubmissionBySubmissionId(accessionId);
 		
 		// format the linked submission raw data into appropriate data structure
@@ -178,8 +170,7 @@ public class ISHSubmissionAssembler {
 		ishSubmission.setSubmitter(submitter);
 
 		ishSubmission.setLinkedPublications(publication);
-		ishSubmission.setAcknowledgements(acknowledgements);
-		ishSubmission.setPeopleAcknowledged(peopleAcknowledged);
+		ishSubmission.setAcknowledgements(acknowledgement);
         ishSubmission.setLinkedSubmissions(linkedSubmission);
         
         // added by Bernie - 23/09/2010
@@ -193,27 +184,6 @@ public class ISHSubmissionAssembler {
 		
 		/** ---return the composite value object---  */
 		return ishSubmission;
-	}
-	
-	private ArrayList getAcknowledgementInfo(ArrayList acknowledgement, ArrayList peopleAcknowledged) {
-		
-		ArrayList<String[]> acknowledgements = null;
-		if (acknowledgement != null && acknowledgement.size() > 0
-				&& peopleAcknowledged != null && peopleAcknowledged.size() > 0) {
-			int len = acknowledgement.size();
-			int size = 5; // number of aspects displayed for acknowledgements
-			acknowledgements = new ArrayList<String[]>();
-			for (int i=0;i<len;i++) {
-				String[] ack = new String[size]; 
-				ack[0] = ((String[])acknowledgement.get(i))[0]; // project
-				ack[1] = ((String)peopleAcknowledged.get(i)); // name
-				ack[2] = ((String[])acknowledgement.get(i))[1]; // address
-				ack[3] = ((String[])acknowledgement.get(i))[4]; // url
-				ack[4] = ((String[])acknowledgement.get(i))[5]; // reason
-				acknowledgements.add(ack);
-			}
-		}
-		return acknowledgements;
 	}
 	
 	/**

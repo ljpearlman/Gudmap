@@ -88,7 +88,7 @@
 
 		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
 
-            <h:outputText styleClass="plaintextbold" value="Data Source:" />
+            <h:outputText styleClass="plaintextbold" value="Data Source" />
                         
             <h:graphicImage value="../images/GUDMAP_Logo.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
             <h:graphicImage value="../images/button_euregene2.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}"/>
@@ -554,17 +554,11 @@
 						</h:panelGroup>
 					</h:panelGrid>
 									
-					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE' || siteSpecies != 'mouse'}" value="Probe ID:" />
-					<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE' || siteSpecies != 'mouse'}">
+					<h:outputText  value="Probe ID:" />
+					<h:panelGroup>
 						<h:outputLink styleClass="datatext" rendered="#{ISHSingleSubmissionBean.renderPrbNameURL}" value="#{ISHSingleSubmissionBean.submission.probe.probeNameURL}" target="_blank">
 							<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />
 						</h:outputLink>
-						 <%--
-						<h:outputText styleClass="datatext" rendered="#{!ISHSingleSubmissionBean.renderPrbNameURL}" value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />					
-        				<h:outputText styleClass="datatext" rendered="#{ISHSingleSubmissionBean.renderPrbNameURL}" value=" (#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
-         				--%>
-        				<%-- Bernie 27/06/2010 Mantis 558 Task1  --%>
-        				<%--Bernie 15/02/2012 Mantis 558 Task A2 --%>
 						<h:outputLink styleClass="datatext" rendered="#{!ISHSingleSubmissionBean.renderPrbNameURL && ISHSingleSubmissionBean.submission.probe.maprobeID != ISHSingleSubmissionBean.submission.probe.probeName}" value="#{ISHSingleSubmissionBean.submission.probe.probeNameURL}">
 							<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />
 						</h:outputLink>	
@@ -579,12 +573,6 @@
 							<f:param name="maprobe" value="#{ISHSingleSubmissionBean.submission.probe.maprobeID}" />
 							<h:outputText value=" (#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
 						</h:outputLink>
-						
-						<%-- Mantis 558 - TaskA1 
-						<h:outputLink styleClass="datatext" rendered="#{ISHSingleSubmissionBean.submission.probe.maprobeID !=''}" value="/gudmap/pages/probe.html?probe=#{ISHSingleSubmissionBean.submission.probe.probeName}" target="_blank">
-							<h:outputText value=" (#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
-						</h:outputLink>
-						--%>
 					</h:panelGroup>
 					
 					<h:outputText value="Name of cDNA:" rendered="#{siteSpecies == 'mouse'}"/>
@@ -773,7 +761,7 @@
 						<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.otherStageValue}" />
 					</h:panelGroup>
 								
-					<h:outputText value="Tissue" />
+					<h:outputText value="Tissue:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}" />
 					
 					<h:outputText value="Strain:" />
@@ -800,7 +788,11 @@
 					</h:panelGrid>
 					
 					<h:outputText value="Experiment Notes:" />
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.notes}" />
+					<h:dataTable value="#{ISHSingleSubmissionBean.submission.specimen.notes}" var="note" >
+                                                                                       <h:column>
+						< h:outputText value="#{note}" />
+                                                                                       </h:column>
+					</h:dataTable>
 				</h:panelGrid>  
 				<h:outputLink id="editSpecimen" rendered="#{UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
 							onclick="var w=window.open('edit_specimen.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
@@ -888,30 +880,7 @@
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:dataTable value="#{ISHSingleSubmissionBean.submission.acknowledgements}" var="ack">
 					<h:column>
-						<h:panelGrid columns="1">
-							<h:panelGroup>
-								<h:outputText styleClass="plaintext" value="Project: " />
-								<h:outputText styleClass="datatext" value="#{ack[0]}" />
-							</h:panelGroup>
-							<h:panelGroup rendered="#{ack[1] != ''}">
-								<h:outputText styleClass="plaintext" value="Name(s): " />
-								<h:outputText styleClass="datatext" value="#{ack[1]}" />
-							</h:panelGroup>
-							<h:panelGroup rendered="#{ack[2] != ''}">  
-								<h:outputText styleClass="plaintext" value="Address: " />
-								<h:outputText styleClass="datatext" value="#{ack[2]}" />
-							</h:panelGroup>
-							<h:panelGroup rendered="#{ack[3] != ''}">  
-								<h:outputText styleClass="plaintext" value="URL: " />
-								<h:outputLink styleClass="datatext" value="#{ack[3]}">
-									<h:outputText value="#{ack[3]}" />
-								</h:outputLink>
-							</h:panelGroup>
-							<h:panelGroup>  
-								<h:outputText styleClass="plaintext" value="Reason: " />
-								<h:outputText styleClass="datatext" value="#{ack[4]}" escape="true" />
-							</h:panelGroup>
-						</h:panelGrid>
+						<h:outputText value = "#{ack}"/>
 					</h:column>
 				</h:dataTable>
 				<h:outputLink id="editAcknowledgement" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"

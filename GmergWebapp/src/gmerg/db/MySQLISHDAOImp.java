@@ -18,6 +18,7 @@ import gmerg.entities.submission.StatusNote;
 import gmerg.entities.submission.LockingInfo;
 
 import java.util.ResourceBundle;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -274,43 +275,26 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setPublicFlag(resSet.getInt(7));
             submissionInfo.setArchiveId(resSet.getString(8));
             
-            // xingjun - 15/07/2008
             submissionInfo.setDeleteFlag(resSet.getInt(9));
             submissionInfo.setSubmitterId(resSet.getInt(10));
             submissionInfo.setPiId(resSet.getInt(11));
             submissionInfo.setEntryBy(resSet.getInt(12));
             submissionInfo.setModifierId(resSet.getInt(13));
-//            submissionInfo.setLocalStatusId(resSet.getInt(14));
-//            submissionInfo.setDbStatusId(resSet.getInt(15));
             submissionInfo.setDbStatusId(resSet.getInt(14));
-//            submissionInfo.setProject((resSet.getString(16)==null)?"":resSet.getString(16));
             submissionInfo.setProject((resSet.getString(15)==null)?"":resSet.getString(15));
-//            submissionInfo.setAuthorId(resSet.getInt(17));
-            submissionInfo.setAuthorId(resSet.getInt(16));
-//            submissionInfo.setBatchId(resSet.getInt(18));
-            submissionInfo.setBatchId(resSet.getInt(17));
-//            submissionInfo.setNameSpace((resSet.getString(19)==null)?"":resSet.getString(19));
-            submissionInfo.setNameSpace((resSet.getString(18)==null)?"":resSet.getString(18));
-//            submissionInfo.setOsAccession(resSet.getString(20));
-            submissionInfo.setOsAccession(resSet.getString(19));
-//            submissionInfo.setLoaclId((resSet.getString(21)==null)?"":resSet.getString(21));
-            submissionInfo.setLoaclId((resSet.getString(20)==null)?"":resSet.getString(20));
-//            submissionInfo.setSource((resSet.getString(22)==null)?"":resSet.getString(22));
-            submissionInfo.setSource((resSet.getString(21)==null)?"":resSet.getString(21));
-//            submissionInfo.setValidation((resSet.getString(23)==null)?"":resSet.getString(23));
-            submissionInfo.setValidation((resSet.getString(22)==null)?"":resSet.getString(22));
-//            submissionInfo.setControl(resSet.getInt(24));
-            submissionInfo.setControl(resSet.getInt(23));
-//            submissionInfo.setAssessment(resSet.getString(25));
-            submissionInfo.setAssessment(resSet.getString(24));
-//            submissionInfo.setConfidencLevel(resSet.getInt(26));
-            submissionInfo.setConfidencLevel(resSet.getInt(25));
-//            submissionInfo.setLocalDbName((resSet.getString(27)==null)?"":resSet.getString(27));
-            submissionInfo.setLocalDbName((resSet.getString(26)==null)?"":resSet.getString(26));
-//            submissionInfo.setLabId((resSet.getString(28)==null)?"":resSet.getString(28));
-            submissionInfo.setLabId((resSet.getString(27)==null)?"":resSet.getString(27));
-            submissionInfo.setEuregeneId((resSet.getString(28)==null)?"":resSet.getString(28));
-            // xingjun - 15/07/2008
+            submissionInfo.setBatchId(resSet.getInt(16));
+            submissionInfo.setNameSpace((resSet.getString(17)==null)?"":resSet.getString(17));
+            submissionInfo.setOsAccession(resSet.getString(18));
+            submissionInfo.setLoaclId((resSet.getString(19)==null)?"":resSet.getString(19));
+            submissionInfo.setSource((resSet.getString(20)==null)?"":resSet.getString(20));
+            submissionInfo.setValidation((resSet.getString(21)==null)?"":resSet.getString(21));
+            submissionInfo.setControl(resSet.getInt(22));
+            submissionInfo.setAssessment(resSet.getString(23));
+            submissionInfo.setConfidencLevel(resSet.getInt(24));
+            submissionInfo.setLocalDbName((resSet.getString(25)==null)?"":resSet.getString(25));
+            submissionInfo.setLabId((resSet.getString(26)==null)?"":resSet.getString(26));
+            submissionInfo.setEuregeneId((resSet.getString(27)==null)?"":resSet.getString(27));
+
         }
         return submissionInfo;
     }
@@ -956,13 +940,25 @@ public class MySQLISHDAOImp implements ISHDAO {
             specimen.setOtherStageValue(resSetSpecimen.getString(7));
             specimen.setSex(resSetSpecimen.getString(9));
 
+            List<String> notes = new ArrayList<String>();
+            String str = null;
             if (resSetSpecimenNote.first()) {
                 resSetSpecimenNote.beforeFirst();
-                String notes = new String("");
                 while (resSetSpecimenNote.next()) {
-                    notes += resSetSpecimenNote.getString(1) + " ";
+                    str = resSetSpecimenNote.getString(1);
+	    if (null != str) {
+		str = str.trim();
+		if (str.equals(""))
+		str = null;
+	    }
+	    if (null != str)
+		notes.add(str);
                 }
-                specimen.setNotes(notes.trim());
+
+	if (0 == notes.size())
+	    specimen.setNotes(null);
+	else
+	    specimen.setNotes((String[])notes.toArray(new String[0]));
             }
         }
         return specimen;
@@ -1367,8 +1363,8 @@ public class MySQLISHDAOImp implements ISHDAO {
     /**
 	 * @param submissionAccessionId
 	 */
-    public ArrayList findAcknowledgementBySubmissionId(String submissionAccessionId) {
-        ArrayList AcknowledgementInfo = null;
+    public String[] findAcknowledgementBySubmissionId(String submissionAccessionId) {
+        String[] AcknowledgementInfo = null;
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("SUB_ACKNOWLEDGEMENTS");
         PreparedStatement prepStmt = null;
@@ -1382,7 +1378,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 
             // execute
             resSet = prepStmt.executeQuery();
-            AcknowledgementInfo = DBHelper.formatResultSetToArrayList(resSet);
+            AcknowledgementInfo = DBHelper.formatResultSetToStringArray(resSet);
 
             // close the db object
             DBHelper.closePreparedStatement(prepStmt);
@@ -1390,44 +1386,6 @@ public class MySQLISHDAOImp implements ISHDAO {
             se.printStackTrace();
         }
         return AcknowledgementInfo;
-    }
-
-    /**
-     * 
-     */
-    public ArrayList findAcknowledgementPersonBySubmissionId(String submissionAccessionId) {
-        ArrayList<String> peopleAcknowledged = null;
-        ResultSet resSet = null;
-        ParamQuery parQ = DBQuery.getParamQuery("SUB_PER_ACKNOWLEDGEMENTS");
-        PreparedStatement prepStmt = null;
-        try {
-        	// if disconnected from db, re-connected
-        	conn = DBHelper.reconnect2DB(conn);
-
-            parQ.setPrepStat(conn);
-            prepStmt = parQ.getPrepStat();
-            prepStmt.setString(1, submissionAccessionId);
-
-            // execute
-            resSet = prepStmt.executeQuery();
-            if (resSet.first()) {
-    			//need to reset cursor as 'if' move it on a place
-    			resSet.beforeFirst();
-    			
-    			//initialise the arrayList to store each row of results in
-    			peopleAcknowledged = new ArrayList<String>();
-    			
-    			while (resSet.next()) {
-    				String people = resSet.getString(1);
-    				peopleAcknowledged.add(people);
-    			}
-            }
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return peopleAcknowledged;
     }
 
     /**

@@ -511,18 +511,12 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 				DBHelper.closePreparedStatement(prepStmt);
 				return updatedRecordNumber;
 			}
-			// xingjun - 16/07/2008
 			// '999999' is the prefix of the sub temp id, when increment it, only increase the id part
-			// xingjun - 18/07/2008
 			// the submissionTempId column will only store ID, need concatenate the prefix with it
 			// when ask the oid
 			String tempIdPrefixString = Integer.toString(maxSubmissionTempIdPrefix);
 			String tempIdStrng = Integer.toString(maxSubmissionTempId+1);
-			// xingjun - 14/08/2009 
-			// - need to change to string type - big submission id will exceed the range of the int type
-//			int newSubmissionTempId = Integer.parseInt(tempIdPrefixString + tempIdStrng);
 			String newSubmissionTempId = tempIdPrefixString + tempIdStrng;
-            // xingjun - 14/08/2009
 			
         	conn.setAutoCommit(false);
 
@@ -545,17 +539,12 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	}
 
         	//insert temporary submission
-        	// modified by xingjun 19/08/2008
         	// if it's the editor or sysuser create submission for other lab
         	// submitter and pi's value have to be get from pi parameter
 		    if (debug)
 			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryInsertTempSubmission.toLowerCase());
 			prepStmt = conn.prepareStatement(queryInsertTempSubmission);
-			// xingjun - 14/08/2009 - start 
-			// - need to change to the string type - big submission id will exceed the range of the int type
-//			prepStmt.setInt(1, newSubmissionTempId); // sub temp id
 			prepStmt.setString(1, newSubmissionTempId); // sub temp id
-			// xingjun - 14/08/2009 - end
 			if (user.getUserPrivilege() > 4) {
 				prepStmt.setInt(2, pi); // submitter
 				prepStmt.setInt(3, pi); // pi 
@@ -564,20 +553,11 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 				prepStmt.setInt(3, user.getUserPi()); // pi 
 			}
 			prepStmt.setInt(4, batchId); // batch
-			// xingjun - 14/08/2009 - start
-			// - need to change to the string type - big submission id will exceed the range of the int type
-//			prepStmt.setString(5, Integer.toString(newSubmissionTempId)); // sub temp acc
 			prepStmt.setString(5, newSubmissionTempId); // sub temp acc
-			// xingjun - 14/08/2009 - end
-			
-			// added by xingjun - 13/10/2008
+
 			// put sub temp id into sub_lab_id
 			// derek's parser will use labid column in submission table to get a copy of temp sub id
-			// xingjun - 14/08/2009 - start
-			// - need to change to the string type - big submission id will exceed the range of the int type
-//			prepStmt.setString(6, Integer.toString(newSubmissionTempId));
 			prepStmt.setString(6, newSubmissionTempId);
-			// xingjun - 14/08/2009 - end
 			///////////////////////////////////////////////////////////////
 			
 			updatedRecordNumber = prepStmt.executeUpdate();
@@ -649,11 +629,7 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		
 		int maxSubmissionTempId = -1;
 		int maxSubmissionTempIdPrefix = 0;
-		// xingjun - 14/08/2009 - start
-		// - need to change to the string type - big submission id will exceed the range of the int type
-//		int newSubmissionTempId = 0;
 		String newSubmissionTempId = "0";
-		// xingjun - 14/08/2009 - end 
 		int updatedRecordNumber = 0;
 		int loggedRecordNumber = 0;
 		
@@ -675,18 +651,12 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //				return updatedRecordNumber;
 				return Integer.toString(updatedRecordNumber);
 			}
-			// xingjun - 16/07/2008
 			// '999999' is the prefix of the sub temp id, when increment it, only increase the id part
-			// xingjun - 18/07/2008
 			// the submissionTempId column will only store ID, need concatenate the prefix with it
 			// when ask the oid
 			String tempIdPrefixString = Integer.toString(maxSubmissionTempIdPrefix);
 			String tempIdStrng = Integer.toString(maxSubmissionTempId+1);
-			// xingjun - 14/08/2009 - start
-			// - need to change to the string type - big submission id will exceed the range of the int type
-//			newSubmissionTempId = Integer.parseInt(tempIdPrefixString + tempIdStrng);
 			newSubmissionTempId = tempIdPrefixString + tempIdStrng;
-			// xingjun - 14/08/2009 - end
 			
         	conn.setAutoCommit(false);
 
@@ -712,13 +682,8 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		    if (debug)
 			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryInsertTempSubmission.toLowerCase());
 			prepStmt = conn.prepareStatement(queryInsertTempSubmission);
-			// xingjun - 14/08/2009 - start
-			// - big submission id will exceed the range of the int type
-//			prepStmt.setInt(1, newSubmissionTempId); // sub temp id
 			prepStmt.setString(1, newSubmissionTempId); // sub temp id
-//			prepStmt.setString(2, Integer.toString(newSubmissionTempId)); // acc
 			prepStmt.setString(2, newSubmissionTempId); // acc
-			// xingjun - 14/08/2009 - end
 			prepStmt.setString(3, templateSubmission.getStage());
 			prepStmt.setString(4, templateSubmission.getAssayType());
 			prepStmt.setInt(5, templateSubmission.getPublicFlag());
@@ -728,34 +693,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			prepStmt.setInt(9, templateSubmission.getPiId());
 			prepStmt.setInt(10, templateSubmission.getEntryBy());
 			prepStmt.setInt(11, templateSubmission.getModifierId());
-//			prepStmt.setInt(12, templateSubmission.getLocalStatusId());///// removed
-//			prepStmt.setInt(13, templateSubmission.getDbStatusId());
 			prepStmt.setInt(12, templateSubmission.getDbStatusId());
-//			prepStmt.setString(14, templateSubmission.getProject());
 			prepStmt.setString(13, templateSubmission.getProject());
-//			prepStmt.setInt(15, templateSubmission.getAuthorId());
-			prepStmt.setInt(14, templateSubmission.getAuthorId());
-//			prepStmt.setInt(16, templateSubmission.getBatchId());
-			prepStmt.setInt(15, templateSubmission.getBatchId());
-//			prepStmt.setString(17, templateSubmission.getNameSpace());
-			prepStmt.setString(16, templateSubmission.getNameSpace());
-//			prepStmt.setString(18, templateSubmission.getOsAccession());
-			prepStmt.setString(17, templateSubmission.getOsAccession());
-//			prepStmt.setString(19, templateSubmission.getLoaclId());
-			prepStmt.setString(18, templateSubmission.getLoaclId());
-//			prepStmt.setString(20, templateSubmission.getSource());
-			prepStmt.setString(19, templateSubmission.getSource());
-//			prepStmt.setString(21, templateSubmission.getValidation());
-			prepStmt.setString(20, templateSubmission.getValidation());
-//			prepStmt.setInt(22, templateSubmission.getControl());
-			prepStmt.setInt(21, templateSubmission.getControl());
-//			prepStmt.setString(23, templateSubmission.getAssessment());
-			prepStmt.setString(22, templateSubmission.getAssessment());
-//			prepStmt.setInt(24, templateSubmission.getConfidencLevel());
-			prepStmt.setInt(23, templateSubmission.getConfidencLevel());
-//			prepStmt.setString(25, templateSubmission.getLocalDbName());
-			prepStmt.setString(24, templateSubmission.getLocalDbName());
-//			prepStmt.setString(26, templateSubmission.getLabId());
+			prepStmt.setInt(14, templateSubmission.getBatchId());
+			prepStmt.setString(15, templateSubmission.getNameSpace());
+			prepStmt.setString(16, templateSubmission.getOsAccession());
+			prepStmt.setString(17, templateSubmission.getLoaclId());
+			prepStmt.setString(18, templateSubmission.getSource());
+			prepStmt.setString(19, templateSubmission.getValidation());
+			prepStmt.setInt(20, templateSubmission.getControl());
+			prepStmt.setString(21, templateSubmission.getAssessment());
+			prepStmt.setInt(22, templateSubmission.getConfidencLevel());
+			prepStmt.setString(23, templateSubmission.getLocalDbName());
 			
 			updatedRecordNumber = prepStmt.executeUpdate();
 //			System.out.println("updatedSubNumber: " + updatedRecordNumber);

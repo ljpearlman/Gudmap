@@ -24,7 +24,6 @@ public class Submission {
     private int localStatusId; // SUB_LOCAL_STATUS_FK: 3
     private int dbStatusId; // SUB_DB_STATUS_FK: 2
     private String project; // SUB_PROJECT_FK: GUDMAP
-    private int authorId; // SUB_AUTHOR_REF: 0
     private int batchId; // SUB_BATCH: 111
     private String nameSpace; // SUB_NAMESPACE: http://www.gudmap.org
     private String osAccession; // SUB_OS_ACCESSION: UNASSIGNED
@@ -213,15 +212,6 @@ public class Submission {
     public void setProject(String project) {
     	this.project = project;
     }
-
-    public int getAuthorId() {
-    	return this.authorId;
-    }
-    
-    public void setAuthorId(int authorId) {
-    	this.authorId = authorId;
-    }
-
     public int getBatchId() {
     	return this.batchId;
     }

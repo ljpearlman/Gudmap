@@ -9,16 +9,14 @@ import gmerg.entities.submission.ExpressionDetail;
 import gmerg.entities.submission.Transgenic;
 
 import java.util.ArrayList;
-//import java.util.List;
+import java.util.List;
 
 
 public class ISHSubmission extends Submission {
 
     private Probe probe;
     private ArrayList linkedPublications;
-//    private String peopleAcknowledged;
-    private ArrayList peopleAcknowledged; // modified by XP 05 June 2007
-    private ArrayList acknowledgements;
+    private String[] acknowledgements;
     private ArrayList annotationTree;
     private ArrayList linkedSubmissions;
     private ExpressionDetail [] annotatedComponents;
@@ -33,21 +31,6 @@ public class ISHSubmission extends Submission {
     
     }
     
-    public ISHSubmission(String accID, String stage,
-                         Probe probe, Specimen specimen, ArrayList originalImages,
-                         String authors, Person pI, Person submitter, ArrayList annotationTree,
-                         ArrayList linkedPublications, ArrayList acknowledgements,
-                         ExpressionDetail [] annotatedComponents, ArrayList peopleAcknowledged) {
-
-    	super(accID, specimen, pI, submitter, stage, authors, originalImages);
-    	this.probe = probe;
-    	this.linkedPublications = linkedPublications;
-    	this.acknowledgements = acknowledgements;
-    	this.annotationTree = annotationTree;
-        this.annotatedComponents = annotatedComponents;
-        this.peopleAcknowledged = peopleAcknowledged; // added by XP 05 June 2007
-    }
-     
     public void setProbe(Probe prb) {
         probe = prb;
     }
@@ -72,23 +55,14 @@ public class ISHSubmission extends Submission {
         linkedSubmissions = subs;
     }
     
-    // modified by XP 05 June 2007 -- String to ArrayList
-    public void setPeopleAcknowledged(ArrayList value){
-        peopleAcknowledged = value;
-    }
-    
-    // modified by XP 05 June 2007 -- String to ArrayList
-    public ArrayList getPeopleAcknowledged(){
-        return peopleAcknowledged;
-    }
-
-    public void setAcknowledgements(ArrayList acknowls) {
-        acknowledgements = acknowls;
-    }
-
-    public ArrayList getAcknowledgements() {
+    public String[] getAcknowledgements() {
         return acknowledgements;
     }
+
+    public void setAcknowledgements(String[] input) {
+        acknowledgements = input;
+    }
+
     
     public ArrayList getAnnotationTree(){
         return annotationTree;
