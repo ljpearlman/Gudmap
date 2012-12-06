@@ -195,7 +195,7 @@
 											</h:commandLink>
 										</h:panelGroup>
 										<h:panelGroup rendered="#{!UserBean.userLoggedIn}" >
-											<h:outputLink id="loginLink" styleClass="text_bottom" value="secure/login.html?#{Visit.statusParam}" >
+											<h:outputLink id="loginLink" styleClass="text_bottom" value="/gudmap/pages/secure/login.html?#{Visit.statusParam}" >
 												<h:outputText value="Login" />
 											</h:outputLink>
 										</h:panelGroup>

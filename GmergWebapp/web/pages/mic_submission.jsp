@@ -13,9 +13,6 @@
     
     <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" rowClasses="header-stripey,header-nostripe">
     	<h:outputText value="#{stageSeriesLong} Stage" />
-<%-- 
-    	<h:outputLink styleClass="datatext" value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts#{MicroarraySingleSubmissionBean.submission.stage}/">
---%>
     	<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{MicroarraySingleSubmissionBean.submission.stage}definition.html">
     		<h:outputText value="#{stageSeriesShort}#{MicroarraySingleSubmissionBean.submission.stage}" />
     	</h:outputLink>
@@ -66,16 +63,6 @@
 		
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 
-<%-- commented out until further decision about this page - (Mehran 11/06/09)
-      <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-      
-      <h:outputText value="Gene List:" />
-      <f:verbatim>
-        <iframe src="gene_list.html" width="615" height="500" align="middle">
-        </iframe>
-      </f:verbatim>
---%>
-
 		<h:outputText value="Archive ID" rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}" />
 		<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{MicroarraySingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}">
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.archiveId}" />
@@ -86,47 +73,32 @@
 		
 		<h:outputText value="Principal Investigator(s)" />
 		<h:panelGroup rendered="#{MicroarraySingleSubmissionBean.submission.principalInvestigators == null}">
-			<h:outputText styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.name}, " />
-<%-- 		<h:outputText styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.address}, " />--%>
-			<h:outputLink styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.principalInvestigator.id})">
-				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.lab}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.city}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.country}, " />
+			<h:outputLink title="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.principalInvestigator.id})">
+			                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.name}, " />
 			</h:outputLink>
-			<h:outputLink styleClass="datatext" value="mailto:#{MicroarraySingleSubmissionBean.submission.principalInvestigator.email}"> 
-				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.email}" />
-			</h:outputLink>
+			<h:outputText title="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.lab}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.city}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.country}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.email} " />
 		</h:panelGroup>
 		<h:panelGroup rendered="#{MicroarraySingleSubmissionBean.submission.principalInvestigators != null}">
-			<t:dataList id="piDataList" 
-				var="piInfo"
-				value="#{MicroarraySingleSubmissionBean.submission.principalInvestigators}"
-				rowCountVar="count"
-				rowIndexVar="index"
-				layout="unorderedList">
+			<t:dataList id="piDataList" var="piInfo" layout="unorderedList"
+				value="#{MicroarraySingleSubmissionBean.submission.principalInvestigators}">
 					<h:panelGroup>
-						<h:outputText styleClass="datatext" value="#{piInfo.name}, " />
-						<h:outputLink styleClass="datatext" value="javascript:showLabDetails(#{piInfo.id})">
-							<h:outputText value="#{piInfo.lab}, #{piInfo.city}, #{piInfo.country}, " />
+						<h:outputLink  title="#{piInfo.fullAddress}"  styleClass="datatext" value="javascript:showLabDetails(#{piInfo.id})">
+						                <h:outputText value="#{piInfo.name}, " />
 						</h:outputLink>
-						<h:outputLink styleClass="datatext" value="mailto:#{piInfo.email}">
-							<h:outputText value="#{piInfo.email}" />
-						</h:outputLink>
+						<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.lab}, #{piInfo.city}, #{piInfo.country}, #{piInfo.email}" />
 					</h:panelGroup>
 			</t:dataList>
 		</h:panelGroup>
 
 
-                <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+                                <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		
 		<h:outputText value="Submitted By" />
 		<h:panelGroup>
-			<h:outputText styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.submitter.name}, " />
-<%--		<h:outputText styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.submitter.address}, " /> --%>
-			<h:outputLink styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.submitter.id})">
-				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.submitter.lab}, #{MicroarraySingleSubmissionBean.submission.submitter.city}, #{MicroarraySingleSubmissionBean.submission.submitter.country}, " />			
+			<h:outputLink title="#{MicroarraySingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.submitter.id})">
+			               <h:outputText value="#{MicroarraySingleSubmissionBean.submission.submitter.name}, " />
 			</h:outputLink>
-			<h:outputLink styleClass="datatext" value="mailto:#{MicroarraySingleSubmissionBean.submission.submitter.email}"> 
-				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.submitter.email}" />
-			</h:outputLink>
+			<h:outputText title="#{MicroarraySingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.submitter.lab}, #{MicroarraySingleSubmissionBean.submission.submitter.city}, #{MicroarraySingleSubmissionBean.submission.submitter.country},  #{MicroarraySingleSubmissionBean.submission.submitter.email}" />			
 		</h:panelGroup>
 		
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
@@ -165,11 +137,7 @@
 			<h:outputText value="Strain:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.strain}" />
-<%-- 
-          <h:outputText value="Mutation:" />
-          <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.mutation}" />
---%>        
+
 			<h:outputText value="Sex:" />
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.sex}" />

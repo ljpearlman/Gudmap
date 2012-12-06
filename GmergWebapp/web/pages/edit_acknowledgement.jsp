@@ -31,38 +31,10 @@
             </h:column>
             <h:column>
              <f:facet name="header">
-               <h:outputText styleClass="plaintextbold" value="Project" />
+               <h:outputText styleClass="plaintextbold" value="Acknowledgement" />
              </f:facet>
-             <h:inputText styleClass="datatext" value="#{ack[0]}" rendered="#{ack.editable}" />
-             <h:outputText value="#{ack[0]}" rendered="#{not ack.editable}" />
-            </h:column>
-            <h:column>
-             <f:facet name="header">
-               <h:outputText styleClass="plaintextbold" value="Name(s)" />
-             </f:facet>
-             <h:inputText styleClass="datatext" value="#{ack[1]}" rendered="#{ack.editable}" />
-             <h:outputText value="#{ack[1]}" rendered="#{not ack.editable}" />
-            </h:column>
-            <h:column>
-             <f:facet name="header">
-               <h:outputText styleClass="plaintextbold" value="Address" />
-             </f:facet>
-             <h:inputText styleClass="datatext" value="#{ack[2]}" rendered="#{ack.editable}" />
-             <h:outputText value="#{ack[2]}" rendered="#{not ack.editable}" />
-            </h:column>
-            <h:column>
-              <f:facet name="header">
-                <h:outputText styleClass="plaintextbold" value="URL" />
-              </f:facet>
-              <h:inputText value="#{ack[3]}" rendered="#{ack.editable}" />
-              <h:outputText value="#{ack[3]}" rendered="#{not ack.editable}" />
-            </h:column>
-            <h:column>
-              <f:facet name="header">
-                <h:outputText styleClass="plaintextbold" value="Reason" />
-              </f:facet>
-              <h:inputText styleClass="datatext" value="#{ack[4]}" rendered="#{ack.editable}" />
-              <h:outputText value="#{ack[4]}" rendered="#{not ack.editable}" />
+             <h:inputText styleClass="datatext" value="#{ack}" rendered="#{ack.editable}"/>
+             <h:outputText value="#{ack}" rendered="#{not ack.editable}" />
             </h:column>
           </h:dataTable>
         </h:panelGroup>

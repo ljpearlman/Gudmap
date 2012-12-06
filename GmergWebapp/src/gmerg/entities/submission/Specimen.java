@@ -11,7 +11,6 @@ public class Specimen {
     private String fixationMethod;
     private String embedding;
     private String[] notes;
-    protected boolean hasNotes = false;
 
     public String getStageFormat() {
         return stageFormat;
@@ -93,13 +92,9 @@ public class Specimen {
 
     public void setNotes(String[] value) {
         notes = value;
-	if (null != notes && 0 < notes.length)
-	    hasNotes =  true;
-	else
-	    hasNotes =  false;
-    }
-
-    public boolean getHasNotes() {
-	return hasNotes;
+	if (null != notes && 0 == notes.length)
+	    notes = null;
+	if (null == notes)
+	    notes = new String[0];
     }
 }

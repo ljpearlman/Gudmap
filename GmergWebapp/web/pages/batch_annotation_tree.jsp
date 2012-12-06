@@ -208,8 +208,7 @@
 									|| UserBean.user.userPrivilege==5 && BatchAnnotationTreeBean.submission.dbStatusId>=4 && BatchAnnotationTreeBean.submission.dbStatusId<=23)}">
 						<f:param name="stage" value="#{BatchAnnotationTreeBean.stage}" />
 						<h:graphicImage value="/images/tree/PossibleRound20x20.gif" styleClass="icon" />
-						<h:outputText value="Uncertain" rendered="#{proj == 'GUDMAP'}" />
-						<h:outputText value="Possible" rendered="#{proj != 'GUDMAP'}" />
+						<h:outputText value="Uncertain" />
 					</h:commandLink>
 					<h:panelGroup rendered="#{UserBean.user.userType=='EXAMINER' 
 									|| UserBean.user.userPrivilege==3 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId==4 || BatchAnnotationTreeBean.submission.dbStatusId>19) 
@@ -217,8 +216,7 @@
 									|| UserBean.user.userPrivilege==5 && (BatchAnnotationTreeBean.submission.dbStatusId==3 || BatchAnnotationTreeBean.submission.dbStatusId>23)
 									}">
 						<h:graphicImage value="/images/tree/PossibleRound20x20.gif" styleClass="icon" />
-						<h:outputText value="Uncertain" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
-						<h:outputText value="Possible" styleClass="plaintext" rendered="#{proj != 'GUDMAP'}" />
+						<h:outputText value="Uncertain" styleClass="plaintext" />
 					</h:panelGroup>
 					<h:commandLink actionListener="#{BatchAnnotationTreeBean.addExpressionAnnotation}" id="nd"  styleClass="plaintext" 
 								rendered="#{UserBean.userLoggedIn && UserBean.user.userType!='EXAMINER' 
