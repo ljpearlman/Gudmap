@@ -252,9 +252,9 @@
 					
 					<h:graphicImage value="/images/tree/PossibleRound20x20.gif" styleClass="icon" />
 					<h:outputText value="Uncertain" styleClass="plaintext" />
-					<h:outputText value="Not Detected" styleClass="plaintext" />
 					
 					<h:graphicImage value="/images/tree/NotDetectedRoundMinus20x20.gif" styleClass="icon" />
+					<h:outputText value="Not Detected" styleClass="plaintext" />
 					<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 				</h:panelGrid>
 					
