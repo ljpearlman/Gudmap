@@ -96,13 +96,6 @@
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
 
- <!-- bean linked to anatomy tree related operations -->
- <managed-bean>
-  <managed-bean-name>AnatomyBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.AnatomyBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
- </managed-bean>
-
  <managed-bean>
   <managed-bean-name>ArrayFocusBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ArrayFocusBrowseBean</managed-bean-class>
@@ -196,55 +189,26 @@
  </managed-bean>
 
  <managed-bean>
-  <managed-bean-name>EditExpressionBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.EditExpressionBean</managed-bean-class>
-  <managed-bean-scope>session</managed-bean-scope>
+  <managed-bean-name>ExpressionDetailBean</managed-bean-name>
+  <managed-bean-class>gmerg.beans.ExpressionDetailBean</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
 
- <!-- bean linked to the expression editing page -->
+ <managed-bean>
+  <managed-bean-name>EditExpressionBean</managed-bean-name>
+  <managed-bean-class>gmerg.beans.EditExpressionBean</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+ </managed-bean>
+
  <managed-bean>
   <managed-bean-name>EditExpressionSupportBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.EditExpressionSupportBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
 
- <!-- bean linked to the edit history page is to be displayed -->
  <managed-bean>
-  <managed-bean-name>EditHistoryBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.EditHistoryBean</managed-bean-class>
-  <managed-bean-scope>session</managed-bean-scope>
- </managed-bean>
-
- <!-- bean linked to the editor entry page is to be displayed -->
- <managed-bean>
-  <managed-bean-name>EditorQueryBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.EditorQueryBean</managed-bean-class>
-  <managed-bean-scope>session</managed-bean-scope>
- </managed-bean>
-
- <!-- bean linked to the probe editing page -->
- <managed-bean>
-  <managed-bean-name>EditProbeBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.EditProbeBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
- </managed-bean>
-
- <!-- bean used to edit submission detail when editor logged in -->
- <managed-bean>
-  <managed-bean-name>EditSubmissionBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.EditSubmissionBean</managed-bean-class>
-  <managed-bean-scope>session</managed-bean-scope>
- </managed-bean>
-
- <managed-bean>
-  <managed-bean-name>EditSubmissionSupportBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.EditSubmissionSupportBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
- </managed-bean>
-
- <managed-bean>
-  <managed-bean-name>ExpressionDetailBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.ExpressionDetailBean</managed-bean-class>
+  <managed-bean-name>LabISHEditBean</managed-bean-name>
+  <managed-bean-class>gmerg.beans.LabISHEditBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
 
@@ -307,20 +271,6 @@
   <managed-bean-name>ISHBrowseBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.ISHBrowseBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
- </managed-bean>
-
- <managed-bean>
-  <managed-bean-name>ISHComponentGeneExpressionBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.ISHComponentGeneExpressionBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
-  <managed-property>
-   <property-name>resPerPage</property-name>
-   <value>#{sessionScope.resPerPage}</value>
-  </managed-property>
-  <managed-property>
-   <property-name>pnum</property-name>
-   <value>#{param.pgeNum}</value>
-  </managed-property>
  </managed-bean>
 
  <managed-bean>
@@ -415,12 +365,6 @@
  </managed-bean>
 
  <managed-bean>
-  <managed-bean-name>MicSeriesBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.MicSeriesBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
- </managed-bean>
-
- <managed-bean>
   <managed-bean-name>PersonBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.PersonBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
@@ -439,12 +383,6 @@
  </managed-bean>
 
  <!-- bean used to make page redirections on certain queries-->
- <managed-bean>
-  <managed-bean-name>QueryBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.QueryBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
- </managed-bean>
-
  <managed-bean>
   <managed-bean-name>QuickSearchBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.QuickSearchBean</managed-bean-class>
@@ -475,12 +413,6 @@
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
 
- <managed-bean>
-  <managed-bean-name>UploadCollectionBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.UploadCollectionBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
- </managed-bean>
-
  <!--authenticationBean specific to gudmap - required for login to editor pages-->
  <managed-bean>
   <managed-bean-name>UserBean</managed-bean-name>
@@ -498,12 +430,6 @@
   <managed-bean-name>Visit</managed-bean-name>
   <managed-bean-class>gmerg.utils.Visit</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
- </managed-bean>
-
-  <managed-bean>
-  <managed-bean-name>LabISHEditBean</managed-bean-name>
-  <managed-bean-class>gmerg.beans.LabISHEditBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
 
  <managed-bean>
@@ -644,40 +570,6 @@
  </navigation-rule>
 
  <navigation-rule>
-  <display-name>searchGene</display-name>
-  <from-view-id>/pages/query_db.jsp</from-view-id>
-  <navigation-case>
-   <from-action>#{QueryBean.findGenes}</from-action>
-   <from-outcome>success_all</from-outcome>
-   <to-view-id>/pages/#{QueryBean.resultURL}</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-action>#{QueryBean.findGenes}</from-action>
-   <from-outcome>success_annotated</from-outcome>
-   <to-view-id>/pages/ish_comp_gene_exp.jsp</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>anatomyTree</from-outcome>
-   <to-view-id>/pages/anatomy_tree.jsp</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-action>#{QueryBean.findComponent}</from-action>
-   <to-view-id>/pages/#{QueryBean.resultURL}</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>submissionDetail</from-outcome>
-   <to-view-id>/pages/#{QueryBean.assayURL}</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>emptyResult</from-outcome>
-   <to-view-id>/pages/empty_query_result.jsp</to-view-id>
-  </navigation-case>
- </navigation-rule>
-
- <navigation-rule>
   <from-view-id>/pages/ish_submission.jsp</from-view-id>
   <navigation-case>
    <from-action>#{ISHSingleSubmissionBean.annotation}</from-action>
@@ -702,15 +594,6 @@
    <description>Any action on chooselocale should cause navigation to bookstore.jsp</description>
    <from-outcome>samepage</from-outcome>
    <to-view-id>/mic_focus.jsp</to-view-id>
-  </navigation-case>
- </navigation-rule>
-
- <navigation-rule>
-  <from-view-id>/pages/anatomy_tree.jsp</from-view-id>
-  <navigation-case>
-   <from-outcome>success</from-outcome>
-   <to-view-id>/pages/#{AnatomyBean.resultURL}</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
 
@@ -846,14 +729,6 @@
 	</navigation-case>
 </navigation-rule>
 
-<navigation-rule>
-	<from-view-id>/pages/ish_edit_expression.jsp</from-view-id>
-	<navigation-case>
-		<from-outcome>LabIshEdit</from-outcome>
-		<to-view-id>/pages/lab_ish_edit.jsp</to-view-id>
-	</navigation-case>
-</navigation-rule>
- 
  <!--ycheng for new focus end 
  **********************END SECTION: NAVIGATION RULE********************** 
  **********************START SECTION: CUSTOM RENDERERS*******************-->

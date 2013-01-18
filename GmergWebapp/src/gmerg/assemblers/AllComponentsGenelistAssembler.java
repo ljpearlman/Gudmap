@@ -49,11 +49,6 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 		Connection conn = DBHelper.getDBConnection();
 		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
 		
-		// get data
-//    	String[][] data={{"0", "223_all",			"Aronow", "", "223_all ANOVA order",	"GudmapBook1_110707ba.xls",					null,	null},	
-//    					 {"1", "102_SS" ,			"Aronow", "", "S-shaped body",			"GudmapBook2_110707.xls",					null, 	null},	
-//    					 {"2", "110_RV" ,			"Aronow", "", "Renal Vesicles",			"GudmapBook2_110707.xls", 					null,	null},	
-//    					 {"3", "12959_default-log2","Aronow", "", "12959_default-log2",		"aranow_040708/data/12959_default-log2.cdt", "aranow_040708/data/12959_default-log2.cdt",	null} };	
     	ArrayList<GenelistInfo> allAnalysisGenelists = genelistDAO.getAllAnalysisGeneLists();
     	
     	// convert to desired data structure
