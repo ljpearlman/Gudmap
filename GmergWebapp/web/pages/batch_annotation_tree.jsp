@@ -37,7 +37,6 @@
 		@import("${pageContext.request.contextPath}/css/ie51.css");
 	</style>
 	<script src="${pageContext.request.contextPath}/scripts/formfunctions.js" type="text/javascript"></script>
-	<script src="${pageContext.request.contextPath}/scripts/navbar.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/scripts/navfunctions.js" type="text/javascript"></script>
 
 	<script src="${pageContext.request.contextPath}/scripts/ua.js" type="text/javascript"></script>

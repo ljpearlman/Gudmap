@@ -113,11 +113,7 @@ public final class MySQLDAOFactory {
 		return new MySQLBooleanQueryDAOImp(conn);
 	}
 	
-	/**
-	 * @author xingjun 10/03/2008
-	 * @param conn
-	 * @return
-	 */
+
 	public static GenelistDAO getGenelistDAO(Connection conn) {
 		// MySQLGenelistDAOImp implements GenelistDAO
 		return new MySQLGenelistDAOImp(conn);
@@ -136,10 +132,6 @@ public final class MySQLDAOFactory {
 	//tmp code
 	public static AnnotationTestDAO getAnnotationTestDAO(Connection conn){
 		return new MySQLAnnotationTestDAOImp(conn);
-	}
-	
-	public static EditHistoryDAO getEditHistoryDAO(Connection conn){
-		return new MySQLEditHistoryDAOImp(conn);
 	}
 	
 	/**

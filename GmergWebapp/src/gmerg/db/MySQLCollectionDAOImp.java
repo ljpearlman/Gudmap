@@ -256,10 +256,6 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		return result;
 	}
 	
-	public ArrayList<String> getCollectionItemsByIds(String[] collectionIds) {
-		return null;
-	}
-	
 	/**
 	 * get detailed info for specified collection
 	 * @author xingjun
@@ -647,82 +643,6 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		}
 		return updatedRecordNumber;
 	} /** end of updateCollectionSummary */
-	
-	/**
-	 * @author xingjun - 08/10/2009
-	 */
-	public int getPublicSubmissionNumberBySubmissionId(ArrayList submissionIds) {
-		if (submissionIds == null || submissionIds.size() == 0) {
-			return 0;
-		}
-		int result = 0;
-		ResultSet resSet = null;
-		PreparedStatement prepStmt = null;
-		ParamQuery parQ = AdvancedSearchDBQuery.getParamQuery("GET_PUBLIC_SUBMISSION_NUMBER_BY_GIVEN_SUBMISSION_ID");
-		String queryString = parQ.getQuerySQL();
-		String submissionIdString = DBHelper.convertItemsFromArrayListToString(submissionIds);
-		
-		queryString = queryString.replaceAll("IN", "IN (" + submissionIdString + ") ");
-//		System.out.println("CollectionDAO:getPublicSubmissionNumberBySubmissionId:sql: " + queryString);
-		
-		try {
-		    if (debug)
-			System.out.println("MySQLCollectionDAOImp.sql = "+queryString.toLowerCase());
-			prepStmt = conn.prepareStatement(queryString);
-			resSet = prepStmt.executeQuery();
-			if (resSet.first()) {
-				result = resSet.getInt(1);
-			}
-			DBHelper.closePreparedStatement(prepStmt);
-			DBHelper.closeResultSet(resSet);
-		} catch (SQLException se) {
-			se.printStackTrace();
-		}
-		return result;
-	}
-
-	/**
-	 * @author xingjun - 08/10/2009
-	 * @param submissionIds
-	 * @return 0: empty submission id list, or invalid submission id(s) exist(s)
-	 * 			1: all submission ids are valid
-	 */
-	public int checkSubmissionId(ArrayList submissionIds) {
-		if (submissionIds == null || submissionIds.size() == 0) {
-			return 0;
-		}
-		int numberOfValidSubIds = 0;
-		int result = 0;
-		ResultSet resSet = null;
-		PreparedStatement prepStmt = null;
-		ParamQuery parQ = AdvancedSearchDBQuery.getParamQuery("GET_SUBMISSION_NUMBER_BY_GIVEN_SUBMISSION_ID");
-		String queryString = parQ.getQuerySQL();
-		String submissionIdString = DBHelper.convertItemsFromArrayListToString(submissionIds);
-		
-		queryString = queryString.replaceAll("IN", "IN (" + submissionIdString + ") ");
-//		System.out.println("CollectionDAO:getPublicSubmissionNumberBySubmissionId:sql: " + queryString);
-		
-		try {
-		    if (debug)
-			System.out.println("MySQLCollectionDAOImp.sql = "+queryString.toLowerCase());
-			prepStmt = conn.prepareStatement(queryString);
-			resSet = prepStmt.executeQuery();
-			if (resSet.first()) {
-				numberOfValidSubIds = resSet.getInt(1);
-			}
-			DBHelper.closePreparedStatement(prepStmt);
-			DBHelper.closeResultSet(resSet);
-		} catch (SQLException se) {
-			se.printStackTrace();
-		}
-		int numberOfPassedInSubIds = submissionIds.size();
-		if (numberOfValidSubIds < numberOfPassedInSubIds) {
-			result = 0;
-		} else {
-			result = 1;
-		}
-		return result;
-	}
 	
 	/**
 	 * @author xingjun - 16/10/2009

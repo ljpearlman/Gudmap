@@ -65,51 +65,6 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 	}
 	
 	/**
-	 * @author xingjun - 06/11/2008
-	 */
-	public String[] getInsituSubmissionNumberAndStageInfoByGeneSymbol(String symbol) {
-		if (symbol == null || symbol.equals("")) {
-			return null;
-		}
-		String[] insituSubmissionNumberAndStageInfo = null;
-        ResultSet resSet = null;
-        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_ISH");
-        String queryString = parQ.getQuerySQL();
-        PreparedStatement prepStmt = null;
-        try {
-        	// if disconnected from db, re-connected
-        	conn = DBHelper.reconnect2DB(conn);
-
-        	prepStmt = conn.prepareStatement(queryString);
-        	prepStmt.setString(1, symbol);
-        	resSet = prepStmt.executeQuery();
-        	if (resSet.first()) {
-        		insituSubmissionNumberAndStageInfo = new String[2];
-        		resSet.beforeFirst();
-        		int counter = 0;
-        		ArrayList<String> stageList = new ArrayList<String>();
-        		String stageString = "";
-        		while (resSet.next()) {
-        			String stage = resSet.getString(3);
-        			if (!stageList.contains(stage)) {
-            			stageList.add(stage);
-        			}
-        			counter++;
-        		}
-        		stageString += stageList.get(0) + "-" + stageList.get(stageList.size()-1);
-        		insituSubmissionNumberAndStageInfo[0] = stageString;
-        		insituSubmissionNumberAndStageInfo[1] = Integer.toString(counter);
-        	}
-        	
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-        	se.printStackTrace();
-        }
-        return insituSubmissionNumberAndStageInfo;
-	}
-	
-	/**
 	 * @author xingjun - 27/01/2009
 	 * @param symbol: gene symbol
 	 * @param assayType: insitu or microarray

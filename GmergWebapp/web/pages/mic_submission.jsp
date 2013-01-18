@@ -76,7 +76,7 @@
 			<h:outputLink title="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.principalInvestigator.id})">
 			                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.name}, " />
 			</h:outputLink>
-			<h:outputText title="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.lab}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.city}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.country}, #{MicroarraySingleSubmissionBean.submission.principalInvestigator.email} " />
+			<h:outputText title="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.displayAddress}" />
 		</h:panelGroup>
 		<h:panelGroup rendered="#{MicroarraySingleSubmissionBean.submission.principalInvestigators != null}">
 			<t:dataList id="piDataList" var="piInfo" layout="unorderedList"
@@ -85,7 +85,7 @@
 						<h:outputLink  title="#{piInfo.fullAddress}"  styleClass="datatext" value="javascript:showLabDetails(#{piInfo.id})">
 						                <h:outputText value="#{piInfo.name}, " />
 						</h:outputLink>
-						<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.lab}, #{piInfo.city}, #{piInfo.country}, #{piInfo.email}" />
+						<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.displayAddress}" />
 					</h:panelGroup>
 			</t:dataList>
 		</h:panelGroup>
@@ -98,7 +98,7 @@
 			<h:outputLink title="#{MicroarraySingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.submitter.id})">
 			               <h:outputText value="#{MicroarraySingleSubmissionBean.submission.submitter.name}, " />
 			</h:outputLink>
-			<h:outputText title="#{MicroarraySingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.submitter.lab}, #{MicroarraySingleSubmissionBean.submission.submitter.city}, #{MicroarraySingleSubmissionBean.submission.submitter.country},  #{MicroarraySingleSubmissionBean.submission.submitter.email}" />			
+			<h:outputText title="#{MicroarraySingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.submitter.displayAddress}" />			
 		</h:panelGroup>
 		
 		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>

@@ -255,11 +255,8 @@ public class MySQLIHCDAOImp implements IHCDAO {
     	};
     	String geneSymbolCol;
     	
-        if(queryType == 1){
+        if(queryType == 1 || queryType == 2){
             geneSymbolCol = "natural_sort(TRIM(RPR_SYMBOL))";
-        }
-        else if(queryType == 2){
-            geneSymbolCol = "natural_sort(TRIM(PRB_GENE_SYMBOL))";
         }
         else {
             geneSymbolCol = "";
@@ -273,9 +270,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
         		if (queryType == 1) {
         			orderByString = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + 
         			order +", " + geneSymbolCol;
-        		} else if (queryType == 2) {
-        			
-        		}
+        		} 
         	} else if (columnIndex == 1) {
        			orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
         	} else if (columnIndex == 2) {
