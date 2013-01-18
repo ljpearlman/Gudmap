@@ -300,19 +300,6 @@ function drawFolder(insertAtObj)
   else {
     modDesc = this.desc
     
-    //if(this.hasIndirAnnoNotPres || this.isAnnotNotPresent) {
-    //  modDesc = this.desc.fontcolor("blue");
-    //  if(this.isAnnotNotPresent) {
-    //    modDesc = modDesc.toUpperCase();
-    //  }
-    //}
-    //if(this.hasIndirAnnoDet || this.isAnnotDetected) {
-    //  modDesc = this.desc.fontcolor("red");
-    //  if(this.isAnnotDetected) {
-      //  modDesc = modDesc.toUpperCase();
-      //}
-    //}
-
     docW = docW + gp + modDesc;
   }
   
@@ -770,20 +757,6 @@ function drawItem(insertAtObj)
   else {
     modDesc = this.desc
     
-    
-    //if(this.hasIndirAnnoNotPres || this.isAnnotNotPresent) {
-      //modDesc = this.desc.fontcolor("blue");
-      //if(this.isAnnotNotPresent) {
-      //modDesc = modDesc.toUpperCase();
-      //}
-    //}
-    //if(this.hasIndirAnnoDet || this.isAnnotDetected){
-      //modDesc = this.desc.fontcolor("red");
-      //if(this.isAnnotDetected) {
-        //modDesc = modDesc.toUpperCase();
-      //}
-    //}
-
     docW = docW + gp + modDesc;
   }
   
@@ -1863,47 +1836,23 @@ function openNodesMatchingSearchString(searchText, caseSensitive) {
   
   var treeDiv = getElById('domRoot');
   var leaves = treeDiv.getElementsByTagName('a');
+  var order = 0;
   for (var i=0; i<leaves.length; i++) 
-  if (leaves[i].id.indexOf('itemTextLink') == 0) {
-    var nodeId = leaves[i].id.substr(12);
-    leaves[i].style.color = selectedItems[nodeId]? "red" : "#5C5C5C";
-  }
-}
-
-/* Replace with the above to speed it up specially in IE -- Mehran (2/10/09) 
-function openNodesMatchingSearchString(searchText, caseSensitive) {
-  if (caseSensitive==null)
-	  caseSensitive = true;
-  searchText = searchText.trim(); // added by xingjun - 03/08/2009
-  if(searchText != null && searchText != "") {
-    //setInitialLayout();
-    for(i=0;i<indexOfEntries.length;i++) {
-      var thisNode = findObj(i);
-      
-      if( caseSensitive && thisNode.desc.indexOf(searchText)>=0 || 
-      	 !caseSensitive && thisNode.desc.toLowerCase().indexOf(searchText.toLowerCase())>=0 ) {
-        thisNode.forceOpeningOfAncestorFolders();
-        changeObjTextColor(thisNode, "red")
-      }
-      else {
-        changeObjTextColor(thisNode, "#5C5C5C")
-      }
+    if (leaves[i].id.indexOf('itemTextLink') == 0) {
+      var nodeId = leaves[i].id.substr(12);
+      if (selectedItems[nodeId]) {
+	leaves[i].style.color = "red";
+	// make sure the first one is visible
+	if (0 == order) {
+	  order++;
+	  // make it visible only if not
+	  leaves[i].scrollIntoView(false);
+	}
+      } else
+	leaves[i].style.color = "#5C5C5C";
     }
-  }
-
 }
 
-function changeObjTextColor(nodeObj, colour) {
-  if (browserVersion == 1 || browserVersion == 3) {
-    var clickedDOMObj = getElById('itemTextLink'+nodeObj.id);
-    if (clickedDOMObj != null) {        
-      clickedDOMObj.style.color=colour;
-    }
-  }
-}
-*/
-
-// added by xingjun - 03/08/2009
 // trim the leading and trailing whitespace from the string
 String.prototype.trim = function() {
 	return this.replace(/^\s+|\s+$/g, ''); 

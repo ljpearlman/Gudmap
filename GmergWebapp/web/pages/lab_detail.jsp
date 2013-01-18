@@ -26,6 +26,7 @@
     		<h:outputText value="Address:" />
     		<h:panelGrid columns="1" border="0">
     			<h:outputText styleClass="datatext" value="#{PersonBean.person.address}" />
+    			<h:outputText styleClass="datatext" value="#{PersonBean.person.address2}" rendered="#{PersonBean.person.address2 != null}" />
     			<h:outputText styleClass="datatext" value="#{PersonBean.person.city} #{PersonBean.person.postcode}" />
     			<h:outputText styleClass="datatext" value="#{PersonBean.person.country}" />
     		</h:panelGrid>
@@ -36,10 +37,11 @@
     		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
     		
     		<h:outputText value="Email:" />
-    		<h:outputText value="#{PersonBean.person.email}" />
+	                <h:outputLink value="mailto:#{PersonBean.person.email}">
+    		        <h:outputText value="#{PersonBean.person.email}" />
+	                </h:outputLink>
     	</h:panelGrid>
     	
-    	<%-- added by xingjun - there might be multiple People linked to one certain submission --%>
     	<t:dataList id="peopleDataList" var="peopleInfo" value="#{PersonBean.people}" rowCountVar="count" rowIndexVar="index" layout="unorderedList"
 				rendered="#{PersonBean.people != null}">
 				
@@ -65,7 +67,9 @@
 					<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 					
 					<h:outputText value="Email:" />
-					<h:outputText value="#{peopleInfo.email}" />
+	                                                                <h:outputLink value="mailto:#{peopleInfo.email}">
+					          <h:outputText value="#{peopleInfo.email}" />
+	                                                                </h:outputLink>
 				</h:panelGrid>
 				<h:panelGrid width="100%" rowClasses="header-stripey"  >
 					<f:verbatim>&nbsp;</f:verbatim> 

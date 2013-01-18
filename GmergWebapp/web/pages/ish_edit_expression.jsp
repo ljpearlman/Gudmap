@@ -98,8 +98,7 @@
 					<h:outputText value="Present (weak)" styleClass="plaintext" />
 					
 					<h:graphicImage value="/images/tree/PossibleRound20x20.gif" styleClass="icon" />
-					<h:outputText value="Uncertain" styleClass="plaintext" rendered="#{proj == 'GUDMAP'}" />
-					<h:outputText value="Possible" styleClass="plaintext" rendered="#{proj != 'GUDMAP'}" />
+					<h:outputText value="Uncertain" styleClass="plaintext" />
 					
 					<h:graphicImage value="/images/tree/NotDetectedRoundMinus20x20.gif" styleClass="icon" />
 					<h:outputText value="Not Detected" styleClass="plaintext" />

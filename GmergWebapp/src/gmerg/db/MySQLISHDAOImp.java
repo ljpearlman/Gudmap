@@ -1121,7 +1121,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 
             // execute
             resSet = prepStmt.executeQuery();
-            piInfo = formatPIResultSet(resSet);
+            piInfo = formatPersonResultSet(resSet);
 
             // close the connection
             DBHelper.closePreparedStatement(prepStmt);
@@ -1180,18 +1180,19 @@ public class MySQLISHDAOImp implements ISHDAO {
                 person.setName(resSet.getString(1));
                 person.setLab(resSet.getString(2));
                 person.setAddress(resSet.getString(3));
-                person.setEmail(resSet.getString(4));
-                person.setCity(resSet.getString(5));
-                person.setPostcode(resSet.getString(6));
-                person.setCountry(resSet.getString(7));
-                person.setPhone(resSet.getString(8));
-                person.setFax(resSet.getString(9));
-                person.setId(resSet.getString(10));
+                person.setAddress2(resSet.getString(4));
+                person.setEmail(resSet.getString(5));
+                person.setCity(resSet.getString(6));
+                person.setPostcode(resSet.getString(7));
+                person.setCountry(resSet.getString(8));
+                person.setPhone(resSet.getString(9));
+                person.setFax(resSet.getString(10));
+                person.setId(resSet.getString(11));
                 people.add(person);
         	}
         }
         if (people != null) {
-            Person[] result = people.toArray(new Person[people.size()]);
+            Person[] result = people.toArray(new Person[0]);
             return result;
         }
         return null;
@@ -1219,7 +1220,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 
             // execute
             resSet = prepStmt.executeQuery();
-            personInfo = formatPIResultSet(resSet);
+            personInfo = formatPersonResultSet(resSet);
 
             // close the connection
             DBHelper.closePreparedStatement(prepStmt);
@@ -1235,23 +1236,25 @@ public class MySQLISHDAOImp implements ISHDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-    private Person formatPIResultSet(ResultSet resSet) throws SQLException {
+    protected Person formatPersonResultSet(ResultSet resSet) throws SQLException {
         Person pi = new Person();
         if (resSet.first()) {
             pi.setName(resSet.getString(1));
             pi.setLab(resSet.getString(2));
             pi.setAddress(resSet.getString(3));
-            pi.setEmail(resSet.getString(4));
-            pi.setCity(resSet.getString(5));
-            pi.setPostcode(resSet.getString(6));
-            pi.setCountry(resSet.getString(7));
-            pi.setPhone(resSet.getString(8));
-            pi.setFax(resSet.getString(9));
-            pi.setId(resSet.getString(10));
+            pi.setAddress2(resSet.getString(4));
+            pi.setEmail(resSet.getString(5));
+            pi.setCity(resSet.getString(6));
+            pi.setPostcode(resSet.getString(7));
+            pi.setCountry(resSet.getString(8));
+            pi.setPhone(resSet.getString(9));
+            pi.setFax(resSet.getString(10));
+            pi.setId(resSet.getString(11));
         } else {
             pi.setName("n/a");
             pi.setLab("");
             pi.setAddress("");
+            pi.setAddress2("");
             pi.setEmail("");
             pi.setCity("");
             pi.setPostcode("");
@@ -1285,7 +1288,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 
             // execute
             resSet = prepStmt.executeQuery();
-            submitterInfo = formatSubmitterResultSet(resSet);
+            submitterInfo = formatPersonResultSet(resSet);
 
             // close the connection
             DBHelper.closePreparedStatement(prepStmt);
@@ -1293,39 +1296,6 @@ public class MySQLISHDAOImp implements ISHDAO {
             se.printStackTrace();
         }
         return submitterInfo;
-    }
-
-    /**
-	 * @param resSet
-	 * @return
-	 * @throws SQLException
-	 */
-    private Person formatSubmitterResultSet(ResultSet resSet) throws SQLException {
-        Person submitter = new Person();
-        if (resSet.first()) {
-            submitter.setName(resSet.getString(1));
-            submitter.setLab(resSet.getString(2));
-            submitter.setAddress(resSet.getString(3));
-            submitter.setEmail(resSet.getString(4));
-            submitter.setCity(resSet.getString(5));
-            submitter.setPostcode(resSet.getString(6));
-            submitter.setCountry(resSet.getString(7));
-            submitter.setPhone(resSet.getString(8));
-            submitter.setFax(resSet.getString(9));
-            submitter.setId(resSet.getString(10));
-        } else {
-            submitter.setName("n/a");
-            submitter.setLab("");
-            submitter.setAddress("");
-            submitter.setEmail("");
-            submitter.setCity("");
-            submitter.setPostcode("");
-            submitter.setCountry("");
-            submitter.setPhone("");
-            submitter.setFax("");
-            submitter.setId("");
-        }
-        return submitter;
     }
 
     /**
@@ -5483,7 +5453,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
 //        System.out.println("pattern number: " + patternList.size());
         if (patternList != null && patternList.size() > 0) {
-            patterns = patternList.toArray(new ExpressionPattern[patternList.size()]);
+            patterns = patternList.toArray(new ExpressionPattern[0]);
         }
         return patterns;
     }
@@ -5675,7 +5645,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         			statusNote.setSelected(false);
         			sns.add(statusNote);
         		}
-        		statusNotes = sns.toArray(new StatusNote[sns.size()]);
+        		statusNotes = sns.toArray(new StatusNote[0]);
         	}
         	
             // close the db object

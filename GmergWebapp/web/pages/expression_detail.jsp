@@ -69,7 +69,6 @@
             <h:column>
               <h:outputText styleClass="datatext" value="#{pattern.pattern}"  />
             </h:column>
-          </h:dataTable>
           </h:panelGrid>
           <h:panelGrid columns="2" columnClasses="text-top">
             <h:outputText styleClass="plaintext" value="Note:" />

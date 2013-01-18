@@ -202,23 +202,19 @@
 				<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
 					<h:outputText value="Principal Investigator:" />
 					<h:panelGroup>
-						<h:outputText value="#{ISHSingleSubmissionBean.submission.principalInvestigator.name}, " />
-						<h:outputText value="#{ISHSingleSubmissionBean.submission.principalInvestigator.lab}, " />
-						<h:outputText value="#{ISHSingleSubmissionBean.submission.principalInvestigator.address}, " />
-						<h:outputLink styleClass="datatext" value="mailto:#{ISHSingleSubmissionBean.submission.principalInvestigator.email}">
-							<h:outputText value="#{ISHSingleSubmissionBean.submission.principalInvestigator.email}"/>
-						</h:outputLink>
+					       <h:outputLink title="#{ISHSingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{ISHSingleSubmissionBean.submission.principalInvestigator.id})">
+					                <h:outputText value="#{ISHSingleSubmissionBean.submission.principalInvestigator.name}, " />
+					       </h:outputLink>
+					       <h:outputText title="#{ISHSingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.principalInvestigator.lab}, #{ISHSingleSubmissionBean.submission.principalInvestigator.city}, #{ISHSingleSubmissionBean.submission.principalInvestigator.country}, #{ISHSingleSubmissionBean.submission.principalInvestigator.email}" />
 					</h:panelGroup>
 					<h:outputText value="Authors:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.authors}" />
 					<h:outputText value="Submitted By:" />
 					<h:panelGroup>
-						<h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.name}, " />
-						<h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.lab}, " />
-						<h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.address}, " />
-						<h:outputLink styleClass="datatext" value="mailto:#{ISHSingleSubmissionBean.submission.submitter.email}">
-							<h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.email}"/>
-						</h:outputLink>
+                                                                                       <h:outputLink title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{ISHSingleSubmissionBean.submission.submitter.id})">
+					                <h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.name}, " />
+					       </h:outputLink>
+					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.lab}, #{ISHSingleSubmissionBean.submission.submitter.city}, #{ISHSingleSubmissionBean.submission.submitter.country}, #{ISHSingleSubmissionBean.submission.submitter.email}" />
 					</h:panelGroup>
 					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" value="Archive ID:" />
 					<h:outputLink rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" styleClass="datatext" value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" >
@@ -256,7 +252,6 @@
 					
 					<h:graphicImage value="/images/tree/PossibleRound20x20.gif" styleClass="icon" />
 					<h:outputText value="Uncertain" styleClass="plaintext" />
-					<h:outputText value="Possible" styleClass="plaintext" />
 					
 					<h:graphicImage value="/images/tree/NotDetectedRoundMinus20x20.gif" styleClass="icon" />
 					<h:outputText value="Not Detected" styleClass="plaintext" />
