@@ -131,35 +131,6 @@ public class ArraySubmissionAssembler {
 	}
 	
 	/**
-	 * get gene list info of the specified array submission
-	 * 
-	 * @param accessionId
-	 * @param offset
-	 * @return
-	 */
-	public GeneListBrowseSubmission[] getGeneList(String accessionId, String[] order, String offset) {
-		
-		/** ---get the data from dao---  */
-		// create a dao
-		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-		// get gene list
-		GeneListBrowseSubmission[] geneList =
-			arrayDAO.getGeneListBrowseSubmissionsBySubmissionId(accessionId, order, offset);
-		
-//		GeneListBrowseSubmission[] geneListBrowseSubmissions =
-//			(GeneListBrowseSubmission[])geneList.toArray(new GeneListBrowseSubmission[geneList.size()]);
-		
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the gene list info---  */
-		return geneList;
-	}
-	
-	/**
 	 * get total number of gene items
 	 * 
 	 * @param accessionId

@@ -49,7 +49,7 @@ public class MicroarrayDetailsBean {
 	    gudmapId = component.substring(index);
 	    component = component.substring(0, index);
 	    gudmapId = gudmapId.toUpperCase();
-	    gudmapIdUrl = gmerg.utils.Utility.appUrl+"pages/ish_submission.html?id="+gudmapId.replace(":", "%3A");
+	    gudmapIdUrl = "ish_submission.html?id="+gudmapId.replace(":", "%3A");
 	}
 
         value = (String) requestParams.get("value");
