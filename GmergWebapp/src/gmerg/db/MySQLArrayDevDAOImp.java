@@ -40,8 +40,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		ArrayList result = null;
 		ResultSet resSet = null;
                 //find relevant query string from DBQuery
-//		ParamQuery parQ = DBQuery.getParamQuery("ALL_SERIES");
-		ParamQuery parQ = ArrayDBQuery.getParamQuery("ALL_SERIES");// xingjun - 23/06/2011
+		ParamQuery parQ = ArrayDBQuery.getParamQuery("ALL_SERIES");
 		PreparedStatement prepStmt = null;
 		
 		String query = parQ.getQuerySQL();
@@ -432,26 +431,17 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
   
 
 	/**
-	 * <p>xingjun - 14/04/2010 - changed to use the same sql as the method getAllSeries </p>
-	 * <p>xingjun - 23/06/2011 - get the sql from ArrayDBQuery now</p>
-	 * <p>xingjun - 22/07/2011 - correct the sql criteria for platform parameter </p>
 	 */
 	public int getTotalNumberOfSeries(String platform) {
         int totalNumber = 0;
         ResultSet resSet = null;
-//        ParamQuery parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SERIES");
-//        ParamQuery parQ = DBQuery.getParamQuery("ALL_SERIES");
-        ParamQuery parQ = ArrayDBQuery.getParamQuery("ALL_SERIES");// xingjun - 23/06/2011
+	ParamQuery parQ = ArrayDBQuery.getParamQuery("ALL_SERIES");
+
         PreparedStatement prepStmt = null;
         String query = parQ.getQuerySQL();
         
         try {
-//            if(null != platform && !platform.equals("")) {
-//    			query += " WHERE SER_PLATFORM_FK=PLT_OID and PLT_GEO_ID=? ";
-//    		}
-
             if(null != platform && !platform.equals("")) {
-//    			String platformString = " and SER_PLATFORM_FK=PLT_OID and PLT_GEO_ID=? ";
     			String platformString = "AND PLT_GEO_ID = ? "; // xingjun - 22/07/2011
     			query = query.replaceAll("AND SER_PLATFORM_FK", platformString);
     		} else {

@@ -44,11 +44,6 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	this.conn = conn;
     }
     
-    
-    public ArrayList getMicroGeneQueryResult(String[][] param) throws SQLException {
-	return new ArrayList();
-    }
-    
     /**
      * @return total number of submissions
      */
@@ -258,51 +253,6 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	}
 	
 	return column;
-    }
-    
-    /**
-     * 
-     * @param personId
-     */
-    public String findLabNameByPersonId(String personId) {
-	long enter = 0;
-	if (performance)
-	    enter = System.currentTimeMillis();
-	
-	
-	String labName = null;
-	ResultSet resSet = null;
-	ParamQuery parQ = DBQuery.getParamQuery("LAB_NAME_FROM_PERSON_ID");
-	PreparedStatement prepStmt = null;
-	
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    parQ.setPrepStat(conn);
-	    prepStmt = parQ.getPrepStat();
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp.findLabNameByPersonId 1 arg = "+personId);
-	    prepStmt.setString(1, personId);
-	    resSet = prepStmt.executeQuery();
-	    
-	    if (resSet.first()) {
-		labName = resSet.getString(1);
-	    }
-	    
-	    // close the connection
-	    DBHelper.closePreparedStatement(prepStmt);
-	    
-	} catch(SQLException se) {
-	    se.printStackTrace();
-	}
-	if (performance) {
-	    enter = (System.currentTimeMillis() - enter)/1000;
-	    if (2 < enter)
-		System.out.println("MySQLArrayDAOImp.findLabNameByPersonId takes " + enter+" seconds");
-	}
-	
-	return labName;
     }
     
     /**
@@ -852,60 +802,6 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	return null;
     }
     
-    public GeneListBrowseSubmission[] getGeneListBrowseSubmissionsBySubmissionId(String submissionAccessionId, String[] order, String offset) {
-	long enter = 0;
-	if (performance)
-	    enter = System.currentTimeMillis();
-	
-	ResultSet resSet = null;
-	GeneListBrowseSubmission[] result = null;
-	ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_GENE_LIST_ITEM");
-	PreparedStatement prepStmt = null;
-	
-	// assemble the query string
-	String query = parQ.getQuerySQL();
-	
-	String defaultOrder = new String(" ORDER BY MBC_GNF_SYMBOL");
-	String queryString = assembleBrowseSubmissionQueryStringArray(2, query, defaultOrder, order, offset, "500");
-	
-	if (debug)
-	    System.out.println("genelist offset = "+offset+" query: " + queryString);
-
-	parQ.setQuerySQL(queryString);
-	
-	// execute query and assemble result
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    parQ.setPrepStat(conn);
-	    prepStmt = parQ.getPrepStat();
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp 1 arg = "+submissionAccessionId);
-	    prepStmt.setString(1, submissionAccessionId);
-	    // execute
-	    resSet = prepStmt.executeQuery();
-	    result = formatGeneListBrowseResultSet(resSet);
-	    
-	    // close the connection
-	    DBHelper.closePreparedStatement(prepStmt);
-	    //			DBUtil.closeJDBCConnection(conn);
-	    
-	    // reset the static query string to its original value
-	    parQ.setQuerySQL(query);
-	    
-	} catch(SQLException se) {
-	    se.printStackTrace();
-	}
-	if (performance) {
-	    enter = (System.currentTimeMillis() - enter)/1000;
-	    if (2 < enter)
-		System.out.println("MySQLArrayDAOImp.getGeneListBrowseSubmissionsBySubmissionId takes " + enter+" seconds");
-	}
-	
-	return result;
-    }
-    
     /**
      * 
      * @param resSet
@@ -1294,94 +1190,6 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	}
 	
 	return relatedSamples;
-    }
-    
-    /**
-     * 
-     * @param symbol
-     */
-    public int findNumberOfSubmissionsByGeneSymbolISH(String symbol) {
-	long enter = 0;
-	if (performance)
-	    enter = System.currentTimeMillis();
-	
-	int submissionNumber = 0;
-	ResultSet resSet = null;
-	ParamQuery parQ = DBQuery.getParamQuery("NUMBER_RELATED_SUBMISSIONS_FOR_GENE_ISH");
-	PreparedStatement prepStmt = null;
-	
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    parQ.setPrepStat(conn);
-	    prepStmt = parQ.getPrepStat();
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp 1 arg = "+symbol);
-	    prepStmt.setString(1, symbol);
-	    resSet = prepStmt.executeQuery();
-	    
-	    if (resSet.first()) {
-		submissionNumber = resSet.getInt(1);
-	    }
-	    
-	    // close the db object
-	    DBHelper.closePreparedStatement(prepStmt);
-	    
-	} catch(SQLException se) {
-	    se.printStackTrace();
-	}
-	if (performance) {
-	    enter = (System.currentTimeMillis() - enter)/1000;
-	    if (2 < enter)
-		System.out.println("MySQLArrayDAOImp.findNumberOfSubmissionsByGeneSymbolISH takes " + enter+" seconds");
-	}
-	
-	return submissionNumber;
-    }
-    
-    /**
-     * 
-     * @param symbol
-     */
-    public int findNumberOfSubmissionsByGeneSymbolArray(String symbol) {
-	long enter = 0;
-	if (performance)
-	    enter = System.currentTimeMillis();
-	
-	int submissionNumber = 0;
-	ResultSet resSet = null;
-	ParamQuery parQ = DBQuery.getParamQuery("NUMBER_RELATED_SUBMISSIONS_FOR_GENE_ARRAY");
-	PreparedStatement prepStmt = null;
-	
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    parQ.setPrepStat(conn);
-	    prepStmt = parQ.getPrepStat();
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp 1 arg = "+symbol);
-	    prepStmt.setString(1, symbol);
-	    resSet = prepStmt.executeQuery();
-	    
-	    if (resSet.first()) {
-		submissionNumber = resSet.getInt(1);
-	    }
-	    
-	    // close the db object
-	    DBHelper.closePreparedStatement(prepStmt);
-	    
-	} catch(SQLException se) {
-	    se.printStackTrace();
-	}
-	if (performance) {
-	    enter = (System.currentTimeMillis() - enter)/1000;
-	    if (2 < enter)
-		System.out.println("MySQLArrayDAOImp.findNumberOfSubmissionsByGeneSymbolArray takes " + enter+" seconds");
-	}
-	
-	return submissionNumber;
     }
     
     // used for analysis
@@ -3384,33 +3192,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	
 	return probeSetIds;
     }
-    
-    
-    /** --- to be implemented--- */
-    public ArrayList getMicroGeneRelatedSubmissions(String symbol) throws SQLException {
-	return new ArrayList();
-    }
-    
-    public ArrayList getMicroLabSubmission(int single, String order, String labId, String date) throws SQLException {
-	return new ArrayList();
-    }
-    
-    public ArrayList getMicroSubmissionDetails(String id) throws SQLException {
-	return new ArrayList();
-    }
-    
-    public ArrayList getMicroSeries(String id) throws SQLException {
-	return new ArrayList();
-    }
-    
-    public ArrayList getGeneCollectionDetails(String[] geneCookieList) throws SQLException {
-	return new ArrayList();
-    }
-    
-    public ArrayList getMicroGeneList(String order, String id, int pNum, int resPerPage) throws SQLException {
-	return new ArrayList();
-    }
-    
+
     // added by Bernie - 23/09/2010
     public String findTissueBySubmissionId(String submissionId)
     {

@@ -31,171 +31,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
         this.conn = conn;
     }
     
-    public ArrayList getOptionInDB(String option, Hashtable lookup) {
-    	ResultSet resSet = null;
-    	String query = null;
-	if (debug) {
-   	System.out.println("getOptionInDB option:"+ option);
-   	System.out.println("getOptionInDB lookup:"+ ((String)lookup.get(option)));
-	}
-    	if(((String)lookup.get(option)).equals("QSC_ISH_CACHE")) {
-    		query = "Select distinct " + option + " from " + (String)lookup.get(option);
-    	} else if(((String)lookup.get(option)).equals("QSC_MIC_CACHE")) {
-    		query = "Select distinct " + option + " from " + (String)lookup.get(option);
-    	} else if(((String)lookup.get(option)).equals("QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic")){
-	if (debug)
-    		System.out.println("two tables!!!!!!!!!");
-    		String[] options = option.split(",");
-    		String[] wheres = ((String)lookup.get(option)).split(",");
-//    		if(option.indexOf("CONCAT(ish.QIC_SPN_STAGE_FORMAT, ish.QIC_SPN_STAGE), CONCAT(mic.QMC_SPN_STAGE_FORMAT, mic.QMC_SPN_STAGE)") > -1) {
-       		if(option.indexOf("CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE), CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE)") > -1) {
-    			query = "(Select distinct " + options[0] + "," + options[1] + " from " + wheres[0]
-    			         + ") UNION (Select distinct " + options[2]+","+options[3] + " from " + wheres[1]
-    			         +")";
-    		} else {
-    		query = "(Select distinct " + options[0] + " from " + wheres[0]
-    			+ ") UNION (Select distinct " + options[1] + " from " + wheres[1]
-    			+")";
-    		}
-    	} else if(((String)lookup.get(option)).equals("LKP_LOCATION")) {
-    		query = "Select distinct " + option + " from " + (String)lookup.get(option);
-    	}
-	if (debug)
-	    System.out.println("getOptionInDB SQL:"+query.toLowerCase());
-    	PreparedStatement prepStmt = null;
-    	if(null != query) {
-    		try {
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query.toLowerCase());
-    			prepStmt = conn.prepareStatement(query);
-    			resSet = prepStmt.executeQuery();
-    			
-    			ArrayList list = formatImageResultSet(resSet);
-    			DBHelper.closePreparedStatement(prepStmt);
-    			return list;
-    		} catch (Exception se) {
-                se.printStackTrace();
-            }
-    	    
-    	}
-        return null;
-        
-    }
-
-    public ArrayList getQueryResult(ArrayList option, String[] order, 
-    		String offset, String resPerPage, int[] total, String sub) {
-    	ResultSet resSet = null;
-    	ArrayList ishargs = new ArrayList();
-    	ArrayList micargs = new ArrayList();
-	if (debug)
-    	System.out.println("getQueryResult!!!!!!!!!!!!!!!!");
-    	String[] query = assembleSQL(option, ishargs, micargs, order, offset, resPerPage, total, sub);
-    	
-	if (debug)
-	    System.out.println("SQL:"+query);
-    	PreparedStatement prepStmt = null;
-    	if(null != query && null != sub) {
-    		try {
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query[0].toLowerCase());
-    			prepStmt = conn.prepareStatement(query[0]);
-    			if(sub.equals("Both")) {
-    				for(int i = 1; i <= ishargs.size(); i++){
-    					
-			if (debug)
-			    System.out.println("MySQLAdvancedQueryDAOImp "+i+" arg = "+ishargs.get(i-1));
-        				prepStmt.setString(i, (String)ishargs.get(i-1));
-        			}
-        			for(int i = 1; i <= micargs.size(); i++){
-			if (debug)
-			    System.out.println("MySQLAdvancedQueryDAOImp "+(ishargs.size()+i)+" arg = "+micargs.get(i-1));
-        				prepStmt.setString(ishargs.size()+i, (String)micargs.get(i-1));
-        				
-        			}
-    			} else if(sub.equals("ISH")) {
-    				for(int i = 1; i <= ishargs.size(); i++){
-        				prepStmt.setString(i, (String)ishargs.get(i-1));
-        			}
-    			} else if(sub.equals("Microarray")) {
-    				for(int i = 1; i <= micargs.size(); i++){
-        				prepStmt.setString(i, (String)micargs.get(i-1));
-        			}
-    			}
-    			
-    			
-    			resSet = prepStmt.executeQuery();
-    			
-    			ArrayList list = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
-    			DBHelper.closePreparedStatement(prepStmt);
-    			return list;
-    		} catch (Exception se) {
-                se.printStackTrace();
-            }
-    	    
-    	}
-        return null;
-        
-    }    
-    
-    public int[] getTotalNumbers(ArrayList option, String[] order, String offset, String resPerPage, String sub) {
-    	ResultSet resSet = null;
-    	ArrayList ishargs = new ArrayList();
-    	ArrayList micargs = new ArrayList();
-	if (debug)
-    	System.out.println("getTotalNumbers!!!!!!!!!!!!!!!!");
-    	String[] query = assembleSQL(option, ishargs, micargs, order, offset, resPerPage, null, sub);
-    	String ish = null;
-    	String mic = null;
-    	
-	if (debug)
-	    System.out.println("SQL:"+query);
-    	PreparedStatement prepStmt = null;
-    	if(null != query) {
-    		try {
-    			if(null != query[1]) {
-	if (debug)
-	    System.out.println("query1:"+query[1].toLowerCase());
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query[1].toLowerCase());
-	    			prepStmt = conn.prepareStatement(query[1]);
-	    			for(int i = 1; i <= ishargs.size(); i++){
-	    				prepStmt.setString(i, (String)ishargs.get(i-1));
-	    			}
-	    			resSet = prepStmt.executeQuery();
-	    			if(resSet.first()) {
-	    				ish = resSet.getString(1);
-	    			}
-	    			DBHelper.closePreparedStatement(prepStmt);
-    			}
-    			
-    			if(null != query[2]) {
-	if (debug)
-	    System.out.println("query2:"+query[2].toLowerCase());
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+query[2].toLowerCase());
-	    			prepStmt = conn.prepareStatement(query[2]);
-	    			for(int i = 1; i <= micargs.size(); i++){
-	    				prepStmt.setString(i, (String)micargs.get(i-1));
-	    			}
-	    			resSet = prepStmt.executeQuery();
-	    			if(resSet.first()) {
-	    				mic = resSet.getString(1);
-	    			}
-	    			DBHelper.closePreparedStatement(prepStmt);
-    			}
-    			int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic)),(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};
-	if (debug)
-    			System.out.println("number:"+ish+":"+mic);
-    			return total;
-    		} catch (Exception se) {
-                se.printStackTrace();
-            }
-    	    
-    	}
-        return new int[] {0,0,0};
-        
-    }    
-    
     /**
      * old version. not sure still needed
      * 
@@ -392,18 +227,11 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     						if(null != split) {
     							if(split.length == 2) {
     								bothwhere.add(new String(
-    										//"' AND QSC_EXP_STRENGTH='" + ((Object[])item)[1]+ "' "+
     										" "+
     										""+AdvancedSearchDBQuery.getComponentQuery((String)((Object[])item)[0])));
     								
-    								// added by xingjun - 06/12/2007 - start
     								ishBothWhere.add(" " + AdvancedSearchDBQuery.getComponentQuery((String)((Object[])item)[0], "ISH"));
     								micBothWhere.add(" " + AdvancedSearchDBQuery.getComponentQuery((String)((Object[])item)[0], "Microarray"));
-    								// added by xingjun - 06/12/2007 - end
-    								
-    								/*ishwhere.add(new String(lookup3+"='"+((Object[])item)[0])+
-    										"' AND QSC_EXP_STRENGTH='" + ((Object[])item)[1]+ "' "+
-    										"AND "+AdvancedSearchDBQuery.getComponentQuery((String)((Object[])item)[0]));*/
 
     							}
     						}
@@ -411,15 +239,9 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     				} else if(label.indexOf("Ontology Terms") > -1){
     									
     					if(null != ((Object[])item)[0] && !((Object[])item)[0].equals("")){
-    					//&& null != ((Object[])item)[1] && !((Object[])item)[1].equals("")) {   						
     						if(null != split) {
     							if(split.length == 2) {
-//    								ishwhere.add(new String(
-//    										//" QSC_EXP_STRENGTH='" + ((Object[])item)[1]+ "' "+
-//    										" "+AdvancedSearchDBQuery.getComponentNameQuery((String)((Object[])item)[0])));
-    								// modified by xingjun - 06/12/2007 - start
     								ishwhere.add(" " + AdvancedSearchDBQuery.getComponentNameQuery((String)((Object[])item)[0], "ISH"));
-    								// modified by xingjun - 06/12/2007 - end
     								
     								String key = "P";
     								if(null != ((Object[])item)[1]) {
@@ -429,14 +251,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     										key = "A";
     									}
     								}
-//    								micwhere.add(new String(
-//    										" "+
-//    										//"' AND MBC_GLI_DETECTION='" + key + "' "+
-//    										" "+AdvancedSearchDBQuery.getComponentNameQuery((String)((Object[])item)[0])));
-    								
-    								// modified by xingjun - 06/12/2007 - start
+
     								micwhere.add(" " + AdvancedSearchDBQuery.getComponentNameQuery((String)((Object[])item)[0], "Microarray"));
-    								// modified by xingjun - 06/12/2007 - start
     							}
     						}
     					}
@@ -483,8 +299,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 								}
 								String ishsql = criteriaClause(split2[0], "equals", symbols.length);
 								String micsql = criteriaClause(split2[1], "equals", symbols.length);
-								//ishwhere.add(new String(split2[0]+"='"+((Object[])item)[6])+"'");
-								//micwhere.add(new String(split2[1]+"='"+((Object[])item)[6])+"'");
 								ishwhere.add(ishsql);
 								micwhere.add(micsql);
     						}
@@ -498,11 +312,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     		
     		String ishoption = "";
     		String micoption = "";
-//    		String bothoption = "";
-    		// added by xingjun - 06/12/2007 - start
     		String ishBothOption = "";
     		String micBothOption = "";
-    		// added by xingjun - 06/12/2007 - end
     		
     		//does ish
     		for(int i = 0; i < ishwhere.size()-1; i++) {
@@ -515,23 +326,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     			micoption+=micwhere.get(i) + " AND ";
     		}
     		if(micwhere.size()>=1) micoption+=micwhere.get(micwhere.size()-1)+" ";
-    		
-    		// modified by xingjun - 06/12/2007 - start
-//    		for(int i = 0; i < bothwhere.size()-1; i++) {
-//    			bothoption+=bothwhere.get(i) + " AND ";
-//    		}
-//    		if(bothwhere.size()>=1) bothoption+=bothwhere.get(bothwhere.size()-1)+" ";
-    		
-//    		if(!ishoption.equals("") && !bothoption.equals("")) ishoption += " AND ";
-//    		if(!micoption.equals("")) {
-//    			micoption = " AND "+micoption;
-//
-//    		}
-//			if(!bothoption.equals("")) {
-//				micoption += " AND ";
-//			}	
-//    		if(!ishoption.equals("") || !bothoption.equals(""))
-//    			ishoption = " WHERE " + ishoption;
     		
     		for(int i = 0; i < ishBothWhere.size()-1; i++) {
     			ishBothOption += ishBothWhere.get(i) + " AND ";
@@ -557,12 +351,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				micoption += " AND ";
 			}	
     		if(!ishoption.equals("") || !ishBothOption.equals(""))
-//    			ishoption = " AND " + ishoption;
     			ishoption = " WHERE " + ishoption;
-    		// modified by xingjun - 06/12/2007 - end
-
-    		
-    		//"CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS SIGNED)"
     		
     		
     		String orderStr = DBHelper.orderResult(order);
@@ -570,37 +359,18 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     		String append = "";
     		String appendish = "";
     		boolean addBigTable = false;
-    		/*if(null != total) {
-    			if(total[2] > 100) {
-    				total[2] = 100;
-    			}
-    			if(total[1] > 100) {
-    				total[1] = 100;
-    			}
-    		}*/
     		
     		addBigTable = addBigTable(option);
     		
-    		// modified by xingjun - 06/12/2007 - start
-//    		if(bothwhere.size() > 0 || micwhere.size() > 0) {
-//    			append = 
-//	    		AdvancedSearchDBQuery.getMICSelect()+ 
-//	    		(addBigTable == true?AdvancedSearchDBQuery.getMICFrom():AdvancedSearchDBQuery.getMICFromAdvanced()) + 
-//	    		micoption + bothoption +" ) ";
-//	    		//+ new String(null == total?
-//	    			//	") ":" limit 0,"+total[2]+" ) ");
-//    		}
     		if(micBothWhere.size() > 0 || micwhere.size() > 0) {
     			append = AdvancedSearchDBQuery.getMICSelect() +
     			(addBigTable == true?AdvancedSearchDBQuery.getMICFrom():AdvancedSearchDBQuery.getMICFromAdvanced()) +
 	    		micoption + micBothOption + " ) ";
     		}
     		if(ishBothWhere.size() > 0 || ishwhere.size() > 0) {
-//    			appendish = AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + 
     			appendish = AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFromLocation() + 
 	    		ishoption + ishBothOption + " ) ";
     		}
-    		// modified by xingjun - 06/12/2007 - end
     		
     		if (null != resPerPage && resPerPage.compareToIgnoreCase("ALL") == 0) {
     			resPerPage = String.valueOf(total[0]);
@@ -623,12 +393,10 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	    		AdvancedSearchDBQuery.getISHFrom() + 
     	    		ishoption + bothoption + " ) "*/ append+
     	    		new String(appendish.equals("")||append.equals("")?"":AdvancedSearchDBQuery.getUnion())+
-    	    		//new String(null == total?
-    	    				//") ":" limit 0,"+total[1]+" ) ")+	    				
     	    		appendish
     	    		+
     	    		new String(null == order||order.length < 2?AdvancedSearchDBQuery.getOrder():
-    	    		orderStr + " " //+ order[1]
+    	    		orderStr + " " 
     	    		)
     	    		+ new String(null == total?
     	    		  " ":" limit "+offset+","+resPerPage+"  ");
@@ -638,9 +406,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    			all[1] = null;
 	    		} else {	   		
 		    		all[1] = AdvancedSearchDBQuery.getISHCount()+
-//		    		AdvancedSearchDBQuery.getISHFrom() + 
 		    		AdvancedSearchDBQuery.getISHFromLocation() + 
-//		    		ishoption + bothoption;
 		    		ishoption + ishBothOption;
 	    		}
 	    		if(append.equals("")) {
@@ -648,7 +414,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    		} else {
 		    		all[2] = AdvancedSearchDBQuery.getMICCount()+
 		    		(addBigTable == true?AdvancedSearchDBQuery.getMICFrom():AdvancedSearchDBQuery.getMICFromAdvanced()) + 
-//		    		micoption + bothoption;
 		    		micoption + micBothOption;
 	    		}
     		
@@ -864,67 +629,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     }
     
     /**
-     * method to retrieve groups of list of anatomy timed component ids from list of user inputs for each input. 
-     * The input list can contain anatomy terms, anatomy synonyms, timed components public ids
-     * and abstract component public ids
-     * @param input - array containing list of user inputs
-     * @return resultsContainer - array of String arrays which contain lists of timed component 
-     * public ids determined from each element of the user input
-     */
-    private ArrayList<String []> getComponentSetsForSynonymsAndPublicIds(String [] input) {
-    	
-    	//string to contain sql
-    	String anaComponentsQ = DBQuery.getTimedComponentsFromSynsAndIdsQuery();
-    	
-    	PreparedStatement stmt = null;
-		ResultSet resSet = null;
-		
-		try{
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+anaComponentsQ.toLowerCase());
-			stmt = conn.prepareStatement(anaComponentsQ);
-			ArrayList<String[]> resultContainer = new ArrayList<String []>();
-			//for each anatomy input, add the input to a query and execute the 
-			//query - this will build a list of public component ids for each 
-			//term in the input array
-			for(int i=0;i<input.length;i++){
-				//there are 4 unions in the query so the input param will have to be set 4 times
-				for(int j=0;j<4;j++) {
-					stmt.setString(j+1, input[i]);
-				}
-				//execute the query for a single element in the input array
-				resSet = stmt.executeQuery();
-				//if a result set exists
-				if(resSet.first()){
-					resSet.last();
-					String [] componentSet = new String [resSet.getRow()];
-					resSet.beforeFirst();
-					int index = 0;
-					while(resSet.next()){
-						componentSet[index] = resSet.getString(1);
-						index++;
-					}
-					resultContainer.add(componentSet);
-				}
-				//create an empty String array and store it in the array list
-				else {
-					String [] componentSet = null;
-					resultContainer.add(componentSet);
-				}
-			}
-			return resultContainer;
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		finally {
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(stmt);
-		}
-    	return null;
-    }
-    
-    /**
      * @param input
      * @return
      */
@@ -944,7 +648,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			}
 			//execute the query for a single element in the input array
 			resSet = stmt.executeQuery();
-			//if a result set exists
 			if(resSet.first()){
 				resSet.last();
 				String [] componentSet = new String [resSet.getRow()];
@@ -985,8 +688,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    if (debug)
 			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+anaComponentsQ.toLowerCase());
 			stmt = conn.prepareStatement(anaComponentsQ);
-			//since there are 4 queries combined with 'union' (ANA_SYNONYM, ANA_NODE (COMP_NAME), ANA_TIMED_NODE, ANA_NODE (PUBLIC_ID), 
-			//the parameters must be set 4 times, once for each query 
+
 			for(int i=0;i<4;i++){
 				for(int j=0;j<input.length;j++){
 					stmt.setString((i*input.length)+j+1, input[j].trim());
@@ -1427,7 +1129,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		}    
 		return all;
     }
-    
+
 	/** --- Quick Search --- */
 	public ArrayList<String[]> getQuickSearch(String type, String[] input, int orderby, boolean asc, String offset, String resPerPage, int[] total){
         String[] query = AssembleQuickSQL(type, input, orderby, asc, offset, resPerPage, total);
@@ -1734,131 +1436,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	}
     
 	/**
-	 * @author xingjun - 31/03/2010
-	 * <p>modified version of getNumberOfRows: now there is only one query to get the result</p>
-	 * <p>xingjun-20/4/2010
-	 * - modified the calculation for offset from iterations to iterations*input.length<p>
-	 */
-	public int getNumberOfRowsOneQuery(String type, String[] input, String organ,
-    		String sub, String exp, String[] queryCriteria, String transitiveRelations) {
-	    if (debug) {
-		System.out.println("enter getNumberOfRowsOneQuery method!!!!!!!");
-		for (int i=0;i<input.length;i++)
-		System.out.println("input for getNumberOfRowsOneQuery:" + input[i]);		
-	    }
-		
-		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, null, organ, sub, exp, queryCriteria, transitiveRelations);
-		if(list == null){
-			return 0;
-		}
-    	String[] sql = (String [])list.get(0);
-	if (debug) {
-	    for (int i=0;i<sql.length;i++) System.out.println("getNumberOfRowsOneQuery:"+  i + " ##" + sql[i].toLowerCase());
-	}
-
-		int result = 0;
-		ResultSet resSet = null;
-    	PreparedStatement prepStmt = null;
-    	
-    	if(null != sql) {
-    		try {
-    			String ishQueryString = (sql[1]==null)?"":sql[1];
-    			String arrayQueryString = (sql[2]==null)?"":sql[2];
-    			boolean dualQuery = true;
-    			String queryString = "";
-    			
-    			// check two queries
-    			if(sql[1] == null || sql[2] == null) {
-    				dualQuery = false;
-    			}
-    			
-    			// retrieve result
-    			if (dualQuery) { // both ish and array queries
-    				queryString = "SELECT (" + 
-    				ishQueryString + 
-    				") + (" + 
-    				arrayQueryString + 
-    				")";
-	if (debug)
-	    System.out.println("getNumberOfRowsOneQuery:queryString: " + queryString.toLowerCase());
-	    			prepStmt = conn.prepareStatement(queryString);
-	    			int iterations = 0;
-        			// set ish query params
-	    			iterations = Integer.parseInt(sql[3]);
-    				input = (String [])list.get(1);
-    				for(int i=0;i< iterations;i++){
-    					for(int j=0;j<input.length;j++){
-    						prepStmt.setString((i*input.length)+j+1, input[j]);
-    					}
-    				}
-    				// set array query params
-    				int offset = iterations*input.length;// xingjun-20/04/2010
-    				iterations = Integer.parseInt(sql[4]);
-    				input = (String [])list.get(2);
-    				for(int i=0;i< iterations;i++){
-    					for(int j=0;j<input.length;j++){
-    						prepStmt.setString((i*input.length)+j+1+offset, input[j]);
-    					}
-    				}
-    				// execute
-	    			resSet = prepStmt.executeQuery();
-	    			if(resSet.first()) {
-	    				result = resSet.getInt(1);
-	    			}
-    				
-    			} else if (sql[1] != null && sql[2] == null) { // ish query
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+sql[1].toLowerCase());
-	
-	    			prepStmt = conn.prepareStatement(sql[1]);
-	if (debug)
-	    System.out.println(prepStmt.toString().toLowerCase());
-	    			int iterations = 0;
-        			iterations = Integer.parseInt(sql[3]);
-    				input = (String [])list.get(1);
-    				for(int i=0;i< iterations;i++){
-    					for(int j=0;j<input.length;j++){
-    						prepStmt.setString((i*input.length)+j+1, input[j]);
-    					}
-    				}
-	if (debug)
-	    System.out.println(prepStmt.toString().toLowerCase());
-	    			resSet = prepStmt.executeQuery();
-	    			if(resSet.first()) {
-	    				result = resSet.getInt(1);
-	    			}
-   				} else if (sql[1] == null && sql[2] != null) { // array query
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+sql[2].toLowerCase());
-	    			prepStmt = conn.prepareStatement(sql[2]);
-	    			int iterations = 0;
-        			iterations = Integer.parseInt(sql[4]);
-        			
-    				input = (String [])list.get(2);
-    				for(int i=0;i < iterations;i++){
-    					for(int j=0;j<input.length;j++){
-    						prepStmt.setString((i*input.length)+j+1, input[j]);
-    					}
-    				}
-	    			resSet = prepStmt.executeQuery();
-	    			if(resSet.first()) {
-	    				result = resSet.getInt(1);
-	    			}
-    			}
-   		
-    		} catch (Exception se) {
-                se.printStackTrace();
-            }
-    		finally {
-    			DBHelper.closePreparedStatement(prepStmt);
-    		}
-    	}
-	if (debug)
-		System.out.println("getNumberOfRowsOneQuery total number: " + result);
-    	return result;
-	}
-
-	/**
 	 * @author xingjun
 	 * at moment the result we return for total number of ish and microarray are hard coded (copy from ying's code).
 	 * if new assay type data come, need change the code. considering modify the code to make it more flexible
@@ -1965,12 +1542,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	return new int[]{0, 0};
 	} // end of getNumberOfRowsInGroups
 
-	public int[] getColumnTotals(String type, String[] input) {
-        return null;
-	}
-	
-	
-	
 	/**
 	 * overload of assembleSQL
 	 * 
@@ -3071,50 +2642,4 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	return wString;
     } // end of assembleWildcardString*/
     
-    /**
-     * 
-     */
-    /*private String assembleWildcardString(int type, String column, String[] values) {
-    	int vLen = values.length;
-    	String wString = "";
-    	if (vLen == 1) { // one keyword
-    		if (type == 0) { // contains
-        		wString = " (" + column + " LIKE '%" + values[0] + "%') ";
-    		} else {
-        		wString = " (" + column + " LIKE '" + values[0] + "%') ";
-    		}
-    	} else { // user inputted more than one keywords
-    		if (type == 0) { // contains
-        		wString += " ((" + column + " LIKE '%" + values[0] + "%') ";
-    		} else {
-        		wString += " ((" + column + " LIKE '" + values[0] + "%') ";
-    		}
-    		for (int i=1;i<vLen;i++) {
-    			if (type == 0) { // contains
-        			wString += "OR (" + column + " LIKE '%" + values[i] + "%') ";
-    			} else {
-        			wString += "OR (" + column + " LIKE '" + values[i] + "%') ";
-    			}
-    		}
-    		wString += ") ";
-    	}
-    	return wString;
-    }*/
-	
-//    private String assembleWildcardString(String columnName, String value) {
-//    	return null;
-//    }
-	
-	/**
-	 * 
-	 * @param startStage
-	 * @param endStage
-	 * @return built tree (an array list)
-	 */
-	public ArrayList getWholeAnatomyTree(String startStage, String endStage) {
-		
-		return null;
-	}	
-	
-	
 }

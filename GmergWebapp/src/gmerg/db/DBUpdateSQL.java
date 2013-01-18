@@ -58,9 +58,6 @@ public class DBUpdateSQL {
 	  // permanent submission id format: GUDMAP:XXXXX
 	  // temporary submission id format: 999999XXXXX
 	  final static String name1 = "INSERT_EXPRESSION_NOTE";
-//	  final static String query1 = "INSERT INTO ISH_EXPRESSION_NOTE (ENT_EXPRESSION_FK, ENT_VALUE, ENT_SEQ) " +
-//	  		"VALUES ((SELECT EXP_OID FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK = CAST(SUBSTRING(?,8) AS UNSIGNED) " +
-//	  		"AND EXP_COMPONENT_ID = ?), ?, ?) ";
 	  final static String query1 = "INSERT INTO ISH_EXPRESSION_NOTE (ENT_EXPRESSION_FK, ENT_VALUE, ENT_SEQ) " +
 	  		"VALUES ((SELECT EXP_OID FROM ISH_EXPRESSION  " +
 	  		"WHERE EXP_SUBMISSION_FK = (SELECT IF(SUBSTR(?,1,6)='999999', ?, CAST(SUBSTRING(?,8) AS UNSIGNED))) " +

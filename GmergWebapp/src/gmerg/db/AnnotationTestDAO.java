@@ -9,12 +9,9 @@ import gmerg.entities.User;
 import java.util.ArrayList;
 
 public interface AnnotationTestDAO {
-	
-	public ArrayList getTheilerStageRanges();
 	public ArrayList<String[]> getStageRanges(); // xingjun - 14/05/2010
 	public ArrayList<String> getTreeContent(String stage, String id);
 	public String getStageFromSubmission(String id);
-	public int deleteAnnotationWithDifferentStage(String stage, String id);
 	public int addSubmission(String batch, UserBean ub);
 	
 	// get batch id of incompleted submission for given pi

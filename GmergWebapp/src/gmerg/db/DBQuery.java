@@ -84,7 +84,9 @@ public class DBQuery {
   
   final static String ORDER_BY_REF_PROBE_SYMBOL = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
   
-  final static String ORDER_BY_ISH_PROBE_SYMBOL = " ORDER BY natural_sort(TRIM(PRB_GENE_SYMBOL))";
+final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURAL_SORT(TRIM(SER_TITLE))";
+
+  final static String ORDER_BY_ISH_PROBE_SYMBOL = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
   
   final static String JOIN_EXPRESSION_START = " JOIN ISH_EXPRESSION ON EXP_SUBMISSION_FK = SUB_OID AND ";
   
@@ -246,18 +248,6 @@ public class DBQuery {
   final static String name11 = "SUB_STAGE_NAME";
   final static String query11 = "SELECT CONCAT(STG_PREFIX,SUB_EMBRYO_STG) FROM ISH_SUBMISSION, ISH_SPECIMEN, REF_STAGE WHERE SUB_OID = SPN_SUBMISSION_FK AND SPN_SPECIES = STG_SPECIES_FK AND SUB_ACCESSION_ID = ?";
 
-  //query14 (find expression mapping components for a submission)
-  final static String name12 = "SUB_EXPRESSION";
-  final static String query12 = "SELECT DISTINCT EXP_COMPONENT_ID, EXP_PATTERN, EXP_STRENGTH, ENT_VALUE, APO_FULL_PATH " +
-                                "FROM ISH_EXPRESSION " +
-                                "LEFT JOIN ISH_EXPRESSION_NOTE ON ENT_EXPRESSION_FK = EXP_OID " +
-                                "JOIN ISH_SUBMISSION ON EXP_SUBMISSION_FK = SUB_OID " +
-                                "AND SUB_ACCESSION_ID = ? " +
-                                "LEFT JOIN ANA_TIMED_NODE ON EXP_COMPONENT_ID = ATN_PUBLIC_ID " +
-                                "LEFT JOIN ANA_NODE ON ANO_OID = ATN_NODE_FK " +
-                                "LEFT JOIN ANAD_PART_OF ON APO_NODE_FK = ANO_OID " +
-                                "AND APO_IS_PRIMARY_PATH = 1 ";
-
   //query 26 (find expression mapping for a particular component in a submission)
   final static String name13 = "EXPRESSION_DETAIL";
   final static String query13 = "SELECT EXP_COMPONENT_ID, ANO_COMPONENT_NAME, APO_FULL_PATH, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH, EXP_OID, SUB_EMBRYO_STG, SUB_OID, SUB_DB_STATUS_FK " +
@@ -392,8 +382,7 @@ public class DBQuery {
   		                        "AND SUB_DB_STATUS_FK = STA_OID AND STA_OID=?  AND SUB_IS_DELETED = 0 " +
   		                        "GROUP BY SUB_SUB_DATE DESC, SUB_ARCHIVE_ID DESC, SUB_ASSAY_TYPE";
 
-					
-  
+
   // find name and id of all PIs)
   final static String name25 = "ALL_PIS";
   final static String query25 = "SELECT DISTINCT PER_NAME, PER_OID FROM ISH_PERSON WHERE PER_TYPE_FK = 'PI' ORDER BY PER_NAME ";
@@ -458,10 +447,6 @@ public class DBQuery {
   		                        "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
   		                        "AND RPR_SYMBOL = ?";
 
-  //query to find the number of submissions for a specific gene -- not sure we still need it
-  final static String name29 = "SUBMISSION_GENE_ENTRIES";
-  final static String query29 = "SELECT COUNT(PRB_GENE_SYMBOL) FROM ISH_PROBE, ISH_SUBMISSION WHERE SUB_OID = PRB_SUBMISSION_FK AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND PRB_GENE_SYMBOL = ?";
-
   //query to find ish submissions linked to a specific gene symbol
   final static String name30 = "GENE_RELATED_SUBMISSIONS_ISH";
   final static String query30 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', CONCAT(STG_PREFIX, SUB_EMBRYO_STG), SPN_ASSAY_TYPE,  " + 
@@ -513,7 +498,7 @@ public class DBQuery {
   
     final static String name174 = "TOTAL_GENE_PROBEIDS";
     final static String query174 = "SELECT COUNT(DISTINCT MBC_GLI_PROBE_SET_NAME) FROM MIC_BROWSE_CACHE WHERE MBC_GNF_SYMBOL = ?";
-    
+
     final static String name175 = "TOTAL_GENE_SIGNAL";
     final static String query175 = "SELECT COUNT(DISTINCT MBC_GLI_SIGNAL) FROM MIC_BROWSE_CACHE WHERE MBC_GNF_SYMBOL = ?";
     
@@ -528,10 +513,6 @@ public class DBQuery {
   final static String query33 = "SELECT DISTINCT SUB_ACCESSION_ID, MBC_GLI_PROBE_SET_NAME, MBC_GLI_SIGNAL, MBC_GLI_DETECTION, MBC_GLI_P_VALUE " +
                                 "FROM MIC_BROWSE_CACHE, ISH_SUBMISSION " +
                                 "WHERE SUB_ACCESSION_ID = MBC_SUB_ACCESSION_ID AND MBC_GNF_SYMBOL = ? ";
-
-  //query to find gene name in microarray tables linked to a specific gene symbol
-  final static String name34 = "GENE_NAME_SYMBOL_ARRAY";
-  final static String query34 = "select GNF_SYMBOL, GNF_NAME from REF_GENE_INFO where GNF_SYMBOL = ?";
 
   //query to find mgi info linked to a specific probe set
   final static String name35 = "GENE_INFO_FOR_ARRAY";
@@ -560,17 +541,6 @@ public class DBQuery {
   final static String name36 = "GENE_SYNONYM_INFO_ARRAY";
   final static String query36 = "SELECT RSY_SYNONYM FROM REF_SYNONYM WHERE RSY_REF = ?";
 		                        
-
-  //query to find refseq info linked to a specific probe set
-  final static String name37 = "GENE_REFSEQ_INFO_ARRAY";
-  final static String query37 = "SELECT EDB_ACCESSION_ID, concat(URL_URL,EDB_ACCESSION_ID) " +
-  		"FROM MIC_EXTERNAL_DB, REF_URL, MIC_PROBE_SET, MIC_PROBE_SET_DB " +
-  		"WHERE PRS_PROBE_SET_ID = ? " +
-  		"AND PSD_PROBE_SET_FK=PRS_OID " +
-  		"AND PSD_EXTERNAL_DB_FK=EDB_OID " +
-  		"AND EDB_NAME='RefSeq' " +
-  		"AND URL_TYPE='genbank_sequence'";
-  
   //find details of a specific maprobe
   final static String name204 = "MAPROBE_DETAILS";
   final static String query204 = "SELECT DISTINCT RPR_SYMBOL, RPR_NAME, RPR_JAX_ACC, RPR_LOCUS_TAG, "+  
@@ -578,7 +548,7 @@ public class DBQuery {
                                  "PRB_GENE_TYPE, PRB_LABEL_PRODUCT, PRB_VISUAL_METHOD, RPR_MTF_JAX, "+  
                                  "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), CONCAT(PRB_NAME_URL.URL_URL,RMP_ID), CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
                                  "RPR_TYPE, RPR_5_LOC, RPR_3_LOC, RPR_5_PRIMER, RPR_3_PRIMER, '', " +
-                                 "RPR_CLONE_NAME_2, PRB_LAB_ID "+ // xingjun - 15/03/2011 - should return the same number of columns as sql SUBMISSION_PROBE
+                                 "RPR_CLONE_NAME_2, PRB_LAB_ID "+ 
                                  "FROM REF_PROBE "+
                                  "JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID "+
                                  "JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK "+
@@ -594,7 +564,7 @@ public class DBQuery {
                                  "PRB_GENE_TYPE, PRB_LABEL_PRODUCT, PRB_VISUAL_METHOD, RPR_MTF_JAX, "+  
                                  "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), CONCAT(PRB_NAME_URL.URL_URL,RMP_ID), CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
                                  "RPR_TYPE, RPR_5_LOC, RPR_3_LOC, RPR_5_PRIMER, RPR_3_PRIMER, '', " +
-                                 "RPR_CLONE_NAME_2, PRB_LAB_ID "+ // xingjun - 15/03/2011 - should return the same number of columns as sql SUBMISSION_PROBE
+                                 "RPR_CLONE_NAME_2, PRB_LAB_ID "+ 
                                  "FROM REF_PROBE "+
                                  "JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID "+
                                  "JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK "+
@@ -623,77 +593,10 @@ public class DBQuery {
 
   static String expPresentQuerySection = "";
   
-  public static void setExpPresentQuerySection(String [] publicIds) {
-      expPresentQuerySection =
-          " JOIN ISH_EXPRESSION " +
-          "ON EXP_SUBMISSION_FK = SUB_OID "+ 
-          "AND EXP_STRENGTH = 'present' "+  
-          "AND EXP_COMPONENT_ID in " +      
-          "(select DISTINCT DESCEND_ATN.ATN_PUBLIC_ID "+  
-          "from ANA_TIMED_NODE ANCES_ATN, ANAD_RELATIONSHIP_TRANSITIVE, ANA_TIMED_NODE DESCEND_ATN " + 
-          "where ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
-          "and RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
-          "and ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
-          "and ANCES_ATN.ATN_PUBLIC_ID IN (";
-
-      StringBuffer publicIdparams = new StringBuffer("");
-      for (int i = 0; i < publicIds.length; i++) {
-        if (i == publicIds.length - 1) {
-          publicIdparams.append("?");
-        }
-        else {
-          publicIdparams.append("?, ");
-        }
-      }
-      publicIdparams.append(")) ");
-
-      expPresentQuerySection += publicIdparams.toString();
-  }
-  
-  public static String getexpPresentQueryTotal() {
-      String query = NUMBER_OF_SUBMISSION + ISH_BROWSE_ALL_TABLES + expPresentQuerySection + PUBLIC_ENTRIES_Q;
-      return query;
-  }
-  
-  static String expNotDetectedQuerySection = "";
-  
-  public static void setExpNotDetectedQuerySection(String [] publicIds) {
-  
-      expNotDetectedQuerySection = 
-          " JOIN ISH_EXPRESSION " +
-          "ON EXP_SUBMISSION_FK = SUB_OID "+ 
-          "AND EXP_STRENGTH = 'not detected' "+  
-          "AND EXP_COMPONENT_ID in " +      
-          "(select DISTINCT ANCES_ATN.ATN_PUBLIC_ID "+  
-          "from ANA_TIMED_NODE ANCES_ATN, ANAD_RELATIONSHIP_TRANSITIVE, ANA_TIMED_NODE DESCEND_ATN " + 
-          "where ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
-          "and RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
-          "and ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
-          "and DESCEND_ATN.ATN_PUBLIC_ID IN (";
-      
-      StringBuffer publicIdparams = new StringBuffer("");
-      for (int i = 0; i < publicIds.length; i++) {
-        if (i == publicIds.length - 1) {
-          publicIdparams.append("?");
-        }
-        else {
-          publicIdparams.append("?, ");
-        }
-      }
-      publicIdparams.append(")) ");
-
-      expNotDetectedQuerySection += publicIdparams.toString();
-  }
-  
-  public static String getExpNotDetectedQueryTotal() {
-      String query = NUMBER_OF_SUBMISSION + ISH_BROWSE_ALL_TABLES + expNotDetectedQuerySection + PUBLIC_ENTRIES_Q;
-      return query;
-  }
-
   // ISH totals
   final static String NUMBER_OF_SUBMISSION = "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) ";
   
-  final static String NUMBER_OF_GENE_SYMBOL = "SELECT COUNT(DISTINCT PRB_GENE_SYMBOL) ";
+  final static String NUMBER_OF_GENE_SYMBOL = "SELECT COUNT(DISTINCT RPR_SYMBOL) ";
   
   final static String NUMBER_OF_THEILER_STAGE = "SELECT COUNT(DISTINCT SUB_EMBRYO_STG) ";
   
@@ -772,42 +675,6 @@ public class DBQuery {
   final static String name135 = "TOTAL_NUMBER_OF_PROBE_TYPE";
   final static String query135 = NUMBER_OF_PROBE_TYPE + endsBrowseSubmissionISH;
   
-  
-//Collections total 
-  final static String name38_1 = "COLLECTION_TOTAL_NUMBER_OF_SUBMISSION";
-  final static String query38_1 = NUMBER_OF_SUBMISSION + endsCollectionSubmissionISH;
-  
-  final static String name39_1 = "COLLECTION_TOTAL_NUMBER_OF_GENE_SYMBOL";
-  final static String query39_1 = NUMBER_OF_GENE_SYMBOL + endsCollectionSubmissionISH;
-  
-  final static String name40_1 = "COLLECTION_TOTAL_NUMBER_OF_THEILER_STAGE";
-  final static String query40_1 = NUMBER_OF_THEILER_STAGE + endsCollectionSubmissionISH;;
-  
-  final static String name41_1 = "COLLECTION_TOTAL_NUMBER_OF_GIVEN_STAGE";
-  final static String query41_1 = NUMBER_OF_GIVEN_STAGE + endsCollectionSubmissionISH;;
-  
-  final static String name42_1 = "COLLECTION_TOTAL_NUMBER_OF_LAB";
-  final static String query42_1 = NUMBER_OF_LAB + endsCollectionSubmissionISH;;
-  
-  final static String name43_1 = "COLLECTION_TOTAL_NUMBER_OF_SUBMISSION_DATE";
-  final static String query43_1 = NUMBER_OF_SUBMISSION_DATE + endsCollectionSubmissionISH;
-  
-  final static String name44_1 = "COLLECTION_TOTAL_NUMBER_OF_ASSAY_TYPE";
-  final static String query44_1 = NUMBER_OF_ASSAY_TYPE + endsCollectionSubmissionISH;
-  
-  final static String name45_1 = "COLLECTION_TOTAL_NUMBER_OF_SPECIMEN_TYPE";
-  final static String query45_1 = NUMBER_OF_SPECIMEN_TYPE + endsCollectionSubmissionISH;
-  
-  final static String name46_1 = "COLLECTION_TOTAL_NUMBER_OF_IMAGE";
-  final static String query46_1 = NUMBER_OF_IMAGE + endsCollectionSubmissionISH;
-
-  
-  final static String name119 = "TOTAL_ANAT_Q_RESULT__PRESENT_PAGES";
-  final static String query119 = NUMBER_OF_SUBMISSION + ISH_BROWSE_ALL_TABLES + expPresentQuerySection + PUBLIC_ENTRIES_Q;
-  
-  final static String name120 = "TOTAL_ANAT_Q_RESULT__NOTDETECTED_PAGES";
-  final static String query120 = NUMBER_OF_SUBMISSION + ISH_BROWSE_ALL_TABLES + expNotDetectedQuerySection + PUBLIC_ENTRIES_Q;
-  
   // query to build anatomy tree for displaying annotation
   final static String name47 = "ANNOT_TREE_CONTENT";
   final static String query47 = "SELECT APO_DEPTH,APO_SEQUENCE, PATN.ATN_PUBLIC_ID, PARENT.ANO_COMPONENT_NAME, CONCAT('(',strt.STG_NAME,'-',end.sTG_NAME,')') AS 'RANGE', " +
@@ -878,46 +745,10 @@ public class DBQuery {
   "SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, " +
   "SER_GEO_ID, concat(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ') '), SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID " + endsBrowseSubmissionArray;
   
-  final static String name220 = "TOTAL_NUMBER_OF_ALL_ENTRIES_ARRAY";
-  final static String query220 = "SELECT COUNT(DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE," +stageFormatConcat+", " +
-  "IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), SUB_SOURCE) SUB_SOURCE, " +
-  "SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, " +
-  "SER_GEO_ID, concat(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ') '), SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID) " + endsBrowseSubmissionArray;
-  
-  final static String name108 = "LAB_NAME_FROM_PERSON_ID";
-  final static String query108 = "SELECT PER_LAB FROM ISH_PERSON WHERE PER_OID = ?";
-  
   /* queries to find unique totals for each of the 'browse all' columns */
   // need to modify these sql
   final static String name51 = "TOTAL_NUMBER_OF_SUBMISSION_ARRAY";
   final static String query51 = NUMBER_OF_SUBMISSION + endsBrowseSubmissionArray;
-  
-  final static String name52 = "TOTAL_NUMBER_OF_THEILER_STAGE_ARRAY";
-  final static String query52 = "SELECT COUNT(DISTINCT SMP_THEILER_STAGE) " + endsBrowseSubmissionArray;
-  
-  final static String name53 = "TOTAL_NUMBER_OF_AGE_ARRAY";
-  final static String query53 = "SELECT COUNT(DISTINCT SPN_STAGE) " + endsBrowseSubmissionArray;
-  
-  final static String name54 = "TOTAL_NUMBER_OF_LAB_ARRAY";
-  final static String query54 = NUMBER_OF_LAB + endsBrowseSubmissionArray;
-  
-  final static String name55 = "TOTAL_NUMBER_OF_SUBMISSION_DATE_ARRAY";
-  final static String query55 = NUMBER_OF_SUBMISSION_DATE + endsBrowseSubmissionArray;
-  
-  final static String name56 = "TOTAL_NUMBER_OF_SAMPLE_ARRAY";
-  final static String query56 = "SELECT COUNT(DISTINCT SMP_SOURCE) " + endsBrowseSubmissionArray;
-
-  final static String name57 = "TOTAL_NUMBER_OF_SAMPLE_DESCRIPTION_ARRAY";
-  final static String query57 = "SELECT COUNT(DISTINCT SRM_SAMPLE_DESCRIPTION) " + endsBrowseSubmissionArray;
-  
-  final static String name58 = "TOTAL_NUMBER_OF_SAMPLE_TITLE_ARRAY";
-  final static String query58 = "SELECT COUNT(DISTINCT SMP_TITLE) " + endsBrowseSubmissionArray;
-  
-  final static String name59 = "TOTAL_NUMBER_OF_SAMPLE_ARRAY";
-  final static String query59 = "SELECT COUNT(DISTINCT SMP_GEO_ID) " + endsBrowseSubmissionArray;
-  
-  final static String name60 = "TOTAL_NUMBER_OF_SERIES_ARRAY";
-  final static String query60 = "SELECT COUNT(DISTINCT SER_GEO_ID) " + endsBrowseSubmissionArray;
   
   final static String name61 = "SUBMISSION_SUPPLIMENTARY_FILES_ARRAY";
   final static String query61 = "SELECT DISTINCT SMP_FILE_LOCATION,SMP_CEL_FILENAME, SMP_CHP_FILENAME, SMP_RPT_FILENAME, SMP_EXP_FILENAME, SMP_TXT_FILENAME " +
@@ -1143,13 +974,8 @@ public class DBQuery {
   // and order by string if specified
   // geneInfo + stageCondition + orderByString;
 
-  final static String name104 = "WHERE_CONDITION_COMPONENT_COUNT_QUERY";
-  final static String query104 = "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
-  		                         "AND PRB_MAPROBE = RPR_OID " +
-  		                         "AND RMM_SYMBOL=RPR_SYMBOL ";
-
   final static String name105 = "GROUP_BY_CLAUSE_COMPONENT_COUNT_QUERY";
-  final static String query105 = "GROUP BY APO_FULL_PATH, EXP_COMPONENT_ID, SUB_EMBRYO_STG, PRB_GENE_SYMBOL ";
+  final static String query105 = "GROUP BY APO_FULL_PATH, EXP_COMPONENT_ID, SUB_EMBRYO_STG, RPR_SYMBOL ";
 
 
   // component query
@@ -1341,10 +1167,6 @@ public class DBQuery {
   final static String name222 = "NUMBER_OF_PUBLIC_SUBMISSIONS_TG";
   final static String query222 = "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) FROM ISH_SUBMISSION WHERE SUB_ASSAY_TYPE LIKE '%TG%' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4";
     
-  //query to find the number of public gene entries
-  final static String name98 = "NUMBER_OF_PUBLIC_GENES";
-  final static String query98 = "SELECT COUNT(DISTINCT PRB_GENE_SYMBOL) FROM ISH_PROBE, ISH_SUBMISSION WHERE PRB_SUBMISSION_FK = SUB_OID AND SUB_IS_PUBLIC=1";
-
   //query to find date of last modification by editor
   final static String name99 = "LAST_ENTRY_DATE_EDITORIAL";
   final static String query99 = "select max(SUB_MODIFIED_DATE) from ISH_SUBMISSION";
@@ -1356,10 +1178,6 @@ public class DBQuery {
   //query to find the latest date of entry in db
   final static String name101 = "LAST_ENTRY_DATE_DB";
   final static String query101 = "select max(SUB_ENTRY_DATE) from ISH_SUBMISSION";
-
-  // query to find the number of related ish submissions for specific gene
-  final static String name106 = "NUMBER_RELATED_SUBMISSIONS_FOR_GENE_ISH";
-  final static String query106 = "select count(distinct SUB_ACCESSION_ID) from ISH_SUBMISSION, ISH_PROBE where PRB_SUBMISSION_FK = SUB_OID and PRB_GENE_SYMBOL = ? ";
 
   // query to find the number of related array submissions for specific gene
   final static String name107 = "NUMBER_RELATED_SUBMISSIONS_FOR_GENE_ARRAY";
@@ -1409,43 +1227,6 @@ public class DBQuery {
   final static String name122 = "TOTAL_NUMBER_OF_pROCESSED_GENE_LIST_ITEMS";
   final static String query122 = "SELECT COUNT(*) FROM INT_GENE_LIST_ITEM WHERE IGI_GENE_LIST_OID = ? ";
   
-  // molecular marker
-  final static String name123 = "MARKER_CANDIDATES";
-  final static String query123 = "SELECT EXP_COMPONENT_ID, ANO_COMPONENT_NAME, RPR_SYMBOL, SUB_EMBRYO_STG, SUB_ACCESSION_ID, COUNT(*) CNT " +
-  "FROM " +
-  "(SELECT RPR_SYMBOL, EXP1.EXP_COMPONENT_ID, ANO_COMPONENT_NAME, SUB_EMBRYO_STG, SUB_ACCESSION_ID " +
-  "FROM ISH_EXPRESSION EXP1, ANA_NODE, ANA_TIMED_NODE, ISH_SUBMISSION, ISH_PROBE, REF_PROBE " +
-  "WHERE EXP1.EXP_COMPONENT_ID = ATN_PUBLIC_ID " +
-  "AND ATN_NODE_FK = ANO_OID " +
-  "AND EXP1.EXP_SUBMISSION_FK = SUB_OID " +
-  "AND EXP1.EXP_SUBMISSION_FK = PRB_SUBMISSION_FK AND RPR_OID = PRB_MAPROBE " +
-  "AND EXP1.EXP_STRENGTH = 'present' " +
-  "AND " +
-  "( " +
-  "  ((SELECT count(DESCEND_ATN.ATN_PUBLIC_ID) " +
-  "    FROM ANA_TIMED_NODE ANCES_ATN, ANAD_RELATIONSHIP_TRANSITIVE, ANA_TIMED_NODE DESCEND_ATN " +
-  "    WHERE ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
-  "    AND RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
-  "    AND ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
-  "    AND ANCES_ATN.ATN_PUBLIC_ID = EXP1.EXP_COMPONENT_ID " +
-  "    AND DESCEND_ATN.ATN_PUBLIC_ID IN " +
-  "    (SELECT DISTINCT EXP2.EXP_COMPONENT_ID " +
-  "     FROM ISH_EXPRESSION EXP2 " +
-  "     WHERE EXP2.EXP_STRENGTH = 'present' " +
-  "     AND EXP2.EXP_SUBMISSION_FK = EXP1.EXP_SUBMISSION_FK)) = 1) " +
-  "  OR ( " +
-  "  (SELECT COUNT(DESCEND_ATN.ATN_PUBLIC_ID) " +
-  "   FROM ANA_TIMED_NODE ANCES_ATN, ANAD_RELATIONSHIP_TRANSITIVE, ANA_TIMED_NODE DESCEND_ATN " +
-  "   WHERE ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
-  "   AND RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
-  "   AND ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
-  "   AND ANCES_ATN.ATN_PUBLIC_ID = EXP1.EXP_COMPONENT_ID) = 1) " +
-  ") " +
-  "ORDER BY EXP1.EXP_COMPONENT_ID, RPR_SYMBOL) AS MM_CANDIDATE " +
-  "GROUP BY RPR_SYMBOL " +
-  "HAVING CNT = 1 " +
-  "ORDER BY CNT, EXP_COMPONENT_ID";
-  
   final static String name128 = "LOGIN_DETAILS";
   final static String query128 = "SELECT USR_UNAME, USR_PASSWD, USR_USER_TYPE, PRV_OID, USP_USER_FK, USP_PI_ID, USR_FORENAME FROM REF_USER " +
   		"JOIN SEC_USER_PI ON USP_USER_FK = USR_OID " +
@@ -1453,30 +1234,9 @@ public class DBQuery {
   		"JOIN SEC_PRIVILEGE ON PRV_OID = RPV_PRIVILEGE_FK " +
   		"WHERE USR_UNAME = ? AND USR_PASSWD = ?";
 
-  final static String name137 = "ALL_SERIES";
-  final static String query137 = "SELECT DISTINCT SER_TITLE, SER_GEO_ID, " +
-  		"(SELECT COUNT(distinct SRM_SAMPLE_FK) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID) SAMPLE_NUMBER, " +
-		"PER_SURNAME, PLT_GEO_ID, SER_OID, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') " +// added group_concat column - 02/03/2010
-		"FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, MIC_PLATFORM, ISH_PERSON, ANA_NODE, ANA_TIMED_NODE " +// added node and timed node table - 02/03/2010
-  		"WHERE SRM_SERIES_FK = SER_OID " +
-  		"AND SRM_SAMPLE_FK = SMP_OID " +
-  		"AND SMP_SUBMISSION_FK = SUB_OID " +
-  		"AND EXP_SUBMISSION_FK=SUB_OID " +// added to speedup the query
-  		"AND SUB_PI_FK = PER_OID " +
-  		"AND PLT_OID = SER_PLATFORM_FK " +
-  		"AND ATN_PUBLIC_ID = EXP_COMPONENT_ID AND ATN_NODE_FK = ANO_OID " + // newly added - 02/03/2010
-		"AND SER_PLATFORM_FK " + // newly added - 02/03/2010
-		"GROUP BY SER_GEO_ID ";// newly added - 02/03/2010
-  final static String ORDER_BY_EXPERIMENT_NAME = " ORDER BY NATURAL_SORT(TRIM(SER_TITLE))";
-  final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURAL_SORT(TRIM(SER_TITLE))";
-
   final static String name138 = "TOTAL_NUMBER_OF_EXPERIMENT_NAME";
   final static String query138 = "SELECT COUNT(DISTINCT SER_TITLE) FROM MIC_SERIES ";
 
-  //////////////// could be obsolete
-  final static String name139 = "TOTAL_NUMBER_OF_SERIES_TYPE";
-  final static String query139 = "SELECT COUNT(DISTINCT SER_TYPE) FROM MIC_SERIES ";
-  
   final static String name162 = "TOTAL_NUMBER_OF_SAMPLE_NUMBERS";
   final static String query162 = "SELECT COUNT(DISTINCT (SELECT COUNT(*) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID)) FROM MIC_SERIES ";
   
@@ -1558,9 +1318,6 @@ public class DBQuery {
   final static String name155 = "TOTAL_NUMBER_OF_CONFIDENCE_LEVEL_NON_RENAL"; // leave for future
   final static String query155 = NUMBER_OF_CONFIDENCE_LEVEL + ISH_NON_RENAL_SUBMISSIONS_QUERY_CRITERIA;
 
-  final static String name156 = "TOTAL_NUMBER_OF_PROBE_NAME_NON_RENAL";
-  final static String query156 = NUMBER_OF_PROBE_NAME + ISH_NON_RENAL_SUBMISSIONS_QUERY_CRITERIA;
-
   final static String name157 = "TOTAL_NUMBER_OF_ANTIBODY_NAME_NON_RENAL"; // leave for future
   final static String query157 = NUMBER_OF_ANTIBODY_NAME + ISH_NON_RENAL_SUBMISSIONS_QUERY_CRITERIA;
 
@@ -1578,47 +1335,19 @@ public class DBQuery {
 
   // find details of a antibody linked in a submission
   final static String name163 = "SUBMISSION_ANTIBODY";
-  final static String query163 = "SELECT DISTINCT  CONCAT(ATB_PREFIX,ATB_OID),ATB_NAME,ATB_JAX_ACC,ATB_PROTEIN_SYMBOL,ATB_PROTEIN_NAME,ATB_LOCUS_TAG,ATB_GENBANK,ATB_5_LOC,ATB_3_LOC," +
-		"ATB_TYPE,ATB_PROD_METHOD,ATB_CLONE_ID,ATB_SP_IMMUNIZED,ATB_PURIFICATION_MD,ATB_IMM_ISOTYPE,ATB_CHAIN," +
-		"ATB_DIRECT_LABEL,ATL_DETECTION_NOTES,ATL_DILUTION,ATL_LAB_ID, " +
-		"SUP_COMPANY,SUP_CAT_NUM,SUP_LOT_NUM, " +
-		"ATL_SEC_ANTIBODY,ATL_DETECTION_METHOD, " +
-		"ABN_VALUE " +
+  final static String query163 = "SELECT DISTINCT  CONCAT(ATB_PREFIX,ATB_OID), ATB_NAME, "+
+      "RPR_JAX_ACC, RPR_SYMBOL, RPR_NAME, RPR_LOCUS_TAG, RPR_GENBANK, RPR_5_LOC, RPR_3_LOC, "+
+      "ATB_TYPE, ATB_PROD_METHOD, ATB_CLONE_ID, ATB_SP_IMMUNIZED, ATB_PURIFICATION_MD, ATB_IMM_ISOTYPE, ATB_CHAIN, ATB_DIRECT_LABEL,"+
+      "ATL_DETECTION_NOTES, ATL_DILUTION, ATL_LAB_ID, " +
+      "SUP_COMPANY, SUP_CAT_NUM, SUP_LOT_NUM, " +
+      "ATL_SEC_ANTIBODY, ATL_DETECTION_METHOD " +
 		"FROM ISH_ANTIBODY " +
+                                "LEFT JOIN REF_PROBE ON ATB_OID=RPR_OID " +
 		"JOIN LNK_SUB_ANTIBODY ON ATL_ATB_OID_FK = ATB_OID " +  
-		"LEFT JOIN ISH_ANTIBODY_NOTES ON ABN_ATB_OID_FK = ATB_OID " +
 		"JOIN ISH_SUBMISSION ON SUB_OID = ATL_SUBMISSION_FK " +
   		"JOIN LNK_SUP_ANTIBODY ON LAS_ATB_OID_FK = ATB_OID " +
   		"JOIN GEN_SUPPLIER ON LAS_SUP_FK = SUP_OID " +
   		"WHERE (CONCAT('GUDMAP:',ATL_SUBMISSION_FK) = ?)";
-  
-  // find details of a transgenic report allele for given submission
-  final static String name223 = "SUBMISSION_TRANSGENIC";
-  final static String query223 = "SELECT RPR_SYMBOL, RPR_NAME, RPR_LOCUS_TAG, " +
-  		"CONCAT(GENE_URL.URL_URL, CASE substring(RPR_LOCUS_TAG from 1 for position(':' in RPR_LOCUS_TAG)) " +
-  		"                         WHEN 'MGI:' THEN RMM_ID " +
-  		"                         ELSE RPR_LOCUS_TAG " +
-  		"                         END), " +
-  		"MUT_ALLELE_ID, MUT_ALLELE_DESC, MUT_LABEL, MUT_VISUALISATION " +
-  		"FROM ISH_MUTANT " +
-  		"JOIN ISH_SUBMISSION ON MUT_SUBMISSION_FK = SUB_OID AND SUB_ACCESSION_ID = ? " +
-  		"JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " +
-  		"LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE AND RPR_IS_TG = 1 " +
-  		"JOIN REF_URL GENE_URL ON GENE_URL.URL_TYPE = (CASE substring(RPR_LOCUS_TAG from 1 for position(':' in RPR_LOCUS_TAG)) " +
-  		"                                              WHEN 'HGNC:' THEN 'hgnc' " +
-  		"                                              WHEN 'MGI:' THEN 'jax_gene_dir' " +
-  		"                                              ELSE 'xenbase_gene' " +
-  		"                                              END) " +
-  		"LEFT JOIN REF_MGI_MRK ON RPR_LOCUS_TAG = RMM_MGIACC " +
-  		"LEFT JOIN REF_URL PRB_NAME_URL " +
-  		"ON PRB_NAME_URL.URL_TYPE = (CASE substring(RPR_JAX_ACC from 1 for position(':' in RPR_JAX_ACC)) " +
-  		"                            WHEN 'MGI:'     THEN 'jax_probe_dir' " +
-  		"                            WHEN 'GenBank:' THEN 'genbank_sequence' " +
-  		"                            WHEN 'IMAGE:'   THEN 'image_clone' " +
-  		"                            WHEN 'NIBB:'    THEN 'nibb_xdb' " +
-  		"                            WHEN 'maprobe:' THEN 'maprobe_probe' " +
-  		"                            ELSE '-1' " +
-  		"                            END)";
   
   final static String name224 = "TRANSGENIC_NOTE";
   final static String query224 = "SELECT MTN_VALUE FROM ISH_MUTANT_NOTE " +
@@ -1644,7 +1373,7 @@ public class DBQuery {
 
   // find details of a antibody 
   final static String name241 = "ANTIBODY_DETAILS";
-  final static String query241 = "SELECT DISTINCT  CONCAT(ATB_PREFIX,ATB_OID),ATB_NAME,ATB_JAX_ACC,ATB_PROTEIN_SYMBOL,ATB_PROTEIN_NAME,ATB_LOCUS_TAG,ATB_GENBANK,ATB_5_LOC,ATB_3_LOC," +
+  final static String query241 = "SELECT DISTINCT  CONCAT(ATB_PREFIX,ATB_OID),ATB_NAME,RPR_JAX_ACC,RPR_SYMBOL,RPR_NAME,RPR_LOCUS_TAG,RPR_GENBANK,'',''," +
 		"ATB_TYPE,ATB_PROD_METHOD,ATB_CLONE_ID,ATB_SP_IMMUNIZED,ATB_PURIFICATION_MD,ATB_IMM_ISOTYPE,ATB_CHAIN," +
 		"ATB_DIRECT_LABEL,ATL_DETECTION_NOTES,ATL_DILUTION,ATL_LAB_ID, " +
 		"SUP_COMPANY,SUP_CAT_NUM,SUP_LOT_NUM, " +
@@ -1652,6 +1381,7 @@ public class DBQuery {
 		"ABN_VALUE " +
 		"FROM ISH_ANTIBODY " +
 		"JOIN LNK_SUB_ANTIBODY ON ATL_ATB_OID_FK = ATB_OID " +  
+		"LEFT JOIN REF_PROBE ON REF_OID = ATB_OID " +
 		"LEFT JOIN ISH_ANTIBODY_NOTES ON ABN_ATB_OID_FK = ATB_OID " +
 		"JOIN ISH_SUBMISSION ON SUB_OID = ATL_SUBMISSION_FK " +
   		"JOIN LNK_SUP_ANTIBODY ON LAS_ATB_OID_FK = ATB_OID " +
@@ -1933,7 +1663,6 @@ public class DBQuery {
       new ParamQuery(name9,query9),
       new ParamQuery(name10,query10),
       new ParamQuery(name11,query11),
-      new ParamQuery(name12,query12),
       new ParamQuery(name13,query13),
       new ParamQuery(name14,query14),
       new ParamQuery(name15,query15),
@@ -1949,15 +1678,12 @@ public class DBQuery {
       new ParamQuery(name26,query26),
       new ParamQuery(name27,query27),
       new ParamQuery(name28,query28),
-      new ParamQuery(name29,query29),
       new ParamQuery(name30,query30),
       new ParamQuery(name31,query31),
       new ParamQuery(name32,query32),
       new ParamQuery(name33,query33),
-      new ParamQuery(name34,query34),
       new ParamQuery(name35,query35),
       new ParamQuery(name36,query36),
-      new ParamQuery(name37,query37),
       new ParamQuery(name38,query38),
       new ParamQuery(name39,query39),
       new ParamQuery(name40,query40),
@@ -1967,27 +1693,9 @@ public class DBQuery {
       new ParamQuery(name44,query44),
       new ParamQuery(name45,query45),
       new ParamQuery(name46,query46),
-      new ParamQuery(name38_1,query38_1),
-      new ParamQuery(name39_1,query39_1),
-      new ParamQuery(name40_1,query40_1),
-      new ParamQuery(name41_1,query41_1),
-      new ParamQuery(name42_1,query42_1),
-      new ParamQuery(name43_1,query43_1),
-      new ParamQuery(name44_1,query44_1),
-      new ParamQuery(name45_1,query45_1),
-      new ParamQuery(name46_1,query46_1),
       new ParamQuery(name47,query47),
       new ParamQuery(name50,query50),
       new ParamQuery(name51,query51),
-      new ParamQuery(name52,query52),
-      new ParamQuery(name53,query53),
-      new ParamQuery(name54,query54),
-      new ParamQuery(name55,query55),
-      new ParamQuery(name56,query56),
-      new ParamQuery(name57,query57),
-      new ParamQuery(name58,query58),
-      new ParamQuery(name59,query59),
-      new ParamQuery(name60,query60),
       new ParamQuery(name61,query61),
       new ParamQuery(name62,query62),
       new ParamQuery(name63,query63),
@@ -2025,17 +1733,13 @@ public class DBQuery {
       new ParamQuery(name95,query95),
       new ParamQuery(name96,query96),
       new ParamQuery(name97,query97),
-      new ParamQuery(name98,query98),
       new ParamQuery(name99,query99),
       new ParamQuery(name100,query100),
       new ParamQuery(name101,query101),
       new ParamQuery(name102,query102),
       new ParamQuery(name103,query103),
-      new ParamQuery(name104,query104),
       new ParamQuery(name105,query105),
-      new ParamQuery(name106,query106),
       new ParamQuery(name107,query107),
-      new ParamQuery(name108,query108),
       new ParamQuery(name109,query109),
       new ParamQuery(name110,query110),
       new ParamQuery(name111,query111),
@@ -2046,11 +1750,8 @@ public class DBQuery {
       new ParamQuery(name116,query116),
       new ParamQuery(name117,query117),
       new ParamQuery(name118,query118),
-      new ParamQuery(name119,query119),
-      new ParamQuery(name120,query120),
       new ParamQuery(name121,query121),
       new ParamQuery(name122,query122),
-      new ParamQuery(name123,query123),
       new ParamQuery(name124,query124),
       new ParamQuery(name125,query125),
       new ParamQuery(name126,query126),
@@ -2064,9 +1765,7 @@ public class DBQuery {
       new ParamQuery(name134,query134),
       new ParamQuery(name135,query135),
       new ParamQuery(name136,query136),
-      new ParamQuery(name137,query137),
       new ParamQuery(name138,query138),
-      new ParamQuery(name139,query139),
       new ParamQuery(name140,query140),
       new ParamQuery(name141,query141),
       new ParamQuery(name142,query142),
@@ -2083,7 +1782,6 @@ public class DBQuery {
       new ParamQuery(name153,query153),
       new ParamQuery(name154,query154),
       new ParamQuery(name155,query155),
-      new ParamQuery(name156,query156),
       new ParamQuery(name157,query157),
       new ParamQuery(name158,query158),
       new ParamQuery(name159,query159),
@@ -2100,8 +1798,8 @@ public class DBQuery {
       new ParamQuery(name170,query170),
       new ParamQuery(name171,query171),
       new ParamQuery(name172,query172),
-      new ParamQuery(name173,query173),
       new ParamQuery(name174,query174),
+      new ParamQuery(name173,query173),
       new ParamQuery(name175,query175),
       new ParamQuery(name176,query176),
       new ParamQuery(name177,query177),
@@ -2147,10 +1845,8 @@ public class DBQuery {
       new ParamQuery(name217,query217),
       new ParamQuery(name218,query218),
       new ParamQuery(name219,query219),
-      new ParamQuery(name220,query220),
       new ParamQuery(name221,query221),
       new ParamQuery(name222,query222),
-      new ParamQuery(name223,query223),
       new ParamQuery(name224,query224),
       new ParamQuery(name225,query225),
       new ParamQuery(name226,query226),
@@ -2200,10 +1896,6 @@ public class DBQuery {
   		                                 "SBH_MODIFIED_TIME " +        // 7
   		                                 "FROM REF_SUBMISSION_HISTORY";
 
-    public static String getEditHistoryQuery() {
-        return submissionHistoryQuery;
-    }
-    
     public static String getComponentRelations(int numEnteredComps, String col1, String col2) {
     	
     	StringBuffer componentRealtionsQ = new StringBuffer("SELECT DISTINCT "+col1 + 
@@ -2280,12 +1972,6 @@ public class DBQuery {
         }
         
         return compsFromSynsAndIdsQ.toString();
-    }
-
-  //query to find the no of public array submissions -- not sure need any more
-    static String numPubGenesForMicroarrayQuery = "select count(distinct MBC_GNF_SYMBOL) from MIC_BROWSE_CACHE";
-    public static String getNumPubGenesForMicroarrayQuery() {
-        return numPubGenesForMicroarrayQuery;
     }
 
     /**

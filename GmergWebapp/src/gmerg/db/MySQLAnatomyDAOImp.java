@@ -452,17 +452,12 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
             //javascript function changes depending on whether tree is annotated or not
             if (!hasAnnot) {
                 
-            	if(FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/ish_edit_expression.jsp") ||
-            			FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/ish_submission.jsp")) {
+            	if(FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/ish_edit_expression.jsp")) {
 	            	results.add("ANNOTATEDTREE = 0");
 	                results.add("OPENATVISCERAL = 1");
 	                results.add("HIGHLIGHT = 1");
 	                results.add("SUBMISSION_ID = \"" + accno + "\"");
-	                if (alternativeFunction) {
-	                    javascriptFunc = "javascript:editExprInfo";
-	                } else {
-	                    javascriptFunc = "javascript:showExprInfo";
-	                }
+			javascriptFunc = "javascript:showExprInfo";
             	} else {
             		results.add("ANNOTATEDTREE = 0");
                     results.add("OPENATVISCERAL = 1");
@@ -479,11 +474,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 results.add("OPENATVISCERAL = 0");
                 results.add("HIGHLIGHT = 0");
                 results.add("SUBMISSION_ID = \"" + accno + "\"");
-                if (alternativeFunction) {
-                    javascriptFunc = "javascript:editExprInfo";
-                } else {
                     javascriptFunc = "javascript:showExprInfo";
-                }
             }
             
             results.add("USETEXTLINKS = 1");
@@ -867,31 +858,4 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
         }
         return null;
     }
-    
-    
-        
-
-	
-	/** ---to be implemented--- */
-	public ArrayList executeTreeBuild(String treeType, String start, String end) throws SQLException {
-		return new ArrayList();
-	}
-
-	public int getStageSequence(String stage) throws SQLException {
-		return 1;
-	}
-
-	public ArrayList getComponentExpression(String[] nodeIds, String start, String end, String status) throws SQLException {
-		return new ArrayList();
-	}
-
-	public ArrayList getAnnotatedSubmissions(ArrayList results, String exprStatus, String start, String end, String order) throws SQLException {
-		return new ArrayList();
-		
-	}
-	
-	public ArrayList getAnatomyQueryResult(String[][] param) throws SQLException {
-		return new ArrayList();
-	}
-
 }

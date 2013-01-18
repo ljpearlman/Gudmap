@@ -490,11 +490,8 @@ public final class DBHelper {
 		String column = new String("");
 		String geneSymbolCol;
                 
-                if(queryType == 1){
+                if(queryType == 1 || queryType == 2){
                     geneSymbolCol = "natural_sort(TRIM(RPR_SYMBOL))";
-                }
-                else if(queryType == 2){
-                    geneSymbolCol = "natural_sort(TRIM(PRB_GENE_SYMBOL))";
                 }
                 else {
                     geneSymbolCol = "";
@@ -517,16 +514,12 @@ public final class DBHelper {
 			}
 		} else {
 			if(order[0].equals("byID")) {
-				if (queryType == 1) {
+				if (queryType == 1 || queryType == 2) {
 					column = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS SIGNED) " + order[1] +", " + geneSymbolCol; 
-				} else if (queryType == 2) {
-					column = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS SIGNED) " + order[1] +", " + geneSymbolCol;
 				}
 			} else if (order[0].equals("byGene")) {
-				if (queryType == 1) {
+				if (queryType == 1 || queryType == 2) {
 					column = geneSymbolCol + " " + order[1] +", SUB_EMBRYO_STG "; 
-				} else if (queryType == 2) {
-					column = geneSymbolCol + " " + order[1] +", SUB_EMBRYO_STG ";
 				}
 			} else if (order[0].equals("byTS")) {
 				column = "SUB_EMBRYO_STG" + " " + order[1] +", " + geneSymbolCol; 
@@ -543,10 +536,8 @@ public final class DBHelper {
 			} else if (order[0].equals("bySpecimen")) {
 				column = "SPN_ASSAY_TYPE" + " " + order[1] +", " + geneSymbolCol; 
 			} else {
-				if (queryType == 1) {
+				if (queryType == 1 || queryType == 2) {
 					column = geneSymbolCol + ", SUB_EMBRYO_STG "; 
-				} else if (queryType == 2) {
-					column = geneSymbolCol + ", SUB_EMBRYO_STG ";
 				}
 			}
 		}
@@ -567,10 +558,8 @@ public final class DBHelper {
 		String order = (ascending == true ? "ASC" : "DESC");
 		String geneSymbolCol;
 		
-		if(queryType == 1){
+		if(queryType == 1 || queryType == 2){
 			geneSymbolCol = "natural_sort(TRIM(RPR_SYMBOL))";
-		} else if(queryType == 2){
-			geneSymbolCol = "natural_sort(TRIM(PRB_GENE_SYMBOL))";
 		} else {
 			geneSymbolCol = "";
 		}
@@ -600,11 +589,9 @@ public final class DBHelper {
 					column = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS SIGNED) " + order + ", " + geneSymbolCol;
 				}
 			} else if (columnIndex == 1) { // gene
-				if (queryType == 1) {
+				if (queryType == 1 || queryType == 2) {
 					column = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
-				} else if (queryType == 2) {
-					column = geneSymbolCol + " " + order +", SUB_EMBRYO_STG ";
-				}
+				} 
 			} else if (columnIndex == 2) { // stage 
 				column = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol; 
 			} else if (columnIndex == 3) { // age
@@ -626,11 +613,9 @@ public final class DBHelper {
 			} else if (columnIndex == 11) { // probe type
 				column = "PRB_PROBE_TYPE" + " " + order +", " + geneSymbolCol; 
 			} else {
-				if (queryType == 1) {
+				if (queryType == 1 || queryType == 2) {
 					column = geneSymbolCol + ", SUB_EMBRYO_STG "; 
-				} else if (queryType == 2) {
-					column = geneSymbolCol + ", SUB_EMBRYO_STG ";
-				}
+				} 
 			}
 		}
 		return column;
@@ -691,11 +676,7 @@ public final class DBHelper {
 				results.add("ANNOTATEDTREE = 1");
 				results.add("OPENATVISCERAL = 0");
 				results.add("SUBMISSION_ID = \""+accno+"\"");
-				if(isEditor) {
-					javascriptFunc = "javascript:editExprInfo";
-				} else {
-					javascriptFunc = "javascript:showExprInfo";
-				}
+				javascriptFunc = "javascript:showExprInfo";
 			}
 			
 			results.add("STARTALLOPEN = 0");
@@ -860,41 +841,6 @@ public final class DBHelper {
 		return orderStr;
     }	
     
-    
-    public static String getColumnNameByIndexISH(int idx) {
-    	int len = browseColumnsISH.length;
-    	for (int i=0;i<len;i++) {
-    		if (Integer.parseInt(browseColumnsISH[i][0]) == idx)
-    			return browseColumnsISH[i][1];
-    	}
-    	return null;
-    }
-    
-    public static int getColumnIndexByNameISH(String name) {
-    	int len = browseColumnsISH.length;
-    	for (int i=0;i<len;i++) {
-    		if (browseColumnsISH[i][1].equals(name))
-    			return Integer.parseInt(browseColumnsISH[i][0]);
-    	}
-    	return -1;
-    }
-    
-    public static String getColumnNameByIndexArray(int idx) {
-    	return null;
-    }
-    
-    public static int getColumnIndexByNameArray(String name) {
-    	return 0;
-    }
-
-    public static String getColumnNameByIndexAll(int idx) {
-    	return null;
-    }
-    
-    public static int getColumnIndexByNameAll(String name) {
-    	return 0;
-    }
-
 	/**
 	 * @author xingjun - 02/02/2009
 	 * @param emapIds
