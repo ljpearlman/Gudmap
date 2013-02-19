@@ -209,12 +209,11 @@
 
 		<%-- ==================================== Page Navigation Section ==================================== --%>
 		<h:inputHidden id="maxPageNum" value="#{TableBean.maxPageNum}" />
-		<h:panelGrid rendered="#{(TableBean.tableView.numPages > 1 || TableBean.tableView.heightFlexible) && TableBean.tableView.displayHeader}"
+		<h:panelGrid rendered="#{(TableBean.tableView.numPages > 0 || TableBean.tableView.heightFlexible) && TableBean.tableView.displayHeader}"
 					 border="0" width="100%" styleClass="stripey" cellpadding="2" cellspacing="2" style="white-space:nowrap" 
-					 columns="7" columnClasses="navPageNoCol, centreAlign, centreAlign, centreAlign, navGotoBoxCol, navGotoButtonCol, navScrollCol" >
+					 columns="5" columnClasses="navPageNoCol, centreAlign, centreAlign, centreAlign, navGotoBoxCol, navGotoButtonCol, navScrollCol" >
 
-			<h:outputText rendered="#{TableBean.tableView.table.numRows == 1}" value="#{TableBean.tableView.table.numRows} Row: Page #{TableBean.tableView.currentPage} of #{TableBean.tableView.numPages}" styleClass="plaintext"/>
-			<h:outputText rendered="#{TableBean.tableView.table.numRows != 1}" value="#{TableBean.tableView.table.numRows} Rows: Page #{TableBean.tableView.currentPage} of #{TableBean.tableView.numPages}" styleClass="plaintext"/>
+			<h:outputText rendered="#{TableBean.tableView.table.numRows > 0}" value="#{TableBean.tableView.table.numRows} Row: Page #{TableBean.tableView.currentPage} of #{TableBean.tableView.numPages}" styleClass="plaintext"/>
 
 			<h:panelGroup rendered="#{TableBean.tableView.numPages > 1}">
 				<h:commandLink id="first" action="#{TableBean.tableNavigation}" styleClass="nav3" >
@@ -248,24 +247,20 @@
 			<h:outputText value=" " rendered="#{TableBean.tableView.heatmapColumns==null}" />
 
 			<%-- ==================================== Goto page Section ====================================== --%>
-			<h:outputText value=" " rendered="#{TableBean.tableView.numPages == 1}" />
 			<h:panelGroup rendered="#{TableBean.tableView.numPages > 1}" >
-				<h:outputText value="Go to page:"		styleClass="plaintext"/>
-				<f:verbatim>&nbsp;</f:verbatim>
-				<h:inputText id="pageNum" value="#{TableBean.pageNum}" size="3" />
-			</h:panelGroup>		
-			<h:outputText value=" " rendered="#{TableBean.tableView.numPages == 1}" />
-			<f:verbatim>&nbsp;</f:verbatim>
-			<h:panelGroup rendered="#{TableBean.tableView.numPages > 1}" >
-				<h:commandLink id="gotoPage" action="#{TableBean.tableNavigation}" onclick="return validatePageNum(event)" >
+			                <h:panelGrid columns="4" style="margin-left:auto; margin-right:0" >
+				         <h:outputText value="Go to page: " styleClass="nav3" />
+				         <h:inputText id="pageNum" value="#{TableBean.pageNum}" size="3"/>
+				         <h:outputText value=" " styleClass="nav3" />
+				         <h:commandLink id="gotoPage" action="#{TableBean.tableNavigation}" onclick="return validatePageNum(event)" >
 					<h:graphicImage value="../images/Go_btn.png" title="Go to page" alt="next" styleClass="icon" />
 					<f:param name="tableOperation" value="gotoPage" />
-				</h:commandLink>
+				         </h:commandLink>
+													                                </h:panelGrid>
 			</h:panelGroup>
 			
-			<h:outputText value=" " rendered="#{TableBean.tableView.numPages == 1}" />
-
 			<%-- ================================ Expand/Shrink body Section ================================= --%>
+<%-- scrolling within a table does not work properly, any browser window has its own scrolling function, no need to have both
 			<h:panelGroup rendered="#{TableBean.tableView.heightLimittedFlexible}" >
 				<h:graphicImage value="../images/FlexS_Expand_btn.png" title="click to expand scroll area" styleClass="icon" style="cursor:pointer;"
 								onclick="expandTableBodyPanel(event)" onmousedown="continuousExpandTableBodyPanel(event)" />
@@ -284,8 +279,8 @@
 				<h:graphicImage value="../images/FlexibleScroll_btn.png" alt=" Flexible scroll " styleClass="icon" width="100" height="32" />
 				<f:param name="tableOperation" value="limittedHeight" />
 			</h:commandLink>
+--%>
 		</h:panelGrid>
-
 		<%-- ==================================== Table Body Section ==================================== --%>
 		<h:inputHidden id="actualRowsPerPage" value="#{TableBean.actualRowsPerPage}" />
 		<h:outputText styleClass="plaintext" value="<br/>There is no result to display, modify your filter and try again.<br/><br/>" escape="false" rendered="#{TableBean.filteredTableEmpty}" />
@@ -370,7 +365,7 @@
  				
 		    <h:panelGrid rendered="#{(TableBean.tableView.numPages > 1 || TableBean.tableView.heightFlexible) && TableBean.tableView.displayHeader}"
 					 border="0" width="100%" styleClass="stripey" cellpadding="2" cellspacing="2" style="white-space:nowrap" 
-					 columns="7" columnClasses="navPageNoCol, centreAlign, centreAlign, centreAlign, navGotoBoxCol, navGotoButtonCol, navScrollCol" >
+					 columns="5" columnClasses="navPageNoCol, centreAlign, centreAlign, centreAlign, navGotoBoxCol, navGotoButtonCol, navScrollCol" >
 
 				<h:outputText value="#{TableBean.tableView.table.numRows} Rows: Page #{TableBean.tableView.currentPage} of #{TableBean.tableView.numPages}" styleClass="plaintext"/>
 	
@@ -397,28 +392,18 @@
 				</h:panelGroup>
 
 			<%-- ==================================== Goto page Section 2 ====================================== --%>
-
-				<h:outputText value=" " rendered="#{TableBean.tableView.numPages == 1}" />
-				<h:panelGroup rendered="#{TableBean.tableView.numPages > 1}" >
-					<h:outputText value="Go to page:"		styleClass="plaintextvm"/>
-					<f:verbatim>&nbsp;</f:verbatim>
-					<h:inputText id="pageNum2" value="#{TableBean.pageNum2}" size="3" />
-				</h:panelGroup>
-				
-				<h:outputText value=" " rendered="#{TableBean.tableView.numPages == 1}" />
-
- 				<f:verbatim>&nbsp;</f:verbatim>
-				<h:panelGroup rendered="#{TableBean.tableView.numPages > 1}" >
-					<h:commandLink id="gotoPage2" action="#{TableBean.tableNavigation}" onclick="return validatePageNum2(event)" >
-						<h:graphicImage value="../images/Go_btn.png" title="Go to page" alt="next" styleClass="icon" />
-						<f:param name="tableOperation" value="gotoPage" />
-					</h:commandLink>
-				</h:panelGroup>
-				<h:outputText value=" " rendered="#{TableBean.tableView.numPages == 1}" />
-
-			</h:panelGrid>
-			
-																		
+			                <h:panelGroup rendered="#{TableBean.tableView.numPages > 1}" >
+			                     <h:panelGrid columns="4" style="margin-left:auto; margin-right:0" >
+				         <h:outputText value="Go to page: " styleClass="nav3" />
+				         <h:inputText  id="pageNum2" value="#{TableBean.pageNum2}" size="3"/>
+				         <h:outputText value=" " styleClass="nav3" />
+				         <h:commandLink id="gotoPage2" action="#{TableBean.tableNavigation}" onclick="return validatePageNum2(event)" >
+					<h:graphicImage value="../images/Go_btn.png" title="Go to page" alt="next" styleClass="icon" />
+					<f:param name="tableOperation" value="gotoPage" />
+				         </h:commandLink>
+													                                     </h:panelGrid>
+			                </h:panelGroup>
+			</h:panelGrid>														
 			<h:panelGrid columns="3" styleClass="header-stripey" border="0" width="100%"  columnClasses="leftAlign,rightAlign,collectionButtonsCol3" 
 						rendered="#{TableBean.multipleCollections && TableBean.collectionBottons!=4}">
 				<h:panelGroup>

@@ -16,16 +16,15 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//Bernie 10/5/2010 Mantis 328 - modified to allow generic filters
 public class GenericTableFilter {
+    protected boolean debug = false;
+
 	boolean active;
 	TreeMap<Integer, FilterItem> filters;
 	int[] tableToSqlColMap;
-	// Bernie 02/03/2012 - (mantis 620) - added QIC_SPN_SEX & QMC_SPN_SEX to filter choice
-	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_ASSAY_TYPE","QIC_EXP_STRENGTH","#","#","QIC_SUB_EMBRYO_STG","7","QIC_SPN_SEX","QIC_PER_NAME","QIC_SUB_SUB_DATE","QIC_SPN_ASSAY_TYPE","#","#","#"};
-	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","#","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_PER_NAME","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
-	// Bernie 08/03/2012 - (Mantis 364) - allow expression filtering
-	String[] microarrayMapQuery = {"#","#","#","#","#","#","QMC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","QMC_PER_NAME","QMC_SUB_SUB_DATE","QMC_SPN_ASSAY_TYPE","#","#","#"};
+	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_ASSAY_TYPE","QIC_EXP_STRENGTH","#","#","QIC_SUB_EMBRYO_STG","7","QIC_SPN_SEX","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_SPN_ASSAY_TYPE","#","#","#"};
+	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","#","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
+	String[] microarrayMapQuery = {"#","#","#","#","#","#","QMC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","QMC_SUB_SOURCE","QMC_SUB_SUB_DATE","QMC_SPN_ASSAY_TYPE","#","#","#"};
 			
 	public GenericTableFilter() {
 		active = false;
@@ -55,21 +54,43 @@ public class GenericTableFilter {
 		return filters.get(col);
 	}
 	
-	// Bernie 10/8/2010 Mantis 328 - refactor
-	private String getSql(String currentSql, String[] columnNames) {
-//		System.out.println("****	GenericTableFilter:getSQL(String currentSql, String[] columnNames)");	
+                private boolean hasFilter() {
+		if (filters == null || filters.size()==0)
+			return false;
 
+		for(FilterItem filter: filters.values()){
+			if (filter.isActive()) 
+			    return true;
+		}
+
+		return false;
+              }
+
+	private String getFilterSql(String currentSql, String[] columnNames) {
+	    if (!hasFilter())
+		return null;
+
+	    if (debug) {
+		System.out.println("enter GenericTableFilter:getFilterSql(String currentSql, String[] columnNames) currentSql = "+currentSql);
+		int iSize = 0;
+		if (null != columnNames)
+		    iSize = columnNames.length;
+		int i = 0;
+		for (i = 0; i < iSize; i++)
+		    System.out.println(i+" col = "+columnNames[i]);
+	    }
+		
 		String sql = "";
 		for(FilterItem filter: filters.values()){
-			//System.out.println(filter.getCol()+"FFFFFFFFFFFFFFFFFFFF=="+filter.getName()+"~~~~~~~~~~"+filter.isActive());				
+		    if (debug)
+			System.out.println(filter.getCol()+"FFFFFFFFFFFFFFFFFFFF=="+filter.getName()+"~~~~~~~~~~"+filter.isActive());				
 			
 			if (filter.isActive()) {
 				String colName = "";
 				
 				if (tableToSqlColMap == null){
 					colName = extractSqlName(columnNames[filter.getCol()]);
-				}
-				else{
+				} else {
 					int col = filter.getCol();
 					if (currentSql.contains("QIC_RPR_SYMBOL")){
 						colName = insituMap[col];
@@ -77,241 +98,192 @@ public class GenericTableFilter {
 					if (currentSql.contains("MBC_GNF_SYMBOL")){
 						colName = microarrayMap[col];
 					}
-					// Bernie 08/03/2012 - (Mantis 364) - allow expression filtering
 					if (currentSql.contains("QMC_SPN_ASSAY_TYPE")){
 						colName = microarrayMapQuery[col];
 					}
 					
 				}
-				
+						
 				String filterSql = "";
 				if(!colName.equalsIgnoreCase("#"))
 					filterSql = filter.getSql(colName);
-				
+				if (debug)
+				    System.out.println("colName = "+colName+" filterSql = "+filterSql+" current sql = "+currentSql);
+
 				if (filterSql != "")
 					sql += ((sql.equals(""))? "" : " AND ") + filterSql;
 			}
 		}
 		
-//		System.out.println("~~~~getSql = "+sql);
+		if (debug)
+		    System.out.println("exit GenericTableFilter.getFilterSql = "+sql);
+
 		return sql;
 	}
 
-	// Bernie 10/5/2010 Mantis 328 - added function
 	public String addFilterCountSql(String sql) {
-//		System.out.println("GenericTableFilter:addFilterCountSql(String sql)");
-		
+	    if (debug)
+		System.out.println("enter GenericTableFilter.addFilterCountSql sql = "+sql);
+	    // to check whether it has filter
+	    if (!hasFilter())
+		return sql;
+
 		// strip out the count part of the sql statement
-		
 		Pattern patternCountStar = Pattern.compile("^(?i)\\s*select\\s* count\\s*\\(\\s*\\*\\s*\\)\\s*from\\s*\\(\\s*(.*)\\)");
-		Pattern patternTrimBrackets = Pattern.compile("^(?i)\\s*\\(\\s*(.*)\\s*\\)\\s*");
 
-//		Matcher m = patternTrimBrackets.matcher(sql);
-//		if (m.find()){
-//			System.out.println("GenericTableFilter:addFilterSql matcher.group(1) trimmed = "+m.group(1));
-//		}
-
-		String CountSql = "";
+		String ret = sql;
 		
 		Matcher matchcount = patternCountStar.matcher(sql);
 		if (matchcount.find()) {
-			String newsql = matchcount.group(1);
-			
-			CountSql = "select count(*) from (" + addFilterSql(newsql) + ") as tablea";
-			return CountSql;
-		}
-		else{
-			return addFilterSql(sql);
+		    ret = processFilterSql(matchcount.group(1), null);
+
+		    ret = "select count(*) from (" + ret+ ") as tablea";
+		} else {
+			ret = processFilterSql(sql, (String[])null);
 		}
 		
+		if (debug)
+		    System.out.println("exit GenericTableFilter.addFilterCountSql getSql = "+ret);
+
+		return ret;
 		
 	}
 	
-	// Bernie 10/5/2010 Mantis 328 - added function
-	// xingjun - 30/08/2011 - for sql with count(*) clause there is no 'order by' clause so need to check before append 'ORDER BY' clause to the sql
-	public String addFilterSql(String sql) {
-//		System.out.println("GenericTableFilter:addFilterSql(String sql)");
-		if (filters == null || filters.size()==0)
-			return sql;
-		
-		Boolean counter = false;
+    private String processFilterSql(String inputSql, String[] colName) {
+	    if (!hasFilter())
+		return inputSql;
 
-		Pattern patternComplexQuery = Pattern.compile("^(?i)\\s*\\(\\s*(select\\s*.*)\\s*\\)\\s*(union)\\s*(\\(\\s*select\\s*.*\\s*\\))(.*)");
-		Pattern patternTrimBrackets = Pattern.compile("^(?i)\\s*\\(\\s*(.*)\\s*\\)\\s*");
-		
-		Matcher matcher = patternComplexQuery.matcher(sql);
+	    if (debug)
+		System.out.println("enter GenericTableFilter.processFilterSql sql = "+inputSql);
+
+		String currentSql = inputSql.toLowerCase();
+		String before = "";
+		String after = "";
+		// get part inside ... () as tablea
+		if (currentSql.endsWith(") as tablea")) {
+		    after = ") as tablea";
+
+		    int index = currentSql.indexOf("from");
+		    if (-1 == index)
+			return null;
+		    before = inputSql.substring(0, index+4)+" (";
+		    currentSql = inputSql.substring(index+4);
+		    index = currentSql.indexOf("(");
+		    currentSql = currentSql.substring(index+1);
+		    currentSql = currentSql.replace(after, "");
+		} else
+		    currentSql = inputSql;
+
+		Pattern p1 = Pattern.compile("order by");
+		String[] items = p1.split(currentSql);
+		int iSize = items.length;
+		Matcher matcher = p1.matcher(currentSql);
 		if (matcher.find()) {
-//			System.out.println("^^^^^^GenericTableFilter:addFilterSql matcher succeeded");
-//			System.out.println("GenericTableFilter:addFilterSql matcher.group(1) = "+matcher.group(1));
-//			System.out.println("GenericTableFilter:addFilterSql matcher.group(2) = "+matcher.group(2));
-//			System.out.println("GenericTableFilter:addFilterSql matcher.group(3) = "+matcher.group(3));
-//			System.out.println("GenericTableFilter:addFilterSql matcher.group(4) = "+matcher.group(4));
-			
-			// split the sql up into manageable groups via the union keyword
-//			Pattern p1 = Pattern.compile("order");
-			Pattern p1 = Pattern.compile("order by");
-			Pattern p2 = Pattern.compile("union");
-			int i;
-			String[] items1 = p1.split(sql);
-//			String lastPart = "ORDER" + items1[items1.length-1];// get the last portion of the split
-			// xingjun - 30/08/2011 - start
-			String lastPart = "";
-			matcher = p1.matcher(sql);
-			if (matcher.find()) {
-				lastPart = "ORDER BY" + items1[items1.length-1];// get the last portion of the split
-			}
-			// xingjun - 30/08/2011 - end
-			
-			//String lastPart = matcher.group(4); //"ORDER " + items1[1];
-			String[] items2 = p2.split(items1[0]);
-
-
-			String newSql = "";
-			
-			for(i=0; i<items2.length; i++){
-				matcher = patternTrimBrackets.matcher(items2[i]);
-				if (matcher.find()) { 				
-					sql = matcher.group(1);	
-					newSql +=  "("+ addFilterSql1(sql)+ ")";
-					if (i < items2.length-1 )
-						newSql += " union ";
-					else
-						newSql += " " +lastPart;
-				}				
-			}			
-			return newSql;								
+		    after = "ORDER BY " + items[iSize-1] + after;
 		}
-		else{
-			matcher = patternTrimBrackets.matcher(sql);
-			
-			//Bernie 12/03/2012 - (mantis 625) fix for sort feature
-			Pattern p1 = Pattern.compile("order by");
-			int i;
-			String lastPart = "";
-			String[] items1 = p1.split(sql);
-			if (matcher.find()){
-				if (items1.length > 1){
-					lastPart = "ORDER BY " + items1[items1.length-1];
-					sql = items1[0];
-				}
-			}
-//			System.out.println("addFilterSql:firstPart = " + items1[0]);
-//			System.out.println("addFilterSql:lastPart = " + lastPart);
 
-			
-			if (matcher.find()){
-				sql = matcher.group(1);	
-				String r1 = "(" + addFilterSql1(sql) + ") ";
-//				System.out.println("addFilterSql:r1 = "+r1 + lastPart);
-				return r1 + lastPart;
-			}
-			else{
-				// Bernie 13/03/2012 - (mantis 637 & mantis 626) fix for filter on anatomy query
-				matcher = patternTrimBrackets.matcher(sql);
-				if (matcher.find()){
-					sql = matcher.group(1);
-//					System.out.println("addFilterSql:r21 = "+sql);
-					//sql += " " + lastPart;
-				}
-				
-//				System.out.println("addFilterSql:r22 = "+sql);
-				String r3 = addFilterSql1(sql) + " " + lastPart;
-//				System.out.println("addFilterSql:r3 = "+r3);
-				return r3;
-			}
+		p1 = Pattern.compile("union");
+		items = p1.split(items[0]);
+		iSize = items.length;
+		int i = 0;
+		String str = null;
+		String sql = null;
+
+		if (1 == iSize) {
+		    // remove most out ()
+		    currentSql = items[0].trim();
+		    sql = currentSql.trim();
+		    int num = 0;
+		    while (0 == sql.indexOf("(") && sql.endsWith(")")) { 
+			// within brackets
+			num++;
+			sql = sql.substring(1);
+			sql = sql.substring(0, sql.length() - 1);
+		    }
+		    sql = addFilterSql1(sql, colName);
+		    if (0 < num)
+			sql = "("+sql+")";
+		} else {
+		    sql = processFilterSql(items[0], colName);
+		    for (i = 1; i < iSize; i++) {
+			str = processFilterSql(items[i], colName);
+			sql = sql + " UNION "+str;
+		    }
 		}
+		
+		String ret = before + sql + after;
+		
+		if (debug)
+		    System.out.println("exit GenericTableFilter.processFilterSql getSql = "+ret);
+
+		return ret;
 	}
 
-//	public String addFilterSql(String sql) {
-//		System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nGenericTableFilter:addFilterSql sql = "+sql);
-//		if (filters == null || filters.size()==0)
-//			return sql;
-//
-//		Pattern patternComplexQuery = Pattern.compile("^(?i)\\s*\\(\\s*(select\\s*.*)\\s*\\)\\s*(union)\\s*(\\(\\s*select\\s*.*\\s*\\))(.*)");
-//		Pattern patternTrimBrackets = Pattern.compile("^(?i)\\s*\\(\\s*(.*)\\s*\\)\\s*");
-//
-//		
-//		Matcher matcher = patternComplexQuery.matcher(sql);
-//		if (matcher.find()) {
-////			System.out.println("GenericTableFilter:addFilterSql matcher.group(1) = "+matcher.group(1));
-////			System.out.println("GenericTableFilter:addFilterSql matcher.group(2) = "+matcher.group(2));
-////			System.out.println("GenericTableFilter:addFilterSql matcher.group(3) = "+matcher.group(3));
-////			System.out.println("GenericTableFilter:addFilterSql matcher.group(4) = "+matcher.group(4));
-//
-//			String newSql = "";
-//			String lastPart = matcher.group(4);
-//			System.out.println("GenericTableFilter:addFilterSql lastPart = "+ lastPart);
-//			while (matcher.find(0)) {
-//				newSql +=  "("+ addFilterSql1(matcher.group(1))+ ") " + matcher.group(2) + " ";
-////				System.out.println("GenericTableFilter:addFilterSql newSql0 = "+ newSql);
-//				sql = matcher.group(3);
-////				System.out.println("GenericTableFilter:addFilterSql sql0 = "+ sql);
-//				matcher = patternComplexQuery.matcher(sql);
-//			}
-//			matcher = patternTrimBrackets.matcher(sql);
-//			if (matcher.find()) { 
-//				sql = matcher.group(1);	
-////				System.out.println("GenericTableFilter:addFilterSql sql1 = "+ sql);
-//				String r1 = newSql + " (" + addFilterSql1(sql) + ") " + lastPart;
-////				System.out.println("GenericTableFilter:addFilterSql sql out1 = r1");
-//				return r1;
-//			}
-//			else{
-//				String r2 = newSql + addFilterSql1(sql) + lastPart;
-////				System.out.println("GenericTableFilter:addFilterSql sql out2 = r2");
-//				return r2;
-//			}
-//		}
-//		else{
-//			String r3 = addFilterSql1(sql);
-////			System.out.println("GenericTableFilter:addFilterSql sql out3 = r3");
-//			return r3;
-//		}
-//	}
+private String addFilterSql1(String currentSql, String[] colName) {
+	    if (debug)
+		System.out.println("enter GenericTableFilter.addFilterSql1 sql = "+currentSql);
 
-	
-	// Bernie 10/8/2010 Mantis 328 - refactor
-	private String addFilterSql1(String currentSql) {
-//		System.out.println("GenericTableFilter:addFilterSql1(String currentSql)");
+	    if (null == currentSql || currentSql.trim().equals(""))
+		return null;
+
 		Pattern patternCountStar = Pattern.compile("^(?i)\\s*select\\s* count\\s*\\(\\s*\\*\\s*\\)\\s*from\\s*\\(\\s*(.*)\\)");
-//		Pattern pattern = Pattern.compile("^(?i)\\(*\\s*select\\s*(count\\s*\\()?\\s*(distinct)?\\s*(.*?)from.*");
+		/*
+		Pattern pattern = Pattern.compile("^(?i)\\(*\\s*select\\s*(count\\s*\\()?\\s*(distinct)?\\s*(.*?)from.*");
 		Pattern pattern = Pattern.compile("^(?i)\\(*\\s*select\\s*(count\\s*\\()?\\s*(distinct)?\\s*(.*)");
 		Pattern patternAliasColName = Pattern.compile("^(?i).+?\\s+(.+)");
 		Pattern patternAliasColNameComplex = Pattern.compile("^(?i).+\\)\\s+([^\\)]+)$");
-		
-		Matcher matcher = patternCountStar.matcher(currentSql);
-		String sql;
-		String countStarSql = null;
-		if (matcher.find()) {
+		*/
+
+		    Matcher matcher = patternCountStar.matcher(currentSql);
+		    String countStarSql = null;
+		    String sql = null;
+
+		    if (matcher.find()) {
 			String coreSql = matcher.group(1);
-//			System.out.println("** addFilterSql1 --- coreSql = " + coreSql);
+			if (debug)
+			    System.out.println("GenericTableFilter.addFilterSql1 find match select count coreSql = " + coreSql);
 			countStarSql = currentSql.replace(coreSql, "#@#@#"); 
 			sql = coreSql.trim();
 			if (sql.indexOf("(") == 0) {
-				sql = sql.substring(1, sql.length()-1);
-				countStarSql = currentSql.replace(coreSql, "("+"#@#@#"+")");
+			    sql = sql.substring(1, sql.length()-1);
+			    countStarSql = currentSql.replace(coreSql, "("+"#@#@#"+")");
 			}
-		}
-		else
+		    } else {
 			sql = currentSql;
-				
-		if (countStarSql != null) {
-			sql = addFilterSql(sql, null);
+		    }
+		
+		    String worker = getFilterSql(sql, colName);
+		    sql = primaryFilterSql(sql, worker);
+		    if (countStarSql != null) {
 			countStarSql = countStarSql.replace("#@#@#", sql);
-			return countStarSql;
-		}
-		return addFilterSql(currentSql, null);	
+			sql = countStarSql;
+		    }
+
+		if (debug)
+		    System.out.println("exit GenericTableFilter.addFilterSql1 getSql = "+sql);
+
+		return sql;
 	}
 
-	public String addFilterSql(String currentSql, String[] colNames) {
-//		System.out.println("GenericTableFilter:addFilterSql = " +currentSql);		
-		String filterSql = getSql(currentSql,colNames);
-		if (filterSql==null || filterSql.equals(""))
-			return currentSql;
-	
-		filterSql = " AND " + filterSql;
+    public String addFilterSql(String currentSql, String[] colNames) {
+	    if (!hasFilter())
+		return currentSql;
+
+	    return processFilterSql(currentSql, colNames);
+    }
+
+    private String primaryFilterSql(String currentSql, String inputFilterSql) {
+	if (null == currentSql  || currentSql.trim().equals(""))
+	    return null;
+
+	if (null == inputFilterSql  || inputFilterSql.trim().equals(""))
+		return currentSql;
+
+		String filterSql = " AND " + inputFilterSql;
+
+		if (debug)
+		System.out.println("enter GenericTableFilter.primaryFilterSql sql = "+currentSql+" filterSql = "+filterSql);
 		
-		// Bernie 28/03/2012 Mantis 640 - a hack to get filter working for WHERE clause with lots of OR statements when adding an AND statement
 		// use regex to build filter is not the simple way to do things - too many variations
 		// should create new statement with placeholder for filters
 		Pattern p1 = Pattern.compile("WHERE");
@@ -348,45 +320,38 @@ public class GenericTableFilter {
 			}
 		}
 
-		//Bernie 26/05/2011 
-		String sql1 = null;
+		String ret = "";
 		if (currentSql.matches("(?i).*\\)\\s*\\)\\s*GROUP\\sBY\\s.*")) {
 			filterSql=filterSql.replaceAll("\\$","\\\\\\$");	// This is to avoid exception being thrown by java Matcher
-			sql1 = currentSql.replaceFirst("(?i)\\)\\s*GROUP\\sBY\\s",  filterSql + ") GROUP BY ");
-//			System.out.println("+++sql1====="+sql1);
-			return sql1;
+			ret = currentSql.replaceFirst("(?i)\\)\\s*GROUP\\sBY\\s",  filterSql + ") GROUP BY ");
 		}
 		else if (currentSql.matches("(?i).*\\sGROUP\\sBY\\s.*")) {
 			filterSql=filterSql.replaceAll("\\$","\\\\\\$");	// This is to avoid exception being thrown by java Matcher
 //			System.out.println("+++Filter sql2====="+filterSql);			
-			sql1 = currentSql.replaceFirst("(?i)\\sGROUP\\sBY\\s",  filterSql + " GROUP BY ");
-//			System.out.println("+++sql1====="+sql1);
-			return sql1;
+			ret = currentSql.replaceFirst("(?i)\\sGROUP\\sBY\\s",  filterSql + " GROUP BY ");
 		}		
 		else if (currentSql.matches("(?i).*\\)\\s*\\)\\s*\\)\\s*ORDER\\sBY\\s.*")) {
 			filterSql=filterSql.replaceAll("\\$","\\\\\\$");	// This is to avoid exception being thrown by java Matcher
 //			System.out.println("+++Filter sql1====="+filterSql);			
-			sql1 = currentSql.replaceFirst("(?i)\\)\\s*ORDER\\sBY\\s",  ") " + filterSql + " ORDER BY ");
-//			System.out.println("+++sql1====="+sql1);
-			return sql1;
+			ret = currentSql.replaceFirst("(?i)\\)\\s*ORDER\\sBY\\s",  ") " + filterSql + " ORDER BY ");
 		}
 		else if (currentSql.matches("(?i).*\\)\\s*\\)\\s*ORDER\\sBY\\s.*")) {
 			filterSql=filterSql.replaceAll("\\$","\\\\\\$");	// This is to avoid exception being thrown by java Matcher
-			sql1 = currentSql.replaceFirst("(?i)\\)\\s*ORDER\\sBY\\s",  filterSql + ") ORDER BY ");
-//			System.out.println("+++sql1====="+sql1);
-			return sql1;
+			ret = currentSql.replaceFirst("(?i)\\)\\s*ORDER\\sBY\\s",  filterSql + ") ORDER BY ");
 		}
 		else if (currentSql.matches("(?i).*\\sORDER\\sBY\\s.*")) {
 			filterSql=filterSql.replaceAll("\\$","\\\\\\$");	// This is to avoid exception being thrown by java Matcher
-			sql1 = currentSql.replaceFirst("(?i)\\sORDER\\sBY\\s",  filterSql + " ORDER BY ");
-//			System.out.println("+++sql1====="+sql1);
-			return sql1;
+			ret = currentSql.replaceFirst("(?i)\\sORDER\\sBY\\s",  filterSql + " ORDER BY ");
 		}
 
-		
-		String newSql = currentSql + filterSql;
-//		System.out.println("newSql ====="+newSql);
-		return  newSql;
+		if (ret.equals("")) {
+			    ret = currentSql +" "+filterSql;
+		}
+
+		if (debug) 
+		    System.out.println("exit GenericTableFilter.primaryFilterSql  getSql = "+ret);
+
+		return  ret;
 	}
 	
 	private String extractSqlName(String name) {	
@@ -397,17 +362,14 @@ public class GenericTableFilter {
 		return name;
 	}
 
-	// Bernie 10/5/2010 Mantis 328 - added function
 	public int[] getTableToSqlColMap() {
 		return tableToSqlColMap;
 	}
 
-	// Bernie 10/5/2010 Mantis 328 - added function
 	public void setTableToSqlColMap(int[] tableToSqlColMap) {
 		this.tableToSqlColMap = tableToSqlColMap;
 	}
 	
-	// Bernie 10/5/2010 Mantis 328 - added function
 	public String getActiveAssay()
 	{
 		String result = null;
@@ -419,15 +381,4 @@ public class GenericTableFilter {
 //		System.out.println("~~~getAssayActive = "+ result);
 		return result;
 	}
-	
-
-	
-/*	
-	public ParamQuery addFilterSql(ParamQuery query, String[] colNames) {
-        String queryString = query.getQuerySQL();
-		queryString = addFilterSql(queryString, DBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
-		query.setQuerySQL(queryString);
-		return query;
-	}
-*/	
 }

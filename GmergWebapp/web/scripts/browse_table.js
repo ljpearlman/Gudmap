@@ -681,23 +681,25 @@ function columnSelection(e, selectItem) {
 	var maxColNum = parseInt(getById(viewId+':browseTableForm:maxColNum').value);
 	var visibleColNumItem = getById(viewId+':browseTableForm:visibleColNum');
 	var message = ' ';
+
 	if (!selectItem.checked) {  //When this function is called the check box value is changed because it was clicked
 		if (visibleColNumItem.value > minColNum) {
 			visibleColNumItem.value--;
-		}
-		else {
+		} else {
 			selectItem.checked = true;
 			message = 'no more column can be removed';
-		}			
+		}
 	}
 	else { 
 		if (visibleColNumItem.value < maxColNum) {
 			visibleColNumItem.value++;
 		}
+		/* to allow to see maxum !!!
 		else {
 			selectItem.checked = false;
 			message = 'no more column can be added';
 		}
+		*/
 	}
 	
 	setMessage(viewId+':browseTableForm:columnMessage', message);

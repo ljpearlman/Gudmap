@@ -41,6 +41,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	 * 
 	 */
 	public ArrayList getTheilerStageRanges() {
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.getTheilerStageRanges");
 		
 	    //retrieve the query to find all stages in db
 	    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
@@ -80,6 +82,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	
 	
 	public String getAnatomyTermFromPublicId(String id){
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.getAnatomyTermFromPublicId");
 		
 		if(id == null || id.equals("")){
 			return "";
@@ -117,6 +121,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
     }
 	
 	public String getOnlogyTerms() {
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.getOnlogyTerms");
 		
 		ResultSet resSet = null;
 		Statement stmt = null;
@@ -159,6 +165,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	 * @return
 	 */
 	public int findSequencebyStageName(String stageName) {
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.findSequencebyStageName");
 		
 	    int sequence = -1;
 		ResultSet resSet = null;
@@ -195,6 +203,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	 * @return built tree (an array list)
 	 */
 	public ArrayList getAnatomyTreeByStages(String startStage, String endStage, boolean isForBooleanQ) {
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.getAnatomyTreeByStages");
 		
 //	    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 //	    String treeType = bundle.getString("perspective");
@@ -236,6 +246,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	 * @return list of public ids
 	 */
 	public ArrayList findPublicIdByComponentIdAndStage(String[] components, String startStage, String endStage) {
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.findPublicIdByComponentIdAndStage");
 		
 //		System.out.println("start: " + startStage);
 		ParamQuery parQ = DBQuery.getParamQuery("ANATOMY_PUBLIC_ID_FROM_NODE_ID");
@@ -288,6 +300,9 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	public ISHBrowseSubmission[] getAnnotatedSubmissionByPublicIdAndStage(ArrayList publicIds,
 			String startStage, String endStage, String expressionState, String[] order, String offset, String num) {
 		
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.getAnnotatedSubmissionByPublicIdAndStage");
+
 		ParamQuery parQStart = null;
 		ParamQuery parQEnd = null;
 		PreparedStatement prepStmt = null;
@@ -357,6 +372,9 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
      */
     public ArrayList findAnnotationTreeBySubmissionId(String submissionAccessionId,
                                                       boolean isEditor, UserBean userBean) {
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.findAnnotationTreeBySubmissionId");
+
         if (submissionAccessionId == null) {
 //            throw new NullPointerException("id parameter");
 			return null;
@@ -436,6 +454,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
      * @throws SQLException
      */
     public ArrayList buildTreeStructure(ResultSet resSet, boolean hasAnnot, String accno, boolean alternativeFunction) throws SQLException {
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.buildTreeStructure");
             
         if (resSet.first()) {
 
@@ -580,6 +600,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
     }
     
     String getPatternsForAnnotatedComponent(String expressionOID) throws SQLException{
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.getPatternsForAnnotatedComponent");
         
         ParamQuery parQ = DBQuery.getParamQuery("EXPRESSION_PATTERNS");
         PreparedStatement prepStat = null;
@@ -626,6 +648,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
      * @return result - an array of annotated components corresponding to the submissionAccessionId param
      */
     public ExpressionDetail [] findAnnotatedListBySubmissionIds(String submissionAccessionId, boolean isEditor) {
+	if (debug)
+	    System.out.println("MysqlAnatomyDAOImp.findAnnotatedListBySubmissionIds");
     
         if (submissionAccessionId == null) {
 //            throw new NullPointerException("id parameter");

@@ -63,8 +63,17 @@ public class Antibody {
 		return this.accessionId;
 	}
 	
-	public void setAccessionId(String accessionId) {
-		this.accessionId = accessionId;
+	public void setAccessionId(String input) {
+		accessionId = input;
+		// need to be MGI accession
+		if (null != accessionId) {
+		    accessionId = accessionId.trim();
+		    if (accessionId.equals(""))
+			accessionId = null;
+		}
+
+		if (null != accessionId && 0 != accessionId.toLowerCase().indexOf("mgi:"))
+		    accessionId = null;
 	}
 	
 	public String getUrl() {

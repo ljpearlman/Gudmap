@@ -1,4 +1,4 @@
-<!-- Author: Mehran Sharghi																	 -->
+<!-- Author: Mehran Sharghi			 -->
 <%@ page contentType="text/html;charset=ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
@@ -72,24 +72,13 @@
 		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}">&nbsp;</f:verbatim>
 		
 		<h:outputText value="Principal Investigator(s)" />
-		<h:panelGroup rendered="#{MicroarraySingleSubmissionBean.submission.principalInvestigators == null}">
-			<h:outputLink title="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.principalInvestigator.id})">
-			                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.name}, " />
-			</h:outputLink>
-			<h:outputText title="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.principalInvestigator.displayAddress}" />
-		</h:panelGroup>
-		<h:panelGroup rendered="#{MicroarraySingleSubmissionBean.submission.principalInvestigators != null}">
-			<t:dataList id="piDataList" var="piInfo" layout="unorderedList"
+		<t:dataList id="piDataList" var="piInfo"
 				value="#{MicroarraySingleSubmissionBean.submission.principalInvestigators}">
-					<h:panelGroup>
-						<h:outputLink  title="#{piInfo.fullAddress}"  styleClass="datatext" value="javascript:showLabDetails(#{piInfo.id})">
-						                <h:outputText value="#{piInfo.name}, " />
-						</h:outputLink>
-						<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.displayAddress}" />
-					</h:panelGroup>
-			</t:dataList>
-		</h:panelGroup>
-
+				<h:outputLink  title="#{piInfo.fullAddress}"  styleClass="datatext" value="javascript:showLabDetails(#{piInfo.id})">
+					<h:outputText value="#{piInfo.name}, " />
+				</h:outputLink>
+				<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.displayAddress}" /><br/>
+		</t:dataList>
 
                                 <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		

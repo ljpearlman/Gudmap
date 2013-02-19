@@ -15,7 +15,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
     private boolean debug = false;
 
 	private Connection conn; 
-	private int ColumnNumbers = 15;//14; // Bernie 06/03/2012 (Mantis 328) added column for Sex
+	private int ColumnNumbers = 15;
 	
 	String outputString;
 
@@ -27,7 +27,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 
     private String SELECT_STR="SELECT ";
     private String DISTINCT_STR="DISTINCT ";
-    private String FROM_STR="FROM QSC_ISH_CACHE LEFT JOIN QSC_ISH_LOCATION ON QIL_SUB_ACCESSION_ID = QIC_SUB_ACCESSION_ID ";
+    private String FROM_STR="FROM QSC_ISH_CACHE LEFT JOIN QSC_ISH_LOCATION ON QIL_SUB_ACCESSION_ID = QIC_SUB_ACCESSION_ID  ";
     private String WHERE_STR="WHERE ";
     private String AND_STR="AND ";
     private String OR_STR="OR ";
@@ -36,15 +36,13 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
     private String SUB_UNION_STR="UNION ( ";
     private String INTERSECT_STR_ENTRY="AND QIC_SUB_ACCESSION_ID IN ( ";
     private String ACCESSION_STR="QIC_SUB_ACCESSION_ID ";
-    // Bernie 06/03/2012 (Mantis 328) added column for Sex
     private String COLUMN_STR="QIC_RPR_SYMBOL col1,"+
-                              "'' col2,"+
+                              "(SELECT GROUP_CONCAT(DISTINCT a.ANO_COMPONENT_NAME SEPARATOR '; ')  FROM ISH_SP_TISSUE, ANA_TIMED_NODE t, ANA_NODE a WHERE IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) AND t.ATN_PUBLIC_ID = IST_COMPONENT AND t.ATN_NODE_FK = a.ANO_OID) as col2, "+
                               "'' col3,"+
-                              "QIC_PER_NAME col4,"+
+                              "QIC_SUB_SOURCE col4,"+
                               "QIC_SUB_SUB_DATE col5,"+
                               "QIC_SUB_EMBRYO_STG col6,"+
                               "QIC_SPN_ASSAY_TYPE col7,"+
-//                              "concat(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) col8,"+
                               "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
                               "QIC_SUB_THUMBNAIL col9,"+
                               "QIC_SUB_ACCESSION_ID col10,"+
@@ -63,7 +61,6 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
     		"AND ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
     		"AND RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
     		"AND ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
-//    		"AND ANCES_ATN.ATN_STAGE_FK = STG_OID " +
     		"AND APO_NODE_FK = ANO_OID " +
     		"AND APO_IS_PRIMARY = 1) ";
 
@@ -77,13 +74,11 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 	"AND ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
 	"AND RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
 	"AND ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
-//	"AND ANCES_ATN.ATN_STAGE_FK = STG_OID " +
 	"AND APO_NODE_FK = ANO_OID " +
 	"AND APO_IS_PRIMARY = 1) ";
 
     private String GENE_STR = "QIC_RPR_SYMBOL ";
     private String INTERSECT_STR_GENE="AND QIC_RPR_SYMBOL IN ( ";
-//    private String ORDER_BY_GENE_STR = " ORDER BY NATURAL_SORT(QIC_RPR_SYMBOL) ";
     
     private String prevOp="";
     
@@ -140,7 +135,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 				sql = sql.replaceFirst("SELECT", "SELECT DISTINCT");
 			
 //			System.out.println("\nBOOL QUERY1 (pre filter)====== sql="+sql);
-			sql = filter.addFilterSql(sql);
+			sql = filter.addFilterSql(sql, (String[])null);
 //			System.out.println("\nBOOL QUERY11 (post filter)====== sql= "+sql);
 
 //			prepStmt = conn.prepareStatement(sql);
@@ -148,7 +143,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 			stmt = conn.createStatement();
 //			System.out.println("Boolean query sql: " + sql);
 		    if (debug)
-			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql.toLowerCase());
+			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql);
 			resSet = stmt.executeQuery(sql);
 			result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
 //			DBHelper.closePreparedStatement(prepStmt);
@@ -180,7 +175,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 			String sql = "select count(*) from (" +	queryString + ") as tablea";
 			
 //			System.out.println("\nBOOL QUERY2 (pre filter)====== sql="+sql);
-			sql = filter.addFilterSql(sql);
+			sql = filter.addFilterSql(sql, (String[])null);
 //			System.out.println("\nBOOL QUERY22 (post filter)====== sql= "+sql);
 
 //			System.out.println("booleanQueryTotNumInput:"+ input);
@@ -189,7 +184,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 			stmt = conn.createStatement();
 //			resSet = prepStmt.executeQuery();
 		    if (debug)
-			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql.toLowerCase());
+			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql);
 			resSet = stmt.executeQuery(sql);
 			if(resSet.first()) {
 				total = Integer.parseInt(resSet.getString(1));
@@ -228,7 +223,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 		// query
 		try {
 		    if (debug)
-			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql.toLowerCase());
+			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql);
 			prepStmt = conn.prepareStatement(sql);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
@@ -250,136 +245,6 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 		return result;
 	}
 	
-    // modified by xingjun - 06/03/2008 
-	// - added criteria to check children nodes as well as give anatomy term(s)
-	// - before modification only check given anatomy term(s)
-	// !!!!!!!!! the assembling sql need further refactoring !!!!!!!!!!!!
-//	public String getProcessBooleanQuery(String str)
-//    {
-//
-//        v_queries=GetSeparatedMultiples(str,"|");
-//        StringBuffer[] buffers_array;
-//        Vector<StringBuffer[]> v_buffers = new Vector<StringBuffer[]>(0,1);
-//        query_num=v_queries.size();
-//
-///*TO DETERMINE IF WE HAVE AN (A OR B) AND C AS THIS IS TREATED DIFFERENTLY TO THE REST */
-//        for(int i=0;i<query_num;i++)
-//        {
-//            String tmp_str = v_queries.elementAt(i).toString();
-//            String operator_str = tmp_str.substring(tmp_str.indexOf("}") + 1).
-//                                  trim();
-//            switch(i)
-//            {
-//            case 0:
-//                if(operator_str.equalsIgnoreCase("OR"))
-//                firstOperator = true;
-//                break;
-//            case 1:
-//                if(operator_str.equalsIgnoreCase("AND"))
-//                secondOperator = true;
-//                break;
-//            }
-//        }
-//        if(firstOperator&&secondOperator)
-//        {
-//            doOrAnd = true;
-//            //System.out.println("THIS IS AN AND/OR QUERY!!!!!");
-//        }
-///****************************************************************************/
-//        /*BUILD UP THE WHERE CLAUSE*/
-//        for(int i=0;i<query_num;i++)
-//        {
-//             buffers_array=new StringBuffer[3];
-//             where_buf=new StringBuffer("WHERE (QIC_ANO_COMPONENT_NAME=");
-//             component_buf=new StringBuffer();
-//             stage_buf=new StringBuffer("AND QIC_SUB_EMBRYO_STG IN (");
-//             expression_buf=new StringBuffer("AND QIC_EXP_STRENGTH IN (");
-//             pattern_buf=new StringBuffer("AND QIC_PTN_PATTERN=");
-//             location_buf=new StringBuffer("AND QIL_LCN_LOCATION=");
-//
-//            ResetValues();
-//            //System.out.println("QUERY: " + v_queries.elementAt(i).toString());
-//            //}
-//            String tmp_str = v_queries.elementAt(i).toString();
-//            // added by xingjun - 06/03/2009 - get component name
-//            String componentName = 
-//            	tmp_str.substring(tmp_str.indexOf("{in") + 3, tmp_str.indexOf("TS")).trim();
-//            
-//            component_buf.append("'" + componentName + "'");
-//            where_buf.append(component_buf.toString()+" ");
-//            String exp_str = tmp_str.substring(0, tmp_str.indexOf("{"));
-//            v_expression = GetSeparatedMultiples(exp_str, ",");
-//            SetExpression(v_expression);
-////            for (int j = 0; j < v_expression.size(); j++) {
-//                //System.out.println(v_expression.elementAt(j).toString());
-////            }
-//
-//            where_buf.append(expression_buf.toString());
-//            String stage_str = tmp_str.substring(tmp_str.indexOf("TS"),
-//                                                 tmp_str.indexOf("..") + 6);
-//            stage_str = SplitString(stage_str, "TS");
-//            SetStage(stage_str);
-//            where_buf.append(stage_buf.toString());
-//            //System.out.println("IS PATTERN??: " + tmp_str.indexOf("pt=")+"  ITERATION: " + i);
-//            if (tmp_str.indexOf("pt=") > -1) {
-//                includePattern = true;
-//                patternIndex = tmp_str.indexOf("pt=") + 3;
-//                //System.out.println("PATTERN_INDEX: " + patternIndex);
-//            }
-//            if (tmp_str.indexOf("lc=") > -1) {
-//                includeLocation = true;
-//                locationIndex = tmp_str.indexOf("lc=") + 3;
-//            }
-//            if (includePattern)
-//            {
-//                SetPattern(tmp_str);
-//                where_buf.append(pattern_buf.toString());
-//            }
-//            if (includeLocation)
-//            {
-//                SetLocation(tmp_str);
-//                where_buf.append(location_buf.toString());
-//            }
-//            StringBuffer operator_buf = 
-//            	new StringBuffer(tmp_str.substring(tmp_str.indexOf("}") + 1).trim());
-//            
-//            // added by xingjun - 06/03/2009
-//            String extraCiteriaString = 
-//            	this.INHERITANCE_CRITERIA_STR_DESCENDANT.replaceAll("ANO_COMPONENT_NAME", 
-//            			("ANO_COMPONENT_NAME = '" + componentName + "' "));
-//            where_buf.append(extraCiteriaString);
-//            
-//            where_buf.append(") ");
-//            /*System.out.println("WHERE CLAUSE: "+ where_buf.toString());
-//            System.out.println("component: " + component_buf.toString());
-//            System.out.println("expression: " + expression_buf.toString());
-//            System.out.println("stage: " + stage_buf.toString());
-//            System.out.println("pattern: " + pattern_buf.toString());
-//            System.out.println("location: " + location_buf.toString());
-//            System.out.println("Operator: " + operator_buf.toString());*/
-//
-//            buffers_array[0]=where_buf;
-//            buffers_array[1]=operator_buf;
-//            buffers_array[2]=new StringBuffer(prevOp);
-//
-//            v_buffers.addElement(buffers_array);
-//
-///*SEND EACH ITERATION TO THE FULL QUERY BUILDER IF ITS NOT -OR AND-*/
-//            if(!doOrAnd)
-//                ConstructQuery(operator_buf.toString(),i,query_num, 0);
-//
-//            prevOp=operator_buf.toString();
-//        }
-//        /*GATHER ALL THE WHERE CLAUSES INTO A VECTOR FOR PROCESSING BY THE -OR AND- QUERY BUILDER*/
-//        if(doOrAnd)
-//            ConstructOrAnd(v_buffers, 0);
-//
-//        SetOutput(output_bf);
-//        output_bf = null;
-//        output_bf=new StringBuffer();
-//        return GetOutput();
-//    }
-
 	/**
 	 * modified by xingjun - 03/08/2009
 	 * changed the code: adjusted code to get pattern and location info within the query
@@ -524,14 +389,6 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
             StringBuffer operator_buf = 
             	new StringBuffer(tmp_str.substring(tmp_str.indexOf("}") + 1).trim());
             
-//            System.out.println("WHERE CLAUSE: "+ where_buf.toString());
-//            System.out.println("component: " + component_buf.toString());
-//            System.out.println("expression: " + expression_buf.toString());
-//            System.out.println("stage: " + stage_buf.toString());
-//            System.out.println("pattern: " + pattern_buf.toString());
-//            System.out.println("location: " + location_buf.toString());
-//            System.out.println("Operator: " + operator_buf.toString());
-
             buffers_array[0]=where_buf;
             buffers_array[1]=operator_buf;
             buffers_array[2]=new StringBuffer(prevOp);
@@ -596,7 +453,6 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 			if (queryType == 0) {
 				output_bf.append(COLUMN_STR);
 			} else if (queryType == 1) {
-//				output_bf.append(this.DISTINCT_STR + this.GENE_STR); // added distinct modifier - xingjun - 22/04/2009
 				output_bf.append(this.GENE_STR); // remove distinct modifier - xingjun - 22/04/2009
 			}
 		}
@@ -634,7 +490,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
         if (queryType == 0) {
     		output_bf.append(COLUMN_STR);
         } else if (queryType == 1) {
-        	output_bf.append(this.DISTINCT_STR + this.GENE_STR); // added distinct modifier - xingjun - 22/04/2009
+        	output_bf.append(this.DISTINCT_STR + this.GENE_STR); 
         }
         output_bf.append(FROM_STR);
         tmp_buf=(StringBuffer[])v.elementAt(2);
@@ -831,13 +687,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
         	String tmp_str = v_queries.elementAt(i).toString(); 
         	
             // get component name
-//            String componentName = tmp_str.substring(tmp_str.indexOf("{in") + 3, tmp_str.indexOf("TS")).trim();
-//        	System.out.println("BooleanQueryDAO:getGeneBooleanQueryString:tmp_str: " + tmp_str); should plus one to get the component name - xingjun - 21/10/2009
             String componentName = tmp_str.substring(tmp_str.indexOf("\"")+1, tmp_str.lastIndexOf("\"")).trim();
-//            System.out.println("BooleanQueryDAO:getGeneBooleanQueryString:componentName: " + tmp_str);
-//            component_buf.append("'" + componentName + "'");
-//            where_buf.append(component_buf.toString()+" ");
-//            subWhereClause.append(component_buf.toString()+" ");
             
             // get stage
             String stage_str = 
@@ -925,14 +775,6 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
             StringBuffer operator_buf = 
             	new StringBuffer(tmp_str.substring(tmp_str.indexOf("}") + 1).trim());
             
-//            System.out.println(i+ ":WHERE CLAUSE: "+ where_buf.toString());
-//            System.out.println("component: " + component_buf.toString());
-//            System.out.println("expression: " + expression_buf.toString());
-//            System.out.println("stage: " + stage_buf.toString());
-//            System.out.println("pattern: " + pattern_buf.toString());
-//            System.out.println("location: " + location_buf.toString());
-//            System.out.println("Operator: " + operator_buf.toString());
-
             buffers_array[0]=where_buf;
             buffers_array[1]=operator_buf;
             buffers_array[2]=new StringBuffer(prevOp);
@@ -945,7 +787,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
             prevOp=operator_buf.toString();
         } // end of for loop
         
-        // GATHER ALL THE WHERE CLAUSES INTO A VECTOR FOR PROCESSING BY THE -OR AND- QUERY BUILDER
+        //  GATHER ALL THE WHERE CLAUSES INTO A VECTOR FOR PROCESSING BY THE -OR AND- QUERY BUILDER
         if(doOrAnd)
             ConstructOrAnd(v_buffers, 1);
 

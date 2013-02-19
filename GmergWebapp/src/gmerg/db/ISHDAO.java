@@ -38,7 +38,6 @@ public interface ISHDAO {
 	public Probe findMaProbeByProbeId(String probeId, String maprobeId);
 	public Specimen findSpecimenBySubmissionId(String submissionAccessionId); // q2
 	public String findAuthorBySubmissionId(String submissionAccessionId); // q16
-	public Person findPIBySubmissionId(String submissionAccessionId); // q3
 	public Person[] findPIsBySubmissionId(String submissionAccessionId); // xingjun - 20/06/2011
 	public Person findPersonById(String personId);
 	public Person findSubmitterBySubmissionId(String submissionAccessionId); // q4

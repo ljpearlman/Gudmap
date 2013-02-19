@@ -569,7 +569,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSetSpeciesSpecificity = null;
         ResultSet resSetAntibodyVariant = null;
         ParamQuery parQAntibody = DBQuery.getParamQuery("ANTIBODY_DETAILS");
-        ParamQuery parQAntibodyNote = DBQuery.getParamQuery("SUBMISSION_ANTIBODYNOTE");
+        ParamQuery parQAntibodyNote = DBQuery.getParamQuery("MAPROBE_NOTE");
         ParamQuery parQSpeciesSpecificity = DBQuery.getParamQuery("ANTIBODY_SPECIES_SPECIFICITY");
         ParamQuery parQAntibodyVariant = DBQuery.getParamQuery("ANTIBODY_VARIANTS");
         PreparedStatement prepStmtAntibody = null;
@@ -594,7 +594,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             prepStmtAntibodyNote = parQAntibodyNote.getPrepStat();
             prepStmtAntibodyNote.setString(1, antibodyId);
             resSetAntibodyNote = prepStmtAntibodyNote.executeQuery();
-	    
+
             // species specificity 
             parQSpeciesSpecificity.setPrepStat(conn);
             prepStmtSpeciesSpecificity = parQSpeciesSpecificity.getPrepStat();
@@ -611,7 +611,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             conn.setAutoCommit(true);
 	    
             // assemble
-            antibody = formatAntibodyResultSet(resSetAntibody, resSetAntibodyNote, resSetSpeciesSpecificity, resSetAntibodyVariant);
+            antibody = formatAntibodyResultSet(resSetAntibody, null, resSetSpeciesSpecificity, resSetAntibodyVariant);
 	    
             // close the connection
             DBHelper.closePreparedStatement(prepStmtAntibody);
@@ -633,14 +633,13 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSetSpeciesSpecificity = null;
         ResultSet resSetAntibodyVariant = null;
         ParamQuery parQAntibody = DBQuery.getParamQuery("SUBMISSION_ANTIBODY");
-        ParamQuery parQAntibodyNote = DBQuery.getParamQuery("SUBMISSION_ANTIBODYNOTE");
+        ParamQuery parQAntibodyNote = DBQuery.getParamQuery("SUBMISSION_PRBNOTE");
         ParamQuery parQSpeciesSpecificity = DBQuery.getParamQuery("ANTIBODY_SPECIES_SPECIFICITY");
         ParamQuery parQAntibodyVariant = DBQuery.getParamQuery("ANTIBODY_VARIANTS");
         PreparedStatement prepStmtAntibody = null;
         PreparedStatement prepStmtAntibodyNote = null;
         PreparedStatement prepStmtSpeciesSpecificity = null;
         PreparedStatement prepStmtAntibodyVariant = null;
-	//        System.out.println("sql for antibody: " + parQAntibody.getQuerySQL());
         try {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
@@ -648,24 +647,36 @@ public class MySQLISHDAOImp implements ISHDAO {
             conn.setAutoCommit(false);
 	    
             // antibody
+	if (debug) 
+	    System.out.println(" to do sql for antibody: " + parQAntibody.getQuerySQL());
+
             parQAntibody.setPrepStat(conn);
             prepStmtAntibody = parQAntibody.getPrepStat();
             prepStmtAntibody.setString(1, submissionAccessionId);
             resSetAntibody = prepStmtAntibody.executeQuery();
 	    
             // antibody note
+	if (debug) 
+	    System.out.println("to do sql for antibody note: " + parQAntibodyNote.getQuerySQL());
+
             parQAntibodyNote.setPrepStat(conn);
             prepStmtAntibodyNote = parQAntibodyNote.getPrepStat();
             prepStmtAntibodyNote.setString(1, submissionAccessionId);
             resSetAntibodyNote = prepStmtAntibodyNote.executeQuery();
 	    
             // species specificity 
+	if (debug) 
+	    System.out.println("to sql for antibody specificity: " + parQSpeciesSpecificity.getQuerySQL());
+
             parQSpeciesSpecificity.setPrepStat(conn);
             prepStmtSpeciesSpecificity = parQSpeciesSpecificity.getPrepStat();
             prepStmtSpeciesSpecificity.setString(1, submissionAccessionId);
             resSetSpeciesSpecificity = prepStmtSpeciesSpecificity.executeQuery();
 	    
             // antibody variant
+	if (debug) 
+	    System.out.println("sql for antibody variant: " + parQAntibodyVariant.getQuerySQL());
+
             parQAntibodyVariant.setPrepStat(conn);
             prepStmtAntibodyVariant = parQAntibodyVariant.getPrepStat();
             prepStmtAntibodyVariant.setString(1, submissionAccessionId);
@@ -1035,6 +1046,7 @@ public class MySQLISHDAOImp implements ISHDAO {
     /**
      * @param submissionAccessionId
      */
+    /*
     public Person findPIBySubmissionId(String submissionAccessionId) {
         if (submissionAccessionId == null) {
 	    //            throw new NullPointerException("id parameter");
@@ -1063,12 +1075,14 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
         return piInfo;
     }
-    
+    */
+
     /**
      * @author xingjun - 17/06/2011
      * @param submissionAccessionId
      * @return
      */
+
     public Person[] findPIsBySubmissionId(String submissionAccessionId) {
     	if (submissionAccessionId == null) {
 	    return null;
@@ -1091,6 +1105,23 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             // close the connection
             DBHelper.closePreparedStatement(prepStmt);
+
+	    if (null == piInfo || 0 == piInfo.length) {
+		parQ = DBQuery.getParamQuery("SUBMISSION_PI");
+		parQ.setPrepStat(conn);
+		prepStmt = parQ.getPrepStat();
+		prepStmt.setString(1, submissionAccessionId);
+		
+		// execute
+		resSet = prepStmt.executeQuery();
+		piInfo = new Person[1];
+		piInfo[0] = formatPersonResultSet(resSet);
+		if (null == piInfo[0])
+		    piInfo = null;
+	    
+		// close the connection
+		DBHelper.closePreparedStatement(prepStmt);
+	    }
         } catch (SQLException se) {
             se.printStackTrace();
         }

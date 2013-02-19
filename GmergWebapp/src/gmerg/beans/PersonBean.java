@@ -4,55 +4,39 @@ import gmerg.assemblers.ISHSubmissionAssembler;
 import gmerg.entities.submission.Person;
 
 import java.util.Map;
-
 import javax.faces.context.FacesContext;
 
 public class PersonBean {
     private boolean debug = false;
-	private String id;
-    private Map requestParams;
-	private Person person;
-	private Person[] people;
-	private ISHSubmissionAssembler ishSubmissionAssembler;
-
-	public PersonBean () {
+    private Person[] people;
+    
+    public PersonBean () {
 	if (debug)
 	    System.out.println("PersonBean.constructor");
 
-		FacesContext context = FacesContext.getCurrentInstance();
-        this.requestParams = context.getExternalContext().getRequestParameterMap();
-        this.id = (String)requestParams.get("id");
-        this.ishSubmissionAssembler = new ISHSubmissionAssembler();
-        this.people = null;
-        this.person = null;
-	}
-
-	public Person getPerson() {
-		person = new Person();
-        id = (String)requestParams.get("id");
-        ishSubmissionAssembler = new ISHSubmissionAssembler();
-        if(id != null){
-        	person = ishSubmissionAssembler.getPerson(id);
-        }
-        else {
-            id = (String)requestParams.get("personId");
-            if(id != null)
-            	person = ishSubmissionAssembler.getPersonById(id);
-        }
-		return person;
-	}
+	FacesContext context = FacesContext.getCurrentInstance();
+	Map requestParams = context.getExternalContext().getRequestParameterMap();
+	ISHSubmissionAssembler ishSubmissionAssembler = new ISHSubmissionAssembler();
+	String id = (String)requestParams.get("id");
 	
-	
-	/**
-	 *  @author xingjun - 18/07/2011
-	 *  <p>There might be multiple PIs linked to one certain submission </p>
-	 */ 
-	public Person[] getPeople() {
-        id = (String)requestParams.get("id");
-        ishSubmissionAssembler = new ISHSubmissionAssembler();
-        if(id != null){
-        	people = ishSubmissionAssembler.getPeopleBySubmissionId(id);
-        }
-		return people;
+	if (null != id)
+	    people = ishSubmissionAssembler.getPeopleBySubmissionId(id);
+	if (null == people || 0 == people.length) {
+	    id = (String)requestParams.get("personId");
+	    Person person = null;
+	    if (null != id)
+		person = ishSubmissionAssembler.getPersonById(id);
+	    
+	    if (null == person)
+		people = null;
+	    else {
+		people = new Person[1];
+		people[0] = person;
+	    }
 	}
+    }
+    
+    public Person[] getPeople() {
+	return people;
+    }
 }

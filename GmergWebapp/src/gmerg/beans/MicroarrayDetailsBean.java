@@ -4,6 +4,7 @@ import gmerg.utils.table.GenericTable;
 import gmerg.utils.table.GenericTableView;
 import gmerg.utils.table.TableUtil;
 import gmerg.utils.table.DataItem;
+import gmerg.utils.table.HeaderItem;
 
 import java.util.Map;
 import javax.faces.context.FacesContext;
@@ -62,7 +63,7 @@ public class MicroarrayDetailsBean {
 		
 		table = tableView.getTable();
 		DataItem[][] tableData = tableView.getData();
-		
+
 		probeId = "";
 		geneSymbol = "";
 		refSeq = "";
@@ -74,16 +75,22 @@ public class MicroarrayDetailsBean {
 		if (tableData != null) {
 		    probeId = (String)tableData[row][0].getValue();
 		    geneSymbol = (String)tableData[row][3].getValue();
-		    if (tableData[row].length>60)
-			refSeq = (String)tableData[row][60].getValue();
-		    if (tableData[row].length>62)
-			entrezGeneId = (String)tableData[row][62].getValue();
-		    if (tableData[row].length>61)
-			mgiGeneId = (String)tableData[row][61].getValue();
-		    if (tableData[row].length>63)
-			humanOrthologSymbol = (String)tableData[row][63].getValue();	
-		    if (tableData[row].length>64)
-			humanOrthologEntrezId = (String)tableData[row][64].getValue();
+
+		    HeaderItem[] header = tableView.getTable().getHeader();
+		    int iSize = header.length;
+		    int i = 0;
+		    for (i = 0; i < iSize; i++) {
+			if (-1 != header[i].getTitle().indexOf("Probe Seq ID"))
+			    refSeq = (String)tableData[row][i].getValue();
+			if (-1 != header[i].getTitle().indexOf("Entrez Gene ID"))
+			    entrezGeneId = (String)tableData[row][i].getValue();
+			if (-1 != header[i].getTitle().indexOf("MGI Gene ID"))
+			    mgiGeneId = (String)tableData[row][i].getValue();
+			if (-1 != header[i].getTitle().indexOf("Human Ortholog Symbol"))
+			    humanOrthologSymbol = (String)tableData[row][i].getValue();
+			if (-1 != header[i].getTitle().indexOf("Human Ortholog Entez ID"))
+			    humanOrthologEntrezId = (String)tableData[row][i].getValue();
+		    }
 		}
 	}
 

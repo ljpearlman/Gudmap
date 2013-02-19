@@ -14,35 +14,7 @@
       <title>Source Detail</title>
     </head>
     <body>
-    	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" rendered="#{PersonBean.people == null}" >
-    		<h:outputText value="Name:" />
-    		<h:outputText value="#{PersonBean.person.name}" />
-    		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-    		
-    		<h:outputText value="Institution:" />
-    		<h:outputText value="#{PersonBean.person.lab}" />
-    		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-    		
-    		<h:outputText value="Address:" />
-    		<h:panelGrid columns="1" border="0">
-    			<h:outputText styleClass="datatext" value="#{PersonBean.person.address}" />
-    			<h:outputText styleClass="datatext" value="#{PersonBean.person.address2}" rendered="#{PersonBean.person.address2 != null}" />
-    			<h:outputText styleClass="datatext" value="#{PersonBean.person.city} #{PersonBean.person.postcode}" />
-    			<h:outputText styleClass="datatext" value="#{PersonBean.person.country}" />
-    		</h:panelGrid>
-    		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-    		
-    		<h:outputText value="Tel:" />
-    		<h:outputText value="#{PersonBean.person.phone}" />
-    		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-    		
-    		<h:outputText value="Email:" />
-	                <h:outputLink value="mailto:#{PersonBean.person.email}">
-    		        <h:outputText value="#{PersonBean.person.email}" />
-	                </h:outputLink>
-    	</h:panelGrid>
-    	
-    	<t:dataList id="peopleDataList" var="peopleInfo" value="#{PersonBean.people}" rowCountVar="count" rowIndexVar="index" layout="unorderedList"
+    	<t:dataList id="peopleDataList" var="peopleInfo" value="#{PersonBean.people}" rowCountVar="count" rowIndexVar="index" 
 				rendered="#{PersonBean.people != null}">
 				
 				<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" >

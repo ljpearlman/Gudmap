@@ -315,7 +315,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
         // append submission id condition
         int submissionNumber = submissionIds.length;
-        String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_PER_NAME, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
+        String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_SUB_SOURCE, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
         if (submissionNumber == 1) {
 //            queryIS += "AND QSC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
             queryIS += "AND QIC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
@@ -361,7 +361,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
         // append submission id condition
         int submissionNumber = submissionIds.length;
-        String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_PER_NAME, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
+        String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_SUB_SOURCE, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
         if (submissionNumber == 1) {
 //            queryIS += "AND QSC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
             queryIS += "AND QIC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
@@ -601,7 +601,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
            // append submission id condition
            int submissionNumber = submissionIds.length;
-           String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_PER_NAME, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
+           String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_SUB_SOURCE, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
            if (submissionNumber == 1) {
                queryIS += "AND SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
                queryArray += "AND QMC_SUB_ACCESSION_ID = '" + submissionIds[0] + "' " + groupByClause;
@@ -718,7 +718,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		   		"QSC_RPR_SYMBOL", // 1
 		   		"QSC_SUB_EMBRYO_STG", // 2
 		   		"QSC_AGE", // 3
-		   		"QSC_PER_NAME", // 4
+		   		"QSC_SUB_SOURCE", // 4
 		   		"QSC_SPN_ASSAY_TYPE", // 7
 		   		"QSC_ASSAY_TYPE", // 6
 		   		"QSC_SUB_SUB_DATE", // 5
@@ -763,7 +763,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		   } else if (columnIndex == 3) {
 			   orderByString = "QSC_AGE " + order + ", " + defaultCol;
 		   } else if (columnIndex == 4) {
-			   orderByString = "QSC_PER_NAME " + order + ", " + defaultCol;
+			   orderByString = "QSC_SUB_SOURCE " + order + ", " + defaultCol;
 		   } else if (columnIndex == 5) {
 			   orderByString = "QSC_SUB_SUB_DATE " + order + ", " + defaultCol;
 		   } else if (columnIndex == 6) {

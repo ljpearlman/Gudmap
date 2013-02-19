@@ -173,10 +173,6 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String name3 = "SUBMISSION_PRBNOTE";
   final static String query3 = "SELECT PNT_VALUE FROM ISH_PROBE_NOTE, ISH_SUBMISSION WHERE PNT_SUBMISSION_FK = SUB_OID AND SUB_IS_PUBLIC=1 AND SUB_ACCESSION_ID = ? ORDER BY PNT_SEQ";
 
-  // find antibody notes linked to a submission
-  final static String name242 = "SUBMISSION_ANTIBODYNOTE";
-  final static String query242 = "SELECT ABN_VALUE FROM ISH_ANTIBODY_NOTES, LNK_SUB_ANTIBODY WHERE ABN_ATB_OID_FK = ATL_ATB_OID_FK AND ATL_SUBMISSION_FK = ?";
-
   // find maprobe notes for linked to a ish submission -- 02/05/2007
   final static String name125 = "SUBMISSION_MAPROBE_NOTE";
   final static String query125 = "SELECT RPN_NOTES FROM REF_PRB_NOTES, ISH_SUBMISSION, ISH_PROBE, REF_PROBE " +
@@ -1381,7 +1377,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
 		"ABN_VALUE " +
 		"FROM ISH_ANTIBODY " +
 		"JOIN LNK_SUB_ANTIBODY ON ATL_ATB_OID_FK = ATB_OID " +  
-		"LEFT JOIN REF_PROBE ON REF_OID = ATB_OID " +
+		"LEFT JOIN REF_PROBE ON RPR_OID = ATB_OID " +
 		"LEFT JOIN ISH_ANTIBODY_NOTES ON ABN_ATB_OID_FK = ATB_OID " +
 		"JOIN ISH_SUBMISSION ON SUB_OID = ATL_SUBMISSION_FK " +
   		"JOIN LNK_SUP_ANTIBODY ON LAS_ATB_OID_FK = ATB_OID " +
@@ -1865,7 +1861,6 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name239,query239),
       new ParamQuery(name240,query240),
       new ParamQuery(name241,query241),
-      new ParamQuery(name242,query242)
   };
 
   // finds ParamQuery object by name and returns

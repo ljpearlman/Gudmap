@@ -404,7 +404,7 @@ public class AdvancedSearchDBQuery {
 		  return "(select distinct QIC_RPR_SYMBOL col1, "+
 		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') col2,"+  
 		"'' col3,"+
-		"QIC_PER_NAME col4,"+
+		"QIC_SUB_SOURCE col4,"+
 		"QIC_SUB_SUB_DATE col5,"+
 		"QIC_SUB_EMBRYO_STG col6,"+
 		"QIC_SPN_ASSAY_TYPE col7,"+
@@ -425,7 +425,7 @@ public class AdvancedSearchDBQuery {
 	return "(select distinct QIC_RPR_SYMBOL col1, "+
 	    "'' col2,"+
 	    "QIC_EXP_STRENGTH col3,"+
-	    "QIC_PER_NAME col4,"+
+	    "QIC_SUB_SOURCE col4,"+
 	    "QIC_SUB_SUB_DATE col5,"+
 	    "QIC_SUB_EMBRYO_STG col6,"+
 	    "QIC_SPN_ASSAY_TYPE col7,"+
@@ -439,7 +439,7 @@ public class AdvancedSearchDBQuery {
 		  return "(select distinct QIC_RPR_SYMBOL col1, "+
 			"QIC_ANO_COMPONENT_NAME col2, "+
 	        "QIC_EXP_STRENGTH col3,"+
-			"QIC_PER_NAME col4,"+
+			"QIC_SUB_SOURCE col4,"+
 			"QIC_SUB_SUB_DATE col5,"+
 			"QIC_SUB_EMBRYO_STG col6,"+
 			"QIC_SPN_ASSAY_TYPE col7,"+
@@ -454,7 +454,7 @@ public class AdvancedSearchDBQuery {
 		"'' col1,"+
 		"QMC_ANO_COMPONENT_NAME col2,"+
                 "'' col3,"+
-		"QMC_PER_NAME col4,"+
+		"QMC_SUB_SOURCE col4,"+
 		"QMC_SUB_SUB_DATE col5,"+
 		"QMC_SUB_EMBRYO_STG col6,"+
 		"QMC_SPN_ASSAY_TYPE col7,"+
@@ -477,7 +477,7 @@ public class AdvancedSearchDBQuery {
 		"MBC_GNF_SYMBOL col1,"+
 		"MBC_ANO_COMPONENT_NAME col2,"+
                 "'' col3,"+
-		"IF((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK=GRP_OID WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)), MBC_PER_NAME) col4,"+
+		"IF((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK=GRP_OID WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)), MBC_SUB_SOURCE) col4,"+
 		"MBC_SUB_SUB_DATE col5,"+
 		"MBC_SUB_EMBRYO_STG col6,"+
 		"MBC_SPN_ASSAY_TYPE col7,"+
@@ -493,7 +493,7 @@ public class AdvancedSearchDBQuery {
 			"'' col1,"+
 			"QMC_ANO_COMPONENT_NAME col2,"+
 	                "'' col3,"+
-			"QMC_PER_NAME col4,"+
+			"QMC_SUB_SOURCE col4,"+
 			"QMC_SUB_SUB_DATE col5,"+
 			"QMC_SUB_EMBRYO_STG col6,"+
 			"QMC_SPN_ASSAY_TYPE col7,"+
@@ -509,7 +509,7 @@ public class AdvancedSearchDBQuery {
 		"'' col1,"+
 		"QMC_ANO_COMPONENT_NAME col2,"+
                 "'' col3,"+
-		"QMC_PER_NAME col4,"+
+		"QMC_SUB_SOURCE col4,"+
 		"QMC_SUB_SUB_DATE col5,"+
 		"QMC_SUB_EMBRYO_STG col6,"+
 		"QMC_SPN_ASSAY_TYPE col7,"+
@@ -524,7 +524,7 @@ public class AdvancedSearchDBQuery {
 		  return "select count(distinct QIC_RPR_SYMBOL, " +
 		  "'', " +
 		  "'', " +
-		  "QIC_PER_NAME, " +
+		  "QIC_SUB_SOURCE, " +
 		  "QIC_SUB_SUB_DATE, " +
 		  "QIC_SUB_EMBRYO_STG, " +
 		  "QIC_SPN_ASSAY_TYPE, " +
@@ -542,7 +542,7 @@ public class AdvancedSearchDBQuery {
 		"'' ,"+
 		"QMC_ANO_COMPONENT_NAME ,"+
                 "'' ,"+
-		"QMC_PER_NAME ,"+
+		"QMC_SUB_SOURCE,"+
 		"QMC_SUB_SUB_DATE ,"+
 		"QMC_SUB_EMBRYO_STG ,"+
 		"QMC_SPN_ASSAY_TYPE ,"+
@@ -838,7 +838,7 @@ public class AdvancedSearchDBQuery {
       /* ---query to find summary info on every array entry in the db--- */
 	  final static String name50 = "ALL_ENTRIES_ARRAY_FOCUS";
 	  final static String query50 = "SELECT DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE, " + stageFormatConcat +", " +
-		   "IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), SUB_SOURCE) SUB_SOURCE, " +
+		   "SUB_SOURCE, " +
 		   "SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, " +
 		   "SER_GEO_ID, GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', '), MUT_GENE, SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID " + endsBrowseSubmissionArray;
 
@@ -943,7 +943,7 @@ public class AdvancedSearchDBQuery {
 	  final static String name137 = "ALL_SERIES";
 	  final static String query137 = "SELECT distinct SER_TITLE, SER_GEO_ID, " +
 		"(SELECT COUNT(*) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID) SAMPLE_NUMBER, " +
-		"IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), SUB_SOURCE) SUB_SOURCE, " +
+		"SUB_SOURCE, " +
 		"PLT_GEO_ID, SER_OID, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') " +// added group_concat column - 02/03/2010
 		"FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, MIC_PLATFORM, ISH_PERSON, ANA_NODE, ANA_TIMED_NODE " +// added node and timed node table - 02/03/2010
 		"WHERE SRM_SERIES_FK = SER_OID " +

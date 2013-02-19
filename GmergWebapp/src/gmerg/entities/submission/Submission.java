@@ -6,7 +6,6 @@ public class Submission {
 
     private String accID;
     private Specimen specimen;
-    private Person principalInvestigator;
     private Person submitter;
     private String stage;
     private String authors;
@@ -38,25 +37,12 @@ public class Submission {
     private String localId; //SUB_LOCAL_ID
     private String euregeneId; //SUB_ACCESSION_ID_2
     
-    // xingjun  - 14/06/2011 - might have more than one principal investigators
     private Person[] principalInvestigators;
 
     public Submission() {
     
     }
     
-    public Submission(String accID, Specimen specimen, Person pi, Person submitter, 
-    		String stage, String authors, ArrayList originalImages) {
-    	this.accID = accID;
-    	this.specimen = specimen;
-    	this.principalInvestigator = pi;
-    	this.submitter = submitter;
-    	this.stage = stage;
-    	this.authors = authors;
-        this.originalImages = originalImages;
-    }
-    
-    // xingjun - 14/06/2011 - multiple pis constructor
     public Submission(String accID, Specimen specimen, Person[] pis, Person submitter, 
     		String stage, String authors, ArrayList originalImages) {
     	this.accID = accID;
@@ -82,14 +68,6 @@ public class Submission {
 
     public Specimen getSpecimen() {
         return specimen;
-    }
-
-    public void setPrincipalInvestigator(Person pI) {
-        principalInvestigator = pI;
-    }
-
-    public Person getPrincipalInvestigator() {
-        return principalInvestigator;
     }
 
     public void setSubmitter(Person sbmttr) {
@@ -299,9 +277,7 @@ public class Submission {
     public void setLabId(String labId) {
     	this.labId = labId;
     }
-    // xingjun - 15/07/2008
 
-    // xingjun - 14/06/2011 
     public void setPrincipalInvestigators(Person[] pis) {
         this.principalInvestigators = pis;
     }
