@@ -77,16 +77,10 @@ public class AnnotationToolQuery {
 	  };
 /** backup - end */	  
 	  
-	  
 	  final static String name213 = "GET_STAGE_FROM_SUBMISSION";
 	  final static String query213 = "SELECT SUB_EMBRYO_STG FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID=?";
-	  
-	  final static String name214 = "DELETE_FROM_EXPRESSION_WITH_DIFFERENT_STAGE";
-	  final static String query214 = "delete FROM ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE, ANA_STAGE "
-									+" WHERE STG_NAME=? AND EXP_COMPONENT_ID = ATN_PUBLIC_ID "
-									+" AND ATN_NODE_FK=ANO_OID AND ATN_STAGE_FK=STG_OID "
-									+" AND EXP_SUBMISSION_FK=SUB_OID AND SUB_ACCESSION_ID=?";
 
+	  
 	  final static String name1 = "INCOMPLETED_SUBMISSION_BATCH_ID";
 	  final static String query1 = "SELECT DISTINCT SUB_BATCH FROM ISH_SUBMISSION " +
 	  		"WHERE SUB_DB_STATUS_FK = 2 AND SUB_PI_FK = ?";
@@ -97,11 +91,7 @@ public class AnnotationToolQuery {
 	  final static String name3 = "UPDATE_MAX_SUBMISSION_BATCH_ID";
 	  final static String query3 = "UPDATE REF_BATCH SET BAT_OID = ?";
 	  
-	  // mofidied by xingjun - 15/08/2008
-	  // more information need to be retrieved
-	  // xingjun - 16/10/2009 - added column SUB_DB_STATUS_FK
 	  final static String name4 = "GET_ISH_SUBMISSIONS_BY_BATCH_ID";
-//	  final static String query4 = "SELECT SUB_ACCESSION_ID, SUB_BATCH FROM ISH_SUBMISSION WHERE SUB_BATCH = ?";
 	  final static String query4 = "SELECT SUB_ACCESSION_ID, SUB_BATCH, LSB_USER, TIMESTAMPDIFF(MINUTE, LSB_LOCKED_TIME, NOW()), RPV_PRIVILEGE_FK , EDH_MODIFIED_BY, MAX(EDH_MODIFIED_TIME), SUB_DB_STATUS_FK FROM ISH_SUBMISSION " +
 	  		"JOIN LOG_EDITING_HISTORY ON EDH_ACCESSION_ID = SUB_ACCESSION_ID " +
 	  		"LEFT JOIN LCK_SUBMISSION ON LSB_ACCESSION_ID = SUB_ACCESSION_ID " +
@@ -115,11 +105,6 @@ public class AnnotationToolQuery {
 	  final static String name6 = "UPDATE_MAX_SUBMISSION_TEMP_ID";
 	  final static String query6 = "UPDATE REF_SEQUENCES SET SEQ_TEMP_ID = ?";
 	  
-	  // modified by xingjun - 31/07/2008
-	  // changed the initial value 'ISH' for SUB_ASSAY_TYPE column to '' - when user create a new 
-	  // temp submission, it could be ISH, IHC, or Tg. Better not to specify it when first insert it
-	  // leave it to later after spreadsheet data has been loaded in
-	  // xingjun - 06/11/2009 - take SUB_LOCAL_STATUS_FK out from the sql - DH need that column for storing xml file status
 	  final static String name7 = "INSERT_TEMP_SUBMISSION";
 	  final static String query7 = "INSERT INTO ISH_SUBMISSION (SUB_OID, SUB_SUBMITTER_FK, SUB_PI_FK, " +
 	  		"SUB_ENTRY_BY_FK, SUB_MODIFIER_FK, SUB_DB_STATUS_FK, SUB_PROJECT_FK, " +
@@ -164,10 +149,6 @@ public class AnnotationToolQuery {
 	  		"WHERE SUB_OID = ?";
 	  
 	  final static String name12 = "INSERT_SUBMISSION";
-	  // modified by xingjun - 12/11/2008 - removed SUB_LAB_ID
-	  // derek set a unique index in the ish_submission table and want to use this column 
-	  // to store other information. I think we should not specify its value here
-	  // xingjun - 06/11/2009 - take SUB_LOCAL_STATUS_FK out from the sql - DH need that column for storing xml file status
 	  final static String query12 = "INSERT INTO ISH_SUBMISSION (SUB_OID, SUB_ACCESSION_ID, SUB_EMBRYO_STG, " +
 	  		"SUB_ASSAY_TYPE, SUB_IS_PUBLIC, SUB_ARCHIVE_ID, SUB_IS_DELETED, SUB_SUBMITTER_FK, SUB_PI_FK, " +
 	  		"SUB_ENTRY_BY_FK, SUB_MODIFIER_FK, SUB_DB_STATUS_FK, SUB_PROJECT_FK, " +
@@ -215,18 +196,7 @@ public class AnnotationToolQuery {
 	  		                        "AND PARENT.ATN_NODE_FK != RTR_DESCENDENT_FK " +
 	  		                        "AND KIDS.ATN_PUBLIC_ID IN ";
 
-	  // modified by xingjun - 12/12/2008
-	  // added criteria to only retrieve log info that record db status 
-	  // changed from 1 (new) to 2 (incomplete); not from 3 (awaiting metadata) to 2.
-	  // in latter case administrator change the status back sometimes to allow users to
-	  // re-edit their data
-	  // modified by xingjun - 18/12/2008 - need to find completed batch as well
 	  final static String name17 = "GET_ISH_BATCHES_WITH_MODIFICATION_TIME_BY_PI";
-//	  final static String query17 = "SELECT SUB_BATCH, EDH_MODIFIED_BY, MAX(EDH_MODIFIED_TIME) FROM ISH_SUBMISSION " +
-//		"JOIN LOG_EDITING_HISTORY ON EDH_ACCESSION_ID = SUB_ACCESSION_ID " +
-//		"WHERE SUB_DB_STATUS_FK = 2 AND SUB_PI_FK = ? " +
-//		"AND EDH_OLD_VALUE < 2 " +
-//		"GROUP BY SUB_BATCH, EDH_MODIFIED_BY";
 	  final static String query17 = "SELECT SUB_BATCH, EDH_MODIFIED_BY, MAX(EDH_MODIFIED_TIME), SUB_DB_STATUS_FK FROM ISH_SUBMISSION " +
 	  		"JOIN LOG_EDITING_HISTORY ON EDH_ACCESSION_ID = SUB_ACCESSION_ID " +
 	  		"WHERE SUB_DB_STATUS_FK < 4 AND SUB_PI_FK = ? " +
@@ -235,11 +205,6 @@ public class AnnotationToolQuery {
 	  	  
 	  
 	  final static String name18 = "GET_ISH_BATCHES_WITH_CREATION_TIME_BY_PI";
-//	  final static String query18 = "SELECT EDH_NEW_VALUE, EDH_MODIFIED_BY, EDH_MODIFIED_TIME FROM LOG_EDITING_HISTORY " +
-//	  		"JOIN ISH_BATCH_USER ON BSR_BATCH_ID = CAST(EDH_NEW_VALUE AS UNSIGNED) " +
-//	  		"WHERE EDH_COLUMN = 'BSR_BATCH_ID' " +
-//	  		"AND EDH_TYPE = 'insert' " +
-//	  		"AND BSR_PI = ?";
 	  final static String query18 = "SELECT H0.EDH_ITEM, H0.EDH_MODIFIED_BY, MAX(H0.EDH_MODIFIED_TIME) MAX_MOD_TIME, '2' FROM LOG_EDITING_HISTORY H0 " +
 	  		"JOIN ISH_BATCH_USER ON BSR_BATCH_ID = CAST(H0.EDH_ITEM AS UNSIGNED) AND BSR_PI = ? " +
 	  		"WHERE H0.EDH_TABLE = 'ISH_BATCH_USER' " +
@@ -261,24 +226,6 @@ public class AnnotationToolQuery {
 	  final static String query24 = "SELECT BSR_STATUS FROM ISH_BATCH_USER WHERE BSR_BATCH_ID = ? ";
 	  
 
-	  final static String name100 = "GET_LOG_HISTORY_DATE";
-	  final static String query100 = "select distinct SUBSTR(EDH_MODIFIED_TIME,1 , 10) from LOG_EDITING_HISTORY";
-
-	  final static String name101 = "GET_USERS_IN_DATE";
-	  final static String query101 = "select distinct EDH_MODIFIED_BY from  LOG_EDITING_HISTORY where  SUBSTR(EDH_MODIFIED_TIME,1 , 10)=?";
-
-	  final static String name102 = "GET_SECTIONS";
-	  final static String query102 = "select distinct EDH_SECTION from LOG_EDITING_HISTORY where SUBSTR(EDH_MODIFIED_TIME,1 , 10)=? and EDH_MODIFIED_BY=? and EDH_ACCESSION_ID=?";
-
-	  final static String name103 = "GET_SUBMISSIONS";
-	  final static String query103 = "select distinct EDH_ACCESSION_ID from LOG_EDITING_HISTORY where  SUBSTR(EDH_MODIFIED_TIME,1 , 10)=? and EDH_MODIFIED_BY=?";
-
-	  final static String name104 = "GET_ITEMS";
-	  final static String query104 = "select distinct EDH_ITEM, EDH_OLD_VALUE, EDH_NEW_VALUE from LOG_EDITING_HISTORY where  SUBSTR(EDH_MODIFIED_TIME,1 , 10)=? and EDH_MODIFIED_BY=? and EDH_ACCESSION_ID=? and EDH_SECTION=?";
-
-	  final static String name105 = "GET_HISTORY";
-	  final static String query105 = "select distinct SUBSTR(EDH_MODIFIED_TIME,1 , 10),EDH_MODIFIED_BY, EDH_ACCESSION_ID, EDH_SECTION, EDH_ITEM, EDH_COLUMN_LABEL, EDH_OLD_VALUE, EDH_NEW_VALUE from LOG_EDITING_HISTORY group by SUBSTR(EDH_MODIFIED_TIME,1 , 10),EDH_MODIFIED_BY, EDH_ACCESSION_ID, EDH_SECTION, EDH_ITEM order by SUBSTR(EDH_MODIFIED_TIME,1 , 10) DESC LIMIT 0, 100";
-
 	  final static String name106 = "SUBMISSION_SUMMARY";
 	  final static String query106 = "SELECT SUB_OID, SUB_ACCESSION_ID, SUB_EMBRYO_STG, SUB_DB_STATUS_FK FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID = ? ";
 	  
@@ -288,8 +235,6 @@ public class AnnotationToolQuery {
 	  
 	  
 	  static ParamQuery pqList[] = {
-	      new ParamQuery(name213, query213),
-	      new ParamQuery(name214, query214),
 	      new ParamQuery(name1, query1),
 	      new ParamQuery(name2, query2),
 	      new ParamQuery(name3, query3),
@@ -314,13 +259,8 @@ public class AnnotationToolQuery {
 	      new ParamQuery(name22, query22),
 	      new ParamQuery(name23, query23),
 	      new ParamQuery(name24, query24),
-	      new ParamQuery(name100, query100),
-	      new ParamQuery(name101, query101),
-	      new ParamQuery(name102, query102),
-	      new ParamQuery(name103, query103),
-	      new ParamQuery(name104, query104),
-	      new ParamQuery(name105, query105),
-	      new ParamQuery(name106, query106)
+	      new ParamQuery(name106, query106),
+	      new ParamQuery(name213, query213)
 	  };
 	  
 	  // finds ParamQuery object by name and returns

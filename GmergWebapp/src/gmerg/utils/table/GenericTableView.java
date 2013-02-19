@@ -86,12 +86,19 @@ public class GenericTableView
 		this.name = name;
 		width = w;
 		height = h;
+		/** scroll within table does not work properly
+		 *  anyway, brwoser has a scroll function itself
+		 *  two scoll functions are unnecessary
+		 */
+		/*
 		if (height == 0) {
 			heightMode = 1;
 			height = DEFAULT_HEIGHT;
 		}
 		else
 			heightMode = 3;
+		*/
+		heightMode = 0;
 		parentIdParam = null;
 		parentId = null;
 		displayHeader = true;

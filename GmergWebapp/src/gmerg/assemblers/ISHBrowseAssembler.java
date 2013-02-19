@@ -313,31 +313,31 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		if(null != row[13]) {
 			if(row[13].equalsIgnoreCase("5")) {
 				//formatedRow[13] = new DataItem("Awaiting Annotation", "Click to open annotation window for "+ row[0], "openZoomViewer('"+row[0]+"', 'desktop1', '1');var w=window.open('ish_edit_expression.html?id="+row[0]+"','desktop0','left=800,resizable=1,toolbar=0,scrollbars=1,width=600,height=700');w.focus(); return false;", 40);	// thumbnail
-				formatedRow[13] = new DataItem("View/Edit Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
+				formatedRow[13] = new DataItem("View Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
 			} else if(row[13].equalsIgnoreCase("19")) {
 				//formatedRow[13] = new DataItem("Partially Annotated by Annotator", "Click to open annotation window for "+ row[0], "openZoomViewer('"+row[0]+"', 'desktop1', '1');var w=window.open('ish_edit_expression.html?id="+row[0]+"','desktop0','left=800,resizable=1,toolbar=0,scrollbars=1,width=600,height=700');w.focus(); return false;", 40);	// thumbnail
-				formatedRow[13] = new DataItem("View/Edit Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
+				formatedRow[13] = new DataItem("View Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
 			} else if(row[13].equalsIgnoreCase("20")) {
 				//formatedRow[13] = new DataItem("Completely Annotated by Annotator", "Click to open annotation window for "+ row[0], "openZoomViewer('"+row[0]+"', 'desktop1', '1');var w=window.open('ish_edit_expression.html?id="+row[0]+"','desktop0','left=800,resizable=1,toolbar=0,scrollbars=1,width=600,height=700');w.focus(); return false;", 40);	// thumbnail
-				formatedRow[13] = new DataItem("View/Edit Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
+				formatedRow[13] = new DataItem("View Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
 			} else if(row[13].equalsIgnoreCase("21")) {
 				//formatedRow[13] = new DataItem("Partially Annotated by Sr. Annotator", "Click to open annotation window for "+ row[0], "openZoomViewer('"+row[0]+"', 'desktop1', '1');var w=window.open('ish_edit_expression.html?id="+row[0]+"','desktop0','left=800,resizable=1,toolbar=0,scrollbars=1,width=600,height=700');w.focus(); return false;", 40);	// thumbnail
-				formatedRow[13] = new DataItem("View/Edit Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
+				formatedRow[13] = new DataItem("View Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
 			} else if(row[13].equalsIgnoreCase("22")) {
 				//formatedRow[13] = new DataItem("Completely Annotated by Sr. Annotator", "Click to open annotation window for "+ row[0], "openZoomViewer('"+row[0]+"', 'desktop1', '1');var w=window.open('ish_edit_expression.html?id="+row[0]+"','desktop0','left=800,resizable=1,toolbar=0,scrollbars=1,width=600,height=700');w.focus(); return false;", 40);	// thumbnail
-				formatedRow[13] = new DataItem("View/Edit Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
+				formatedRow[13] = new DataItem("View Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
 			} else if(row[13].equalsIgnoreCase("23")) {
 				//formatedRow[13] = new DataItem("Partially Annotated by Editor", "Click to open annotation window for "+ row[0], "openZoomViewer('"+row[0]+"', 'desktop1', '1');var w=window.open('ish_edit_expression.html?id="+row[0]+"','desktop0','left=800,resizable=1,toolbar=0,scrollbars=1,width=600,height=700');w.focus(); return false;", 40);	// thumbnail
-				formatedRow[13] = new DataItem("View/Edit Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
+				formatedRow[13] = new DataItem("View Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
 			} else if(row[13].equalsIgnoreCase("24")) {
 				//formatedRow[13] = new DataItem("Completely Annotated by Editor", "Click to open annotation window for "+ row[0], "openZoomViewer('"+row[0]+"', 'desktop1', '1');var w=window.open('ish_edit_expression.html?id="+row[0]+"','desktop0','left=800,resizable=1,toolbar=0,scrollbars=1,width=600,height=700');w.focus(); return false;", 40);	// thumbnail
-				formatedRow[13] = new DataItem("View/Edit Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
+				formatedRow[13] = new DataItem("View Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
 			} else if(row[13].equalsIgnoreCase("25")) {
 				//formatedRow[13] = new DataItem("Partially Annotated by Sr. Editor", "Click to open annotation window for "+ row[0], "openZoomViewer('"+row[0]+"', 'desktop1', '1');var w=window.open('ish_edit_expression.html?id="+row[0]+"','desktop0','left=800,resizable=1,toolbar=0,scrollbars=1,width=600,height=700');w.focus(); return false;", 40);	// thumbnail
-				formatedRow[13] = new DataItem("View/Edit Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
+				formatedRow[13] = new DataItem("View Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
 			} else if(row[13].equalsIgnoreCase("4")) {
 				//formatedRow[13] = new DataItem("Public");	// thumbnail
-				formatedRow[13] = new DataItem("View/Edit Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
+				formatedRow[13] = new DataItem("View Annotation", "Click to open annotation window for "+ row[0], "openDesktop1('"+row[0]+"');return false;", 40);	// thumbnail
 
 			}/* else if(row[13].equalsIgnoreCase("0")) {
 				formatedRow[13] = new DataItem("Editing in Progress");	// thumbnail

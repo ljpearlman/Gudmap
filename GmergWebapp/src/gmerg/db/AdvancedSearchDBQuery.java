@@ -53,60 +53,9 @@ public class AdvancedSearchDBQuery {
 		  return "NATURAL_SORT(RPR_SYMBOL), SUB_EMBRYO_STG, SPN_SEX";			  
 	  }
 	  
-	  final static public String getISHGeneDefaultSort(){
-		  return "RPR_SYMBOL ASC";			  
-	  }
-	  
-	  final static public String getISHStageDefaultSort(){
-		  return "SUB_EMBRYO_STG ASC";			  
-	  }
-	  
 	  // order: assay type, gene, expression, theiler stage, tissue, sex
 	  final static public String getBothDefaultSort(){
 		  return "col14, col1, col3, col6, col2, col15";
-	  }
-	  
-	  final static public String getBothGeneDefaultSort(String asc){
-		  return "col6 " + asc + ", col1 ASC";		  
-	  }
-	  
-	  final static public String getBothStageDefaultSort(String asc){
-		  return "col1 "+ asc+ ", col6 ASC";		  
-	  }
-	  
-	  final static public Hashtable getOrgans(){
-			Hashtable<String, String[]> lookupsection = new Hashtable<String,String[]>();
-			lookupsection.put("1",new String[]{"metanephros"});
-			lookupsection.put("2",new String[]{"mesonephros", "gonad", "genital tubercle"});
-			lookupsection.put("3",new String[]{"male reproductive system"});
-			lookupsection.put("4",new String[]{"female reproductive system"});
-			lookupsection.put("5",new String[]{"bladder", 
-					"urethral plate","urethra of female",
-					"urorectal septum","urogenital sinus","urogenital membrane"});
-			
-			return lookupsection;
-	  }
-	  
-	  final static public Hashtable getOrganTitles(){
-			Hashtable<String, String> lookupsection = new Hashtable<String,String>();
-			lookupsection.put("1",new String("Metanephros"));
-			lookupsection.put("5",new String("Lower Urinary Tract"));
-			lookupsection.put("3",new String("Male Reproductive System"));
-			lookupsection.put("4",new String("Female Reproductive System"));
-			lookupsection.put("2",new String("Early Reproductive System"));
-			
-			return lookupsection;
-	  }
-	  
-	  final static public Hashtable getOrganNumbers(){
-			Hashtable<String, String> lookupsection = new Hashtable<String,String>();
-			lookupsection.put(new String("metanephros"),"1");
-			lookupsection.put(new String("lower urinary tract"),"5");
-			lookupsection.put(new String("male reproductive system"),"3");
-			lookupsection.put(new String("female reproductive system"),"4");
-			lookupsection.put(new String("early reproductive system"),"2");
-			
-			return lookupsection;
 	  }
 	  
 	  final static public Hashtable getEMAPID(){
@@ -184,7 +133,7 @@ public class AdvancedSearchDBQuery {
 		  lookup.put("Probe", new String[]{"QIC_PRB_PROBE_NAME", "QIC_PRB_CLONE_NAME"});
 		  return lookup;
 	  }
-	  
+
 	  final static public Hashtable getMICQuickSearchColumns(){
 		  Hashtable<String, String[]> lookup = new Hashtable<String,String[]>();
 		  lookup.put("All", new String[]{"MBC_GNF_SYMBOL",
@@ -229,27 +178,6 @@ public class AdvancedSearchDBQuery {
 		  lookup.put("RefMgiGoGene_MrkSymbol", new String [] {"SELECT DISTINCT GOG_MRK_SYMBOL FROM REF_MGI_GOGENE WHERE ","GOG_TERM"});
 		  return lookup;
 	  }
-	  
-	  final static public Hashtable getSortColumn(){
-		  Hashtable<String, String> lookup = new Hashtable<String,String>();
-		  lookup.put("0","1");
-		  lookup.put("1","11");
-		  lookup.put("2","14");
-		  lookup.put("3","12");
-		  lookup.put("4","3");
-		  lookup.put("5","2");
-		  lookup.put("6","6");
-		  lookup.put("7","15");
-		  lookup.put("8","8");
-		  lookup.put("9", "4");
-		  lookup.put("10", "5");
-		  lookup.put("11", "7");
-		  lookup.put("12", "9");
-
-		  return lookup;
-	  }
-	  
-	  
 	  
 	  
 	  final static public Hashtable getLookup(){
@@ -333,21 +261,7 @@ public class AdvancedSearchDBQuery {
 			lookup2.put("Location", "36");
 			return lookup2;
 	  }
-	  
-	  final static public Hashtable getLookupsection(){
-		Hashtable<String, String> lookupsection = new Hashtable<String,String>();
-		lookupsection.put("probe","0");
-		lookupsection.put("gene","1");
-		lookupsection.put("sample","2");
-		lookupsection.put("series","3");
-		lookupsection.put("ontology","4");
-		lookupsection.put("specimen","5");
-		lookupsection.put("lab","6");
-		lookupsection.put("platform","7");
-		lookupsection.put("probeset","8");
-		return lookupsection;
-	  }
-	  
+
 	  final static public Hashtable getLookupInDB(){
 			Hashtable<String, String> lookupInDB = new Hashtable<String,String>();
 			lookupInDB.put("Tissue", "QIC_PRB_TISSUE");
@@ -490,7 +404,7 @@ public class AdvancedSearchDBQuery {
 		  return "(select distinct QIC_RPR_SYMBOL col1, "+
 		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') col2,"+  
 		"'' col3,"+
-		"QIC_PER_NAME col4,"+
+		"QIC_SUB_SOURCE col4,"+
 		"QIC_SUB_SUB_DATE col5,"+
 		"QIC_SUB_EMBRYO_STG col6,"+
 		"QIC_SPN_ASSAY_TYPE col7,"+
@@ -511,7 +425,7 @@ public class AdvancedSearchDBQuery {
 	return "(select distinct QIC_RPR_SYMBOL col1, "+
 	    "'' col2,"+
 	    "QIC_EXP_STRENGTH col3,"+
-	    "QIC_PER_NAME col4,"+
+	    "QIC_SUB_SOURCE col4,"+
 	    "QIC_SUB_SUB_DATE col5,"+
 	    "QIC_SUB_EMBRYO_STG col6,"+
 	    "QIC_SPN_ASSAY_TYPE col7,"+
@@ -525,7 +439,7 @@ public class AdvancedSearchDBQuery {
 		  return "(select distinct QIC_RPR_SYMBOL col1, "+
 			"QIC_ANO_COMPONENT_NAME col2, "+
 	        "QIC_EXP_STRENGTH col3,"+
-			"QIC_PER_NAME col4,"+
+			"QIC_SUB_SOURCE col4,"+
 			"QIC_SUB_SUB_DATE col5,"+
 			"QIC_SUB_EMBRYO_STG col6,"+
 			"QIC_SPN_ASSAY_TYPE col7,"+
@@ -535,26 +449,12 @@ public class AdvancedSearchDBQuery {
 			"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15  ";
 	  }
 	  
-	  
-	  final static public String getISHCountForAnatomy(){
-		  return "select count(distinct QIC_RPR_SYMBOL , "+
-		"'' ,"+
-                "QIC_EXP_STRENGTH ,"+  
-		"QIC_PER_NAME ,"+
-		"QIC_SUB_SUB_DATE ,"+
-		"QIC_SUB_EMBRYO_STG ,"+
-		"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) ,"+
-		"QIC_SUB_THUMBNAIL ,"+
-		"QIC_SUB_ACCESSION_ID ,"+
-		"'' ,'' ), QIC_SPN_SEX ";
-	  }
-	  
 	  final static public String getMICSelect(){
 		  return "(select distinct "+
 		"'' col1,"+
 		"QMC_ANO_COMPONENT_NAME col2,"+
                 "'' col3,"+
-		"QMC_PER_NAME col4,"+
+		"QMC_SUB_SOURCE col4,"+
 		"QMC_SUB_SUB_DATE col5,"+
 		"QMC_SUB_EMBRYO_STG col6,"+
 		"QMC_SPN_ASSAY_TYPE col7,"+
@@ -577,7 +477,7 @@ public class AdvancedSearchDBQuery {
 		"MBC_GNF_SYMBOL col1,"+
 		"MBC_ANO_COMPONENT_NAME col2,"+
                 "'' col3,"+
-		"IF((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK=GRP_OID WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)), MBC_PER_NAME) col4,"+
+		"IF((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK=GRP_OID WHERE SPG_SUBMISSION_FK=CAST(SUBSTRING(MBC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED)), MBC_SUB_SOURCE) col4,"+
 		"MBC_SUB_SUB_DATE col5,"+
 		"MBC_SUB_EMBRYO_STG col6,"+
 		"MBC_SPN_ASSAY_TYPE col7,"+
@@ -593,7 +493,7 @@ public class AdvancedSearchDBQuery {
 			"'' col1,"+
 			"QMC_ANO_COMPONENT_NAME col2,"+
 	                "'' col3,"+
-			"QMC_PER_NAME col4,"+
+			"QMC_SUB_SOURCE col4,"+
 			"QMC_SUB_SUB_DATE col5,"+
 			"QMC_SUB_EMBRYO_STG col6,"+
 			"QMC_SPN_ASSAY_TYPE col7,"+
@@ -609,7 +509,7 @@ public class AdvancedSearchDBQuery {
 		"'' col1,"+
 		"QMC_ANO_COMPONENT_NAME col2,"+
                 "'' col3,"+
-		"QMC_PER_NAME col4,"+
+		"QMC_SUB_SOURCE col4,"+
 		"QMC_SUB_SUB_DATE col5,"+
 		"QMC_SUB_EMBRYO_STG col6,"+
 		"QMC_SPN_ASSAY_TYPE col7,"+
@@ -624,7 +524,7 @@ public class AdvancedSearchDBQuery {
 		  return "select count(distinct QIC_RPR_SYMBOL, " +
 		  "'', " +
 		  "'', " +
-		  "QIC_PER_NAME, " +
+		  "QIC_SUB_SOURCE, " +
 		  "QIC_SUB_SUB_DATE, " +
 		  "QIC_SUB_EMBRYO_STG, " +
 		  "QIC_SPN_ASSAY_TYPE, " +
@@ -642,7 +542,7 @@ public class AdvancedSearchDBQuery {
 		"'' ,"+
 		"QMC_ANO_COMPONENT_NAME ,"+
                 "'' ,"+
-		"QMC_PER_NAME ,"+
+		"QMC_SUB_SOURCE,"+
 		"QMC_SUB_SUB_DATE ,"+
 		"QMC_SUB_EMBRYO_STG ,"+
 		"QMC_SPN_ASSAY_TYPE ,"+
@@ -662,13 +562,6 @@ public class AdvancedSearchDBQuery {
 	  
 	  final static public String getISHFromLocation(){
 		  return " from QSC_ISH_CACHE Left join QSC_ISH_LOCATION on QIL_SUB_ACCESSION_ID=QIC_SUB_ACCESSION_ID ";
-	  }
-	  
-	  final static public String getISHFromGO(){ //??????????????????????????????????????
-		  return " from QSC_ISH_CACHE "+
-			 " ,mygo.term term1, mygo.term term2, mygo.graph_path graph "+
-			 " where QSC_GO_ACC=term2.ACC and term1.id=graph.term1_id and term2.id=graph.term2_id "+
-			 " and term1.name='reproduction' ";
 	  }
 	  
 	  final static public String getMICFrom(){
@@ -698,13 +591,6 @@ public class AdvancedSearchDBQuery {
 	  
 	  final static public String getMICFromForAnatomy() {
 		  return " FROM QSC_MIC_CACHE as Gene ";
-	  }
-	  
-	  final static public String getMICFromGO(){
-		  return " from GudmapGX_test.MIC_BROWSE_CACHE as Gene " +
-	        " ,mygo.term term1, mygo.term term2, mygo.graph_path graph " +
-	        " where MBC_GO_ACC=term2.ACC and term1.id=graph.term1_id and term2.id=graph.term2_id " +
-	        " and term1.name='reproduction' ";
 	  }
 	  
 	  final static public String getUnion(){
@@ -855,35 +741,6 @@ public class AdvancedSearchDBQuery {
 			  "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) " +
 			  "WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" : 
 			  "CONCAT(SPN_STAGE_FORMAT, SPN_STAGE)";
-	  
-	  /**
-	   * xingjun - 25/09/2009 - not use for time being
-	   * @param emapids
-	   * @return
-	   */
-	  final static public String getPublicMICNumber(String[] emapids) {
-		  String ids = "";
-		  for(int i = 0; i < emapids.length; i++) {
-			  ids += "'"+emapids[i] + "',";
-		  }
-		  if(emapids.length >= 1) {
-			  ids = ids.substring(0, ids.length()-1);
-		  }
-		  return " select count(DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE," + stageFormatConcat + ", SUB_SOURCE,SUB_SUB_DATE,SMP_SEX, " +
-		         "SRM_SAMPLE_DESCRIPTION,SMP_TITLE, SER_GEO_ID, concat(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ') '), SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID) " +
-		         "FROM ISH_SUBMISSION,MIC_SAMPLE,ISH_SPECIMEN,MIC_SERIES_SAMPLE,MIC_SERIES,ISH_PERSON,ISH_EXPRESSION, ANA_TIMED_NODE, ANA_NODE ANA_NODE " +
-				 "WHERE SMP_SUBMISSION_FK = SUB_OID AND SRM_SAMPLE_FK = SMP_OID AND EXP_SUBMISSION_FK=SUB_OID AND SRM_SERIES_FK = SER_OID AND PER_OID = SUB_PI_FK " +
-				 "AND SUB_OID = SPN_SUBMISSION_FK AND SUB_ASSAY_TYPE = 'Microarray' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND ATN_PUBLIC_ID=EXP_COMPONENT_ID " +
-				 "AND ATN_NODE_FK = ANO_OID  AND EXP_COMPONENT_ID in  (select distinct DESCEND_ATN.ATN_PUBLIC_ID " +
-				 "from ANA_TIMED_NODE ANCES_ATN, ANAD_RELATIONSHIP_TRANSITIVE, ANA_TIMED_NODE DESCEND_ATN, " +
-				 "ANA_NODE, ANAD_PART_OF " +
-				 "where ANCES_ATN.ATN_PUBLIC_ID in (" + ids + ") " +
-				 "and ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
-				 "and RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
-				 "and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK " +
-				 "and ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
-				 "and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) ";
-	  }
 
 	  final static public String getPublicIHCNumber(String[] emapids) {
 		  String ids = "";
@@ -954,11 +811,6 @@ public class AdvancedSearchDBQuery {
 	  "join ANA_TIMED_NODE on ATN_PUBLIC_ID=EXP_COMPONENT_ID "+
 	  "join ANA_NODE on ATN_NODE_FK = ANO_OID where SUB_ACCESSION_ID=?";  
 	  
-	  final static String name130 = "ALL_ANATOMY_TERMS";
-	  final static String query130 = "select distinct ANO_COMPONENT_NAME from ANAD_RELATIONSHIP_TRANSITIVE, ANA_NODE "+
-	  								"where ANO_COMPONENT_NAME like ? and  RTR_DESCENDENT_FK=ANO_OID and RTR_ANCESTOR_FK in "+
-	  								"(select NIP_NODE_FK from  ANA_NODE_IN_PERSPECTIVE where NIP_PERSPECTIVE_FK='Urogenital')"; 
-
 	  public static String endsBrowseSubmissionArray = "FROM ISH_SUBMISSION " +
 	  		"JOIN MIC_SAMPLE ON SMP_SUBMISSION_FK = SUB_OID " +
 	  		"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
@@ -986,7 +838,7 @@ public class AdvancedSearchDBQuery {
       /* ---query to find summary info on every array entry in the db--- */
 	  final static String name50 = "ALL_ENTRIES_ARRAY_FOCUS";
 	  final static String query50 = "SELECT DISTINCT SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE, " + stageFormatConcat +", " +
-		   "IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), SUB_SOURCE) SUB_SOURCE, " +
+		   "SUB_SOURCE, " +
 		   "SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, " +
 		   "SER_GEO_ID, GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', '), MUT_GENE, SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID " + endsBrowseSubmissionArray;
 
@@ -1091,7 +943,7 @@ public class AdvancedSearchDBQuery {
 	  final static String name137 = "ALL_SERIES";
 	  final static String query137 = "SELECT distinct SER_TITLE, SER_GEO_ID, " +
 		"(SELECT COUNT(*) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID) SAMPLE_NUMBER, " +
-		"IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), SUB_SOURCE) SUB_SOURCE, " +
+		"SUB_SOURCE, " +
 		"PLT_GEO_ID, SER_OID, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') " +// added group_concat column - 02/03/2010
 		"FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, MIC_PLATFORM, ISH_PERSON, ANA_NODE, ANA_TIMED_NODE " +// added node and timed node table - 02/03/2010
 		"WHERE SRM_SERIES_FK = SER_OID " +
@@ -1234,14 +1086,6 @@ public class AdvancedSearchDBQuery {
 		  return symbolsQ.toString();
 	  }
 	  
-	  /*final static public String getISHGeneExpresssion(String symbol) {
-		  return "select distinct SUB_ACCESSION_ID,  SUB_EMBRYO_STG, EXP_STRENGTH from ISH_PROBE,ISH_SUBMISSION,ISH_EXPRESSION where EXP_SUBMISSION_FK=SUB_OID and PRB_SUBMISSION_FK=SUB_OID and PRB_GENE_SYMBOL = '"+symbol+"'";
-	  }
-	  
-	  final static public String getMicGeneExpresssion(String symbol) {
-		  return "select distinct MBC_SUB_ACCESSION_ID, MBC_SUB_EMBRYO_STG, MBC_GLI_DETECTION from MIC_BROWSE_CACHE where MBC_GNF_SYMBOL = '"+symbol+"' ";
-	  }*/
-	  
 	  final static String name140 = "GENE_EXPRESSION_FOR_GIVEN_STRUCTURE";
 	  final static String query140 = "SELECT DISTINCT EXP_COMPONENT_ID, EXP_STRENGTH FROM ISH_EXPRESSION " +
 	  		"JOIN ISH_SUBMISSION ON EXP_SUBMISSION_FK = SUB_OID AND SUB_ASSAY_TYPE IN ('ISH', 'IHC', 'TG') " +
@@ -1278,13 +1122,6 @@ public class AdvancedSearchDBQuery {
 	  		"WHERE GNE_SYMBOL = ? " +
 	  		"AND (DGA_FLAG = 'N' || DGA_FLAG = 'U' || DGA_FLAG = 'R')"; // modified by xingjun - 30/04/2009
 
-	  final static String name144 = "GET_PUBLIC_SUBMISSION_NUMBER_BY_GIVEN_SUBMISSION_ID";
-	  final static String query144 = "SELECT COUNT(*) FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID IN AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
-
-	  final static String name145 = "GET_SUBMISSION_NUMBER_BY_GIVEN_SUBMISSION_ID";
-	  final static String query145 = "SELECT COUNT(*) FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID IN ";
-
-
 	  final static String name = "";
 	  final static String query = "";
 
@@ -1301,7 +1138,6 @@ public class AdvancedSearchDBQuery {
 	      new ParamQuery(name42, query42),
 	      new ParamQuery(name50, query50),
 	      new ParamQuery(name129, query129),
-	      new ParamQuery(name130, query130),
 	      new ParamQuery(name137, query137),
 	      new ParamQuery(name138, query138),
 	      new ParamQuery(name139, query139),
@@ -1309,8 +1145,6 @@ public class AdvancedSearchDBQuery {
 	      new ParamQuery(name141, query141),
 	      new ParamQuery(name142, query142),
 	      new ParamQuery(name143, query143),
-	      new ParamQuery(name144, query144),
-	      new ParamQuery(name145, query145)
 	  };
 
 	  //  finds ParamQuery object by name and returns

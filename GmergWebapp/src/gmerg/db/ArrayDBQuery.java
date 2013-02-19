@@ -230,10 +230,9 @@ public class ArrayDBQuery {
 	"JOIN ANA_TIMED_NODE ON ATN_NODE_FK = ANO_OID " +
 	"JOIN ISH_SP_TISSUE ON IST_COMPONENT  = ATN_PUBLIC_ID " +
 	"WHERE IST_SUBMISSION_FK = SUBSTR(?,8) ";
-	
 	final static String name29 = "ALL_SERIES";
 	final static String query29 = "SELECT DISTINCT SER_TITLE, SER_GEO_ID, (SELECT COUNT(distinct SRM_SAMPLE_FK) FROM MIC_SERIES_SAMPLE WHERE SRM_SERIES_FK = SER_OID) SAMPLE_NUMBER, " +
-			"IF ((SELECT COUNT(*) FROM REF_SUBMISSION_PERSON_GRP WHERE SPG_SUBMISSION_FK = SUB_OID) > 0, (SELECT GRP_DESCRIPTION FROM REF_GROUP JOIN REF_SUBMISSION_PERSON_GRP ON SPG_GROUP_FK = GRP_OID WHERE SPG_SUBMISSION_FK = SUB_OID), SUB_SOURCE) SUB_SOURCE, " +
+			"SUB_SOURCE, " +
 			"PLT_GEO_ID, SER_OID, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') " +
 			"FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, MIC_PLATFORM, ISH_PERSON, ANA_NODE, ANA_TIMED_NODE " +
 			"WHERE SRM_SERIES_FK = SER_OID " +
@@ -244,10 +243,10 @@ public class ArrayDBQuery {
 			"AND PLT_OID = SER_PLATFORM_FK " +
 			"AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
 			"AND ATN_NODE_FK = ANO_OID " +
-			"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + // added by xingjun - 10/10/2011 - only retrieve public entries
-			"AND SER_PLATFORM_FK " + // added by xingjun - 22/07/2011 - refer to sql ALL_SERIES in DBQuery.java
+			"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
+			"AND SER_PLATFORM_FK " + 
 			"GROUP BY SER_GEO_ID ";
-	
+
 	
 	final static String name = "";
 	final static String query = "";
@@ -281,7 +280,7 @@ public class ArrayDBQuery {
 		new ParamQuery(name26, query26),
 		new ParamQuery(name27, query27),
 		new ParamQuery(name28, query28),
-		new ParamQuery(name29, query29)
+		new ParamQuery(name29, query29),
 	};
 	
 	// finds ParamQuery object by name and returns

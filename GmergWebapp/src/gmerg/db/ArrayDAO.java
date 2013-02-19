@@ -22,8 +22,6 @@ public interface ArrayDAO {
 	/** ---implemented--- */
 	public String getTotalNumberOfSubmission();
         
-	public String findLabNameByPersonId(String personId);
-	
 	public SupplementaryFile findSupplementaryFileInfoBySubmissionId(String submissionAccessionId);
 	
 	public Sample findSampleBySubmissionId(String submissionAccessionId);
@@ -31,8 +29,6 @@ public interface ArrayDAO {
 	public Series findSeriesBySubmissionId(String submissionAccessionId);
 	
 	public Platform findPlatformBySubmissionId(String submissionAccessionId);
-	
-	public GeneListBrowseSubmission[] getGeneListBrowseSubmissionsBySubmissionId(String submissionAccessionId, String[] order, String offset);
 	
 	public String getTotalNumberOfGeneListItemsBySubmissionId(String submissionAccessionId);
 	
@@ -53,10 +49,6 @@ public interface ArrayDAO {
 	/////////////////////////////////////////////////////////////////////////////////////////
 	
 	public ArrayList findSamplesInCertainSeriesBySubmissionId(String submissionAccessionId);
-	
-	// used for gene collection page
-	public int findNumberOfSubmissionsByGeneSymbolISH(String symbol);
-	public int findNumberOfSubmissionsByGeneSymbolArray(String symbol);
 	
 	// used for analysis
 	public String[][] findSampleIdsBySeriesId(String seriesId);
@@ -95,22 +87,4 @@ public interface ArrayDAO {
 	public MasterTableInfo[] getMasterTableList(boolean isMaster); // keep it for time being in case required later - xingjun - 03/02/2010
 	
 	public ArrayList<String> getProbeSetIdBySymbols(String[] symbols, String platformId);
-	
-
-	/** --- to be implemented--- */
-	public ArrayList getMicroGeneQueryResult(String[][] param) throws SQLException;
-	
-	public ArrayList getMicroGeneRelatedSubmissions(String symbol) throws SQLException;
-	
-	public ArrayList getMicroLabSubmission(int single, String order, String labId, String date) throws SQLException;
-	
-	public ArrayList getMicroSubmissionDetails(String id) throws SQLException;
-	
-	public ArrayList getMicroSeries(String id) throws SQLException;
-	
-	public ArrayList getGeneCollectionDetails(String[] geneCookieList) throws SQLException;
-	
-	public ArrayList getMicroGeneList(String order, String id, int pNum, int resPerPage) throws SQLException;
-	
-	
 }

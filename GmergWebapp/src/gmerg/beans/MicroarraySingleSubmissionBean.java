@@ -60,36 +60,6 @@ public class MicroarraySingleSubmissionBean {
         else {
             //error message
         }
-        
-        
-        /*
-        if (submissionId != null && !submissionId.equals("")) {
-            setFacesSessionValue("arraySubId", submissionId);
-            
-            if(assembler.getData(submissionId) != null){
-                sub = assembler.getData(submissionId);
-            }
-            else {
-                //faces error message
-            }
-            
-        } else {
-        	if(assembler.getData((String)getFacesSessionValue("submissionID")) != null){
-        		System.out.println("FROM MIC SINGLE:"+(String)getFacesSessionValue("submissionID"));
-        		sub = assembler.getData((String)getFacesSessionValue("submissionID"));
-        		setFacesSessionValue("arraySubId", (String)getFacesSessionValue("submissionID"));
-        	} else {
-        	//error message shuld go here.
-            this.setSubmission(null);
-        	}
-        }
-        if(sub == null) {
-            //create faces error message
-        }
-        else {
-            this.setSubmission(sub);
-        }
-        */
     }
 
     public void setSubmission(ArraySubmission sub) {
@@ -204,44 +174,6 @@ public class MicroarraySingleSubmissionBean {
         if(pnum > npges)
             pnum = npges;
         geneListPageNum = String.valueOf(pnum);
-    }
-
-    public DataModel getGeneList() {
-        
-    	
-        String subId = (String)FacesUtil.getSessionValue("arraySubId");
-        
-        String sortDir = (String)FacesUtil.getSessionValue("glSortDir");
-        String sortParam = (String)FacesUtil.getSessionValue("glSortBy");
-        String [] order = new String [2];
-        
-        if(sortDir == null || sortParam == null){
-            order = null;
-        }
-        else{
-            order [0] = sortParam;
-            order[1] = sortDir;
-        }
-        
-        String offSet = ""; //determines which subset of entries are displayed on page
-        
-        int pNum;  //integer representation of current page
-        
-         try {
-             pNum = Integer.parseInt(getGeneListPageNum());
-         }
-         catch (NumberFormatException e){
-             pNum = 1;
-         }
-        
-         int startNo = (pNum - 1) * RES_PER_PAGE + 1;
-         offSet = Integer.toString(startNo);
-         
-        glItem = assembler.getGeneList(subId,order,offSet);
-         
-        geneList = new ArrayDataModel(glItem);
-        return geneList;
-
     }
 
     public void sortByAny(ActionEvent event){

@@ -38,7 +38,6 @@ public interface ISHDAO {
 	public Probe findMaProbeByProbeId(String probeId, String maprobeId);
 	public Specimen findSpecimenBySubmissionId(String submissionAccessionId); // q2
 	public String findAuthorBySubmissionId(String submissionAccessionId); // q16
-	public Person findPIBySubmissionId(String submissionAccessionId); // q3
 	public Person[] findPIsBySubmissionId(String submissionAccessionId); // xingjun - 20/06/2011
 	public Person findPersonById(String personId);
 	public Person findSubmitterBySubmissionId(String submissionAccessionId); // q4
@@ -53,9 +52,6 @@ public interface ISHDAO {
 	public Antibody findAntibodyBySubmissionId(String submissionAccessionId);
 	public Antibody findAntibodyByAntibodyId(String antibodyId);
 	
-	// added to allow display transgenic data - xingjun 27/08/2008
-	public Transgenic findTransgenicBySubmissionId(String submissionId);
-	
 	// added to allow display tissue data - bernie 23/09/210
 	public String findTissueBySubmissionId(String submissionId);
 	
@@ -66,22 +62,13 @@ public interface ISHDAO {
                                          boolean ascending, int offset,
                                          int num);
 	public ArrayList findRelatedMAProbeBySymbol(String symbol);
-	public Gene findGeneInfoInArrayEntries(String symbol);
         public Gene findFurtherGeneInfoForMicroarray(Gene geneInfo);
-	public ArrayList findEntrezInfoByProbeSetIdArray(String probeSetId);
-	public ArrayList findRefseqInfoByProbeSetIdArray(String probeSetId);
 	
 	/** query page */
 	// gene query
-	public ISHBrowseSubmission[] getSubmissionByGeneInfo(String inputType, String ignoreExpression, String inputString,
-			String stage, String criteria, String[] order, String offset, String num);
                         
 	public String getTotalNumberOfISHSubmissionsForGeneQuery(String inputType, String ignoreExpression, String inputString, String stage, String criteria);
 	public String getTotalNumberOfISHSubmissionsForGeneQuery(String inputType, String ignoreExpression, String inputString, String component, String stage, String criteria);
-
-	public ISHBrowseSubmission[] getSubmissionByGeneInfo(String inputType, String ignoreExpression, String inputString,
-			String componentId,
-			String stage, String criteria, String[] order, String offset, String num);
 
 	public String[][] getTotalNumberOfColumnsGeneQuery(String[] query, String inputType, String ignoreExpression, String inputString,
 			String stage, String criteria);
@@ -91,9 +78,8 @@ public interface ISHDAO {
 			String stage, String criteria);
 
 	// component count query
-	public ArrayList getComponentCountInfoByGeneInfo(String inputType, String inputString,
-			                                         String stage, String criteria,
-			                                         String[] order, String offset, String num);
+public ArrayList getComponentCountInfoByGeneInfo(String inputType, String inputString,
+			String stage, String criteria, int columnIndex, boolean ascending, int offset, int num);
                                                                  
 	public String getTotalISHComponentsExpressingGeneQuery(String inputType, String ignoreExpression, String inputString, String stage, String criteria);
 
@@ -106,17 +92,12 @@ public interface ISHDAO {
                                                                         
 	public ISHBrowseSubmission[] getSubmissionByComponentIds(String[] component, String start,String end, String [] annotationTypes, String criteria,
 			                                                 String[] order, String offset, String num);
-	// added by xingjun - 21/11/2007 - comply with new format of browse page - start
+
 	public ArrayList getSubmissionByComponentIds(String[] components, int columnIndex, boolean ascending, int offset, int num);
 	public ArrayList getSubmissionByComponentIds(String[] components, String startStage, String endStage, String [] annotationTypes, String criteria, int columnIndex, boolean ascending, int offset, int num);
 	public ArrayList getSubmissionByComponentId(String component, String stage, int columnIndex, boolean ascending, int offset, int num);
 	public ArrayList getSubmissionByGeneInfo(String inputType, String ignoreExpression,
             String inputString, String stage, String criteria, int columnIndex, boolean ascending, int offset, int num);
-	public ArrayList getSubmissionByGeneInfo(String inputType, String ignoreExpression, String inputString,
-			String componentId, String stage, String criteria, int columnIndex, boolean ascending, int offset, int num);
-	public ArrayList getComponentCountInfoByGeneInfo(String inputType, String inputString,
-            String stage, String criteria, int columnIndex, boolean ascending, int offset, int num);
-	// added by xingjun - 21/11/2007 - end
 	
     public String getTotalNumberOfSubmissionsForComponentsQuery(String [] components, String start, String end, String [] annotationTypes, String criteria);
         
@@ -200,9 +181,6 @@ public interface ISHDAO {
 	
 	// added by xingjun - 16/06/2008
 	public ArrayList getComponentListAtGivenStage(String stage);
-	
-	/** --- molecular marker --- */
-	public ArrayList getMolecularMarkerCandidates();
 	
 	// status notes - only display when editor logged in
 	public StatusNote[] getStatusNotesBySubmissionId(String submissionAccessionId);

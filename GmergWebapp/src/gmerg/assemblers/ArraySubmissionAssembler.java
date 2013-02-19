@@ -54,11 +54,8 @@ public class ArraySubmissionAssembler {
 		SupplementaryFile supplementaryFiles = arrayDAO.findSupplementaryFileInfoBySubmissionId(accessionId);
 		
 		// get pi info
-		Person pi = ishDAO.findPIBySubmissionId(accessionId);
-		
-		// xingjun - 20/06/2011 - some of the submission entries might have multiple pis
 		Person[] pis = ishDAO.findPIsBySubmissionId(accessionId);
-		
+
 		// get submitter info
 		Person submitter = ishDAO.findSubmitterBySubmissionId(accessionId);
 		
@@ -86,12 +83,6 @@ public class ArraySubmissionAssembler {
 		arraySubmission.setStage(submission.getStage());
 		arraySubmission.setArchiveId(submission.getArchiveId()); // added by xingjun - 03/11/2010
 		arraySubmission.setOriginalImages(images);
-//		arraySubmission.setFilesLocation((String)supplementaryFiles.get(0));
-//		arraySubmission.setCelFile((String)supplementaryFiles.get(1));
-//		arraySubmission.setChpFile((String)supplementaryFiles.get(2));
-//		arraySubmission.setRptFile((String)supplementaryFiles.get(3));
-//		arraySubmission.setExpFile((String)supplementaryFiles.get(4));
-//		arraySubmission.setTxtFile((String)supplementaryFiles.get(5));
 
 		arraySubmission.setFilesLocation(supplementaryFiles.getFilesLocation());
 		arraySubmission.setCelFile(supplementaryFiles.getCelFile());
@@ -99,7 +90,6 @@ public class ArraySubmissionAssembler {
 		arraySubmission.setRptFile(supplementaryFiles.getRptFile());
 		arraySubmission.setExpFile(supplementaryFiles.getExpFile());
 		arraySubmission.setTxtFile(supplementaryFiles.getTxtFile());
-		arraySubmission.setPrincipalInvestigator(pi);
 		arraySubmission.setPrincipalInvestigators(pis);
 		arraySubmission.setSubmitter(submitter);
 		arraySubmission.setSample(sample);
@@ -128,35 +118,6 @@ public class ArraySubmissionAssembler {
 		
 		/** ---return the array submission  */
 		return arraySubmission;
-	}
-	
-	/**
-	 * get gene list info of the specified array submission
-	 * 
-	 * @param accessionId
-	 * @param offset
-	 * @return
-	 */
-	public GeneListBrowseSubmission[] getGeneList(String accessionId, String[] order, String offset) {
-		
-		/** ---get the data from dao---  */
-		// create a dao
-		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-		// get gene list
-		GeneListBrowseSubmission[] geneList =
-			arrayDAO.getGeneListBrowseSubmissionsBySubmissionId(accessionId, order, offset);
-		
-//		GeneListBrowseSubmission[] geneListBrowseSubmissions =
-//			(GeneListBrowseSubmission[])geneList.toArray(new GeneListBrowseSubmission[geneList.size()]);
-		
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the gene list info---  */
-		return geneList;
 	}
 	
 	/**

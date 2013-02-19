@@ -17,25 +17,9 @@ import gmerg.entities.BrowseTableTitle;
  */
 public interface GenelistDAO {
 
-	public String getIdTitle(int genelistId);
-	
 	public String[] getAnalysisTitles(int ref);	
-//	public String[] getAnalysisTitlesImageNames(int ref);	
-	public String[] getOntologyTitles();
-	
-//	public Object[][] getData(int column, boolean ascending, int offset, int num, int genelistId);
-
-	public int getTotalNumberOfRows(int genelistId);
-	
-
-	public GenelistInfo getGenelistInfo(int genelistId);	
-	public int[] getDefaultOntologyCols();
-	
-	public int[][] getOntologyColsWidth();
-	
 	
 	public double[][] getAllAnalysisData(int ref);
-	
 	
 	public String[] getAllIds(int ref);
 	

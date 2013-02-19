@@ -29,15 +29,4 @@ public interface AnatomyDAO {
 	public ExpressionDetail [] findAnnotatedListBySubmissionIds(String submissionAccessionId, boolean isEditor);
 	public String getAnatomyTermFromPublicId(String id);
 	
-	/** ---to be implemented--- */
-	public ArrayList executeTreeBuild(String treeType, String start, String end) throws SQLException;
-
-	public int getStageSequence(String stage) throws SQLException;
-
-	public ArrayList getComponentExpression(String[] nodeIds, String start, String end, String status) throws SQLException;
-
-	public ArrayList getAnnotatedSubmissions(ArrayList results, String exprStatus, String start, String end, String order) throws SQLException;
-	
-	public ArrayList getAnatomyQueryResult(String[][] param) throws SQLException;
-
 }

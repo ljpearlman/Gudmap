@@ -72,9 +72,6 @@
           
           <h:outputText value="Immunoglobulin Isotype:" />
           <h:outputText value="#{AntibodyBean.antibody.immunoglobulinIsotype}" />
-
-          <h:outputText value="Chain Subtype:" />
-          <h:outputText value="#{AntibodyBean.antibody.chainType}" />
         </h:panelGrid>
 
 

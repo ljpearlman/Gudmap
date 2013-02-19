@@ -348,7 +348,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			parQ = new ParamQuery("FOCUS_ARRAY_BROWSE",sql);
 
 			if (debug)
-			    System.out.println("FocusForAllDAO:getFocusBrowseList:Arraybrowseall:"+sql);
+			    System.out.println("FocusForAllDAO:getFocusBrowseList:Arraybrowseall:"+parQ.getQuerySQL());
 			try {
 				parQ.setPrepStat(conn);
 				prepStmt = parQ.getPrepStat();

@@ -38,6 +38,8 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	}
 
 	public void setParams() {
+	    if (debug)
+		System.out.println("FocusForAllAssembler.setParams");
 		super.setParams();
 		organ = getParam("organ");
 		input = getParams("geneSymbols");
@@ -49,6 +51,9 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	    if (debug)
+		System.out.println("FocusForAllAssembler.retrieveData");
+
 	    if (null != cache &&
 		cache.isSameQuery(column, ascending, offset, num)) {
 		if (debug)
@@ -80,6 +85,7 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public int retrieveNumberOfRows() {
+
 	    // force new cache
 	    cache = null;
 
@@ -115,11 +121,17 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	}
 		
 	public HeaderItem[] createHeader() {
+	    if (debug)
+		System.out.println("FocusForAllAssembler.createHeader");
+
 		return QuickSearchAssembler.createHeaderForSearchResultTable();
 	}
 	
 	// Bernie - 9/5/2011 - Mantis 328 - added method
 	public int[] getTableviewToSqlColMap() {
+	    if (debug)
+		System.out.println("FocusForAllAssembler.getTableviewToSqlColMap");
+
 		return QuickSearchAssembler.getTableviewToSqlColMap();
 	}
 	

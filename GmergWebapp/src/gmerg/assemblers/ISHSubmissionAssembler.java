@@ -123,7 +123,7 @@ public class ISHSubmissionAssembler {
 		String author = ishDAO.findAuthorBySubmissionId(accessionId);
 		
 		// get pi info
-		Person pi = ishDAO.findPIBySubmissionId(accessionId);
+		Person[] pi = ishDAO.findPIsBySubmissionId(accessionId);
 		
 		// get submitter info
 		Person submitter = ishDAO.findSubmitterBySubmissionId(accessionId);
@@ -166,7 +166,7 @@ public class ISHSubmissionAssembler {
 		ishSubmission.setSpecimen(specimen);
 		ishSubmission.setOriginalImages(images);
 		ishSubmission.setAuthors(author);
-		ishSubmission.setPrincipalInvestigator(pi);
+		ishSubmission.setPrincipalInvestigators(pi);
 		ishSubmission.setSubmitter(submitter);
 
 		ishSubmission.setLinkedPublications(publication);
@@ -443,22 +443,6 @@ public class ISHSubmissionAssembler {
 		return result;
     }
 	
-	public Person getPerson(String accessionId) {
-		
-		if (accessionId == null) {
-			return null;
-		}
-		
-		/** ---get data from dao---  */
-		// create a dao
-		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// get pi info
-		Person pi = ishDAO.findPIBySubmissionId(accessionId);
-		return pi;
-	}
-
 	public Person getPersonById(String personId) {
 		
 		if (personId == null) {
@@ -503,7 +487,6 @@ public class ISHSubmissionAssembler {
 			return null;
 		}
 		
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
@@ -512,5 +495,4 @@ public class ISHSubmissionAssembler {
 		Person[] pis = ishDAO.findPIsBySubmissionId(submissionId);
 		return pis;
 	}
-
 }

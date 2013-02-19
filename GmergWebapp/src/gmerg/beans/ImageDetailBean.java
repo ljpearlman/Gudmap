@@ -157,13 +157,12 @@ public class ImageDetailBean {
 	}
 
 	public String getViewerFrameSourceName() {
+	    String ret = null;
+
 		StringBuffer requestUrl = ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURL();
 		if(Utility.getProject().equalsIgnoreCase("gudmap")) {
-		    return Utility.domainUrl+"mrciip/mrciip_gudmap.html";
+		    ret = Utility.domainUrl+"mrciip/mrciip_gudmap.html";
 		} 
-		if(Utility.getProject().equalsIgnoreCase("euregene")) {
-		    return Utility.domainUrl+"mrciip/mrciip_euregene.html";
-		} 
-		return null;
+		return ret;
 	}
 }

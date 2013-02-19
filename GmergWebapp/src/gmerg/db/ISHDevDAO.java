@@ -26,17 +26,8 @@ public interface ISHDevDAO {
 	public String getCollectionTotalsQueryEndingClause(int userPrivilege, String[] submissionIds);
 	public String[][] getStringArrayFromBatchQuery(String[][] param, String[] query, String endingClause, GenericTableFilter filter);
 
-	public ArrayList getPublicCollectionSubmissionBySubmissionId(int type, String[] submissionIds, int column, boolean ascending, int offset, int num);
-	public ArrayList getAllCollectionSubmissionBySubmissionId(int type, String[] submissionIds, int columnIndex, boolean ascending, int offset, int num);
 	public ArrayList getCollectionSubmissionBySubmissionId(int userPrivilege, int type, String[] submissionIds, int columnIndex, boolean ascending, int offset, int num);
 
-	/** edit pages */
-	// probe
-    public Probe findProbeBySubmissionId(String submissionAccessionId);
-    public String findProbeNoteBySubmissionId(String submissionAccessionId);
-    public String findMaProbeNoteBySubmissionId(String submissionAccessionId);
-    public String findProbeFullSequenceBySubmissionId(String submissionAccessionId);
-    
     /**  browse all - non-renal */
     public ArrayList getAllSubmissionsNonRenal(int columnIndex, boolean ascending, int offset, int num);
     public int getTotalNumberOfNonRenalSubmissions();

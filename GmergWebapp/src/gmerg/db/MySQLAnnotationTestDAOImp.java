@@ -303,13 +303,7 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 				ishBatchIdListC.add(batchId);
 			}
 		}
-//		if (ishBatchIdListM != null) {
-//			System.out.println("ishBatchIdListM size: " + ishBatchIdListM.size());
-//			System.out.println("ishBatchListM size: " + ishBatchListM.size());
-//		}
-//		if (ishBatchIdListC != null) {
-//			System.out.println("ishBatchIdListC size: " + ishBatchIdListC.size());
-//		}
+
 		// combine the two
 		if (ishBatchListM == null) {
 			if (ishBatchListC == null) {
@@ -900,10 +894,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(loggedRecordNumber + " records logged!");
         	
         	// update
-//    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:status: " + status);
-//    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:subDate: " + subDate);
-//    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:labId: " + labId);
-//    		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:subState: " + subState);
 		    if (debug)
 			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
@@ -1057,33 +1047,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		return submission;
 	}
 
-	public int deleteAnnotationWithDifferentStage(String stage, String id) {
-		int numOfSubDeleted;
-		
-		PreparedStatement prepStmt = null;
-		ArrayList<String> treeContent = null;
-		
-		ParamQuery parQ = 
-			AnnotationToolQuery.getParamQuery("DELETE_FROM_EXPRESSION_WITH_DIFFERENT_STAGE");
-		try {
-			
-			parQ.setPrepStat(conn);
-            prepStmt = parQ.getPrepStat();
-            prepStmt.setString(1, stage);
-            prepStmt.setString(2, id);
-
-            // execute
-            numOfSubDeleted = prepStmt.executeUpdate();
-        } catch (Exception e){
-			e.printStackTrace();
-			numOfSubDeleted = 0;
-		}
-		finally {
-			DBHelper.closePreparedStatement(prepStmt);
-		}		
-		return numOfSubDeleted;
-	}
-	
 	/**
 	 * @author xingjun - 11/07/2008
 	 */
@@ -1560,36 +1523,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 	public int completeBatch(String batch, UserBean ub) {
 		//set SUB_DB_STATUS_FK=3
 		return 0;
-	}
-	
-	
-	/**
-	 * <p>xingjun - 13/05/2010 - use different sql to return stage value from TS17</p>
-	 */
-	public ArrayList getTheilerStageRanges() {
-		ResultSet resSet = null;
-		ParamQuery parQ = null;
-		PreparedStatement prepStmt = null;
-		
-		parQ = DBQuery.getParamQuery("STAGES_IN_PERSPECTIVE_FROM_TS17");
-		
-		try {
-			parQ.setPrepStat(conn);
-			prepStmt = parQ.getPrepStat();
-			resSet = prepStmt.executeQuery();
-			ArrayList stages = DBHelper.formatResultSetToArrayList(resSet);
-			
-			return stages;
-			
-		} catch(SQLException se) {
-			se.printStackTrace();
-		}
-		finally {
-			//close the statement and result set
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-		}
-		return null;
 	}
 	
 	/**

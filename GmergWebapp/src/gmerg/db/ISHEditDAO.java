@@ -13,10 +13,6 @@ import gmerg.entities.submission.Probe;
  *
  */
 public interface ISHEditDAO {
-
-	// linked to edit probe page
-	public Probe findProbeBySubmissionId(String submissionAccessionId);
-	
 	// linked to ish browse all page
 	public boolean deleteSelectedSubmission(String[] selectedSubmissions);
 	

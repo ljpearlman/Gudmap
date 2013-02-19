@@ -1097,11 +1097,6 @@ function showExprInfo(emapID, text_to_display, row) {
   w.focus();
 }
 
-function editExprInfo(emapID,text_to_display,row) {
-  var w=window.open('edit_expression.html?submissionId='+SUBMISSION_ID+'&componentId='+emapID,'expressionPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=900');
-  w.focus();
-}
-
 var numComps = 0;
 
 function showComponentIDIII(id_to_display, text_to_display, row) {

@@ -113,7 +113,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		
 		// offset and retrieval number
 		queryString = queryString + " LIMIT " + offset + " ," + num;
-		
+
 		// return assembled query string
 		return queryString;
     }
@@ -145,11 +145,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
     	};
     	String geneSymbolCol;
     	
-        if(queryType == 1){
+        if(queryType == 1 || queryType == 2){
             geneSymbolCol = "natural_sort(TRIM(RPR_SYMBOL))";
-        }
-        else if(queryType == 2){
-            geneSymbolCol = "natural_sort(TRIM(PRB_GENE_SYMBOL))";
         }
         else {
             geneSymbolCol = "";
@@ -163,8 +160,6 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         		if (queryType == 1) {
         			orderByString = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + 
         			order +", " + geneSymbolCol;
-        		} else if (queryType == 2) {
-        			
         		}
         	} else if (columnIndex == 1) {
        			orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
@@ -320,7 +315,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
         // append submission id condition
         int submissionNumber = submissionIds.length;
-        String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_PER_NAME, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
+        String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_SUB_SOURCE, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
         if (submissionNumber == 1) {
 //            queryIS += "AND QSC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
             queryIS += "AND QIC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
@@ -366,7 +361,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
         // append submission id condition
         int submissionNumber = submissionIds.length;
-        String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_PER_NAME, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
+        String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_SUB_SOURCE, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
         if (submissionNumber == 1) {
 //            queryIS += "AND QSC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
             queryIS += "AND QIC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
@@ -436,7 +431,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
             }
             if (filter!=null)
             	queryString[i] = filter.addFilterSql(queryString[i], AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
-//            System.out.println("Q: "  + queryString[i]);
+
             result[i][0] = query[i];
         }
 
@@ -446,8 +441,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         PreparedStatement prepStmt = null;
         try {
             for (int i = 0; i < queryNumber; i++) {
-		    if (debug)
-			System.out.println("MySQLISHDevDAOImp.sql = "+queryString[i].toLowerCase());
+		if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql "+i+" th= "+queryString[i].toLowerCase());
                 prepStmt = conn.prepareStatement(queryString[i]);
 //                System.out.println("sql: " + queryString[i]);
                 if (param != null &&
@@ -578,213 +573,6 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
    }
    
    /**
-    * only return public collection submission entries
-    * <p>modified by xingjun on 04/01/2008 - modified sql to make it comply with changed DB table column names</p>
-    * <p>modified by xingjun - 28/09/2009 - add group by clause into the sql to merge tissue type column for the same submission</p>
-    * type: 0 all types of submissions
-    *       1 ish/in situ submissions
-    *       2 microarray submissions
-    */
-   public ArrayList getPublicCollectionSubmissionBySubmissionId(int type, String[] submissionIds,
-		   int columnIndex, boolean ascending, int offset, int num) {
-//	   System.out.println("ISHDevDAO:getPublicCollectionSubmissionBySubmissionId!!!!!");
-//	   System.out.println("ISHDevDAO:getPublicCollectionSubmissionBySubmissionId:type" + type);
-       ResultSet resSet = null;
-       ArrayList result = null;
-       PreparedStatement prepStmt = null;
-       ParamQuery parQIS = null;
-       ParamQuery parQArray = null; 
-       String queryIS = null;
-       String queryArray = null;
-       String query = null;
-       String defaultOrder = null;
-       String queryString = null;
-       
-       if (type == 0) { // all types of submissions
-           parQIS = DBQuery.getParamQuery("COLLECTION_SUBMISSION_IN_SITU_PUBLIC");
-           parQArray = DBQuery.getParamQuery("COLLECTION_SUBMISSION_ARRAY_PUBLIC");
-
-           // assemble the query string
-           queryIS = parQIS.getQuerySQL();
-           queryArray = parQArray.getQuerySQL();
-
-           // append submission id condition
-           int submissionNumber = submissionIds.length;
-           String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_PER_NAME, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
-           if (submissionNumber == 1) {
-//               queryIS += "AND QSC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
-               queryIS += "AND QIC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
-//               queryArray += "AND QSC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
-               // modified by xingjun - 28/09/2009
-//               queryArray += "AND QMC_SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
-               queryArray += "AND QMC_SUB_ACCESSION_ID = '" + submissionIds[0] + "' " + groupByClause;
-           } else {
-//               queryIS += "AND QSC_SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
-               queryIS += "AND QIC_SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
-//               queryArray += "AND QSC_SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
-               queryArray += "AND QMC_SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
-               for (int i = 1; i < submissionNumber; i++) {
-                   queryIS += ", '" + submissionIds[i] + "'";
-                   queryArray += ", '" + submissionIds[i] + "'";
-               }
-               queryIS += ") ";
-//               queryArray += ") ";
-               // modified by xingjun - 28/09/2009
-               queryArray += ") " + groupByClause;
-           }
-           query = "(" + queryIS + ")" +  " UNION " + "(" + queryArray + " )";
-
-           defaultOrder = " ORDER BY natural_sort(TRIM(QSC_RPR_SYMBOL))";
-           queryString =
-        	   assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num);
-//           System.out.println("ISHDevDAO:getPublicSubmissionBySubmissionId:sql: " + queryString);
-       
-       } else if (type == 1) { // in situ
-        StringBuffer sb = new StringBuffer(DBQuery.getISH_BROWSE_ALL_COLUMNS()+DBQuery.ISH_BROWSE_ALL_TABLES+DBQuery.PUBLIC_ENTRIES_Q);
-//        String  submissionIdsClause = " ";
-            int submissionNumber = submissionIds.length;
-        if (submissionNumber == 1) {
-                sb.append("AND SUB_ACCESSION_ID = '" + submissionIds[0] + "'");
-        } 
-        else {
-            sb.append("AND SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'");
-            for (int i = 1; i < submissionNumber; i++) {
-                sb.append(", '" + submissionIds[i] + "'");
-            }
-            sb.append(") ");
-        }
-        defaultOrder = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
-        queryString =
-                assembleBrowseSubmissionQueryStringISH(1, sb.toString(), defaultOrder, columnIndex, ascending, offset, num);
-    	   
-       } else if (type == 2) {// array
-    	   
-       }
-
-       // execute query and assemble result
-       try {
-		    if (debug)
-			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
-           prepStmt = conn.prepareStatement(queryString);
-           resSet = prepStmt.executeQuery();
-           
-           if(type == 0) { //mixed
-               result = formatBrowseResultSetMixed(resSet);
-           }
-           else if (type == 1){ //ish
-               result = this.formatBrowseResultSet(resSet);
-           }
-           else { //array
-               
-           }
-
-           // close the db object
-           DBHelper.closePreparedStatement(prepStmt);
-
-       } catch (SQLException se) {
-           se.printStackTrace();
-       }
-       return result;
-   }
-   
-   /**
-    * @author xingjun - 08/10/2009
-    * return all collection submission entries - no matter they are public or not
-    * 
-    */
-   public ArrayList getAllCollectionSubmissionBySubmissionId(int type, String[] submissionIds,
-		   int columnIndex, boolean ascending, int offset, int num) {
-//	   System.out.println("ISHDevDAO:getAllSubmissionBySubmissionId!!!!!");
-//	   System.out.println("ISHDevDAO:getAllSubmissionBySubmissionId:type" + type);
-       ResultSet resSet = null;
-       ArrayList result = null;
-       PreparedStatement prepStmt = null;
-       ParamQuery parQIS = null;
-       ParamQuery parQArray = null; 
-       String queryIS = null;
-       String queryArray = null;
-       String query = null;
-       String defaultOrder = null;
-       String queryString = null;
-       
-       if (type == 0) { // all types of submissions
-           parQIS = DBQuery.getParamQuery("ALL_COLLECTION_ENTRIES_ISH");
-           parQArray = DBQuery.getParamQuery("COLLECTION_SUBMISSION_ARRAY_PUBLIC");
-
-           // assemble the query string
-           queryIS = parQIS.getQuerySQL();
-           queryArray = parQArray.getQuerySQL();
-
-           // append submission id condition
-           int submissionNumber = submissionIds.length;
-           String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_PER_NAME, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
-           if (submissionNumber == 1) {
-               queryIS += "AND SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
-               queryArray += "AND QMC_SUB_ACCESSION_ID = '" + submissionIds[0] + "' " + groupByClause;
-           } else {
-               queryIS += "AND SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
-               queryArray += "AND QMC_SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
-               for (int i = 1; i < submissionNumber; i++) {
-                   queryIS += ", '" + submissionIds[i] + "'";
-                   queryArray += ", '" + submissionIds[i] + "'";
-               }
-               queryIS += ") ";
-               queryArray += ") " + groupByClause;
-           }
-           query = "(" + queryIS + ")" +  " UNION " + "(" + queryArray + " )";
-
-           defaultOrder = " ORDER BY natural_sort(TRIM(QSC_RPR_SYMBOL))";
-           queryString =
-        	   assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num);
-           System.out.println("ISHDevDAO:getAllSubmissionBySubmissionId:sql: " + queryString);
-       
-       } else if (type == 1) { // in situ
-        StringBuffer sb = new StringBuffer(DBQuery.getISH_BROWSE_ALL_COLUMNS()+DBQuery.ISH_BROWSE_ALL_TABLES+DBQuery.PUBLIC_ENTRIES_Q);
-            int submissionNumber = submissionIds.length;
-        if (submissionNumber == 1) {
-                sb.append("AND SUB_ACCESSION_ID = '" + submissionIds[0] + "'");
-        } else {
-            sb.append("AND SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'");
-            for (int i = 1; i < submissionNumber; i++) {
-                sb.append(", '" + submissionIds[i] + "'");
-            }
-            sb.append(") ");
-        }
-        defaultOrder = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
-        queryString =
-                assembleBrowseSubmissionQueryStringISH(1, sb.toString(), defaultOrder, columnIndex, ascending, offset, num);
-    	   
-       } else if (type == 2) {// array
-    	   
-       }
-
-       // execute query and assemble result
-       try {
-		    if (debug)
-			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
-           prepStmt = conn.prepareStatement(queryString);
-           resSet = prepStmt.executeQuery();
-           
-           if(type == 0) { //mixed
-               result = formatBrowseResultSetMixed(resSet);
-           }
-           else if (type == 1){ //ish
-               result = this.formatBrowseResultSet(resSet);
-           }
-           else { //array
-               
-           }
-
-           // close the db object
-           DBHelper.closePreparedStatement(prepStmt);
-
-       } catch (SQLException se) {
-           se.printStackTrace();
-       }
-       return result;
-   }
-
-   /**
     * @author xingjun - 13/10/2009
     * @return
     */
@@ -813,7 +601,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
            // append submission id condition
            int submissionNumber = submissionIds.length;
-           String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_PER_NAME, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
+           String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_SUB_SOURCE, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
            if (submissionNumber == 1) {
                queryIS += "AND SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
                queryArray += "AND QMC_SUB_ACCESSION_ID = '" + submissionIds[0] + "' " + groupByClause;
@@ -930,7 +718,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		   		"QSC_RPR_SYMBOL", // 1
 		   		"QSC_SUB_EMBRYO_STG", // 2
 		   		"QSC_AGE", // 3
-		   		"QSC_PER_NAME", // 4
+		   		"QSC_SUB_SOURCE", // 4
 		   		"QSC_SPN_ASSAY_TYPE", // 7
 		   		"QSC_ASSAY_TYPE", // 6
 		   		"QSC_SUB_SUB_DATE", // 5
@@ -948,11 +736,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 	   String geneSymbolCol;
 	   String theilerStageCol = "QSC_SUB_EMBRYO_STG ";
 	   
-	   if(queryType == 1){
+	   if(queryType == 1 || queryType == 2){
 		   geneSymbolCol = " natural_sort(TRIM(QSC_RPR_SYMBOL))";
-	   }
-	   else if(queryType == 2){
-		   geneSymbolCol = " natural_sort(TRIM(PRB_GENE_SYMBOL))";
 	   }
 	   else {
 		   geneSymbolCol = " ";
@@ -970,9 +755,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		   if (columnIndex == 0) {
 			   if (queryType == 1) {
 				   orderByString = "natural_sort(QSC_SUB_ACCESSION_ID) " + order + ", " + defaultCol;
-			   } else if (queryType == 2) {
-				   
-			   }
+			   } 
 		   } else if (columnIndex == 1) {
 			   orderByString = geneSymbolCol + " " + order +", " + theilerStageCol;
 		   } else if (columnIndex == 2) {
@@ -980,7 +763,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		   } else if (columnIndex == 3) {
 			   orderByString = "QSC_AGE " + order + ", " + defaultCol;
 		   } else if (columnIndex == 4) {
-			   orderByString = "QSC_PER_NAME " + order + ", " + defaultCol;
+			   orderByString = "QSC_SUB_SOURCE " + order + ", " + defaultCol;
 		   } else if (columnIndex == 5) {
 			   orderByString = "QSC_SUB_SUB_DATE " + order + ", " + defaultCol;
 		   } else if (columnIndex == 6) {
@@ -1010,78 +793,6 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		   }
 	   }
 	   return orderByString;
-   }
-   
-   /**
-    * 
-    */
-   public Probe findProbeBySubmissionId(String submissionAccessionId) {
-	   
-       if (submissionAccessionId == null) {
-//           throw new NullPointerException("id parameter");
-			return null;
-       }
-
-       Probe probeInfo = null;
-       ResultSet resSetProbe = null;
-       ParamQuery parQProbe = DBQuery.getParamQuery("SUBMISSION_PROBE");
-       PreparedStatement prepStmtProbe = null;
-
-       ResultSet resSetProbeNote = null;
-       ParamQuery parQProbeNote = DBQuery.getParamQuery("SUBMISSION_PRBNOTE");
-       PreparedStatement prepStmtProbeNote = null;
-
-       ResultSet resSetMaprobeNote = null;
-       ParamQuery parQMaprobeNote = DBQuery.getParamQuery("SUBMISSION_MAPROBE_NOTE");
-       PreparedStatement prepStmtMaprobeNote = null;
-
-       ResultSet resSetFullSequence = null;
-       ParamQuery parQFullSequence = DBQuery.getParamQuery("SUBMISSION_FULL_SEQUENCE");
-       PreparedStatement prepStmtFullSequence = null;
-
-       try {
-           conn.setAutoCommit(false);
-
-           // probe
-           parQProbe.setPrepStat(conn);
-           prepStmtProbe = parQProbe.getPrepStat();
-           prepStmtProbe.setString(1, submissionAccessionId);
-           resSetProbe = prepStmtProbe.executeQuery();
-
-           // probe note
-           parQProbeNote.setPrepStat(conn);
-           prepStmtProbeNote = parQProbeNote.getPrepStat();
-           prepStmtProbeNote.setString(1, submissionAccessionId);
-           resSetProbeNote = prepStmtProbeNote.executeQuery();
-           
-           // maprobe note --- 02/05/2007
-           parQMaprobeNote.setPrepStat(conn);
-           prepStmtMaprobeNote = parQMaprobeNote.getPrepStat();
-           prepStmtMaprobeNote.setString(1, submissionAccessionId);
-           resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
-	    
-	    // maprobe full sequence
-           parQFullSequence.setPrepStat(conn);
-           prepStmtFullSequence = parQFullSequence.getPrepStat();
-           prepStmtFullSequence.setString(1, submissionAccessionId);
-           resSetFullSequence = prepStmtFullSequence.executeQuery();
-
-           conn.commit();
-           conn.setAutoCommit(true);
-
-           // assemble
-           probeInfo = formatProbeResultSet(resSetProbe, resSetProbeNote, resSetMaprobeNote, resSetFullSequence);
-
-           // release db objects
-           DBHelper.closePreparedStatement(prepStmtProbe);
-           DBHelper.closePreparedStatement(prepStmtProbeNote);
-           DBHelper.closePreparedStatement(prepStmtMaprobeNote);
-           DBHelper.closePreparedStatement(prepStmtFullSequence);
-
-       } catch (SQLException se) {
-           se.printStackTrace();
-       }
-       return probeInfo;
    }
    
    /**
@@ -1191,19 +902,6 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
        return probe;
    } // end of formatProbeResultSet
    
-   public String findProbeNoteBySubmissionId(String submissionAccessionId) {
-
-	   return null;
-   }
-   
-   public String findMaProbeNoteBySubmissionId(String submissionAccessionId) {
-
-	   return null;
-   }
-   
-   public String findProbeFullSequenceBySubmissionId(String submissionAccessionId) {
-	   return null;
-   }
    
    public ArrayList getAllSubmissionsNonRenal(int columnIndex, boolean ascending, int offset, int num) {
 	   
@@ -1226,9 +924,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
     */
    public int getTotalNumberOfNonRenalSubmissions() {
 	   
-	   String queryName = "ISH_NUMBER_OF_SUBMISSIONS_NON_RENAL";
-	   String queryString = DBQuery.getParamQuery(queryName).getQuerySQL();
-//	   System.out.println("totalNumberRenalQueryString: " + queryString);
+	   String queryString = DBQuery.getParamQuery("ISH_NUMBER_OF_SUBMISSIONS_NON_RENAL").getQuerySQL();
+
 	   int totalNumberOfNonRenalSubmissions = getIntegerFromDatabaseWithoutParameter(queryString);
 	   return totalNumberOfNonRenalSubmissions;
    }

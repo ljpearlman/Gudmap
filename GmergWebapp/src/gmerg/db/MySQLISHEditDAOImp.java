@@ -150,14 +150,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 		return true;
 	}	
 	
-	/* (non-Javadoc)
-	 * @see gmerg.db.ISHEditDAO#findProbeBySubmissionId(java.lang.String)
-	 */
-	public Probe findProbeBySubmissionId(String submissionAccessionId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	/**
 	 * @author xingjun
 	 * 

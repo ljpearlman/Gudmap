@@ -14,6 +14,7 @@ public class Person {
     protected String fax;
     protected String id;
     protected String fullAddress = null;
+    protected String displayAddress = null;
     
     public void setName(String input) {
         name = input;
@@ -129,20 +130,44 @@ public class Person {
     public String getFullAddress () {
 	if (null == fullAddress) {
 	     fullAddress = name;
-	     if (null != lab)
+	     if (null != lab && !lab.equals(""))
 		 fullAddress  = fullAddress+", "+lab;
-	     if (null != address)
+	     if (null != address && !address.equals(""))
 		 fullAddress  = fullAddress+", "+address;
-	     if (null != address2)
+	     if (null != address2 && !address2.equals(""))
 		 fullAddress  = fullAddress+", "+address2;
-	     if (null != city)
+	     if (null != city && !city.equals(""))
 		 fullAddress  = fullAddress+", "+city;
-	     if (null != postcode)
+	     if (null != postcode && !postcode.equals(""))
 		 fullAddress  = fullAddress+", "+postcode;
-	     if (null != country)
+	     if (null != country && !country.equals(""))
 		 fullAddress  = fullAddress+", "+country;
 	}
 
 	return fullAddress;
+    }	
+    
+    public String getDisplayAddress () {
+	if (null == displayAddress) {
+	     displayAddress = "";
+	     if (null != lab && !lab.equals(""))
+		 displayAddress = lab;
+	     if (null != city && !city.equals("")) {
+		 if (displayAddress.equals(""))
+		     displayAddress  = city;
+		 else
+		     displayAddress  = displayAddress+", "+city;
+	     }
+	     if (null != country && !country.equals("")) {
+		 if (displayAddress.equals(""))
+		     displayAddress  = country;
+		 else
+		     displayAddress  = displayAddress+", "+country;
+	     }
+	     if ((null != email  && !email.equals("")) && !displayAddress.equals(""))
+		 displayAddress  = displayAddress+", "+email;
+	}
+
+	return displayAddress;
     }	    
 }

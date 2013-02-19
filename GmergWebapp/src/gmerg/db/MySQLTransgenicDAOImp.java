@@ -139,7 +139,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 		
 		// offset and retrieval number
 		queryString = queryString + " LIMIT " + offset + " ," + num;
-		
+
 		// return assembled query string
 		return queryString;
     }
@@ -171,11 +171,8 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     	};
     	String geneSymbolCol;
     	
-        if(queryType == 1){
+        if(queryType == 1 || queryType == 2){
             geneSymbolCol = "natural_sort(TRIM(RPR_SYMBOL))";
-        }
-        else if(queryType == 2){
-            geneSymbolCol = "natural_sort(TRIM(PRB_GENE_SYMBOL))";
         }
         else {
             geneSymbolCol = "";
@@ -189,9 +186,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         		if (queryType == 1) {
         			orderByString = "natural_sort(SUB_ACCESSION_ID) " + 
         			order +", " + geneSymbolCol;
-        		} else if (queryType == 2) {
-        			
-        		}
+        		} 
         	} else if (columnIndex == 1) {
        			orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
         	} else if (columnIndex == 2) {

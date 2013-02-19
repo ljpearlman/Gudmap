@@ -5,37 +5,12 @@
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 
 <%-- moved style definition to gudmap_css.css - xingjun - 30/07/2010 --%>
-<%-- 
-<head>
-	<style>
-		.width95 {
-			width:95%;
-		}
-		.width5 {
-			width:5%;
-		}
-		td.width5 {
-			text-align:right;
-			vertical-align:bottom;
-		}
-		.width85 {
-			width:85%;
-		}
-		.width15 {
-			width:15%;
-		}		
-	</style>
-</head>
---%>
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 
 	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id" rendered="#{!ISHSingleSubmissionBean.renderPage}"/>
 	
 	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage}">
-<%-- xingjun - 24/11/2009
-		<h:panelGrid rendered="#{!UserBean.userLoggedIn}" width="100%" columns="1" rowClasses="header-stripey,header-nostripe">
---%>
 		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe">
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" rendered="#{ISHSingleSubmissionBean.submission.euregeneId == ''}" />
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID} (#{ISHSingleSubmissionBean.submission.euregeneId})" rendered="#{ISHSingleSubmissionBean.submission.euregeneId != ''}"/>
@@ -43,47 +18,6 @@
 
 		
 <%-- added by xingjun - 02/06/2008 - display status note if editor logged in - begin --%>
-<%-- xingjun - 24/11/2009
-		<h:inputHidden id="hiddenSubId" value="#{EditSubmissionSupportBean.subAccessionId}" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5}"/>
-		<h:panelGrid rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5}" width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
-        	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}"/>
-        	<h:panelGrid columns="1">
-        		<h:dataTable id="statusNoteTable" bgcolor="white" rowClasses="table-stripey,table-nostripe" headerClass="align-top-stripey"
-        					value="#{EditSubmissionBean.statusNotes}" var="statusNotes">
-        			<h:column>
-        				<f:facet name="header">
-        					<h:outputText id="select" value="Select" styleClass="plaintext"/>
-        				</f:facet>
-        				<h:selectBooleanCheckbox value="#{statusNotes.selected}"/>
-        			</h:column>
-        			<h:column>
-        				<f:facet name="header">
-        					<h:outputText styleClass= "plaintext" value="Status Note" />
-        				</f:facet>
-        				<h:inputText styleClass= "datatext" size="50" value="#{statusNotes.statusNote}" />
-        			</h:column>
-        		</h:dataTable>
-        		<f:verbatim>&nbsp;</f:verbatim>
-        		
-        		<h:outputText rendered="#{EditSubmissionBean.noStatusNoteCheckedForDeletion}" styleClass="plainred" value="Please make a selection before clicking on the Delete button"/>
-        		<h:outputText rendered="#{EditSubmissionBean.emptyStatusNoteExists}" styleClass="plainred" value="Status note could not be empty!"/>
-        		
-        		<h:panelGrid columns="5" cellspacing="5">
-        			<h:commandLink id="deleteStatusNoteLink" value="Delete" action="#{EditSubmissionBean.deleteStatusNote}" >
-        				<f:param name="submissionId" value="#{ISHSingleSubmissionBean.submission.accID}" />
-        			</h:commandLink>
-        			<h:commandLink id="addStatusNoteLink" value="Add" action="#{EditSubmissionBean.addStatusNote}" >
-        				<f:param name="submissionId" value="#{ISHSingleSubmissionBean.submission.accID}" />
-        			</h:commandLink>
-        			<h:commandLink id="cancelStatusNoteLink" value="Cancel Modification" action="#{EditSubmissionBean.cancelModification}">
-        				<f:param name="submissionId" value="#{ISHSingleSubmissionBean.submission.accID}" />
-        			</h:commandLink>
-        			<f:verbatim>&nbsp;</f:verbatim>
-        			<h:commandButton id="commitButton" value="Commit Change" action="#{EditSubmissionBean.commitModification}"/>
-        		</h:panelGrid>
-        	</h:panelGrid>
-        </h:panelGrid>
---%>
 <%-- added by xingjun - 02/06/2008 - display status note if editor logged in - end --%>
 
 		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
@@ -115,10 +49,6 @@
 			</h:panelGroup>
 			<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.assayType == 'TG'}" >
 				<h:outputLink styleClass="plaintext" value="gene.html">
-<%-- 
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.transgenic.promoter}" />
-					<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.transgenic.promoter}" />
---%>
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.transgenic.geneSymbol}" />
 					<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.transgenic.geneSymbol}" />
 				</h:outputLink>
@@ -130,9 +60,6 @@
 			<f:verbatim>&nbsp;</f:verbatim>
 
 			<h:outputText value="Theiler Stage" />
-<%-- 
-			<h:outputLink styleClass="plaintext" value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts#{ISHSingleSubmissionBean.submission.stage}" rendered="#{siteSpecies == 'mouse'}">
---%>
 			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{siteSpecies == 'mouse'}">
 				<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
 			</h:outputLink>
@@ -167,10 +94,6 @@
 						<h:outputText styleClass="notetext" value="#{image[1]}"/>
 					</h:column>
 				</h:dataTable>
-				<h:outputLink id="editImage" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
-							  onclick="var w=window.open('edit_image.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
-					<h:outputText value="[Edit]" />
-				</h:outputLink>
 			</h:panelGrid>
     
 			<f:verbatim>&nbsp;</f:verbatim>
@@ -200,13 +123,14 @@
 			<h:outputText value="Submitters" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
-					<h:outputText value="Principal Investigator:" />
-					<h:panelGroup>
-					       <h:outputLink title="#{ISHSingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{ISHSingleSubmissionBean.submission.principalInvestigator.id})">
-					                <h:outputText value="#{ISHSingleSubmissionBean.submission.principalInvestigator.name}, " />
-					       </h:outputLink>
-					       <h:outputText title="#{ISHSingleSubmissionBean.submission.principalInvestigator.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.principalInvestigator.lab}, #{ISHSingleSubmissionBean.submission.principalInvestigator.city}, #{ISHSingleSubmissionBean.submission.principalInvestigator.country}, #{ISHSingleSubmissionBean.submission.principalInvestigator.email}" />
-					</h:panelGroup>
+		                                                <h:outputText value="Principal Investigator(s):" />
+			                                <t:dataList id="piDataList" var="piInfo"
+				                          value="#{ISHSingleSubmissionBean.submission.principalInvestigators}" >
+						<h:outputLink  title="#{piInfo.fullAddress}"  styleClass="datatext" value="javascript:showLabDetails(#{piInfo.id})">
+						                <h:outputText value="#{piInfo.name}, " />
+						</h:outputLink>
+						<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.displayAddress}" /><br/>
+			                                </t:dataList>
 					<h:outputText value="Authors:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.authors}" />
 					<h:outputText value="Submitted By:" />
@@ -214,7 +138,7 @@
                                                                                        <h:outputLink title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{ISHSingleSubmissionBean.submission.submitter.id})">
 					                <h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.name}, " />
 					       </h:outputLink>
-					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.lab}, #{ISHSingleSubmissionBean.submission.submitter.city}, #{ISHSingleSubmissionBean.submission.submitter.country}, #{ISHSingleSubmissionBean.submission.submitter.email}" />
+					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.displayAddress}" />
 					</h:panelGroup>
 					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" value="Archive ID:" />
 					<h:outputLink rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" styleClass="datatext" value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" >
@@ -224,10 +148,6 @@
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.labId}" />
 				</h:panelGrid>
 				
-				<h:outputLink id="editSubmitters" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
-					          onclick="var w=window.open('edit_person.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
-					<h:outputText value="[Edit]" />
-				</h:outputLink>
 			</h:panelGrid>
 			
 			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
@@ -430,9 +350,10 @@
 			
 					<h:outputText value="Accession ID:" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}" />
 						<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}">
-							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.accessionId}">
+							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.accessionId}" rendered="#{ISHSingleSubmissionBean.submission.antibody.accessionId != null}">
 								<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.accessionId} " />
 							</h:outputLink>	
+							<h:outputText value="No MGI ID " rendered="#{ISHSingleSubmissionBean.submission.antibody.accessionId == null}"/>
 
  							<h:outputLink styleClass="datatext" value="antibody.html" target="_blank">
 								<f:param name="antibody" value="#{ISHSingleSubmissionBean.submission.antibody.maProbeId}" />
@@ -464,7 +385,7 @@
 					<f:verbatim>&nbsp;</f:verbatim>
 					<f:verbatim>&nbsp;</f:verbatim>
 			
-					<h:outputText value="Antibody Type: " />
+					<h:outputText value="Type: " />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.type}" />
 			
 					<h:outputText value="Host: " />
@@ -478,9 +399,6 @@
 					
 					<h:outputText value="Immunoglobulin Isotype:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.immunoglobulinIsotype}" />
-					
-					<h:outputText value="Chain Subtype:" />
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.chainType}" />
 					
 					<h:outputText value="Variant Detected:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.detectedVariantValue}" />
@@ -512,14 +430,13 @@
 					<f:verbatim>&nbsp;</f:verbatim>
 			
 
-					<h:outputText styleClass="plaintext,text-top" value="Antibody Dilution:" />
+					<h:outputText styleClass="plaintext,text-top" value="Dilution:" />
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.dilution}" />
 
-					<h:outputText styleClass="plaintext,text-top" value="Antibody Notes:" rendered="#{ISHSingleSubmissionBean.submission.antibody.notes != null}" />
-					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.notes}"
-								  rendered="#{ISHSingleSubmissionBean.submission.antibody.notes != null}" />
+					<h:outputText styleClass="plaintext,text-top" value="Notes:" />
+					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.notes}" />
 								  
-					<h:outputText styleClass="plaintext,text-top" value="Lab Probe ID:" />
+					<h:outputText styleClass="plaintext,text-top" value="Lab Antibody ID:" />
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.labProbeId}" />
 				</h:panelGrid>
 				
@@ -651,10 +568,6 @@
 						</h:column>
 					</h:dataTable>
 				</h:panelGrid>
-				<h:outputLink id="editProbe" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
-							onclick="var w=window.open('edit_probe.html?accessionId=#{ISHSingleSubmissionBean.submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
-					<h:outputText value="[Edit]" />
-				</h:outputLink>
 			</h:panelGrid>
 			
 			<h:outputText value="&nbsp" escape="false"/>
@@ -706,10 +619,6 @@
 							<h:outputText styleClass="plaintext,text-top" value="Notes:" rendered="#{transgenics.notes != null}" />
 					<h:outputText value="#{transgenics.notes}" rendered="#{transgenics.notes != null}" escape="false" />
 						</h:panelGrid>
-						<h:outputLink id="editTransgenic" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
-									onclick="var w=window.open('edit_probe.html?accessionId=#{ISHSingleSubmissionBean.submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
-							<h:outputText value="[Edit]" />
-						</h:outputLink>
 					</h:panelGrid>
 				</t:column>
 			</t:dataTable>
@@ -725,9 +634,6 @@
 					<h:outputLink value="http://xenbase.org/xenbase/original/atlas/NF/NF-all.html" styleClass="plaintext" rendered="#{siteSpecies == 'Xenopus laevis'}"> 
 						<h:outputText value="Theiler Stage:" />
 					</h:outputLink>
-<%-- 
-					<h:outputLink value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/MAstaging.html" styleClass="plaintext" rendered="#{siteSpecies == 'mouse'}"> 
---%>
 					<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/stagecriteria.html" styleClass="plaintext" rendered="#{siteSpecies == 'mouse'}"> 
 						<h:outputText value="Theiler Stage:" />
 					</h:outputLink>
@@ -735,9 +641,6 @@
 					<h:outputLink styleClass="datatext" value="http://xenbase.org/xenbase/original/atlas/NF/NF-all.html" rendered="#{siteSpecies == 'Xenopus laevis'}">
 						<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
 					</h:outputLink>
-<%-- 
-					<h:outputLink styleClass="datatext" value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts#{ISHSingleSubmissionBean.submission.stage}" rendered="#{siteSpecies == 'mouse'}">
---%>
 					<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{siteSpecies == 'mouse'}">
 						<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
 					</h:outputLink>
@@ -789,10 +692,6 @@
                                                                                        </h:column>
 					</h:dataTable>
 				</h:panelGrid>  
-				<h:outputLink id="editSpecimen" rendered="#{UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
-							onclick="var w=window.open('edit_specimen.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
-					<h:outputText value="[Edit]" />
-				</h:outputLink>
 			</h:panelGrid>  
 				
 			<f:verbatim>&nbsp;</f:verbatim>
@@ -811,10 +710,6 @@
                         <h:outputText styleClass="plaintext" value="#{pub[6]}" />
 					</h:column>
 				</h:dataTable>
-				<h:outputLink id="editPublication" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
-							onclick="var w=window.open('edit_linked_publication.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
-					<h:outputText value="[Edit]" />
-				</h:outputLink>
 			</h:panelGrid>
 
 			<f:verbatim>&nbsp;</f:verbatim>
@@ -862,10 +757,6 @@
 						</h:panelGrid>
 					</h:column>
 				</h:dataTable>
-				<h:outputLink id="editLinkedSubmission" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
-							onclick="var w=window.open('edit_linked_submission.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
-					<h:outputText value="[Edit]" />
-				</h:outputLink>
 			</h:panelGrid>
 
 			<f:verbatim>&nbsp;</f:verbatim>
@@ -878,10 +769,6 @@
 						<h:outputText value = "#{ack}"/>
 					</h:column>
 				</h:dataTable>
-				<h:outputLink id="editAcknowledgement" rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && UserBean.user.userType!='EXAMINER'}"
-					  onclick="var w=window.open('edit_acknowledgement.html?accessionId=#{submission.accID}','editPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;">
-					<h:outputText value="[Edit]" />
-				</h:outputLink>
 			</h:panelGrid>
 		</h:panelGrid>
 	</h:form>

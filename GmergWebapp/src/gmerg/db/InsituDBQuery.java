@@ -185,31 +185,6 @@ public class InsituDBQuery {
 	final static String name14 = "ALL_ENTRIES_TG";
 	final static String query14 = getTG_BROWSE_ALL_COLUMNS() + BROWSE_ALL_TABLES_TG + PUBLIC_ENTRIES_Q;
 
-	final static String name00 = "ALL_ENTRIES_BROWSE_TG";
-	final static String query00 = "SELECT DISTINCT SUB_ACCESSION_ID, " +
-	"MUT_GENE AS RPR_SYMBOL, " +
-	"SUB_EMBRYO_STG, " +
-	"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) AS AGE, " +
-	"SUB_SOURCE, " +
-	"SUB_SUB_DATE, " +
-	"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE, " +
-	"SPN_ASSAY_TYPE, " +
-	"SPN_SEX, " +
-	"'' AS RPR_JAX_ACC, /* TG data has no probe name*/ " +
-	"(CASE WHEN SPN_WILDTYPE='true' THEN 'Wild Type' WHEN SPN_WILDTYPE='false' THEN 'Non-wild Type' ELSE '' END) AS SPN_WILDTYPE, " +
-	"'' AS PRB_PROBE_TYPE, " +
-	"CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME) AS THUMBNAIL, " +
-	"REPLACE(SUB_ACCESSION_ID, ':', 'no') " +
-	"FROM ISH_SUBMISSION " +
-	"JOIN ISH_MUTANT ON MUT_SUBMISSION_FK = SUB_OID " +
-	"JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
-	"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
-	"JOIN ISH_ORIGINAL_IMAGE I ON SUB_OID = I.IMG_SUBMISSION_FK " +
-	"	AND I.IMG_OID = (SELECT MIN(IMG_OID) FROM ISH_ORIGINAL_IMAGE WHERE IMG_SUBMISSION_FK = SUB_OID) " +
-	"JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 31  " +
-	"WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
-
-
 	final static String NUMBER_OF_SUBMISSION = "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) ";
 	
 	final static String NUMBER_OF_GENE_SYMBOL = "SELECT COUNT(DISTINCT RPR_SYMBOL) ";
@@ -301,7 +276,7 @@ public class InsituDBQuery {
 			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) " +
 			"WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" :
 				"CONCAT(SPN_STAGE_FORMAT, SPN_STAGE)";
-	
+
 	final static String name15 = "SUBMISSION_IMAGE_DETAIL_TG";
 	final static String query15 = 
 		"SELECT SUB_ACCESSION_ID, MUT_GENE AS RPR_SYMBOL, RPR_NAME, " +
@@ -314,7 +289,6 @@ public class InsituDBQuery {
 		"JOIN ISH_ORIGINAL_IMAGE I ON SUB_OID = I.IMG_SUBMISSION_FK " +
 		"JOIN REF_URL ON URL_OID = " + bundle.getString("img_url_oid") +
 		" WHERE SUB_ACCESSION_ID = ? LIMIT ?,1";
-
 	
 	final static String name = "";
 	final static String query = "";
@@ -335,6 +309,7 @@ public class InsituDBQuery {
 		new ParamQuery(name12, query12),
 		new ParamQuery(name13, query13),
 		new ParamQuery(name14, query14),
+		new ParamQuery(name15, query15),
 		new ParamQuery(name101, query101),
 		new ParamQuery(name102, query102),
 		new ParamQuery(name103, query103),
@@ -348,7 +323,6 @@ public class InsituDBQuery {
 		new ParamQuery(name111, query111),
 		new ParamQuery(name112, query112),
 		new ParamQuery(name113, query113),
-		new ParamQuery(name15, query15),
 		new ParamQuery(name16, query16)
 	};
 	

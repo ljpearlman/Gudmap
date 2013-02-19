@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Arrays;
 
 public class QuickSearchAssembler extends OffMemoryTableAssembler {
     protected boolean debug = false;
@@ -31,12 +32,18 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	}
 
 	public void setParams() {
+	if (debug)
+	    System.out.println("QuickSearchAssembler.setParams");
+
 		super.setParams();
 		input = getParams("input");
 		query = getParam("query");
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
+	if (debug)
+	    System.out.println("QuickSearchAssembler.retrieveData");
+
 		if(input == null || input[0] == null || input[0].equals("")) 
 			return null;
 
@@ -71,6 +78,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public int retrieveNumberOfRows() {
+	if (debug)
+	    System.out.println("QuickSearchAssembler.retrieveNumberOfRows");
+
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		int[] n = ishDAO.getQuickNumberOfRows(query, input);
@@ -85,6 +95,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	 * @return
 	 */
 	public int[] retrieveNumberOfRowsInGroups() {
+	if (debug)
+	    System.out.println("QuickSearchAssembler.retrieveNumberOfRowsInGroups");
+
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		int[] n = ishDAO.getQuickNumberOfRows(query, input);
@@ -100,6 +113,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	}
 	
 	public static HeaderItem[] createHeaderForSearchResultTable() {
+
+	    System.out.println("QuickSearchAssembler.createHeaderForSearchResultTable");
+
 		 String headerTitles[] = AdvancedSearchDBQuery.getBothDefaultTitle();
 		 boolean headerSortable[] = {true, true, true, true, true, true, true, true, true, true, true, true, false};
 		 int colNum = headerTitles.length;
@@ -121,6 +137,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	 * <p>xingjun - 08/07/2011 - changed the link to the EMAP database: need to change to get the link from the database in the future </p>
 	 */
 	public static DataItem[][] getTableDataFormatFromArrayList(ArrayList list) {
+
+	    System.out.println("QuickSearchAssembler.getTableDataFormatFromArrayList");
+
 	    if (list == null){
 			System.out.println("No data is retrieved");
 			return null;
@@ -138,6 +157,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 		int rowNum = list.size();
 		DataItem[][] tableData = new DataItem[rowNum][colNum];
 		String[] row = null;
+		String[] strArr = null;
+		String str = null;
+		int j = 0;
 		for(int i=0; i<rowNum; i++) {	
 			row = (String[])list.get(i); 
 		
@@ -150,8 +172,19 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			tableData[i][2] = new DataItem(row[13]);	//assay type
 			tableData[i][3] = new DataItem(row[2]);		//ish exp
 			tableData[i][4] = new DataItem(geneExpressions.get(row[11]));	//mic exp
-			// Bernie 27/10/2010 - mod to tissue to allow description popup window, and mouse over text
-			tableData[i][5] = new DataItem(row[1],row[1],30);		//tissue	
+			// to allow description popup window, and mouse over text
+			if (null != row[1]) {
+			    strArr = row[1].split(";");
+			    if (3 < strArr.length) {
+				Arrays.sort(strArr);
+				str = strArr[0];
+				for (j = 1; j < 3; j++)
+				    str += "; "+strArr[j];
+				str += " ...";
+			    } else 
+				str = row[1];
+			}
+			tableData[i][5] = new DataItem(str,row[1],30);		//tissue	
             if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
 //                tableData[i][6] = new DataItem(row[5], "", "http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts"+row[5]+"/", 10);         //stage
                 tableData[i][6] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[5]+"definition.html", 10);         //stage
