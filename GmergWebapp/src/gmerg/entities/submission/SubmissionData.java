@@ -18,7 +18,7 @@ public class SubmissionData {
 	}
 	
 	public Object getSubmission() {
-		return this.submission;
+		return submission;
 	}
 	
 	public void setSubmission(Object submission) {
@@ -26,7 +26,7 @@ public class SubmissionData {
 	}
 	
 	public int getSubmissionType() {
-		return this.submissionType;
+		return submissionType;
 	}
 	
 	public void setSubmissionType(int submissionType) {

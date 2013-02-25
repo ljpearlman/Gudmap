@@ -101,7 +101,7 @@ public class Sample {
     }
     
     public String getTheilerStage() {
-    	return this.theilerStage;
+    	return theilerStage;
     }
     
     public void setdissectionMethod(String dm) {
@@ -213,12 +213,11 @@ public class Sample {
     }
     
     public String getDescription() {
-    	return this.description;
+    	return description;
     }
 
-    // xingjun - 14/05/2010 - start
     public String getExperimentalDesign() {
-    	return this.experimentalDesign;
+    	return experimentalDesign;
     }
     
     public void setExperimentalDesign(String experimentalDesign) {
@@ -226,7 +225,7 @@ public class Sample {
     }
     
     public String getLabelProtocol() {
-    	return this.labelProtocol;
+    	return labelProtocol;
     }
     
     public void setLabelProtocol(String labelProtocol) {
@@ -234,16 +233,15 @@ public class Sample {
     }
     
     public String getScanProtocol() {
-    	return this.scanProtocol;
+    	return scanProtocol;
     }
     
     public void setScanProtocol(String scanProtocol) {
     	this.scanProtocol = scanProtocol;
     }
-    // xingjun - 14/05/2010 - end
 
     public String getPoolSize() {
-    	return this.poolSize;
+    	return poolSize;
     }
     
     public void setPoolSize(String poolSize) {
@@ -251,19 +249,17 @@ public class Sample {
     }
 
     public String getPooledSample() {
-    	return this.pooledSample;
+    	return pooledSample;
     }
     
     public void setPooledSample(String pooledSample) {
     	this.pooledSample = pooledSample;
     }
 
-    //bernie - 22/11/2010 added (Mantis 505)
     public String getDevelopmentalLandmarks(){
-    	return this.developmentalLandmarks;    	
+    	return developmentalLandmarks;    	
     }
 
-    //bernie - 22/11/2010 added (Mantis 505)
     public void setDevelopmentalLandmarks(String developmentalLandmarks){
     	this.developmentalLandmarks = developmentalLandmarks;    	
     }

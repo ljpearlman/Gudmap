@@ -5,6 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="https://ajax4jsf.dev.java.net/ajax" prefix="a4j"%>
 
 <fmt:setBundle basename="configuration" />
 
@@ -158,15 +159,15 @@
 							<h:form id="quickSearchForm" >
 							<h:panelGrid columns="5" cellpadding="2" cellspacing="0" border="0" columnClasses="width:115px;width:130px;width:20px;width:210px;width:75px" style="margin-left:auto; margin-right:0px; border-color:#FFFFFF;width:550px">
 								<h:outputText value="Quick search: " styleClass="search_text"/>
-								<h:selectOneMenu id="quickSearchType" styleClass="selectBanner" value="#{HeaderQuickSearchBean.quickSearchType}" immediate="true" onchange="submit()"
-												valueChangeListener="#{HeaderQuickSearchBean.changeSearchType}" style="color:#000; font-family:Verdana, Geneva, sans-serif">
+								<h:selectOneMenu id="quickSearchType" styleClass="selectBanner" immediate="true" value="#{HeaderQuickSearchBean.quickSearchType}" 
+												valueChangeListener="#{HeaderQuickSearchBean.changeSearchType}"  style="color:#000; font-family:Verdana, Geneva, sans-serif">
 									<f:selectItems value="#{HeaderQuickSearchBean.quickSearchTypeItems}"/>
+					                                                                <a4j:support event="onchange" reRender="quickSearchType" />
 								</h:selectOneMenu>
 								<h:outputText value=" for " styleClass="search_text"/>
 								<h:inputText id="quickSearchInput" value="#{HeaderQuickSearchBean.quickSearchInput}" styleClass="textfield"/>
 								<h:commandLink id="quickSearchButton" action="#{HeaderQuickSearchBean.quickSearch}" styleClass="quick_search">
 									<h:graphicImage value="/images/search.png" title="Click to search" alt="search" styleClass="icon" style="border:0"/>
-									<f:param name="query" value="#{HeaderQuickSearchBean.quickSearchType}" />
 									<f:param name="input" value="#{HeaderQuickSearchBean.quickSearchInput}" />
 								</h:commandLink>
 							</h:panelGrid>

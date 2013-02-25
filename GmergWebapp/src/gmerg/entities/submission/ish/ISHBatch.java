@@ -45,7 +45,7 @@ public class ISHBatch {
 	}
 	
 	public Date getLastModified() {
-		return this.lastModified;
+		return lastModified;
 	}
 	
 	public void setLastModified(Date lastModified) {

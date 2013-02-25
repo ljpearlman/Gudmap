@@ -28,12 +28,12 @@ public class SearchLink {
     }
     
     public String getUrl(String param){
-      return this.urlPrefix + param + this.urlSuffix;
+      return urlPrefix + param + urlSuffix;
     }
     public String getInstitue(){
-      return this.institue;
+      return institue;
     }
     public String getName(){
-      return this.name;
+      return name;
     }
 }

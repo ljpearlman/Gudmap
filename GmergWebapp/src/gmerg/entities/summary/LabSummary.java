@@ -42,9 +42,8 @@ public class LabSummary {
         summaryResults = values;
     }
     
-    // xingjun - 25/11/2009
     public boolean isViewableByExaminer() {
-    	return this.viewableByExaminer;
+    	return viewableByExaminer;
     }
     
     public void setViewableByExaminer(boolean viewableByExaminer) {

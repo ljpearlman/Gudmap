@@ -21,7 +21,6 @@ public class DBSummary {
     
     private String applicationVersion;
     
-    // added by xingjun - 26/08/2008 - transgenic data
     private String totalAvailableSubmissionsTG;
     
     public void setTotIshGenes(String genes) {
@@ -89,7 +88,7 @@ public class DBSummary {
     }
     
     public String getDatabaseServer() {
-    	return this.databaseServer;
+    	return databaseServer;
     }
     
     public void setDatabaseServer(String databaseServer) {
@@ -97,7 +96,7 @@ public class DBSummary {
     }
     
     public String getProject() {
-    	return this.project;
+    	return project;
     }
     
     public void setProject(String project) {
@@ -105,7 +104,7 @@ public class DBSummary {
     }
     
     public String getTotalAvailableSubmissionsIHC() {
-    	return this.totalAvailableSubmissionsIHC;
+    	return totalAvailableSubmissionsIHC;
     }
     
     public void setTotalAvailableSubmissionsIHC(String totalAvailableSubmissionsIHC) {
@@ -114,22 +113,20 @@ public class DBSummary {
     
     
     public String getTotalEditSubmissionsIHC() {
-    	return this.totalEditSubmissionsIHC;
+    	return totalEditSubmissionsIHC;
     }
     
     public void setTotalEditSubmissionsIHC(String totalEditSubmissionsIHC) {
     	this.totalEditSubmissionsIHC = totalEditSubmissionsIHC;
     }
     
-    // added by xingjun - 26/08/2008 - start - transgenic data need to be added
     public String getTotalAvailableSubmissionsTG() {
-    	return this.totalAvailableSubmissionsTG;
+    	return totalAvailableSubmissionsTG;
     }
     
     public void setTotalAvailableSubmissionsTG(String totalAvailableSubmissionsTG) {
     	this.totalAvailableSubmissionsTG = totalAvailableSubmissionsTG;
     }
-    // added by xingjun - 26/08/2008 - end
 
     public void setTotIhcGenes(String genes) {
         totIhcGenes = genes;
@@ -148,7 +145,7 @@ public class DBSummary {
     }
     
     public String getApplicationVersion() {
-    	return this.applicationVersion;
+    	return applicationVersion;
     }
     
     public void setApplicationVersion(String applicationVersion) {

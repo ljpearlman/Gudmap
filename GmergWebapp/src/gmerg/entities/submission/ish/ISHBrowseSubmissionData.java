@@ -20,7 +20,7 @@ public class ISHBrowseSubmissionData {
 	
 	// access method
 	public ISHBrowseSubmission[] getBroseSubmissionData() {
-		return this.browseSubmissionData;
+		return browseSubmissionData;
 	}
 	
 	public void setBroseSubmissionData(ISHBrowseSubmission[] broseSubmissionData) {
@@ -28,7 +28,7 @@ public class ISHBrowseSubmissionData {
 	}
 	
 	public String[][] getAllColumnTotalNumbers() {
-		return this.allColumnTotalNumbers;
+		return allColumnTotalNumbers;
 	}
 	
 	public void setAllColumnTotalNumbers(String[][] allColumnTotalNumbers) {

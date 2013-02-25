@@ -25,7 +25,7 @@ public class ISHBatchSubmission {
 	}
 
 	public boolean isSelected() {
-    	return this.selected;
+    	return selected;
     }
     
     public void setSelected(boolean selected) {
@@ -80,9 +80,8 @@ public class ISHBatchSubmission {
 		this.lastModifiedDate = lastModifiedDate;
 	}
 	
-	// xingjun - 16/10/2009
 	public int getDbStatus() {
-		return this.dbStatus;
+		return dbStatus;
 	}
 	
 	public void setDbStatus(int dbStatus) {

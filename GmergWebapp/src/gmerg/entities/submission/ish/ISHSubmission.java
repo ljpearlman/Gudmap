@@ -22,9 +22,9 @@ public class ISHSubmission extends Submission {
     private ExpressionDetail [] annotatedComponents;
     private Antibody antibody;
     private Transgenic transgenic;
-    private Transgenic[] transgenics = null; // added by xingjun - 09/11/2009
-    private boolean multipleTransgenics; // added by xingjun - 09/11/2009
-    private String tissue; // added by bernie - 15/09/2010
+    private Transgenic[] transgenics = null; 
+    private boolean multipleTransgenics; 
+    private String tissue; 
     private String project; 
 
     public ISHSubmission() {
@@ -81,25 +81,23 @@ public class ISHSubmission extends Submission {
     }
     
     public Antibody getAntibody() {
-    	return this.antibody;
+    	return antibody;
     }
     
     public void setAntibody(Antibody antibody) {
     	this.antibody = antibody;
     }
     
-    // added by xingjun - 27/08/2008
     public Transgenic getTransgenic() {
-    	return this.transgenic;
+    	return transgenic;
     }
     
     public void setTransgenic(Transgenic transgenic) {
     	this.transgenic = transgenic;
     }
 
-    // added by xingjun - 09/11/2009
     public Transgenic[] getTransgenics() {
-    	return this.transgenics;
+    	return transgenics;
     }
     
     public void setTransgenics(Transgenic[] transgenics) {
@@ -107,14 +105,13 @@ public class ISHSubmission extends Submission {
     }
 
     public boolean isMultipleTransgenics() {
-    	return this.multipleTransgenics;
+    	return multipleTransgenics;
     }
     
     public void setMultipleTransgenics(boolean multipleTransgenics) {
     	this.multipleTransgenics = multipleTransgenics;
     }
     
-    // added by Bernie - 23/09/2010
     public String getTissue() {
     	return tissue;
     }

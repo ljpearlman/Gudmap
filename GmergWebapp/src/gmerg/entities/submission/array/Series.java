@@ -17,8 +17,8 @@ public class Series {
     private String design;
     private ArrayList summaryResults;
     private int oid;
-    private String description;// list of components - xingjun - 02/03/2010
-    private int archiveId;// xingjun - 12/08/2010
+    private String description;// list of components
+    private int archiveId;
     
     public void setGeoID(String id) {
         geoID = id;
@@ -81,27 +81,23 @@ public class Series {
     }
 
     public int getOid() {
-        return this.oid;
+        return oid;
     }
 
-    // xingjun - 02/03/2010
     public void SetDescription(String description) {
         this.description = description;
     }
 
-    // xingjun - 02/03/2010
     public String getDescription() {
-        return this.description;
+        return description;
     }
     
-    // xingjun - 12/08/2010 - start
     public int getArchiveId() {
-    	return this.archiveId;
+    	return archiveId;
     }
     
     public void setArchiveId(int archiveId) {
     	this.archiveId = archiveId;
     }
-    //  xingjun - 12/08/2010 - end 
 
 }
