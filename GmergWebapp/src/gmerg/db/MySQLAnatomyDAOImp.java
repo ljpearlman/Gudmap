@@ -4,6 +4,7 @@
 package gmerg.db;
 
 import gmerg.beans.UserBean;
+import gmerg.utils.Utility;
 import gmerg.entities.submission.ExpressionDetail;
 import gmerg.entities.submission.ExpressionPattern;
 import gmerg.entities.submission.ish.ISHBrowseSubmission;
@@ -206,9 +207,6 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	if (debug)
 	    System.out.println("MysqlAnatomyDAOImp.getAnatomyTreeByStages");
 		
-//	    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-//	    String treeType = bundle.getString("perspective");
-
 		ParamQuery parQ = DBQuery.getParamQuery("QUERY_TREE_CONTENT");
 		String queryString = parQ.getQuerySQL();
 		PreparedStatement prepStmt = null;
@@ -702,6 +700,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 //go back to start of result set so you can obtain relevant info for each row
                 resSet.beforeFirst();
                 int index = 0;
+		String str = null;
         
                 while(resSet.next()){
                 
@@ -716,29 +715,25 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                     result[index].setSecondaryStrength(resSet.getString(5));
                     result[index].setNoteExists(resSet.getBoolean(6));
                     
-                    
-                    
-                    if(resSet.getString(4).trim().equalsIgnoreCase("present")){
-                        if(resSet.getString(5) == null || resSet.getString(5).trim().equalsIgnoreCase("")){
-                            result[index].setExpressionImage(imgPath+"DetectedRoundPlus20x20.gif");
-                        }
-                        else if(resSet.getString(5).trim().equals("strong")){
-                            result[index].setExpressionImage(imgPath+"StrongRoundPlus20x20.gif");
-                        }
-                        else if(resSet.getString(5).trim().equals("moderate")){
-                            result[index].setExpressionImage(imgPath+"ModerateRoundPlus20x20.gif");
-                        }
-                        else if(resSet.getString(5).trim().equals("weak")){
-                            result[index].setExpressionImage(imgPath+"WeakRoundPlus20x20.gif");
-                        }
+                    str = Utility.netTrim(resSet.getString(4));
+		    if (null != str) {
+			if(str.trim().equalsIgnoreCase("present")){
+			    str = Utility.netTrim(resSet.getString(5));
+			    if(str == null){
+				result[index].setExpressionImage(imgPath+"DetectedRoundPlus20x20.gif");
+			    } else if(str.equals("strong")){
+				result[index].setExpressionImage(imgPath+"StrongRoundPlus20x20.gif");
+			    } else if(str.equals("moderate")){
+				result[index].setExpressionImage(imgPath+"ModerateRoundPlus20x20.gif");
+			    } else if(str.equals("weak")){
+				result[index].setExpressionImage(imgPath+"WeakRoundPlus20x20.gif");
+			    }
+			} else if(str.equalsIgnoreCase("not detected")){
+			    result[index].setExpressionImage(imgPath+"NotDetectedRoundMinus20x20.gif");
+			} else if(str.equalsIgnoreCase("uncertain") || str.equalsIgnoreCase("possible")){
+			    result[index].setExpressionImage(imgPath+"PossibleRound20x20.gif");
+			}
                     }
-                    else if(resSet.getString(4).trim().equalsIgnoreCase("not detected")){
-                        result[index].setExpressionImage(imgPath+"NotDetectedRoundMinus20x20.gif");
-                    }
-                    else if(resSet.getString(4).trim().equalsIgnoreCase("uncertain") || resSet.getString(4).trim().equalsIgnoreCase("possible")){
-                        result[index].setExpressionImage(imgPath+"PossibleRound20x20.gif");
-                    }
-                    
                     
                     //annotationQ is changed to contain query to find list of expression patterns for this component
                     annotationQ = DBQuery.getParamQuery("EXPRESSION_PATTERNS");
@@ -765,32 +760,31 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                             patterns[index2] = new ExpressionPattern();
                             
                             //set pattern value in ExpressionPattern object for specified element in array
-                            patterns[index2].setPattern(patternSet.getString(2));
-                            
-                            if(patternSet.getString(2) != null && !patternSet.getString(2).trim().equalsIgnoreCase("")){
-                                
-                                if(patternSet.getString(2).indexOf("homogeneous") >= 0){
+                            str = Utility.netTrim(patternSet.getString(2));
+                            patterns[index2].setPattern(str);
+                            if (null != str) {
+                                if(str.indexOf("homogeneous") >= 0){
                                     patterns[index2].setPatternImage(imgPath + "HomogeneousRound20x20.png");
                                 }
-                                else if(patternSet.getString(2).indexOf("spotted") >= 0){
+                                else if(str.indexOf("spotted") >= 0){
                                     patterns[index2].setPatternImage(imgPath + "SpottedRound20x20.png");
                                 }
-                                else if(patternSet.getString(2).indexOf("regional") >= 0){
+                                else if(str.indexOf("regional") >= 0){
                                     patterns[index2].setPatternImage(imgPath + "RegionalRound20x20.png");
                                 }
-                                else if(patternSet.getString(2).indexOf("graded") >= 0){
+                                else if(str.indexOf("graded") >= 0){
                                     patterns[index2].setPatternImage(imgPath + "GradedRound20x20.png");
                                 }
-                                else if(patternSet.getString(2).indexOf("ubiquitous") >= 0) {
+                                else if(str.indexOf("ubiquitous") >= 0) {
                                     patterns[index2].setPatternImage(imgPath + "UbiquitousRound20x20.png");
                                 }
-                                else if(patternSet.getString(2).indexOf("other") >= 0) {
+                                else if(str.indexOf("other") >= 0) {
                                     patterns[index2].setPatternImage(imgPath + "OtherRound20x20.png");
                                 }
-                                else if(patternSet.getString(2).indexOf("single cell") >= 0) {
+                                else if(str.indexOf("single cell") >= 0) {
                                     patterns[index2].setPatternImage(imgPath + "SingleCellRound20x20.png");
                                 }
-                                else if(patternSet.getString(2).indexOf("restricted") >= 0) {
+                                else if(str.indexOf("restricted") >= 0) {
                                     patterns[index2].setPatternImage(imgPath + "RestrictedRound20x20.png");
                                 }
                             }
@@ -813,6 +807,10 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                                 
                                 //all loations will be stored in a String (comma separated)
                                 locations = new StringBuffer("");
+				String adjacentTxt = "adjacent to ";
+				String atnPubIdVal = null;
+                                        ResourceBundle bundle = ResourceBundle.getBundle("configuration");
+                                        String anatIdPrefix = bundle.getString("anatomy_id_prefix");
                                 
                                 while(locationSet.next()){
                                  
@@ -821,17 +819,15 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                                     }
                                     
                                     
-                                    String adjacentTxt = "adjacent to ";
                                     //if the location string begins with 'adjacent to ', further query is required
-                                    if(locationSet.getString(1).indexOf(adjacentTxt) >= 0) {
+                                    str = Utility.netTrim(locationSet.getString(1));
+                                    if(null != str && str.indexOf(adjacentTxt) >= 0) {
                                     
                                         //the components public id is a substring of the location string 
-                                        String atnPubIdVal = locationSet.getString(1).substring(adjacentTxt.length());
+                                        atnPubIdVal = str.substring(adjacentTxt.length());
                                         
                                         /*need to get the anatomy prefix and attach it to the id obtained previously
                                         then query the database to get the mane of the component*/
-                                        ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-                                        String anatIdPrefix = bundle.getString("anatomy_id_prefix");
                                         
                                         annotationQ = DBQuery.getParamQuery("COMPONENT_NAME_FROM_ATN_PUBLIC_ID");
                                         annotationQ.setPrepStat(conn);

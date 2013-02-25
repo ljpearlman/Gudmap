@@ -22,21 +22,18 @@ public class FocusGeneBrowseBean {
     private String focusedOrgan;
 	
 	public FocusGeneBrowseBean() {
-	    if (debug)
-		System.out.println("FocusGeneBrowseBean constructor:");
 	    query = Visit.getRequestParam("query");
 		input = Visit.getRequestParam("input");
-//		focusedOrgan = Visit.getRequestParam("focusedOrgan");		// changed by Mehran (23/11/09) - Anatomy search ignores any focus group
-		// modified by xingjun - 14/01/2010 - start
-		// - should not simply assign null value to focusdOrgan 
-		// - other query will be affected when specifying focus organ (e.g. gene query)
-//		focusedOrgan = null;
+
+	    if (debug)
+		System.out.println("FocusGeneBrowseBean constructor: query = "+query+" input = "+input);
+
 		if (query == null || query.trim().equalsIgnoreCase("")) {
 			focusedOrgan = null;
 		} else {
 			focusedOrgan = Visit.getRequestParam("focusedOrgan");  
 		}
-		// modified by xingjun - 14/01/2010 - end
+
 		String viewName = "focusGene";
 		if (TableUtil.isTableViewInSession())
 			return;
@@ -88,8 +85,7 @@ public class FocusGeneBrowseBean {
 		    inputs = input.split("\t|\n|\r|\f|;");
 		    if (debug)
 			System.out.println("number of symbols: " + inputs.length);
-		    //			geneSymbols = input.split("[[\\s|,]&&[^ ]]");
-		    /////// added by xingjun - 06/04/2009 - if the input by user comes like 'string*', it means wildcard search (start with) //////////////
+
 	    if (debug)
 			System.out.println("check input string###########: ");
 			int numberOfInputItems = inputs.length;

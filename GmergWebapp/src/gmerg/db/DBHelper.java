@@ -5,6 +5,7 @@ package gmerg.db;
 
 import gmerg.entities.submission.ish.ISHBrowseSubmission;
 import gmerg.utils.table.GenericTableFilter;
+import gmerg.utils.Utility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -206,10 +207,8 @@ public final class DBHelper {
     		resSet.beforeFirst();
 			ArrayList<String> results = new ArrayList<String>();
     		while (resSet.next()) {
-    			str = resSet.getString(1);
+		    str = Utility.netTrim(resSet.getString(1));
 			if (null != str)
-			    str = str.trim();
-			if (null != str && !str.equals(""))
 			    results.add(str);
     		}
     		if (results != null && results.size() > 0) {

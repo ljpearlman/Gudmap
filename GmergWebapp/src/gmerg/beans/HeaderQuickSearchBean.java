@@ -6,10 +6,13 @@ package gmerg.beans;
 import javax.faces.model.SelectItem;
 import javax.faces.event.ValueChangeEvent;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 import gmerg.entities.Globals;
 import gmerg.utils.FacesUtil;
 import gmerg.utils.Visit;
+import gmerg.utils.Utility;
 
 /**
  * @author xingjun
@@ -19,7 +22,6 @@ public class HeaderQuickSearchBean {
     private boolean debug = false;
 
 	private String quickSearchInput;
-	private String query;
 	private String quickSearchType;
 	private String dis_text;
 
@@ -31,42 +33,37 @@ public class HeaderQuickSearchBean {
 	    if (debug)
 		System.out.println("HeaderQuickSearchBean.constructor");
 
-		query = FacesUtil.getRequestParamValue("query"); 		// this is provided by action f:param
 		quickSearchInput = "";
-		quickSearchType = "Gene"; // default search option
+		quickSearchType = "Gene"; 
 	}
 
 	// ********************************************************************************
 	// Action methods
 	// ********************************************************************************
-	// modified by xingjun - 11/01/2011 - added trim method to handle multiple whitespaces input from the user
 	public String quickSearch() {
-//		System.out.println("HeaderQuickSearchBean:quickSearch:quickSearchInput: " + quickSearchInput);
-//		System.out.println("HeaderQuickSearchBean:quickSearch:query: " + query);
 		if (quickSearchInput == null || quickSearchInput.trim().equals("")) {
-//			System.out.println("return QuickNoResult");
 			return "QuickNoResult";
 		}
 		else {
-			if (query.equals("Gene")) {
-//				System.out.println("return QuickGeneQuery");
-	   			return "QuickGeneQuery";
-			} 
+		    if (null != quickSearchType && quickSearchType.equals("Gene"))
+			return "QuickGeneQuery";
 		}
-//		System.out.println("return QuickAdvancedQuery");
 		return "QuickAdvancedQuery";
 	}
 	
 	public String getQuickSearchParams() {
-//		System.out.println("HeaderQuickSearchBean:getQuickSearchParams#########");
 		HashMap<String, String> params = new HashMap<String, String>();
 		String urlParams = null;
-		params.put("input", quickSearchInput);
-		params.put("query", query);
+
+		if (null != quickSearchType && quickSearchType.equals("Accession ID"))
+		    params.put("input", Utility.checkAccessionInput(quickSearchInput));
+		else
+		    params.put("input", quickSearchInput);
+		params.put("query", quickSearchType);
 		urlParams = Visit.packParams(params);
 		if (urlParams==null)
 			return "";
-//		System.out.println("HeaderQuickSearchBean:getQuickSearchParams:urlParams: " + urlParams);
+
 		return "?"+urlParams;
 	}
 	
@@ -81,7 +78,7 @@ public class HeaderQuickSearchBean {
 	public SelectItem[] getQuickSearchTypeItems() {
 		return Globals.getQuickSearchTypeItems();
 	}
-	
+
 	public String getQuickSearchType() {
 		return this.quickSearchType;
 	}
@@ -91,8 +88,8 @@ public class HeaderQuickSearchBean {
 	}
 	
     public String changeSearchType(ValueChangeEvent value) {
-    	String searchTypeValue = (String)value.getNewValue();
-    	this.quickSearchInput = searchTypeValue;
-    	return null;
+    	quickSearchType = (String)value.getNewValue();
+
+    	return quickSearchType;
     }
 }
