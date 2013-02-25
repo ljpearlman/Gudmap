@@ -8,7 +8,7 @@ public class ChromeDetail {
 	
 	
 	public String getChromeName() {
-		return this.chromeName;
+		return chromeName;
 	}
 	
 	public void setChromeName(String chromeName) {
@@ -16,7 +16,7 @@ public class ChromeDetail {
 	}
 
 	public String getChromeStart() {
-		return this.chromeStart;
+		return chromeStart;
 	}
 	
 	public void setChromeStart(String chromeStart) {
@@ -24,7 +24,7 @@ public class ChromeDetail {
 	}
 
 	public String getChromeEnd() {
-		return this.chromeEnd;
+		return chromeEnd;
 	}
 	
 	public void setChromeEnd(String chromeEnd) {

@@ -3,6 +3,7 @@
  */
 package gmerg.db;
 
+import gmerg.utils.Utility;
 import gmerg.entities.submission.Probe;
 import gmerg.utils.table.GenericTableFilter;
 
@@ -206,8 +207,11 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
             //create array to store each row of results in
             ArrayList<String[]> results = new ArrayList<String[]>();
 
+	    String[] ishBrowseSubmission = null;
+		String str = null;
+
             while (resSet.next()) {
-                String[] ishBrowseSubmission = new String[13];
+                ishBrowseSubmission = new String[13];
                 ishBrowseSubmission[ 0] = resSet.getString(1); // id
                 ishBrowseSubmission[ 1] = resSet.getString(2); // symbol
                 ishBrowseSubmission[ 2] = resSet.getString(3); // ts
@@ -220,8 +224,13 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                 ishBrowseSubmission[ 9] = resSet.getString(12); // probe name
                 ishBrowseSubmission[10] = resSet.getString(13); // genotype
                 ishBrowseSubmission[11] = resSet.getString(14); // probe type
-                if(resSet.getString(7).trim().equalsIgnoreCase("OPT")){
-                	ishBrowseSubmission[12] = resSet.getString(9).substring(0, resSet.getString(9).lastIndexOf(".")) + ".jpg"; //thumbnail for OPT data
+                str = Utility.netTrim(resSet.getString(7));
+                if(null != str && str.trim().equalsIgnoreCase("OPT")){
+		    str = Utility.netTrim(resSet.getString(9));
+		    if (null == str)
+                	ishBrowseSubmission[12] = null;
+		    else
+                	ishBrowseSubmission[12] = str.substring(0, str.lastIndexOf(".")) + ".jpg"; //thumbnail for OPT data
                 }
                 else {
                 	ishBrowseSubmission[12] = resSet.getString(9); // thumbnail
@@ -808,6 +817,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		   ResultSet resSetMaprobeNote, ResultSet resSetFullSequence) throws SQLException {
 	   
        Probe probe = null;
+       String str = null;
        if (resSetProbe.first()) {
            probe = new Probe();
            probe.setGeneSymbol(resSetProbe.getString(1));
@@ -830,42 +840,41 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
            probe.setSeqStatus(resSetProbe.getString(17));
            probe.setSeq5Loc(resSetProbe.getString(18));
            probe.setSeq3Loc(resSetProbe.getString(19));
-           probe.setSeq5Primer(resSetProbe.getString(20).toUpperCase());
-           probe.setSeq3Primer(resSetProbe.getString(21).toUpperCase());
+           str = Utility.netTrim(resSetProbe.getString(20));
+	   if (null != str)
+	       probe.setSeq5Primer(str.toUpperCase());
+           str = Utility.netTrim(resSetProbe.getString(21));
+	   if (null != str)
+	       probe.setSeq3Primer(str.toUpperCase());
 
            // obtain probe note
            if (resSetProbeNote.first()) {
                resSetProbeNote.beforeFirst();
                String notes = new String("");
                while (resSetProbeNote.next()) {
-                   notes += resSetProbeNote.getString(1) + " ";
+                   str = Utility.netTrim(resSetProbeNote.getString(1));
+		   if (null != str)
+                   notes += str + " ";
                }
                probe.setNotes(notes.trim());
            }
            
            // obtain maprobe note
            if (resSetMaprobeNote.first()) {
-//           	ArrayList<String> maprobeNotes = new ArrayList<String>();
            	String maprobeNotes = "";
                resSetMaprobeNote.beforeFirst();
                String notes = null;
                while (resSetMaprobeNote.next()) {
-            	   notes = resSetMaprobeNote.getString(1).replaceAll("\\s", " ").trim();
-            	   
-            	   if (notes != null && !notes.equals("")) { // dont accept null value or empty string
-//                       String[] separatedNote = notes.split("\\|");
-//                       if(null != separatedNote && separatedNote.length > 1) {
-//                    	   for(int i = 0; i < separatedNote.length; i++) {
-//                    		   maprobeNotes.add(separatedNote[i]);
-//                    	   }
-//                       } else {
-//                    	   maprobeNotes.add(notes);
-//                       }
+            	   notes = Utility.netTrim(resSetMaprobeNote.getString(1));
+		   if (null != notes) {
+		       notes = notes.replaceAll("\\s", " ").trim();
+		       if (notes.equals(""))
+			   notes = null;
+		   }
+            	   if (notes != null) { // dont accept null value or empty string
             		   maprobeNotes += notes + " ";
             	   }
                }
-//               System.out.println("mn size: " + maprobeNotes.size());
-//               probe.setMaprobeNotes(maprobeNotes);
                probe.setMaprobeNoteString(maprobeNotes);
            }
            

@@ -945,9 +945,11 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		resSet.beforeFirst();
 		boolean notFound = true;
 		int rowNum = -1;
+		String str = null;
 		//starting at 0 go through the result set until a match is found
 		while(resSet.next() && notFound){
-		    if(resSet.getString(1).equalsIgnoreCase(geneSymbol)){
+		    str = Utility.netTrim(resSet.getString(1));
+		    if(null != str && str.equalsIgnoreCase(geneSymbol)){
 			notFound = false;
 			rowNum = resSet.getRow();
 		    }	
@@ -1279,6 +1281,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	PreparedStatement prepStmt = null;
 	
 	int row;
+	String str = null;
 	try {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
@@ -1300,7 +1303,9 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		while(resSet.next()) {
 		    row = resSet.getInt(1) - 1;
 		    data[row][col] = resSet.getFloat(2);
-		    mask[row][col] = (resSet.getString(3)).charAt(0);
+		    str = Utility.netTrim(resSet.getString(3));
+		    if (null != str)
+			mask[row][col] = str .charAt(0);
 		}
 	    }
 	    
@@ -2794,6 +2799,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	ArrayList<Transgenic> transgenicList = null;
 	ArrayList<String[]> transgenicNoteList = null;
 	Transgenic[] transgenics = null;
+	String str = null;
 	if (resSetTransgenic.first()) {
 	    transgenicList = new ArrayList<Transgenic>();
 	    resSetTransgenic.beforeFirst();
@@ -2802,19 +2808,52 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    while (resSetTransgenic.next()) {
 		Transgenic transgenic = new Transgenic();
 		transgenic.setMutantOid(resSetTransgenic.getInt(1));
-		transgenic.setMutantType(resSetTransgenic.getString(2).trim());
-		transgenic.setGeneSymbol(resSetTransgenic.getString(3).trim());
-		//				String geneId = resSetTransgenic.getString(4).trim();
-		//				if (geneId.indexOf("MGI:") != -1) { // 
-		//					
-		//				}
-		transgenic.setGeneId(resSetTransgenic.getString(4).trim());
-		transgenic.setMutatedAlleleId(resSetTransgenic.getString(5).trim());
-		transgenic.setMutatedAlleleName(resSetTransgenic.getString(6).trim());
-		transgenic.setLabelProduct(resSetTransgenic.getString(7).trim());
-		transgenic.setVisMethod(resSetTransgenic.getString(8).trim());
-		transgenic.setAlleleFirstChrom(resSetTransgenic.getString(9).trim());
-		transgenic.setAlleleSecondChrom(resSetTransgenic.getString(10).trim());
+		str = Utility.netTrim(resSetTransgenic.getString(2));
+		if (null == str)
+		    transgenic.setMutantType(null);
+		else
+		    transgenic.setMutantType(str.trim());
+		str = Utility.netTrim(resSetTransgenic.getString(3));
+		if (null == str)
+		    transgenic.setGeneSymbol(null);
+		else
+		    transgenic.setGeneSymbol(str.trim());
+		str = Utility.netTrim(resSetTransgenic.getString(4));
+		if (null == str)
+		    transgenic.setGeneId(null);
+		else
+		    transgenic.setGeneId(str.trim());
+		str = Utility.netTrim(resSetTransgenic.getString(5));
+		if (null == str)
+		    transgenic.setMutatedAlleleId(null);
+		else
+		    transgenic.setMutatedAlleleId(str.trim());
+		str = Utility.netTrim(resSetTransgenic.getString(6));
+		if (null == str)
+		    transgenic.setMutatedAlleleName(null);
+		else
+		    transgenic.setMutatedAlleleName(str.trim());
+		str = Utility.netTrim(resSetTransgenic.getString(7));
+		if (null == str)
+		    transgenic.setLabelProduct(null);
+		else
+		    transgenic.setLabelProduct(str.trim());
+		str = Utility.netTrim(resSetTransgenic.getString(8));
+		if (null == str)
+		    transgenic.setVisMethod(null);
+		else
+		    transgenic.setVisMethod(str.trim());
+		str = Utility.netTrim(resSetTransgenic.getString(9));
+		if (null == str)
+		    transgenic.setAlleleFirstChrom(null);
+		else
+		    transgenic.setAlleleFirstChrom(str.trim());
+		str = Utility.netTrim(resSetTransgenic.getString(10));
+		if (null == str)
+		    transgenic.setAlleleSecondChrom(null);
+		else
+		    transgenic.setAlleleSecondChrom(str.trim());
+	
 		transgenic.setSerialNo(serialNo);
 		serialNo++;
 		transgenicList.add(transgenic);

@@ -24,14 +24,14 @@ public class CollectionInfo {
 	public CollectionInfo() {
 		// set default values which are not possible in the real time
 		// based on the values we can check if the object has been really assigned propertities 
-		this.owner = -1;
-		this.type = -1;
-		this.status = -1;
-		this.focusGroup = -1;
+		owner = -1;
+		type = -1;
+		status = -1;
+		focusGroup = -1;
 	}
 	
 	public int getId() {
-		return this.id;
+		return id;
 	}
 	
 	public void setId(int id) {
@@ -39,7 +39,7 @@ public class CollectionInfo {
 	}
 	
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public void setName(String name) {
@@ -47,7 +47,7 @@ public class CollectionInfo {
 	}
 
 	public int getOwner() {
-		return this.owner;
+		return owner;
 	}
 
 	public void setOwner(int owner) {
@@ -55,7 +55,7 @@ public class CollectionInfo {
 	}
 	
 	public String getOwnerName() {
-		return this.ownerName;
+		return ownerName;
 	}
 
 	public void setOwnerName(String ownerName) {
@@ -63,7 +63,7 @@ public class CollectionInfo {
 	}
 	
 	public int getType() {
-		return this.type;
+		return type;
 	}
 
 	public void setType(int type) {
@@ -71,7 +71,7 @@ public class CollectionInfo {
 	}
 
 	public int getStatus() {
-		return this.status;
+		return status;
 	}
 
 	public void setStatus(int status) {
@@ -79,7 +79,7 @@ public class CollectionInfo {
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	public void setDescription(String description) {
@@ -87,25 +87,23 @@ public class CollectionInfo {
 	}
 
 	public int getFocusGroup() {
-		return this.focusGroup;
+		return focusGroup;
 	}
 
 	public void setFocusGroup(int focusGroup) {
 		this.focusGroup = focusGroup;
 	}
 
-	// added by xingjun - 06/10/2009
 	public String getFocusGroupName() {
-		return this.focusGroupName;
+		return focusGroupName;
 	}
 
-	// added by xingjun - 06/10/2009
 	public void setFocusGroupName(String focusGroupName) {
 		this.focusGroupName = focusGroupName;
 	}
 
 	public String getLastUpdate() {
-		return this.lastUpdate;
+		return lastUpdate;
 	}
 
 	public void setLastUpdate(String lastUpdate) {
@@ -113,7 +111,7 @@ public class CollectionInfo {
 	}
 
 	public int getEntries() {
-		return this.entries;
+		return entries;
 	}
 
 	public void setEntries(int entries) {
@@ -131,7 +129,10 @@ public class CollectionInfo {
 
 	public String getAllInfo() {
 		String outputString = "name = " + getName() + "\n";
-		outputString += "type = " + Globals.getCollectionCategoryName(getType()).toLowerCase() + "\n";
+		String str = null;
+		str = Globals.getCollectionCategoryName(getType());
+		if (null != str)
+		    outputString += "type = " + str.toLowerCase() + "\n";
 		outputString += "description = " + getDescription() + "\n";
 		outputString += "focus group = " + Globals.getFocusGroup(getFocusGroup()) + "\n";
 		outputString += "status = " + ((getStatus()==0)? "private" : "public") + "\n";

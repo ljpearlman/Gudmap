@@ -4,6 +4,7 @@
 package gmerg.db;
 
 import gmerg.entities.submission.array.Series;
+import gmerg.utils.Utility;
 
 import java.util.ArrayList;
 import java.sql.Connection;
@@ -617,7 +618,6 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				}
 				columns[columnCount] = String.valueOf(serialNo);
 				serialNo++;
-//				resSetImage.getString(1).replaceAll("\\W", "");
 				results.add(columns);
 			}
 			return results;

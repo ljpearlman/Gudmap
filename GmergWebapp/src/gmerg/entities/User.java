@@ -38,7 +38,7 @@ public class User  {
     }
     
     public String getUserRole() {
-        return this.userRole;
+        return userRole;
     }
     
     public void setUserRole(String userRole){
@@ -46,7 +46,7 @@ public class User  {
     }
     
     public int getUserPrivilege() {
-        return this.userPrivilege;
+        return userPrivilege;
     }
     
     public void setUserPrivilege(int userPrivilege){
@@ -54,7 +54,7 @@ public class User  {
     }
     
     public int getUserId() {
-    	return this.userId;
+    	return userId;
     }
     
     public void setUserId(int userId) {
@@ -78,7 +78,7 @@ public class User  {
 	}
     
     public String getNickName() {
-        return this.nickName;
+        return nickName;
     }
     
     public void setNickName(String value) {

@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import gmerg.utils.Utility;
+
 /**
  * @author xingjun
  *
@@ -266,14 +268,16 @@ public class MySQLGeneDAOImp implements GeneDAO {
 			}
 
 			resSet = stmt.executeQuery();
+			String str = null;
 			if(resSet.first()){
 				resSet.last();
 				geneSymbols = new ArrayList<String>();
 				resSet.beforeFirst();
 				while (resSet.next()) {
-					if(!resSet.getString(1).trim().equals("")){
-						geneSymbols.add(resSet.getString(1));
-					}
+				    str = Utility.netTrim(resSet.getString(1));
+				    if(null != str){
+					geneSymbols.add(str);
+				    }
 				}
 			}
 

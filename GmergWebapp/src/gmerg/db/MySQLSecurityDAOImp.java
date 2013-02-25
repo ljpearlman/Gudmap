@@ -1,6 +1,7 @@
 package gmerg.db;
 
 import gmerg.entities.User;
+import gmerg.utils.Utility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +21,8 @@ public class MySQLSecurityDAOImp implements SecurityDAO {
         ParamQuery parQ = DBQuery.getParamQuery("LOGIN_DETAILS");
         ResultSet resSet = null;
         PreparedStatement prepStat = null;
+	String str = null;
+	User user = null;
         
         try {
             parQ.setPrepStat(conn);
@@ -29,8 +32,12 @@ public class MySQLSecurityDAOImp implements SecurityDAO {
             resSet = prepStat.executeQuery();
             
             if(resSet.first()){
-                if(resSet.getString(1).equals(username) && resSet.getString(2).equals(password)){
-                    User user = new User();
+                str = Utility.netTrim(resSet.getString(1));
+                if(null != str && str.equals(username)) {
+		    str = Utility.netTrim(resSet.getString(2));
+ 		    
+		if (null != str && str.equals(password)){
+                    user = new User();
                     user.setUserName(resSet.getString(1));
                     user.setUserType(resSet.getString(3));
                     user.setUserRole(resSet.getString(3));
@@ -40,6 +47,7 @@ public class MySQLSecurityDAOImp implements SecurityDAO {
                     user.setNickName(resSet.getString(7));
                     return user;
                 }
+		}
             }
             return null;
             

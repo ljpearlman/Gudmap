@@ -38,6 +38,9 @@ public class HeatmapData {
 	}
 	
 	public static double findMedian(double[] data) {
+	    if (null == data)
+		return 0;
+
 		int n = data.length;
 		double[] temp = new double[n]; 
 		System.arraycopy(data, 0, temp, 0, n);
@@ -48,6 +51,9 @@ public class HeatmapData {
 	}
 	
 	public static double findStdDev(double[] data) {
+	    if (null == data)
+		return 0;
+
 		double mean = findMean(data);
 		double sum =0;
 		//Find standard deviation
@@ -57,6 +63,9 @@ public class HeatmapData {
 	}
 	
 	public static double findMean(double[] data) {
+	    if (null == data)
+		return 0;
+
 		double sum =0;
 		for (int i=0; i<data.length; i++)
 			sum += data[i];

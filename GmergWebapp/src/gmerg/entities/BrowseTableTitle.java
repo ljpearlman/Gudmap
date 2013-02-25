@@ -20,7 +20,7 @@ public class BrowseTableTitle {
 	
 	
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 	
 	public void setTitle(String title) {
@@ -28,7 +28,7 @@ public class BrowseTableTitle {
 	}
 	
 	public String getType() {
-		return this.type;
+		return type;
 	}
 	
 	public void setType(String type) {
@@ -36,7 +36,7 @@ public class BrowseTableTitle {
 	}
 	
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 	
 	public void setDescription(String description) {
@@ -44,7 +44,7 @@ public class BrowseTableTitle {
 	}
 	
 	public String getGroupName() {
-		return this.groupName;
+		return groupName;
 	}
 	
 	public void setGroupName(String groupName) {

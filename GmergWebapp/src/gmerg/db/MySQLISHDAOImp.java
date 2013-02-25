@@ -13,6 +13,7 @@ import gmerg.entities.submission.Specimen;
 import gmerg.entities.submission.Submission;
 import gmerg.entities.submission.StatusNote;
 import gmerg.entities.submission.LockingInfo;
+import gmerg.utils.Utility;
 
 import java.util.ResourceBundle;
 import java.util.List;
@@ -468,12 +469,19 @@ public class MySQLISHDAOImp implements ISHDAO {
             probe.setSeq5Loc(resSetProbe.getString(18));
             probe.setSeq3Loc(resSetProbe.getString(19));
 	    
-            // xingjun --- 02/05/2007
-            probe.setSeq5Primer(resSetProbe.getString(20).toUpperCase());
-            probe.setSeq3Primer(resSetProbe.getString(21).toUpperCase());
+	    String str = null;
+            str = Utility.netTrim(resSetProbe.getString(20));
+	    if (null == str)
+		probe.setSeq5Primer(null);
+	    else
+		probe.setSeq5Primer(str.toUpperCase());
+            str = Utility.netTrim(resSetProbe.getString(21));
+	    if (null == str)
+		probe.setSeq3Primer(null);
+	    else
+		probe.setSeq3Primer(str.toUpperCase());
             probe.setGeneIdUrl(resSetProbe.getString(22));
 	    
-            // xingjun - 30/10/2009
             probe.setAdditionalCloneName(resSetProbe.getString(23));
 	    
             // xingjun - 19/01/2011
@@ -484,32 +492,27 @@ public class MySQLISHDAOImp implements ISHDAO {
                 resSetProbeNote.beforeFirst();
                 String notes = new String("");
                 while (resSetProbeNote.next()) {
-                    notes += resSetProbeNote.getString(1) + " ";
+                    str = Utility.netTrim(resSetProbeNote.getString(1));
+		    if (null != str)
+                    notes += str + " ";
                 }
                 probe.setNotes(notes.trim());
             }
-	    
-            // obtain maprobe note --- 02/05/2007
-	    
-	    //            resSetMaprobeNote.last();
-	    //            int rowCount =resSetMaprobeNote.getRow();
-	    //            resSetMaprobeNote.beforeFirst();
-	    
 	    
             if (resSetMaprobeNote!= null && resSetMaprobeNote.first()) {
             	ArrayList<String> maprobeNotes = new ArrayList<String>();
                 resSetMaprobeNote.beforeFirst();
                 String notes = null;
+		String[] separatedNote = null;
                 while (resSetMaprobeNote.next()) {
-		    //                	System.out.println("ma probe note result set");
-		    notes = resSetMaprobeNote.getString(1).replaceAll("\\s", " ").trim();
-		    //                	System.out.println("manotes: " + notes);
-		    //                    if (notes.equals(" ")) {
-		    //                    	System.out.println("white space");
-		    //                    }
-                    if (notes != null && !notes.equals("")) { // dont accept null value or empty string
-			//                    	System.out.println("notes not null");
-                        String[] separatedNote = notes.split("\\|");
+		    notes = Utility.netTrim(resSetMaprobeNote.getString(1));
+		    if (null != notes) {
+			notes = notes.replaceAll("\\s", " ").trim();
+			if (notes.equals(""))
+			    notes = null;
+		    }
+		    if (null != notes) {
+                        separatedNote = notes.split("\\|");
                     	if(null != separatedNote && separatedNote.length > 1) {
 			    for(int i = 0; i < separatedNote.length; i++) {
 				maprobeNotes.add(separatedNote[i]);
@@ -520,8 +523,6 @@ public class MySQLISHDAOImp implements ISHDAO {
                     	}
                     }
                 }
-		//                System.out.println("mn size: " + maprobeNotes.size());
-                // xingjun - 14/04/2010
                 if (maprobeNotes.size() == 0) {
 		    probe.setMaprobeNotes(null);
                 } else {
@@ -557,8 +558,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             	probe.setFullSequence(null);
             }
         }
-	//        ArrayList mn = probe.getMaprobeNotes();
-	//        System.out.println("manotes size: " + mn.size());
+
         return probe;
     }
     
@@ -807,8 +807,11 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    if (resSetTransgenicNote.first()) {
                 resSetTransgenicNote.beforeFirst();
                 String notes = new String("");
+		String str = null;
                 while (resSetTransgenicNote.next()) {
-                    notes += resSetTransgenicNote.getString(1) + " ";
+                    str = Utility.netTrim(resSetTransgenicNote.getString(1));
+		    if (null != str)
+                    notes += str + " ";
                 }
                 transgenic.setNotes(notes.trim());
 	    }
@@ -889,12 +892,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             if (resSetSpecimenNote.first()) {
                 resSetSpecimenNote.beforeFirst();
                 while (resSetSpecimenNote.next()) {
-                    str = resSetSpecimenNote.getString(1);
-		    if (null != str) {
-			str = str.trim();
-			if (str.equals(""))
-			    str = null;
-		    }
+                    str = Utility.netTrim(resSetSpecimenNote.getString(1));
 		    if (null != str)
 			notes.add(str);
                 }
@@ -967,19 +965,27 @@ public class MySQLISHDAOImp implements ISHDAO {
             resSetImage.beforeFirst();
             int serialNo = 1;
             ArrayList<String[]> results = new ArrayList<String[]>();
+	    int dotPosition = 0;
+	    String fileExtension = null;
+	    String str = null;
+	    String[] columns = null;
+
             while (resSetImage.next()) {
-                String[] columns = new String[columnCount + 1];
+                columns = new String[columnCount + 1];
                 for (int i = 0; i < columnCount; i++) {
 		    if(i == 3) {
-			//                   		columns[i] = resSetImage.getString(i+1).substring(0, resSetImage.getString(i+1).lastIndexOf(".")) + ".jpg"; //thumbnail for OPT data
-                    	String str = resSetImage.getString(i+1);
-                    	int dotPosition = str.lastIndexOf(".");
-                    	String fileExtension = str.substring(dotPosition+1).trim();
-                    	if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("wlz")) {
-			    columns[i] = str.substring(0, str.lastIndexOf(".")) + ".jpg";
-                    	} else {
-			    columns[i] = str.substring(0, str.lastIndexOf(".")) + "." + fileExtension;// xingjun - 01/08/2011 - mantis 556
-                    	}
+                    	str = Utility.netTrim(resSetImage.getString(i+1));
+			if (null == str) 
+			    columns[i] = null;
+			else {
+			    dotPosition = str.lastIndexOf(".");
+			    fileExtension = str.substring(dotPosition+1).trim();
+			    if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("wlz")) {
+				columns[i] = str.substring(0, str.lastIndexOf(".")) + ".jpg";
+			    } else {
+				columns[i] = str.substring(0, str.lastIndexOf(".")) + "." + fileExtension;// xingjun - 01/08/2011 - mantis 556
+			    }
+			}
 		    }
 		    else {
 			columns[i] = resSetImage.getString(i + 1);
@@ -4497,10 +4503,12 @@ public class MySQLISHDAOImp implements ISHDAO {
             if (resSetAllImageNotesInSameSubmission.first()) {
             	ArrayList<String[]> allImageNotes = new ArrayList<String[]>();
             	resSetAllImageNotesInSameSubmission.beforeFirst();
+		String[] filenamenNote = null;
             	while (resSetAllImageNotesInSameSubmission.next()) {
-		    String[] filenamenNote = new String[2];
-		    filenamenNote[0] = resSetAllImageNotesInSameSubmission.getString(1);
-		    filenamenNote[1] = resSetAllImageNotesInSameSubmission.getString(2);
+		    filenamenNote = new String[2];
+		    filenamenNote[0] = Utility.netTrim(resSetAllImageNotesInSameSubmission.getString(1));
+		    filenamenNote[1] = Utility.netTrim(resSetAllImageNotesInSameSubmission.getString(2));
+		    if (null != filenamenNote[0] || null !=  filenamenNote[1])
 		    allImageNotes.add(filenamenNote);
             	}
             	imageDetail.setAllImageNotesInSameSubmission(allImageNotes);
@@ -4620,31 +4628,28 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     private ExpressionDetail formatExpressionDetailResultSet(ResultSet resSet) throws SQLException {
         ExpressionDetail expression = null;
+	String str = null;
+	String [] components = null;
+	ArrayList componentList = null;
         if (resSet.first()) {
             expression = new ExpressionDetail();
             expression.setComponentId(resSet.getString(1));
             expression.setComponentName(resSet.getString(2));
-	    
-            //			  expression.setPattern(resSet.getString(3));
-            // at moment we have not available value for patters
-            // so only specify pattern value in the new data structure
-            //ExpressionPattern[] patterns = new ExpressionPattern[1];
-            //ExpressionPattern pattern = new ExpressionPattern();
-            //pattern.setPattern(resSet.getString(3));
-            //patterns[0] = pattern;
-            //expression.setPattern(patterns);
-	    
-            String [] components = resSet.getString(3).split("\\.");
-            ArrayList componentList = reformatComponentFullPath(components);
-            expression.setComponentDescription(componentList);
-            //			  expression.setStrength(resSet.getString(5));
+	    str = Utility.netTrim(resSet.getString(3));
+	    if (null == str) {
+		expression.setComponentDescription(null);
+	    } else {
+		
+		components = str.split("\\.");
+		componentList = reformatComponentFullPath(components);
+		expression.setComponentDescription(componentList);
+	    }
             expression.setPrimaryStrength(resSet.getString(4));
             expression.setSecondaryStrength(resSet.getString(5));
             expression.setExpressionId(resSet.getInt(6));
             expression.setStage("TS" + resSet.getString(7));
-            //			  expression.setSubmissionFk(8);
             expression.setSubmissionDbStatus(resSet.getInt(9));
-	    //            System.out.println("ISHDAO:formatExpressionDetailResultSet:dbStatus: " + expression.getSubmissionDbStatus());
+
             return expression;
         }
         return null;
@@ -4759,26 +4764,31 @@ public class MySQLISHDAOImp implements ISHDAO {
                     prepStmtLocations.setString(1, resSetPattern.getString(1));
                     resSetLocations = prepStmtLocations.executeQuery();
                     StringBuffer locations = null;
+		    String str = null;
+		    String atnPubIdVal = null;
+		    ResourceBundle  bundle = ResourceBundle.getBundle("configuration");
+		    String anatIdPrefix = bundle.getString("anatomy_id_prefix");
+		    ResultSet compNmeSet = null;
+                                
                     if (resSetLocations.first()) {
 			//                        System.out.println("resSetLocations has results");
                         locations = new StringBuffer("");
                         resSetLocations.beforeFirst();
+			String adjacentTxt = "adjacent to ";
                         while (resSetLocations.next()) {
-                            String adjacentTxt = "adjacent to ";
                             //if the location string begins with 'adjacent to ', further query is required
-                            if(resSetLocations.getString(1).indexOf(adjacentTxt) >= 0) {
+                            str = Utility.netTrim(resSetLocations.getString(1));
+                            if(null != str && str.indexOf(adjacentTxt) >= 0) {
                                 //the components public id is a substring of the location string 
-                                String atnPubIdVal = resSetLocations.getString(1).substring(adjacentTxt.length());
+                                atnPubIdVal = str.substring(adjacentTxt.length());
 				
                                 /*need to get the anatomy prefix and attach it to the id obtained previously
 				  then query the database to get the mane of the component*/
-                                ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-                                String anatIdPrefix = bundle.getString("anatomy_id_prefix");
                                 parQ = DBQuery.getParamQuery("COMPONENT_NAME_FROM_ATN_PUBLIC_ID");
                                 parQ.setPrepStat(conn);
                                 compNmeStmt = parQ.getPrepStat();
                                 compNmeStmt.setString(1, anatIdPrefix+atnPubIdVal);
-                                ResultSet compNmeSet = compNmeStmt.executeQuery();
+                                compNmeSet = compNmeStmt.executeQuery();
                                 if(compNmeSet.first()){
                                     locations.append(adjacentTxt+ compNmeSet.getString(1));
                                 }
@@ -4864,28 +4874,34 @@ public class MySQLISHDAOImp implements ISHDAO {
                     prepStmtLocations.setInt(1, resSetPattern.getInt(1));
                     resSetLocations = prepStmtLocations.executeQuery();
                     StringBuffer locations = null;
+		    String str = null;
+		    String adjacentTxt = "adjacent to ";
+		    String atnPubIdVal = null;
+		    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
+		    String  anatIdPrefix = bundle.getString("anatomy_id_prefix");
+		    ResultSet compNmeSet = null;
+		    
                     if (resSetLocations.first()) {
 			//                        System.out.println("resSetLocations has results");
                     	if (!forEditing) {
                             locations = new StringBuffer("");
                             resSetLocations.beforeFirst();
                             while (resSetLocations.next()) {
-                                String adjacentTxt = "adjacent to ";
                                 //if the location string begins with 'adjacent to ', further query is required
-                                if(resSetLocations.getString(1).indexOf(adjacentTxt) >= 0) {
+                                str = Utility.netTrim(resSetLocations.getString(1));
+                                if(null != str && str.indexOf(adjacentTxt) >= 0) {
 				    
                                     //the components public id is a substring of the location string 
-                                    String atnPubIdVal = resSetLocations.getString(1).substring(adjacentTxt.length());
+                                    atnPubIdVal = str.substring(adjacentTxt.length());
 				    
                                     /*need to get the anatomy prefix and attach it to the id obtained previously
 				      then query the database to get the mane of the component*/
-                                    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-                                    String anatIdPrefix = bundle.getString("anatomy_id_prefix");
+                                    
                                     parQ = DBQuery.getParamQuery("COMPONENT_NAME_FROM_ATN_PUBLIC_ID");
                                     parQ.setPrepStat(conn);
                                     compNmeStmt = parQ.getPrepStat();
                                     compNmeStmt.setString(1, anatIdPrefix+atnPubIdVal);
-                                    ResultSet compNmeSet = compNmeStmt.executeQuery();
+                                    compNmeSet = compNmeStmt.executeQuery();
                                     if(compNmeSet.first()){
                                         locations.append(adjacentTxt+ compNmeSet.getString(1));
                                     }
@@ -4918,7 +4934,7 @@ public class MySQLISHDAOImp implements ISHDAO {
                             	}
                             }
                             int len = locationList.size();
-			    //                            System.out.println("location number: " + len);
+
                             if (len > 0) {
                                 pattern.setLocationId(Integer.parseInt(locationList.get(0)[1]));
                                 /////////////////////////////
@@ -4928,7 +4944,11 @@ public class MySQLISHDAOImp implements ISHDAO {
 				    pattern.setLocations(locationString);
 				    if(locationString.indexOf("adjacent to") >= 0) {
                                 	pattern.setLocationAPart("adjacent to");
-                                	pattern.setLocationNPart(locationString.substring(11).trim());
+                                	str = Utility.netTrim(locationString.substring(11));
+					if (null == str)
+                                	pattern.setLocationNPart(null);
+					else
+                                	pattern.setLocationNPart(str);
 				    } else {
                                 	pattern.setLocationAPart(locationString);
                                 	pattern.setLocationNPart("");
@@ -4944,13 +4964,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 						pattern.setPattern(patternValue);
 						pattern.setLocationId(Integer.parseInt(locationList.get(i)[1]));
 						/////////////////////////////
-						    // modified by xingjun - 16/06/2008 - need to split location value if
 						    // it's in 'adjacent to xxxxx' format
 						    locationString = locationList.get(i)[0];
 						    pattern.setLocations(locationString);
 						    if(locationString.indexOf("adjacent to") >= 0) {
 							pattern.setLocationAPart("adjacent to");
-							pattern.setLocationNPart(locationString.substring(11).trim());
+							str = Utility.netTrim(locationString.substring(11));
+							if (null == str)
+							    pattern.setLocationNPart(null);
+							else
+							    pattern.setLocationNPart(str);
 						    } else {
 							pattern.setLocationAPart(locationString);
 							pattern.setLocationNPart("");
@@ -4996,6 +5019,9 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("COMPONENT_DETAIL");
         PreparedStatement prepStmt = null;
+	String [] components = null;
+	ArrayList componentList = null;
+	String str = null;
         try {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
@@ -5008,9 +5034,12 @@ public class MySQLISHDAOImp implements ISHDAO {
                 componentDetail = new ArrayList<Object>();
                 componentDetail.add(resSet.getString(1));
                 componentDetail.add(resSet.getString(2));
-                String [] components = resSet.getString(3).split("\\.");
-                ArrayList componentList = reformatComponentFullPath(components);
+                str = Utility.netTrim(resSet.getString(3));
+		if (null != str) {
+                components = str.split("\\.");
+                componentList = reformatComponentFullPath(components);
                 componentDetail.add(componentList);
+		}
             }
             // close the db object
             DBHelper.closePreparedStatement(prepStmt);
@@ -5137,10 +5166,10 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    if (resSet.first()) {
 		resSet.beforeFirst();
 		ArrayList<StatusNote> sns = new ArrayList<StatusNote>();
+		StatusNote statusNote = null;
 		while (resSet.next()) {
-		    StatusNote statusNote = new StatusNote();
+		    statusNote = new StatusNote();
 		    statusNote.setStatusNoteId(resSet.getInt(1));
-		    //        			statusNote.setSubmissionId(resSet.getInt(2));
 		    statusNote.setSubmissionId(resSet.getString(2));
 		    statusNote.setStatusNote(resSet.getString(3));
 		    statusNote.setSelected(false);
@@ -5168,6 +5197,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	//        System.out.println("pattern list query: " + query);
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
+	String str = null;
         try {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
@@ -5180,7 +5210,9 @@ public class MySQLISHDAOImp implements ISHDAO {
 		resSet.beforeFirst();
 		patternList = new ArrayList<String>();
 		while (resSet.next()) {
-		    patternList.add(resSet.getString(1).trim());
+		    str = Utility.netTrim(resSet.getString(1));
+		    if (null != str)
+			patternList.add(str);
 		}
 	    }
 	    
@@ -5204,6 +5236,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	//        System.out.println("location list query: " + query);
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
+	String str = null;
         try {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
@@ -5216,7 +5249,9 @@ public class MySQLISHDAOImp implements ISHDAO {
 		resSet.beforeFirst();
 		locationList = new ArrayList<String>();
 		while (resSet.next()) {
-		    locationList.add(resSet.getString(1).trim());
+		    str = Utility.netTrim(resSet.getString(1));
+		    if (null != str)
+			locationList.add(str);
 		}
 	    }
 	    
@@ -5251,14 +5286,19 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    prepStmt = conn.prepareStatement(query);
 	    prepStmt.setString(1, stage);
 	    resSet = prepStmt.executeQuery();
+	    String str = null;
+	    String[] component = null;
 	    if (resSet.first()) {
 		resSet.beforeFirst();
 		componentList = new ArrayList<String[]>();
 		while (resSet.next()) {
-		    String[] component = new String[2];
-		    component[0] = resSet.getString(1).trim();
-		    component[1] = resSet.getString(2).trim();
-		    componentList.add(component);
+		    component = new String[2];
+		    str = Utility.netTrim(resSet.getString(1));
+		    component[0] = str;
+		    str = Utility.netTrim(resSet.getString(2));
+		    component[1] = str;
+		    if (null != component[0] || str != component[1])
+			componentList.add(component);
 		}
 	    }
             // close the db object

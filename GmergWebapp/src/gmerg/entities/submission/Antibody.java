@@ -52,7 +52,7 @@ public class Antibody {
 	
 	
 	public String getName() {
-		return this.name;
+		return name;
 	}
 	
 	public void setName(String name) {
@@ -60,7 +60,7 @@ public class Antibody {
 	}
 	
 	public String getAccessionId() {
-		return this.accessionId;
+		return accessionId;
 	}
 	
 	public void setAccessionId(String input) {
@@ -77,7 +77,7 @@ public class Antibody {
 	}
 	
 	public String getUrl() {
-		return this.url;
+		return url;
 	}
 	
 	public void setUrl(String url) {
@@ -85,7 +85,7 @@ public class Antibody {
 	}
 	
 	public String getGeneSymbol() {
-		return this.geneSymbol;
+		return geneSymbol;
 	}
 	
 	public void setGeneSymbol(String geneSymbol) {
@@ -93,7 +93,7 @@ public class Antibody {
 	}
 	
 	public String getGeneName() {
-		return this.geneName;
+		return geneName;
 	}
 	
 	public void setGeneName(String geneName) {
@@ -101,7 +101,7 @@ public class Antibody {
 	}
 	
 	public String getGeneId() {
-		return this.geneId;
+		return geneId;
 	}
 	
 	public void setGeneId(String geneId) {
@@ -109,21 +109,25 @@ public class Antibody {
 	}
 	
 	public String getSeqStatus() {
-		return this.seqStatus;
+		return seqStatus;
 	}
 	
     public void setSeqStatus(String value) {
-        if (value.trim().equals("FULLY_SEQUENCED")) {
-            this.seqStatus = "Fully Sequenced";
-        } else if (value.trim().equals("PARTIALLY_SEQUENCED")) {
-            this.seqStatus = "Partially Sequenced";
-        } else {
-            this.seqStatus = "Unsequenced";
-        }
+	if (null == value) 
+	    seqStatus= "";
+	else {
+	    if (value.trim().equals("FULLY_SEQUENCED")) {
+		seqStatus = "Fully Sequenced";
+	    } else if (value.trim().equals("PARTIALLY_SEQUENCED")) {
+		seqStatus = "Partially Sequenced";
+	    } else {
+		seqStatus = "Unsequenced";
+	    }
+	}
     }
     
     public int getSeqStartLocation() {
-    	return this.seqStartLocation;
+    	return seqStartLocation;
     }
     
     public void setseqStartLocation(int seqStartLocation) {
@@ -131,7 +135,7 @@ public class Antibody {
     }
     
     public int getSeqEndLocation() {
-    	return this.seqEndLocation;
+    	return seqEndLocation;
     }
     
     public void setSeqEndLocation(int seqEndLocation) {
@@ -139,32 +143,15 @@ public class Antibody {
     }
     
     public String getSeqInfo() {
-    	return this.seqInfo;
+    	return seqInfo;
     }
     
     public void setSeqInfo(String seqInfo) {
     	this.seqInfo = seqInfo;
     }
     
-//    public String getGenbankID() {
-//        return this.genbankID;
-//    }
-//
-//    public void setGenbankID(String genbankID) {
-//        this.genbankID = genbankID;
-//    }
-//
-//    public String getGenbankURL() {
-//        return this.genbankURL;
-//    }
-//
-//    public void setGenbankURL(String genbankURL) {
-//        this.genbankURL = genbankURL;
-//    }
-
-	
 	public String getSupplier() {
-		return this.supplier;
+		return supplier;
 	}
 	
 	public void setSupplier(String supplier) {
@@ -172,7 +159,7 @@ public class Antibody {
 	}
 	
 	public String getCatalogueNumber() {
-		return this.catalogueNumber;
+		return catalogueNumber;
 	}
 	
 	public void setCatalogueNumber(String catalogueNumber) {
@@ -180,18 +167,22 @@ public class Antibody {
 	}
 	
 	public String getLotNumber() {
-		return this.lotNumber;
+		return lotNumber;
 	}
 	
 	public void setLotNumber(String lotNumber) {
+	    if (null == lotNumber)
+		this.lotNumber = "";
+	    else {
 		if (lotNumber.equalsIgnoreCase("na"))
-			this.lotNumber = "";
+		    this.lotNumber = "";
 		else
-			this.lotNumber = lotNumber;
+		    this.lotNumber = lotNumber;
+	    }
 	}
 	
 	public String getType() {
-		return this.type;
+		return type;
 	}
 	
 	public void setSubtype(String type) {
@@ -199,7 +190,7 @@ public class Antibody {
 	}
 	
 	public String getHost() {
-		return this.host;
+		return host;
 	}
 	
 	public void setHost(String host) {
@@ -207,7 +198,7 @@ public class Antibody {
 	}
 	
 	public String getHybridomaValue() {
-		return this.hybridomaValue;
+		return hybridomaValue;
 	}
 	
 	public void setHybridomaValue(String hybridomaValue) {
@@ -215,7 +206,7 @@ public class Antibody {
 	}
 	
 	public String getPhageDisplayValue() {
-		return this.phageDisplayValue;
+		return phageDisplayValue;
 	}
 	
 	public void setPhageDisplayValue(String phageDisplayValue) {
@@ -223,7 +214,7 @@ public class Antibody {
 	}
 	
 	public String getSpeciesImmunizedValue() {
-		return this.speciesImmunizedValue;
+		return speciesImmunizedValue;
 	}
 	
 	public void setSpeciesImmunizedValue(String speciesImmunizedValue) {
@@ -231,7 +222,7 @@ public class Antibody {
 	}
 	
 	public String getPurificationMethod() {
-		return this.purificationMethod;
+		return purificationMethod;
 	}
 	
 	public void setPurificationMethod(String purificationMethod) {
@@ -239,7 +230,7 @@ public class Antibody {
 	}
 	
 	public String getImmunoglobulinIsotype() {
-		return this.immunoglobulinIsotype;
+		return immunoglobulinIsotype;
 	}
 	
 	public void setImmunoglobulinIsotype(String immunoglobulinIsotype) {
@@ -247,7 +238,7 @@ public class Antibody {
 	}
 	
 	public String getChainType() {
-		return this.chainType;
+		return chainType;
 	}
 	
 	public void setChainType(String chainType) {
@@ -255,7 +246,7 @@ public class Antibody {
 	}
 	
 	public String getDetectedVariantValue() {
-		return this.detectedVariantValue;
+		return detectedVariantValue;
 	}
 	
 	public void setDetectedVariantValue(String detectedVariantValue) {
@@ -263,7 +254,7 @@ public class Antibody {
 	}
 	
 	public String getSpeciesSpecificity() {
-		return this.speciesSpecificity;
+		return speciesSpecificity;
 	}
 	
 	public void setSpeciesSpecificity(String speciesSpecificity) {
@@ -271,7 +262,7 @@ public class Antibody {
 	}
 	
 	public String getLabelProduct() {
-		return this.labelProduct;
+		return labelProduct;
 	}
 	
 	public void setLabelProduct(String labelProduct) {
@@ -279,7 +270,7 @@ public class Antibody {
 	}
 	
 	public String getDirectLabel() {
-		return this.directLabel;
+		return directLabel;
 	}
 	
 	public void setDirectLabel(String directLabel) {
@@ -287,7 +278,7 @@ public class Antibody {
 	}
 	
 	public String getSignalDetectionMethod() {
-		return this.signalDetectionMethod;
+		return signalDetectionMethod;
 	}
 	
 	public void setSignalDetectionMethod(String signalDetectionMethod) {
@@ -295,7 +286,7 @@ public class Antibody {
 	}
 	
 	public String getNotes() {
-		return this.notes;
+		return notes;
 	}
 	
 	public void setNotes(String notes) {
@@ -303,7 +294,7 @@ public class Antibody {
 	}
 
 	public String getUniprotId(){
-		return this.uniprotId;
+		return uniprotId;
 	}
 	
 	public void setUniprotId(String uniprotId) {
@@ -311,7 +302,7 @@ public class Antibody {
 	}
 
 	public String getDetectionNotes() {
-		return this.detectionNotes;
+		return detectionNotes;
 	}
 	
 	public void setDetectionNotes(String detectionNotes) {
@@ -319,7 +310,7 @@ public class Antibody {
 	}
 
 	public String getSecondaryAntibody() {
-		return this.secondaryAntibody;
+		return secondaryAntibody;
 	}
 	
 	public void setSecondaryAntibody(String secondaryAntibody) {
@@ -327,7 +318,7 @@ public class Antibody {
 	}
 
 	public String getDilution(){
-		return this.dilution;
+		return dilution;
 	}
 	
 	public void setDilution(String dilution) {
@@ -335,7 +326,7 @@ public class Antibody {
 	}
 
 	public String getExperimentalNotes() {
-		return this.experimentalNotes;
+		return experimentalNotes;
 	}
 	
 	public void setExperimentalNotes(String experimentalNotes) {
@@ -343,7 +334,7 @@ public class Antibody {
 	}
 
 	public String getLabProbeId() {
-		return this.labProbeId;
+		return labProbeId;
 	}
 	
 	public void setLabProbeId(String labProbeId) {
@@ -351,7 +342,7 @@ public class Antibody {
 	}
 
 	public String getMaProbeId() {
-		return this.maprobeId;
+		return maprobeId;
 	}
 	
 	public void setMaProbeId(String maprobeId) {
@@ -359,7 +350,7 @@ public class Antibody {
 	}
 
 	public String getLocusTag() {
-		return this.locusTag;
+		return locusTag;
 	}
 	
 	public void setLocusTag(String locusTag) {
@@ -367,21 +358,28 @@ public class Antibody {
 	}
 
     public ArrayList getIshSubmissions() { 	  	
-        return this.ishSubmissions;
+        return ishSubmissions;
     }
 	
     public void setIshSubmissions(ArrayList<String[]> values) {
-        this.ishSubmissions = values;
+        ishSubmissions = values;
 
-        this.ishFilteredSubmissions = new ArrayList<String[]>();        
+	if (null == values) {
+	    if (null != ishFilteredSubmissions)
+		ishFilteredSubmissions.clear();
+	    return;
+	}
+
+        ishFilteredSubmissions = new ArrayList<String[]>();        
+	String[] arr = null;
         for (int i=0; i<ishSubmissions.size(); i++){
-        	String[] arr = (String[]) ishSubmissions.get(i);
+        	arr = (String[]) ishSubmissions.get(i);
         	if (arr[9].equalsIgnoreCase(maprobeId) || arr[6].equalsIgnoreCase(maprobeId))
-        		this.ishFilteredSubmissions.add(arr);
+        		ishFilteredSubmissions.add(arr);
         }
     }
 	
     public ArrayList<String[]> getIshFilteredSubmissions() { 	  	
-        return this.ishFilteredSubmissions;
+        return ishFilteredSubmissions;
     }
 }

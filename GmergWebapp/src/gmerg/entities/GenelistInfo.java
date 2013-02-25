@@ -112,7 +112,7 @@ public class GenelistInfo {
 	}
 
 	public String getFilename() {
-		return this.filename;
+		return filename;
 	}
 	
 	public void setFilename(String filename) {
@@ -144,7 +144,7 @@ public class GenelistInfo {
 	}
 	
 	public ArrayList<String> getFolderIds() {
-		return this.folderIds;
+		return folderIds;
 	}
 	
 	public void setFolderIds(ArrayList<String> folderIds) {
@@ -152,7 +152,7 @@ public class GenelistInfo {
 	}
 	
 	public int getDisplayOrder() {
-		return this.displayOrder;
+		return displayOrder;
 	}
 	
 	public void setDisplayOrder(int displayOrder) {

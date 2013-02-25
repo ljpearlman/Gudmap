@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import gmerg.utils.table.GenericTableFilter;
+import gmerg.utils.Utility;
 
 public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
     private boolean debug = false;
@@ -221,6 +222,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 		}
 
 		// query
+		String str = null;
 		try {
 		    if (debug)
 			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql);
@@ -230,10 +232,10 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 				resSet.beforeFirst();
 				result = new ArrayList<String>();
 				while (resSet.next()) {
-					String symbol = resSet.getString(1).trim();
-					if (symbol != null && !symbol.equals("")) {
-						result.add(symbol);
-					}
+				    str = Utility.netTrim(resSet.getString(1));
+				    if (str!= null) {
+					result.add(str);
+				    }
 				}
 			}
 			DBHelper.closeResultSet(resSet);

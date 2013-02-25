@@ -73,6 +73,9 @@ public class Globals {
 	}
 	
 	public int[] getAttributeColNums() {
+	    if (null == attributes || null == attributes.keySet())
+		return null;
+
 	    Set<Integer> a = attributes.keySet();
 	    int colNums[] = new int[a.size()];
 	    for (Integer i : a)
@@ -81,6 +84,9 @@ public class Globals {
 	}
 	
 	public String[] getAttributeNames() {
+	    if (null == attributes|| null == attributes.values())
+		return null;
+
 	    String[] a = new String[attributes.values().size()];
 	    return attributes.values().toArray(a);
 	}
@@ -94,6 +100,9 @@ public class Globals {
 	}
 	
 	public SelectItem[] getAttributesSelectItems() {
+	    if (null ==attributes || null == attributes.keySet())
+		return null;
+
 	    Set<Integer> colNums = attributes.keySet();
 	    if (colNums.size()==0)
 		return null;
@@ -111,6 +120,9 @@ public class Globals {
 	}
 	
 	public CollectionAttribute getAttribute(int colId) {
+	    if (null == attributes)
+		return null;
+
 	    return attributes.get(colId);
 	}
 	
@@ -140,6 +152,9 @@ public class Globals {
     }
     
     public static String[] getCollectionCategoriesNames() {
+	if (null == collectionCategories)
+	    return null;
+
 	String[] categories = new String[collectionCategories.length];
 	for (int i=0; i<collectionCategories.length; i++) 
 	    categories[i] = collectionCategories[i].getCategory();
@@ -147,10 +162,16 @@ public class Globals {
     }
     
     public static String getCollectionCategoryName(int index) {
+	if (null == collectionCategories || index > collectionCategories.length)
+	    return null;
+
 	return collectionCategories[index].getCategory();
     }
     
     public static CollectionCategory getCollectionCategory(int index) {
+	if (null == collectionCategories || index > collectionCategories.length)
+	    return null;
+
 	return collectionCategories[index];
     }
     

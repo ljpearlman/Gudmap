@@ -29,7 +29,7 @@ public class ExpressionDetail {
     }
 
     public String getStage() {
-        return this.stage;
+        return stage;
     }
 
     public void setStage(String stage) {
@@ -37,7 +37,7 @@ public class ExpressionDetail {
     }
 
     public String getComponentName() {
-        return this.componentName;
+        return componentName;
     }
 
     public void setComponentName(String componentName) {
@@ -45,7 +45,7 @@ public class ExpressionDetail {
     }
 
     public String getComponentId() {
-        return this.componentId;
+        return componentId;
     }
 
     public void setComponentId(String componentId) {
@@ -53,7 +53,7 @@ public class ExpressionDetail {
     }
 
     public ArrayList getComponentDescription() {
-        return this.componentDescription;
+        return componentDescription;
     }
 
     public void setComponentDescription(ArrayList componentDescription) {
@@ -61,7 +61,7 @@ public class ExpressionDetail {
     }
 
     public String getPrimaryStrength() {
-        return this.primaryStrength;
+        return primaryStrength;
     }
 
     public void setPrimaryStrength(String strength) {
@@ -69,7 +69,7 @@ public class ExpressionDetail {
     }
 
     public String getSecondaryStrength() {
-        return this.secondaryStrength;
+        return secondaryStrength;
     }
 
     public void setSecondaryStrength(String strength) {
@@ -85,7 +85,7 @@ public class ExpressionDetail {
     }
 
     public ExpressionPattern[] getPattern() {
-        return this.pattern;
+        return pattern;
     }
 
     public void setPattern(ExpressionPattern[] pattern) {
@@ -93,7 +93,7 @@ public class ExpressionDetail {
     }
 
     public String getExpressionNote() {
-        return this.expressionNote;
+        return expressionNote;
     }
 
     public void setExpressionNote(String expressionNote) {
@@ -101,7 +101,7 @@ public class ExpressionDetail {
     }
 
     public int getExpressionId() {
-        return this.expressionId;
+        return expressionId;
     }
 
     public void setExpressionId(int expressionId) {
@@ -109,7 +109,7 @@ public class ExpressionDetail {
     }
 
     public int getSubmissionFk() {
-        return this.submissionFk;
+        return submissionFk;
     }
 
     public void setSubmissionFk(int submissionFk) {
@@ -117,7 +117,7 @@ public class ExpressionDetail {
     }
     
     public boolean isAnnotated() {
-    	return this.annotated;
+    	return annotated;
     }
     
     public void setAnnotated(boolean annotated) {
@@ -133,7 +133,7 @@ public class ExpressionDetail {
     }
     
     public int getSubmissionDbStatus() {
-    	return this.submissionDbStatus;
+    	return submissionDbStatus;
     }
     
     public void setSubmissionDbStatus(int submissionDbStatus) {

@@ -22,7 +22,7 @@ public class NodeData {
     }
     
     public String getNodeText(){
-    	return this.nodeText;
+    	return nodeText;
     }
 
     public void setNodeID(String nodeID){
@@ -30,7 +30,7 @@ public class NodeData {
     }
     
     public String getNodeID(){
-    	return this.nodeID;
+    	return nodeID;
     }
 
     public void setParams(String key, Object value){
@@ -38,7 +38,7 @@ public class NodeData {
     }
     
     public HashMap<String, Object> getParams(){
-    	return this.params;
+    	return params;
     }
 
 }
