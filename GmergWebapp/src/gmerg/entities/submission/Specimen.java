@@ -44,9 +44,17 @@ public class Specimen {
         sex = value;
     }
 
-
-    //modify this method so that processing occurs in bean
     public String getGenotype() {
+        return genotype;
+    }
+
+    public void setGenotype(String value) {
+        genotype = value;
+
+	if (null == value) {
+	    genotype= "";
+	    return;
+	} 
 
         if (genotype.trim().equalsIgnoreCase("true")) {
             genotype = "Wild Type";
@@ -55,11 +63,7 @@ public class Specimen {
         } else {
            genotype = "";
         }
-        return genotype;
-    }
 
-    public void setGenotype(String value) {
-        genotype = value;
     }
 
     public String getAssayType() {
@@ -92,8 +96,6 @@ public class Specimen {
 
     public void setNotes(String[] value) {
         notes = value;
-	if (null != notes && 0 == notes.length)
-	    notes = null;
 	if (null == notes)
 	    notes = new String[0];
     }

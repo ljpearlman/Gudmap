@@ -28,7 +28,7 @@ public class ImageDetail {
 	  
 
 	  public String getAccessionId() {
-		return this.accessionId;
+		return accessionId;
       }
 
       public void setAccessionId(String accessionId) {
@@ -36,7 +36,7 @@ public class ImageDetail {
 	  }
 
 	  public String getGeneSymbol() {
-		return this.geneSymbol;
+		return geneSymbol;
       }
 
       public void setGeneSymbol(String geneSymbol) {
@@ -44,7 +44,7 @@ public class ImageDetail {
 	  }
 
 	  public String getGeneName() {
-		return this.geneName;
+		return geneName;
       }
 
       public void setGeneName(String geneName) {
@@ -68,7 +68,7 @@ public class ImageDetail {
 	  }
 
 	  public String getAssayType() {
-	    return this.assayType;
+	    return assayType;
 	  }
 	  
 	  public void setAssayType(String assayType) {
@@ -76,7 +76,7 @@ public class ImageDetail {
 	  }
 
 	  public String getSpecimenType() {
-	    return this.specimenType;
+	    return specimenType;
 	  }
 		  
 	  public void setSpecimenType(String specimenType) {
@@ -84,7 +84,7 @@ public class ImageDetail {
 	  }
 
 	  public String getFilePath() {
-	    return this.filePath;
+	    return filePath;
 	  }
 		  
 	  public void setFilePath(String filePath) {
@@ -92,7 +92,7 @@ public class ImageDetail {
 	  }
 
 	  public String getImageName() {
-	    return this.imageName;
+	    return imageName;
 	  }
 		  
 	  public void setImageName(String imageName) {
@@ -100,7 +100,7 @@ public class ImageDetail {
 	  }
 
 	  public String getSerialNo() {
-	    return this.serialNo;
+	    return serialNo;
 	  }
 		  
 	  public void setSerialNo(String serialNo) {
@@ -108,7 +108,7 @@ public class ImageDetail {
 	  }
 	  
 	  public ArrayList getAllImageNotesInSameSubmission() {
-		  return this.allImageNotesInSameSubmission;
+		  return allImageNotesInSameSubmission;
 	  }
 	  
 	  public void setAllImageNotesInSameSubmission(ArrayList allImageNotesInSameSubmission) {
@@ -116,7 +116,7 @@ public class ImageDetail {
 	  }
 	  
 	  public ArrayList getAllPublicImagesInSameSubmission() {
-		  return this.allPublicImagesInSameSubmission;
+		  return allPublicImagesInSameSubmission;
 	  }
 	  
 	  public void setAllPublicImagesInSameSubmission(ArrayList allPublicImagesInSameSubmission){
@@ -124,7 +124,7 @@ public class ImageDetail {
 	  }
 	  
 	  public String getPyramidTileSize() {
-		  return this.pyramidTileSize;
+		  return pyramidTileSize;
 	  }
 	  
 	  public void setPyramidTileSize(String pyramidTileSize) {
@@ -132,6 +132,6 @@ public class ImageDetail {
 	  }
 	  
 	  public String getImageId() {
-		  return this.accessionId.substring(7) + "_" + this.imageName;
+		  return accessionId.substring(7) + "_" + this.imageName;
 	  }
 }

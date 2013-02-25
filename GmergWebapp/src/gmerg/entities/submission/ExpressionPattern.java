@@ -41,7 +41,7 @@ public class ExpressionPattern {
     }
     
     public boolean isSelected() {
-    	return this.selected;
+    	return selected;
     }
     
     public void setSelected(boolean selected) {
@@ -49,7 +49,7 @@ public class ExpressionPattern {
     }
     
     public int getExpressionId() {
-    	return this.expressionId;
+    	return expressionId;
     }
     
     public void setExpressionId(int expressionId) {
@@ -57,7 +57,7 @@ public class ExpressionPattern {
     }
     
     public int getPatternId() {
-    	return this.patternId;
+    	return patternId;
     }
     
     public void setPatternId(int patternId) {
@@ -65,17 +65,15 @@ public class ExpressionPattern {
     }
     
     public int getLocationId() {
-    	return this.locationId;
+    	return locationId;
     }
     
     public void setLocationId(int locationId) {
     	this.locationId = locationId;
     }
     
-    // added by xingjun - 13/06/2008 - need to split the location value when it's in 'adjacent to xxx' format
     public String getLocationAPart() {
-//    	this.locationAPart = this.locations.substring(0, 11);
-    	return this.locationAPart;
+    	return locationAPart;
     }
     
     public void setLocationAPart(String locationAPart) {
@@ -83,8 +81,7 @@ public class ExpressionPattern {
     }
     
     public String getLocationNPart() {
-//    	this.locationNPart = this.locations.substring(11).trim();
-    	return this.locationNPart;
+    	return locationNPart;
     }
     
     public void setLocationNPart(String locationNPart) {

@@ -38,13 +38,12 @@ public class Probe {
     private ArrayList maprobeNotes;
     private String probeNameSource; // specify where the probe name come from
     private ArrayList fullSequence;
-    private String labProbeId; // added by xingjun - 19/01/2010
-    private ArrayList ishSubmissions; // added by Bernie 29/06/2011 Mantis 558 Task6
-    private ArrayList<String[]> ishFilteredSubmissions; // added by Bernie 12/08/2011 Mantis 558 
+    private String labProbeId; 
+    private ArrayList ishSubmissions; 
+    private ArrayList<String[]> ishFilteredSubmissions; 
 
-    // full string of ma probe notes
+
     private String maprobeNoteString;
-//    private String fullSequenceString;
 
     public ArrayList getFullSequence() {
 	return fullSequence;
@@ -59,7 +58,7 @@ public class Probe {
     }
 
     public String getGeneSymbol() {
-        return this.geneSymbol;
+        return geneSymbol;
     }
 
     public void setGeneName(String value) {
@@ -67,7 +66,7 @@ public class Probe {
     }
 
     public String getGeneName() {
-        return this.geneName;
+        return geneName;
     }
 
     public void setProbeName(String value) {
@@ -75,7 +74,7 @@ public class Probe {
     }
 
     public String getProbeName() {
-        return this.probeName;
+        return probeName;
     }
 
     public void setGeneID(String value) {
@@ -83,7 +82,7 @@ public class Probe {
     }
 
     public String getGeneID() {
-        return this.geneID;
+        return geneID;
     }
     
     public void setGeneIdUrl(String value) {
@@ -91,7 +90,7 @@ public class Probe {
     }
 
     public String getGeneIdUrl() {
-        return this.geneIdUrl;
+        return geneIdUrl;
     }
 
     public void setSource(String value) {
@@ -99,7 +98,7 @@ public class Probe {
     }
 
     public String getSource() {
-        return this.source;
+        return source;
     }
 
     public void setStrain(String value) {
@@ -107,7 +106,7 @@ public class Probe {
     }
 
     public String getStrain() {
-        return this.strain;
+        return strain;
     }
 
     public void setTissue(String value) {
@@ -115,7 +114,7 @@ public class Probe {
     }
 
     public String getTissue() {
-        return this.tissue;
+        return tissue;
     }
 
     public void setType(String value) {
@@ -123,11 +122,11 @@ public class Probe {
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
     public String getGeneType() {
-        return this.geneType;
+        return geneType;
     }
 
     public void setGeneType(String value) {
@@ -135,7 +134,7 @@ public class Probe {
     }
 
     public String getLabelProduct() {
-        return this.labelProduct;
+        return labelProduct;
     }
 
     public void setLabelProduct(String value) {
@@ -143,7 +142,7 @@ public class Probe {
     }
 
     public String getVisMethod() {
-        return this.visMethod;
+        return visMethod;
     }
 
     public void setVisMethod(String value) {
@@ -151,7 +150,7 @@ public class Probe {
     }
 
     public String getGenbankID() {
-        return this.genbankID;
+        return genbankID;
     }
 
     public void setGenbankID(String value) {
@@ -159,7 +158,7 @@ public class Probe {
     }
 
     public String getCloneName() {
-        return this.cloneName;
+        return cloneName;
     }
 
     public void setCloneName(String value) {
@@ -167,7 +166,7 @@ public class Probe {
     }
 
     public String getAdditionalCloneName() {
-        return this.additionalCloneName;
+        return additionalCloneName;
     }
 
     public void setAdditionalCloneName(String value) {
@@ -175,7 +174,7 @@ public class Probe {
     }
 
     public String getMaprobeID() {
-        return this.maprobeID;
+        return maprobeID;
     }
 
     public void setMaprobeID(String value) {
@@ -187,11 +186,11 @@ public class Probe {
     }
 
     public String getNotes() {
-        return this.notes;
+        return notes;
     }
 
     public String getProbeNameURL() {
-        return this.probeNameURL;
+        return probeNameURL;
     }
 
     public void setProbeNameURL(String value) {
@@ -203,7 +202,7 @@ public class Probe {
     }
 
     public String getGenbankURL() {
-        return this.genbankURL;
+        return genbankURL;
     }
 
     public void setGenbankURL(String value) {
@@ -211,7 +210,7 @@ public class Probe {
     }
 
     public String getMaProbeURL() {
-        return this.maProbeURL;
+        return maProbeURL;
     }
 
     public void setMaProbeURL(String value) {
@@ -219,11 +218,14 @@ public class Probe {
     }
 
     public String getSeqStatus() {
-        return this.seqStatus;
+        return seqStatus;
     }
 
     public void setSeqStatus(String value) {
-        if (value.equals("FULLY_SEQUENCED".trim())) {
+	if (null == value)
+            seqStatus = "";
+
+        else if (value.equals("FULLY_SEQUENCED".trim())) {
             this.seqStatus = "Fully Sequenced.";
         } else if (value.equals("PARTIALLY_SEQUENCED".trim())) {
             this.seqStatus = "Partially Sequenced.";
@@ -240,37 +242,36 @@ public class Probe {
     }
 
     public String getSeqInfo() {
-        return this.seqInfo;
+        return seqInfo;
     }
 
     public String getSeq5Loc() {
-        return this.seq5Loc;
+        return seq5Loc;
     }
 
     public void setSeq5Loc(String value) {
-        if (value.equals("0")) {
-            this.seq5Loc = "n/a";
+        if (null == value || value.equals("0")) {
+            seq5Loc = "n/a";
         } else {
-            this.seq5Loc = value;
+            seq5Loc = value;
         }
     }
 
     public String getSeq3Loc() {
-        return this.seq3Loc;
+        return seq3Loc;
     }
 
     public void setSeq3Loc(String value) {
-        if (value.equals("0")) {
+        if (null == value || value.equals("0")) {
             this.seq3Loc = "n/a";
         } else {
             this.seq3Loc = value;
         }
     }
     
-    // added by Xingjun 02/05/2007 -- begin
     // display info of probe database in the submission detail page
     public String getSeq5Primer() {
-    	return this.seq5Primer;
+    	return seq5Primer;
     }
     
     public void setSeq5Primer(String seq5Primer) {
@@ -278,7 +279,7 @@ public class Probe {
     }
     
     public String getSeq3Primer() {
-    	return this.seq3Primer;
+    	return seq3Primer;
     }
     
     public void setSeq3Primer(String seq3Primer) {
@@ -286,16 +287,15 @@ public class Probe {
     }
     
     public ArrayList getMaprobeNotes() {
-    	return this.maprobeNotes;
+    	return maprobeNotes;
     }
     
     public void setMaprobeNotes(ArrayList maprobeNotes) {
     	this.maprobeNotes = maprobeNotes;
     }
-    // added by Xingjun 02/05/2007 -- end
     
     public String getProbeNameSource() {
-    	return this.probeNameSource;
+    	return probeNameSource;
     }
     
     public void setProbeNameSource(String probeNameSource) {
@@ -303,7 +303,7 @@ public class Probe {
     }
     
     public String getMaprobeNoteString() {
-    	return this.maprobeNoteString;
+    	return maprobeNoteString;
     }
     
     public void setMaprobeNoteString(String maprobeNoteString) {
@@ -315,15 +315,19 @@ public class Probe {
     }
 
     public String getLabProbeId() {
-        return this.labProbeId;
+        return labProbeId;
     }
  
-    // added by Bernie 29/06/2011 Mantis 558 Task6    
     public void setIshSubmissions(ArrayList values) {
         this.ishSubmissions = values;
-        
-     // added by Bernie 12/08/2011 Mantis 558 
-        this.ishFilteredSubmissions = new ArrayList<String[]>();        
+        if (null == values) {
+	    if (null != ishFilteredSubmissions)
+		ishFilteredSubmissions.clear();
+	    return;
+	}
+
+        ishFilteredSubmissions = new ArrayList<String[]>();   
+	if (null != ishSubmissions)
         for (int i=0; i<ishSubmissions.size(); i++){
         	String[] arr = (String[]) ishSubmissions.get(i);
         	if (arr[9].equalsIgnoreCase(maprobeID) || arr[6].equalsIgnoreCase(maprobeID))
@@ -331,22 +335,12 @@ public class Probe {
         }
     }
 
-    // added by Bernie 29/06/2011 Mantis 558 Task6
     public ArrayList getIshSubmissions() { 	  	
-        return this.ishSubmissions;
+        return ishSubmissions;
     }
 
- // added by Bernie 12/08/2011 Mantis 558 
     public ArrayList getIshFilteredSubmissions() { 	  	
-        return this.ishFilteredSubmissions;
+        return ishFilteredSubmissions;
     }
 
-//    public String getFullSequenceString() {
-//    	return this.fullSequenceString;
-//    }
-//    
-//    public void setFullSequenceString(String fullSequenceString) {
-//    	this.fullSequenceString = fullSequenceString;
-//    }
-    
 }

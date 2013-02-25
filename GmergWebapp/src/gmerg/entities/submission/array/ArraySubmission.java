@@ -15,9 +15,9 @@ public class ArraySubmission extends Submission {
     private String expFile;
     private String txtFile;
     private Transgenic transgenic;
-    private Transgenic[] transgenics;// added by xingjun - 09/11/2009
-    private boolean multipleTransgenics; // added by xingjun - 09/11/2009
-    private String tissue; // added by bernie - 15/09/2010
+    private Transgenic[] transgenics;
+    private boolean multipleTransgenics; 
+    private String tissue; 
 
     public void setSeries(Series ser) {
         series = ser;
@@ -91,18 +91,16 @@ public class ArraySubmission extends Submission {
         return txtFile;
     }
 
-    // added by xingjun - 22/07/2009
     public Transgenic getTransgenic() {
-    	return this.transgenic;
+    	return transgenic;
     }
     
     public void setTransgenic(Transgenic transgenic) {
     	this.transgenic = transgenic;
     }
 
-    // xingjun - 09/11/2009
     public Transgenic[] getTransgenics() {
-    	return this.transgenics;
+    	return transgenics;
     }
     
     public void setTransgenics(Transgenic[] transgenics) {
@@ -110,14 +108,13 @@ public class ArraySubmission extends Submission {
     }
     
     public boolean isMultipleTransgenics() {
-    	return this.multipleTransgenics;
+    	return multipleTransgenics;
     }
     
     public void setMultipleTransgenics(boolean multipleTransgenics) {
     	this.multipleTransgenics = multipleTransgenics;
     }    
     
-    // added by Bernie - 23/09/2020
     public String getTissue() {
     	return tissue;
     }

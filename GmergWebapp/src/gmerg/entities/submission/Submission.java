@@ -14,7 +14,6 @@ public class Submission {
     private String assayType;
     private String archiveId;
     
-    // xingjun - 15/07/2008 - need more information - for duplicating submission purpose
     private int deleteFlag; // SUB_IS_DELETED
     private int submitterId; //  SUB_SUBMITTER_FK: 3
     private int piId; // SUB_PI_FK: 3
@@ -103,7 +102,7 @@ public class Submission {
     }
     
     public int getPublicFlag() {
-    	return this.publicFlag;
+    	return publicFlag;
     }
     
     public void setPublicFlag(int publicFlag) {
@@ -111,7 +110,7 @@ public class Submission {
     }
     
     public String getAssayType() {
-    	return this.assayType;
+    	return assayType;
     }
     
     public void setAssayType(String assayType) {
@@ -126,9 +125,8 @@ public class Submission {
         archiveId = aId;
     }
     
-    // xingjun - 15/07/2008
     public int getDeleteFlag() {
-    	return this.deleteFlag;
+    	return deleteFlag;
     }
     
     public void setDeleteFlag(int deleteFlag) {
@@ -136,7 +134,7 @@ public class Submission {
     }
     
     public int getSubmitterId() {
-    	return this.submitterId;
+    	return submitterId;
     }
     
     public void setSubmitterId(int submitterId) {
@@ -144,7 +142,7 @@ public class Submission {
     }
     
     public int getPiId() {
-    	return this.piId;
+    	return piId;
     }
     
     public void setPiId(int piId) {
@@ -152,7 +150,7 @@ public class Submission {
     }
 
     public int getEntryBy() {
-    	return this.entryBy;
+    	return entryBy;
     }
     
     public void setEntryBy(int entryBy) {
@@ -160,7 +158,7 @@ public class Submission {
     }
 
     public int getModifierId() {
-    	return this.modifierId;
+    	return modifierId;
     }
     
     public void setModifierId(int modifierId) {
@@ -168,7 +166,7 @@ public class Submission {
     }
 
     public int getLocalStatusId() {
-    	return this.localStatusId;
+    	return localStatusId;
     }
     
     public void setLocalStatusId(int localStatusId) {
@@ -176,7 +174,7 @@ public class Submission {
     }
 
     public int getDbStatusId() {
-    	return this.dbStatusId;
+    	return dbStatusId;
     }
     
     public void setDbStatusId(int dbStatusId) {
@@ -184,14 +182,14 @@ public class Submission {
     }
 
     public String getProject() {
-    	return this.project;
+    	return project;
     }
     
     public void setProject(String project) {
     	this.project = project;
     }
     public int getBatchId() {
-    	return this.batchId;
+    	return batchId;
     }
     
     public void setBatchId(int batchId) {
@@ -199,7 +197,7 @@ public class Submission {
     }
 
     public String getNameSpace() {
-    	return this.nameSpace;
+    	return nameSpace;
     }
     
     public void setNameSpace(String nameSpace) {
@@ -207,7 +205,7 @@ public class Submission {
     }
 
     public String getOsAccession() {
-    	return this.osAccession;
+    	return osAccession;
     }
     
     public void setOsAccession(String osAccession) {
@@ -215,7 +213,7 @@ public class Submission {
     }
 
     public String getLoaclId() {
-    	return this.loaclId;
+    	return loaclId;
     }
     
     public void setLoaclId(String loaclId) {
@@ -223,7 +221,7 @@ public class Submission {
     }
 
     public String getSource() {
-    	return this.source;
+    	return source;
     }
     
     public void setSource(String source) {
@@ -231,7 +229,7 @@ public class Submission {
     }
 
     public String getValidation() {
-    	return this.validation;
+    	return validation;
     }
     
     public void setValidation(String validation) {
@@ -239,7 +237,7 @@ public class Submission {
     }
 
     public int getControl() {
-    	return this.control;
+    	return control;
     }
     
     public void setControl(int control) {
@@ -247,7 +245,7 @@ public class Submission {
     }
 
     public String getAssessment() {
-    	return this.assessment;
+    	return assessment;
     }
     
     public void setAssessment(String assessment) {
@@ -255,7 +253,7 @@ public class Submission {
     }
 
     public int getConfidencLevel() {
-    	return this.confidencLevel;
+    	return confidencLevel;
     }
     
     public void setConfidencLevel(int confidencLevel) {
@@ -263,7 +261,7 @@ public class Submission {
     }
 
     public String getLocalDbName() {
-    	return this.localDbName;
+    	return localDbName;
     }
     
     public void setLocalDbName(String localDbName) {
@@ -271,7 +269,7 @@ public class Submission {
     }
 
     public String getLabId() {
-    	return this.labId;
+    	return labId;
     }
     
     public void setLabId(String labId) {
@@ -283,11 +281,11 @@ public class Submission {
     }
     
     public Person[] getPrincipalInvestigators() {
-        return this.principalInvestigators;
+        return principalInvestigators;
     }
 
     public String getEuregeneId() {
-    	return this.euregeneId;
+    	return euregeneId;
     }
     
     public void setEuregeneId(String euregeneId) {

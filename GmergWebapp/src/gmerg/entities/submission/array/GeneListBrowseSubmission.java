@@ -18,7 +18,7 @@ public class GeneListBrowseSubmission {
   }
 
   public String getGeneSymbol() {
-    return this.geneSymbol;
+    return geneSymbol;
   }
   
   public void setProbeId(String probeId) {
@@ -26,7 +26,7 @@ public class GeneListBrowseSubmission {
   }
   
   public String getProbeId() {
-	  return this.probeId;
+	  return probeId;
   }
 
   public void setSignal(String signal) {
@@ -34,7 +34,7 @@ public class GeneListBrowseSubmission {
   }
 
   public String getSignal() {
-    return this.signal;
+    return signal;
   }
 
   public void setDetection(String detection) {
@@ -42,7 +42,7 @@ public class GeneListBrowseSubmission {
   }
 
   public String getDetection() {
-    return this.detection;
+    return detection;
   }
 
   public void setPvalue(String pValue) {
@@ -50,7 +50,7 @@ public class GeneListBrowseSubmission {
   }
 
   public String getPvalue() {
-    return this.pValue;
+    return pValue;
   }
 
   public void setSelected(boolean sel) {

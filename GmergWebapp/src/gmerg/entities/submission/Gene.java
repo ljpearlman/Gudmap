@@ -43,7 +43,7 @@ public class Gene {
      * @return the gene symbol
      */
     public String getSymbol() {
-        return this.symbol;
+        return symbol;
     }
 
     /**
@@ -57,7 +57,7 @@ public class Gene {
      * @return the name of the gene
      */
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setSynonyms(String value) {
@@ -65,7 +65,7 @@ public class Gene {
     }
 
     public String getSynonyms() {
-        return this.synonyms;
+        return synonyms;
     }
 
     public void setXsomeStart(String value) {
@@ -73,7 +73,7 @@ public class Gene {
     }
 
     public String getXsomeStart() {
-        return this.xsomeStart;
+        return xsomeStart;
     }
 
     public void setXsomeEnd(String value) {
@@ -81,7 +81,7 @@ public class Gene {
     }
 
     public String getXsomeEnd() {
-        return this.xsomeEnd;
+        return xsomeEnd;
     }
 
     public void setXsomeName(String value) {
@@ -89,7 +89,7 @@ public class Gene {
     }
 
     public String getXsomeName() {
-        return this.xsomeName;
+        return xsomeName;
     }
 
     public void setGenomeBuild(String value) {
@@ -97,7 +97,7 @@ public class Gene {
     }
 
     public String getGenomeBuild() {
-        return this.genomeBuild;
+        return genomeBuild;
     }
 
     /**
@@ -108,7 +108,7 @@ public class Gene {
     }
 
     public String getMgiAccID() {
-        return this.mgiAccID;
+        return mgiAccID;
     }
 
     public void setMgiURL(String value) {
@@ -116,7 +116,7 @@ public class Gene {
     }
 
     public String getMgiURL() {
-        return this.mgiURL;
+        return mgiURL;
     }
 
     public void setEntrezURL(String value) {
@@ -124,7 +124,7 @@ public class Gene {
     }
 
     public String getEntrezURL() {
-        return this.entrezURL;
+        return entrezURL;
     }
 
     public void setEntrezID(String value) {
@@ -132,7 +132,7 @@ public class Gene {
     }
 
     public String getEntrezID() {
-        return this.entrezID;
+        return entrezID;
     }
 
     public void setRefSeqURL(String value) {
@@ -140,7 +140,7 @@ public class Gene {
     }
 
     public String getRefSeqURL() {
-        return this.refSeqURL;
+        return refSeqURL;
     }
 
     public void setRefSeqID(String value) {
@@ -148,7 +148,7 @@ public class Gene {
     }
 
     public String getRefSeqID() {
-        return this.refSeqID;
+        return refSeqID;
     }
 
     public void setEnsemblURL(String value) {
@@ -156,7 +156,7 @@ public class Gene {
     }
 
     public String getEnsemblURL() {
-        return this.ensemblURL;
+        return ensemblURL;
     }
 
     public void setEnsemblID(String value) {
@@ -164,7 +164,7 @@ public class Gene {
     }
 
     public String getEnsemblID() {
-        return this.ensemblID;
+        return ensemblID;
     }
 
     public void setGoURL(String value) {
@@ -172,7 +172,7 @@ public class Gene {
     }
 
     public String getGoURL() {
-        return this.goURL;
+        return goURL;
     }
 
     public void setOmimURL(String value) {
@@ -180,7 +180,7 @@ public class Gene {
     }
 
     public String getOmimURL() {
-        return this.omimURL;
+        return omimURL;
     }
 
     public void setIshSubmissions(ArrayList values) {
@@ -188,7 +188,7 @@ public class Gene {
     }
 
     public ArrayList getIshSubmissions() { 	  	
-        return this.ishSubmissions;
+        return ishSubmissions;
     }
 
     public void setAssocProbes(ArrayList values) {
@@ -196,7 +196,7 @@ public class Gene {
     }
 
     public ArrayList getAssocProbes() {
-        return this.maProbes;
+        return maProbes;
     }
 
     public void setArraySubmissions(ArrayList arraysubs) {
@@ -204,7 +204,7 @@ public class Gene {
     }
 
     public ArrayList getArraySubmissions() {
-        return this.arraySubmissions;
+        return arraySubmissions;
     }
     
     public String getGeneCardURL() {
@@ -239,7 +239,7 @@ public class Gene {
     }
     
     public String getUcscURL() {
-    	return this.ucscURL;
+    	return ucscURL;
     }
     
     public void setUcscURL(String ucscURL) {

@@ -75,34 +75,34 @@ public class ProcessedGeneListHeader {
     }
    
     public String getLabName(){
-      return this.labName;
+      return labName;
     }
     public String getComponents(){
-      return this.components;
+      return components;
     }
     public String getStatistics(){
-      return this.statistics;
+      return statistics;
     }
     public String getDataTransformation(){
-      return this.dataTransformation;
+      return dataTransformation;
     }
     public int getTests(){
-      return this.tests;
+      return tests;
     }
     public int getSerialNo(){
-      return this.serialNo;
+      return serialNo;
     }
     public int getUpRegulated(){
-      return this.upRegulated;
+      return upRegulated;
     }
     public int getDownRegulated(){
-      return this.downRegulated;
+      return downRegulated;
     }
     public String getFileName(){
-      return this.fileName;
+      return fileName;
     }
     public int getId(){
-      return this.id;
+      return id;
     }
 
 	public String getSurname() {

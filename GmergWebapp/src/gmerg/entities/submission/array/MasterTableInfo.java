@@ -54,7 +54,7 @@ public class MasterTableInfo {
 	}
 	
 	public String getMasterId() {
-		return this.masterId;
+		return masterId;
 	}
 	
 	public void setMasterId(String masterId) {
@@ -62,7 +62,7 @@ public class MasterTableInfo {
 	}
 	
 	public String getSectionId() {
-		return this.sectionId;
+		return sectionId;
 	}
 	
 	public void setSectionId(String sectionId) {

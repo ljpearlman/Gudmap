@@ -15,7 +15,7 @@ public class GeneCollectionItem {
     private String numberOfRelatedSubmissionsArray;
     
     public boolean getSelected() {
-    	return this.selected;
+    	return selected;
     }
     
     public void setSelected(boolean selected) {
@@ -23,7 +23,7 @@ public class GeneCollectionItem {
     }
     
     public String getGeneSymbol() {
-    	return this.geneSymbol;
+    	return geneSymbol;
     }
     
     public void setGeneSymbol(String geneSymbol) {
@@ -31,7 +31,7 @@ public class GeneCollectionItem {
     }
     
     public String getNumberOfRelatedSubmissionsISH() {
-    	return this.numberOfRelatedSubmissionsISH;
+    	return numberOfRelatedSubmissionsISH;
     }
     
     public void setNumberOfRelatedSubmissionsISH(String numberOfRelatedSubmissionsISH) {
@@ -39,7 +39,7 @@ public class GeneCollectionItem {
     }
     
     public String getNumberOfRelatedSubmissionsArray() {
-    	return this.numberOfRelatedSubmissionsArray;
+    	return numberOfRelatedSubmissionsArray;
     }
     
     public void setNumberOfRelatedSubmissionsArray(String numberOfRelatedSubmissionsArray) {

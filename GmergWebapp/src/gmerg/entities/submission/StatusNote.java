@@ -19,7 +19,7 @@ public class StatusNote {
 	}
 	
 	public int getStatusNoteId() {
-		return this.statusNoteId;
+		return statusNoteId;
 	}
 	
 	public void setStatusNoteId(int statusNoteId) {
@@ -27,7 +27,7 @@ public class StatusNote {
 	}
 
 	public String getSubmissionId() {
-		return this.submissionId;
+		return submissionId;
 	}
 	
 	public void setSubmissionId(String submissionId) {
@@ -35,7 +35,7 @@ public class StatusNote {
 	}
 
 	public String getStatusNote() {
-		return this.statusNote;
+		return statusNote;
 	}
 	
 	public void setStatusNote(String statusNote) {
@@ -43,7 +43,7 @@ public class StatusNote {
 	}
 
 	public boolean isSelected() {
-		return this.selected;
+		return selected;
 	}
 	
 	public void setSelected(boolean selected) {

@@ -15,7 +15,7 @@ public class LockingInfo {
 	
 	
 	public String getSubmissionId() {
-		return this.submissionId;
+		return submissionId;
 	}
 	
 	public void setsubmissionId(String submissionId) {
@@ -23,7 +23,7 @@ public class LockingInfo {
 	}
 	
 	public String getLockedBy() {
-		return this.lockedBy;
+		return lockedBy;
 	}
 	
 	public void setLockedBy(String lockedBy) {
@@ -31,7 +31,7 @@ public class LockingInfo {
 	}
 	
 	public int getLockTime() {
-		return this.lockTime;
+		return lockTime;
 	}
 	
 	public void setLockTime(int lockTime) {
