@@ -254,14 +254,14 @@
 						<li>
 							<a  href="http://www.gudmap.org/Resources/index.html" class="MenuBarItemSubmenu bignavtext">Resources</a>
 							<ul>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Submission_Archive/index.html">Submission Archive</a></li>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Resources/Request_ISH.html">Request ISH</a></li>
-								<li><a  class="mediumnavtext" href="http://uqgudmap.imb.uq.edu.au" target="_blank">UQ GUDMAP - Probe Design</a></li>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Research/Protocols/index.html">Project Protocols</a></li>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Resources/MouseStrains/index.html">Mice/Cell Lines</a></li>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Resources/Ontologies.html">Ontology</a></li>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Website_Reports/index.html">Web Stats</a></li>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Internal/index.html">Internal</a></li>
+		                                                                                                <li><a href="http://www.gudmap.org/Submission_Archive/index.html">Submission Archive</a></li>
+                                                                                                                                <li><a href="http://www.gudmap.org/Research/Protocols/index.html">Project Protocols</a></li>
+                                                                                                                                <li><a href="http://www.gudmap.org/Resources/MouseStrains/index.html">Mice/Cell Lines</a></li>
+                                                                                                                                <li><a href="http://www.gudmap.org/Resources/OPT/index.html">3D Atlas</a></li>
+                                                                                                                                <li><a href="http://www.gudmap.org/Resources/Ontologies.html">Ontology</a></li>
+                                                                                                                                <li><a href="http://uqgudmap.imb.uq.edu.au" target="_blank">UQ GUDMAP - Probe Design</a></li>
+                                                                                                                                <li><a href="http://www.gudmap.org/Website_Reports/index.html">Web Statistics</a></li>
+                                                                                                                                <li><a href="http://www.gudmap.org/Internal/index.html">Internal</a></li>
 							</ul>
 						</li>
 						<li>
