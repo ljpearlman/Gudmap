@@ -826,7 +826,7 @@ public class AdvancedSearchDBQuery {
 														  "SPN_ASSAY_TYPE",
 														  "SPN_SEX",
 														  "RPR_JAX_ACC",
-														  "(CASE WHEN SPN_WILDTYPE='true' THEN 'Wild Type' WHEN SPN_WILDTYPE='false' THEN 'Non-wild Type' ELSE '' END) SPN_WILDTYPE",
+														  "SPN_WILDTYPE",
 														  "PRB_PROBE_TYPE",
 														  "CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME)",
 														  "REPLACE(SUB_ACCESSION_ID, ':', 'no')" };

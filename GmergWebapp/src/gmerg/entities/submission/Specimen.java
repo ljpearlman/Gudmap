@@ -49,21 +49,12 @@ public class Specimen {
     }
 
     public void setGenotype(String value) {
-        genotype = value;
-
 	if (null == value) {
 	    genotype= "";
 	    return;
 	} 
 
-        if (genotype.trim().equalsIgnoreCase("true")) {
-            genotype = "Wild Type";
-        } else if (genotype.trim().equalsIgnoreCase("false")) {
-           genotype = "Non-wild Type";
-        } else {
-           genotype = "";
-        }
-
+        genotype = value.trim();
     }
 
     public String getAssayType() {

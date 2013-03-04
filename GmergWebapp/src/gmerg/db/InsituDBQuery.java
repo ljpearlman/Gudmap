@@ -161,7 +161,7 @@ public class InsituDBQuery {
 		"REPLACE(SUB_ACCESSION_ID, ':', 'no')", 
 		"SPN_SEX",
 		"'' RPR_JAX_ACC",
-		"(CASE WHEN SPN_WILDTYPE='true' THEN 'Wild Type' WHEN SPN_WILDTYPE='false' THEN 'Non-wild Type' ELSE '' END) AS SPN_WILDTYPE",
+		"SPN_WILDTYPE",
 		"'' PRB_PROBE_TYPE"
 	};
 	
