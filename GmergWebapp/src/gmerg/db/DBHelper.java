@@ -769,19 +769,19 @@ public final class DBHelper {
 			if(Integer.parseInt(col) < 0) {
 				orderStr = " order by " + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("0")) { // by gene
-				orderStr = " order by col1 " + orderBy + ", col14, col3, col6, col2 ";
+				orderStr = " order by col1 " + orderBy + ", col14, FIELD(col3, 'present', 'uncertain', 'not detected', ''), col6, col2 ";
 			} else if(col.equals("1")) { // by gudmap id
 				orderStr = " order by NATURAL_SORT(col10) " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort(); 
 			} else if(col.equals("2")) { // by assay type
-				orderStr = " order by col14 " + orderBy + ", col1, col3, col6, col2 ";
+				orderStr = " order by col14 " + orderBy + ", col1, FIELD(col3, 'present', 'uncertain', 'not detected', ''), col6, col2 ";
 			} else if(col.equals("4")) { // by expression microarray
 				orderStr = " order by col12 " + orderBy + ", col14, col1, col6, col2 ";
 			} else if(col.equals("3")) { // by expression ish
-				orderStr = " order by col3 " + orderBy + ", col14, col1, col6, col2 ";
+				orderStr = " order by FIELD(col3, 'present', 'uncertain', 'not detected', '') " + orderBy + ", col14, col1, col6, col2 ";
 			} else if(col.equals("5")) { // by tissue
-				orderStr = " order by col2 " + orderBy + ", col14, col1, col3, col6 ";
+				orderStr = " order by col2 " + orderBy + ", col14, col1, FIELD(col3, 'present', 'uncertain', 'not detected', ''), col6 ";
 			} else if(col.equals("6")) { // by stage
-				orderStr = " order by col6 " + orderBy + ", col14, col1, col3, col2 ";
+				orderStr = " order by col6 " + orderBy + ", col14, col1, FIELD(col3, 'present', 'uncertain', 'not detected', ''), col2 ";
 			} else if(col.equals("7")) { // by age
 				orderStr = " order by col8 " + orderBy + "," + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("8")) { // by source
@@ -811,23 +811,23 @@ public final class DBHelper {
 			if(orderby < 0) {
 				orderStr = " order by " + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("0")) { // by gene
-				orderStr = " order by col1 " + order + ", col14, col3, col6, col2 ";
+				orderStr = " order by col1 " + order + ", col14, FIELD(col3, 'present', 'uncertain', 'not detected', ''), col6, col2 ";
 			} else if(col.equals("1")) { // by gudmap id
 				orderStr = " order by NATURAL_SORT(col10) " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort(); 
 			} else if(col.equals("2")) { // by assay type
-				orderStr = " order by col14 " + order + ", col1, col3, col6, col2 ";
+				orderStr = " order by col14 " + order + ", col1, FIELD(col3, 'present', 'uncertain', 'not detected', ''), col6, col2 ";
 			} else if(col.equals("4")) { // by expression microarray
 				orderStr = " order by col12 " + order + ", col14, col1, col6, col2 ";
 			} else if(col.equals("3")) { // by expression ish
 				orderStr = " order by col3 " + order + ", col14, col1, col6, col2 ";
 			} else if(col.equals("5")) { // by tissue
-				orderStr = " order by col2 " + order + ", col14, col1, col3, col6 ";
+				orderStr = " order by col2 " + order + ", col14, col1, FIELD(col3, 'present', 'uncertain', 'not detected', ''), col6 ";
 			} else if(col.equals("6")) { // by stage
-				orderStr = " order by col6 " + order + ", col14, col1, col3, col2 ";
+				orderStr = " order by col6 " + order + ", col14, col1, FIELD(col3, 'present', 'uncertain', 'not detected', ''), col2 ";
 			} else if(col.equals("7")) { // by age
 				orderStr = " order by col8 " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("8")) { // by sex
-				orderStr = " order by col15 " + order + ", col14, col1, col3, col6";
+				orderStr = " order by col15 " + order + ", col14, col1, CASE col3 HEN 'present' THEN 1 WHEN 'uncertain' THEN 2 WHEN 'not detect' THEN 3 ELSE 4 END, col6";
 			} else if(col.equals("9")) { // by source
 				orderStr = " order by col4 " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("10")) { // by submission date

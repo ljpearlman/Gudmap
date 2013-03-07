@@ -55,7 +55,7 @@ public class AdvancedSearchDBQuery {
 	  
 	  // order: assay type, gene, expression, theiler stage, tissue, sex
 	  final static public String getBothDefaultSort(){
-		  return "col14, col1, col3, col6, col2, col15";
+		  return "col14, col1, FIELD(col3, 'present', 'uncertain', 'not detected', ''), col6, col2, col15";
 	  }
 	  
 	  final static public Hashtable getEMAPID(){
