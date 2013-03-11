@@ -14,7 +14,7 @@ public class DBQuery {
 
   static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
   
-    public static String dataSource = "SELECT DISTINCT SUB_SOURCE FROM ISH_SUBMISSION ORDER BY SUB_SOURCE DESC";
+    public static String dataSource = "SELECT DISTINCT SUB_SOURCE FROM ISH_SUBMISSION WHERE SUB_IS_PUBLIC=1 ORDER BY SUB_SOURCE DESC";
 
   // for every fomat except DPC, which is what GUDMAP uses, the format goes first.
   public static String stageFormatConcat = bundle.getString("project").equals("GUDMAP") ? 

@@ -50,7 +50,7 @@ public class MicroarrayDetailsBean {
 	    gudmapId = component.substring(index);
 	    component = component.substring(0, index);
 	    gudmapId = gudmapId.toUpperCase();
-	    gudmapIdUrl = "ish_submission.html?id="+gudmapId.replace(":", "%3A");
+	    gudmapIdUrl = "mic_submission.html?id="+gudmapId.replace(":", "%3A");
 	}
 
         value = (String) requestParams.get("value");
