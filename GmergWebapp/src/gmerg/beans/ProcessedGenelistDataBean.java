@@ -62,11 +62,8 @@ public class ProcessedGenelistDataBean extends MultipleInstanceBean{
 	    ProcessedGenelistDataAssembler assembler = new ProcessedGenelistDataAssembler(queryParams);
 	    GenericTable table = assembler.createTable();
 	    // Create a GenericTableView object for genelist data
-//		GenericTableView tableView = new GenericTableView(viewName, 20, "", 500, 1500, table);
 		GenericTableView tableView = new GenericTableView(viewName, 20, 570, table);
-		tableView.setHeightUnlimittedFlexible();
 	    tableView.setColWrap(false);
-//		tableView.setDisplayInFrame(true);
 		
 		tableView.setColVisible(5, false);
 		tableView.setColVisible(7, false);

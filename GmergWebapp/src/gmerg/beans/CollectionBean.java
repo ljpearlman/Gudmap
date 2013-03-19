@@ -81,7 +81,6 @@ public class CollectionBean {
 		tableView.setCollectionBottons(2);
 		tableView.addCollection(0, 0);
 		tableView.setDisplayTotals(true);
-		tableView.setHeightUnlimittedFlexible();
                 
 		if(Utility.getProject().equals("GUDMAP"))
 			tableView.setColVisible(new boolean[]{ true, true, true, false, false, false,  true, false, true, false, false, false, true,
@@ -89,7 +88,6 @@ public class CollectionBean {
 		else 
 			tableView.setColVisible(new boolean[]{ true, true, true, false,  true, false, false, true, false, true, true, true, true});
 
-		tableView.setDynamicColumnsLimits(5, 9);
 	    
 		tableView.setNoDataMessage("Your Collection is Empty.");
 		return tableView;
@@ -125,7 +123,6 @@ public class CollectionBean {
 		CollectionBrowseHelper helper = Globals.getCollectionBrowseHelper(getCollectionOperationIds(), 0);	// Entry Ids
 		GenericTableView tableView = helper.getCollectionTableView(viewName);
 		
-		tableView.setHeightUnlimittedFixed();
 		tableView.setDisplayTotals(true);
                 
 		if(Utility.getProject().equals("GUDMAP"))
@@ -134,7 +131,6 @@ public class CollectionBean {
 		else 
 			tableView.setColVisible(new boolean[]{ true, true, true, false,  true, false, false, true, false, true, true, true, true});
 
-		tableView.setDynamicColumnsLimits(5, 9);
 		tableView.setNoDataMessage("Collection operation result is empty.");
 		
 		return tableView;

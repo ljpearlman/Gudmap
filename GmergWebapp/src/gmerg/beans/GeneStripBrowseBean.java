@@ -34,10 +34,7 @@ public class GeneStripBrowseBean {
 		GenericTable table = assembler.createTable(0);	// set default sort column 
 		GenericTableView tableView = getDefaultGeneStripTableView(viewName, table);
 		tableView.setRowsSelectable();
-		tableView.setHeightUnlimittedFlexible();
 		tableView.setDisplayTotals(false);
-//		tableView.setRowsPerPage(20);
-//		tableView.setColWrap(false);
 		
 		return tableView;
 	}

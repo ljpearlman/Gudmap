@@ -51,7 +51,6 @@ public class AllComponentsGenelistsBean {
 	    InMemoryTableAssembler assembler = new AllComponentsGenelistAssembler();
 	    GenericTable table = assembler.createTable();
 	    GenericTableView tableView = new GenericTableView(viewName, 20, 300, table);
-	    tableView.setHeightUnlimittedFlexible();
 
 	    return tableView;
 	}

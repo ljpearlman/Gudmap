@@ -63,7 +63,6 @@ public class LabISHEditBean {
 		tableView.addCollection(1, 1);
 		tableView.setDisplayTotals(true);
 		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, true, false, false, true, false, true, true, true, true, true});
-//		tableView.setHeightUnlimittedFixed();
 		HeaderItem[] tableHeader = table.getHeader();
 		tableHeader[4].setSortable(false);		// lab column
 		tableHeader[5].setSortable(false);		// submission data column

@@ -48,17 +48,13 @@ public class ProcessedGenelistsBean {
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		queryParams.put("component", component);
 		queryParams.put("lab", lab);
-//	    ProcessedGenelistAssembler assembler = new ProcessedGenelistAssembler(queryParams);
+
 	    InMemoryTableAssembler assembler = new ProcessedGenelistAssembler(queryParams);
 	    GenericTable table = assembler.createTable();
 	    //Create a GenericTableView object for list of Genelists
-//	    GenericTableView tableView = new GenericTableView(viewName, 3, "", 400, 1100, table);
 	    GenericTableView tableView = new GenericTableView(viewName, 5, 300, table);
-	    tableView.setHeightUnlimittedFlexible();
 	    boolean columnWrap[] = {false, false, false, false, true, true, true, true, true, false, true };
 	    tableView.setColWrap(columnWrap);
-//	    tableView.setSelectable(false);
-//		tableView.setDisplayInFrame(true);
 
 	    return tableView;
 	}
@@ -70,22 +66,4 @@ public class ProcessedGenelistsBean {
 		return false;
 	}
 
-/*	
-	public GenericTableView getTableView() {
-		return tableView;
-	}
-
-	public void setTableView(GenericTableView tableView) {
-		this.tableView = tableView;
-	}
-
-	public String getWidth() {
-		return String.valueOf(tableView.getWidth());
-	}
-
-	public String getTableViewName() {
-		return tableView.getName();
-	}
-*/
-	
 }

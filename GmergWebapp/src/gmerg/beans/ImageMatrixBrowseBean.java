@@ -39,8 +39,6 @@ public class ImageMatrixBrowseBean {
 		tableView.addCollection(2, 0);
 		tableView.setDisplayTotals(false);
 		tableView.setVerticalAlign(1);
-		tableView.setHeightLimittedFlexible();
-		tableView.setHeight(800);
 		
 		return tableView;
 	}

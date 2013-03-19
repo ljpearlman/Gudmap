@@ -102,11 +102,6 @@ public class ISHBrowseBean extends MultipleInstanceBean {
 		tableView.addCollection(1, 1);
 		tableView.setDisplayTotals(true);
 		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, true, false, false, false, false, true, true, false, true});
-//		tableView.setColVisible(new boolean[]{true, true, true, false, true, false, false, true, false, true, true, true, true});
-//		tableView.setDynamicColumnsLimits(5, 9);
-//	    tableView.setColWrap(false);
-//		tableView.setHeightUnlimittedFixed();
-//		table.getAssembler().setFilter(getDefaultIshFilter());
 		
 		return tableView;
 	}

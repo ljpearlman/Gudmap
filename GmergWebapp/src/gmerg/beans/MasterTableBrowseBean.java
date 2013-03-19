@@ -304,7 +304,7 @@ public class MasterTableBrowseBean {
 
 		GenericTable table = assembler.createTable();
 		GenericTableView tableView = new GenericTableView(viewName, 100, 350, table);
-		tableView.setHeightLimittedFlexible();
+
 	    tableView.setColWrap(false);
 	    
 		int ontologisColOffset = expressionTitles.length + 1;
