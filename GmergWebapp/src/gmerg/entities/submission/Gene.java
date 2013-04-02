@@ -6,31 +6,33 @@ import org.apache.commons.lang.ArrayUtils;
 
 public class Gene {
 
-    private String symbol;
-    private String name;
-    private String synonyms;
-    private String xsomeStart;
-    private String xsomeEnd;
-    private String xsomeName;
-    private String genomeBuild;
-    private String mgiAccID;
-    private String mgiURL;
-    private String ensemblURL;
-    private String ensemblID;
-    private String goURL;
-    private String omimURL;
-    private String entrezURL;
-    private String entrezID;
-    private String refSeqID;
-    private String refSeqURL;
+    private String symbol = null;
+    private String name = null;
+    private String synonyms = null;
+    private String xsomeStart = null;
+    private String xsomeEnd = null;
+    private String xsomeName = null;
+    private String genomeBuild = null;
+    private String mgiAccID = null;
+    private String mgiURL = null;
+    private String ensemblURL = null;
+    private String ensemblID = null;
+    private String goURL = null;
+    private String omimURL = null;
+    private String entrezURL = null;
+    private String entrezID = null;
+    private String refSeqID = null;
+    private String refSeqURL = null;
     private ArrayList ishSubmissions;
     private ArrayList maProbes;
     private ArrayList arraySubmissions;
     private ArrayList ontologyTerms;
-    private String geneCardURL;
-    private String hgncSearchSymbolURL;
-    private String numMicArrays;
-    private String ucscURL;
+    private String geneCardURL = null;
+    private String hgncSearchSymbolURL = null;
+    private String numMicArrays = null;
+    private String ucscURL = null;
+    protected String iuphar_db_URL = null;
+    protected String iuphar_guide_URL = null;
 
     /**
      * @param value the gene symbol
@@ -244,6 +246,22 @@ public class Gene {
     
     public void setUcscURL(String ucscURL) {
     	this.ucscURL = ucscURL;
+    }
+
+    public String getIuphar_db_URL() {
+    	return iuphar_db_URL;
+    }
+    
+    public void setIuphar_db_URL(String input) {
+    	iuphar_db_URL = input;
+    }
+
+    public String getIuphar_guide_URL() {
+    	return iuphar_guide_URL;
+    }
+    
+    public void setIuphar_guide_URL(String input) {
+    	iuphar_guide_URL = input;
     }
 
 }

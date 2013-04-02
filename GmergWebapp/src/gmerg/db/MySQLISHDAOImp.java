@@ -1602,13 +1602,14 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @return gene - object containing more complete info on a gene
      */
     public Gene findFurtherGeneInfoForMicroarray(Gene geneInfo) {
-        ResultSet resSet = null;
-        ParamQuery parQ = DBQuery.getParamQuery("GENE_INFO_FOR_ARRAY");
-        PreparedStatement prepStmt = null;
         Gene gene = geneInfo;
         if (gene == null) {
             return null;
         }
+
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("GENE_INFO_FOR_ARRAY");
+        PreparedStatement prepStmt = null;
         try {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
@@ -1671,7 +1672,53 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
         return null;
     }
-    
+ 
+    /**
+     * method to get additional translational info on the gene
+     * @param geneInfo - a gene object containing partial data on a gene 
+     * @return gene - object containing more complete info on a gene
+     */
+    public Gene addGeneInfoIuphar(Gene geneInfo) {
+	if (null == geneInfo)
+	    return null;
+	String str = geneInfo.getMgiAccID();
+	if (null == str || str.trim().equals(""))
+	    str = geneInfo.getSymbol();
+	if (null == str || str.trim().equals(""))
+	    return geneInfo;
+	
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("GENE_INFO_IUPHAR");
+        PreparedStatement prepStmt = null;
+
+	Gene gene = geneInfo;
+        try {
+	    // if disconnected from db, re-connected
+	    conn = DBHelper.reconnect2DB(conn);
+	    
+            parQ.setPrepStat(conn);
+            prepStmt = parQ.getPrepStat();
+            prepStmt.setString(1, str);
+            prepStmt.setString(2, str);
+            resSet = prepStmt.executeQuery();
+            if(resSet.first()){
+		gene.setIuphar_db_URL(resSet.getString(1)); 
+		gene.setIuphar_guide_URL(resSet.getString(2)); 
+            } else {
+		gene.setIuphar_db_URL(null); 
+		gene.setIuphar_guide_URL(null); 
+	    }
+	    
+            // close the connection
+            DBHelper.closePreparedStatement(prepStmt);
+        } catch (SQLException se) {
+		gene.setIuphar_db_URL(null); 
+		gene.setIuphar_guide_URL(null); 
+            se.printStackTrace();
+        }
+        return gene;
+    }
+ 
     /**
      * @author xingjun
      * <p>used for new format of browse style page</p>

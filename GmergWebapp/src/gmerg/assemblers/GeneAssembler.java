@@ -60,11 +60,9 @@ public class GeneAssembler extends OffMemoryTableAssembler{
         ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
         
         // get data from database
-		// modified by xingjun - 19/03/2009 
 		// - use symbol from gene object instead of geneId params 
 		// - sometimes geneId is actually synonym of the gene and symbol of gene object 
 		//   will always be the real symbol
-//        ArrayList arraysForGene = ishDAO.findRelatedSubmissionBySymbolArray(geneId, columnIndex, ascending, offset, num);
         ArrayList arraysForGene = ishDAO.findRelatedSubmissionBySymbolArray(gene.getSymbol(), columnIndex, ascending, offset, num);
         
         // release db resources
@@ -113,7 +111,6 @@ public class GeneAssembler extends OffMemoryTableAssembler{
         String[] allColTotalsQueries =
         { "TOTAL_GENE_RELATED_ARRAYS", "TOTAL_GENE_PROBEIDS", "TOTAL_GENE_SIGNAL",
           "TOTAL_GENE_DETECTION", "TOTAL_GENE_PVALUE" };
-//        String[][] param = { { geneId }, { geneId }, { geneId }, { geneId }, { geneId }};
         String[][] param = { { gene.getSymbol() }, { gene.getSymbol() }, { gene.getSymbol() }, { gene.getSymbol() }, { gene.getSymbol() }};
         String[][] columnNumbers = ishDAO.getStringArrayFromBatchQuery(param,
                                                      allColTotalsQueries);;
@@ -141,12 +138,10 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 	*/
 	public HeaderItem[] createHeader() {
 		//set the titles of each of the columns in the table
-//		String headerTitles[] = { "GUDMAP ID", "Probe ID", "Signal", "Detection", "P-Value" };
 		String projectString = bundle.getString("project").trim();
 		String headerTitles[] = { (projectString+" ID"), "Probe ID", "Signal", "Detection", "P-Value" };
 		//specify which columns are sortable
 		boolean headerSortable[] = { false, false, false, false, false };
-		//boolean headerSortable[] = { true, true, true, true, true };
 		
 		int colNum = headerTitles.length;
 		HeaderItem[] tableHeader = new HeaderItem[colNum];
@@ -192,19 +187,13 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 			}
 			
 			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-//			ArrayList<String> synonymsAndSymbol = geneDAO.findSynonymsBySymbol(symbol);
-//			if (synonymsAndSymbol == null || synonymsAndSymbol.size() == 0) {
-//				synonymsAndSymbol = new ArrayList<String>();
-//			}
-//			synonymsAndSymbol.add(symbol);
 			
 			// find gene info
 			geneInfo = arrayDAO.findGeneInfoBySymbol(synonymsAndSymbol);
-//			geneInfo = ishDAO.findGeneInfoInArrayEntries(symbol);
 			if(geneInfo == null){
 //				System.out.println("geneInfo is null############### ");
 		    	return null;
-		    } else {
+			} else {
 //		    	System.out.println("GeneAssembler:geneInfo by array:synonym: " + geneInfo.getSynonyms());
 //		    	System.out.println("geneInfo is not null############### ");
 //		    	System.out.println("gene symbol: " + geneInfo.getSymbol());
@@ -229,6 +218,9 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 			geneInfo.setAssocProbes(associatedProbe);
 		}
 		
+		// get translational links info
+		geneInfo = ishDAO.addGeneInfoIuphar(geneInfo);
+		    
 		// release the db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDAO = null;

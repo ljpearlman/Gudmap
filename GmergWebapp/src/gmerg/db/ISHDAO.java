@@ -63,6 +63,7 @@ public interface ISHDAO {
                                          int num);
 	public ArrayList findRelatedMAProbeBySymbol(String symbol);
         public Gene findFurtherGeneInfoForMicroarray(Gene geneInfo);
+        public Gene addGeneInfoIuphar(Gene geneInfo);
 	
 	/** query page */
 	// gene query

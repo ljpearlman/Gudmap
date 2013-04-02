@@ -443,6 +443,16 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		                        "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
   		                        "AND RPR_SYMBOL = ?";
 
+  final static String name242 = "GENE_INFO_IUPHAR";
+  final static String query242 = "SELECT DISTINCT CONCAT(IUPHAR_URL.URL_URL, IUP_IUPHAR_ID), "+
+  		                        "CONCAT(IUPHAR_2_URL.URL_URL, IUP_IUPHAR_ID) " +
+  		                        "FROM REF_IUPHAR "+
+  		                        "JOIN REF_URL IUPHAR_URL " +
+  		                        "JOIN REF_URL IUPHAR_2_URL " +
+  		                        "WHERE IUPHAR_URL.URL_TYPE = 'iuphar_gene' " + 
+  		                        "AND IUPHAR_2_URL.URL_TYPE = 'iuphar_gene2' " +
+  		                        "AND (IUP_SYMBOL = ? OR IUP_MGIACC = ?) ";
+
   //query to find ish submissions linked to a specific gene symbol
   final static String name30 = "GENE_RELATED_SUBMISSIONS_ISH";
   final static String query30 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', CONCAT(STG_PREFIX, SUB_EMBRYO_STG), SPN_ASSAY_TYPE,  " + 
@@ -1861,6 +1871,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name239,query239),
       new ParamQuery(name240,query240),
       new ParamQuery(name241,query241),
+      new ParamQuery(name242,query242)
   };
 
   // finds ParamQuery object by name and returns

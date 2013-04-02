@@ -54,23 +54,11 @@
       </h:panelGrid>
     </h:panelGrid>
     <h:panelGrid cellpadding="0" cellspacing="0" border="0" width="100%" columns="1">
-      <h:panelGroup rendered="#{siteSpecies != 'Xenopus laevis'}">
+      <h:panelGroup>
         <h:outputText styleClass="plaintextbold" value="G " />
         <h:outputText styleClass="plaintext" value="Group or group descendent. Groups provide alternative groupings of terms." />
       </h:panelGroup>
-      <h:panelGroup rendered="#{siteSpecies == 'Xenopus laevis'}">
-        <h:outputText styleClass="plaintext" value="We would like to thank " />
-        <h:outputLink styleClass="plaintext" value="http://cbrbio.ucalgary.ca/lab/vize.html"><h:outputText value="Peter Vize" /></h:outputLink>
-        <h:outputText styleClass="plaintext" value=" and " />
-        <h:outputLink styleClass="plaintext" value="http://homepages.ucalgary.ca/~esegerde/"><h:outputText value="Erik Segerdell" /></h:outputLink>
-        <h:outputText styleClass="plaintext" value=" at " />
-        <h:outputLink styleClass="plaintext" value="http://xenbase.org/"><h:outputText value="Xenbase" /></h:outputLink>
-        <h:outputText styleClass="plaintext" value=" for their help with the " />
-        <h:outputLink styleClass="plaintext" value="http://www.obofoundry.org/cgi-bin/detail.cgi?id=xenopus_anatomy"><h:outputText value="anatomy ontology" /></h:outputLink><h:outputText styleClass="plaintext" value="." />
-        
-      </h:panelGroup>
     </h:panelGrid>
-    
   
   <f:verbatim></div></f:verbatim>
   </h:panelGroup>

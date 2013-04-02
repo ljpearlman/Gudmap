@@ -60,13 +60,9 @@
 			<f:verbatim>&nbsp;</f:verbatim>
 
 			<h:outputText value="Theiler Stage" />
-			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{siteSpecies == 'mouse'}">
+			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
 				<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
 			</h:outputLink>
-			<h:outputLink styleClass="plaintext" value="http://xenbase.org/xenbase/original/atlas/NF/NF-all.html" rendered="#{siteSpecies == 'Xenopus laevis'}">
-				<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
-			</h:outputLink>
-			
 			
 			<f:verbatim>&nbsp;</f:verbatim>
 			<f:verbatim>&nbsp;</f:verbatim>
@@ -217,7 +213,7 @@
 						<f:param name="annotationDisplay" value="#{ISHSingleSubmissionBean.annotationDisplayType}"/>
 						<f:param name="displayOfAnnoGps" value="#{ISHSingleSubmissionBean.displayOfAnnoGps}"/>
 					</h:commandLink>
-					<h:commandLink action="#{ISHSingleSubmissionBean.displayOfAnnotatedGps}" rendered="#{siteSpecies!='Xenopus laevis' && ISHSingleSubmissionBean.annotationDisplayType!='list'}" styleClass="plaintext" >
+					<h:commandLink action="#{ISHSingleSubmissionBean.displayOfAnnotatedGps}" rendered="#{ISHSingleSubmissionBean.annotationDisplayType!='list'}" styleClass="plaintext" >
 						<h:outputText value="#{ISHSingleSubmissionBean.displayOfAnnotatedGpsTxt}" />
 						<f:param name="annotationDisplay" value="#{ISHSingleSubmissionBean.annotationDisplayType}"/>
 						<f:param name="displayOfAnnoGps" value="#{ISHSingleSubmissionBean.displayOfAnnoGps}"/>
@@ -309,10 +305,6 @@
 						</noscript>
 						&nbsp;
 					</f:verbatim>
-					<h:panelGroup rendered="#{siteSpecies != 'Xenopus laevis'}">
-						<h:outputText styleClass="plaintextbold" value="G " />
-						<h:outputText styleClass="plaintext" value="Group or group descendent. Groups provide alternative groupings of terms." />
-					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
 		
@@ -343,8 +335,8 @@
 						</h:panelGroup>
 					</h:panelGrid>
 				
-					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE' || siteSpecies != 'mouse'}" value="Name:" />
-					<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE' || siteSpecies != 'mouse'}">
+					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE'}" value="Name:" />
+					<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.project != 'EUREGENE'}">
 						<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.name}" />
 					</h:panelGroup>
 			
@@ -487,11 +479,11 @@
 						</h:outputLink>
 					</h:panelGroup>
 					
-					<h:outputText value="Name of cDNA:" rendered="#{siteSpecies == 'mouse'}"/>
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.cloneName}" rendered="#{siteSpecies == 'mouse'}" />
+					<h:outputText value="Name of cDNA:" />
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.cloneName}" />
 					
-					<h:outputText value="Additional Name of cDNA:" rendered="#{siteSpecies == 'mouse' && ISHSingleSubmissionBean.submission.probe.additionalCloneName != null && ISHSingleSubmissionBean.submission.probe.additionalCloneName != ''}"/>
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.additionalCloneName}" rendered="#{siteSpecies == 'mouse' && ISHSingleSubmissionBean.submission.probe.additionalCloneName != null && ISHSingleSubmissionBean.submission.probe.additionalCloneName != ''}" />
+					<h:outputText value="Additional Name of cDNA:" rendered="#{ISHSingleSubmissionBean.submission.probe.additionalCloneName != null && ISHSingleSubmissionBean.submission.probe.additionalCloneName != ''}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.additionalCloneName}" rendered="#{ISHSingleSubmissionBean.submission.probe.additionalCloneName != null && ISHSingleSubmissionBean.submission.probe.additionalCloneName != ''}" />
 					
 					<h:outputText value="Sequence ID:" />
 					<h:panelGrid  rowClasses="text-top" columns="1" border="0" >
@@ -631,17 +623,11 @@
 			<h:outputText value="Specimen" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
-					<h:outputLink value="http://xenbase.org/xenbase/original/atlas/NF/NF-all.html" styleClass="plaintext" rendered="#{siteSpecies == 'Xenopus laevis'}"> 
-						<h:outputText value="Theiler Stage:" />
-					</h:outputLink>
-					<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/stagecriteria.html" styleClass="plaintext" rendered="#{siteSpecies == 'mouse'}"> 
+					<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/stagecriteria.html" styleClass="plaintext"> 
 						<h:outputText value="Theiler Stage:" />
 					</h:outputLink>
 					
-					<h:outputLink styleClass="datatext" value="http://xenbase.org/xenbase/original/atlas/NF/NF-all.html" rendered="#{siteSpecies == 'Xenopus laevis'}">
-						<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
-					</h:outputLink>
-					<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{siteSpecies == 'mouse'}">
+					<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
 						<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
 					</h:outputLink>
 

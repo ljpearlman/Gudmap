@@ -139,7 +139,7 @@
 		<h:panelGrid columns="2" columnClasses="table-stripey" bgcolor="white" cellspacing="2" cellpadding="4">
 
 					<h:commandLink action="#{ISHSingleSubmissionBean.displayOfAnnotatedGps}" styleClass="plaintext">
-						<h:outputText styleClass="plaintext" value="#{ISHSingleSubmissionBean.displayOfAnnotatedGpsTxt}" rendered="#{siteSpecies != 'Xenopus laevis'}" />
+						<h:outputText styleClass="plaintext" value="#{ISHSingleSubmissionBean.displayOfAnnotatedGpsTxt}" />
 					</h:commandLink>
 				</h:panelGrid>								
 				<h:inputHidden value="#{ISHSingleSubmissionBean.submissionID}" />
@@ -160,10 +160,6 @@
 						</noscript>
 						&nbsp;
 					</f:verbatim>
-					<h:panelGroup rendered="#{siteSpecies != 'Xenopus laevis'}">
-						<h:outputText styleClass="plaintextbold" value="G " />
-						<h:outputText styleClass="plaintext" value="Group or group descendent. Groups provide alternative groupings of terms." />
-					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
 			</h:panelGrid>
