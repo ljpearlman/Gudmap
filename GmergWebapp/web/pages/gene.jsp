@@ -28,18 +28,19 @@
 			<h:outputText value="Genome Build:" />
 			<h:outputText value="#{GeneInfoBean.gene.genomeBuild}" />
 		</h:panelGrid>
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 	</h:panelGrid>
 
-	<f:subview id="geneStripTable" rendered="#{GeneInfoBean.gene!=null}">
+	<f:verbatim>&nbsp;</f:verbatim>
+	<f:subview id="geneStripTable" rendered="#{GeneInfoBean.gene!=null}"> 
 		<h:outputText value="" rendered="#{GeneInfoBean.setTableViewNameToGeneStrip}" />
 		<jsp:include page="../includes/browse_table.jsp" />
-	</f:subview>
+	</f:subview> 
 
-	<h:panelGrid columns="2" rowClasses="header-nostripe,header-stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null}">
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+	<h:panelGrid rendered="#{GeneInfoBean.gene != null && GeneInfoBean.gene.assocProbes != null}">
+      	                <f:verbatim>&nbsp;</f:verbatim>
+	</h:panelGrid>
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null && GeneInfoBean.gene.assocProbes != null}">
 		<h:outputText value="Probes Linked to Gene" />
-		<h:panelGrid columns="2" columnClasses="datatext,datatext">
 		<h:dataTable value="#{GeneInfoBean.gene.assocProbes}" var="probe">
 			<h:column>
 				<h:outputLink styleClass="datatext" value="#{probe[3]}" rendered="#{probe[3] != 'probe.html'}">
@@ -58,22 +59,24 @@
 				</h:outputLink>
 			</h:column>			
 		</h:dataTable>
-		</h:panelGrid>
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 	</h:panelGrid>
 
-	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null}">
+	<h:panelGrid rendered="#{GeneInfoBean.gene != null}">
+      	                <f:verbatim>&nbsp;</f:verbatim>
+	</h:panelGrid>
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null}">
 		<h:outputText value="Links" />
 		<h:panelGrid columns="2" columnClasses="plaintext,datatext">
 			<h:outputText value="MGI:"/>
 			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.mgiURL}" rendered="#{!GeneInfoBean.xenbaseEntryExists}" target="_blank">
 				<h:outputText value="#{GeneInfoBean.gene.mgiAccID}" />
 			</h:outputLink>
-			
+
 			<h:outputText value="Ensembl:" />
 			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.ensemblURL}" target="_blank">
 				<h:outputText value="#{GeneInfoBean.gene.ensemblID}" />
 			</h:outputLink>
+
 			<h:outputText value="UCSC:" />
 			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.ucscURL}" target="_blank">
 				<h:outputText value="View probes for this gene in UCSC Browser" />
@@ -90,7 +93,7 @@
 				<h:outputText rendered="#{!GeneInfoBean.entrezIdExists}" value="Search entrez" />
 			</h:outputLink>
 			
-			<h:outputText value="Genecards:" />
+			<h:outputText value="Genecards:"/>
 			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.geneCardURL}" target="_blank">
 				<h:outputText value="Search GeneCards" />
 			</h:outputLink>
@@ -100,10 +103,14 @@
 				<h:outputText value="MGI GO Annotations" />
 			</h:outputLink>
 		</h:panelGrid>
+	</h:panelGrid>
 
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-		<h:outputText value="In-Situs" />
-		<h:dataTable cellspacing="5" value="#{GeneInfoBean.gene.ishSubmissions}" var="sub">
+	<h:panelGrid rendered="#{GeneInfoBean.gene.ishSubmissions != null}">
+      	                <f:verbatim>&nbsp;</f:verbatim>
+	</h:panelGrid>
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ishSubmissions != null}">
+		        <h:outputText value="In-Situs" />
+		        <h:dataTable cellspacing="5" value="#{GeneInfoBean.gene.ishSubmissions}" var="sub">
 			<h:column>
 				<h:outputLink styleClass="datatext" value="#{sub[1]}">
 					<f:param value="#{sub[0]}" name="id" />
@@ -139,32 +146,40 @@
 				</h:outputLink>
 			</h:column>
 		</h:dataTable>
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 	</h:panelGrid>
 
-	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene. iuphar_db_URL != null}">
+	<h:panelGrid rendered="#{GeneInfoBean.gene. iuphar_db_URL != null || GeneInfoBean.gene. iuphar_guide_URL != null}">
+      	                <f:verbatim>&nbsp;</f:verbatim>
+	</h:panelGrid>
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene. iuphar_db_URL != null || GeneInfoBean.gene. iuphar_guide_URL != null}">
 		<h:outputText value="Translational Links" />
 		<h:panelGrid columns="2" columnClasses="plaintext,datatext">
-			<h:outputText value="IUPHAR-DB:" />
-			<h:outputLink styleClass="plaintext"  value="#{GeneInfoBean.gene. iuphar_db_URL}" target="_blank">
+			<h:outputText  rendered="#{GeneInfoBean.gene. iuphar_db_URL != null}" value="IUPHAR-DB:" />
+			<h:outputLink  rendered="#{GeneInfoBean.gene. iuphar_db_URL != null}" styleClass="plaintext"  value="#{GeneInfoBean.gene. iuphar_db_URL}" target="_blank">
 				<h:outputText value="View pharmacological information for #{GeneInfoBean.gene.symbol}" />
 			</h:outputLink>
-			<h:outputText value="Guide to PHARMACOLOGY:" />
-			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene. iuphar_guide_URL}" target="_blank">
+			<h:outputText  rendered="#{GeneInfoBean.gene. iuphar_guide_URL != null}" value="Guide to PHARMACOLOGY:" />
+			<h:outputLink  rendered="#{GeneInfoBean.gene. iuphar_guide_URL != null}" styleClass="plaintext" value="#{GeneInfoBean.gene. iuphar_guide_URL}" target="_blank">
 				<h:outputText value="View pharmacological information for #{GeneInfoBean.gene.symbol}" />
 			</h:outputLink>
 		</h:panelGrid>
 	</h:panelGrid>
 
-	<h:panelGrid columns="1" rowClasses="header-stripey" columnClasses="leftCol" width="100%" cellpadding="0" cellspacing="0" rendered="#{GeneInfoBean.gene != null}">
-		<h:outputText value="Microarrays"/>
+	<h:panelGrid rendered="#{GeneInfoBean.gene != null && GeneInfoBean.gene.numMicArrays != null}">
+      	                <f:verbatim>&nbsp;</f:verbatim>
 	</h:panelGrid>
-
-   	<f:subview id="GeneArrayTable" rendered="#{GeneInfoBean.gene.numMicArrays != null && GeneInfoBean.gene.numMicArrays > 0}">
-		<h:outputText value="" rendered="#{GeneInfoBean.setTableViewNameToArrayData}" />
+	<h:panelGrid columns="1" rowClasses="stripey" columnClasses="leftCol" width="100%" cellpadding="0" cellspacing="0"  rendered="#{GeneInfoBean.gene != null && GeneInfoBean.gene.numMicArrays != null}">
+		<h:outputText value="Microarrays" />
+	</h:panelGrid>
+  	<f:subview id="GeneArrayTable" rendered="#{GeneInfoBean.gene != null && GeneInfoBean.gene.numMicArrays != null}">
+<!-- change gen strip bean to array bean --> 
+                                <h:outputText value="" rendered="#{GeneInfoBean.setTableViewNameToArrayData}" />
+<!-- change gen strip bean to array bean --> 
 		<jsp:include page="../includes/browse_table.jsp" />
-	</f:subview>
+	</f:subview> 
+<!-- change back to gen strip bean --> 
 	<h:outputText value="" rendered="#{UtilityBean.setActiveTableViewName}" />
+<!-- change back to gen strip bean --> 
 
 	<jsp:include page="/includes/footer.jsp" />
     

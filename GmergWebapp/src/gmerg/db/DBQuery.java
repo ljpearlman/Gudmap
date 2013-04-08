@@ -445,7 +445,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
 
   final static String name242 = "GENE_INFO_IUPHAR";
   final static String query242 = "SELECT DISTINCT CONCAT(IUPHAR_URL.URL_URL, IUP_IUPHAR_ID), "+
-  		                        "CONCAT(IUPHAR_2_URL.URL_URL, IUP_IUPHAR_ID) " +
+  		                        "CONCAT(IUPHAR_2_URL.URL_URL, IUP_IUPHAR_ID), IUP_URL_TYPE " +
   		                        "FROM REF_IUPHAR "+
   		                        "JOIN REF_URL IUPHAR_URL " +
   		                        "JOIN REF_URL IUPHAR_2_URL " +

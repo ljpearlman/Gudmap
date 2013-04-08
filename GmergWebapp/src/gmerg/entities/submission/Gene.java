@@ -38,7 +38,9 @@ public class Gene {
      * @param value the gene symbol
      */
     public void setSymbol(String value) {
-        this.symbol = value;
+        symbol = value;
+	if (null != symbol && symbol.trim().equals(""))
+	    symbol = null;
     }
 
     /**
@@ -52,7 +54,9 @@ public class Gene {
      * @param value the name of the gene
      */
     public void setName(String value) {
-        this.name = value;
+        name = value;
+	if (null != name && name.trim().equals(""))
+	    name = null;
     }
 
     /**
@@ -63,7 +67,9 @@ public class Gene {
     }
 
     public void setSynonyms(String value) {
-        this.synonyms = value;
+        synonyms = value;
+	if (null != synonyms && synonyms.trim().equals(""))
+	    synonyms = null;
     }
 
     public String getSynonyms() {
@@ -71,7 +77,9 @@ public class Gene {
     }
 
     public void setXsomeStart(String value) {
-        this.xsomeStart = value;
+        xsomeStart = value;
+	if (null != xsomeStart && xsomeStart.trim().equals(""))
+	    xsomeStart = null;
     }
 
     public String getXsomeStart() {
@@ -79,7 +87,9 @@ public class Gene {
     }
 
     public void setXsomeEnd(String value) {
-        this.xsomeEnd = value;
+        xsomeEnd = value;
+	if (null != xsomeEnd && xsomeEnd.trim().equals(""))
+	    xsomeEnd = null;
     }
 
     public String getXsomeEnd() {
@@ -87,7 +97,9 @@ public class Gene {
     }
 
     public void setXsomeName(String value) {
-        this.xsomeName = value;
+        xsomeName = value;
+	if (null != xsomeName && xsomeName.trim().equals(""))
+	    xsomeName = null;
     }
 
     public String getXsomeName() {
@@ -95,7 +107,9 @@ public class Gene {
     }
 
     public void setGenomeBuild(String value) {
-        this.genomeBuild = value;
+        genomeBuild = value;
+	if (null != genomeBuild && genomeBuild.trim().equals(""))
+	    genomeBuild = null;
     }
 
     public String getGenomeBuild() {
@@ -106,7 +120,9 @@ public class Gene {
      * @param value MGI Accession ID
      */
     public void setMgiAccID(String value) {
-        this.mgiAccID = value;
+        mgiAccID = value;
+	if (null != mgiAccID && mgiAccID.trim().equals(""))
+	    mgiAccID = null;
     }
 
     public String getMgiAccID() {
@@ -114,7 +130,9 @@ public class Gene {
     }
 
     public void setMgiURL(String value) {
-        this.mgiURL = value;
+        mgiURL = value;
+	if (null != mgiURL && mgiURL.trim().equals(""))
+	    mgiURL = null;
     }
 
     public String getMgiURL() {
@@ -122,7 +140,9 @@ public class Gene {
     }
 
     public void setEntrezURL(String value) {
-        this.entrezURL = value;
+        entrezURL = value;
+	if (null != entrezURL && entrezURL.trim().equals(""))
+	    entrezURL = null;
     }
 
     public String getEntrezURL() {
@@ -130,7 +150,9 @@ public class Gene {
     }
 
     public void setEntrezID(String value) {
-        this.entrezID = value;
+        entrezID = value;
+	if (null != entrezID && entrezID.trim().equals(""))
+	    entrezID = null;
     }
 
     public String getEntrezID() {
@@ -138,7 +160,9 @@ public class Gene {
     }
 
     public void setRefSeqURL(String value) {
-        this.refSeqURL = value;
+        refSeqURL = value;
+	if (null != refSeqURL && refSeqURL.trim().equals(""))
+	    refSeqURL = null;
     }
 
     public String getRefSeqURL() {
@@ -146,7 +170,9 @@ public class Gene {
     }
 
     public void setRefSeqID(String value) {
-        this.refSeqID = value;
+        refSeqID = value;
+	if (null != refSeqID && refSeqID.trim().equals(""))
+	    refSeqID = null;
     }
 
     public String getRefSeqID() {
@@ -154,7 +180,9 @@ public class Gene {
     }
 
     public void setEnsemblURL(String value) {
-        this.ensemblURL = value;
+        ensemblURL = value;
+	if (null != ensemblURL && ensemblURL.trim().equals(""))
+	    ensemblURL = null;
     }
 
     public String getEnsemblURL() {
@@ -162,7 +190,9 @@ public class Gene {
     }
 
     public void setEnsemblID(String value) {
-        this.ensemblID = value;
+        ensemblID = value;
+	if (null != ensemblID && ensemblID.trim().equals(""))
+	    ensemblID = null;
     }
 
     public String getEnsemblID() {
@@ -170,7 +200,9 @@ public class Gene {
     }
 
     public void setGoURL(String value) {
-        this.goURL = value;
+        goURL = value;
+	if (null != goURL && goURL.trim().equals(""))
+	    goURL = null;
     }
 
     public String getGoURL() {
@@ -178,7 +210,9 @@ public class Gene {
     }
 
     public void setOmimURL(String value) {
-        this.omimURL = value;
+        omimURL = value;
+	if (null != omimURL && omimURL.trim().equals(""))
+	    omimURL = null;
     }
 
     public String getOmimURL() {
@@ -186,7 +220,9 @@ public class Gene {
     }
 
     public void setIshSubmissions(ArrayList values) {
-        this.ishSubmissions = values;
+        ishSubmissions = values;
+	if (null != ishSubmissions && 0 == ishSubmissions.size())
+	    ishSubmissions = null;
     }
 
     public ArrayList getIshSubmissions() { 	  	
@@ -194,7 +230,9 @@ public class Gene {
     }
 
     public void setAssocProbes(ArrayList values) {
-        this.maProbes = values;
+        maProbes = values;
+	if (null != maProbes && 0 == maProbes.size())
+	    maProbes = null;
     }
 
     public ArrayList getAssocProbes() {
@@ -202,7 +240,9 @@ public class Gene {
     }
 
     public void setArraySubmissions(ArrayList arraysubs) {
-        this.arraySubmissions = arraysubs;
+        arraySubmissions = arraysubs;
+	if (null != arraySubmissions && 0 == arraySubmissions.size())
+	    arraySubmissions = null;
     }
 
     public ArrayList getArraySubmissions() {
@@ -215,6 +255,8 @@ public class Gene {
     
     public void setGeneCardURL(String value){
         geneCardURL = value;
+	if (null != geneCardURL && geneCardURL.trim().equals(""))
+	    geneCardURL = null;
     }
     
     public String getHgncSearchSymbolURL() {
@@ -223,6 +265,8 @@ public class Gene {
     
     public void setHgncSearchSymbolURL(String value){
         hgncSearchSymbolURL = value;
+	if (null != hgncSearchSymbolURL && hgncSearchSymbolURL.trim().equals(""))
+	    hgncSearchSymbolURL = null;
     }
     
     public String getNumMicArrays() {
@@ -231,6 +275,11 @@ public class Gene {
     
     public void setNumMicArrays(String value){
         numMicArrays = value;
+	if (null != numMicArrays) {
+	    String str = numMicArrays.trim();
+	    if (str.equals("") || str.equals("0"))
+		numMicArrays = null;
+	}
     }
     public ArrayList getOntologyTerms() {
     	return ontologyTerms;
@@ -238,6 +287,8 @@ public class Gene {
     
     public void setOntologyTerms(ArrayList terms) {
     	ontologyTerms = terms;
+	if (null != ontologyTerms && 0 == ontologyTerms.size())
+	    ontologyTerms = null;
     }
     
     public String getUcscURL() {
@@ -245,7 +296,9 @@ public class Gene {
     }
     
     public void setUcscURL(String ucscURL) {
-    	this.ucscURL = ucscURL;
+    	ucscURL = ucscURL;
+	if (null != ucscURL && ucscURL.trim().equals(""))
+	    ucscURL = null;
     }
 
     public String getIuphar_db_URL() {
@@ -254,6 +307,8 @@ public class Gene {
     
     public void setIuphar_db_URL(String input) {
     	iuphar_db_URL = input;
+	if (null != iuphar_db_URL && iuphar_db_URL.trim().equals(""))
+	    iuphar_db_URL = null;
     }
 
     public String getIuphar_guide_URL() {
@@ -262,6 +317,8 @@ public class Gene {
     
     public void setIuphar_guide_URL(String input) {
     	iuphar_guide_URL = input;
+	if (null != iuphar_guide_URL && iuphar_guide_URL.trim().equals(""))
+	    iuphar_guide_URL = null;
     }
 
 }

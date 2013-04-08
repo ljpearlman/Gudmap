@@ -1690,8 +1690,12 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("GENE_INFO_IUPHAR");
         PreparedStatement prepStmt = null;
-
+	int type = -1;
 	Gene gene = geneInfo;
+
+	gene.setIuphar_db_URL(null); 
+	gene.setIuphar_guide_URL(null); 
+
         try {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
@@ -1702,12 +1706,21 @@ public class MySQLISHDAOImp implements ISHDAO {
             prepStmt.setString(2, str);
             resSet = prepStmt.executeQuery();
             if(resSet.first()){
-		gene.setIuphar_db_URL(resSet.getString(1)); 
-		gene.setIuphar_guide_URL(resSet.getString(2)); 
-            } else {
-		gene.setIuphar_db_URL(null); 
-		gene.setIuphar_guide_URL(null); 
-	    }
+		type = resSet.getInt(3);
+		switch (type) {
+		case 2:
+		    gene.setIuphar_db_URL(resSet.getString(1)); 
+		    gene.setIuphar_guide_URL(resSet.getString(2)); 
+		    break;
+		case 1:
+		    gene.setIuphar_guide_URL(resSet.getString(2)); 
+		break;
+		case 0:
+		default:
+		    gene.setIuphar_db_URL(resSet.getString(1)); 
+		    break;
+		}
+            }
 	    
             // close the connection
             DBHelper.closePreparedStatement(prepStmt);
