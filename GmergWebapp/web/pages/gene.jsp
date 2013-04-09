@@ -105,6 +105,23 @@
 		</h:panelGrid>
 	</h:panelGrid>
 
+	<h:panelGrid rendered="#{GeneInfoBean.gene. iuphar_db_URL != null || GeneInfoBean.gene. iuphar_guide_URL != null}">
+      	                <f:verbatim>&nbsp;</f:verbatim>
+	</h:panelGrid>
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene. iuphar_db_URL != null || GeneInfoBean.gene. iuphar_guide_URL != null}">
+		<h:outputText value="Translational Links" />
+		<h:panelGrid columns="2" columnClasses="plaintext,datatext">
+			<h:outputText  rendered="#{GeneInfoBean.gene. iuphar_db_URL != null}" value="IUPHAR-DB:" />
+			<h:outputLink  rendered="#{GeneInfoBean.gene. iuphar_db_URL != null}" styleClass="plaintext"  value="#{GeneInfoBean.gene. iuphar_db_URL}" target="_blank">
+				<h:outputText value="View pharmacological information for #{GeneInfoBean.gene.symbol}" />
+			</h:outputLink>
+			<h:outputText  rendered="#{GeneInfoBean.gene. iuphar_guide_URL != null}" value="Guide to PHARMACOLOGY:" />
+			<h:outputLink  rendered="#{GeneInfoBean.gene. iuphar_guide_URL != null}" styleClass="plaintext" value="#{GeneInfoBean.gene. iuphar_guide_URL}" target="_blank">
+				<h:outputText value="View pharmacological information for #{GeneInfoBean.gene.symbol}" />
+			</h:outputLink>
+		</h:panelGrid>
+	</h:panelGrid>
+
 	<h:panelGrid rendered="#{GeneInfoBean.gene.ishSubmissions != null}">
       	                <f:verbatim>&nbsp;</f:verbatim>
 	</h:panelGrid>
@@ -146,23 +163,6 @@
 				</h:outputLink>
 			</h:column>
 		</h:dataTable>
-	</h:panelGrid>
-
-	<h:panelGrid rendered="#{GeneInfoBean.gene. iuphar_db_URL != null || GeneInfoBean.gene. iuphar_guide_URL != null}">
-      	                <f:verbatim>&nbsp;</f:verbatim>
-	</h:panelGrid>
-	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene. iuphar_db_URL != null || GeneInfoBean.gene. iuphar_guide_URL != null}">
-		<h:outputText value="Translational Links" />
-		<h:panelGrid columns="2" columnClasses="plaintext,datatext">
-			<h:outputText  rendered="#{GeneInfoBean.gene. iuphar_db_URL != null}" value="IUPHAR-DB:" />
-			<h:outputLink  rendered="#{GeneInfoBean.gene. iuphar_db_URL != null}" styleClass="plaintext"  value="#{GeneInfoBean.gene. iuphar_db_URL}" target="_blank">
-				<h:outputText value="View pharmacological information for #{GeneInfoBean.gene.symbol}" />
-			</h:outputLink>
-			<h:outputText  rendered="#{GeneInfoBean.gene. iuphar_guide_URL != null}" value="Guide to PHARMACOLOGY:" />
-			<h:outputLink  rendered="#{GeneInfoBean.gene. iuphar_guide_URL != null}" styleClass="plaintext" value="#{GeneInfoBean.gene. iuphar_guide_URL}" target="_blank">
-				<h:outputText value="View pharmacological information for #{GeneInfoBean.gene.symbol}" />
-			</h:outputLink>
-		</h:panelGrid>
 	</h:panelGrid>
 
 	<h:panelGrid rendered="#{GeneInfoBean.gene != null && GeneInfoBean.gene.numMicArrays != null}">
