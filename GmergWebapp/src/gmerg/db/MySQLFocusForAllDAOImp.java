@@ -856,6 +856,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	 * 
 	 */
 	public int getNumberOfSubmissionsForLab(String labId, String assayType, String submissionDate, String archiveId) {
+	    if (null == assayType)
+		return 0;
+
 //      System.out.println("getNumberOfSubmissionsForLab:labId: " + labId);
 //      System.out.println("getNumberOfSubmissionsForLab:assayType: " + assayType);
 //      System.out.println("getNumberOfSubmissionsForLab:submissionDate: " + submissionDate);

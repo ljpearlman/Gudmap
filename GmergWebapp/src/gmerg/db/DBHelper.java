@@ -872,10 +872,15 @@ public final class DBHelper {
      * @return
      */
     public static Connection reconnect2DB(Connection conn) {
-    	if (conn == null) {
-	    conn = getDBConnection();
-    	}
-		return conn;
+	Connection ret = conn;
+
+	try {
+	    if (conn == null || conn.isClosed()) {
+		ret = getDBConnection();
+	    } 
+	} catch (Exception e) {ret = null;}
+
+	return ret;
     }
     
 	/**

@@ -11,7 +11,7 @@ package gmerg.beans;
 
 import javax.servlet.http.HttpSession;
 import javax.faces.context.FacesContext;
-
+import java.io.Serializable;
 import gmerg.assemblers.SecurityAssembler;
 import gmerg.assemblers.EditAssemblerUtil;
 import gmerg.control.GudmapPageHistoryFilter;
@@ -22,7 +22,7 @@ import gmerg.utils.FacesUtil;
  * @author xingjun
  *
  */
-public class UserBean {
+public class UserBean  implements Serializable {
     private boolean debug = false;
 
     private String userName;
