@@ -8,10 +8,16 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 
-	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{ISHSingleSubmissionBean.id})" rendered="#{!ISHSingleSubmissionBean.renderPage}"/><br/>
-	<h:outputText styleClass="plaintextbold" value="The entry in the database matching the specified submission id (#{ISHSingleSubmissionBean.id}) is private" rendered="#{!ISHSingleSubmissionBean.publicPage}"/><br/>
-	<h:outputText styleClass="plaintextbold" value="The entry in the database matching the specified submission id (#{ISHSingleSubmissionBean.id}) has been deleted" rendered="#{ISHSingleSubmissionBean.deletedPage}"/><br/>
-	
+	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{ISHSingleSubmissionBean.id})" rendered="#{!ISHSingleSubmissionBean.renderPage}"/>
+	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!ISHSingleSubmissionBean.publicPage && !ISHSingleSubmissionBean.deletedPage}"/>
+	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{ISHSingleSubmissionBean.deletedPage && ISHSingleSubmissionBean.publicPage}"/>
+	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!ISHSingleSubmissionBean.publicPage && ISHSingleSubmissionBean.deletedPage}"/>
+	<h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!ISHSingleSubmissionBean.publicPage || ISHSingleSubmissionBean.deletedPage}" escape="false"/>
+	<h:outputLink styleClass="text_bottom" value="javascript:popupCenter('http://www.gudmap.org/Feedback/popupgudmap.php', 'feedbackGudmap', 570, 610);" rendered="#{!ISHSingleSubmissionBean.publicPage || ISHSingleSubmissionBean.deletedPage}">
+		GUDMAP-EDITORS
+	</h:outputLink>
+
+</p>	
 	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage && ISHSingleSubmissionBean.publicPage && !ISHSingleSubmissionBean.deletedPage}">
 		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe">
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" rendered="#{ISHSingleSubmissionBean.submission.euregeneId == ''}" />
