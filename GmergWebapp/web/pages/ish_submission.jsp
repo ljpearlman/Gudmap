@@ -8,9 +8,11 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 
-	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id" rendered="#{!ISHSingleSubmissionBean.renderPage}"/>
+	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{ISHSingleSubmissionBean.id})" rendered="#{!ISHSingleSubmissionBean.renderPage}"/><br/>
+	<h:outputText styleClass="plaintextbold" value="The entry in the database matching the specified submission id (#{ISHSingleSubmissionBean.id}) is private" rendered="#{!ISHSingleSubmissionBean.publicPage}"/><br/>
+	<h:outputText styleClass="plaintextbold" value="The entry in the database matching the specified submission id (#{ISHSingleSubmissionBean.id}) has been deleted" rendered="#{ISHSingleSubmissionBean.deletedPage}"/><br/>
 	
-	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage}">
+	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage && ISHSingleSubmissionBean.publicPage && !ISHSingleSubmissionBean.deletedPage}">
 		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe">
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" rendered="#{ISHSingleSubmissionBean.submission.euregeneId == ''}" />
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID} (#{ISHSingleSubmissionBean.submission.euregeneId})" rendered="#{ISHSingleSubmissionBean.submission.euregeneId != ''}"/>

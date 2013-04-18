@@ -181,6 +181,14 @@ public class ISHSingleSubmissionBean {
         }
         return renderPage;
     }
+
+    public boolean getPublicPage() {
+        return submission.getPublic();
+    }
+    
+    public boolean getDeletedPage() {
+        return submission.getDeleted();
+    }
     
     public boolean isRenderPrbSeqInfo(){
         return renderPrbSeqInfo;

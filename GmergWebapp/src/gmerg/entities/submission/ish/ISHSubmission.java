@@ -26,6 +26,8 @@ public class ISHSubmission extends Submission {
     private boolean multipleTransgenics; 
     private String tissue; 
     private String project; 
+    private boolean isPublic;
+    private boolean isDeleted;
 
     public ISHSubmission() {
     
@@ -127,5 +129,27 @@ public class ISHSubmission extends Submission {
     public void setProject(String project) {
     	this.project = project;
     }    
-   
+
+    public Boolean getPublic() {
+        return this.isPublic;
+    }
+    
+    public void setPublic(int  publicFlag) {
+    	if (publicFlag == 1)
+    		this.isPublic = true;
+    	else
+    		this.isPublic = false;
+    }
+    
+    public Boolean getDeleted() {
+        return this.isDeleted;
+    }
+    
+    public void setDeleted(int deleteFlag) {
+    	if (deleteFlag == 1)
+    		this.isDeleted = true;
+    	else
+    		this.isDeleted = false;
+    }
+    
 }

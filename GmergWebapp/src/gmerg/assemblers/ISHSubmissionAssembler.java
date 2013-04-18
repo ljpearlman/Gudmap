@@ -78,6 +78,8 @@ public class ISHSubmissionAssembler {
 		/** ---composite a ish submission object---  */
 		ISHSubmission ishSubmission = new ISHSubmission();
 		ishSubmission.setAccID(submission.getAccID());
+		ishSubmission.setPublic(submission.getPublicFlag());
+		ishSubmission.setDeleted(submission.getDeleteFlag());
 		ishSubmission.setStage(submission.getStage());
 		ishSubmission.setAssayType(assayType);
 		ishSubmission.setArchiveId(submission.getArchiveId());
