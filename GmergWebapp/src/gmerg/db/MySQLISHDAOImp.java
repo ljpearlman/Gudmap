@@ -223,7 +223,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_DETAILS");
         String queryString = parQ.getQuerySQL();
-        System.out.println("ISHDAO:findSubmissionById:sql: " + queryString);
+//        System.out.println("ISHDAO:findSubmissionById:sql: " + queryString);
         PreparedStatement prepStmt = null;
         try {
 	    // if disconnected from db, re-connected
