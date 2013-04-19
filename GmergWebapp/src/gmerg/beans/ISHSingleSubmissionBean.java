@@ -183,10 +183,16 @@ public class ISHSingleSubmissionBean {
     }
 
     public boolean getPublicPage() {
+    	if (submission == null)
+    		return true;
+    	
         return submission.getPublic();
     }
     
     public boolean getDeletedPage() {
+    	if (submission == null)
+    		return false;
+    	
         return submission.getDeleted();
     }
     
