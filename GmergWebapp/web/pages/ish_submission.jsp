@@ -13,9 +13,10 @@
 	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{ISHSingleSubmissionBean.deletedPage && ISHSingleSubmissionBean.publicPage}"/>
 	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!ISHSingleSubmissionBean.publicPage && ISHSingleSubmissionBean.deletedPage}"/>
 	<h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!ISHSingleSubmissionBean.publicPage || ISHSingleSubmissionBean.deletedPage}" escape="false"/>
-	<h:outputLink styleClass="text_bottom" value="javascript:popupCenter('http://www.gudmap.org/Feedback/popupgudmap.php', 'feedbackGudmap', 570, 610);" rendered="#{!ISHSingleSubmissionBean.publicPage || ISHSingleSubmissionBean.deletedPage}">
-		GUDMAP-EDITORS
+	<h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!ISHSingleSubmissionBean.publicPage || ISHSingleSubmissionBean.deletedPage}">
+		gudmap-editors@gudmap.org
 	</h:outputLink>
+
 
 </p>	
 	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage && ISHSingleSubmissionBean.publicPage && !ISHSingleSubmissionBean.deletedPage}">
