@@ -40,6 +40,9 @@ public class CollectionBrowseBean {
 		else
 			collectionType = getCollectionInfo().getType(); 
 		
+		if (debug)
+		    System.out.println("CollectionBrowseBean collectionId = "+collectionId+" collectionType = "+collectionType);
+
 		browseHelper = null;	// has a lasy getter
 		String actionMethodCalled = FacesUtil.getRequestParamValue("actionMethodCalled");
 		if(actionMethodCalled==null)
@@ -68,16 +71,16 @@ public class CollectionBrowseBean {
 		return null;
 	}
 	
-	public String removeSelectedItems() {
+	public void removeSelectedItems() {
 	    if (debug)
 		System.out.println("CollectionBrowseBean.removeSelectedItems");
 
+	    if (isClipboard()) {
 		String[] selectedIds = TableUtil.getSelectedIdsForCollection(collectionType);
-		if (isClipboard()) {
-			ArrayList<String> newIds = ClipboardDelegateCookieImp.removeValuesFromClipboard(collectionType, selectedIds);
-			getBrowseHelper().setDynamicCollectionIds(newIds);
-		}
-		return null;
+
+		ArrayList<String> newIds = ClipboardDelegateCookieImp.removeValuesFromClipboard(collectionType, selectedIds);
+		getBrowseHelper().setDynamicCollectionIds(newIds);
+	    }
 	}
 
 	public String saveCollection() {

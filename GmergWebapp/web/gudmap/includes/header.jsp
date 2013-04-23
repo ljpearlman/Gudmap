@@ -189,14 +189,14 @@
 									<h:form id="loginLinkForm" >
 									<h:panelGrid columns="1">
 										<h:panelGroup rendered="#{UserBean.userLoggedIn}">
-											<h:outputText value="User: #{UserBean.nickName} " styleClass="italictext" />
+											<h:outputText value="User: #{UserBean.userName} " styleClass="italictext" />
 											<f:verbatim>&nbsp;&nbsp;</f:verbatim>
 											<h:commandLink styleClass="text_bottom" action="#{UserBean.logout}" immediate="true">
 												<h:outputText value="Logout" />
 											</h:commandLink>
 										</h:panelGroup>
 										<h:panelGroup rendered="#{!UserBean.userLoggedIn}" >
-											<h:outputLink id="loginLink" styleClass="text_bottom" value="/gudmap/pages/secure/login.html?#{Visit.statusParam}" >
+											<h:outputLink id="loginLink" styleClass="text_bottom" value="#{HeaderQuickSearchBean.appUrl}pages/secure/login.html?#{Visit.statusParam}" >
 												<h:outputText value="Login" />
 											</h:outputLink>
 										</h:panelGroup>

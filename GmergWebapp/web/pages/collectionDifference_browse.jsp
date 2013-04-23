@@ -11,7 +11,7 @@
 		<h:outputText value="Compare two collections:" />
 		<h:outputText value="#{CollectionOperationBrowseBean.collectionNames}" escape="false"/>
 	</h:panelGrid>
-	<rich:tabPanel switchType="client" activeTabStyleClass="header-stripey" activeSubStyleClass="header-stripey" tabContentStyleClass="header-stripey">
+	<rich:tabPanel switchType="client" activeTabClass="header-stripey" tabClass="header-stripey">
 		<rich:tab label="A - B" >
 			<f:subview id="collectionDifferenceBrowse1">
 				<h:outputText value="" rendered="#{CollectionOperationBrowseBean.setViewNameDifference1}" />

@@ -16,7 +16,8 @@ import gmerg.utils.table.CollectionBrowseHelper;
 */
 
 public class ClipboardDelegateCookieImp {
-	
+    protected static boolean debug = true;
+
 	public ClipboardDelegateCookieImp() {
 	}	
 
@@ -82,6 +83,9 @@ public class ClipboardDelegateCookieImp {
 	}
 	
 	public static ArrayList<String> getResultIdsOperationWithClipboard (String operation, String[] newIds, int collectionCategory) {
+	    if (debug)
+		System.out.println("ClipboardDelegateCookieImp.getResultIdsOperationWithClipboard operation = "+operation+" collectionCategory = "+collectionCategory);
+
 		int n1 = 0;
 	    String[] clipboardIds = null;
 		String cookieName = getCookieName(collectionCategory);

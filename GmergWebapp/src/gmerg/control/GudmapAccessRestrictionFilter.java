@@ -30,14 +30,14 @@ public class GudmapAccessRestrictionFilter implements Filter{
 			}
 			String pageURI = httpServletRequest.getRequestURI().substring(httpServletRequest.getRequestURI().indexOf("/pages/")+7);
 			if (!userLoggedIn && isRestrictedPage(httpServletRequest.getRequestURI())) {
-				session.setAttribute("restrictedAccesssPage", pageURI);		// This is to transfer to requested page from login page
-				String restrictedPageRedirect = httpServletRequest.getContextPath() + "/pages/restricted_access_redirect.html";
+				session.setAttribute("loginPage", "secure/"+pageURI);		// This is to transfer to requested page from login page
+				String restrictedPageRedirect = httpServletRequest.getContextPath() + "/pages/secure/login.html";
 				httpServletResponse.sendRedirect(restrictedPageRedirect);
 				return;
 			}
 			else 
-				if (pageURI.indexOf("secure/login.")!=0 && pageURI.indexOf("restricted_access_redirect.")!=0)
-					session.removeAttribute("restrictedAccesssPage");
+				if (pageURI.indexOf("secure/login.")!=0)
+					session.removeAttribute("loginPage");
 		}
 		filterChain.doFilter(request, response);
 	}

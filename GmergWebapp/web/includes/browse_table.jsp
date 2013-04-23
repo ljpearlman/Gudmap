@@ -486,12 +486,6 @@
 					<h:graphicImage value="../images/Replace_btn.png"		title="Replace" alt="next" styleClass="icon" />
 					<f:param name="tableOperation" value="replaceClipboardWithSelected" />
 				</h:commandLink>
-				<%--
-				<h:outputLink id="ViewClipboard1" styleClass="plaintextbold"
-								  value="collection_browse.html?collectionType=#{TableBean.selectedCollection}">
-						<h:outputText value="View my #{TableBean.clipboardName} (or other selections)" />
-					</h:outputLink>
-				--%>	
 				
 				<%--<h:commandButton id="viewClipboard1" image="../images/View_btn.png" action="#{TableBean.gotoCollectionPage}"/>--%>
 				<%--<h:graphicImage id="viewClipboard1" value="../images/View_btn.png" title="Click to View my #{TableBean.clipboardName} (or other selections)"
@@ -503,23 +497,6 @@
 				</h:commandLink>--%>
 				
 				</h:panelGroup>				
-					<%--
-					<h:commandLink id="addClipboard" action="#{TableBean.addToClipboard}" onclick="return saveSelections(event)" styleClass="plaintextbold" >
-						<h:outputText value="Add to my #{TableBean.clipboardName}" />
-						<f:param name="tableOperation" value="addClipboard" />
-					</h:commandLink>
-					
-					<h:outputLink id="intersectClipboard" styleClass="plaintextbold" onclick="return processSelectionsForLink(event)" 
-								  value="clipboardOperation_browse.html?collectionOperation=intersection&collectionType=#{TableBean.selectedCollection}">
-						<h:outputText value="Get intersection with my #{TableBean.clipboardName}" />
-					</h:outputLink>
-					<h:graphicImage url="/images/gu_intersect.gif" alt="intersection"/>
-					
-					<h:commandLink id="replaceClipboardWithSelected1" action="#{TableBean.replaceClipboardWithSelected}" onclick="return saveSelections(event)" styleClass="plaintextbold" >
-						<h:outputText value="Replace my #{TableBean.clipboardName}" />
-						<f:param name="tableOperation" value="replaceClipboardWithSelected" />
-					</h:commandLink>
-					--%>
 
 					<h:outputLink id="differenceCollection" onclick="return processSelectionsForLink(event)" styleClass="plaintextbold" 
 								  value="clipboardOperation_browse.html?collectionOperation=difference&collectionType=#{TableBean.selectedCollection}">
@@ -528,12 +505,6 @@
 					<h:graphicImage url="/images/gu_difference.gif" alt="difference"/>
 				
 					
-					<%-- 
-					<h:outputLink id="ViewClipboard1" styleClass="plaintextbold" rendered="#{TableBean.clipboardItemsNum > 0}"
-								  value="collection_browse.html?collectionType=#{TableBean.selectedCollection}">
-						<h:outputText value="View my #{TableBean.clipboardName} (or other selections)" />
-					</h:outputLink>
-					--%> 
 			    </h:panelGrid>
 
 											

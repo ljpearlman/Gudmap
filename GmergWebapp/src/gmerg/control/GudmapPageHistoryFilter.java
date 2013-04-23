@@ -48,7 +48,9 @@ public class GudmapPageHistoryFilter implements Filter{
 					}
 				}
 			}
-		}
+		} else 
+		    System.out.println("!!! possible warning request class = "+request.getClass().getName()+" response class = "+response.getClass().getName());
+
 		filterChain.doFilter(request, response);
 	}
 
@@ -61,14 +63,16 @@ public class GudmapPageHistoryFilter implements Filter{
 		if (refererURI==null)
 			return "database_homepage.html";
 		
- 		return Visit.getAddedStatusUrl(refererURI);
-//		return refererURI;
+ 		refererURI = Visit.getAddedStatusUrl(refererURI);
+		return refererURI;
 	}
 	
 	public static void setRefererPage(String refererURI) {
 		String referer = refererURI;
 		if (refererURI.indexOf("/pages/")==0)
 			referer = refererURI.substring(7);
+		if (-1 != referer.indexOf("secure") && -1 == referer.indexOf("login"))
+		    referer = referer.replace("secure/", "");
 		FacesUtil.setSessionValue("refererURI", referer);
 	}
 	

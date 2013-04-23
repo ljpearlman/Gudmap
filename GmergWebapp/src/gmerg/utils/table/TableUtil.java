@@ -20,7 +20,8 @@ import gmerg.utils.Visit;
  */
 
 public class TableUtil {
-	
+    static boolean debug = false;
+
 	static final protected String distinguishingParam = "tableViewName";
 	
 	public static String getActionLinkScript(String formId, String linkId, HashMap<String,String> params) {
@@ -202,48 +203,63 @@ public class TableUtil {
 
 	private static String[] getSelectedIds(int id, boolean isCollectionId) {  // id can be either a column Id (number) or a collection category id. This is specified by the second parameter isCollectionId
 		String selectionsString = FacesUtil.getAnyRequestParamValue("selectionsString");
-//		System.out.println("   in get selected Ids:	SelectionString==========="+selectionsString + "     id="+id);
+		if (debug) 
+		    System.out.println("TableUtil.getSelectedIds:   SelectionString==========="+selectionsString + "  id="+id+" isCollectionId = "+isCollectionId);
 
 		if (selectionsString == null) 
 			return null;
-//		GenericTableView tableView = getSelectionsTableViewFromSession();
 		GenericTableView tableView = getTableViewFromSession();
-//		System.out.println("   in get selected Ids:	tableView ="+tableView.getName());
 		if(tableView==null) {
 			System.out.println("NULLLLLLLLLLL============tableview in getSelectedIds");
 			return null;
 		}
 		
 		int columnId = 0;
+		String str = null;
 		if(id==-1) {
 			Collection <String> collectionIds = tableView.getCollections().values();
 			if (!collectionIds.isEmpty())
-				columnId = Integer.parseInt(collectionIds.iterator().next());
+			    str = collectionIds.iterator().next();
+		} else {
+		    if (isCollectionId) {
+			str = String.valueOf(id);
+			str = tableView.getCollections().get(str);
+		    }  else
+			columnId = id;
 		}
-		else
-			if (isCollectionId) {
-				String collectionId = String.valueOf(id);
-				columnId = Integer.parseInt(tableView.getCollections().get(collectionId));
-			}
-			else
-				columnId = id;
-		return getSelectedIdsFromTableView(tableView, selectionsString, columnId, 0);
+
+		if (debug)
+		    System.out.println("TableUtil. getSelectedIds str = "+str+" columnId="+columnId);
+
+		if (null != str)
+		    columnId = Integer.parseInt(str);
+
+		// ret is collection id
+		String[] ret =  getSelectedIdsFromTableView(tableView, selectionsString, columnId, 0);
+
+		return ret;
 	}
 
 	public static String[] getSelectedIdsFromTableView(GenericTableView tableView, String selectionString, int columnId, int offset) {
+	    if (debug)
+		System.out.println("TableUtil. getSelectedIdsFromTableView selectionString = "+selectionString+" columnId="+columnId);
+		
 		DataItem[][] tableData = tableView.getData();
+
 		//Selection Ids might be repeated so I used a Set to uniqly insert them in a list
 		HashSet<String> selectedIds = new HashSet<String>();
 		int colNum = tableView.getVisibleColNum();
  		int dataOffset = tableView.getFirstRowIndex(); //it is 0 for Offmemory tables and some offset for InMemory tables
 		/////////!!!!
-		if (-1 == columnId)
-		    columnId = 0;
+		    if (-1 == columnId) {
+			columnId = 0;
+		    }
 		//////!!!!!
 
+		    DataItem item;
+		    String value = null;
 		for (int i=0; i<selectionString.length(); i++)
 			if (selectionString.charAt(i) == '1') {
-				DataItem item;
 				if (tableView.isRowsSelectable()) 
 					item = tableData[i+dataOffset][columnId];
 				else {
@@ -251,22 +267,21 @@ public class TableUtil {
 					int col = i % colNum;
 					item = tableData[row][col];
 					if (item.isComplex()) {
-						
-//for (DataItem d:(ArrayList<DataItem>)(item.getValue())) 
-//	System.out.println("d==="+d.getValue());
 						item = ((ArrayList<DataItem>)(item.getValue())).get(columnId + offset);
-//System.out.println(columnId + "     " + offset+ "     value="+ item.getValue());
 					}
 				}
-				String value = (String)item.getValue();
-				if (value!=null && !"".equals(value))
+				value = (String)item.getValue();
+				if (value!=null && !value.trim().equals(""))
 					selectedIds.add(value);
 			}
 		
 		String[] selections = new String[selectedIds.size()];
 
 		selectedIds.toArray(selections);
-//for(int i=0; i<selections.length; i++)	System.out.println("Selection["+i+"]====="+selections[i]);
+		if (debug)
+		    for(int i=0; i<selections.length; i++)	
+			System.out.println("TableUtil. getSelectedIdsFromTableView Selection["+i+"]====="+selections[i]);
+
 		return selections;
 		
 	}

@@ -92,4 +92,8 @@ public class HeaderQuickSearchBean {
 
     	return quickSearchType;
     }
+
+    public String getAppUrl() {
+	return gmerg.utils.Utility.appUrl;
+    }
 }

@@ -538,8 +538,4 @@ public class DatabaseHomepageBean {
     public void setUploadGenes(String uploadedGenes) {
     	this.uploadedGenes = uploadedGenes;
     }
-
-    public String getDomainUrl() {
-	return gmerg.utils.Utility.domainUrl;
-    }
 }

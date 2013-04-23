@@ -271,7 +271,6 @@ public class Globals {
 	"mic_focus",
 	"requirement",
 	"ontologydescription",
-	"restricted_access_redirect",
 	"series_browse",
 	"entry_page",
 	"index"};
@@ -283,7 +282,6 @@ public class Globals {
     //**************************************************************************
 	private static String[] historyRequiredPages = {
 	"secure/login", 
-	"restricted_access_redirect",
 	"message"};
     
     public static String[] getHistoryRequiredPages() {

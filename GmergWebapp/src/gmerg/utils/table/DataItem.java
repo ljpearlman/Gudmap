@@ -17,12 +17,12 @@ import java.net.URLEncoder;
  */
 
 public class DataItem implements Serializable {
-	Object value;
-	byte type;
-	String title;
-	String link;
-	String[] params; // Params for links target window
-	Object spareValue; // for any additional requirement will set separatley (not by constructor);
+	Object value = null;
+    byte type;
+	String title = null;
+	String link = null;
+	String[] params = null; // Params for links target window
+	Object spareValue = null; // for any additional requirement will set separatley (not by constructor);
 
 	public DataItem(Object value) {
 		this(value, null, null, 0);
@@ -186,5 +186,22 @@ public class DataItem implements Serializable {
 	public void setSpareValue(Object spareValue) {
 		this.spareValue = spareValue;
 	}
-	
+
+    public void print() {
+	if (null == value)
+	    System.out.println("DataItem: value null");
+	else 
+	    System.out.println("DataItem: value class = "+value.getClass().getName()+" value = "+value);
+	System.out.println("DataItem: type = "+type);
+	System.out.println("DataItem: title = "+title);
+	System.out.println("DataItem: link = "+link);
+	if (null == params)
+	    System.out.println("DataItem: params null");
+else
+    System.out.println("DataItem:  params length = "+params.length);
+	if (null == spareValue)
+	    System.out.println("DataItem: spareValue null");
+else
+	    System.out.println("DataItem:  spareValue class = "+value.getClass().getName()+" spareValue = "+spareValue);
+    }
 }

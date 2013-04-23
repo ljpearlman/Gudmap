@@ -8,8 +8,9 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.*;
 
 public class CollectionOperationBrowseBean extends CollectionOperationBrowseParentBean{
+    protected boolean debug = false;
 
-	private String[] selectedIds;	// it has to be accesed using a lazy getter because of multiple populate tableViews when operation is difference
+    private String[] selectedIds;	// it has to be accesed using a lazy getter because of multiple populate tableViews when operation is difference
 	
 	// ********************************************************************************
 	// Constructors & Initializers
@@ -46,19 +47,24 @@ public class CollectionOperationBrowseBean extends CollectionOperationBrowsePare
 	protected ArrayList<String> getCollectionIds(int idCol, String resultId) {
 		ArrayList<String> collectionItemsIds = new ArrayList<String>();
 		String[] selectedIds = getSelectedIds(idCol);	//it contain Ids for selected collections from collectionList table
-/*		
+
+		if (debug) {
+		    System.out.println("CollectionOperationBrowseBean.getCollectionIds");
 		System.out.println("idCol="+idCol+"     resultId=="+resultId);
-		for(int i=0; i<selectedIds.length; i++) 
+		if (null != selectedIds)
+		    for(int i=0; i<selectedIds.length; i++) 
 			System.out.println("selectedCollections["+i+"]="+selectedIds[i]);
-*/		
+		}
+		
 		if (selectedIds == null)
 			return collectionItemsIds;
 
+		String[] selectedCollectionNames = null;
 		for (int i=0; i<selectedIds.length; i++)  
 			selectedCollectionsString += ((i>0)? ", ": "") + selectedIds[i];
 		
 		if (collectionNames.equals("")) {	// only do it once. this is specially useful for collection difference 
-			String[] selectedCollectionNames = CollectionAssembler.instance().getCollectionNames(selectedIds);
+			selectedCollectionNames = CollectionAssembler.instance().getCollectionNames(selectedIds);
 			for (int i=0; i<Math.max(2, selectedIds.length); i++) {
 				if (resultId.indexOf("difference")==0) 
 					collectionNames += ((i>0)? "<span class='plaintextbold'>&nbsp;&nbsp;and&nbsp;&nbsp;</span>": "") + (char)(i + 'A') + ") "; 
