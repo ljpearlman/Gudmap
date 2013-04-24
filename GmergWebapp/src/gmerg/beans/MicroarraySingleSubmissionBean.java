@@ -27,6 +27,7 @@ public class MicroarraySingleSubmissionBean {
     private String geneListPageNum;
     private String numGeneListPages;
     private String geneSymbol; //assigned value of to user input when doing gene search
+    private boolean renderPage;
 
     public MicroarraySingleSubmissionBean() {
         	if (debug)
@@ -60,6 +61,14 @@ public class MicroarraySingleSubmissionBean {
         else {
             //error message
         }
+    }
+    
+    public String getId() {
+        return submissionId;
+    }
+
+    public void setId(String submissionId) {   
+        this.submissionId = submissionId;
     }
 
     public void setSubmission(ArraySubmission sub) {
@@ -255,4 +264,30 @@ public class MicroarraySingleSubmissionBean {
 
         
     }
+    
+    public boolean isRenderPage() {
+        
+        if(submission == null){
+            renderPage = false;
+        }
+        else {
+            renderPage = true;
+        }
+        return renderPage;
+    }
+    
+    public boolean getPublicPage() {
+    	if (submission == null)
+    		return true;
+    	
+        return submission.getPublic();
+    }
+    
+    public boolean getDeletedPage() {
+    	if (submission == null)
+    		return false;
+    	
+        return submission.getDeleted();
+    }
+
 }

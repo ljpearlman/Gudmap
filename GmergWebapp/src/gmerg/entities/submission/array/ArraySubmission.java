@@ -18,6 +18,8 @@ public class ArraySubmission extends Submission {
     private Transgenic[] transgenics;
     private boolean multipleTransgenics; 
     private String tissue; 
+    private boolean isPublic;
+    private boolean isDeleted;
 
     public void setSeries(Series ser) {
         series = ser;
@@ -123,5 +125,26 @@ public class ArraySubmission extends Submission {
     	this.tissue = tissue;
     }
     
+    public Boolean getPublic() {
+        return this.isPublic;
+    }
+    
+    public void setPublic(int  publicFlag) {
+    	if (publicFlag == 1)
+    		this.isPublic = true;
+    	else
+    		this.isPublic = false;
+    }
+    
+    public Boolean getDeleted() {
+        return this.isDeleted;
+    }
+    
+    public void setDeleted(int deleteFlag) {
+    	if (deleteFlag == 1)
+    		this.isDeleted = true;
+    	else
+    		this.isDeleted = false;
+    }
     
 }

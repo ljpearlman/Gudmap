@@ -6,6 +6,18 @@
 
 <f:view>
   <jsp:include page="/includes/header.jsp" />
+  
+ 	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{MicroarraySingleSubmissionBean.id})" rendered="#{!MicroarraySingleSubmissionBean.renderPage}"/>
+	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!MicroarraySingleSubmissionBean.publicPage && !MicroarraySingleSubmissionBean.deletedPage}"/>
+	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{MicroarraySingleSubmissionBean.deletedPage && MicroarraySingleSubmissionBean.publicPage}"/>
+	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!MicroarraySingleSubmissionBean.publicPage && MicroarraySingleSubmissionBean.deletedPage}"/>
+	<h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!MicroarraySingleSubmissionBean.publicPage || MicroarraySingleSubmissionBean.deletedPage}" escape="false"/>
+	<h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!MicroarraySingleSubmissionBean.publicPage || MicroarraySingleSubmissionBean.deletedPage}">
+		gudmap-editors@gudmap.org
+	</h:outputLink>
+	
+	<h:form id="mainForm" rendered="#{MicroarraySingleSubmissionBean.renderPage && MicroarraySingleSubmissionBean.publicPage && !MicroarraySingleSubmissionBean.deletedPage}">
+
     <h:panelGrid columns="1" width="100%" rowClasses="header-stripey,header-nostripe">
     <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.submission.accID}" />
     <f:verbatim>&nbsp;</f:verbatim>
@@ -470,7 +482,9 @@
           </h:panelGrid>
 --%>          
     </h:panelGrid>
+  </h:form>  
   <f:subview id="footer">
+
     <jsp:include page="/includes/footer.jsp" />
   </f:subview>
 </f:view>

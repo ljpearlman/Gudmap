@@ -49,6 +49,8 @@ public class ArraySubmissionAssembler {
 		
 		// get basic submission info and create submission object
 		Submission submission = ishDAO.findSubmissionById(accessionId);
+		if (submission == null)
+			return null;
 		
 		// get supplementary file info
 		SupplementaryFile supplementaryFiles = arrayDAO.findSupplementaryFileInfoBySubmissionId(accessionId);
@@ -96,6 +98,9 @@ public class ArraySubmissionAssembler {
 		arraySubmission.setSeries(series);
 		arraySubmission.setPlatform(platform);
 		arraySubmission.setSpecimen(specimen);
+		
+		arraySubmission.setPublic(submission.getPublicFlag());
+		arraySubmission.setDeleted(submission.getDeleteFlag());
 		
 		// added by xingjun - 22/07/2009
 //		arraySubmission.setTransgenic(transgenic);
