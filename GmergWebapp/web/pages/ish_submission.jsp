@@ -35,8 +35,7 @@
                         
             <h:graphicImage value="../images/GUDMAP_Logo.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
             <h:graphicImage value="../images/button_euregene2.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}"/>
-            <f:verbatim>&nbsp;</f:verbatim>
-            <f:verbatim>&nbsp;</f:verbatim>
+            <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 
 
 			<h:outputText value="Gene"/>
@@ -65,16 +64,14 @@
 				<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.transgenic.geneName}" />
 			</h:panelGroup>
 			
-			<f:verbatim>&nbsp;</f:verbatim>
-			<f:verbatim>&nbsp;</f:verbatim>
+			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 
 			<h:outputText value="Theiler Stage" />
 			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
 				<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
 			</h:outputLink>
 			
-			<f:verbatim>&nbsp;</f:verbatim>
-			<f:verbatim>&nbsp;</f:verbatim>
+			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 
 
 			<h:outputText value="Tissue" />
@@ -82,8 +79,7 @@
 
 
 			
-			<f:verbatim>&nbsp;</f:verbatim>
-			<f:verbatim>&nbsp;</f:verbatim>
+			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 			<h:outputText value="Images" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:dataTable columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.originalImages}" var="image">
@@ -101,8 +97,17 @@
 				</h:dataTable>
 			</h:panelGrid>
     
-			<f:verbatim>&nbsp;</f:verbatim>
-			<f:verbatim>&nbsp;</f:verbatim>
+			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+		</h:panelGrid>
+
+		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" rendered="#{ISHSingleSubmissionBean.submission.resultNotes != null}">
+			<h:outputText value="Results Notes" />
+			<h:dataTable columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.resultNotes}" var="note">
+				<h:column>
+					<h:outputText value="#{note}"/>
+				</h:column>
+			</h:dataTable>
+			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
 
 		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP' && (ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)') && ISHSingleSubmissionBean.submission.specimen.assayType == 'wholemount'}">
@@ -371,8 +376,7 @@
 					<h:outputText value="Carboxy-terminus (end):" rendered="#{ISHSingleSubmissionBean.submission.antibody.seqStartLocation > 0 && ISHSingleSubmissionBean.submission.antibody.seqEndLocation > 0}"/>
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.seqEndLocation}" rendered="#{ISHSingleSubmissionBean.submission.antibody.seqStartLocation > 0 && ISHSingleSubmissionBean.submission.antibody.seqEndLocation > 0}"/>
 			
-					<f:verbatim>&nbsp;</f:verbatim>
-					<f:verbatim>&nbsp;</f:verbatim>
+					<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 			
 					<h:outputText value="Supplier: " />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.supplier}" />
@@ -383,8 +387,7 @@
 					<h:outputText value="Lot Number: " />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.lotNumber}" />
 			
-					<f:verbatim>&nbsp;</f:verbatim>
-					<f:verbatim>&nbsp;</f:verbatim>
+					<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 			
 					<h:outputText value="Type: " />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.type}" />
@@ -395,8 +398,7 @@
 					<h:outputText value="Purification Method: "/>
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.purificationMethod}" />
 
-					<f:verbatim>&nbsp;</f:verbatim>
-					<f:verbatim>&nbsp;</f:verbatim>
+					<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 					
 					<h:outputText value="Immunoglobulin Isotype:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.immunoglobulinIsotype}" />
@@ -427,8 +429,7 @@
 						</h:panelGroup>
 					</h:panelGrid>
 			
-					<f:verbatim>&nbsp;</f:verbatim>
-					<f:verbatim>&nbsp;</f:verbatim>
+					<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 			
 
 					<h:outputText styleClass="plaintext,text-top" value="Dilution:" />
@@ -624,8 +625,7 @@
 				</t:column>
 			</t:dataTable>
 
-			<f:verbatim>&nbsp;</f:verbatim>
-			<f:verbatim>&nbsp;</f:verbatim>
+			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
 
 		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
@@ -689,8 +689,7 @@
 				</h:panelGrid>  
 			</h:panelGrid>  
 				
-			<f:verbatim>&nbsp;</f:verbatim>
-			<f:verbatim>&nbsp;</f:verbatim>
+			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 					
 			<h:outputText value="Linked Publications" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
@@ -707,8 +706,7 @@
 				</h:dataTable>
 			</h:panelGrid>
 
-			<f:verbatim>&nbsp;</f:verbatim>
-			<f:verbatim>&nbsp;</f:verbatim>
+			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 					
 			<h:outputText value="Linked Submissions" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
@@ -754,8 +752,7 @@
 				</h:dataTable>
 			</h:panelGrid>
 
-			<f:verbatim>&nbsp;</f:verbatim>
-			<f:verbatim>&nbsp;</f:verbatim>
+			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
     
 			<h:outputText value="Acknowledgements" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >

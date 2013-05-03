@@ -35,6 +35,8 @@ public class Submission {
     private String labId; // SUB_LAB_ID: 
     private String localId; //SUB_LOCAL_ID
     private String euregeneId; //SUB_ACCESSION_ID_2
+
+    protected String[] resultNotes = null;
     
     private Person[] principalInvestigators;
 
@@ -291,5 +293,14 @@ public class Submission {
     public void setEuregeneId(String euregeneId) {
     	this.euregeneId = euregeneId;
     }
+
+    public String[] getResultNotes() {
+    	return resultNotes;
+    }
     
+    public void setResultNotes(String[] input) {
+    	resultNotes = input;
+	if (null != resultNotes && 0 == resultNotes.length)
+	    resultNotes = null;
+    }    
 }

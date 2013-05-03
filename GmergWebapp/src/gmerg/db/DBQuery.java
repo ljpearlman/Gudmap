@@ -131,6 +131,9 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		"SUB_CONTROL, SUB_ASSESSMENT, SUB_CONFIDENCE, SUB_LOCALDB_NAME, " +
   		"SUB_LAB_ID, SUB_ACCESSION_ID_2 FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID = ?";
 
+  final static String name243 = "SUBMISSION_NOTES";
+  final static String query243 = "SELECT SNT_VALUE, SNT_TYPE FROM ISH_SUBMISSION_NOTE WHERE  (CONCAT('GUDMAP:', SNT_SUBMISSION_FK) = ?)";
+
   // find details of a probe linked in a submission
   final static String name2 = "SUBMISSION_PROBE";
   final static String query2 = "SELECT DISTINCT RPR_SYMBOL, RPR_NAME, RPR_JAX_ACC, /* 1-3 */ " +
@@ -1871,7 +1874,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name239,query239),
       new ParamQuery(name240,query240),
       new ParamQuery(name241,query241),
-      new ParamQuery(name242,query242)
+      new ParamQuery(name242,query242),
+      new ParamQuery(name243,query243)
   };
 
   // finds ParamQuery object by name and returns

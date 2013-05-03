@@ -34,11 +34,6 @@ public class ISHSubmissionAssembler {
 
     }
 	/**
-	 * <p>modified by xingjun - 27/08/2008 - added code linked to transgenic data</p>
-	 * <p>modified by xingjun - 27/08/2009 - modified ways to get transgenic data</p>
-	 * <p>modifiec by xingjun - 09/11/2009 - put transgenic data into array data structure</p>
-	 * <p>xingjun - 11/05/2010 - added extra line of transgenic setup - refer to the comment in the code below</p>
-	 * <p>xingjun - 12/08/2010 - added labId into returned ishSubmission object</p>
 	 * @param accessionId
 	 * @param isEditor
 	 * @return
@@ -88,6 +83,7 @@ public class ISHSubmissionAssembler {
 		ishSubmission.setLabId(submission.getLabId());// added by xingjun - 12/08/2010
 		ishSubmission.setProject(submission.getProject());
 		ishSubmission.setEuregeneId(submission.getEuregeneId());
+		ishSubmission.setResultNotes(submission.getResultNotes());
 		
 		if(onlyRetrieveTree) {
 			// release the db resources

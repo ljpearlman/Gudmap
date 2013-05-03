@@ -236,7 +236,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             // execute
             resSet = prepStmt.executeQuery();
-            submissionInfo = formatSubmissionResultSet(resSet);
+
+            // get notes
+            parQ = DBQuery.getParamQuery("SUBMISSION_NOTES");
+	    queryString = parQ.getQuerySQL();
+	    
+	    prepStmt = conn.prepareStatement(queryString);
+            prepStmt.setString(1, submissionAccessionId);
+            ResultSet resSetNote = prepStmt.executeQuery();
+	    
+            submissionInfo = formatSubmissionResultSet(resSet, resSetNote);
 	    
             // release the resource
             DBHelper.closePreparedStatement(prepStmt);
@@ -253,7 +262,7 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @throws SQLException
      * modified by xingjun - 15/07/2008 - need more info used to duplicate submission
      */
-    public Submission formatSubmissionResultSet(ResultSet resSet) throws SQLException {
+    public Submission formatSubmissionResultSet(ResultSet resSet, ResultSet noteSet) throws SQLException {
         Submission submissionInfo = null;
         if (resSet.first()) {
             submissionInfo = new Submission();
@@ -284,6 +293,32 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setEuregeneId((resSet.getString(27)==null)?"":resSet.getString(27));
 	    
         }
+        if (null != noteSet) {
+	    String str = null;
+	    List list = new ArrayList<String>();
+	    while (noteSet.next()) {
+		str = noteSet.getString(2);
+		if (null != str) {
+		    str = str.trim();
+		    if (str.equals(""))
+			str = null;
+		}
+		if (null != str && str.equalsIgnoreCase("result")) {
+		    str = noteSet.getString(1);
+		    if (null != str) {
+			str = str.trim();
+			if (!str.equals("") && !list.contains(str))
+			    list.add(str);
+		    }
+		}
+	    }
+
+	    if (0 == list.size())
+		submissionInfo.setResultNotes(null);
+	    else 
+		submissionInfo.setResultNotes((String[])list.toArray(new String[0]));
+	}
+
         return submissionInfo;
     }
     
