@@ -5,7 +5,7 @@ import gmerg.entities.submission.ExpressionPattern;
 import gmerg.entities.submission.Gene;
 import gmerg.entities.submission.ish.ISHBrowseSubmission;
 import gmerg.entities.submission.Antibody;
-import gmerg.entities.submission.Transgenic;
+import gmerg.entities.submission.Allele;
 import gmerg.entities.submission.ImageDetail;
 import gmerg.entities.submission.Person;
 import gmerg.entities.submission.Probe;
@@ -820,42 +820,6 @@ public class MySQLISHDAOImp implements ISHDAO {
     }
     
     /**
-     * @author xingjun - 27/08/2008
-     * @param resSetTransgenic
-     * @param resSetTransgenicNote
-     * @return
-     * @throws SQLException
-     */
-    private Transgenic formatTransgenicResultSet(ResultSet resSetTransgenic, 
-						 ResultSet resSetTransgenicNote) throws SQLException {
-    	Transgenic transgenic = null;
-    	if (resSetTransgenic.first()) {
-	    transgenic = new Transgenic();
-	    transgenic.setGeneSymbol(resSetTransgenic.getString(1));
-	    transgenic.setGeneName(resSetTransgenic.getString(2));
-	    transgenic.setGeneId(resSetTransgenic.getString(3));
-	    transgenic.setGeneIdUrl(resSetTransgenic.getString(4));
-	    transgenic.setMutatedAlleleId(resSetTransgenic.getString(5));
-	    transgenic.setMutatedAlleleName(resSetTransgenic.getString(6));
-	    transgenic.setLabelProduct(resSetTransgenic.getString(7));
-	    transgenic.setVisMethod(resSetTransgenic.getString(8));
-	    if (resSetTransgenicNote.first()) {
-                resSetTransgenicNote.beforeFirst();
-                String notes = new String("");
-		String str = null;
-                while (resSetTransgenicNote.next()) {
-                    str = Utility.netTrim(resSetTransgenicNote.getString(1));
-		    if (null != str)
-                    notes += str + " ";
-                }
-                transgenic.setNotes(notes.trim());
-	    }
-	    return transgenic;
-    	}
-    	return null;
-    }
-    
-    /**
      * @param submissionAccessionId
      */
     public Specimen findSpecimenBySubmissionId(String submissionAccessionId) {
@@ -864,7 +828,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    return null;
         }
         Specimen specimenInfo = null;
-        ResultSet resSetSpecimen = null;
+        ResultSet resSet = null;
         ResultSet resSetSpecimenNote = null;
         ParamQuery parQSpecimen = DBQuery.getParamQuery("SUBMISSION_SPECIMEN");
         ParamQuery parQSpecimenNote = DBQuery.getParamQuery("SPECIMEN_NOTE");
@@ -880,15 +844,14 @@ public class MySQLISHDAOImp implements ISHDAO {
             parQSpecimen.setPrepStat(conn);
             prepStmtSpecimen = parQSpecimen.getPrepStat();
             prepStmtSpecimen.setString(1, submissionAccessionId);
-            resSetSpecimen = prepStmtSpecimen.executeQuery();
+            resSet = prepStmtSpecimen.executeQuery();
 	    
             // specimen note
             parQSpecimenNote.setPrepStat(conn);
             prepStmtSpecimenNote = parQSpecimenNote.getPrepStat();
             prepStmtSpecimenNote.setString(1, submissionAccessionId);
             resSetSpecimenNote = prepStmtSpecimenNote.executeQuery();
-            specimenInfo =
-		formatSpecimenResultSet(resSetSpecimen, resSetSpecimenNote);
+            specimenInfo = formatSpecimenResultSet(resSet, resSetSpecimenNote);
 	    
             conn.commit();
             conn.setAutoCommit(true);
@@ -900,6 +863,44 @@ public class MySQLISHDAOImp implements ISHDAO {
             se.printStackTrace();
         }
         return specimenInfo;
+    }
+
+    /**
+     * @param submissionAccessionId
+     */
+    public Allele[] findAlleleBySubmissionId(String submissionAccessionId) {
+        if (submissionAccessionId == null) {
+	    //            throw new NullPointerException("id parameter");
+	    return null;
+        }
+
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("ALLELE_INFO_BY_SUBMISSION_ID");
+        PreparedStatement prepStmt = null;
+	Allele[] ret = null;
+        try {
+	    // if disconnected from db, re-connected
+	    conn = DBHelper.reconnect2DB(conn);
+	    
+            conn.setAutoCommit(false);
+	    
+	    // get allele if any
+            parQ.setPrepStat(conn);
+            prepStmt = parQ.getPrepStat();
+            prepStmt.setString(1, submissionAccessionId);
+            resSet = prepStmt.executeQuery();
+	    
+	    ret = formatAlleleResultSet(resSet);
+
+            conn.commit();
+            conn.setAutoCommit(true);
+	    
+            // close the connection
+            DBHelper.closePreparedStatement(prepStmt);
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return ret;
     }
     
     /**
@@ -941,6 +942,68 @@ public class MySQLISHDAOImp implements ISHDAO {
         return specimen;
     }
     
+    private Allele[] formatAlleleResultSet(ResultSet resSet)
+    throws SQLException {
+	if (debug)
+	    System.out.println("MySQLISHDAOImp.formatAlleleResultSet");
+ 	ArrayList<Allele> alleleList = new ArrayList<Allele>();
+ 	String str = null;
+	Allele allele = null;
+
+ 	if (resSet.first()) {
+	if (debug)
+	    System.out.println("MySQLISHDAOImp.formatAlleleResultSet has allele");
+ 	    resSet.beforeFirst();
+ 	    while (resSet.next()) {
+ 		allele = new Allele();
+ 		str = Utility.netTrim(resSet.getString(1));
+		allele.setGeneSymbol(str);
+
+ 		str = Utility.netTrim(resSet.getString(2));
+		allele.setGeneId(str);
+
+ 		str = Utility.netTrim(resSet.getString(3));
+		allele.setAlleleId(str);
+		
+		// name first, then lab name
+ 		str = Utility.netTrim(resSet.getString(5));
+		if (null == str)
+		    str = Utility.netTrim(resSet.getString(4));
+		allele.setAlleleName(str);
+
+ 		str = Utility.netTrim(resSet.getString(7));
+		allele.setType(str);
+
+ 		str = Utility.netTrim(resSet.getString(8));
+		allele.setAlleleFirstChrom(str);
+
+ 		str = Utility.netTrim(resSet.getString(9));
+		allele.setAlleleSecondChrom(str);
+
+ 		str = Utility.netTrim(resSet.getString(10));
+		allele.setReporter(str);
+
+ 		str = Utility.netTrim(resSet.getString(11));
+		allele.setVisMethod(str);
+
+		str = Utility.netTrim(resSet.getString(12));
+		allele.setNotes(str);
+
+		if (debug)
+		    allele.print();
+
+ 		alleleList.add(allele);
+ 	    }
+	}
+	if (debug)
+	    System.out.println("number of allele = "+alleleList.size());
+
+	if (0 == alleleList.size())
+	    return null;
+
+     	return (Allele[])alleleList.toArray(new Allele[0]);
+     } // end of formatAlleleResultSet
+
     /**
      * @param submissionAccessionId
      */
@@ -3710,7 +3773,6 @@ public class MySQLISHDAOImp implements ISHDAO {
     }
     
     /**
-     * <p>modified by xingjun - 28/08/2008
      * separated query based on assay type - ish, ihc, array, transgenic</p>
      * 
      */
@@ -4498,7 +4560,6 @@ public class MySQLISHDAOImp implements ISHDAO {
     }
     
     /**
-     * <p>xingjun - 14/09/2011 - modified to be able to retrieve images for transgenic data</p>
      * @param submissionAccessionId
      * @param serialNum
      * return

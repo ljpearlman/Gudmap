@@ -9,9 +9,8 @@ import gmerg.db.DBHelper;
 import gmerg.db.ISHDAO;
 import gmerg.db.MySQLDAOFactory;
 import gmerg.entities.submission.Person;
-import gmerg.entities.submission.Specimen;
 import gmerg.entities.submission.Submission;
-import gmerg.entities.submission.Transgenic;
+import gmerg.entities.submission.Allele;
 import gmerg.entities.submission.array.ArraySubmission;
 import gmerg.entities.submission.array.GeneListBrowseSubmission;
 import gmerg.entities.submission.array.Platform;
@@ -35,7 +34,6 @@ public class ArraySubmissionAssembler {
 	/**
 	 * get array submission info excluding gene list info
 	 * 
-	 * <p>modifiec by xingjun - 09/11/2009 - put transgenic data into array data structure</p>
 	 * @param accessionId
 	 * @return
 	 */
@@ -70,14 +68,10 @@ public class ArraySubmissionAssembler {
 		// get platform info
 		Platform platform = arrayDAO.findPlatformBySubmissionId(accessionId);
 		
-		// get specimen info
-		Specimen specimen = ishDAO.findSpecimenBySubmissionId(accessionId);
+		// array submission does not have specimen so get allele if any
+		Allele[] allele = ishDAO.findAlleleBySubmissionId(accessionId);
 		
 		ArrayList images = arrayDevDAO.findOriginalImagesById(accessionId);
-		
-		// get transgenic info - xingjun - 22/07/2009
-//		Transgenic transgenic = arrayDAO.getTransgenicInfoBySubmissionId(accessionId);
-		Transgenic[] transgenics = arrayDAO.getTransgenicInfoBySubmissionIdBak(accessionId);
 		
 		/** ---assemble array submission object---  */
 		ArraySubmission arraySubmission = new ArraySubmission();
@@ -97,20 +91,11 @@ public class ArraySubmissionAssembler {
 		arraySubmission.setSample(sample);
 		arraySubmission.setSeries(series);
 		arraySubmission.setPlatform(platform);
-		arraySubmission.setSpecimen(specimen);
+		arraySubmission.setAllele(allele);
 		
 		arraySubmission.setPublic(submission.getPublicFlag());
 		arraySubmission.setDeleted(submission.getDeleteFlag());
 		
-		// added by xingjun - 22/07/2009
-//		arraySubmission.setTransgenic(transgenic);
-		// xingjun - 09/11/2009
-		arraySubmission.setTransgenics(transgenics);
-		if (transgenics != null && transgenics.length > 1) {
-			arraySubmission.setMultipleTransgenics(true);
-		} else {
-			arraySubmission.setMultipleTransgenics(false);
-		}
 
         // added by Bernie - 23/09/2010
         String tissue = arrayDAO.findTissueBySubmissionId(accessionId);

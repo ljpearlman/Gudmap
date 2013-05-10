@@ -1,7 +1,6 @@
 package gmerg.entities.submission.array;
 
 import gmerg.entities.submission.Submission;
-import gmerg.entities.submission.Transgenic;
 
 public class ArraySubmission extends Submission {
 
@@ -14,9 +13,6 @@ public class ArraySubmission extends Submission {
     private String rptFile;
     private String expFile;
     private String txtFile;
-    private Transgenic transgenic;
-    private Transgenic[] transgenics;
-    private boolean multipleTransgenics; 
     private String tissue; 
     private boolean isPublic;
     private boolean isDeleted;
@@ -93,30 +89,6 @@ public class ArraySubmission extends Submission {
         return txtFile;
     }
 
-    public Transgenic getTransgenic() {
-    	return transgenic;
-    }
-    
-    public void setTransgenic(Transgenic transgenic) {
-    	this.transgenic = transgenic;
-    }
-
-    public Transgenic[] getTransgenics() {
-    	return transgenics;
-    }
-    
-    public void setTransgenics(Transgenic[] transgenics) {
-    	this.transgenics = transgenics;
-    }
-    
-    public boolean isMultipleTransgenics() {
-    	return multipleTransgenics;
-    }
-    
-    public void setMultipleTransgenics(boolean multipleTransgenics) {
-    	this.multipleTransgenics = multipleTransgenics;
-    }    
-    
     public String getTissue() {
     	return tissue;
     }

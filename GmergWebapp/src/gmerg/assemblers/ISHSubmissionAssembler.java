@@ -13,8 +13,8 @@ import gmerg.entities.submission.Antibody;
 import gmerg.entities.submission.ExpressionDetail;
 import gmerg.entities.submission.Person;
 import gmerg.entities.submission.Probe;
-import gmerg.entities.submission.Transgenic;
 import gmerg.entities.submission.Specimen;
+import gmerg.entities.submission.Allele;
 import gmerg.entities.submission.Submission;
 import gmerg.entities.submission.StatusNote;
 import gmerg.entities.submission.ish.ISHSubmission;
@@ -95,24 +95,17 @@ public class ISHSubmissionAssembler {
 	
 		Probe probe = null;
 		Antibody antibody = null;
-		Transgenic transgenic = null;
-		Transgenic[] transgenics = null;
 		if (assayType.indexOf("ISH") >= 0) {
 			probe = ishDAO.findProbeBySubmissionId(accessionId);
 		} else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
 			antibody = ishDAO.findAntibodyBySubmissionId(accessionId);
-		} else if (assayType.indexOf("TG") >= 0) { // assay type is transgenic
-//			transgenic = ishDAO.findTransgenicBySubmissionId(accessionId);
-			// modified by xingjun - 27/08/2009
-			// retieve all transgenic relevant information from mutant table
-			// not going ref_probe table any more
-			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-//			transgenic = arrayDAO.getTransgenicInfoBySubmissionId(accessionId);
-			transgenics = arrayDAO.getTransgenicInfoBySubmissionIdBak(accessionId);
 		}
 		
 		// get specimen info
 		Specimen specimen = ishDAO.findSpecimenBySubmissionId(accessionId);
+
+		// get allel info
+		Allele[] allele = ishDAO.findAlleleBySubmissionId(accessionId);
 		
 		// get image info
 		ArrayList images = ishDAO.findImageBySubmissionId(accessionId);
@@ -137,31 +130,15 @@ public class ISHSubmissionAssembler {
 		// format the linked submission raw data into appropriate data structure
 		ArrayList linkedSubmission = formatLinkedSubmissionData(linkedSubmissionsRaw);
 		
-        // modfied to allow to display antibody data -- xingjun 09-July-2007
-		// modfied to allow to display transgenic data -- xingjun 27/08/2008
         if (assayType.indexOf("ISH") >=0) {
 //        	System.out.println("add probe into submission");
     		ishSubmission.setProbe(probe);
         } else if (assayType.indexOf("IHC") >=0) {
         	ishSubmission.setAntibody(antibody);
-        } else if (assayType.indexOf("TG") >=0) {
-//        	ishSubmission.setTransgenic(transgenic);
-        	// xingjun - 09/11/2009
-        	ishSubmission.setTransgenics(transgenics);
-    		if (transgenics != null && transgenics.length > 1) {
-    			ishSubmission.setMultipleTransgenics(true);
-    		} else {
-    			ishSubmission.setMultipleTransgenics(false);
-    		}
-			// xingjun - 11/05/2010 - start
-			// need to have a transgenic entity to give gene info
-			// which will be used in submission detail page (Gene section)
-			ishSubmission.setTransgenic(transgenics[0]);
-//			System.out.println("ISHSubmissionAssembler:transgenic:gene: " + ishSubmission.getTransgenic().getGeneSymbol());
-			// xingjun - 11/05/2010 - end
         }
 		
 		ishSubmission.setSpecimen(specimen);
+		ishSubmission.setAllele(allele);
 		ishSubmission.setOriginalImages(images);
 		ishSubmission.setAuthors(author);
 		ishSubmission.setPrincipalInvestigators(pi);

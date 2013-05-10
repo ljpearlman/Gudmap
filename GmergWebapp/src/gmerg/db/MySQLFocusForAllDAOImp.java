@@ -14,7 +14,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
     protected boolean debug = false;
 
     private Connection conn;
-    private int MAX_COLUMNS = 12; // changed from 11 by xingjun - 07/12/2009 - added extra column MUT_GENE
+    private int MAX_COLUMNS = 12; // added extra column ALE_GENE
     private int MAX_ISH_COLUMNS = 13;
 
     // default constructor
@@ -182,8 +182,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         
         String queryString = null;
         if (assayType.equalsIgnoreCase("TG")) {
-        	queryString = parQ.getQuerySQL().replace("JOIN ISH_SUBMISSION ON MUT_SUBMISSION_FK = SUB_OID", 
-        			"JOIN ISH_SUBMISSION ON MUT_SUBMISSION_FK = SUB_OID " +
+        	queryString = parQ.getQuerySQL().replace("JOIN ISH_SUBMISSION ON SAL_SUBMISSION_FK = SUB_OID", 
+        			"JOIN ISH_SUBMISSION ON SAL_SUBMISSION_FK = SUB_OID " +
 			"JOIN ISH_EXPRESSION ON EXP_SUBMISSION_FK = SUB_OID ")
 			+ componentString;
         } else {
@@ -249,7 +249,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}  else if(8 == orderby){
 					orderStr = " order by SMP_TITLE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(9 == orderby){
-					orderStr = " order by natural_sort(MUT_GENE) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+					orderStr = " order by natural_sort(ALE_GENE) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				} else if(10 == orderby){
 					orderStr = " order by natural_sort(SER_GEO_ID) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				} else if(11 == orderby){

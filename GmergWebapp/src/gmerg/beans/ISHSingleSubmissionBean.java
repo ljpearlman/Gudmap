@@ -60,9 +60,6 @@ public class ISHSingleSubmissionBean {
 	 * details as a submission object. Method also carries out some post db
 	 * query processing of the submission
 	 * </p>
-	 * <p>
-	 * modified by xingjun - 27/08/2008 - added code linked to transgenic data
-	 * </p>
 	 * 
 	 * @param subId -
 	 *            the accession id of the submission
@@ -160,15 +157,6 @@ public class ISHSingleSubmissionBean {
 
     public ISHSubmission getSubmission() {
         return submission;
-    }
-    
-    public String getTransgenicTitle() {
-    	String type = submission.getTransgenics()[0].getMutantType();
-    	if ("transgenic insertion".equalsIgnoreCase(type))
-    		return "Transgenic Reporter Allele"+ ((submission.isMultipleTransgenics())?"s":"");
-    	if ("mutant allele".equalsIgnoreCase(type))
-    		return "Mutant Allele"+ ((submission.isMultipleTransgenics())?"s":"");
-    	return "";
     }
     
     public boolean isRenderPage() {

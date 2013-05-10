@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import gmerg.entities.submission.array.*;
 import gmerg.entities.submission.Gene;
-import gmerg.entities.submission.Transgenic;
 import gmerg.entities.HeatmapData;
 
 import analysis.DataSet;
@@ -77,9 +76,6 @@ public interface ArrayDAO {
 	
 	public ArrayList<String> getProbeSetIdByAnalysisGenelistId(String genelistId, boolean ascending, int offset, int num);
 	public String getAnalysisGenelistTitle(String genelistId);
-	
-	public Transgenic getTransgenicInfoBySubmissionId(String submissionId);
-	public Transgenic[] getTransgenicInfoBySubmissionIdBak(String submissionId);
 	
 	// linked to master table
 	public MasterTableInfo[] getMasterTableList();

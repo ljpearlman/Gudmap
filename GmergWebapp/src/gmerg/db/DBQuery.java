@@ -134,6 +134,12 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String name243 = "SUBMISSION_NOTES";
   final static String query243 = "SELECT SNT_VALUE, SNT_TYPE FROM ISH_SUBMISSION_NOTE WHERE  (CONCAT('GUDMAP:', SNT_SUBMISSION_FK) = ?)";
 
+    final static String name244 = "ALLELE_INFO_BY_SUBMISSION_ID";
+    final static String query244 = "SELECT ALE_GENE, ALE_MUTATED_GENE_ID, ALE_MGI_ALLELE_ID, "+
+	"ALE_LAB_NAME_ALLELE, ALE_ALLELE_NAME, ALE_NON_PAIRED , ALE_TYPE, "+
+	"SAL_FIRST_CHROM, SAL_SECOND_CHROM, SAL_TG_REPORTER, SAL_TG_VISUALISATION, SAL_NOTES "+  
+	"FROM LNK_SUB_ALLELE LEFT JOIN  ISH_ALLELE ON SAL_ALE_OID_FK=ALE_OID WHERE  (CONCAT('GUDMAP:', SAL_SUBMISSION_FK) = ?) ORDER BY SAL_ORDER ";
+
   // find details of a probe linked in a submission
   final static String name2 = "SUBMISSION_PROBE";
   final static String query2 = "SELECT DISTINCT RPR_SYMBOL, RPR_NAME, RPR_JAX_ACC, /* 1-3 */ " +
@@ -1172,7 +1178,6 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String name143 = "NUMBER_OF_PUBLIC_SUBMISSIONS_IHC";
   final static String query143 = "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) FROM ISH_SUBMISSION WHERE SUB_ASSAY_TYPE LIKE '%IHC%' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4";
   
-  // query to find the number of public transgenic submissions in db - 26/08/2008
   final static String name222 = "NUMBER_OF_PUBLIC_SUBMISSIONS_TG";
   final static String query222 = "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) FROM ISH_SUBMISSION WHERE SUB_ASSAY_TYPE LIKE '%TG%' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4";
     
@@ -1358,12 +1363,6 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		"JOIN GEN_SUPPLIER ON LAS_SUP_FK = SUP_OID " +
   		"WHERE (CONCAT('GUDMAP:',ATL_SUBMISSION_FK) = ?)";
   
-  final static String name224 = "TRANSGENIC_NOTE";
-  final static String query224 = "SELECT MTN_VALUE FROM ISH_MUTANT_NOTE " +
-  		"JOIN ISH_MUTANT ON MTN_MUT_FK = MUT_OID " +
-  		"JOIN ISH_SUBMISSION ON MUT_SUBMISSION_FK = SUB_OID AND SUB_IS_PUBLIC=1 AND SUB_ACCESSION_ID = ? " +
-  		"ORDER BY MTN_SEQ";
-
   // find species specificity linked to the antibody
   final static String name164 = "ANTIBODY_SPECIES_SPECIFICITY";
   final static String query164 = "SELECT ATB_OID,ABP_SPECIES " +
@@ -1856,7 +1855,6 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name219,query219),
       new ParamQuery(name221,query221),
       new ParamQuery(name222,query222),
-      new ParamQuery(name224,query224),
       new ParamQuery(name225,query225),
       new ParamQuery(name226,query226),
       new ParamQuery(name227,query227),
@@ -1875,7 +1873,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name240,query240),
       new ParamQuery(name241,query241),
       new ParamQuery(name242,query242),
-      new ParamQuery(name243,query243)
+      new ParamQuery(name243,query243),
+      new ParamQuery(name244,query244)
   };
 
   // finds ParamQuery object by name and returns

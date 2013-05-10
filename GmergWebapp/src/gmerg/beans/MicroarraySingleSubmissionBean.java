@@ -79,17 +79,6 @@ public class MicroarraySingleSubmissionBean {
         return submission;
     }
     
-    public String getTransgenicTitle() {
-    	if (submission==null || submission.getTransgenics()==null)
-    		return "";
-    	String type = submission.getTransgenics()[0].getMutantType();
-    	if ("transgenic insertion".equalsIgnoreCase(type))
-    		return "Transgenic Reporter Allele"+ ((submission.isMultipleTransgenics())?"s":"");
-    	if ("mutant allele".equalsIgnoreCase(type))
-    		return "Mutant Allele"+ ((submission.isMultipleTransgenics())?"s":"");
-    	return "";
-    }
-    
     public void setNumGeneListPages(String value){
         numGeneListPages = value;
     }

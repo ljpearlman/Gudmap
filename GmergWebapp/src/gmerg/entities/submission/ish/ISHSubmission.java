@@ -6,7 +6,6 @@ import gmerg.entities.submission.Probe;
 import gmerg.entities.submission.Specimen;
 import gmerg.entities.submission.Submission;
 import gmerg.entities.submission.ExpressionDetail;
-import gmerg.entities.submission.Transgenic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +20,6 @@ public class ISHSubmission extends Submission {
     private ArrayList linkedSubmissions;
     private ExpressionDetail [] annotatedComponents;
     private Antibody antibody;
-    private Transgenic transgenic;
-    private Transgenic[] transgenics = null; 
-    private boolean multipleTransgenics; 
     private String tissue; 
     private String project; 
     private boolean isPublic;
@@ -31,6 +27,42 @@ public class ISHSubmission extends Submission {
 
     public ISHSubmission() {
     
+    }
+
+    public String getGeneSymbol() {
+	String str = assayType.toLowerCase();
+	String ret = null;
+
+	if (-1 != str.indexOf("ish")) {
+	    if (null != probe)
+		ret = probe.getGeneSymbol();
+	} else if (-1 == str.indexOf("tg")) {
+	    if (null != antibody)
+		ret = antibody.getGeneSymbol();
+	} else
+	    ret = super.getGeneSymbol();
+    
+	if (null != ret && ret.trim().equals(""))
+	    ret = null;
+	
+	return ret;
+    }
+    public String getGeneName() {
+	String str = assayType.toLowerCase();
+	String ret = null;
+
+	if (-1 != str.indexOf("ish")) {
+	    if (null != probe)
+		ret = probe.getGeneName();
+	} else if (-1 == str.indexOf("tg")) {
+	    if (null != antibody)
+		ret = antibody.getGeneName();
+	}
+    
+	if (null != ret && ret.trim().equals(""))
+	    ret = null;
+	
+	return ret;
     }
     
     public void setProbe(Probe prb) {
@@ -88,30 +120,6 @@ public class ISHSubmission extends Submission {
     
     public void setAntibody(Antibody antibody) {
     	this.antibody = antibody;
-    }
-    
-    public Transgenic getTransgenic() {
-    	return transgenic;
-    }
-    
-    public void setTransgenic(Transgenic transgenic) {
-    	this.transgenic = transgenic;
-    }
-
-    public Transgenic[] getTransgenics() {
-    	return transgenics;
-    }
-    
-    public void setTransgenics(Transgenic[] transgenics) {
-    	this.transgenics = transgenics;
-    }
-
-    public boolean isMultipleTransgenics() {
-    	return multipleTransgenics;
-    }
-    
-    public void setMultipleTransgenics(boolean multipleTransgenics) {
-    	this.multipleTransgenics = multipleTransgenics;
     }
     
     public String getTissue() {

@@ -4,41 +4,42 @@ import java.util.ArrayList;
 
 public class Submission {
 
-    private String accID;
-    private Specimen specimen;
-    private Person submitter;
-    private String stage;
-    private String authors;
-    private ArrayList originalImages;
-    private int publicFlag;
-    private String assayType;
-    private String archiveId;
+    protected String accID;
+    protected Specimen specimen;
+    protected Person submitter;
+    protected String stage;
+    protected String authors;
+    protected ArrayList originalImages;
+    protected int publicFlag;
+    protected String assayType;
+    protected String archiveId;
     
-    private int deleteFlag; // SUB_IS_DELETED
-    private int submitterId; //  SUB_SUBMITTER_FK: 3
-    private int piId; // SUB_PI_FK: 3
-    private int entryBy; // SUB_ENTRY_BY_FK: 1
-    private int modifierId; // SUB_MODIFIER_FK: 1
-    private int localStatusId; // SUB_LOCAL_STATUS_FK: 3
-    private int dbStatusId; // SUB_DB_STATUS_FK: 2
-    private String project; // SUB_PROJECT_FK: GUDMAP
-    private int batchId; // SUB_BATCH: 111
-    private String nameSpace; // SUB_NAMESPACE: http://www.gudmap.org
-    private String osAccession; // SUB_OS_ACCESSION: UNASSIGNED
-    private String loaclId; // SUB_LOCAL_ID:
-    private String source; // SUB_SOURCE:
-    private String validation; // SUB_VALIDATION:
-    private int control; // SUB_CONTROL: 0
-    private String assessment; // SUB_ASSESSMENT:
-    private int confidencLevel; // SUB_CONFIDENCE: 0
-    private String localDbName; // SUB_LOCALDB_NAME:
-    private String labId; // SUB_LAB_ID: 
-    private String localId; //SUB_LOCAL_ID
-    private String euregeneId; //SUB_ACCESSION_ID_2
+    protected int deleteFlag; // SUB_IS_DELETED
+    protected int submitterId; //  SUB_SUBMITTER_FK: 3
+    protected int piId; // SUB_PI_FK: 3
+    protected int entryBy; // SUB_ENTRY_BY_FK: 1
+    protected int modifierId; // SUB_MODIFIER_FK: 1
+    protected int localStatusId; // SUB_LOCAL_STATUS_FK: 3
+    protected int dbStatusId; // SUB_DB_STATUS_FK: 2
+    protected String project; // SUB_PROJECT_FK: GUDMAP
+    protected int batchId; // SUB_BATCH: 111
+    protected String nameSpace; // SUB_NAMESPACE: http://www.gudmap.org
+    protected String osAccession; // SUB_OS_ACCESSION: UNASSIGNED
+    protected String loaclId; // SUB_LOCAL_ID:
+    protected String source; // SUB_SOURCE:
+    protected String validation; // SUB_VALIDATION:
+    protected int control; // SUB_CONTROL: 0
+    protected String assessment; // SUB_ASSESSMENT:
+    protected int confidencLevel; // SUB_CONFIDENCE: 0
+    protected String localDbName; // SUB_LOCALDB_NAME:
+    protected String labId; // SUB_LAB_ID: 
+    protected String localId; //SUB_LOCAL_ID
+    protected String euregeneId; //SUB_ACCESSION_ID_2
 
     protected String[] resultNotes = null;
     
-    private Person[] principalInvestigators;
+    protected Person[] principalInvestigators;
+    protected Allele[] allele;
 
     public Submission() {
     
@@ -55,6 +56,55 @@ public class Submission {
         this.originalImages = originalImages;
     }
     
+
+    public Allele[] getAllele() {
+        return allele;
+    }
+
+    public void setAllele(Allele[] input) {
+        allele = input;
+        int iSize = 0;
+	if (null != allele)
+	    iSize = allele.length;
+
+	if (0 == iSize) {
+	    allele = null;
+	    return;
+	}
+
+	if (1 == iSize)
+	    allele[0].setTitle("Non-wild type Allele:");
+	else {
+	    int i = 0;
+	    iSize++;
+	    for (i = 1; i < iSize; i++) {
+		allele[i-1].setTitle("Non-wild type Allele "+i+":");
+	    }
+	}
+    }
+
+    public String getGeneSymbol() {
+	String ret = null;
+	if (null != allele && 0 < allele.length)
+	    ret = allele[0].getGeneSymbol();
+    
+	if (null != ret && ret.trim().equals(""))
+	    ret = null;
+	
+	return ret;
+    }
+    public String getGeneName() {
+	return null;
+    }
+
+    public boolean isTransgenic() {
+	if (null != assayType && assayType.equalsIgnoreCase("tg"))
+	    return true;
+
+	return false;
+    }
+
+
     public void setAccID(String id) {
         accID = id;
     }
@@ -115,8 +165,10 @@ public class Submission {
     	return assayType;
     }
     
-    public void setAssayType(String assayType) {
-    	this.assayType = assayType;
+    public void setAssayType(String input) {
+    	assayType = input;
+	if (null != assayType) 
+	    assayType = assayType.trim();
     }
     
     public String getArchiveId() {

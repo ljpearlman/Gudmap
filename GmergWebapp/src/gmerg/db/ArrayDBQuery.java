@@ -111,17 +111,7 @@ public class ArrayDBQuery {
     final static String name11 = "SERIES_SAMPLES_BY_OID";
     final static String query11 = SAMPLE_SERIES_COLS + SAMPLE_SERIES_TABS_BY_OID;
 
-	final static String name12 = "TRANSGENIC_INFO_BY_SUBMISSION_ID";
-	final static String query12 = "SELECT MUT_OID, MUT_TYPE, MUT_GENE,MUT_MUTATED_GENE_ID, MUT_ALLELE_ID, " +
-			"CASE MUT_TYPE WHEN 'mutant allele' THEN MUT_ALLELE_DESC WHEN 'transgenic insertion' THEN MUT_ALLELE_NAME END MUT_ALLELE_NAME, " +
-			"MUT_LABEL, MUT_VISUALISATION, MUT_ALLELE_FIRST_CHROM, MUT_ALLELE_SEC_CHROM " +
-			"FROM ISH_MUTANT WHERE MUT_SUBMISSION_FK = ? ORDER BY MUT_OID ";
 	
-	final static String name19 = "TRANSGENIC_NOTE";
-	final static String query19 = "SELECT MTN_MUT_FK, MTN_VALUE " +
-			"FROM ISH_MUTANT_NOTE JOIN ISH_MUTANT ON MTN_MUT_FK = MUT_OID " +
-			"WHERE MUT_SUBMISSION_FK = ? ORDER BY MTN_MUT_FK, MTN_SEQ; ";
-	  
 	final static String name13 = "MASTER_TABLE_LIST";
 	final static String query13 = "SELECT AMT_OID, AMT_PLATFORM_ID, AMT_TITLE, AMT_DESCRIPTION FROM MIC_ANALYSIS_MASTER " +
 			"WHERE AMT_STATUS = 1 " +
@@ -263,14 +253,12 @@ public class ArrayDBQuery {
 		new ParamQuery(name9, query9),
 		new ParamQuery(name10, query10),
 		new ParamQuery(name11, query11),
-		new ParamQuery(name12, query12),
 		new ParamQuery(name13, query13),
 		new ParamQuery(name14, query14),
 		new ParamQuery(name15, query15),
 		new ParamQuery(name16, query16),
 		new ParamQuery(name17, query17),
 		new ParamQuery(name18, query18),
-		new ParamQuery(name19, query19),
 		new ParamQuery(name20, query20),
 		new ParamQuery(name21, query21),
 		new ParamQuery(name22, query22),

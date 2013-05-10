@@ -11,9 +11,9 @@ import gmerg.entities.submission.ImageDetail;
 import gmerg.entities.submission.LockingInfo;
 import gmerg.entities.submission.Person;
 import gmerg.entities.submission.Probe;
+import gmerg.entities.submission.Allele;
 import gmerg.entities.submission.Specimen;
 import gmerg.entities.submission.Submission;
-import gmerg.entities.submission.Transgenic;
 import gmerg.entities.submission.ish.ISHBrowseSubmission;
 import gmerg.entities.submission.StatusNote;
 
@@ -37,6 +37,7 @@ public interface ISHDAO {
 	public Probe findProbeBySubmissionId(String submissionAccessionId); // q1
 	public Probe findMaProbeByProbeId(String probeId, String maprobeId);
 	public Specimen findSpecimenBySubmissionId(String submissionAccessionId); // q2
+	public Allele[] findAlleleBySubmissionId(String submissionAccessionId); 
 	public String findAuthorBySubmissionId(String submissionAccessionId); // q16
 	public Person[] findPIsBySubmissionId(String submissionAccessionId); // xingjun - 20/06/2011
 	public Person findPersonById(String personId);
