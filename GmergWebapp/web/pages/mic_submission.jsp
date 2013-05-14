@@ -167,15 +167,11 @@
 			
 					<h:outputText value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleFirstChrom}" />
-					<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/javawi2/servlet/WIFetch?page=alleleDetail&key=1654" rendered="#{not empty allele.alleleFirstChrom}" target="gmerg_external3" >
-						<h:outputText value="#{allele.alleleFirstChrom}" />
-					</h:outputLink>	
+					<h:outputText value="#{allele.alleleFirstChrom}" rendered="#{not empty allele.alleleFirstChrom}" escape="false"/>
 									
 					<h:outputText value="Allele Second Chromatid"  rendered="#{not empty allele.alleleSecondChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleSecondChrom}"/>
-					<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/javawi2/servlet/WIFetch?page=alleleDetail&key=1654" rendered="#{not empty allele.alleleSecondChrom}" target="gmerg_external4" >
-						<h:outputText value="#{allele.alleleSecondChrom}" />
-					</h:outputLink>
+					<h:outputText value="#{allele.alleleSecondChrom}"  rendered="#{not empty allele.alleleSecondChrom}" escape="false"/>
 					
 					<h:outputText value="Notes:" rendered="#{not empty allele.notes}" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.notes}"/>

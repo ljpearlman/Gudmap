@@ -64,7 +64,7 @@
           <h:outputText value="Name:" />
           <h:panelGroup>
             <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.geneName}" />
-            <h:outputLink styleClass="datatext" target="_blank" value="http://www.informatics.jax.org/searches/accession_report.cgi?id=#{MaProbeBean.maProbe.geneID}" rendered="#{MaProbeBean.maProbe.geneID != null && MaProbeBean.maProbe.geneID != ''}">
+            <h:outputLink styleClass="datatext" target="_blank" value="http://www.informatics.jax.org/accession/#{MaProbeBean.maProbe.geneID}" rendered="#{MaProbeBean.maProbe.geneID != null && MaProbeBean.maProbe.geneID != ''}">
               <h:outputText value=" (#{MaProbeBean.maProbe.geneID})" />
             </h:outputLink>
           </h:panelGroup>

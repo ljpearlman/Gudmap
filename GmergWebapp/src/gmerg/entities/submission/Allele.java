@@ -83,7 +83,7 @@ public class Allele {
 	// if input is MGI accession, hardwire its url
 	// otherwise, input cantains url
 	if (null != input && -1 != input.indexOf("MGI:"))
-    	    setAlleleIdUrl("http://www.informatics.jax.org/searchtool/Search.do?query=" + input);
+    	    setAlleleIdUrl("http://www.informatics.jax.org/accession/" + input);
 
     }
 

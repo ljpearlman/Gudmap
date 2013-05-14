@@ -414,7 +414,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		                        "END), " +
   		                        "RPR_ENSEMBL, CONCAT(ENS_URL.URL_URL,RPR_ENSEMBL), " +
   		                        "CASE substring(RPR_LOCUS_TAG from 1 for position(':' in RPR_LOCUS_TAG)) " +
-		                        "WHEN 'MGI:' THEN CONCAT('http://www.informatics.jax.org/javawi2/servlet/WIFetch?page=markerGO&key=',RMM_ID) " + 
+		                        "WHEN 'MGI:' THEN CONCAT('http://www.informatics.jax.org/accession/',RMM_ID) " + 
 		                        "ELSE /* HGNC: OR xenbase id */ CONCAT(GO_URL.URL_URL,RPR_SYMBOL,GO_URL.URL_SUFFIX) " + 
 		                        "END, " +
   		                        "CONCAT(OMIM_URL.URL_URL,RPR_SYMBOL), " +
@@ -478,7 +478,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                                 "END, " + 
                                 "CASE WHEN (CONCAT(RPR_PREFIX,RPR_OID) =  RPR_JAX_ACC) THEN '' ELSE CONCAT(RPR_PREFIX,RPR_OID) END, " +
                           		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
-                           		"CONCAT('http://www.informatics.jax.org/searches/probe.cgi?',RMP_ID) " +
+                           		"CONCAT('http://www.informatics.jax.org/accession/',RMP_ID) " +
                            		"ELSE 'probe.html' END " +
                                 "FROM ISH_SUBMISSION " + 
                                 "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
@@ -499,7 +499,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String name31 = "GENE_RELATED_MAPROBE";
   final static String query31 = "SELECT DISTINCT '', RPR_JAX_ACC, CONCAT(RPR_PREFIX,RPR_OID), " + 
   		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
-   		"CONCAT('http://www.informatics.jax.org/searches/probe.cgi?',RMP_ID) " +
+   		"CONCAT('http://www.informatics.jax.org/accession/',RMP_ID) " +
    		"ELSE 'probe.html' END " +
   		"FROM REF_PROBE " +
   		"JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID " +
