@@ -21,7 +21,7 @@
 </p>	
 	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage && ISHSingleSubmissionBean.publicPage && !ISHSingleSubmissionBean.deletedPage}">
 		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe">
-			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" rendered="#{not empty ISHSingleSubmissionBean.submission.euregeneId}" />
+			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" rendered="#{empty ISHSingleSubmissionBean.submission.euregeneId}" />
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID} (#{ISHSingleSubmissionBean.submission.euregeneId})" rendered="#{not empty ISHSingleSubmissionBean.submission.euregeneId}"/>
 		</h:panelGrid>
 
