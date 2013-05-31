@@ -682,7 +682,7 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			prepStmt.setString(4, templateSubmission.getAssayType());
 			prepStmt.setInt(5, templateSubmission.getPublicFlag());
 			prepStmt.setInt(6, Integer.parseInt(templateSubmission.getArchiveId()));
-			prepStmt.setInt(7, templateSubmission.getDeleteFlag());
+			prepStmt.setInt(7, templateSubmission.getDeletedFlag());
 			prepStmt.setInt(8, templateSubmission.getSubmitterId());
 			prepStmt.setInt(9, templateSubmission.getPiId());
 			prepStmt.setInt(10, templateSubmission.getEntryBy());

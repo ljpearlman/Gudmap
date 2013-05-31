@@ -435,7 +435,7 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 		
         /********* add by Xingjun Pi 18/04/2007 begin ***********/
 		// if it is a non-public submission, return null value for the submission query
-		if (submission.getPublicFlag() == 0) {
+		if (!submission.isReleased()) {
 			return null;
 		}
         /********* add by Xingjun Pi 18/04/2007 end ***********/

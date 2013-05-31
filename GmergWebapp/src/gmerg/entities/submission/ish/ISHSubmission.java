@@ -13,17 +13,15 @@ import java.util.List;
 
 public class ISHSubmission extends Submission {
 
-    private Probe probe;
-    private ArrayList linkedPublications;
-    private String[] acknowledgements;
-    private ArrayList annotationTree;
-    private ArrayList linkedSubmissions;
-    private ExpressionDetail [] annotatedComponents;
-    private Antibody antibody;
-    private String tissue; 
-    private String project; 
-    private boolean isPublic;
-    private boolean isDeleted;
+    protected Probe probe;
+    protected ArrayList linkedPublications;
+    protected String[] acknowledgements;
+    protected ArrayList annotationTree;
+    protected ArrayList linkedSubmissions;
+    protected ExpressionDetail [] annotatedComponents;
+    protected Antibody antibody;
+    protected String tissue; 
+    protected String project; 
 
     public ISHSubmission() {
     
@@ -137,27 +135,4 @@ public class ISHSubmission extends Submission {
     public void setProject(String project) {
     	this.project = project;
     }    
-
-    public Boolean getPublic() {
-        return this.isPublic;
-    }
-    
-    public void setPublic(int  publicFlag) {
-    	if (publicFlag == 1)
-    		this.isPublic = true;
-    	else
-    		this.isPublic = false;
-    }
-    
-    public Boolean getDeleted() {
-        return this.isDeleted;
-    }
-    
-    public void setDeleted(int deleteFlag) {
-    	if (deleteFlag == 1)
-    		this.isDeleted = true;
-    	else
-    		this.isDeleted = false;
-    }
-    
 }

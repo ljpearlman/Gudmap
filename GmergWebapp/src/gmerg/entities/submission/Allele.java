@@ -105,6 +105,14 @@ public class Allele {
     
     public void setAlleleName(String input) {
     	alleleName = input;
+	if (null != alleleName &&
+	    -1 != alleleName.indexOf("<")) {
+		alleleName = alleleName.replace("<", "##1");
+		alleleName = alleleName.replace(">", "##2");
+		alleleName = alleleName.replace("##1", "<sup>");
+		alleleName = alleleName.replace("##2", "</sup>");
+	}
+
     }
     
     public String getReporter() {
@@ -151,18 +159,32 @@ public class Allele {
     }
     
     public String getAlleleFirstChrom() {
-    	return this.alleleFirstChrom;
+    	return alleleFirstChrom;
     }
     
-    public void setAlleleFirstChrom(String alleleFirstChrom) {
-    	this.alleleFirstChrom = alleleFirstChrom;
+    public void setAlleleFirstChrom(String input) {
+    	alleleFirstChrom = input;
+	if (null != alleleFirstChrom &&
+	    -1 != alleleFirstChrom.indexOf("<")) {
+		alleleFirstChrom = alleleFirstChrom.replace("<", "##1");
+		alleleFirstChrom = alleleFirstChrom.replace(">", "##2");
+		alleleFirstChrom = alleleFirstChrom.replace("##1", "<sup>");
+		alleleFirstChrom = alleleFirstChrom.replace("##2", "</sup>");
+	}
     }
     
     public String getAlleleSecondChrom() {
-    	return this.alleleSecondChrom;
+    	return alleleSecondChrom;
     }
     
-    public void setAlleleSecondChrom(String alleleSecondChrom) {
-    	this.alleleSecondChrom = alleleSecondChrom;
+    public void setAlleleSecondChrom(String input) {
+    	alleleSecondChrom = input;
+	if (null != alleleSecondChrom &&
+	    -1 != alleleSecondChrom.indexOf("<")) {
+		alleleSecondChrom = alleleSecondChrom.replace("<", "##1");
+		alleleSecondChrom = alleleSecondChrom.replace(">", "##2");
+		alleleSecondChrom = alleleSecondChrom.replace("##1", "<sup>");
+		alleleSecondChrom = alleleSecondChrom.replace("##1", "</sup>");
+	}
     }
 }

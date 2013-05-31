@@ -8,48 +8,39 @@
   <jsp:include page="/includes/header.jsp" />
   
  	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{MicroarraySingleSubmissionBean.id})" rendered="#{!MicroarraySingleSubmissionBean.renderPage}"/>
-	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!MicroarraySingleSubmissionBean.publicPage && !MicroarraySingleSubmissionBean.deletedPage}"/>
-	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{MicroarraySingleSubmissionBean.deletedPage && MicroarraySingleSubmissionBean.publicPage}"/>
-	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!MicroarraySingleSubmissionBean.publicPage && MicroarraySingleSubmissionBean.deletedPage}"/>
-	<h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!MicroarraySingleSubmissionBean.publicPage || MicroarraySingleSubmissionBean.deletedPage}" escape="false"/>
-	<h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!MicroarraySingleSubmissionBean.publicPage || MicroarraySingleSubmissionBean.deletedPage}">
+	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}"/>
+	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{MicroarraySingleSubmissionBean.submission.deleted && MicroarraySingleSubmissionBean.submission.released}"/>
+	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!MicroarraySingleSubmissionBean.submission.released && MicroarraySingleSubmissionBean.submission.deleted}"/>
+	<h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}" escape="false"/>
+	<h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}">
 		gudmap-editors@gudmap.org
 	</h:outputLink>
 	
-	<h:form id="mainForm" rendered="#{MicroarraySingleSubmissionBean.renderPage && MicroarraySingleSubmissionBean.publicPage && !MicroarraySingleSubmissionBean.deletedPage}">
+	<h:form id="mainForm" rendered="#{MicroarraySingleSubmissionBean.renderPage && MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}">
 
-    <h:panelGrid columns="1" width="100%" rowClasses="header-stripey,header-nostripe">
-    <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.submission.accID}" />
-    <f:verbatim>&nbsp;</f:verbatim>
-    </h:panelGrid>
+                <h:panelGrid columns="1" width="100%" styleClass="block-stripey">
+                          <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.submission.accID}" />
+                </h:panelGrid>
     
-    <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" rowClasses="header-stripey,header-nostripe">
-    	<h:outputText value="#{stageSeriesLong} Stage" />
-    	<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{MicroarraySingleSubmissionBean.submission.stage}definition.html">
+                <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
+    	          <h:outputText value="#{stageSeriesLong} Stage" />
+    	          <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{MicroarraySingleSubmissionBean.submission.stage}definition.html">
     		<h:outputText value="#{stageSeriesShort}#{MicroarraySingleSubmissionBean.submission.stage}" />
-    	</h:outputLink>
-
-		<%--  commented out until further decision about this page - (Bernie 17/11/2010 Mantis 506 )
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+    	          </h:outputLink>
+               </h:panelGrid>
 		
-		<h:outputText value="Tissue" />
-		<h:outputText value="#{MicroarraySingleSubmissionBean.submission.tissue}" />
-		--%>
-		
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-		
-		<h:outputText value="Images" rendered="#{MicroarraySingleSubmissionBean.submission.originalImages != null}" />
-		<h:dataTable rendered="#{MicroarraySingleSubmissionBean.submission.originalImages != null}" columnClasses="text-normal,text-top" value="#{MicroarraySingleSubmissionBean.submission.originalImages}" var="image" >
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty MicroarraySingleSubmissionBean.submission.originalImages}">
+		<h:outputText value="Images"  />
+		<h:dataTable columnClasses="text-normal,text-top" value="#{MicroarraySingleSubmissionBean.submission.originalImages}" var="image" >
 			<h:column>
 				<h:outputLink value="#" onclick="window.open('#{image[1]}', '', 'resizable=1,toolbar=0,scrollbars=1,width=600,height=600');return false;">
 					<h:graphicImage styleClass="icon" value="#{image[0]}" height="50" onclick=""/>
 				</h:outputLink>
 			</h:column>
 		</h:dataTable>
+               </h:panelGrid>
 		
-		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.originalImages != null}">&nbsp;</f:verbatim>
-		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.originalImages != null}">&nbsp;</f:verbatim>
-		
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 		<h:outputText value="Supplemental Data Files" />
 		<h:panelGrid columns="2" columnClasses="plaintext, datatext">
 			<h:outputText value="CEL file:" />
@@ -72,17 +63,16 @@
 				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.txtFile}" />
 			</h:outputLink>
 		</h:panelGrid>
+               </h:panelGrid>
 		
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-
-		<h:outputText value="Archive ID" rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}" />
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty MicroarraySingleSubmissionBean.submission.archiveId}">
+		<h:outputText value="Archive ID"/>
 		<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{MicroarraySingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}">
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.archiveId}" />
 		</h:outputLink>
+               </h:panelGrid>
 		
-		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}">&nbsp;</f:verbatim>
-		<f:verbatim rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}">&nbsp;</f:verbatim>
-		
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 		<h:outputText value="Principal Investigator(s)" />
 		<t:dataList id="piDataList" var="piInfo"
 				value="#{MicroarraySingleSubmissionBean.submission.principalInvestigators}">
@@ -91,9 +81,9 @@
 				</h:outputLink>
 				<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.displayAddress}" /><br/>
 		</t:dataList>
-
-                                <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+               </h:panelGrid>
 		
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 		<h:outputText value="Submitted By" />
 		<h:panelGroup>
 			<h:outputLink title="#{MicroarraySingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{MicroarraySingleSubmissionBean.submission.submitter.id})">
@@ -101,9 +91,9 @@
 			</h:outputLink>
 			<h:outputText title="#{MicroarraySingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{MicroarraySingleSubmissionBean.submission.submitter.displayAddress}" />			
 		</h:panelGroup>
+               </h:panelGrid>
 		
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-		
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 		<h:outputText value="Specimen Details" />
 		<h:panelGrid columns="2" columnClasses="data-titleCol,data-textCol, data-textCol">
 			<h:outputText value="Sample GEO ID:" />
@@ -159,7 +149,7 @@
 
 					<h:outputText value="MGI Symbol or lab name"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<h:outputText value="#{allele.alleleName}" />
+					<h:outputText value="#{allele.alleleName}" escape="false" />
 
 					<h:outputText value="Type"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
@@ -204,9 +194,9 @@
 			<h:outputText value="Experimental Design:" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.experimentalDesign}" />
 		</h:panelGrid>
+               </h:panelGrid>
 		
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-		
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 		<h:outputText value="Array Hybridization" />
 		<h:panelGrid columns="2" columnClasses="data-titleCol,data-textCol, data-textCol">
 			<h:outputText value="Extracted Molecule:" />
@@ -251,27 +241,28 @@
 			<h:outputText value="Reference:" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.reference}" />
 		</h:panelGrid>
+               </h:panelGrid>
 		
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-        <h:outputText value="Series Details" />
-        <h:panelGrid columns="2" columnClasses="data-titleCol,data-textCol, data-textCol">
-        	<h:outputText value="Series GEO ID:" />
-        	<h:panelGroup>
-        		<h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
-        			<f:param value="#{MicroarraySingleSubmissionBean.submission.series.geoID}" name="acc" />
-        			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.geoID}" />
-        		</h:outputLink>
-        	</h:panelGroup>
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
+                                <h:outputText value="Series Details" />
+                                <h:panelGrid columns="2" columnClasses="data-titleCol,data-textCol, data-textCol">
+        	                                <h:outputText value="Series GEO ID:" />
+        	                                <h:panelGroup>
+        		                        <h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
+        			              <f:param value="#{MicroarraySingleSubmissionBean.submission.series.geoID}" name="acc" />
+        			               <h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.geoID}" />
+        		                        </h:outputLink>
+        	                                </h:panelGroup>
         	
-        	<h:outputText value="Number of Samples:" />
-        	<h:panelGroup>
-        		<h:outputLink styleClass="datatext" value="series.html">
+        	                                <h:outputText value="Number of Samples:" />
+        	                                <h:panelGroup>
+        		                             <h:outputLink styleClass="datatext" value="series.html">
 					<f:param value="#{MicroarraySingleSubmissionBean.submission.series.oid}" name="seriesId" />
 					<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.numSamples} samples" />
-				</h:outputLink>
-			</h:panelGroup>
+			             </h:outputLink>
+		                </h:panelGroup>
 			
-			<h:outputText value="Title:" />
+		                <h:outputText value="Title:" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.title}" />
 			
 			<h:outputText value="Summary:" />
@@ -283,43 +274,41 @@
 			<h:outputText value="Overall Design:" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.series.design}" />
 		</h:panelGrid>
-        
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-        
-        <h:outputText value="Platform Details" />
-        <h:panelGrid columns="2" columnClasses="data-titleCol,data-textCol, data-textCol">
-          <h:outputText value="Platform GEO ID:" />
-          <h:panelGroup>
-            <h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
-              <f:param value="#{MicroarraySingleSubmissionBean.submission.platform.geoID}" name="acc"/>
-              <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.geoID}" />
-            </h:outputLink>
-          </h:panelGroup>
+               </h:panelGrid>
+		
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
+                                <h:outputText value="Platform Details" />
+                                <h:panelGrid columns="2" columnClasses="data-titleCol,data-textCol, data-textCol">
+                                                <h:outputText value="Platform GEO ID:" />
+                                                <h:panelGroup>
+                                                          <h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external">
+                                                                 <f:param value="#{MicroarraySingleSubmissionBean.submission.platform.geoID}" name="acc"/>
+                                                                 <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.geoID}" />
+                                                          </h:outputLink>
+                                                </h:panelGroup>
           
-          <h:outputText value="Title:" />
-          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.title}" />
+                                                <h:outputText value="Title:" />
+                                                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.title}" />
 
-          <h:outputText value="Distribution:" />
-          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.distribution}" />
+                                                <h:outputText value="Distribution:" />
+                                                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.distribution}" />
           
-          <h:outputText value="Technology:" />
-          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.technology}" />
+                                                <h:outputText value="Technology:" />
+                                                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.technology}" />
           
-          <h:outputText value="Organism:" />
-          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.organism}" />
+                                                <h:outputText value="Organism:" />
+                                                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.organism}" />
           
-          <h:outputText value="Manufacturer:" />
-          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.manufacturer}" />
+                                                <h:outputText value="Manufacturer:" />
+                                                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.manufacturer}" />
           
-          <h:outputText value="Manufacturer Protocol:" />
-          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.manufactureProtocol}" />
+                                                <h:outputText value="Manufacturer Protocol:" />
+                                                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.manufactureProtocol}" />
           
-          <h:outputText value="Catalogue Number:" />
-          <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.catNo}" />
-        </h:panelGrid>
-        
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-    </h:panelGrid>
+                                                <h:outputText value="Catalogue Number:" />
+                                                <h:outputText value="#{MicroarraySingleSubmissionBean.submission.platform.catNo}" />
+                              </h:panelGrid>
+               </h:panelGrid>
   </h:form>  
   <f:subview id="footer">
 

@@ -272,7 +272,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setPublicFlag(resSet.getInt(7));
             submissionInfo.setArchiveId(resSet.getString(8));
 	    
-            submissionInfo.setDeleteFlag(resSet.getInt(9));
+            submissionInfo.setDeletedFlag(resSet.getInt(9));
             submissionInfo.setSubmitterId(resSet.getInt(10));
             submissionInfo.setPiId(resSet.getInt(11));
             submissionInfo.setEntryBy(resSet.getInt(12));

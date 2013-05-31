@@ -13,8 +13,8 @@ public class Submission {
     protected int publicFlag;
     protected String assayType;
     protected String archiveId;
-    
-    protected int deleteFlag; // SUB_IS_DELETED
+
+    protected int deletedFlag; // SUB_IS_DELETED
     protected int submitterId; //  SUB_SUBMITTER_FK: 3
     protected int piId; // SUB_PI_FK: 3
     protected int entryBy; // SUB_ENTRY_BY_FK: 1
@@ -179,12 +179,12 @@ public class Submission {
         archiveId = aId;
     }
     
-    public int getDeleteFlag() {
-    	return deleteFlag;
+    public int getDeletedFlag() {
+    	return deletedFlag;
     }
     
-    public void setDeleteFlag(int deleteFlag) {
-    	this.deleteFlag = deleteFlag;
+    public void setDeletedFlag(int input) {
+    	this.deletedFlag = input;
     }
     
     public int getSubmitterId() {
@@ -355,4 +355,16 @@ public class Submission {
 	if (null != resultNotes && 0 == resultNotes.length)
 	    resultNotes = null;
     }    
+
+    public boolean isReleased() {
+	if (publicFlag < 1)
+	    return false;
+	return true;
+    }
+    
+    public boolean isDeleted() {
+	if (deletedFlag < 1)
+	    return false;
+	return true;
+    }
 }

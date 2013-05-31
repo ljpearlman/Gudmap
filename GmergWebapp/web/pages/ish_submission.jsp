@@ -9,32 +9,30 @@
 	<jsp:include page="/includes/header.jsp" />
 
 	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{ISHSingleSubmissionBean.id})" rendered="#{!ISHSingleSubmissionBean.renderPage}"/>
-	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!ISHSingleSubmissionBean.publicPage && !ISHSingleSubmissionBean.deletedPage}"/>
-	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{ISHSingleSubmissionBean.deletedPage && ISHSingleSubmissionBean.publicPage}"/>
-	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!ISHSingleSubmissionBean.publicPage && ISHSingleSubmissionBean.deletedPage}"/>
-	<h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!ISHSingleSubmissionBean.publicPage || ISHSingleSubmissionBean.deletedPage}" escape="false"/>
-	<h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!ISHSingleSubmissionBean.publicPage || ISHSingleSubmissionBean.deletedPage}">
+	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!ISHSingleSubmissionBean.submission.released && !ISHSingleSubmissionBean.submission.deleted}"/>
+	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{ISHSingleSubmissionBean.submission.deleted && ISHSingleSubmissionBean.submission.released}"/>
+	<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!ISHSingleSubmissionBean.submission.released && ISHSingleSubmissionBean.submission.deleted}"/>
+	<h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!ISHSingleSubmissionBean.submission.released || ISHSingleSubmissionBean.submission.deleted}" escape="false"/>
+	<h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!ISHSingleSubmissionBean.submission.released || ISHSingleSubmissionBean.submission.deleted}">
 		gudmap-editors@gudmap.org
 	</h:outputLink>
 
 
 </p>	
-	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage && ISHSingleSubmissionBean.publicPage && !ISHSingleSubmissionBean.deletedPage}">
-		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe">
+	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage && ISHSingleSubmissionBean.submission.released && !ISHSingleSubmissionBean.submission.deleted}">
+		<h:panelGrid width="100%" columns="1" styleClass="block-stripey">
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" rendered="#{empty ISHSingleSubmissionBean.submission.euregeneId}" />
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID} (#{ISHSingleSubmissionBean.submission.euregeneId})" rendered="#{not empty ISHSingleSubmissionBean.submission.euregeneId}"/>
 		</h:panelGrid>
-
 		
-		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
-
-            <h:outputText styleClass="plaintextbold" value="Data Source" />
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
+                                                <h:outputText styleClass="plaintextbold" value="Data Source" />
                         
-            <h:graphicImage value="../images/GUDMAP_Logo.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
-            <h:graphicImage value="../images/button_euregene2.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}"/>
-            <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+                                                 <h:graphicImage value="../images/GUDMAP_Logo.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
+                                                 <h:graphicImage value="../images/button_euregene2.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}"/>
+		</h:panelGrid>
 
-
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
 			<h:outputText value="Gene"/>
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{empty ISHSingleSubmissionBean.submission.geneSymbol}"/>
 			<h:panelGrid columns="3"  rendered="#{not empty ISHSingleSubmissionBean.submission.geneSymbol}" >
@@ -42,24 +40,23 @@
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
 					<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
 				</h:outputLink>
-				<f:verbatim>&nbsp;</f:verbatim>
 				<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.geneName}" />
 			</h:panelGrid>
+		</h:panelGrid>
 			
-			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
 			<h:outputText value="Theiler Stage" />
 			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
 				<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
 			</h:outputLink>
-			
-			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+		</h:panelGrid>
 
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" rendered="#{not empty ISHSingleSubmissionBean.submission.tissue}">
+			<h:outputText value="Tissue" />
+			<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
+		</h:panelGrid>
 
-			<h:outputText value="Tissue" rendered="#{not empty ISHSingleSubmissionBean.submission.tissue}" />
-			<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}" rendered="#{not empty ISHSingleSubmissionBean.submission.tissue}"/> 
-			
-			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" >
 			<h:outputText value="Images" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:dataTable columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.originalImages}" var="image">
@@ -76,21 +73,18 @@
 					</h:column>
 				</h:dataTable>
 			</h:panelGrid>
-    
-			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
 
-		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" rendered="#{not empty ISHSingleSubmissionBean.submission.resultNotes}">
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" rendered="#{not empty ISHSingleSubmissionBean.submission.resultNotes}">
 			<h:outputText value="Results Notes" />
 			<h:dataTable columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.resultNotes}" var="note">
 				<h:column>
 					<h:outputText value="#{note}"/>
 				</h:column>
 			</h:dataTable>
-			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
 
-		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP' && (ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)') && ISHSingleSubmissionBean.submission.specimen.assayType == 'wholemount'}">
+		<h:panelGrid width="100%" columns="1" styleClass="block-stripey" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP' && (ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)') && ISHSingleSubmissionBean.submission.specimen.assayType == 'wholemount'}">
 			<h:panelGroup>
 				<h:outputText styleClass="plaintextbold" value="Whole-mount in situ hybridization is subject to technical limitations that may influence accuracy of the data (" />
 				<h:outputLink styleClass="plaintext" value="#" onclick="var w=window.open('wish_moreInfo.jsf','wholemountPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;" >
@@ -98,18 +92,15 @@
 				</h:outputLink>
 				<h:outputText styleClass="plaintextbold" value=")." />
 			</h:panelGroup>
-			<f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
   
-		<h:panelGrid width="100%" columns="1" rowClasses="header-stripey,header-nostripe" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}">
+		<h:panelGrid width="100%" columns="1" styleClass="block-stripey" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}">
 			<h:panelGroup>
 				<h:outputText styleClass="plaintextbold" value="IMPORTANT NOTE ABOUT EUREGENE ANNOTATIONS: " />
-				<h:outputText styleClass="plaintext" value="Annotations within this entry are currently under review by the GUDMAP editorial office and Kylie Georgas (Little Lab, University of Queensland). In due course the annotations will be changed to reflect this review process. Original EuReGene annotations will continue to be available from www.euregene.org" />
 			</h:panelGroup>
-			<f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
   
-		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" >
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" >
 			<h:outputText value="Submitters" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
@@ -139,11 +130,9 @@
 				</h:panelGrid>
 				
 			</h:panelGrid>
-			
-			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 		</h:panelGrid>
 
-		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
 			<h:panelGroup>
 				<h:outputText value="Expression Mapping <br/><br/>" escape="false"/>
 				<h:outputText value="Expression Strengths Key:" styleClass="plaintextbold" rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}" />
@@ -301,16 +290,12 @@
 					</f:verbatim>
 				</h:panelGroup>
 			</h:panelGroup>
-		
-			<h:outputText value="&nbsp" escape="false"/>
-			<h:outputText value="&nbsp" escape="false"/>
 		</h:panelGrid>
-		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
-			
-			<h:outputText value="Antibody" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'IHC' || ISHSingleSubmissionBean.submission.assayType == 'OPT'}" />
-			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" rendered ="#{ISHSingleSubmissionBean.submission.assayType == 'IHC' || ISHSingleSubmissionBean.submission.assayType == 'OPT'}">
+
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'IHC' || ISHSingleSubmissionBean.submission.assayType == 'OPT'}">
+			<h:outputText value="Antibody"  />
+			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5">
 				<h:panelGrid border="0" columns="2" columnClasses="data-titleCol,data-textCol">
-			
 					<h:outputText value="Protein:" />
 					<h:panelGrid columns="1" border="0" columnClasses="text-top,text-normal">
 						<h:panelGroup>
@@ -421,11 +406,12 @@
 					<h:outputText styleClass="plaintext,text-top" value="Lab Antibody ID:" />
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.antibody.labProbeId}" />
 				</h:panelGrid>
-				
 			</h:panelGrid>
+		 </h:panelGrid>
 
-		    <h:outputText value="Probe" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)'}" />
-			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'ISH'  || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)'}">
+		 <h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" rendered="#{ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)'}">
+		                <h:outputText value="Probe"  />
+			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5">
 				<h:panelGrid border="0" columns="2" columnClasses="data-titleCol,data-textCol">
 				
 					<h:outputText value="Gene:" />
@@ -541,13 +527,9 @@
 					</h:dataTable>
 				</h:panelGrid>
 			</h:panelGrid>
-			
-			<h:outputText value="&nbsp" escape="false"/>
-			<h:outputText value="&nbsp" escape="false"/>
-						
-       	</h:panelGrid>
+       	               </h:panelGrid>
 
-		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
 			<h:outputText value="Specimen" />
 			<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
 				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/stagecriteria.html" styleClass="plaintext"> 
@@ -604,7 +586,7 @@
 
 					<h:outputText value="MGI Symbol or lab name"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<h:outputText value="#{allele.alleleName}" />
+					<h:outputText value="#{allele.alleleName}" escape="false" />
 
 					<h:outputText value="Type"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
@@ -612,11 +594,11 @@
 			
 					<h:outputText value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleFirstChrom}" />
-					<h:outputText value="#{allele.alleleFirstChrom}" rendered="#{not empty allele.alleleFirstChrom}" escape="false"/>
+					<h:outputText value="#{allele.alleleFirstChrom}" escape="false" rendered="#{not empty allele.alleleFirstChrom}" />
 									
 					<h:outputText value="Allele Second Chromatid"  rendered="#{not empty allele.alleleSecondChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleSecondChrom}"/>
-					<h:outputText value="#{allele.alleleSecondChrom}"  rendered="#{not empty allele.alleleSecondChrom}" escape="false"/>
+					<h:outputText value="#{allele.alleleSecondChrom}"  escape="false" rendered="#{not empty allele.alleleSecondChrom}" />
 					
 					<h:outputText value="Notes:" rendered="#{not empty allele.notes}" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.notes}"/>
@@ -648,10 +630,10 @@
 					< h:outputText value="#{note}" />
                                                                          </h:column>
 			                 </h:dataTable>
-			     </h:panelGrid>  
+			 </h:panelGrid>  
 		</h:panelGrid>  
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-		<h:panelGrid width="100%" columns="2" rendered="#{ISHSingleSubmissionBean.submission.transgenic}"  rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" >
+
+		<h:panelGrid width="100%" columns="2" rendered="#{ISHSingleSubmissionBean.submission.transgenic}"  styleClass="block-stripey" columnClasses="leftCol,rightCol" >
 			<h:outputText value="Transgene Visualisation" />
 			<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
 				<h:outputText value="Reporter:" />
@@ -661,11 +643,8 @@
 				<h:outputText value="#{ISHSingleSubmissionBean.submission.allele[0].visMethod}" />
 		               </h:panelGrid>
 		</h:panelGrid>
-		<h:panelGrid width="100%" columns="2" rendered="#{ISHSingleSubmissionBean.submission.transgenic}" >
-		                <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-		</h:panelGrid>
 
-		<h:panelGrid width="100%" columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol">
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol"  rendered="#{not empty ISHSingleSubmissionBean.submission.linkedPublications}">
 			<h:outputText value="Linked Publications" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:dataTable  value="#{ISHSingleSubmissionBean.submission.linkedPublications}" var="pub">
@@ -673,16 +652,16 @@
 						<h:outputText styleClass="plaintext" value="#{pub[0]} " />
 						<h:outputText styleClass="plaintext" value="(#{pub[1]}) " />
 						<h:outputText styleClass="plaintextbold" value="#{pub[2]} " />
-                        <h:outputText styleClass="plaintext" style="font-style:italic" value="#{pub[3]}, " rendered="#{not empty pub[3]}" />
-                        <h:outputText styleClass="plaintextbold" value="#{pub[4]}" rendered="#{not empty pub[4]}"/>
-                        <h:outputText styleClass="plaintext" value=", " rendered="#{not empty pub[4]}" />
-                        <h:outputText styleClass="plaintext" value="#{pub[6]}" />
+                                                                                                 <h:outputText styleClass="plaintext" style="font-style:italic" value="#{pub[3]}, " rendered="#{not empty pub[3]}" />
+                                                                                                 <h:outputText styleClass="plaintextbold" value="#{pub[4]}" rendered="#{not empty pub[4]}"/>
+                                                                                                 <h:outputText styleClass="plaintext" value=", " rendered="#{not empty pub[4]}" />
+                                                                                                 <h:outputText styleClass="plaintext" value="#{pub[6]}" />
 					</h:column>
 				</h:dataTable>
 			</h:panelGrid>
+		</h:panelGrid>
 
-			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-					
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol"  rendered="#{not empty ISHSingleSubmissionBean.submission.linkedSubmissions}">
 			<h:outputText value="Linked Submissions" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:dataTable value="#{ISHSingleSubmissionBean.submission.linkedSubmissions}" var="link">
@@ -726,9 +705,9 @@
 					</h:column>
 				</h:dataTable>
 			</h:panelGrid>
+		</h:panelGrid>
 
-			<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-    
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol"  rendered="#{not empty ISHSingleSubmissionBean.submission.acknowledgements}">
 			<h:outputText value="Acknowledgements" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:dataTable value="#{ISHSingleSubmissionBean.submission.acknowledgements}" var="ack">

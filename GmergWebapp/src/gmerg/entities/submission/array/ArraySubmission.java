@@ -4,18 +4,16 @@ import gmerg.entities.submission.Submission;
 
 public class ArraySubmission extends Submission {
 
-    private Series series;
-    private Platform platform;
-    private Sample sample;
-    private String filesLocation;
-    private String celFile;
-    private String chpFile;
-    private String rptFile;
-    private String expFile;
-    private String txtFile;
-    private String tissue; 
-    private boolean isPublic;
-    private boolean isDeleted;
+    protected Series series;
+    protected Platform platform;
+    protected Sample sample;
+    protected String filesLocation;
+    protected String celFile;
+    protected String chpFile;
+    protected String rptFile;
+    protected String expFile;
+    protected String txtFile;
+    protected String tissue; 
 
     public void setSeries(Series ser) {
         series = ser;
@@ -96,27 +94,4 @@ public class ArraySubmission extends Submission {
     public void setTissue(String tissue) {
     	this.tissue = tissue;
     }
-    
-    public Boolean getPublic() {
-        return this.isPublic;
-    }
-    
-    public void setPublic(int  publicFlag) {
-    	if (publicFlag == 1)
-    		this.isPublic = true;
-    	else
-    		this.isPublic = false;
-    }
-    
-    public Boolean getDeleted() {
-        return this.isDeleted;
-    }
-    
-    public void setDeleted(int deleteFlag) {
-    	if (deleteFlag == 1)
-    		this.isDeleted = true;
-    	else
-    		this.isDeleted = false;
-    }
-    
 }

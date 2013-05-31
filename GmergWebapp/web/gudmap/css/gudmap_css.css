@@ -66,6 +66,15 @@
 .stripey {
 	background-color: #E6E8FA !important;
 }
+
+.block-stripey
+{
+  background-color: #E6E8FA !important;
+  padding:2px;
+  margin-bottom:10px;
+  text-align:left;
+}
+
 .header-stripey
 {
   background-color: #E6E8FA !important;

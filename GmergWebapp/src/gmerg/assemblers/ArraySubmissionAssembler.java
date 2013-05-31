@@ -93,8 +93,8 @@ public class ArraySubmissionAssembler {
 		arraySubmission.setPlatform(platform);
 		arraySubmission.setAllele(allele);
 		
-		arraySubmission.setPublic(submission.getPublicFlag());
-		arraySubmission.setDeleted(submission.getDeleteFlag());
+		arraySubmission.setPublicFlag(submission.getPublicFlag());
+		arraySubmission.setDeletedFlag(submission.getDeletedFlag());
 		
 
         // added by Bernie - 23/09/2010
