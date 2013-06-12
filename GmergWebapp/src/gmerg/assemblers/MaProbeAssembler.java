@@ -19,6 +19,7 @@ public class MaProbeAssembler {
 	public Probe getData(String probeId, String maprobeId) {
 
 		if (probeId == null || probeId.equals("")) {
+		    System.out.println("MaProbeAssembler.getData  !!! possible error: null probeId");
 			return null;
 		}
 

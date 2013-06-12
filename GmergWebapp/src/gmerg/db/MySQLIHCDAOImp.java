@@ -50,12 +50,9 @@ public class MySQLIHCDAOImp implements IHCDAO {
 	        //*******************************************************************************************************************
 	        // Temporarily added by Mehran to implement Filter functionality 
 	        if (filter!=null) {
-				queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
+		    queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
 	        }	    		
 	        //*******************************************************************************************************************
-
-	        
-//	        System.out.println("queryString IHC: " + queryString);
 	        
 	        parQ.setQuerySQL(queryString);
 	
@@ -131,7 +128,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
 	        //*******************************************************************************************************************
 	        // Temporarily added by Mehran to implement Filter functionality 
 			if (filter!=null) {
-		  	  	query = filter.addFilterSql(query, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
+		  	  	query = filter.addFilterSql(query, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
 			}     
 	        //*******************************************************************************************************************
 

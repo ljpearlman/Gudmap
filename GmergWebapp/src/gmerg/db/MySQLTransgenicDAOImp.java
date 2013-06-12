@@ -54,7 +54,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 	    System.out.println("TransgenicDAO:getAllSubmission:sql (pre filter): " + queryString);
         
         if(filter!=null)
-	  	  	queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
+	  	  	queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
         
 	if (debug)
 	    System.out.println("TransgenicDAOImp:getAllSubmission:sql (post filter): " + queryString);
@@ -239,7 +239,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 		if (debug)
 		    System.out.println("Q (preFilter): "  + queryString[i]);
     		if (filter!=null)
-    			queryString[i] = filter.addFilterSql(queryString[i], InsituDBQuery.getTG_BROWSE_ALL_SQL_COLUMNS());
+    			queryString[i] = filter.addFilterSql(queryString[i], InsituDBQuery.TG_BROWSE_ALL_SQL_COLUMNS);
 		if (debug)
 		    System.out.println("Q (postFilter): "  + queryString[i]);
     		result[i][0] = query[i];
@@ -392,7 +392,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 	     System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (pre filter): " + query);
          
          if(filter!=null)
- 	  	  	query = filter.addFilterSql(query, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
+ 	  	  	query = filter.addFilterSql(query, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
          
 	 if (debug)
 	     System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (post filter): " + query);

@@ -332,7 +332,7 @@ public class Globals {
 	case ASSAY: 
 	    return new FilterItem(FilterType.CHECKBOX, new String[]{"ISH", "IHC", "Array", "TG"}, null);
 	case SPECIMEN: 
-	    return new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount"}, null);
+	    return new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount", "wholemount-opt"}, null);
 	case GENOTYPE: 
 	    return new FilterItem(FilterType.LIST, new String[]{"wholemount", "section"}, null);
 	case DATE:

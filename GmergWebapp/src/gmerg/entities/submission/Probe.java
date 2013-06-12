@@ -62,7 +62,9 @@ public class Probe {
     }
 
     public void setGeneName(String value) {
-        this.geneName = value;
+        geneName = value;
+	if (null != geneName && geneName.equals("0"))
+	    geneName = null;
     }
 
     public String getGeneName() {

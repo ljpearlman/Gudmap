@@ -406,11 +406,10 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
     	    	    " ":" limit "+offset+","+resPerPage+"  ");
 		
 			if(filter!=null) 
-				sql = filter.addFilterSql(sql, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
+				sql = filter.addFilterSql(sql, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
 			parQ = null;
 			parQ = new ParamQuery("FOCUS_ISH_BROWSE",sql);
 
-//			System.out.println("FocusForAllDAO:ISHbrowseall:"+sql);
 			try {
 				parQ.setPrepStat(conn);
 				prepStmt = parQ.getPrepStat();
@@ -467,7 +466,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
     	    	    " ":" limit "+offset+","+resPerPage+"  ");
 			
 			if(filter!=null) 
-				sql = filter.addFilterSql(sql, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
+				sql = filter.addFilterSql(sql, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
 			parQ = null;
 			parQ = new ParamQuery("FOCUS_INSITU_BROWSE",sql);
 

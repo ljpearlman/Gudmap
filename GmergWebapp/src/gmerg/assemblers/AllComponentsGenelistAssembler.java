@@ -137,11 +137,8 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 	    DataItem[][] tableData = new DataItem[rowNum][colNum];
 	    for(int i=0; i<rowNum; i++){
 	    	if (genelistsData[i][5]==null) {
-//		    	tableData[i][0] = new DataItem(genelistsData[i][0], "click to view gene list", "genelist.html?genelistId="+genelistsData[i][0], 10);
-//		    	tableData[i][1] = new DataItem(genelistsData[i][1], "click to view gene list", "genelist.html?genelistId="+genelistsData[i][0], 10);
 		    	tableData[i][0] = new DataItem(genelistsData[i][0], "click to view gene list", "mastertable_browse.html?genelistId="+genelistsData[i][0], 10);
 		    	tableData[i][1] = new DataItem(genelistsData[i][1], "click to view gene list", "mastertable_browse.html?genelistId="+genelistsData[i][0], 10);
-//		    	tableData[i][5] = new DataItem("download", "click to download original data", "http://gudmap.hgu.mrc.ac.uk/Gudmap/arrayData/aronow/november_2007/aronow_071107/data/"+genelistsData[i][4], 10);
 		    	tableData[i][5] = new DataItem("download", "click to download original data", genelistsData[i][4], 10);
 	    	}
 	    	else {

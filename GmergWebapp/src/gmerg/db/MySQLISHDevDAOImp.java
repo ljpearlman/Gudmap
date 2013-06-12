@@ -53,7 +53,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 //        System.out.println("ISHDevDAO:getAllSubmissionInsitu:queryString: " + queryString);
         
 		if(filter!=null)
-			queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
+			queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
         
         // execute query and assemble result
         try {
@@ -439,7 +439,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                 queryString[i] = parQ.getQuerySQL()  + endingClause; 
             }
             if (filter!=null)
-            	queryString[i] = filter.addFilterSql(queryString[i], AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
+            	queryString[i] = filter.addFilterSql(queryString[i], AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
 
             result[i][0] = query[i];
         }
@@ -506,7 +506,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 //    	String queryString = parQ.getQuerySQL();
     	String queryString = parQ.getQuerySQL() + AdvancedSearchDBQuery.getAssayType(new String[]{"ISH", "IHC"});
         if(filter!=null) 
-			queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.getISH_BROWSE_ALL_SQL_COLUMNS());
+			queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
         
         PreparedStatement prepStmt = null;
 //        System.out.println("ISHDevDAO:getTotalNumberOfSubmissions:sql: " + queryString);

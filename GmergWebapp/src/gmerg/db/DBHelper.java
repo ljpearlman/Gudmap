@@ -150,11 +150,22 @@ public final class DBHelper {
 			
 			//create ArrayList to store each row of results in
 			ArrayList<String[]> results = new ArrayList<String[]>();
-			
+			int i = 0;
+			String[] columns = null;
+			String str = null;
 			while (resSet.next()) {
-				String[] columns = new String[columnCount];
-				for (int i = 0; i < columnCount; i++) {
-					columns[i] = resSet.getString(i + 1);
+				columns = new String[columnCount];
+				for (i = 0; i < columnCount; i++) {
+					str = resSet.getString(i + 1);
+					if (null == str)
+					    str = "";
+					else {
+					    str = str.trim();
+					    if (str.equalsIgnoreCase("null"))
+						str = "";
+					}
+
+					columns[i] = str;
 				}
 				results.add(columns);
 			}
@@ -176,18 +187,27 @@ public final class DBHelper {
         if (resSet.first()) {
             resSet.beforeFirst();           
             ArrayList<String[]> results = new ArrayList<String[]>();
+            String str = null;
+            String[] columns = null;
+            int i = 0;
             while (resSet.next()) {
-                String[] columns = new String[length];
-                for(int i = 1; i <= length; i++) {
-		    String col = resSet.getString(i);
-		    if (col == null || col.equalsIgnoreCase("null")) {
-			columns[i-1] = "";
-		    } else {
-			columns[i-1] = col.equals("ITG")?"Tg":col;
+                columns = new String[length];
+                for(i = 1; i <= length; i++) {
+		    str = resSet.getString(i);
+		    if (null == str)
+			str = "";
+		    else {
+			str = str.trim();
+			if (str.equalsIgnoreCase("null"))
+			    str = "";
+			else if (str.equalsIgnoreCase("itg"))
+			    str = "Tg";
 		    }
+
+		    columns[i - 1] = str;
                 }
                 if(null != columns)
-                results.add(columns);
+		    results.add(columns);
             }
 
             return results;

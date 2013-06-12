@@ -43,19 +43,20 @@
 		<h:outputText value="Probes Linked to Gene" />
 		<h:dataTable value="#{GeneInfoBean.gene.assocProbes}" var="probe">
 			<h:column>
-				<h:outputLink styleClass="datatext" value="#{probe[3]}" rendered="#{probe[3] != 'probe.html'}">
+				<h:outputLink styleClass="datatext" value="#{probe[3]}" rendered="#{probe[3] != 'probe.html' && not empty probe[1]}">
 					<h:outputText value="#{probe[1]}"/>
 				</h:outputLink>
 				<h:outputLink styleClass="datatext" value="#{probe[3]}" rendered="#{probe[3] == 'probe.html'}">
-					<f:param name="probe" value="#{probe[2]}" />
-					<h:outputText value="#{probe[1]}"/>
+					<f:param name="probe" value="#{probe[1]}" />
+					<f:param name="maprobe" value="#{probe[2]}" />
+					<h:outputText value="#{probe[2]}"/>
 				</h:outputLink>
 			</h:column>
-			<h:column>
+			<h:column  rendered="#{probe[3] != 'probe.html'}">
 				<h:outputLink styleClass="datatext" value="probe.html">
 					<f:param name="probe" value="#{probe[1]}" />
 					<f:param name="maprobe" value="#{probe[2]}" />
-					<h:outputText value="(#{probe[2]})" rendered="#{probe[1] != probe[2]}"/>
+					<h:outputText value="(#{probe[2]})"/>
 				</h:outputLink>
 			</h:column>			
 		</h:dataTable>
@@ -99,7 +100,7 @@
 			</h:outputLink>
 			
 			<h:outputText value="GO:" />
-			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.goURL}#tabular"  target="_blank">
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.goURL}"  target="_blank">
 				<h:outputText value="MGI GO Annotations" />
 			</h:outputLink>
 		</h:panelGrid>

@@ -30,18 +30,14 @@ public class DBQuery {
 				  "SPN_ASSAY_TYPE",
 				  "IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE",
 				  "SUB_SUB_DATE",
-				  "CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME)",
+				  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_FILENAME)",
 				  "REPLACE(SUB_ACCESSION_ID, ':', 'no')", 
 				  "SPN_SEX",
 				  "RPR_JAX_ACC",
 				  "SPN_WILDTYPE",
 				  "PRB_PROBE_TYPE" };
 
-	public final static String[] getISH_BROWSE_ALL_SQL_COLUMNS() {
-		return ISH_BROWSE_ALL_SQL_COLUMNS;
-	}
-	
-	final static String getISH_BROWSE_ALL_COLUMNS() {
+    final static String getISH_BROWSE_ALL_COLUMNS() {
 		String s = "SELECT DISTINCT ";
 		for (int i=0; i<ISH_BROWSE_ALL_SQL_COLUMNS.length; i++) {
 		if (i > 0)
@@ -62,9 +58,9 @@ public class DBQuery {
                                                   "JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
                                                   "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
                                                   "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
-                                                  "JOIN ISH_ORIGINAL_IMAGE I ON SUB_OID = I.IMG_SUBMISSION_FK " +
-                                                  "AND I.IMG_OID = (SELECT MIN(IMG_OID) FROM ISH_ORIGINAL_IMAGE WHERE IMG_SUBMISSION_FK = SUB_OID) "+
-                                                  "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = " + bundle.getString("img_url_oid") + " ";
+                                                  "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
+                                                  "AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
+                                                  "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 31 ";
 
   final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
   final static String FOR_ANNOTATION_ENTRIES_Q = " WHERE STA_OID = ? AND SUB_IS_DELETED = 0 ";
@@ -115,7 +111,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		"SUB_SUB_DATE QSC_SUB_SUB_DATE, SPN_SEX QSC_SPN_SEX, PRB_PROBE_NAME QSC_PRB_PROBE_NAME, " +
   		"SPN_WILDTYPE QSC_SPN_WILDTYPE, " +
   		"PRB_PROBE_TYPE QSC_PROBE_TYPE, " + 
-  		"CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME) QSC_SUB_THUMBNAIL, " +
+  		"CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_FILENAME) QSC_SUB_THUMBNAIL, " +
   		"'' QSC_TISSUE, '' QSC_SMP_TITLE, '' QSC_SAMPLE_DESCRIPTION, '' QSC_SER_GEO_ID " + 
   		ISH_BROWSE_ALL_TABLES;
     
@@ -147,33 +143,24 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                               "PRB_TISSUE, PRB_PROBE_TYPE, PRB_GENE_TYPE, /* 7-9 */ "+
                               "PRB_LABEL_PRODUCT, PRB_VISUAL_METHOD, RPR_MTF_JAX, /* 10-12 */ " +
                               "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), /* 13-14 */ " +
-                              "CONCAT(PRB_NAME_URL.URL_URL,  CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RMP_ID ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END) as prbName_url, /* 15 */ "+
+                              "CONCAT(PRB_NAME_URL.URL_URL,  CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RPR_JAX_ACC ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END) as prbName_url, /* 15 */ "+
                               "CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), RPR_TYPE, /* 16-17 */ " +
                               "RPR_5_LOC, RPR_3_LOC, /* 18-19 */ " +
                               "RPR_5_PRIMER, RPR_3_PRIMER, /* 20-21 */ " +
-                              "CONCAT(GENE_URL.URL_URL," + 
                               "CASE substring(RPR_LOCUS_TAG from 1 for position(':' in RPR_LOCUS_TAG)) " + 
-                              "WHEN 'MGI:' THEN RMM_ID " + 
-                              "ELSE /* HGNC: OR xenbase id */ RPR_LOCUS_TAG END), /* 22 */" +
+                              "WHEN 'MGI:' THEN CONCAT(GENE_URL.URL_URL, RPR_LOCUS_TAG) " + 
+                              "ELSE /* non MGI */ '' END, /* 22 */" +
                               "RPR_CLONE_NAME_2, PRB_LAB_ID /* 23-24 */" +
                               "FROM ISH_PROBE " + 
                               "JOIN ISH_SUBMISSION ON PRB_SUBMISSION_FK = SUB_OID AND SUB_ACCESSION_ID = ? " +
                               "JOIN REF_URL GENBANK_URL ON GENBANK_URL.URL_OID = 4 " + 
                               "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " + 
-                              "JOIN REF_URL GENE_URL ON GENE_URL.URL_TYPE = " + 
-                              "CASE substring(RPR_LOCUS_TAG from 1 for position(':' in RPR_LOCUS_TAG)) " + 
-                              "WHEN 'HGNC:'   THEN 'hgnc' " + 
-                              "WHEN 'MGI:'/* MGI */ THEN 'jax_gene_dir' " + 
-                              "ELSE 'xenbase_gene' /* xenbase */ " + 
-                              "END " +
+                              "JOIN REF_URL GENE_URL ON GENE_URL.URL_TYPE = 'jax_gene' " + 
                               "LEFT JOIN REF_MGI_PRB ON RPR_JAX_ACC = RMP_MGIACC " + 
                               "LEFT JOIN REF_MGI_MRK ON RPR_LOCUS_TAG = RMM_MGIACC " +
                               "LEFT JOIN REF_URL PRB_NAME_URL ON PRB_NAME_URL.URL_TYPE = " + 
                               "CASE substring(RPR_JAX_ACC from 1 for position(':' in RPR_JAX_ACC)) " + 
-                              "WHEN 'MGI:'     THEN  'jax_probe_dir' " + 
-                              "WHEN 'GenBank:' THEN  'genbank_sequence'  " + 
-                              "WHEN 'IMAGE:'   THEN 'image_clone' " + 
-                              "WHEN 'NIBB:'    THEN 'nibb_xdb' " + 
+                              "WHEN 'MGI:'     THEN  'jax_gene' " + 
                               "WHEN 'maprobe:' THEN 'maprobe_probe' " + 
                               "ELSE '-1' /* unrecognised prefix, get NULL record */ " + 
                               "END";
@@ -211,18 +198,18 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
 
   //query6 (find original images of a particular submission)
   final static String name6 = "SUBMISSION_IMAGES";
-  final static String query6 = "SELECT CASE SUB_ASSAY_TYPE WHEN 'OPT' THEN CONCAT(URL_URL,IMG_FILEPATH,IMG_FILENAME) ELSE CONCAT(URL_URL,IMG_FILEPATH,URL_SUFFIX,IMG_FILENAME) END,INT_VALUE, INT_OID, CONCAT(URL_URL,IMG_FILEPATH,URL_SUFFIX,IMG_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID JOIN REF_URL ON URL_OID = "+bundle.getString("img_url_oid")+" LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1";
+  final static String query6 = "SELECT CASE SUB_ASSAY_TYPE WHEN 'OPT' THEN CONCAT(URL_URL, IMG_FILEPATH, IMG_FILENAME) ELSE CONCAT(URL_URL, IMG_FILEPATH,URL_SUFFIX, IMG_FILENAME) END,INT_VALUE, INT_OID, CONCAT(URL_URL, IMG_FILEPATH,URL_SUFFIX, IMG_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID JOIN REF_URL ON URL_OID = 31 LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1";
 
   final static String name7 = "SUBMISSION_IMAGE_DETAIL";
   final static String query7 = "SELECT SUB_ACCESSION_ID, RPR_SYMBOL, RPR_NAME, " +
   		"SUB_EMBRYO_STG, " + stageFormatConcat + ", SUB_ASSAY_TYPE, SPN_ASSAY_TYPE, " +
-  				"I.IMG_FILEPATH, I.IMG_FILENAME " +
+  				"IMG_FILEPATH, IMG_FILENAME " +
   				"FROM ISH_PROBE " +
   				"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
   				"JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK " +
   				"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
-  				"JOIN ISH_ORIGINAL_IMAGE I ON SUB_OID = I.IMG_SUBMISSION_FK " +
-  				"JOIN REF_URL ON URL_OID = " + bundle.getString("img_url_oid") + 
+  				"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
+  				"JOIN REF_URL ON URL_OID = 31 " + 
   				" WHERE SUB_ACCESSION_ID = ? LIMIT ?,1";
 
   final static String name32 = "SUBMISSION_AUTHOR";
@@ -407,15 +394,14 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   //query11 (gene info on a gene)
   final static String name28 = "GENE_INFO";
   final static String query28 = "SELECT DISTINCT RPR_SYMBOL, RPR_NAME, RPR_LOCUS_TAG, RPR_SYNONYMS, " +
-  		                        "CONCAT(GENE_URL.URL_URL," + 
   		                        "CASE substring(RPR_LOCUS_TAG from 1 for position(':' in RPR_LOCUS_TAG)) " + 
-  		                        "WHEN 'MGI:' THEN RMM_ID " + 
-  		                        "ELSE /* HGNC: OR xenbase id */ RPR_LOCUS_TAG " + 
-  		                        "END), " +
+  		                        "WHEN 'MGI:' THEN CONCAT(GENE_URL.URL_URL, RPR_LOCUS_TAG) " + 
+  		                        "ELSE /* NON MGI */ '' " + 
+  		                        "END, " +
   		                        "RPR_ENSEMBL, CONCAT(ENS_URL.URL_URL,RPR_ENSEMBL), " +
   		                        "CASE substring(RPR_LOCUS_TAG from 1 for position(':' in RPR_LOCUS_TAG)) " +
-		                        "WHEN 'MGI:' THEN CONCAT('http://www.informatics.jax.org/accession/',RMM_ID) " + 
-		                        "ELSE /* HGNC: OR xenbase id */ CONCAT(GO_URL.URL_URL,RPR_SYMBOL,GO_URL.URL_SUFFIX) " + 
+		                        "WHEN 'MGI:' THEN CONCAT(GO_URL.URL_URL, RPR_LOCUS_TAG) " + 
+		                        "ELSE /* non-MGI */ '' " + 
 		                        "END, " +
   		                        "CONCAT(OMIM_URL.URL_URL,RPR_SYMBOL), " +
   		                        "CONCAT(ENTREZ_URL.URL_URL,RPR_SYMBOL), " +
@@ -429,21 +415,16 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		                        "LEFT JOIN REF_ENS_GENE ON REG_STABLE = RPR_ENSEMBL " +
   		                        "LEFT JOIN REF_MGI_MRK ON RMM_MGIACC = RPR_LOCUS_TAG " +
   		                        "JOIN REF_URL GENE_URL " +
-  		                        "JOIN REF_URL ENS_URL " +
   		                        "JOIN REF_URL GO_URL " +
+  		                        "JOIN REF_URL ENS_URL " +
   		                        "JOIN REF_URL OMIM_URL " +
   		                        "JOIN REF_URL ENTREZ_URL " +
                                 "JOIN REF_URL GENECARDS_URL "+
                                 "JOIN REF_URL HGNC_SYMBOL_SEARCH_URL "+
                                 "JOIN REF_URL UCSC_URL " + // added by xingjun - 30/04/2009
-  		                        "WHERE GENE_URL.URL_TYPE = " + 
-  		                        "CASE substring(RPR_LOCUS_TAG from 1 for position(':' in RPR_LOCUS_TAG)) " + 
-  		                        "WHEN 'HGNC:'   THEN 'hgnc' " + 
-  		                        "WHEN 'MGI:'/* MGI */ THEN 'jax_gene_dir' " + 
-                                        "ELSE 'xenbase_gene' /* xenbase */ " + 
-  		                        "END " +
-  		                        "AND ENS_URL.URL_TYPE = 'ens_gene' " +
+  		                        "WHERE GENE_URL.URL_TYPE = 'jax_gene' " + 
   		                        "AND GO_URL.URL_TYPE = 'go_gene' " +
+  		                        "AND ENS_URL.URL_TYPE = 'ens_gene' " +
   		                        "AND OMIM_URL.URL_TYPE = 'omim_gene' " +
   		                        "AND ENTREZ_URL.URL_TYPE = 'entrez_all' " +
                                 "AND GENECARDS_URL.URL_TYPE = 'genecards_gene' " +
@@ -478,7 +459,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                                 "END, " + 
                                 "CASE WHEN (CONCAT(RPR_PREFIX,RPR_OID) =  RPR_JAX_ACC) THEN '' ELSE CONCAT(RPR_PREFIX,RPR_OID) END, " +
                           		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
-                           		"CONCAT('http://www.informatics.jax.org/accession/',RMP_ID) " +
+                           		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
                            		"ELSE 'probe.html' END " +
                                 "FROM ISH_SUBMISSION " + 
                                 "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
@@ -499,7 +480,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String name31 = "GENE_RELATED_MAPROBE";
   final static String query31 = "SELECT DISTINCT '', RPR_JAX_ACC, CONCAT(RPR_PREFIX,RPR_OID), " + 
   		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
-   		"CONCAT('http://www.informatics.jax.org/accession/',RMP_ID) " +
+   		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
    		"ELSE 'probe.html' END " +
   		"FROM REF_PROBE " +
   		"JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID " +
@@ -531,9 +512,9 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
 
   //query to find mgi info linked to a specific probe set
   final static String name35 = "GENE_INFO_FOR_ARRAY";
-  final static String query35 = "SELECT RMM_SYMBOL, RMM_ID, RMM_MGIACC, CONCAT(GENE_URL.URL_URL, RMM_ID), REG_STABLE, " + 
+  final static String query35 = "SELECT RMM_SYMBOL, RMM_ID, RMM_MGIACC, CONCAT(GENE_URL.URL_URL, RMM_MGIACC), REG_STABLE, " + 
                                 "CONCAT(ENS_URL.URL_URL, REG_STABLE), " + 
-                                "CONCAT(GO_URL.URL_URL, RMM_SYMBOL, GO_URL.URL_SUFFIX), " + 
+                                "CONCAT(GO_URL.URL_URL, RMM_MGIACC), " + 
                                 "CONCAT(OMIM_URL.URL_URL, RMM_SYMBOL), " + 
                                 "CONCAT(ENTREZ_URL.URL_URL, RMM_SYMBOL), " + 
                                 "REG_CHROM_START, REG_CHROM_END, REG_CHROME_NAME, M.MIS_ENS_GENEBUILD, " + 
@@ -543,7 +524,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                                 " ON RMM_MGIACC = REG_PRIMARY_ACC " + 
                                 "JOIN REF_URL GENE_URL  JOIN REF_URL ENS_URL  JOIN REF_URL GO_URL  JOIN REF_URL OMIM_URL  JOIN REF_URL ENTREZ_URL  JOIN REF_URL GENECARDS_URL " + 
                                 "JOIN REF_URL HGNC_SYMBOL_SEARCH_URL " + 
-                                "WHERE GENE_URL.URL_TYPE = 'jax_gene_dir' " + 
+                                "WHERE GENE_URL.URL_TYPE = 'jax_gene' " + 
                                 "AND ENS_URL.URL_TYPE = 'ens_gene'  " +
                                 "AND GO_URL.URL_TYPE = 'go_gene'  " +
                                 "AND OMIM_URL.URL_TYPE = 'omim_gene'  " +
@@ -561,13 +542,20 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String query204 = "SELECT DISTINCT RPR_SYMBOL, RPR_NAME, RPR_JAX_ACC, RPR_LOCUS_TAG, "+  
                                  "PRB_SOURCE, PRB_STRAIN, PRB_TISSUE, PRB_PROBE_TYPE, "+
                                  "PRB_GENE_TYPE, PRB_LABEL_PRODUCT, PRB_VISUAL_METHOD, RPR_MTF_JAX, "+  
-                                 "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), CONCAT(PRB_NAME_URL.URL_URL,RMP_ID), CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
+                                 "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), "+
+                                 "CONCAT(PRB_NAME_URL.URL_URL,  CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RPR_JAX_ACC ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END) "+
+                                  "CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
                                  "RPR_TYPE, RPR_5_LOC, RPR_3_LOC, RPR_5_PRIMER, RPR_3_PRIMER, '', " +
                                  "RPR_CLONE_NAME_2, PRB_LAB_ID "+ 
                                  "FROM REF_PROBE "+
                                  "JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID "+
                                  "JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK "+
-                                 "JOIN REF_URL PRB_NAME_URL ON PRB_NAME_URL.URL_TYPE = 'jax_probe_dir' "+
+                                 "JOIN REF_URL PRB_NAME_URL ON PRB_NAME_URL.URL_TYPE = "+
+                              "CASE substring(RPR_JAX_ACC from 1 for position(':' in RPR_JAX_ACC)) " + 
+                              "WHEN 'MGI:'     THEN  'jax_gene' " + 
+                              "WHEN 'maprobe:' THEN 'maprobe_probe' " + 
+                              "ELSE '-1' /* unrecognised prefix, get NULL record */ " + 
+                              "END " +
                                  "JOIN REF_URL GENBANK_URL ON GENBANK_URL.URL_TYPE = 'genbank_sequence' "+
                                  "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC "+
                                  "WHERE RPR_JAX_ACC = ? "+
@@ -577,13 +565,20 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String query239 = "SELECT DISTINCT RPR_SYMBOL, RPR_NAME, RPR_JAX_ACC, RPR_LOCUS_TAG, "+  
                                  "PRB_SOURCE, PRB_STRAIN, PRB_TISSUE, PRB_PROBE_TYPE, "+
                                  "PRB_GENE_TYPE, PRB_LABEL_PRODUCT, PRB_VISUAL_METHOD, RPR_MTF_JAX, "+  
-                                 "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), CONCAT(PRB_NAME_URL.URL_URL,RMP_ID), CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
+                                 "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), "+
+                                 "CONCAT(PRB_NAME_URL.URL_URL,  CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RPR_JAX_ACC ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END), "+
+                                 "CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
                                  "RPR_TYPE, RPR_5_LOC, RPR_3_LOC, RPR_5_PRIMER, RPR_3_PRIMER, '', " +
                                  "RPR_CLONE_NAME_2, PRB_LAB_ID "+ 
                                  "FROM REF_PROBE "+
                                  "JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID "+
                                  "JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK "+
-                                 "JOIN REF_URL PRB_NAME_URL ON PRB_NAME_URL.URL_TYPE = 'jax_probe_dir' "+
+                                 "JOIN REF_URL PRB_NAME_URL ON PRB_NAME_URL.URL_TYPE = "+
+                              "CASE substring(RPR_JAX_ACC from 1 for position(':' in RPR_JAX_ACC)) " + 
+                              "WHEN 'MGI:'     THEN  'jax_gene' " + 
+                              "WHEN 'maprobe:' THEN 'maprobe_probe' " + 
+                              "ELSE '-1' /* unrecognised prefix, get NULL record */ " + 
+                              "END " +
                                  "JOIN REF_URL GENBANK_URL ON GENBANK_URL.URL_TYPE = 'genbank_sequence' "+
                                  "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC "+
                                  "WHERE RPR_JAX_ACC = ? "+
@@ -598,13 +593,13 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                         " JOIN ISH_PROBE  ON SUB_OID = PRB_SUBMISSION_FK " +
                         " JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
                         " JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK" +
-                        " JOIN REF_URL U ON U.URL_OID = 10 LEFT " +
-                        " JOIN ISH_ORIGINAL_IMAGE I ON SUB_OID = I.IMG_SUBMISSION_FK " +
-                        " AND I.IMG_OID = " +
-                        "  (SELECT MIN(I1.IMG_OID) " +
-                        "   FROM ISH_ORIGINAL_IMAGE I1 " +
-                        "   WHERE I1.IMG_SUBMISSION_FK = SUB_OID) " +
-                        " JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = " + bundle.getString("img_url_oid");
+                        " JOIN REF_URL U ON U.URL_OID = 1 LEFT " +
+                        " JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
+                        " AND IMG_OID = " +
+                        "  (SELECT MIN(I.IMG_OID) " +
+                        "   FROM ISH_ORIGINAL_IMAGE I " +
+                        "   WHERE I.IMG_SUBMISSION_FK = SUB_OID) " +
+      " JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 31 ";
 
   static String expPresentQuerySection = "";
   
@@ -625,7 +620,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   
   final static String NUMBER_OF_SPECIMEN_TYPE = "SELECT COUNT(DISTINCT SPN_ASSAY_TYPE) ";
   
-  final static String NUMBER_OF_IMAGE = "SELECT COUNT(DISTINCT CONCAT(I.IMG_FILEPATH,I.IMG_FILENAME)) ";
+  final static String NUMBER_OF_IMAGE = "SELECT COUNT(DISTINCT CONCAT(IMG_FILEPATH, IMG_FILENAME)) ";
 
   final static String name38 = "TOTAL_NUMBER_OF_SUBMISSION";
   final static String query38 = NUMBER_OF_SUBMISSION + endsBrowseSubmissionISH;
@@ -948,7 +943,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String name78 = "TOTAL_NUMBER_OF_SPECIMEN_TYPE_QENE_QUERY";
   final static String query78 = NUMBER_OF_SPECIMEN_TYPE;
   
-  final static String NUMBER_OF_IMAGE_GENE_QUERY = "SELECT COUNT(DISTINCT CONCAT(IMG_URL.URL_URL,I.IMG_FILEPATH,IMG_URL.URL_SUFFIX,I.IMG_FILENAME), REPLACE(SUB_ACCESSION_ID, '" + ":" + "', '" + "no" + "')) ";
+  final static String NUMBER_OF_IMAGE_GENE_QUERY = "SELECT COUNT(DISTINCT CONCAT(IMG_URL.URL_URL, IMG_FILEPATH,IMG_URL.URL_SUFFIX, IMG_FILENAME), REPLACE(SUB_ACCESSION_ID, '" + ":" + "', '" + "no" + "')) ";
   
   final static String name79 = "TOTAL_NUMBER_OF_IMAGE_QENE_QUERY";
   final static String query79 = NUMBER_OF_IMAGE_GENE_QUERY ;
@@ -970,17 +965,17 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		                                                      "LEFT JOIN REF_SYNONYM ON RSY_REF = RMM_ID " +
   		                                                      "JOIN ISH_PROBE ON SUB_OID = PRB_SUBMISSION_FK " +
   		                                                      "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
-  		                                                      "JOIN REF_URL ON URL_OID = 10 " +
+  		                                                      "JOIN REF_URL ON URL_OID = 1 " +
   		                                                      "JOIN ANA_NODE " +
   		                                                      "JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
   		                                                      "  AND ATN_NODE_FK = ANO_OID " +
   		                                                      "JOIN ANAD_PART_OF ON APO_NODE_FK = " +
   		                                                      "  ANO_OID AND APO_IS_PRIMARY = true " +
   		                                                      "JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
-  		                                                      "JOIN ISH_ORIGINAL_IMAGE I ON SUB_OID = I.IMG_SUBMISSION_FK " +
-  		                                                      "  AND I.IMG_OID = " +
-  		                                                      "    (SELECT MIN(I1.IMG_OID) FROM ISH_ORIGINAL_IMAGE I1 " +
-  		                                                      "     WHERE I1.IMG_SUBMISSION_FK = SUB_OID) " +
+  		                                                      "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
+  		                                                      "  AND IMG_OID = " +
+  		                                                      "    (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I " +
+  		                                                      "     WHERE I.IMG_SUBMISSION_FK = SUB_OID) " +
   		                                                      "JOIN REF_PROBE WHERE ";
   
   final static String name103 = "COMPONENT_COUNT_QUERY";
@@ -1139,19 +1134,19 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                                                             "    and ANCES_ATN.ATN_PUBLIC_ID ";
 
   final static String name91 = "GENE_EXPRESSED_IN_COMPONENT_END";
-  final static String query91 = "JOIN ISH_ORIGINAL_IMAGE I ON SUB_OID = I.IMG_SUBMISSION_FK " +
-  		                                                "  AND I.IMG_OID = " +
-  		                                                "   (SELECT MIN(I1.IMG_OID) " +
-  		                                                "    FROM ISH_ORIGINAL_IMAGE I1 " +
-  		                                                "    WHERE I1.IMG_SUBMISSION_FK = SUB_OID) " +
+  final static String query91 = "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
+  		                                                "  AND IMG_OID = " +
+  		                                                "   (SELECT MIN(I.IMG_OID) " +
+  		                                                "    FROM ISH_ORIGINAL_IMAGE I " +
+  		                                                "    WHERE I.IMG_SUBMISSION_FK = SUB_OID) " +
   		                                                "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 14 " + PUBLIC_ENTRIES_Q;
   
   final static String name92 = "GENE_NOT_DETECTED_IN_COMPONENT_END";
-  final static String query92 = "JOIN ISH_ORIGINAL_IMAGE I ON SUB_OID = I.IMG_SUBMISSION_FK " +
-  		                                                  "  AND I.IMG_OID = " +
-  		                                                  "    (SELECT MIN(I1.IMG_OID) " +
-  		                                                  "     FROM ISH_ORIGINAL_IMAGE I1 " +
-  		                                                  "     WHERE I1.IMG_SUBMISSION_FK = SUB_OID) " + PUBLIC_ENTRIES_Q;
+  final static String query92 = "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
+  		                                                  "  AND IMG_OID = " +
+  		                                                  "    (SELECT MIN(I.IMG_OID) " +
+  		                                                  "     FROM ISH_ORIGINAL_IMAGE I " +
+  		                                                  "     WHERE I.IMG_SUBMISSION_FK = SUB_OID) " + PUBLIC_ENTRIES_Q;
   
   /** ---used for entry page--- */
   // query to find the number of total ISH submissions users sent to GUDMAP DB
@@ -1507,8 +1502,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String query226 = query199;
   
   final static String name200 = "MIC_IMAGES";
-  final static String query200 = "SELECT CONCAT(URL_URL,IMG_FILEPATH,URL_SUFFIX,IMG_FILENAME),CONCAT(URL_URL,IMG_FILEPATH,IMG_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? "
-				+" AND  IMG_SUBMISSION_FK = SUB_OID JOIN REF_URL ON URL_OID = '"+bundle.getString("img_url_oid") + "' "
+  final static String query200 = "SELECT CONCAT(URL_URL, IMG_FILEPATH,URL_SUFFIX, IMG_FILENAME),CONCAT(URL_URL, IMG_FILEPATH, IMG_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? "
+				+" AND  IMG_SUBMISSION_FK = SUB_OID JOIN REF_URL ON URL_OID = 31 "
 				+" LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE='Microarray' ";
   
   /** retrieve collection info */
@@ -1630,9 +1625,9 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
 
 
   final static String name231 = "GENE_RELATED_INSITU_SUBMISSION_IMAGES";
-  final static String query231 = "SELECT SUB_ACCESSION_ID, SUB_EMBRYO_STG, SPN_ASSAY_TYPE, CONCAT(URL_URL,IMG_FILEPATH,URL_SUFFIX,IMG_FILENAME), IMG_FILENAME, IMG_PYR_TILE_SIZE " +
+  final static String query231 = "SELECT SUB_ACCESSION_ID, SUB_EMBRYO_STG, SPN_ASSAY_TYPE, CONCAT(URL_URL, IMG_FILEPATH,URL_SUFFIX, IMG_FILENAME), IMG_FILENAME, IMG_PYR_TILE_SIZE " +
   		"FROM ISH_SUBMISSION " +
-  		"JOIN REF_URL ON URL_OID = " + bundle.getString("iip_img_url_oid") + " " +
+  		"JOIN REF_URL ON URL_OID = 41 " +
   		"JOIN ISH_ORIGINAL_IMAGE ON IMG_SUBMISSION_FK = SUB_OID " +
   		"JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " +
   		"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +

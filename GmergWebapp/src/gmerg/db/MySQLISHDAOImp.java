@@ -170,7 +170,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             for (int i = 0; i < queryNumber; i++) {
 		if (debug)
-		    System.out.println("MySQLISHDAOImp.sql = "+queryString[i].toLowerCase());
+		    System.out.println("MySQLISHDAOImp.sql "+i+"th = "+queryString[i]);
                 prepStmt = conn.prepareStatement(queryString[i]);
                 if (param != null &&
                     param[i] != null) { // set query criteria if it's not null
@@ -230,7 +230,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, submissionAccessionId);
 	    
@@ -324,7 +324,7 @@ public class MySQLISHDAOImp implements ISHDAO {
     
     public Probe findMaProbeByProbeId(String probeId, String maprobeId){
     	if(probeId == null){
-	    //    		throw new NullPointerException("probe id paramter");
+	    System.out.println("MySQLISHDAOImp.findMaProbeByProbeId !!!possible error: null probe id");
 	    return null;
     	}
 	
@@ -341,7 +341,9 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
     	}
 	
-    	//Bernie 28/06/2011 Mantis 558 Task 5 added to query to get notes
+	if (debug) 
+	    System.out.println("MySQLISHDAOImp.findMaProbeByProbeId sql = "+parQProbe.getQuerySQL());
+
         PreparedStatement prepStmtProbeNote = null;
         ResultSet resSetProbeNote = null;
         ParamQuery parQProbeNote = DBQuery.getParamQuery("MAPROBE_PRBNOTE");
@@ -403,7 +405,7 @@ public class MySQLISHDAOImp implements ISHDAO {
     public Probe findProbeBySubmissionId(String submissionAccessionId) {
 	
         if (submissionAccessionId == null) {
-	    //            throw new NullPointerException("id parameter");
+	    System.out.println("MySQLISHDAOImp.findProbeBySubmissionId  !!!possible error: try to get probe of a submission whose accession is null");
 	    return null;
         }
 	
@@ -426,6 +428,9 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQFullSequence = DBQuery.getParamQuery("SUBMISSION_FULL_SEQUENCE");
         PreparedStatement prepStmtFullSequence = null;
 	
+	if (debug) 
+	    System.out.println(" to do sql for rna probe: " + parQProbe.getQuerySQL());
+
         try {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
@@ -434,7 +439,10 @@ public class MySQLISHDAOImp implements ISHDAO {
             // probe
             parQProbe.setPrepStat(conn);
             prepStmtProbe = parQProbe.getPrepStat();
-            prepStmtProbe.setString(1, submissionAccessionId);
+	    if (-1 == submissionAccessionId.indexOf("GUDMAP:"))
+		prepStmtProbe.setString(1, "GUDMAP:"+submissionAccessionId);
+	    else
+		prepStmtProbe.setString(1, submissionAccessionId);
             resSetProbe = prepStmtProbe.executeQuery();
 	    
             // probe note
@@ -469,6 +477,9 @@ public class MySQLISHDAOImp implements ISHDAO {
         } catch (SQLException se) {
             se.printStackTrace();
         }
+
+	if (null == probeInfo)
+	    System.out.println("MySQLISHDAOImp.findProbeBySubmissionId !!!possible error: submission "+submissionAccessionId+" has no probe");
         return probeInfo;
     }
     
@@ -593,6 +604,9 @@ public class MySQLISHDAOImp implements ISHDAO {
             	probe.setFullSequence(null);
             }
         }
+
+	if (null == probe) 
+	    System.out.println("MySQLISHDAOImp.formatProbeResultSet   !!!possible error: null probe");
 
         return probe;
     }
@@ -1023,7 +1037,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, submissionAccessionId);
 	    
@@ -1623,7 +1637,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, symbol);
             resSet = prepStmt.executeQuery();
@@ -2005,7 +2019,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+query);
             prepStmt = conn.prepareStatement(query);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
@@ -2217,7 +2231,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             for (int i = 0; i < queryNumber; i++) {
 		if (debug)
-		    System.out.println("MySQLISHDAOImp.sql = "+queryString[i].toLowerCase());
+		    System.out.println("MySQLISHDAOImp.sql = "+queryString[i]);
                 prepStmt = conn.prepareStatement(queryString[i]);
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
@@ -2317,7 +2331,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             for (int i = 0; i < queryNumber; i++) {
 		if (debug)
-		    System.out.println("MySQLISHDAOImp.sql = "+queryString[i].toLowerCase());
+		    System.out.println("MySQLISHDAOImp.sql = "+queryString[i]);
                 prepStmt = conn.prepareStatement(queryString[i]);
 		//                System.out.println("total Number sql: " + queryString[i]);
                 resSet = prepStmt.executeQuery();
@@ -2390,7 +2404,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
 	    resSet = prepStmt.executeQuery();
 	    result = DBHelper.formatResultSetToArrayList(resSet);
@@ -2434,7 +2448,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+query);
             prepStmt = conn.prepareStatement(query);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
@@ -2565,7 +2579,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
 	    
             if (stage == null || stage.equals("")) {
@@ -2641,7 +2655,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
 	    if (stage == null || stage.equals("")) {
 		prepStmt.setString(1, componentId);
@@ -2723,7 +2737,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
@@ -2798,7 +2812,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
 	    resSet = prepStmt.executeQuery();
 	    result = DBHelper.formatBrowseResultSetISH(resSet);
@@ -3114,7 +3128,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+query);
             prepStmt = conn.prepareStatement(query);
             prepStmt.setString(1, componentId);
 	    
@@ -3173,7 +3187,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
 	    resSet = prepStmt.executeQuery();
 	    if (resSet.first()) {
@@ -3752,7 +3766,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
 	    
             if (submissionDate == null || submissionDate.equals("")) {
@@ -3825,7 +3839,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
 	    
 	    if (submissionDate == null || submissionDate.equals("")) {
@@ -3903,7 +3917,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
 	    
 	    prepStmt.setInt(1, Integer.parseInt(labId));
@@ -3969,7 +3983,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
 	    if (submissionDate == null || submissionDate.equals("")) {
 		prepStmt.setString(1, isPublic);
@@ -4031,7 +4045,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
 	    prepStmt.setString(1, isPublic);
 	    prepStmt.setInt(2, Integer.parseInt(labId));
@@ -4084,7 +4098,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+query);
             prepStmt = conn.prepareStatement(query);
             if (submissionDate == null || submissionDate.equals("")) {
                 prepStmt.setInt(1, lab);
@@ -4134,7 +4148,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+query);
             prepStmt = conn.prepareStatement(query);
             if (submissionDate == null || submissionDate.equals("")) {
                 prepStmt.setInt(1, lab);
@@ -4436,7 +4450,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
 	    //            prepStmt.setString(1, assayType);
             resSet = prepStmt.executeQuery();
@@ -4597,7 +4611,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             if (!resSet.first()) {// not a insitu submission. go to get the image from tg table
 		//            	System.out.println("findImageDetailBySubmissionId:it's a tg submission");
 		if (debug)
-		    System.out.println("MySQLISHDAOImp.sql = "+queryStringTG.toLowerCase());
+		    System.out.println("MySQLISHDAOImp.sql = "+queryStringTG);
                 prepStmtTG = conn.prepareStatement(queryStringTG);
                 prepStmtTG.setString(1, submissionAccessionId);
                 prepStmtTG.setInt(2, serialNum);
@@ -4727,7 +4741,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
@@ -5315,7 +5329,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+query);
 	    prepStmt = conn.prepareStatement(query);
 	    prepStmt.setInt(1, Integer.parseInt(accessionId.substring(7)));
 	    resSet = prepStmt.executeQuery();
@@ -5359,7 +5373,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+query);
 	    prepStmt = conn.prepareStatement(query);
 	    resSet = prepStmt.executeQuery();
 	    if (resSet.first()) {
@@ -5398,7 +5412,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+query);
 	    prepStmt = conn.prepareStatement(query);
 	    resSet = prepStmt.executeQuery();
 	    if (resSet.first()) {
@@ -5438,7 +5452,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+query);
 	    prepStmt = conn.prepareStatement(query);
 	    prepStmt.setString(1, stage);
 	    resSet = prepStmt.executeQuery();
@@ -5484,7 +5498,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString.toLowerCase());
+		System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    prepStmt = conn.prepareStatement(queryString);
 	    prepStmt.setString(1, accessionId);
 	    resSet = prepStmt.executeQuery();
