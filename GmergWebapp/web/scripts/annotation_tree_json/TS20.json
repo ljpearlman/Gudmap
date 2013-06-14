@@ -1,0 +1,1786 @@
+[
+{
+"data" : "mouse (EMAP:25785)",
+"attr" : {
+"id" : "0--0",
+"APO_DEPTH" : "0",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "0",
+"ATN_PUBLIC_ID" : "EMAP:25785",
+"name" : "EMAP25785",
+"RANGE" : "(TS01-TS28)",
+"kids" : "15"
+}, "children" : [
+
+{ "data" : "organ system (EMAP:3981)",
+"attr" : {
+"id" : "1--0",
+"APO_DEPTH" : "1",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "1",
+"ATN_PUBLIC_ID" : "EMAP:3981",
+"name" : "EMAP3981",
+"RANGE" : "(TS11-TS28)",
+"kids" : "5",
+"parent_id" : "0--0"
+}, "children" : [
+
+{ "data" : "visceral organ (EMAP:3982)",
+"attr" : {
+"id" : "2--0",
+"APO_DEPTH" : "2",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "2",
+"ATN_PUBLIC_ID" : "EMAP:3982",
+"name" : "EMAP3982",
+"RANGE" : "(TS12-TS28)",
+"kids" : "5",
+"parent_id" : "1--0"
+}, "children" : [
+
+{ "data" : "urinary system (EMAP:4580)",
+"attr" : {
+"id" : "3--0",
+"APO_DEPTH" : "3",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "50",
+"ATN_PUBLIC_ID" : "EMAP:4580",
+"name" : "EMAP4580",
+"RANGE" : "(TS19-TS28)",
+"kids" : "11",
+"parent_id" : "2--0"
+}, "children" : [
+
+{ "data" : "mesentery (EMAP:4581)",
+"attr" : {
+"id" : "4--0",
+"APO_DEPTH" : "4",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "51",
+"ATN_PUBLIC_ID" : "EMAP:4581",
+"name" : "EMAP4581",
+"RANGE" : "(TS20-TS28)",
+"kids" : "2",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : "rest of mesentery (EMAP:29610)",
+"attr" : {
+"id" : "5--0",
+"APO_DEPTH" : "5",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "52",
+"ATN_PUBLIC_ID" : "EMAP:29610",
+"name" : "EMAP29610",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "4--0"
+} },
+{ "data" : "urogenital mesentery (EMAP:4582)",
+"attr" : {
+"id" : "5--1",
+"APO_DEPTH" : "5",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "53",
+"ATN_PUBLIC_ID" : "EMAP:4582",
+"name" : "EMAP4582",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "4--0"
+} }
+]},
+{ "data" : "metanephros (EMAP:4587)",
+"attr" : {
+"id" : "4--1",
+"APO_DEPTH" : "4",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "54",
+"ATN_PUBLIC_ID" : "EMAP:4587",
+"name" : "EMAP4587",
+"RANGE" : "(TS19-TS28)",
+"kids" : "11",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : "renal capsule (EMAP:31848)",
+"attr" : {
+"id" : "5--2",
+"APO_DEPTH" : "5",
+"depth_occurence" : "2",
+"APO_SEQUENCE" : "55",
+"ATN_PUBLIC_ID" : "EMAP:31848",
+"name" : "EMAP31848",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "4--1"
+} },
+{ "data" : "nephrogenic interstitium (EMAP:27672)",
+"attr" : {
+"id" : "5--3",
+"APO_DEPTH" : "5",
+"depth_occurence" : "3",
+"APO_SEQUENCE" : "65",
+"ATN_PUBLIC_ID" : "EMAP:27672",
+"name" : "EMAP27672",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "4--1"
+} },
+{ "data" : "cap mesenchyme (EMAP:4589)",
+"attr" : {
+"id" : "5--4",
+"APO_DEPTH" : "5",
+"depth_occurence" : "4",
+"APO_SEQUENCE" : "66",
+"ATN_PUBLIC_ID" : "EMAP:4589",
+"name" : "EMAP4589",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "4--1"
+} },
+{ "data" : "pretubular aggregate (EMAP:27674)",
+"attr" : {
+"id" : "5--5",
+"APO_DEPTH" : "5",
+"depth_occurence" : "5",
+"APO_SEQUENCE" : "67",
+"ATN_PUBLIC_ID" : "EMAP:27674",
+"name" : "EMAP27674",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "4--1"
+} },
+{ "data" : "renal vesicle (EMAP:27679)",
+"attr" : {
+"id" : "5--6",
+"APO_DEPTH" : "5",
+"depth_occurence" : "6",
+"APO_SEQUENCE" : "71",
+"ATN_PUBLIC_ID" : "EMAP:27679",
+"name" : "EMAP27679",
+"RANGE" : "(TS20-TS21)",
+"kids" : "3",
+"parent_id" : "4--1"
+}, "children" : [
+
+{ "data" : "renal connecting segment of renal vesicle (EMAP:31700)",
+"attr" : {
+"id" : "6--0",
+"APO_DEPTH" : "6",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "72",
+"ATN_PUBLIC_ID" : "EMAP:31700",
+"name" : "EMAP31700",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--6"
+} },
+{ "data" : "distal renal vesicle (EMAP:31836)",
+"attr" : {
+"id" : "6--1",
+"APO_DEPTH" : "6",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "73",
+"ATN_PUBLIC_ID" : "EMAP:31836",
+"name" : "EMAP31836",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--6"
+} },
+{ "data" : "proximal renal vesicle (EMAP:31731)",
+"attr" : {
+"id" : "6--2",
+"APO_DEPTH" : "6",
+"depth_occurence" : "2",
+"APO_SEQUENCE" : "74",
+"ATN_PUBLIC_ID" : "EMAP:31731",
+"name" : "EMAP31731",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--6"
+} }
+]},
+{ "data" : "comma-shaped body (EMAP:27682)",
+"attr" : {
+"id" : "5--7",
+"APO_DEPTH" : "5",
+"depth_occurence" : "7",
+"APO_SEQUENCE" : "75",
+"ATN_PUBLIC_ID" : "EMAP:27682",
+"name" : "EMAP27682",
+"RANGE" : "(TS20-TS21)",
+"kids" : "3",
+"parent_id" : "4--1"
+}, "children" : [
+
+{ "data" : "upper limb of comma-shaped body (EMAP:27685)",
+"attr" : {
+"id" : "6--3",
+"APO_DEPTH" : "6",
+"depth_occurence" : "3",
+"APO_SEQUENCE" : "76",
+"ATN_PUBLIC_ID" : "EMAP:27685",
+"name" : "EMAP27685",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--7"
+} },
+{ "data" : "lower limb of comma-shaped body (EMAP:27688)",
+"attr" : {
+"id" : "6--4",
+"APO_DEPTH" : "6",
+"depth_occurence" : "4",
+"APO_SEQUENCE" : "77",
+"ATN_PUBLIC_ID" : "EMAP:27688",
+"name" : "EMAP27688",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--7"
+} },
+{ "data" : "renal connecting segment of comma-shaped body (EMAP:31717)",
+"attr" : {
+"id" : "6--5",
+"APO_DEPTH" : "6",
+"depth_occurence" : "5",
+"APO_SEQUENCE" : "78",
+"ATN_PUBLIC_ID" : "EMAP:31717",
+"name" : "EMAP31717",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--7"
+} }
+]},
+{ "data" : "renal interstitium (EMAP:27691)",
+"attr" : {
+"id" : "5--8",
+"APO_DEPTH" : "5",
+"depth_occurence" : "8",
+"APO_SEQUENCE" : "97",
+"ATN_PUBLIC_ID" : "EMAP:27691",
+"name" : "EMAP27691",
+"RANGE" : "(TS20-TS21)",
+"kids" : "3",
+"parent_id" : "4--1"
+}, "children" : [
+
+{ "data" : "resident macrophages (EMAP:31274)",
+"attr" : {
+"id" : "6--6",
+"APO_DEPTH" : "6",
+"depth_occurence" : "6",
+"APO_SEQUENCE" : "99",
+"ATN_PUBLIC_ID" : "EMAP:31274",
+"name" : "EMAP31274",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--8"
+} },
+{ "data" : "nephrogenic interstitium (EMAP:31271)",
+"attr" : {
+"id" : "6--7",
+"APO_DEPTH" : "6",
+"depth_occurence" : "7",
+"APO_SEQUENCE" : "100",
+"ATN_PUBLIC_ID" : "EMAP:31271",
+"name" : "EMAP31271",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--8"
+} },
+{ "data" : "rest of renal interstitium (EMAP:31277)",
+"attr" : {
+"id" : "6--8",
+"APO_DEPTH" : "6",
+"depth_occurence" : "8",
+"APO_SEQUENCE" : "101",
+"ATN_PUBLIC_ID" : "EMAP:31277",
+"name" : "EMAP31277",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--8"
+} }
+]},
+{ "data" : "developing vasculature of metanephros (EMAP:27795)",
+"attr" : {
+"id" : "5--9",
+"APO_DEPTH" : "5",
+"depth_occurence" : "9",
+"APO_SEQUENCE" : "102",
+"ATN_PUBLIC_ID" : "EMAP:27795",
+"name" : "EMAP27795",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "4--1"
+} },
+{ "data" : "primitive collecting duct (EMAP:4590)",
+"attr" : {
+"id" : "5--10",
+"APO_DEPTH" : "5",
+"depth_occurence" : "10",
+"APO_SEQUENCE" : "103",
+"ATN_PUBLIC_ID" : "EMAP:4590",
+"name" : "EMAP4590",
+"RANGE" : "(TS20-TS20)",
+"kids" : "2",
+"parent_id" : "4--1"
+}, "children" : [
+
+{ "data" : "ureteric tip (EMAP:27695)",
+"attr" : {
+"id" : "6--9",
+"APO_DEPTH" : "6",
+"depth_occurence" : "9",
+"APO_SEQUENCE" : "104",
+"ATN_PUBLIC_ID" : "EMAP:27695",
+"name" : "EMAP27695",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--10"
+} },
+{ "data" : "ureteric trunk (EMAP:27698)",
+"attr" : {
+"id" : "6--10",
+"APO_DEPTH" : "6",
+"depth_occurence" : "10",
+"APO_SEQUENCE" : "105",
+"ATN_PUBLIC_ID" : "EMAP:27698",
+"name" : "EMAP27698",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--10"
+} }
+]},
+{ "data" : " G early nephron GROUP (EMAP:29339)",
+"attr" : {
+"id" : "5--11",
+"APO_DEPTH" : "5",
+"depth_occurence" : "11",
+"APO_SEQUENCE" : "522",
+"ATN_PUBLIC_ID" : "EMAP:29339",
+"name" : "EMAP29339",
+"RANGE" : "(TS20-TS28)",
+"kids" : "2",
+"parent_id" : "4--1"
+}, "children" : [
+
+{ "data" : " G renal vesicle (EMAP:27679)",
+"attr" : {
+"id" : "6--11",
+"APO_DEPTH" : "6",
+"depth_occurence" : "11",
+"APO_SEQUENCE" : "579",
+"ATN_PUBLIC_ID" : "EMAP:27679",
+"name" : "EMAP27679",
+"RANGE" : "(TS20-TS21)",
+"kids" : "3",
+"parent_id" : "5--11"
+}, "children" : [
+
+{ "data" : " G renal connecting segment of renal vesicle (EMAP:31700)",
+"attr" : {
+"id" : "7--0",
+"APO_DEPTH" : "7",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "580",
+"ATN_PUBLIC_ID" : "EMAP:31700",
+"name" : "EMAP31700",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "6--11"
+} },
+{ "data" : " G distal renal vesicle (EMAP:31836)",
+"attr" : {
+"id" : "7--1",
+"APO_DEPTH" : "7",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "581",
+"ATN_PUBLIC_ID" : "EMAP:31836",
+"name" : "EMAP31836",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "6--11"
+} },
+{ "data" : " G proximal renal vesicle (EMAP:31731)",
+"attr" : {
+"id" : "7--2",
+"APO_DEPTH" : "7",
+"depth_occurence" : "2",
+"APO_SEQUENCE" : "582",
+"ATN_PUBLIC_ID" : "EMAP:31731",
+"name" : "EMAP31731",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "6--11"
+} }
+]},
+{ "data" : " G comma-shaped body (EMAP:27682)",
+"attr" : {
+"id" : "6--12",
+"APO_DEPTH" : "6",
+"depth_occurence" : "12",
+"APO_SEQUENCE" : "583",
+"ATN_PUBLIC_ID" : "EMAP:27682",
+"name" : "EMAP27682",
+"RANGE" : "(TS20-TS21)",
+"kids" : "3",
+"parent_id" : "5--11"
+}, "children" : [
+
+{ "data" : " G upper limb of comma-shaped body (EMAP:27685)",
+"attr" : {
+"id" : "7--3",
+"APO_DEPTH" : "7",
+"depth_occurence" : "3",
+"APO_SEQUENCE" : "584",
+"ATN_PUBLIC_ID" : "EMAP:27685",
+"name" : "EMAP27685",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "6--12"
+} },
+{ "data" : " G lower limb of comma-shaped body (EMAP:27688)",
+"attr" : {
+"id" : "7--4",
+"APO_DEPTH" : "7",
+"depth_occurence" : "4",
+"APO_SEQUENCE" : "585",
+"ATN_PUBLIC_ID" : "EMAP:27688",
+"name" : "EMAP27688",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "6--12"
+} },
+{ "data" : " G renal connecting segment of comma-shaped body (EMAP:31717)",
+"attr" : {
+"id" : "7--5",
+"APO_DEPTH" : "7",
+"depth_occurence" : "5",
+"APO_SEQUENCE" : "586",
+"ATN_PUBLIC_ID" : "EMAP:31717",
+"name" : "EMAP31717",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "6--12"
+} }
+]}
+]},
+{ "data" : " G nephrogenic zone GROUP (EMAP:31766)",
+"attr" : {
+"id" : "5--12",
+"APO_DEPTH" : "5",
+"depth_occurence" : "12",
+"APO_SEQUENCE" : "823",
+"ATN_PUBLIC_ID" : "EMAP:31766",
+"name" : "EMAP31766",
+"RANGE" : "(TS20-TS21)",
+"kids" : "4",
+"parent_id" : "4--1"
+}, "children" : [
+
+{ "data" : " G cap mesenchyme (EMAP:4589)",
+"attr" : {
+"id" : "6--13",
+"APO_DEPTH" : "6",
+"depth_occurence" : "13",
+"APO_SEQUENCE" : "824",
+"ATN_PUBLIC_ID" : "EMAP:4589",
+"name" : "EMAP4589",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--12"
+} },
+{ "data" : " G nephrogenic interstitium (EMAP:31271)",
+"attr" : {
+"id" : "6--14",
+"APO_DEPTH" : "6",
+"depth_occurence" : "14",
+"APO_SEQUENCE" : "825",
+"ATN_PUBLIC_ID" : "EMAP:31271",
+"name" : "EMAP31271",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--12"
+} },
+{ "data" : " G pretubular aggregate (EMAP:27674)",
+"attr" : {
+"id" : "6--15",
+"APO_DEPTH" : "6",
+"depth_occurence" : "15",
+"APO_SEQUENCE" : "826",
+"ATN_PUBLIC_ID" : "EMAP:27674",
+"name" : "EMAP27674",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--12"
+} },
+{ "data" : " G ureteric tip (EMAP:27695)",
+"attr" : {
+"id" : "6--16",
+"APO_DEPTH" : "6",
+"depth_occurence" : "16",
+"APO_SEQUENCE" : "827",
+"ATN_PUBLIC_ID" : "EMAP:27695",
+"name" : "EMAP27695",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--12"
+} }
+]}
+]},
+{ "data" : "nephric duct, metanephric portion (EMAP:4592)",
+"attr" : {
+"id" : "4--2",
+"APO_DEPTH" : "4",
+"depth_occurence" : "2",
+"APO_SEQUENCE" : "840",
+"ATN_PUBLIC_ID" : "EMAP:4592",
+"name" : "EMAP4592",
+"RANGE" : "(TS19-TS20)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "ureter (EMAP:4591)",
+"attr" : {
+"id" : "4--3",
+"APO_DEPTH" : "4",
+"depth_occurence" : "3",
+"APO_SEQUENCE" : "841",
+"ATN_PUBLIC_ID" : "EMAP:4591",
+"name" : "EMAP4591",
+"RANGE" : "(TS20-TS28)",
+"kids" : "3",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : "epithelial layer of ureter (EMAP:27709)",
+"attr" : {
+"id" : "5--13",
+"APO_DEPTH" : "5",
+"depth_occurence" : "13",
+"APO_SEQUENCE" : "846",
+"ATN_PUBLIC_ID" : "EMAP:27709",
+"name" : "EMAP27709",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "4--3"
+} },
+{ "data" : "ureteral mesenchyme (EMAP:27712)",
+"attr" : {
+"id" : "5--14",
+"APO_DEPTH" : "5",
+"depth_occurence" : "14",
+"APO_SEQUENCE" : "853",
+"ATN_PUBLIC_ID" : "EMAP:27712",
+"name" : "EMAP27712",
+"RANGE" : "(TS20-TS24)",
+"kids" : "2",
+"parent_id" : "4--3"
+}, "children" : [
+
+{ "data" : "subepithelial layer (EMAP:28562)",
+"attr" : {
+"id" : "6--17",
+"APO_DEPTH" : "6",
+"depth_occurence" : "17",
+"APO_SEQUENCE" : "854",
+"ATN_PUBLIC_ID" : "EMAP:28562",
+"name" : "EMAP28562",
+"RANGE" : "(TS20-TS24)",
+"kids" : "0",
+"parent_id" : "5--14"
+} },
+{ "data" : "ureteral mesenchyme, rest of (EMAP:29994)",
+"attr" : {
+"id" : "6--18",
+"APO_DEPTH" : "6",
+"depth_occurence" : "18",
+"APO_SEQUENCE" : "860",
+"ATN_PUBLIC_ID" : "EMAP:29994",
+"name" : "EMAP29994",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--14"
+} }
+]},
+{ "data" : "ureteral vasculature (EMAP:30851)",
+"attr" : {
+"id" : "5--15",
+"APO_DEPTH" : "5",
+"depth_occurence" : "15",
+"APO_SEQUENCE" : "862",
+"ATN_PUBLIC_ID" : "EMAP:30851",
+"name" : "EMAP30851",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "4--3"
+} }
+]},
+{ "data" : "allantois (EMAP:28548)",
+"attr" : {
+"id" : "4--4",
+"APO_DEPTH" : "4",
+"depth_occurence" : "4",
+"APO_SEQUENCE" : "863",
+"ATN_PUBLIC_ID" : "EMAP:28548",
+"name" : "EMAP28548",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "urogenital sinus (EMAP:4594)",
+"attr" : {
+"id" : "4--5",
+"APO_DEPTH" : "4",
+"depth_occurence" : "5",
+"APO_SEQUENCE" : "899",
+"ATN_PUBLIC_ID" : "EMAP:4594",
+"name" : "EMAP4594",
+"RANGE" : "(TS19-TS22)",
+"kids" : "4",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : "developing vasculature of urogenital sinus (EMAP:31673)",
+"attr" : {
+"id" : "5--16",
+"APO_DEPTH" : "5",
+"depth_occurence" : "16",
+"APO_SEQUENCE" : "902",
+"ATN_PUBLIC_ID" : "EMAP:31673",
+"name" : "EMAP31673",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "4--5"
+} },
+{ "data" : "nerves of urogenital sinus (EMAP:31675)",
+"attr" : {
+"id" : "5--17",
+"APO_DEPTH" : "5",
+"depth_occurence" : "17",
+"APO_SEQUENCE" : "903",
+"ATN_PUBLIC_ID" : "EMAP:31675",
+"name" : "EMAP31675",
+"RANGE" : "(TS20-TS21)",
+"kids" : "2",
+"parent_id" : "4--5"
+}, "children" : [
+
+{ "data" : "pelvic ganglion (EMAP:31661)",
+"attr" : {
+"id" : "6--19",
+"APO_DEPTH" : "6",
+"depth_occurence" : "19",
+"APO_SEQUENCE" : "904",
+"ATN_PUBLIC_ID" : "EMAP:31661",
+"name" : "EMAP31661",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--17"
+} },
+{ "data" : "nerve of urogenital sinus (EMAP:31663)",
+"attr" : {
+"id" : "6--20",
+"APO_DEPTH" : "6",
+"depth_occurence" : "20",
+"APO_SEQUENCE" : "905",
+"ATN_PUBLIC_ID" : "EMAP:31663",
+"name" : "EMAP31663",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--17"
+} }
+]},
+{ "data" : "primitive bladder (EMAP:30871)",
+"attr" : {
+"id" : "5--18",
+"APO_DEPTH" : "5",
+"depth_occurence" : "18",
+"APO_SEQUENCE" : "906",
+"ATN_PUBLIC_ID" : "EMAP:30871",
+"name" : "EMAP30871",
+"RANGE" : "(TS20-TS21)",
+"kids" : "3",
+"parent_id" : "4--5"
+}, "children" : [
+
+{ "data" : "epithelial layer of primitive bladder (EMAP:30874)",
+"attr" : {
+"id" : "6--21",
+"APO_DEPTH" : "6",
+"depth_occurence" : "21",
+"APO_SEQUENCE" : "907",
+"ATN_PUBLIC_ID" : "EMAP:30874",
+"name" : "EMAP30874",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--18"
+} },
+{ "data" : "mesenchymal layer of primitive bladder (EMAP:30877)",
+"attr" : {
+"id" : "6--22",
+"APO_DEPTH" : "6",
+"depth_occurence" : "22",
+"APO_SEQUENCE" : "908",
+"ATN_PUBLIC_ID" : "EMAP:30877",
+"name" : "EMAP30877",
+"RANGE" : "(TS20-TS21)",
+"kids" : "2",
+"parent_id" : "5--18"
+}, "children" : [
+
+{ "data" : "mesenchymal layer of dorsal primitive bladder (EMAP:31665)",
+"attr" : {
+"id" : "7--6",
+"APO_DEPTH" : "7",
+"depth_occurence" : "6",
+"APO_SEQUENCE" : "909",
+"ATN_PUBLIC_ID" : "EMAP:31665",
+"name" : "EMAP31665",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "6--22"
+} },
+{ "data" : "mesenchymal layer of ventral primitive bladder (EMAP:31652)",
+"attr" : {
+"id" : "7--7",
+"APO_DEPTH" : "7",
+"depth_occurence" : "7",
+"APO_SEQUENCE" : "910",
+"ATN_PUBLIC_ID" : "EMAP:31652",
+"name" : "EMAP31652",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "6--22"
+} }
+]},
+{ "data" : "developing vasculature of primitive bladder (EMAP:31692)",
+"attr" : {
+"id" : "6--23",
+"APO_DEPTH" : "6",
+"depth_occurence" : "23",
+"APO_SEQUENCE" : "911",
+"ATN_PUBLIC_ID" : "EMAP:31692",
+"name" : "EMAP31692",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--18"
+} }
+]},
+{ "data" : "rest of urogenital sinus (EMAP:30880)",
+"attr" : {
+"id" : "5--19",
+"APO_DEPTH" : "5",
+"depth_occurence" : "19",
+"APO_SEQUENCE" : "922",
+"ATN_PUBLIC_ID" : "EMAP:30880",
+"name" : "EMAP30880",
+"RANGE" : "(TS20-TS20)",
+"kids" : "2",
+"parent_id" : "4--5"
+}, "children" : [
+
+{ "data" : "epithelial layer of rest of urogenital sinus (EMAP:30883)",
+"attr" : {
+"id" : "6--24",
+"APO_DEPTH" : "6",
+"depth_occurence" : "24",
+"APO_SEQUENCE" : "923",
+"ATN_PUBLIC_ID" : "EMAP:30883",
+"name" : "EMAP30883",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--19"
+} },
+{ "data" : "mesenchymal layer of rest of urogenital sinus (EMAP:30886)",
+"attr" : {
+"id" : "6--25",
+"APO_DEPTH" : "6",
+"depth_occurence" : "25",
+"APO_SEQUENCE" : "924",
+"ATN_PUBLIC_ID" : "EMAP:30886",
+"name" : "EMAP30886",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--19"
+} }
+]}
+]},
+{ "data" : "urorectal septum (EMAP:4595)",
+"attr" : {
+"id" : "4--6",
+"APO_DEPTH" : "4",
+"depth_occurence" : "6",
+"APO_SEQUENCE" : "1032",
+"ATN_PUBLIC_ID" : "EMAP:4595",
+"name" : "EMAP4595",
+"RANGE" : "(TS19-TS28)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "urogenital membrane (EMAP:4593)",
+"attr" : {
+"id" : "4--7",
+"APO_DEPTH" : "4",
+"depth_occurence" : "7",
+"APO_SEQUENCE" : "1033",
+"ATN_PUBLIC_ID" : "EMAP:4593",
+"name" : "EMAP4593",
+"RANGE" : "(TS19-TS22)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "urethral plate (EMAP:28556)",
+"attr" : {
+"id" : "4--8",
+"APO_DEPTH" : "4",
+"depth_occurence" : "8",
+"APO_SEQUENCE" : "1034",
+"ATN_PUBLIC_ID" : "EMAP:28556",
+"name" : "EMAP28556",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "urethral fold (EMAP:30889)",
+"attr" : {
+"id" : "4--9",
+"APO_DEPTH" : "4",
+"depth_occurence" : "9",
+"APO_SEQUENCE" : "1035",
+"ATN_PUBLIC_ID" : "EMAP:30889",
+"name" : "EMAP30889",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : " G developing vasculature of urinary system GROUP (EMAP:31768)",
+"attr" : {
+"id" : "4--10",
+"APO_DEPTH" : "4",
+"depth_occurence" : "10",
+"APO_SEQUENCE" : "1038",
+"ATN_PUBLIC_ID" : "EMAP:31768",
+"name" : "EMAP31768",
+"RANGE" : "(TS20-TS28)",
+"kids" : "4",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : " G developing vasculature of metanephros (EMAP:27795)",
+"attr" : {
+"id" : "5--20",
+"APO_DEPTH" : "5",
+"depth_occurence" : "20",
+"APO_SEQUENCE" : "1039",
+"ATN_PUBLIC_ID" : "EMAP:27795",
+"name" : "EMAP27795",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "4--10"
+} },
+{ "data" : " G developing vasculature of primitive bladder (EMAP:31692)",
+"attr" : {
+"id" : "5--21",
+"APO_DEPTH" : "5",
+"depth_occurence" : "21",
+"APO_SEQUENCE" : "1040",
+"ATN_PUBLIC_ID" : "EMAP:31692",
+"name" : "EMAP31692",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "4--10"
+} },
+{ "data" : " G developing vasculature of urogenital sinus (EMAP:31673)",
+"attr" : {
+"id" : "5--22",
+"APO_DEPTH" : "5",
+"depth_occurence" : "22",
+"APO_SEQUENCE" : "1041",
+"ATN_PUBLIC_ID" : "EMAP:31673",
+"name" : "EMAP31673",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "4--10"
+} },
+{ "data" : " G ureteral vasculature (EMAP:30851)",
+"attr" : {
+"id" : "5--23",
+"APO_DEPTH" : "5",
+"depth_occurence" : "23",
+"APO_SEQUENCE" : "1075",
+"ATN_PUBLIC_ID" : "EMAP:30851",
+"name" : "EMAP30851",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "4--10"
+} }
+]}
+]},
+{ "data" : "reproductive system (EMAP:4596)",
+"attr" : {
+"id" : "3--1",
+"APO_DEPTH" : "3",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "1136",
+"ATN_PUBLIC_ID" : "EMAP:4596",
+"name" : "EMAP4596",
+"RANGE" : "(TS19-TS28)",
+"kids" : "3",
+"parent_id" : "2--0"
+}, "children" : [
+
+{ "data" : "male reproductive system (EMAP:28873)",
+"attr" : {
+"id" : "4--11",
+"APO_DEPTH" : "4",
+"depth_occurence" : "11",
+"APO_SEQUENCE" : "1153",
+"ATN_PUBLIC_ID" : "EMAP:28873",
+"name" : "EMAP28873",
+"RANGE" : "(TS20-TS28)",
+"kids" : "6",
+"parent_id" : "3--1"
+}, "children" : [
+
+{ "data" : "mesonephros of male (EMAP:29139)",
+"attr" : {
+"id" : "5--24",
+"APO_DEPTH" : "5",
+"depth_occurence" : "24",
+"APO_SEQUENCE" : "1154",
+"ATN_PUBLIC_ID" : "EMAP:29139",
+"name" : "EMAP29139",
+"RANGE" : "(TS20-TS23)",
+"kids" : "6",
+"parent_id" : "4--11"
+}, "children" : [
+
+{ "data" : "nephric duct of male, mesonephric portion (EMAP:29154)",
+"attr" : {
+"id" : "6--26",
+"APO_DEPTH" : "6",
+"depth_occurence" : "26",
+"APO_SEQUENCE" : "1155",
+"ATN_PUBLIC_ID" : "EMAP:29154",
+"name" : "EMAP29154",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--24"
+} },
+{ "data" : "mesonephric mesenchyme of male (EMAP:29144)",
+"attr" : {
+"id" : "6--27",
+"APO_DEPTH" : "6",
+"depth_occurence" : "27",
+"APO_SEQUENCE" : "1156",
+"ATN_PUBLIC_ID" : "EMAP:29144",
+"name" : "EMAP29144",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--24"
+} },
+{ "data" : "mesonephric tubule of male (EMAP:29149)",
+"attr" : {
+"id" : "6--28",
+"APO_DEPTH" : "6",
+"depth_occurence" : "28",
+"APO_SEQUENCE" : "1157",
+"ATN_PUBLIC_ID" : "EMAP:29149",
+"name" : "EMAP29149",
+"RANGE" : "(TS20-TS22)",
+"kids" : "2",
+"parent_id" : "5--24"
+}, "children" : [
+
+{ "data" : "cranial mesonephric tubule of male (EMAP:30529)",
+"attr" : {
+"id" : "7--8",
+"APO_DEPTH" : "7",
+"depth_occurence" : "8",
+"APO_SEQUENCE" : "1158",
+"ATN_PUBLIC_ID" : "EMAP:30529",
+"name" : "EMAP30529",
+"RANGE" : "(TS20-TS22)",
+"kids" : "2",
+"parent_id" : "6--28"
+}, "children" : [
+
+{ "data" : "mesonephric glomerulus of male (EMAP:30533)",
+"attr" : {
+"id" : "8--0",
+"APO_DEPTH" : "8",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "1159",
+"ATN_PUBLIC_ID" : "EMAP:30533",
+"name" : "EMAP30533",
+"RANGE" : "(TS20-TS22)",
+"kids" : "0",
+"parent_id" : "7--8"
+} },
+{ "data" : "rest of cranial mesonephric tubule of male (EMAP:30537)",
+"attr" : {
+"id" : "8--1",
+"APO_DEPTH" : "8",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "1160",
+"ATN_PUBLIC_ID" : "EMAP:30537",
+"name" : "EMAP30537",
+"RANGE" : "(TS20-TS22)",
+"kids" : "0",
+"parent_id" : "7--8"
+} }
+]},
+{ "data" : "caudal mesonephric tubule of male (EMAP:30541)",
+"attr" : {
+"id" : "7--9",
+"APO_DEPTH" : "7",
+"depth_occurence" : "9",
+"APO_SEQUENCE" : "1161",
+"ATN_PUBLIC_ID" : "EMAP:30541",
+"name" : "EMAP30541",
+"RANGE" : "(TS20-TS22)",
+"kids" : "0",
+"parent_id" : "6--28"
+} }
+]},
+{ "data" : "paramesonephric duct of male, mesonephric portion (EMAP:29159)",
+"attr" : {
+"id" : "6--29",
+"APO_DEPTH" : "6",
+"depth_occurence" : "29",
+"APO_SEQUENCE" : "1165",
+"ATN_PUBLIC_ID" : "EMAP:29159",
+"name" : "EMAP29159",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--24"
+} },
+{ "data" : "coelomic epithelium of male mesonephros (EMAP:30461)",
+"attr" : {
+"id" : "6--30",
+"APO_DEPTH" : "6",
+"depth_occurence" : "30",
+"APO_SEQUENCE" : "1167",
+"ATN_PUBLIC_ID" : "EMAP:30461",
+"name" : "EMAP30461",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--24"
+} },
+{ "data" : "developing vasculature of male mesonephros (EMAP:31684)",
+"attr" : {
+"id" : "6--31",
+"APO_DEPTH" : "6",
+"depth_occurence" : "31",
+"APO_SEQUENCE" : "1168",
+"ATN_PUBLIC_ID" : "EMAP:31684",
+"name" : "EMAP31684",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--24"
+} }
+]},
+{ "data" : "paramesonephric duct of male, rest of (EMAP:30059)",
+"attr" : {
+"id" : "5--25",
+"APO_DEPTH" : "5",
+"depth_occurence" : "25",
+"APO_SEQUENCE" : "1172",
+"ATN_PUBLIC_ID" : "EMAP:30059",
+"name" : "EMAP30059",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "4--11"
+} },
+{ "data" : "nephric duct of male, rest of (EMAP:30060)",
+"attr" : {
+"id" : "5--26",
+"APO_DEPTH" : "5",
+"depth_occurence" : "26",
+"APO_SEQUENCE" : "1175",
+"ATN_PUBLIC_ID" : "EMAP:30060",
+"name" : "EMAP30060",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "4--11"
+} },
+{ "data" : "testis (EMAP:29069)",
+"attr" : {
+"id" : "5--27",
+"APO_DEPTH" : "5",
+"depth_occurence" : "27",
+"APO_SEQUENCE" : "1178",
+"ATN_PUBLIC_ID" : "EMAP:29069",
+"name" : "EMAP29069",
+"RANGE" : "(TS20-TS28)",
+"kids" : "4",
+"parent_id" : "4--11"
+}, "children" : [
+
+{ "data" : "coelomic epithelium of testis (EMAP:29071)",
+"attr" : {
+"id" : "6--32",
+"APO_DEPTH" : "6",
+"depth_occurence" : "32",
+"APO_SEQUENCE" : "1179",
+"ATN_PUBLIC_ID" : "EMAP:29071",
+"name" : "EMAP29071",
+"RANGE" : "(TS20-TS24)",
+"kids" : "0",
+"parent_id" : "5--27"
+} },
+{ "data" : "interstitium of the testis (EMAP:29075)",
+"attr" : {
+"id" : "6--33",
+"APO_DEPTH" : "6",
+"depth_occurence" : "33",
+"APO_SEQUENCE" : "1181",
+"ATN_PUBLIC_ID" : "EMAP:29075",
+"name" : "EMAP29075",
+"RANGE" : "(TS20-TS28)",
+"kids" : "2",
+"parent_id" : "5--27"
+}, "children" : [
+
+{ "data" : "fetal Leydig cell (EMAP:29083)",
+"attr" : {
+"id" : "7--10",
+"APO_DEPTH" : "7",
+"depth_occurence" : "10",
+"APO_SEQUENCE" : "1182",
+"ATN_PUBLIC_ID" : "EMAP:29083",
+"name" : "EMAP29083",
+"RANGE" : "(TS20-TS27)",
+"kids" : "0",
+"parent_id" : "6--33"
+} },
+{ "data" : "rest of interstitium of the testis (EMAP:29091)",
+"attr" : {
+"id" : "7--11",
+"APO_DEPTH" : "7",
+"depth_occurence" : "11",
+"APO_SEQUENCE" : "1184",
+"ATN_PUBLIC_ID" : "EMAP:29091",
+"name" : "EMAP29091",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "6--33"
+} }
+]},
+{ "data" : "developing vasculature of the testis (EMAP:29115)",
+"attr" : {
+"id" : "6--34",
+"APO_DEPTH" : "6",
+"depth_occurence" : "34",
+"APO_SEQUENCE" : "1198",
+"ATN_PUBLIC_ID" : "EMAP:29115",
+"name" : "EMAP29115",
+"RANGE" : "(TS20-TS27)",
+"kids" : "2",
+"parent_id" : "5--27"
+}, "children" : [
+
+{ "data" : "coelomic vessel (EMAP:29123)",
+"attr" : {
+"id" : "7--12",
+"APO_DEPTH" : "7",
+"depth_occurence" : "12",
+"APO_SEQUENCE" : "1199",
+"ATN_PUBLIC_ID" : "EMAP:29123",
+"name" : "EMAP29123",
+"RANGE" : "(TS20-TS27)",
+"kids" : "0",
+"parent_id" : "6--34"
+} },
+{ "data" : "interstitial vessel (EMAP:29131)",
+"attr" : {
+"id" : "7--13",
+"APO_DEPTH" : "7",
+"depth_occurence" : "13",
+"APO_SEQUENCE" : "1200",
+"ATN_PUBLIC_ID" : "EMAP:29131",
+"name" : "EMAP29131",
+"RANGE" : "(TS20-TS27)",
+"kids" : "0",
+"parent_id" : "6--34"
+} }
+]},
+{ "data" : "primary sex cord (EMAP:29099)",
+"attr" : {
+"id" : "6--35",
+"APO_DEPTH" : "6",
+"depth_occurence" : "35",
+"APO_SEQUENCE" : "1201",
+"ATN_PUBLIC_ID" : "EMAP:29099",
+"name" : "EMAP29099",
+"RANGE" : "(TS20-TS22)",
+"kids" : "3",
+"parent_id" : "5--27"
+}, "children" : [
+
+{ "data" : "Sertoli cell (EMAP:29107)",
+"attr" : {
+"id" : "7--14",
+"APO_DEPTH" : "7",
+"depth_occurence" : "14",
+"APO_SEQUENCE" : "1202",
+"ATN_PUBLIC_ID" : "EMAP:29107",
+"name" : "EMAP29107",
+"RANGE" : "(TS20-TS22)",
+"kids" : "0",
+"parent_id" : "6--35"
+} },
+{ "data" : "germ cell of the testis (EMAP:29103)",
+"attr" : {
+"id" : "7--15",
+"APO_DEPTH" : "7",
+"depth_occurence" : "15",
+"APO_SEQUENCE" : "1203",
+"ATN_PUBLIC_ID" : "EMAP:29103",
+"name" : "EMAP29103",
+"RANGE" : "(TS20-TS22)",
+"kids" : "0",
+"parent_id" : "6--35"
+} },
+{ "data" : "peritubular myoid cell (EMAP:29111)",
+"attr" : {
+"id" : "7--16",
+"APO_DEPTH" : "7",
+"depth_occurence" : "16",
+"APO_SEQUENCE" : "1204",
+"ATN_PUBLIC_ID" : "EMAP:29111",
+"name" : "EMAP29111",
+"RANGE" : "(TS20-TS22)",
+"kids" : "0",
+"parent_id" : "6--35"
+} }
+]}
+]},
+{ "data" : "mesorchium (EMAP:30062)",
+"attr" : {
+"id" : "5--28",
+"APO_DEPTH" : "5",
+"depth_occurence" : "28",
+"APO_SEQUENCE" : "1318",
+"ATN_PUBLIC_ID" : "EMAP:30062",
+"name" : "EMAP30062",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "4--11"
+} },
+{ "data" : "genital tubercle of male (EMAP:29166)",
+"attr" : {
+"id" : "5--29",
+"APO_DEPTH" : "5",
+"depth_occurence" : "29",
+"APO_SEQUENCE" : "1319",
+"ATN_PUBLIC_ID" : "EMAP:29166",
+"name" : "EMAP29166",
+"RANGE" : "(TS20-TS24)",
+"kids" : "4",
+"parent_id" : "4--11"
+}, "children" : [
+
+{ "data" : "genital tubercle surface epithelium of male (EMAP:29171)",
+"attr" : {
+"id" : "6--36",
+"APO_DEPTH" : "6",
+"depth_occurence" : "36",
+"APO_SEQUENCE" : "1320",
+"ATN_PUBLIC_ID" : "EMAP:29171",
+"name" : "EMAP29171",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--29"
+} },
+{ "data" : "genital tubercle mesenchyme of male (EMAP:29168)",
+"attr" : {
+"id" : "6--37",
+"APO_DEPTH" : "6",
+"depth_occurence" : "37",
+"APO_SEQUENCE" : "1321",
+"ATN_PUBLIC_ID" : "EMAP:29168",
+"name" : "EMAP29168",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--29"
+} },
+{ "data" : "urethral epithelium of male (EMAP:30468)",
+"attr" : {
+"id" : "6--38",
+"APO_DEPTH" : "6",
+"depth_occurence" : "38",
+"APO_SEQUENCE" : "1322",
+"ATN_PUBLIC_ID" : "EMAP:30468",
+"name" : "EMAP30468",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--29"
+} },
+{ "data" : "developing vasculature of male genital tubercle (EMAP:31606)",
+"attr" : {
+"id" : "6--39",
+"APO_DEPTH" : "6",
+"depth_occurence" : "39",
+"APO_SEQUENCE" : "1346",
+"ATN_PUBLIC_ID" : "EMAP:31606",
+"name" : "EMAP31606",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--29"
+} }
+]}
+]},
+{ "data" : "female reproductive system (EMAP:28872)",
+"attr" : {
+"id" : "4--12",
+"APO_DEPTH" : "4",
+"depth_occurence" : "12",
+"APO_SEQUENCE" : "1458",
+"ATN_PUBLIC_ID" : "EMAP:28872",
+"name" : "EMAP28872",
+"RANGE" : "(TS20-TS28)",
+"kids" : "6",
+"parent_id" : "3--1"
+}, "children" : [
+
+{ "data" : "mesonephros of female (EMAP:28910)",
+"attr" : {
+"id" : "5--30",
+"APO_DEPTH" : "5",
+"depth_occurence" : "30",
+"APO_SEQUENCE" : "1459",
+"ATN_PUBLIC_ID" : "EMAP:28910",
+"name" : "EMAP28910",
+"RANGE" : "(TS20-TS23)",
+"kids" : "7",
+"parent_id" : "4--12"
+}, "children" : [
+
+{ "data" : "mesonephric mesenchyme of female mesonephros (EMAP:28915)",
+"attr" : {
+"id" : "6--40",
+"APO_DEPTH" : "6",
+"depth_occurence" : "40",
+"APO_SEQUENCE" : "1460",
+"ATN_PUBLIC_ID" : "EMAP:28915",
+"name" : "EMAP28915",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--30"
+} },
+{ "data" : "mesonephric tubule of female (EMAP:28920)",
+"attr" : {
+"id" : "6--41",
+"APO_DEPTH" : "6",
+"depth_occurence" : "41",
+"APO_SEQUENCE" : "1461",
+"ATN_PUBLIC_ID" : "EMAP:28920",
+"name" : "EMAP28920",
+"RANGE" : "(TS20-TS21)",
+"kids" : "2",
+"parent_id" : "5--30"
+}, "children" : [
+
+{ "data" : "cranial mesonephric tubule of female (EMAP:30545)",
+"attr" : {
+"id" : "7--17",
+"APO_DEPTH" : "7",
+"depth_occurence" : "17",
+"APO_SEQUENCE" : "1462",
+"ATN_PUBLIC_ID" : "EMAP:30545",
+"name" : "EMAP30545",
+"RANGE" : "(TS20-TS21)",
+"kids" : "2",
+"parent_id" : "6--41"
+}, "children" : [
+
+{ "data" : "mesonephric glomerulus of female (EMAP:30548)",
+"attr" : {
+"id" : "8--2",
+"APO_DEPTH" : "8",
+"depth_occurence" : "2",
+"APO_SEQUENCE" : "1463",
+"ATN_PUBLIC_ID" : "EMAP:30548",
+"name" : "EMAP30548",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "7--17"
+} },
+{ "data" : "rest of cranial mesonephric tubule of female (EMAP:30551)",
+"attr" : {
+"id" : "8--3",
+"APO_DEPTH" : "8",
+"depth_occurence" : "3",
+"APO_SEQUENCE" : "1464",
+"ATN_PUBLIC_ID" : "EMAP:30551",
+"name" : "EMAP30551",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "7--17"
+} }
+]},
+{ "data" : "caudal mesonephric tubule of female (EMAP:30554)",
+"attr" : {
+"id" : "7--18",
+"APO_DEPTH" : "7",
+"depth_occurence" : "18",
+"APO_SEQUENCE" : "1465",
+"ATN_PUBLIC_ID" : "EMAP:30554",
+"name" : "EMAP30554",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "6--41"
+} }
+]},
+{ "data" : "nephric duct of female, mesonephric portion (EMAP:28925)",
+"attr" : {
+"id" : "6--42",
+"APO_DEPTH" : "6",
+"depth_occurence" : "42",
+"APO_SEQUENCE" : "1467",
+"ATN_PUBLIC_ID" : "EMAP:28925",
+"name" : "EMAP28925",
+"RANGE" : "(TS20-TS21)",
+"kids" : "0",
+"parent_id" : "5--30"
+} },
+{ "data" : "paramesonephric duct of female, mesonephric portion (EMAP:28938)",
+"attr" : {
+"id" : "6--43",
+"APO_DEPTH" : "6",
+"depth_occurence" : "43",
+"APO_SEQUENCE" : "1469",
+"ATN_PUBLIC_ID" : "EMAP:28938",
+"name" : "EMAP28938",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--30"
+} },
+{ "data" : "rete ovarii of mesonephros (EMAP:28930)",
+"attr" : {
+"id" : "6--44",
+"APO_DEPTH" : "6",
+"depth_occurence" : "44",
+"APO_SEQUENCE" : "1472",
+"ATN_PUBLIC_ID" : "EMAP:28930",
+"name" : "EMAP28930",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--30"
+} },
+{ "data" : "coelomic epithelium of female mesonephros (EMAP:28935)",
+"attr" : {
+"id" : "6--45",
+"APO_DEPTH" : "6",
+"depth_occurence" : "45",
+"APO_SEQUENCE" : "1473",
+"ATN_PUBLIC_ID" : "EMAP:28935",
+"name" : "EMAP28935",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--30"
+} },
+{ "data" : "developing vasculature of female mesonephros (EMAP:31688)",
+"attr" : {
+"id" : "6--46",
+"APO_DEPTH" : "6",
+"depth_occurence" : "46",
+"APO_SEQUENCE" : "1474",
+"ATN_PUBLIC_ID" : "EMAP:31688",
+"name" : "EMAP31688",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--30"
+} }
+]},
+{ "data" : "paramesonephric duct of female, rest of (EMAP:28941)",
+"attr" : {
+"id" : "5--31",
+"APO_DEPTH" : "5",
+"depth_occurence" : "31",
+"APO_SEQUENCE" : "1475",
+"ATN_PUBLIC_ID" : "EMAP:28941",
+"name" : "EMAP28941",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "4--12"
+} },
+{ "data" : "nephric duct of female, rest of (EMAP:30061)",
+"attr" : {
+"id" : "5--32",
+"APO_DEPTH" : "5",
+"depth_occurence" : "32",
+"APO_SEQUENCE" : "1478",
+"ATN_PUBLIC_ID" : "EMAP:30061",
+"name" : "EMAP30061",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "4--12"
+} },
+{ "data" : "ovary (EMAP:28876)",
+"attr" : {
+"id" : "5--33",
+"APO_DEPTH" : "5",
+"depth_occurence" : "33",
+"APO_SEQUENCE" : "1481",
+"ATN_PUBLIC_ID" : "EMAP:28876",
+"name" : "EMAP28876",
+"RANGE" : "(TS20-TS28)",
+"kids" : "5",
+"parent_id" : "4--12"
+}, "children" : [
+
+{ "data" : "surface epithelium of ovary (EMAP:28877)",
+"attr" : {
+"id" : "6--47",
+"APO_DEPTH" : "6",
+"depth_occurence" : "47",
+"APO_SEQUENCE" : "1482",
+"ATN_PUBLIC_ID" : "EMAP:28877",
+"name" : "EMAP28877",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "5--33"
+} },
+{ "data" : "mesenchymal stroma of ovary (EMAP:28881)",
+"attr" : {
+"id" : "6--48",
+"APO_DEPTH" : "6",
+"depth_occurence" : "48",
+"APO_SEQUENCE" : "1484",
+"ATN_PUBLIC_ID" : "EMAP:28881",
+"name" : "EMAP28881",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "5--33"
+} },
+{ "data" : "germ cell of ovary (EMAP:28878)",
+"attr" : {
+"id" : "6--49",
+"APO_DEPTH" : "6",
+"depth_occurence" : "49",
+"APO_SEQUENCE" : "1489",
+"ATN_PUBLIC_ID" : "EMAP:28878",
+"name" : "EMAP28878",
+"RANGE" : "(TS20-TS24)",
+"kids" : "0",
+"parent_id" : "5--33"
+} },
+{ "data" : "developing vasculature of ovary (EMAP:28889)",
+"attr" : {
+"id" : "6--50",
+"APO_DEPTH" : "6",
+"depth_occurence" : "50",
+"APO_SEQUENCE" : "1529",
+"ATN_PUBLIC_ID" : "EMAP:28889",
+"name" : "EMAP28889",
+"RANGE" : "(TS20-TS27)",
+"kids" : "0",
+"parent_id" : "5--33"
+} },
+{ "data" : "rete ovarii of ovary (EMAP:28879)",
+"attr" : {
+"id" : "6--51",
+"APO_DEPTH" : "6",
+"depth_occurence" : "51",
+"APO_SEQUENCE" : "1530",
+"ATN_PUBLIC_ID" : "EMAP:28879",
+"name" : "EMAP28879",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "5--33"
+} }
+]},
+{ "data" : "mesovarium (EMAP:28875)",
+"attr" : {
+"id" : "5--34",
+"APO_DEPTH" : "5",
+"depth_occurence" : "34",
+"APO_SEQUENCE" : "1535",
+"ATN_PUBLIC_ID" : "EMAP:28875",
+"name" : "EMAP28875",
+"RANGE" : "(TS20-TS28)",
+"kids" : "0",
+"parent_id" : "4--12"
+} },
+{ "data" : "genital tubercle of female (EMAP:29618)",
+"attr" : {
+"id" : "5--35",
+"APO_DEPTH" : "5",
+"depth_occurence" : "35",
+"APO_SEQUENCE" : "1607",
+"ATN_PUBLIC_ID" : "EMAP:29618",
+"name" : "EMAP29618",
+"RANGE" : "(TS20-TS27)",
+"kids" : "4",
+"parent_id" : "4--12"
+}, "children" : [
+
+{ "data" : "genital tubercle surface epithelium of female (EMAP:29627)",
+"attr" : {
+"id" : "6--52",
+"APO_DEPTH" : "6",
+"depth_occurence" : "52",
+"APO_SEQUENCE" : "1608",
+"ATN_PUBLIC_ID" : "EMAP:29627",
+"name" : "EMAP29627",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--35"
+} },
+{ "data" : "genital tubercle mesenchyme of female (EMAP:29622)",
+"attr" : {
+"id" : "6--53",
+"APO_DEPTH" : "6",
+"depth_occurence" : "53",
+"APO_SEQUENCE" : "1609",
+"ATN_PUBLIC_ID" : "EMAP:29622",
+"name" : "EMAP29622",
+"RANGE" : "(TS20-TS20)",
+"kids" : "0",
+"parent_id" : "5--35"
+} },
+{ "data" : "urethral epithelium of female (EMAP:30471)",
+"attr" : {
+"id" : "6--54",
+"APO_DEPTH" : "6",
+"depth_occurence" : "54",
+"APO_SEQUENCE" : "1610",
+"ATN_PUBLIC_ID" : "EMAP:30471",
+"name" : "EMAP30471",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--35"
+} },
+{ "data" : "developing vasculature of female genital tubercle (EMAP:31588)",
+"attr" : {
+"id" : "6--55",
+"APO_DEPTH" : "6",
+"depth_occurence" : "55",
+"APO_SEQUENCE" : "1634",
+"ATN_PUBLIC_ID" : "EMAP:31588",
+"name" : "EMAP31588",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "5--35"
+} }
+]}
+]},
+{ "data" : " G developing vasculature of reproductive system GROUP (EMAP:31777)",
+"attr" : {
+"id" : "4--13",
+"APO_DEPTH" : "4",
+"depth_occurence" : "13",
+"APO_SEQUENCE" : "1720",
+"ATN_PUBLIC_ID" : "EMAP:31777",
+"name" : "EMAP31777",
+"RANGE" : "(TS20-TS27)",
+"kids" : "6",
+"parent_id" : "3--1"
+}, "children" : [
+
+{ "data" : " G developing vasculature of female genital tubercle (EMAP:31588)",
+"attr" : {
+"id" : "5--36",
+"APO_DEPTH" : "5",
+"depth_occurence" : "36",
+"APO_SEQUENCE" : "1721",
+"ATN_PUBLIC_ID" : "EMAP:31588",
+"name" : "EMAP31588",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "4--13"
+} },
+{ "data" : " G developing vasculature of female mesonephros (EMAP:31688)",
+"attr" : {
+"id" : "5--37",
+"APO_DEPTH" : "5",
+"depth_occurence" : "37",
+"APO_SEQUENCE" : "1722",
+"ATN_PUBLIC_ID" : "EMAP:31688",
+"name" : "EMAP31688",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "4--13"
+} },
+{ "data" : " G developing vasculature of male genital tubercle (EMAP:31606)",
+"attr" : {
+"id" : "5--38",
+"APO_DEPTH" : "5",
+"depth_occurence" : "38",
+"APO_SEQUENCE" : "1723",
+"ATN_PUBLIC_ID" : "EMAP:31606",
+"name" : "EMAP31606",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "4--13"
+} },
+{ "data" : " G developing vasculature of male mesonephros (EMAP:31684)",
+"attr" : {
+"id" : "5--39",
+"APO_DEPTH" : "5",
+"depth_occurence" : "39",
+"APO_SEQUENCE" : "1724",
+"ATN_PUBLIC_ID" : "EMAP:31684",
+"name" : "EMAP31684",
+"RANGE" : "(TS20-TS23)",
+"kids" : "0",
+"parent_id" : "4--13"
+} },
+{ "data" : " G developing vasculature of ovary (EMAP:28889)",
+"attr" : {
+"id" : "5--40",
+"APO_DEPTH" : "5",
+"depth_occurence" : "40",
+"APO_SEQUENCE" : "1725",
+"ATN_PUBLIC_ID" : "EMAP:28889",
+"name" : "EMAP28889",
+"RANGE" : "(TS20-TS27)",
+"kids" : "0",
+"parent_id" : "4--13"
+} },
+{ "data" : " G developing vasculature of the testis (EMAP:29115)",
+"attr" : {
+"id" : "5--41",
+"APO_DEPTH" : "5",
+"depth_occurence" : "41",
+"APO_SEQUENCE" : "1726",
+"ATN_PUBLIC_ID" : "EMAP:29115",
+"name" : "EMAP29115",
+"RANGE" : "(TS20-TS27)",
+"kids" : "2",
+"parent_id" : "4--13"
+}, "children" : [
+
+{ "data" : " G coelomic vessel (EMAP:29123)",
+"attr" : {
+"id" : "6--56",
+"APO_DEPTH" : "6",
+"depth_occurence" : "56",
+"APO_SEQUENCE" : "1727",
+"ATN_PUBLIC_ID" : "EMAP:29123",
+"name" : "EMAP29123",
+"RANGE" : "(TS20-TS27)",
+"kids" : "0",
+"parent_id" : "5--41"
+} },
+{ "data" : " G interstitial vessel (EMAP:29131)",
+"attr" : {
+"id" : "6--57",
+"APO_DEPTH" : "6",
+"depth_occurence" : "57",
+"APO_SEQUENCE" : "1728",
+"ATN_PUBLIC_ID" : "EMAP:29131",
+"name" : "EMAP29131",
+"RANGE" : "(TS20-TS27)",
+"kids" : "0",
+"parent_id" : "5--41"
+} }
+]}
+]}
+]}
+]}
+]}
+]}
+] 

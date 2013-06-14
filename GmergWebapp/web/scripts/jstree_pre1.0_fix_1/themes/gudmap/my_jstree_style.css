@@ -1,0 +1,216 @@
+#demo_body {
+color: #333333;
+font-family: Arial,Helvetica,sans-serif;
+font-size: 13px;
+}
+#demo_body a {
+color: #333333;
+cursor: default;
+}
+
+
+#TS_top_container {
+margin: 0px;
+padding: 5px 0 0 0px;
+width: 760px;
+text-align: center;
+
+
+}
+
+#exp_key_div {
+margin: 0px;
+padding: 0px;
+width: 150px;
+background-image: url(../images/expression_gradient.png);
+background-repeat: repeat-y;
+float: left;
+border: 1px solid #b2b7ba;
+font-size: 9pt;
+}
+
+#exp_key_div a {
+text-decoration: none;
+cursor: pointer;
+font-size: 8pt;
+color: #7F7F81;
+}
+
+#exp_key_div a:hover{
+color: #03186d;
+background-color: #c3c4c7;
+}
+.exp_key_div_title{
+text-align: left;
+font-weight: bold;
+font-size: 8pt;
+
+
+
+}
+#jstree_right_div {
+margin: 0px;
+padding: 0px;
+width: 610px;
+float: left;
+}
+
+/*ins { background:url(../themes/default/d.png); background-repeat:no-repeat; background-color:transparent; }*/
+
+/***** classes for displaying expression icons on left hand side of jstree window *****/
+.exp_present_unspecified {
+background: url(../images/expression_images/present_unspecified.gif) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+/*background-position:-56px -39px;*/
+}
+
+.exp_present_strong {
+background: url(../images/expression_images/present_strong.gif) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.exp_present_moderate {
+background: url(../images/expression_images/present_moderate.gif) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.exp_present_weak {
+background: url(../images/expression_images/present_weak.gif) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.exp_uncertain {
+background: url(../images/expression_images/uncertain.gif) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.exp_not_detected {
+background: url(../images/expression_images/notdetected.gif) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.exp_not_examined {
+background: url(../images/expression_images/notexamined.gif) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+
+/***** classes for displaying pattern icons on left hand side of jstree window *****/
+.graded {
+background: url(../images/pattern_images/graded.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+/*background-position:-56px -39px;*/
+}
+
+.regional {
+background: url(../images/pattern_images/regional.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.spotted {
+background: url(../images/pattern_images/spotted.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.ubiquitous {
+background: url(../images/pattern_images/ubiquitous.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.restricted {
+background: url(../images/pattern_images/restricted.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.single_cell {
+background: url(../images/pattern_images/single_cell.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.contains_note {
+background: url(../images/pattern_images/note.gif) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+
+
+/***** tooltip css for displaying note *****/
+
+.tooltip {
+border-bottom: 1px dotted #000000; color: #000000; outline: none;
+ text-decoration: none;
+position: relative;
+}
+.tooltip span {
+margin-left: -999em;
+position: absolute;
+}
+.tooltip:hover span {
+border-radius: 5px 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+font-family: Calibri, Tahoma, Geneva, sans-serif;
+position: absolute; left: 1em; top: 2em; z-index: 99;
+margin-left: 0; width: 250px;
+}
+.tooltip:hover img {
+border: 0; margin: -10px 0 0 -55px;
+float: left; position: absolute;
+}
+.tooltip:hover em {
+font-family: Candara, Tahoma, Geneva, sans-serif; font-size: 1.2em; font-weight: bold;
+display: block; padding: 0.2em 0 0.6em 0;
+}
+.classic { padding: 0.8em 1em; }
+.custom { padding: 0.5em 0.8em 0.8em 2em; }
+* html a:hover { background: transparent; }
+.classic {background: #FFFFAA; border: 1px solid #FFAD33; }
+
+.info { background: #9FDAEE; border: 1px solid #2BB0D7;	}
+
+
+
+
+
+.dark-overlay-class
+{
+   background-color: #F0F0F0;
+   filter:alpha(opacity=50); /* IE */
+   opacity: 0.5; /* Safari, Opera */
+   -moz-opacity:0.50; /* FireFox */
+   z-index: 20;
+   background-repeat:no-repeat;
+   background-position:center;
+   width: 100%;
+   height: 100%;
+   position:absolute;
+   top: 0px;
+   left: 0px;
+}

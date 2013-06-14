@@ -1,0 +1,498 @@
+[
+{
+"data" : "mouse (EMAP:25783)",
+"attr" : {
+"id" : "0--0",
+"APO_DEPTH" : "0",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "0",
+"ATN_PUBLIC_ID" : "EMAP:25783",
+"name" : "EMAP25783",
+"RANGE" : "(TS01-TS28)",
+"kids" : "18"
+}, "children" : [
+
+{ "data" : "organ system (EMAP:2822)",
+"attr" : {
+"id" : "1--0",
+"APO_DEPTH" : "1",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "1",
+"ATN_PUBLIC_ID" : "EMAP:2822",
+"name" : "EMAP2822",
+"RANGE" : "(TS11-TS28)",
+"kids" : "4",
+"parent_id" : "0--0"
+}, "children" : [
+
+{ "data" : "visceral organ (EMAP:2823)",
+"attr" : {
+"id" : "2--0",
+"APO_DEPTH" : "2",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "2",
+"ATN_PUBLIC_ID" : "EMAP:2823",
+"name" : "EMAP2823",
+"RANGE" : "(TS12-TS28)",
+"kids" : "4",
+"parent_id" : "1--0"
+}, "children" : [
+
+{ "data" : "genitourinary system (EMAP:3225)",
+"attr" : {
+"id" : "3--0",
+"APO_DEPTH" : "3",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "3",
+"ATN_PUBLIC_ID" : "EMAP:3225",
+"name" : "EMAP3225",
+"RANGE" : "(TS13-TS18)",
+"kids" : "12",
+"parent_id" : "2--0"
+}, "children" : [
+
+{ "data" : "associated mesenchyme (EMAP:27563)",
+"attr" : {
+"id" : "4--0",
+"APO_DEPTH" : "4",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "8",
+"ATN_PUBLIC_ID" : "EMAP:27563",
+"name" : "EMAP27563",
+"RANGE" : "(TS14-TS18)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "gonad (EMAP:3226)",
+"attr" : {
+"id" : "4--1",
+"APO_DEPTH" : "4",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "9",
+"ATN_PUBLIC_ID" : "EMAP:3226",
+"name" : "EMAP3226",
+"RANGE" : "(TS16-TS18)",
+"kids" : "3",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : "coelomic epithelium (EMAP:27651)",
+"attr" : {
+"id" : "5--0",
+"APO_DEPTH" : "5",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "10",
+"ATN_PUBLIC_ID" : "EMAP:27651",
+"name" : "EMAP27651",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "4--1"
+} },
+{ "data" : "gonadal mesenchyme (EMAP:27647)",
+"attr" : {
+"id" : "5--1",
+"APO_DEPTH" : "5",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "11",
+"ATN_PUBLIC_ID" : "EMAP:27647",
+"name" : "EMAP27647",
+"RANGE" : "(TS17-TS18)",
+"kids" : "3",
+"parent_id" : "4--1"
+}, "children" : [
+
+{ "data" : "anterior gonadal mesenchyme (EMAP:27652)",
+"attr" : {
+"id" : "6--0",
+"APO_DEPTH" : "6",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "12",
+"ATN_PUBLIC_ID" : "EMAP:27652",
+"name" : "EMAP27652",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "5--1"
+} },
+{ "data" : "central gonadal mesenchyme (EMAP:27648)",
+"attr" : {
+"id" : "6--1",
+"APO_DEPTH" : "6",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "13",
+"ATN_PUBLIC_ID" : "EMAP:27648",
+"name" : "EMAP27648",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "5--1"
+} },
+{ "data" : "posterior gonadal mesenchyme (EMAP:27649)",
+"attr" : {
+"id" : "6--2",
+"APO_DEPTH" : "6",
+"depth_occurence" : "2",
+"APO_SEQUENCE" : "14",
+"ATN_PUBLIC_ID" : "EMAP:27649",
+"name" : "EMAP27649",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "5--1"
+} }
+]},
+{ "data" : "primordial germ cells (EMAP:3228)",
+"attr" : {
+"id" : "5--2",
+"APO_DEPTH" : "5",
+"depth_occurence" : "2",
+"APO_SEQUENCE" : "15",
+"ATN_PUBLIC_ID" : "EMAP:3228",
+"name" : "EMAP3228",
+"RANGE" : "(TS16-TS18)",
+"kids" : "0",
+"parent_id" : "4--1"
+} }
+]},
+{ "data" : "mesonephros (EMAP:3229)",
+"attr" : {
+"id" : "4--2",
+"APO_DEPTH" : "4",
+"depth_occurence" : "2",
+"APO_SEQUENCE" : "17",
+"ATN_PUBLIC_ID" : "EMAP:3229",
+"name" : "EMAP3229",
+"RANGE" : "(TS15-TS18)",
+"kids" : "3",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : "mesonephric mesenchyme (EMAP:3230)",
+"attr" : {
+"id" : "5--3",
+"APO_DEPTH" : "5",
+"depth_occurence" : "3",
+"APO_SEQUENCE" : "21",
+"ATN_PUBLIC_ID" : "EMAP:3230",
+"name" : "EMAP3230",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "4--2"
+} },
+{ "data" : "mesonephric tubule (EMAP:3232)",
+"attr" : {
+"id" : "5--4",
+"APO_DEPTH" : "5",
+"depth_occurence" : "4",
+"APO_SEQUENCE" : "22",
+"ATN_PUBLIC_ID" : "EMAP:3232",
+"name" : "EMAP3232",
+"RANGE" : "(TS17-TS18)",
+"kids" : "2",
+"parent_id" : "4--2"
+}, "children" : [
+
+{ "data" : "cranial mesonephric tubule (EMAP:30564)",
+"attr" : {
+"id" : "6--3",
+"APO_DEPTH" : "6",
+"depth_occurence" : "3",
+"APO_SEQUENCE" : "23",
+"ATN_PUBLIC_ID" : "EMAP:30564",
+"name" : "EMAP30564",
+"RANGE" : "(TS17-TS18)",
+"kids" : "2",
+"parent_id" : "5--4"
+}, "children" : [
+
+{ "data" : "mesonephric glomerulus (EMAP:30570)",
+"attr" : {
+"id" : "7--0",
+"APO_DEPTH" : "7",
+"depth_occurence" : "0",
+"APO_SEQUENCE" : "24",
+"ATN_PUBLIC_ID" : "EMAP:30570",
+"name" : "EMAP30570",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "6--3"
+} },
+{ "data" : "rest of cranial mesonephric tubule (EMAP:30567)",
+"attr" : {
+"id" : "7--1",
+"APO_DEPTH" : "7",
+"depth_occurence" : "1",
+"APO_SEQUENCE" : "25",
+"ATN_PUBLIC_ID" : "EMAP:30567",
+"name" : "EMAP30567",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "6--3"
+} }
+]},
+{ "data" : "caudal mesonephric tubule (EMAP:30573)",
+"attr" : {
+"id" : "6--4",
+"APO_DEPTH" : "6",
+"depth_occurence" : "4",
+"APO_SEQUENCE" : "26",
+"ATN_PUBLIC_ID" : "EMAP:30573",
+"name" : "EMAP30573",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "5--4"
+} }
+]},
+{ "data" : "nephric duct, mesonephric portion (EMAP:27593)",
+"attr" : {
+"id" : "5--5",
+"APO_DEPTH" : "5",
+"depth_occurence" : "5",
+"APO_SEQUENCE" : "27",
+"ATN_PUBLIC_ID" : "EMAP:27593",
+"name" : "EMAP27593",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "4--2"
+} }
+]},
+{ "data" : "nephric duct, metanephric portion (EMAP:27601)",
+"attr" : {
+"id" : "4--3",
+"APO_DEPTH" : "4",
+"depth_occurence" : "3",
+"APO_SEQUENCE" : "29",
+"ATN_PUBLIC_ID" : "EMAP:27601",
+"name" : "EMAP27601",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "metanephros (EMAP:3233)",
+"attr" : {
+"id" : "4--4",
+"APO_DEPTH" : "4",
+"depth_occurence" : "4",
+"APO_SEQUENCE" : "31",
+"ATN_PUBLIC_ID" : "EMAP:3233",
+"name" : "EMAP3233",
+"RANGE" : "(TS18-TS18)",
+"kids" : "2",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : "metanephric mesenchyme (EMAP:3234)",
+"attr" : {
+"id" : "5--6",
+"APO_DEPTH" : "5",
+"depth_occurence" : "6",
+"APO_SEQUENCE" : "32",
+"ATN_PUBLIC_ID" : "EMAP:3234",
+"name" : "EMAP3234",
+"RANGE" : "(TS18-TS18)",
+"kids" : "0",
+"parent_id" : "4--4"
+} },
+{ "data" : "ureteric bud (EMAP:3235)",
+"attr" : {
+"id" : "5--7",
+"APO_DEPTH" : "5",
+"depth_occurence" : "7",
+"APO_SEQUENCE" : "33",
+"ATN_PUBLIC_ID" : "EMAP:3235",
+"name" : "EMAP3235",
+"RANGE" : "(TS18-TS18)",
+"kids" : "2",
+"parent_id" : "4--4"
+}, "children" : [
+
+{ "data" : "ureteric tip (EMAP:27606)",
+"attr" : {
+"id" : "6--5",
+"APO_DEPTH" : "6",
+"depth_occurence" : "5",
+"APO_SEQUENCE" : "34",
+"ATN_PUBLIC_ID" : "EMAP:27606",
+"name" : "EMAP27606",
+"RANGE" : "(TS18-TS18)",
+"kids" : "0",
+"parent_id" : "5--7"
+} },
+{ "data" : "ureteric trunk (EMAP:27609)",
+"attr" : {
+"id" : "6--6",
+"APO_DEPTH" : "6",
+"depth_occurence" : "6",
+"APO_SEQUENCE" : "35",
+"ATN_PUBLIC_ID" : "EMAP:27609",
+"name" : "EMAP27609",
+"RANGE" : "(TS18-TS18)",
+"kids" : "0",
+"parent_id" : "5--7"
+} }
+]}
+]},
+{ "data" : "urogenital sinus (EMAP:3238)",
+"attr" : {
+"id" : "4--5",
+"APO_DEPTH" : "4",
+"depth_occurence" : "5",
+"APO_SEQUENCE" : "36",
+"ATN_PUBLIC_ID" : "EMAP:3238",
+"name" : "EMAP3238",
+"RANGE" : "(TS18-TS18)",
+"kids" : "2",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : "epithelium of urogenital sinus (EMAP:31639)",
+"attr" : {
+"id" : "5--8",
+"APO_DEPTH" : "5",
+"depth_occurence" : "8",
+"APO_SEQUENCE" : "37",
+"ATN_PUBLIC_ID" : "EMAP:31639",
+"name" : "EMAP31639",
+"RANGE" : "(TS18-TS18)",
+"kids" : "0",
+"parent_id" : "4--5"
+} },
+{ "data" : "mesenchyme of urogenital sinus (EMAP:31638)",
+"attr" : {
+"id" : "5--9",
+"APO_DEPTH" : "5",
+"depth_occurence" : "9",
+"APO_SEQUENCE" : "38",
+"ATN_PUBLIC_ID" : "EMAP:31638",
+"name" : "EMAP31638",
+"RANGE" : "(TS18-TS18)",
+"kids" : "0",
+"parent_id" : "4--5"
+} }
+]},
+{ "data" : "cloaca (EMAP:27575)",
+"attr" : {
+"id" : "4--6",
+"APO_DEPTH" : "4",
+"depth_occurence" : "6",
+"APO_SEQUENCE" : "39",
+"ATN_PUBLIC_ID" : "EMAP:27575",
+"name" : "EMAP27575",
+"RANGE" : "(TS17-TS18)",
+"kids" : "2",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : "cloacal epithelium (EMAP:27579)",
+"attr" : {
+"id" : "5--10",
+"APO_DEPTH" : "5",
+"depth_occurence" : "10",
+"APO_SEQUENCE" : "40",
+"ATN_PUBLIC_ID" : "EMAP:27579",
+"name" : "EMAP27579",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "4--6"
+} },
+{ "data" : "associated mesenchyme (EMAP:27583)",
+"attr" : {
+"id" : "5--11",
+"APO_DEPTH" : "5",
+"depth_occurence" : "11",
+"APO_SEQUENCE" : "41",
+"ATN_PUBLIC_ID" : "EMAP:27583",
+"name" : "EMAP27583",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "4--6"
+} }
+]},
+{ "data" : "urogenital membrane (EMAP:3237)",
+"attr" : {
+"id" : "4--7",
+"APO_DEPTH" : "4",
+"depth_occurence" : "7",
+"APO_SEQUENCE" : "42",
+"ATN_PUBLIC_ID" : "EMAP:3237",
+"name" : "EMAP3237",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "urorectal septum (EMAP:3239)",
+"attr" : {
+"id" : "4--8",
+"APO_DEPTH" : "4",
+"depth_occurence" : "8",
+"APO_SEQUENCE" : "43",
+"ATN_PUBLIC_ID" : "EMAP:3239",
+"name" : "EMAP3239",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "genital swelling (EMAP:30076)",
+"attr" : {
+"id" : "4--9",
+"APO_DEPTH" : "4",
+"depth_occurence" : "9",
+"APO_SEQUENCE" : "44",
+"ATN_PUBLIC_ID" : "EMAP:30076",
+"name" : "EMAP30076",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : "developing vasculature of genitourinary system (EMAP:31832)",
+"attr" : {
+"id" : "4--10",
+"APO_DEPTH" : "4",
+"depth_occurence" : "10",
+"APO_SEQUENCE" : "45",
+"ATN_PUBLIC_ID" : "EMAP:31832",
+"name" : "EMAP31832",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "3--0"
+} },
+{ "data" : " G nephric duct group (EMAP:3236)",
+"attr" : {
+"id" : "4--11",
+"APO_DEPTH" : "4",
+"depth_occurence" : "11",
+"APO_SEQUENCE" : "46",
+"ATN_PUBLIC_ID" : "EMAP:3236",
+"name" : "EMAP3236",
+"RANGE" : "(TS17-TS18)",
+"kids" : "2",
+"parent_id" : "3--0"
+}, "children" : [
+
+{ "data" : " G nephric duct, mesonephric portion (EMAP:27593)",
+"attr" : {
+"id" : "5--12",
+"APO_DEPTH" : "5",
+"depth_occurence" : "12",
+"APO_SEQUENCE" : "48",
+"ATN_PUBLIC_ID" : "EMAP:27593",
+"name" : "EMAP27593",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "4--11"
+} },
+{ "data" : " G nephric duct, metanephric portion (EMAP:27601)",
+"attr" : {
+"id" : "5--13",
+"APO_DEPTH" : "5",
+"depth_occurence" : "13",
+"APO_SEQUENCE" : "49",
+"ATN_PUBLIC_ID" : "EMAP:27601",
+"name" : "EMAP27601",
+"RANGE" : "(TS17-TS18)",
+"kids" : "0",
+"parent_id" : "4--11"
+} }
+]}
+]}
+]}
+]}
+]}
+] 
