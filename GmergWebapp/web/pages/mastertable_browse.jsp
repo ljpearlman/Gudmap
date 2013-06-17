@@ -85,9 +85,9 @@
 			
 			</h:dataTable>
 --%> 
- 
-			<h:panelGrid columns="4" columnClasses="leftAlign, leftAlign, leftAlign, leftAlign" >		
-	            <rich:dropDownMenu id="menu" style="border:1px solid #{a4jSkin.panelBorderColor}" value="Microarray expression profiles"
+
+			<h:panelGrid columns="3" columnClasses="leftAlign, leftAlign, leftAlign" >		
+	            <rich:dropDownMenu id="menu" style="border:1px solid #{a4jSkin.panelBorderColor}" value="Select microarray expression profiles"
 	                        direction="bottom-right" jointPoint="bl">
 	                        
 	                <rich:menuItem value="Reproductive Gonadal (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedGonadalMOE430}"/>
@@ -139,11 +139,6 @@
 		                </f:facet>             
 	                </rich:menuItem>
 	            </rich:dropDownMenu>
-
-
-				<h:commandLink id="ddmenu" action="menu.onexpand()">
-					<h:graphicImage value="../images/down.gif" alt="update1" styleClass="icon"/>
-				</h:commandLink>
 		 			
 				<h:commandLink id="updatePage" action="#{MasterTableBrowseBean.updatePage}">
 					<h:graphicImage value="../images/gotopage.gif" title="Update Page" alt="update" styleClass="icon"/>
@@ -180,50 +175,50 @@
 			<h:graphicImage value="../images/ToppFun_Button.png" width="60"/>
 		</h:outputLink>
 
-		<rich:tabPanel  switchType="ajax" id="tabPanel1">
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[0].info.title}" name="tab1" rendered="#{MasterTableBrowseBean.allMasterTables[0].selected}" >
+		<rich:tabPanel  switchType="client" >
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[0].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[0].selected}" >
 				<f:subview id="masterTableBrowse_t0">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[0].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[1].info.title}" name="tab2" rendered="#{MasterTableBrowseBean.allMasterTables[1].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[1].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[1].selected}">
 				<f:subview id="masterTableBrowse_t1">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[1].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[2].info.title}" name="tab3" rendered="#{MasterTableBrowseBean.allMasterTables[2].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[2].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[2].selected}">
 				<f:subview id="masterTableBrowse_t2">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[2].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[3].info.title}" name="tab4" rendered="#{MasterTableBrowseBean.allMasterTables[3].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[3].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[3].selected}">
 				<f:subview id="masterTableBrowse_t3">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[3].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[4].info.title}" name="tab5" rendered="#{MasterTableBrowseBean.allMasterTables[4].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[4].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[4].selected}">
 				<f:subview id="masterTableBrowse_t4">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[4].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[5].info.title}" name="tab6" rendered="#{MasterTableBrowseBean.allMasterTables[5].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[5].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[5].selected}">
 				<f:subview id="masterTableBrowse_t5">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[5].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[6].info.title}" name="tab7" rendered="#{MasterTableBrowseBean.allMasterTables[6].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[6].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[6].selected}">
 				<f:subview id="masterTableBrowse_t6">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[6].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />

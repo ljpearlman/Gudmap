@@ -24,7 +24,7 @@ import gmerg.utils.Utility;
 
 public class CollectionBean {
 
-    private boolean debug = true;
+    private boolean debug = false;
 
 	// ********************************************************************************
 	// Constructors & Initializers

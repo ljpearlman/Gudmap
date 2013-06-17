@@ -16,7 +16,7 @@ import gmerg.utils.table.CollectionBrowseHelper;
 */
 
 public class ClipboardDelegateCookieImp {
-    protected static boolean debug = true;
+    protected static boolean debug = false;
 
 	public ClipboardDelegateCookieImp() {
 	}	

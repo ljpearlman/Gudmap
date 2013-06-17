@@ -25,7 +25,7 @@ import gmerg.utils.Visit;
  * 
 */
 public class MasterTableBrowseBean {
-    static private boolean debug = true;
+    static private boolean debug = false;
 
 	private String genelistId;
 	private String geneSymbol;
@@ -38,8 +38,6 @@ public class MasterTableBrowseBean {
     private String collectionId;
     private int collectionType;
 	private CollectionInfo collectionInfo = null;
-	
-	private String selectedTab = "tab1";
 	
 	
 	public class MasterTableDisplayInfo  {
@@ -179,15 +177,6 @@ public class MasterTableBrowseBean {
 	// ********************************************************************************
 	// Action Methods
 	// ********************************************************************************
-   public String getSelectedTab() {
-       return selectedTab;
-   }
-
-   public void setSelectedTab(String selectedTab) {
-       this.selectedTab = selectedTab;
-   }
-
-	
 	public String updatePage() {
 		String prevSelections = FacesUtil.getRequestParamValue("prevSelections");
 		

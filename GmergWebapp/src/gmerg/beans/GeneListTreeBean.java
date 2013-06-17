@@ -555,6 +555,7 @@ public class GeneListTreeBean implements Serializable
 					if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef()) && stage1.equalsIgnoreCase(inf.getStage())){						
 						JSONObject obj1 = new JSONObject();
 						obj1.put("data", inf.getName());
+//						obj.put("data", inf.getName() + "(" + inf.getEntityCount() + " probes, " + inf.getGeneCount() + " genes)");			
 						JSONObject attr1 = new JSONObject();
 						attr1.put("id", inf.getGenelistOID());
 						String table = "";
@@ -619,8 +620,8 @@ public class GeneListTreeBean implements Serializable
 		
 		for (GenelistTreeInfo inf : genelist){
 			JSONObject obj = new JSONObject();		
-			obj.put("data", inf.getName());
-			
+//			obj.put("data", inf.getName());
+			obj.put("data", inf.getName() + "(" + inf.getEntityCount() + " probes, " + inf.getGeneCount() + " genes)");			
 			JSONObject attr = new JSONObject();
 			attr.put("id", inf.getGenelistOID());
 			String table = "";
