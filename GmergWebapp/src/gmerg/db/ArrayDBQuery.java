@@ -56,11 +56,15 @@ public class ArrayDBQuery {
 			"AND URL_OID = 37 ";
 	  
 	final static String name7 = "GET_PROBE_SET_ID_BY_ANALYSIS_GENELIST_ID";
-	final static String query7 = "SELECT GCT_PROBE_SET_ID FROM MIC_ANAL_GLST_COLUMN_ITEM " +
-			"JOIN MIC_ANAL_GENELIST_COLUMN ON GCT_GLST_COLUMN_FK = AGC_OID " +
-			"JOIN MIC_ANALYSIS_GENELIST ON AGC_ANAL_GENELIST_FK = ANG_OID " +
-			"WHERE ANG_OID = ? " +
-			"ORDER BY GCT_OID ";
+//	final static String query7 = "SELECT GCT_PROBE_SET_ID FROM MIC_ANAL_GLST_COLUMN_ITEM " +
+//			"JOIN MIC_ANAL_GENELIST_COLUMN ON GCT_GLST_COLUMN_FK = AGC_OID " +
+//			"JOIN MIC_ANALYSIS_GENELIST ON AGC_ANAL_GENELIST_FK = ANG_OID " +
+//			"WHERE ANG_OID = ? " +
+//			"ORDER BY GCT_OID ";
+	final static String query7 = "SELECT GLE_ENTITY_ID FROM GNL_ENTITIES " +
+			"JOIN REF_GENELISTS ON GLE_LIST_ID = GNL_OID " +
+			"WHERE GNL_OID = ? " +
+			"ORDER BY GLE_ORDER ";
 	  
 	final static String name25 = "GET_PROBE_SET_ID_BY_ANALYSIS_GENELIST_CLUSTER_ID";
 	final static String query25 = "SELECT GCT_PROBE_SET_ID FROM MIC_ANAL_GLST_COLUMN_ITEM  " +
@@ -71,7 +75,7 @@ public class ArrayDBQuery {
 			"ORDER BY GCT_OID ";
 	  
 	final static String name8 = "GET_ANALYSIS_GENELIST_TITLE";
-	final static String query8 = "SELECT ANG_TITLE FROM MIC_ANALYSIS_GENELIST WHERE ANG_OID = ? ";
+	final static String query8 = "SELECT GNL_SHORT_NAME FROM REF_GENELISTS WHERE GNL_OID = ? ";
 	
 	final static String name26 = "GET_ANALYSIS_GENELIST_CLUSTER_TITLE";
 	final static String query26 = "SELECT AGC_TITLE FROM MIC_ANAL_GENELIST_COLUMN WHERE AGC_OID = ? ";
@@ -128,7 +132,8 @@ public class ArrayDBQuery {
 	final static String query14 = "SELECT AMT_PLATFORM_ID FROM MIC_ANALYSIS_MASTER WHERE AMT_OID = ? ";
 		  
 	final static String name15 = "GET_ANALYSIS_GENELIST_PLATFORM";
-	final static String query15 = "SELECT ANG_PLATFORM_ID FROM MIC_ANALYSIS_GENELIST WHERE ANG_OID = ? ";
+//	final static String query15 = "SELECT ANG_PLATFORM_ID FROM MIC_ANALYSIS_GENELIST WHERE ANG_OID = ? ";
+	final static String query15 = "SELECT GNL_PLATFORM_GEO_ID FROM REF_GENELISTS WHERE GNL_OID = ? ";
 	  
 	final static String name16 = "GET_GENE_SYMBOL_BY_ANALYSIS_GENELIST_ID";
 	final static String query16 = "SELECT DISTINCT GNF_SYMBOL " +
@@ -237,6 +242,24 @@ public class ArrayDBQuery {
 			"AND SER_PLATFORM_FK " + 
 			"GROUP BY SER_GEO_ID ";
 
+	final static String name30 = "GET_SAMPLE_LIST";
+	final static String query30 = "SELECT GNL_OID,GNL_SHORT_NAME FROM REF_GENELISTS " +
+			"WHERE GNL_MA_DATASET = ? " +
+			"AND GNL_STAGE = ? " +
+			"AND GNL_KEY_SAMPLE = ? ";
+
+	final static String name31 = "GET_ANALYSIS_GENELIST";
+	final static String query31 = "SELECT DISTINCT MAN_HUMAN_ORTH_SYMBOL FROM MIC_ANAL_ANNOTATION, GNL_ENTITIES " +
+			"WHERE MAN_PROBE_SET_ID = GLE_ENTITY_ID " +
+			"AND GLE_LIST_ID = ? " +
+			"AND MAN_HUMAN_ORTH_SYMBOL != ''";
+
+	final static String name32 = "GET_ALL_REF_GENELISTS";
+	final static String query32 = "SELECT GNL_OID,GNL_UID,GNL_SHORT_NAME,GNL_DESCRIPTION,GNL_SERIES_PLATFORM," +
+			"GNL_PLATFORM_GEO_ID,GNL_KEY_SAMPLE,GNL_EMAP_ID,GNL_MA_DATASET,GNL_MA_DATASET_ID,GNL_GEN_METHOD,GNL_ENTITY_TYPE," +
+			"GNL_TOTAL_ENTITIES,GNL_TOTAL_GENES,GNL_AUTHOR,GNL_DATE,GNL_VERSION,GNL_REFERENCE,GNL_IS_PUBLISHED,GNL_OTHER_REFS," +
+			"GNL_STAGE,GNL_GENELIST_TYPE,GNL_SEX,GNL_SUBSET_1,GNL_SUBSET_2,GNL_SUBSET_3,GNL_AMG_OID_FK,LPU_REF " +
+			"FROM REF_GENELISTS LEFT JOIN ISH_LINKED_PUBLICATION ON LPU_OID = GNL_REFERENCE";
 	
 	final static String name = "";
 	final static String query = "";
@@ -269,6 +292,9 @@ public class ArrayDBQuery {
 		new ParamQuery(name27, query27),
 		new ParamQuery(name28, query28),
 		new ParamQuery(name29, query29),
+		new ParamQuery(name30, query30),
+		new ParamQuery(name31, query31),
+		new ParamQuery(name32, query32)
 	};
 	
 	// finds ParamQuery object by name and returns

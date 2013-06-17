@@ -13,6 +13,7 @@ import gmerg.entities.submission.array.Sample;
 import gmerg.entities.submission.array.SearchLink;
 import gmerg.entities.submission.array.Series;
 import gmerg.entities.submission.array.SupplementaryFile;
+import gmerg.entities.GenelistTreeInfo;
 import gmerg.entities.HeatmapData;
 import gmerg.utils.Utility;
 
@@ -2140,6 +2141,58 @@ public class MySQLArrayDAOImp implements ArrayDAO {
         }
 	return genelistTitle;
     }
+
+    public String getAnalysisGenelist(String genelistId) {
+	long enter = 0;
+	if (performance)
+	    enter = System.currentTimeMillis();
+	
+	if (genelistId == null || genelistId.equals("")) {
+	    return null;
+	}
+	String glstId = AllComponentsGenelistAssembler.getGenelistIdFromClusterId(genelistId);
+	String clstId = AllComponentsGenelistAssembler.getIdFromClusterId(genelistId);
+	
+	String genelist = "";
+    ResultSet resSet = null;
+    ParamQuery parQ = null;
+    if (clstId == null) { // only genelist id passed in
+    	parQ = ArrayDBQuery.getParamQuery("GET_ANALYSIS_GENELIST");
+    } 
+	
+    String queryString = parQ.getQuerySQL();
+    PreparedStatement prepStmt = null;
+	try {
+	    if (debug)
+	    	System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+	    prepStmt = conn.prepareStatement(queryString);
+	    if (clstId == null) {
+		if (debug)
+		    System.out.println("MySQLArrayDAOImp.sql 1 arg = "+glstId);
+		prepStmt.setInt(1, Integer.parseInt(glstId));
+	    } else {
+			if (debug)
+			    System.out.println("MySQLArrayDAOImp.sql 1 arg = "+clstId);
+		prepStmt.setInt(1, Integer.parseInt(clstId));
+	    }
+	    resSet = prepStmt.executeQuery();
+	    
+		while (resSet.next()) { // it's possible it's expressed in more than one component 
+			genelist += resSet.getString(1) + ",";
+		}
+		genelist = genelist.substring(0, genelist.length()-1);
+		if (debug)
+			System.out.println("genelist = "+genelist);
+		
+	    // release the db object
+	    DBHelper.closePreparedStatement(prepStmt);
+	    DBHelper.closeResultSet(resSet);
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+	
+	return genelist;
+    }
     
     /**
      * @author xingjun - 21/11/2008
@@ -2888,5 +2941,108 @@ public class MySQLArrayDAOImp implements ArrayDAO {
         }
         return null;
     }
+ 
+    public ArrayList findSampleList(String dataset, String stage, String sample)
+    {
+        ResultSet resultSet = null;
+        ParamQuery parQ = ArrayDBQuery.getParamQuery("GET_SAMPLE_LIST");
+        PreparedStatement prepStmt = null;  
+        
+        try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+	        parQ.setPrepStat(conn);
+	        prepStmt = parQ.getPrepStat();
+	        prepStmt.setString(1, dataset);
+	        prepStmt.setString(2, stage);
+	        prepStmt.setString(3, sample);
+	        resultSet = prepStmt.executeQuery();
+	        
+			if (resultSet.first()) {
+				
+				//need to reset cursor as 'if' move it on a place
+				resultSet.beforeFirst();
+				
+				//create ArrayList to store each row of results in
+				ArrayList<String[]> results = new ArrayList<String[]>();
+				
+				while (resultSet.next()) {
+					String[] data = new String[2];
+					for (int i = 0; i < 2; i++) {
+						data[i] = resultSet.getString(i + 1);
+					}
+					results.add(data);
+				}
+				return results;
+			}
+	    
+        }
+        catch (SQLException se) {
+        se.printStackTrace();
+        }
+
+        return null;
+    }
+    
+	public ArrayList<GenelistTreeInfo> getRefGenelists() {
+		ArrayList<GenelistTreeInfo> result = null;
+        ResultSet resSet = null;
+        ParamQuery parQ = ArrayDBQuery.getParamQuery("GET_ALL_REF_GENELISTS");
+        PreparedStatement prepStmt = null;
+        String queryString = parQ.getQuerySQL();
+//        System.out.println("getAllAnalysisGeneLists sql: " + queryString);
+        try {
+        	prepStmt = conn.prepareStatement(queryString);
+        	resSet = prepStmt.executeQuery();
+        	
+        	if (resSet.first()) {
+        		resSet.beforeFirst();
+        		
+        		result = new ArrayList<GenelistTreeInfo>();
+        		while (resSet.next()) {
+        			GenelistTreeInfo genelistTreeInfo = new GenelistTreeInfo();
+        			
+        			genelistTreeInfo.setGenelistOID(resSet.getString(1));
+        			genelistTreeInfo.setGenelistUID(resSet.getString(2));
+        			genelistTreeInfo.setName(resSet.getString(3));
+        			genelistTreeInfo.setDescription(resSet.getString(4));
+        			genelistTreeInfo.setSeriesPlatform(resSet.getString(5));
+        			genelistTreeInfo.setPlatformGeoId(resSet.getString(6));
+        			genelistTreeInfo.setSample(resSet.getString(7));
+        			genelistTreeInfo.setEmapId(resSet.getString(8));
+        			genelistTreeInfo.setDataset(resSet.getString(9));
+        			genelistTreeInfo.setDatasetId(resSet.getString(10));
+        			genelistTreeInfo.setMethod(resSet.getString(11));
+        			genelistTreeInfo.setEntityType(resSet.getString(12));
+        			genelistTreeInfo.setEntityCount(resSet.getString(13));
+        			genelistTreeInfo.setGeneCount(resSet.getString(14));
+        			genelistTreeInfo.setAuthor(resSet.getString(15));
+        			genelistTreeInfo.setDate(resSet.getString(16));
+        			genelistTreeInfo.setVersion(resSet.getString(17));
+        			genelistTreeInfo.setReference(resSet.getString(18));
+        			genelistTreeInfo.setPublished(Integer.toBinaryString(resSet.getInt(19)));
+        			genelistTreeInfo.setOtherRefs(resSet.getString(20));
+        			genelistTreeInfo.setStage(resSet.getString(21));
+        			genelistTreeInfo.setGenelistType(resSet.getString(22));
+        			genelistTreeInfo.setSex(resSet.getString(23));
+        			genelistTreeInfo.setSubset1(resSet.getString(24));
+        			genelistTreeInfo.setSubset2(resSet.getString(25));
+        			genelistTreeInfo.setSubset3(resSet.getString(26));
+        			genelistTreeInfo.setAmgId(resSet.getString(27));
+        			genelistTreeInfo.setLpuRef(resSet.getString(28));
+        			
+        			
+        			result.add(genelistTreeInfo);
+        		}
+        	}
+        	
+        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closeResultSet(resSet);
+        } catch (SQLException se) {
+        	se.printStackTrace();
+        }
+		return result;
+	}
     
 }

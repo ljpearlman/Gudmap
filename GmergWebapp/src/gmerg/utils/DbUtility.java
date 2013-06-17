@@ -10,6 +10,7 @@ import gmerg.db.DBHelper;
 import gmerg.db.GeneDAO;
 import gmerg.db.GenelistDAO;
 import gmerg.db.MySQLDAOFactory;
+import gmerg.entities.GenelistTreeInfo;
 import gmerg.entities.submission.array.MasterTableInfo;
 import gmerg.entities.submission.array.SearchLink;
 
@@ -131,9 +132,24 @@ public class DbUtility {
 	arrayDAO = null;
 	
 	// return value
-	return genelistTitle;
+	return genelistTitle.replace("_", " ");
     }
     
+	public static String retrieveGenelist(String genelistId) {
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+
+        // get data from database
+		String genelist = arrayDAO.getAnalysisGenelist(genelistId);
+
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		arrayDAO = null;
+
+		// return value
+		return genelist;
+	}
     
     //***************************************************************************************************
 	public static ArrayList<SearchLink> retrieveSearchLinks() {
@@ -369,45 +385,82 @@ public class DbUtility {
      */
     public static List query(String statement) {
 	
-	if (null == statement)
-	    return null;
+		if (null == statement)
+		    return null;
 	
         Statement stmt = null;
-	ResultSet rs = null;
-	List ret = new ArrayList();
-	Connection conn = DBHelper.getDBConnection();
+		ResultSet rs = null;
+		List ret = new ArrayList();
+		Connection conn = DBHelper.getDBConnection();
         try {
-	    conn = DBHelper.reconnect2DB(conn);
+		    conn = DBHelper.reconnect2DB(conn);
             stmt = conn.createStatement();
             rs = stmt.executeQuery(statement);
-	    if (null != rs) {
-		ResultSetMetaData md = rs.getMetaData();
-		int iSize = md.getColumnCount();
-		Object[] row = null;
-		int i = 0;
-		while (rs.next()) {
-		    if (1 == iSize)
-			ret.add(rs.getObject(1));
-		    else {
-			row = new Object[iSize];
-			for (i = 0; i < iSize; i++)
-			    row[i] = rs.getObject(i+1);
-			ret.add(row);
+		    if (null != rs) {
+				ResultSetMetaData md = rs.getMetaData();
+				int iSize = md.getColumnCount();
+				Object[] row = null;
+				int i = 0;
+				while (rs.next()) {
+				    if (1 == iSize)
+				    	ret.add(rs.getObject(1));
+				    else {
+						row = new Object[iSize];
+						for (i = 0; i < iSize; i++)
+						    row[i] = rs.getObject(i+1);
+						ret.add(row);
+				    }
+				}
 		    }
+		    
+		    // close the db object
+		    DBHelper.closeJDBCConnection(conn);
+		} catch (SQLException se) {
+		    se.printStackTrace();
 		}
-	    }
-	    
-	    // close the db object
-	    DBHelper.closeJDBCConnection(conn);
-	} catch (SQLException se) {
-	    se.printStackTrace();
-	}
 	
-	if (0 == ret.size())
-	    return null;
-	
-	return ret;
+		if (0 == ret.size())
+		    return null;
+		
+		return ret;
     }
-    }   
+    
+	public static ArrayList<String> getListOfSampleNames(String dataset, String stage, String sample) {
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+		
+		ArrayList<String> sampleListNames = null;
+		sampleListNames = arrayDAO.findSampleList(dataset, stage, sample);
+			
+		
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		arrayDAO = null;
+
+
+		// return value
+    	return sampleListNames;
+
+	}
+
+	public static ArrayList<GenelistTreeInfo> getRefGenelists() {
+		Connection conn = DBHelper.getDBConnection();
+		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+
+		ArrayList<GenelistTreeInfo> result = null;
+		result = arrayDAO.getRefGenelists();
+			
+		
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		arrayDAO = null;
+
+
+		// return value
+    	return result;
+	}
+    
+}   
     
   

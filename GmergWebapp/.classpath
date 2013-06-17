@@ -28,10 +28,11 @@
 	<classpathentry kind="lib" path="lib/standard.jar"/>
 	<classpathentry kind="lib" path="lib/tomahawk-1.1.6.jar"/>
 	<classpathentry kind="lib" path="lib/TreeView.jar"/>
-	<classpathentry kind="lib" path="web/analysis.jar"/>
 	<classpathentry kind="lib" path="web/nanoxml-2.2.2.jar"/>
 	<classpathentry kind="lib" path="web/TreeView.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_git/GmergWebapp/lib/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_june/Gudmap/GmergWebapp/lib/json-simple.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_june/Gudmap/GmergWebapp/lib/analysis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

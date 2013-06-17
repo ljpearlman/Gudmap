@@ -3,11 +3,11 @@
  */
 package gmerg.db;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import gmerg.entities.submission.array.*;
 import gmerg.entities.submission.Gene;
+import gmerg.entities.GenelistTreeInfo;
 import gmerg.entities.HeatmapData;
 
 import analysis.DataSet;
@@ -76,6 +76,7 @@ public interface ArrayDAO {
 	
 	public ArrayList<String> getProbeSetIdByAnalysisGenelistId(String genelistId, boolean ascending, int offset, int num);
 	public String getAnalysisGenelistTitle(String genelistId);
+	public String getAnalysisGenelist(String genelistId);
 	
 	// linked to master table
 	public MasterTableInfo[] getMasterTableList();
@@ -83,4 +84,9 @@ public interface ArrayDAO {
 	public MasterTableInfo[] getMasterTableList(boolean isMaster); // keep it for time being in case required later - xingjun - 03/02/2010
 	
 	public ArrayList<String> getProbeSetIdBySymbols(String[] symbols, String platformId);
+	
+	public ArrayList<String> findSampleList(String dataset, String stage, String sample);
+	
+	public ArrayList<GenelistTreeInfo> getRefGenelists();
+	
 }

@@ -2,6 +2,10 @@ package gmerg.beans;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import gmerg.assemblers.CollectionAssembler;
 import gmerg.entities.BrowseTableTitle;
@@ -21,19 +25,21 @@ import gmerg.utils.Visit;
  * 
 */
 public class MasterTableBrowseBean {
-    static private boolean debug = false;
+    static private boolean debug = true;
 
 	private String genelistId;
 	private String geneSymbol;
 	private boolean displayTreeView;
 	private String tableTitle;
 	private String viewMode;
-	
+
 	private String masterTableId;
 	private String platformId;
     private String collectionId;
     private int collectionType;
 	private CollectionInfo collectionInfo = null;
+	
+	private String selectedTab = "tab1";
 	
 	
 	public class MasterTableDisplayInfo  {
@@ -97,7 +103,7 @@ public class MasterTableBrowseBean {
 		allMasterTables = new ArrayList<MasterTableDisplayInfo>();
 		for (MasterTableInfo info : masterTables)
 			allMasterTables.add(new MasterTableDisplayInfo(info));
-		
+			
 		String selections;
 		tableTitle = null;
 		if (TableUtil.isTableViewInSession()) {
@@ -113,7 +119,7 @@ public class MasterTableBrowseBean {
 		geneSymbol = Visit.getRequestParam("gene");
 		if (FacesUtil.getRequestParamValue("actionMethod") != null) 
 			return;
-		
+
 		collectionId = Visit.getRequestParam("collectionId");
 		platformId = Visit.getRequestParam("platformId");
 
@@ -122,18 +128,17 @@ public class MasterTableBrowseBean {
 		else if (collectionId != null)
 			collectionType = getCollectionInfo().getType(); 
 		
-		
-		
 		masterTableId = Visit.getRequestParam("masterTableId");
 		if (masterTableId != null) // If a specific master table is requested
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
-			masterTableInfo.selected = (masterTableInfo.getInfo().getId().equals(masterTableId));
+		    	masterTableInfo.selected = (masterTableInfo.getInfo().getId().equals(masterTableId));
 		    }
 		else if (genelistId != null) {
 		    platformId = DbUtility.getGenelistPlatformId(genelistId);
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
 		    	masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
 		    }
+		    // make only Developing Kidney (MOE430) shown initially to enhance user experience (fast)
 		    String str = null;
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
 				if (masterTableInfo.selected) {
@@ -142,7 +147,7 @@ public class MasterTableBrowseBean {
 					-1 == str.indexOf("kidney"))
 					masterTableInfo.selected = false;
 				}
-		    }
+		    }		    
 		}
 		else if (platformId != null) {    
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
@@ -153,17 +158,20 @@ public class MasterTableBrowseBean {
 			for (MasterTableDisplayInfo masterTableInfo : allMasterTables)
 				masterTableInfo.selected = true;
 
+		
+		updateSelectedItems();	
+						
 		initialseTables(null);
 		if (debug) {
 		    System.out.println("-------End MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol+" displayTreeView = "+displayTreeView+" tableTitle="+tableTitle+" viewMode="+viewMode);
 		    iSize = 0;
 		    if (null != allMasterTables)
-			iSize = allMasterTables.size();
+		    	iSize = allMasterTables.size();
 		    MasterTableDisplayInfo item = null;
 		    for (i = 0; i < iSize; i++) {
-			item = (MasterTableDisplayInfo)allMasterTables.get(i);
-			System.out.println(i+"th MasterTableDisplayInfo");
-			item.print();
+		    	item = (MasterTableDisplayInfo)allMasterTables.get(i);
+		    	System.out.println(i+"th MasterTableDisplayInfo");
+		    	item.print();
 		    }
 		}
 	}
@@ -171,9 +179,18 @@ public class MasterTableBrowseBean {
 	// ********************************************************************************
 	// Action Methods
 	// ********************************************************************************
+   public String getSelectedTab() {
+       return selectedTab;
+   }
+
+   public void setSelectedTab(String selectedTab) {
+       this.selectedTab = selectedTab;
+   }
+
+	
 	public String updatePage() {
 		String prevSelections = FacesUtil.getRequestParamValue("prevSelections");
-
+		
 		initialseTables(prevSelections);
 		return null;
 	}
@@ -182,7 +199,6 @@ public class MasterTableBrowseBean {
 		displayTreeView = true;
 		return null;
 	}
-	
 
 	public CollectionInfo getCollectionInfo() {
 		if (collectionInfo == null)
@@ -205,8 +221,10 @@ public class MasterTableBrowseBean {
 	
 	private void initialseTables(String available) {
 	    if (debug)
-		System.out.println("MasterTableBrowseBean:initialseTables.   available ="+available);
+	    	System.out.println("MasterTableBrowseBean:initialseTables.   available ="+available);
+	    
 		String selectionString = getSelectionsString();
+		
 		int iSize = allMasterTables.size();
 		MasterTableDisplayInfo masterTable = null;
 		String masterTableId = null;
@@ -215,13 +233,10 @@ public class MasterTableBrowseBean {
 
 		if (debug) {
 		    System.out.println("MasterTableBrowseBean:initialseTables.   allMasterTables size = "+iSize+" selectionString = "+selectionString);
-		    for(i=0; i<iSize; i++) {
-			masterTable = allMasterTables.get(i); 
-			System.out.println(i+"th master table Id = "+ masterTable.info.getId()+"  Title = "+ masterTable.info.getTitle());
-		    }
+		    displayMasterTableInfo();
 		}
 		for(i=0; i<iSize; i++) {
-		                masterTable = allMasterTables.get(i); 
+		    masterTable = allMasterTables.get(i); 
 			masterTableId = masterTable.info.getId();
 			if (masterTable.selected) {
 				tableView = null;
@@ -241,11 +256,10 @@ public class MasterTableBrowseBean {
 	
 	private GenericTableView populateGenelistTableView(String viewName, String masterTableId) {
 	    if (debug)
-		System.out.println("===MasterTableBrowseBean===populateGenelistTableView = " + viewName + " " + masterTableId);
+	    	System.out.println("===MasterTableBrowseBean===populateGenelistTableView = " + viewName + " " + masterTableId);
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		String platformId = DbUtility.getMasterTablePlatformId(masterTableId);
 		ArrayList<String> probeIds = new ArrayList<String>();
-		
 		
 		if (collectionId != null) {
 			if (isClipboard())
@@ -274,7 +288,7 @@ public class MasterTableBrowseBean {
 
 		return ret;
 	}
-	
+
 	private String getViewName(String id) {
 		String viewName = "masterTable_";
 		if (genelistId!=null) 
@@ -304,7 +318,7 @@ public class MasterTableBrowseBean {
 
 		GenericTable table = assembler.createTable();
 		GenericTableView tableView = new GenericTableView(viewName, 100, 350, table);
-
+		tableView.setHeightLimittedFlexible();
 	    tableView.setColWrap(false);
 	    
 		int ontologisColOffset = expressionTitles.length + 1;
@@ -368,11 +382,207 @@ public class MasterTableBrowseBean {
 	}
 
 	public String getSelectionsString() {
+		
+		updateSelectionsString();		
+		
 		String selectionsString = "";
 		for(MasterTableDisplayInfo masterTable : allMasterTables)
 			selectionsString += masterTable.selected? "1" : "0";
 		
+		
+		System.out.println("selectionstring = "+ selectionsString );
 		return selectionsString;
+		
+	}
+	
+	public String getGeneList(){
+		
+		String genelist = "";
+		if (genelistId != null) 
+			genelist = DbUtility.retrieveGenelist(genelistId);
+		
+		return genelist;
+	}
+	
+    private List<String> menuItems;
+    public List<String> getMenuItems(){
+        menuItems = new ArrayList<String>();
+        
+        for(MasterTableDisplayInfo masterTable : allMasterTables){
+        	menuItems.add(masterTable.info.getTitle());
+        }
+    	return menuItems;
+    }
+	
+    // code to handle dropdown menu for Microarray expression profiles
+    boolean selectedGonadalST1;
+    public void listenerGonadalST1(ActionEvent event){
+    	selectedGonadalST1 = !selectedGonadalST1;
+    	if (debug) System.out.println("listenerGonadalST1 selectedGonadalST1 = "+ selectedGonadalST1 );
+    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("GonadalST1", selectedGonadalST1);
+    	updatePage();
+    }    
+    public boolean getSelectedGonadalST1(){
+    	if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("GonadalST1") != null)
+    		selectedGonadalST1 = (Boolean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("GonadalST1");
+    	return selectedGonadalST1;
+    }
+
+    boolean selectedKidneyST1;
+    public void listenerKidneyST1(ActionEvent event){
+    	selectedKidneyST1 = !selectedKidneyST1;
+    	if (debug) System.out.println("listenerKidneyST1 selectedKidneyST1 = "+ selectedKidneyST1 );
+    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("KidneyST1", selectedKidneyST1);
+    	updatePage();
+    }    
+    public boolean getSelectedKidneyST1(){
+    	if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("KidneyST1") != null)
+    		selectedKidneyST1 = (Boolean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("KidneyST1");
+    	return selectedKidneyST1;
+    }
+
+    boolean selectedJGAST1;
+    public void listenerJGAST1(ActionEvent event){
+    	selectedJGAST1 = !selectedJGAST1;
+    	if (debug) System.out.println("listenerJGAST1 selectedJGAST1 = "+ selectedJGAST1 );
+    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("JGAST1", selectedJGAST1);
+    	updatePage();
+    }    
+    public boolean getSelectedJGAST1(){
+    	if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("JGAST1") != null)
+    		selectedJGAST1 = (Boolean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("JGAST1");
+    	return selectedJGAST1;
+    }
+    
+    boolean selectedPelvicGangliaST1;
+    public void listenerPelvicGangliaST1(ActionEvent event){
+    	selectedPelvicGangliaST1 = !selectedPelvicGangliaST1;
+    	if (debug) System.out.println("listenerPelvicGangliaST1 selectedPelvicGangliaST1 = "+ selectedPelvicGangliaST1 );
+    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PelvicGangliaST1", selectedPelvicGangliaST1);
+    	updatePage();
+    }    
+    public boolean getSelectedPelvicGangliaST1(){
+    	if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PelvicGangliaST1") != null)
+    		selectedPelvicGangliaST1 = (Boolean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PelvicGangliaST1");
+    	return selectedPelvicGangliaST1;
+    }
+
+    boolean selectedKidneyMOE430;
+    public void listenerKidneyMOE430(ActionEvent event){
+    	selectedKidneyMOE430 = !selectedKidneyMOE430;
+    	if (debug) System.out.println("listenerKidneyMOE430 selectedKidneyMOE430 = "+ selectedKidneyMOE430 );
+    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("KidneyMOE430", selectedKidneyMOE430);
+    	updatePage();
+    }    
+    public boolean getSelectedKidneyMOE430(){
+    	if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("KidneyMOE430") != null)
+    		selectedKidneyMOE430 = (Boolean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("KidneyMOE430");
+    	return selectedKidneyMOE430;
+    }
+
+    boolean selectedLUTMOE430;
+    public void listenerLUTMOE430(ActionEvent event){
+    	selectedLUTMOE430 = !selectedLUTMOE430;
+    	if (debug) System.out.println("listenerLUTMOE430 selectedLUTMOE430 = "+ selectedLUTMOE430 );
+    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("LUTMOE430", selectedLUTMOE430);
+    	updatePage();
+   }    
+    public boolean getSelectedLUTMOE430(){  
+    	if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LUTMOE430") != null)
+    		selectedLUTMOE430 = (Boolean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LUTMOE430");
+    	return selectedLUTMOE430;
+    }
+
+    boolean selectedGonadalMOE430;
+    public void listenerGonadalMOE430(ActionEvent event){
+    	selectedGonadalMOE430 = !selectedGonadalMOE430;
+    	if (debug) System.out.println("listenerGonadalMOE430 selectedGonadalMOE430 = "+ selectedGonadalMOE430 );    	
+    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("GonadalMOE430", selectedGonadalMOE430);
+    	updatePage();
+    }    
+    public boolean getSelectedGonadalMOE430(){
+    	if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("GonadalMOE430") != null)
+    		selectedGonadalMOE430 = (Boolean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("GonadalMOE430");
+    	return selectedGonadalMOE430;
+    }
+       
+	public void updateSelectedItems () {		
+		System.out.println("updateSelectedItems"); 
+		
+		for(MasterTableDisplayInfo masterTable : allMasterTables){
+			if (masterTable.selected == true){
+				if (masterTable.info.getId().contentEquals("4_6"))
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("LUTMOE430", true);
+				if (masterTable.info.getId().contentEquals("4_5"))
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("KidneyMOE430", true);
+				if (masterTable.info.getId().contentEquals("4_7"))
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("GonadalMOE430", true);
+				if (masterTable.info.getId().contentEquals("3_3"))
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("JGAST1", true);
+				if (masterTable.info.getId().contentEquals("3_2"))
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("KidneyST1", true);
+				if (masterTable.info.getId().contentEquals("3_4"))
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PelvicGangliaST1", true);
+				if (masterTable.info.getId().contentEquals("3_1"))
+					FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("GonadalST1", true);							
+			}						
+		}
+	}
+
+	public void updateSelectionsString() {
+		
+		Object sg = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("KidneyMOE430");
+		if (sg != null){
+	    	allMasterTables.get(2).selected = (Boolean)sg;
+	    	selectedKidneyMOE430 = (Boolean)sg;
+		}
+		sg = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LUTMOE430");
+		if (sg != null){
+	    	allMasterTables.get(1).selected = (Boolean)sg;
+	    	selectedLUTMOE430 = (Boolean)sg;
+		}
+		sg = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("GonadalMOE430");
+		if (sg != null){
+	    	allMasterTables.get(0).selected = (Boolean)sg;
+	    	selectedGonadalMOE430 = (Boolean)sg;
+		}
+		sg = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("GonadalST1");
+		if (sg != null){
+	    	allMasterTables.get(6).selected = (Boolean)sg;
+	    	selectedGonadalST1 = (Boolean)sg;
+		}
+		sg = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("KidneyST1");
+		if (sg != null){
+	    	allMasterTables.get(5).selected = (Boolean)sg;
+	    	selectedKidneyST1 = (Boolean)sg;
+		}
+		sg = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("JGAST1");
+		if (sg != null){
+	    	allMasterTables.get(4).selected = (Boolean)sg;
+	    	selectedJGAST1 = (Boolean)sg;
+		}
+		sg = FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PelvicGangliaST1");
+		if (sg != null){
+	    	allMasterTables.get(3).selected = (Boolean)sg;
+	    	selectedPelvicGangliaST1 = (Boolean)sg;
+		}
+		
+		
+		if (debug){
+			System.out.println("updateSelectionsString"); 
+		    displayMasterTableInfo();
+		}
+
+	}
+
+	public void displayMasterTableInfo(){
+		MasterTableDisplayInfo masterTable = null;
+		
+	    for(int i=0; i<allMasterTables.size(); i++) {
+	    	masterTable = allMasterTables.get(i); 
+	    	System.out.println(i+"th master table Id = "+ masterTable.info.getId()+"  Title = "+ masterTable.info.getTitle()+"  selected = "+ masterTable.getSelected());
+	    }
+
 	}
 	
 }

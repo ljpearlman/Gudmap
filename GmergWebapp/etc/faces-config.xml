@@ -484,6 +484,12 @@
   <managed-bean-class>gmerg.beans.AntibodyBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+
+  <managed-bean>
+	<managed-bean-name>GeneListTreeBean</managed-bean-name>
+	<managed-bean-class>gmerg.beans.GeneListTreeBean</managed-bean-class>
+	<managed-bean-scope>session</managed-bean-scope>
+ </managed-bean> 
  
  <!-- *********************END SECTION: MANAGED BEAN************************** 
  =================== Initialize Image Map Hotspot Data ============== 
@@ -551,6 +557,13 @@
    <to-view-id>/pages/empty_query_result.jsp</to-view-id>
    <redirect/>
   </navigation-case>
+  <navigation-case>
+   <from-action>#{GeneListTreeBean.findNode}</from-action>
+   <from-outcome>leaf</from-outcome>
+   <to-view-id>/pages/#{GeneListTreeBean.resultURL}</to-view-id>
+   <redirect/>
+  </navigation-case> 
+  
  </navigation-rule>
 
  <navigation-rule>

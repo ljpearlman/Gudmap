@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 
 <%-- moved style definition to gudmap_css.css - xingjun - 30/07/2010 --%>
 <%-- 
@@ -47,24 +47,23 @@
 			</f:verbatim>
 		</h:panelGroup>
 	</h:form>
+
+		<h:outputLink styleClass="plaintextbold" value ="http://www.gudmap.org/Help/Microarray_Help.html">
+			<h:outputText value= "  (View Microarray Analysis Help) " />
+		</h:outputLink>			
 --%>
+	<h:outputText styleClass="bigplaintext" value="#{MasterTableBrowseBean.title} > Microarray Expression" rendered="true" escape="false" />
 
 	<h:form id="topPanelForm">
-		<h:panelGrid columns="2" width="100%" styleClass="header-stripey" cellpadding="5" columnClasses="panelFirstColumn, leftAlign">
-			<h:panelGrid>
+		<h:panelGrid columns="4" width="100%" styleClass="header-stripey" cellpadding="5" columnClasses="leftAlign, leftAlign">
+			
+			<h:panelGrid columns="3" columnClasses="leftAlign, leftAlign" >	
 				<h:outputText value="Display format: " styleClass="plaintextbold" />
-				<h:selectOneRadio value="#{MasterTableBrowseBean.viewMode}" layout="pageDirection">
+				<h:selectOneRadio value="#{MasterTableBrowseBean.viewMode}" style="display: inline-table; verticle-align: top">
 					<f:selectItem itemValue="0" itemLabel="tabbed panels" />
 					<f:selectItem itemValue="1" itemLabel="sequential" />
 				</h:selectOneRadio>
-				<h:panelGrid width="100%" columnClasses="rightAlign" >
-					<h:commandLink id="updatePage" action="#{MasterTableBrowseBean.updatePage}">
-						<h:graphicImage value="../images/gotopage.gif" title="Update Page" alt="update" styleClass="icon"/>
-						<f:param name="actionMethod" value="updatePage" />
-						<f:param name="prevSelections" value="#{MasterTableBrowseBean.selectionsString}" />
-					</h:commandLink>
-				</h:panelGrid>
-			</h:panelGrid>
+ <%--			
 			<h:dataTable value="#{MasterTableBrowseBean.allMasterTables}" var="masterTable" width="100%"
 						 cellspacing="2" cellpadding="2" border="0" bgcolor="white" 
 						 rowClasses="table-stripey, table-nostripe" headerClass="align-top-stripey">
@@ -85,6 +84,84 @@
 				</h:column>	
 			
 			</h:dataTable>
+--%> 
+ 
+			<h:panelGrid columns="4" columnClasses="leftAlign, leftAlign, leftAlign, leftAlign" >		
+	            <rich:dropDownMenu id="menu" style="border:1px solid #{a4jSkin.panelBorderColor}" value="Microarray expression profiles"
+	                        direction="bottom-right" jointPoint="bl">
+	                        
+	                <rich:menuItem value="Reproductive Gonadal (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedGonadalMOE430}"/>
+	                <rich:menuItem value="Reproductive Gonadal (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedGonadalMOE430}">
+		                <f:facet name="icon">
+		                    <h:graphicImage value="../images/tick.gif"/>  
+		                </f:facet>             
+	                </rich:menuItem>
+	                
+	                <rich:menuItem value="Lower Urinary Tract (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerLUTMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedLUTMOE430}"/>
+	                <rich:menuItem value="Lower Urinary Tract (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerLUTMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedLUTMOE430}">
+		                <f:facet name="icon">
+		                    <h:graphicImage value="../images/tick.gif"/>  
+		                </f:facet>             
+	                </rich:menuItem>
+	                
+	                <rich:menuItem value="Developing Kidney (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerKidneyMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedKidneyMOE430}"/>
+	                <rich:menuItem value="Developing Kidney (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerKidneyMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedKidneyMOE430}">
+		                <f:facet name="icon">
+		                    <h:graphicImage value="../images/tick.gif"/>  
+		                </f:facet>             
+	                </rich:menuItem>
+	
+	                <rich:menuItem value="Developing Pelvic Ganglia FACS (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerPelvicGangliaST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedPelvicGangliaST1}"/>
+	                <rich:menuItem value="Developing Pelvic Ganglia FACS (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerPelvicGangliaST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedPelvicGangliaST1}">
+		                <f:facet name="icon">
+		                    <h:graphicImage value="../images/tick.gif"/>  
+		                </f:facet>             
+	                </rich:menuItem>
+	                
+	                <rich:menuItem value="JGA Single Cell (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerJGAST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedJGAST1}"/>
+	                <rich:menuItem value="JGA Single Cell (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerJGAST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedJGAST1}">
+		                <f:facet name="icon">
+		                    <h:graphicImage value="../images/tick.gif"/>  
+		                </f:facet>             
+	                </rich:menuItem>
+	                
+	                <rich:menuItem value="Developing Kidney (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerKidneyST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedKidneyST1}"/>
+	                <rich:menuItem value="Developing Kidney (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerKidneyST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedKidneyST1}" >
+		                <f:facet name="icon">
+		                    <h:graphicImage value="../images/tick.gif"/>  
+		                </f:facet>             
+	                </rich:menuItem>
+	                
+	                <rich:menuItem value="Developing Gonadal FACS (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedGonadalST1}"/>
+	                <rich:menuItem value="Developing Gonadal FACS (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedGonadalST1}">
+		                <f:facet name="icon">
+		                    <h:graphicImage value="../images/tick.gif"/>  
+		                </f:facet>             
+	                </rich:menuItem>
+	            </rich:dropDownMenu>
+
+
+				<h:commandLink id="ddmenu" action="menu.onexpand()">
+					<h:graphicImage value="../images/down.gif" alt="update1" styleClass="icon"/>
+				</h:commandLink>
+		 			
+				<h:commandLink id="updatePage" action="#{MasterTableBrowseBean.updatePage}">
+					<h:graphicImage value="../images/gotopage.gif" title="Update Page" alt="update" styleClass="icon"/>
+					<f:param name="actionMethod" value="updatePage" />
+					<f:param name="prevSelections" value="#{MasterTableBrowseBean.selectionsString}" />
+				</h:commandLink>
+				
+				<h:outputLink styleClass="plaintextbold" value ="http://www.gudmap.org/Help/Microarray_Help.html">
+					<h:outputText value= "  (View Microarray Analysis Help) " />
+				</h:outputLink>			
+				
+			</h:panelGrid>
+			</h:panelGrid>  
+			
+   			<h:panelGrid columns="2" width="100%" columnClasses="leftAlign" >
+				<h:outputText value="&nbsp;" escape="false"/>
+   			</h:panelGrid>	
+   				
 		</h:panelGrid>
 	</h:form>
 	
@@ -95,55 +172,58 @@
 	<%-- tabbed panels display --%>
 	<h:panelGroup rendered="#{MasterTableBrowseBean.viewMode=='0'}" >
 		<h:outputText value=" Microarray Expression Profile for: " styleClass="plaintextbold" />
-		<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
-		<h:outputLink styleClass="plaintextbold" value ="http://www.gudmap.org/Help/Microarray_Help.html">
-			<h:outputText value= "  (View Microarray Analysis Help)" />
-		</h:outputLink>			
+		<h:outputText value="#{MasterTableBrowseBean.title}  " styleClass="plaintext" />
 		
-		<rich:tabPanel  switchType="client" >
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[0].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[0].selected}" >
+		<h:outputLink id="topGene" target="_blank" 
+					value ="http://toppgene.cchmc.org/ToppGene/CheckInput.action?training_set=#{MasterTableBrowseBean.geneList}&type=HGNC&query=TOPPFUN">
+<%-- 			<h:outputText value="Send To ToppFun" /> --%>
+			<h:graphicImage value="../images/ToppFun_Button.png" width="60"/>
+		</h:outputLink>
+
+		<rich:tabPanel  switchType="ajax" id="tabPanel1">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[0].info.title}" name="tab1" rendered="#{MasterTableBrowseBean.allMasterTables[0].selected}" >
 				<f:subview id="masterTableBrowse_t0">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[0].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[1].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[1].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[1].info.title}" name="tab2" rendered="#{MasterTableBrowseBean.allMasterTables[1].selected}">
 				<f:subview id="masterTableBrowse_t1">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[1].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[2].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[2].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[2].info.title}" name="tab3" rendered="#{MasterTableBrowseBean.allMasterTables[2].selected}">
 				<f:subview id="masterTableBrowse_t2">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[2].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[3].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[3].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[3].info.title}" name="tab4" rendered="#{MasterTableBrowseBean.allMasterTables[3].selected}">
 				<f:subview id="masterTableBrowse_t3">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[3].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[4].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[4].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[4].info.title}" name="tab5" rendered="#{MasterTableBrowseBean.allMasterTables[4].selected}">
 				<f:subview id="masterTableBrowse_t4">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[4].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[5].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[5].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[5].info.title}" name="tab6" rendered="#{MasterTableBrowseBean.allMasterTables[5].selected}">
 				<f:subview id="masterTableBrowse_t5">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[5].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
 				</f:subview>
 			</rich:tab>
 
-			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[6].info.title}" rendered="#{MasterTableBrowseBean.allMasterTables[6].selected}">
+			<rich:tab label="#{MasterTableBrowseBean.allMasterTables[6].info.title}" name="tab7" rendered="#{MasterTableBrowseBean.allMasterTables[6].selected}">
 				<f:subview id="masterTableBrowse_t6">
 					<h:outputText value="" rendered="#{MasterTableBrowseBean.allMasterTables[6].setTableViewName}" />
 					<jsp:include page="../includes/browse_table.jsp" />
@@ -252,79 +332,4 @@
 
 	<jsp:include page="/includes/footer.jsp" />
 </f:view>
-
-<%--
-	<h:outputText value="" rendered="#{MasterTableBrowseBean.dumy}" />
-	<c:forEach items="${MasterTableBrowseBean.allMasterTables}" var="masterTable">
-		<c:if test="${masterTable.selected}">
-			<span class="plaintextbold"><c:out value="${masterTable.info.title} Microarray Expression Profile for: " /></span>
-			<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
-			<c:set var="tableViewName" value="${MasterTableBrowseBean.viewName}_${masterTable.info.id}" scope="page"/>
-			<f:subview id="mastertableBrowse${masterTable.info.id}">
-				<% gmerg.utils.table.TableUtil.setTableViewNameParam((String)pageContext.getAttribute("tableViewName")); %>
-				<jsp:include page="../includes/browse_table.jsp" />
-			</f:subview>
-			<br><br>
-		</c:if>
-	</c:forEach>
-	
-	<h:dataTable value="#{MasterTableBrowseBean.allMasterTablesDataModel}" var="masterTable" >
-		<h:column>
-		<h:panelGroup rendered="#{masterTable.selected}">
-			<h:outputText value="#{masterTable.info.title} Microarray Expression Profile for: " styleClass="plaintextbold" />
-			<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
-			
-			<f:subview id="mastertableBrowse${masterTable.info.id}">
-				<h:outputText value="" rendered="#{MasterTableBrowseBean.setTableViewName}" />
-				<jsp:include page="../includes/browse_table.jsp" />
-			</f:subview>
-			<br><br>
-		</h:panelGroup>
-		</h:column>
-	</h:dataTable>
-
-
-	<h:outputText value="" rendered="#{MasterTableBrowseBean.dumy}" />
-	<c:forEach items="${MasterTableBrowseBean.allMasterTables}" var="masterTableJSTL">
-		<c:set var="testvar" value="${masterTableJSTL}" scope="request" /> <%-- this is to make loop variable accessible for JSF EL -- %>
-		<h:outputText value="#{testvar.info.title} xxxx:#{testvar.selected}" styleClass="plaintextbold" />
-		<h:outputText value="" rendered="#{MasterTableBrowseBean.dumy1}" />
-		<br><c:out value="${masterTableJSTL.info.title} yyyy: ${masterTableJSTL.selected} " />
-		<br><c:out value="${testvar.info.title} zzz: ${testvar.selected} " />
-		<br>
-		<h:panelGroup rendered="#{testvar.selected}">
-			<h:outputText value="#{testvar.info.title} Microarray Expression Profile for: " styleClass="plaintextbold" />
-			<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
-			<f:subview id="mastertableBrowse${testvar.info.id}">
-				<h:outputText value="" rendered="#{testvar.setTableViewName}" />
-				<jsp:include page="../includes/browse_table.jsp" />
-			</f:subview>
-			<br><br>
-		</h:panelGroup>
-	</c:forEach>
-
-
-
-	<t:dataList id="mastertablesList" var="masterTable" value="#{MasterTableBrowseBean.allMasterTablesDataModel}" layout="ordered" >
-		<h:panelGroup rendered="#{masterTable.selected}">
-			<h:outputText value="#{masterTable.info.title} Microarray Expression Profile for: " styleClass="plaintextbold" />
-			<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
-			<br/>
-			<c:out value="---${masterTable.info.id}---" />
-			<br/>
-			<c:out value="---${MasterTableBrowseBean.title}---" />
-			<br/>
-			<c:out value="---${MasterTableBrowseBean.masterTableId}---" />
-			<br/>
-			<f:subview id="mastertableBrowse${MasterTableBrowseBean.masterTableId}">
-				<h:outputText value="" rendered="#{MasterTableBrowseBean.setTableViewName}" />
-				<jsp:include page="../includes/browse_table.jsp" />
-			</f:subview>
-			<br><br>
-		</h:panelGroup>
-
-	</t:dataList>
-
---%>		
-
 
