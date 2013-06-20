@@ -369,7 +369,9 @@
 									<c:if test="${pageName=='/pages/boolean_test.jsp'}" >
 										&nbsp;>&nbsp;Boolean Anatomy Search
 									</c:if>
-								</h1></span>
+									<c:if test="${pageName=='/pages/genelist_tree.jsp'}" >
+										&nbsp;>&nbsp;Gene Lists from Microarray Analysis
+									</c:if>								</h1></span>
 							</f:verbatim>
 						</h:panelGrid>
 					</c:if>

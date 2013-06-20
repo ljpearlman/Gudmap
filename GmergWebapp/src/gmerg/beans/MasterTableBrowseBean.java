@@ -113,6 +113,14 @@ public class MasterTableBrowseBean {
 			setVisibleMasterTables(selections);
 			return;
 		}
+		
+		// if a new item is selected from the genelist tree then clear the selections from the dropdown menu
+		String clearheatmap = (String) FacesUtil.getSessionValue("clearheatmap");		
+		if (clearheatmap.contentEquals("true")){
+			clearSelectionsString();			
+		}
+		FacesUtil.setSessionValue("clearheatmap", "");
+		
 		genelistId = Visit.getRequestParam("genelistId");
 		geneSymbol = Visit.getRequestParam("gene");
 		if (FacesUtil.getRequestParamValue("actionMethod") != null) 
@@ -494,6 +502,32 @@ public class MasterTableBrowseBean {
     		selectedGonadalMOE430 = (Boolean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("GonadalMOE430");
     	return selectedGonadalMOE430;
     }
+    
+	public void clearSelectionsString() {
+		
+    	selectedKidneyMOE430 = false;
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("KidneyMOE430",selectedKidneyMOE430);
+		selectedLUTMOE430 = false;
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("LUTMOE430",selectedLUTMOE430);
+		selectedGonadalMOE430 = false;
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("GonadalMOE430",selectedGonadalMOE430);
+		selectedGonadalST1 = false;
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("GonadalST1",selectedGonadalST1);
+		
+		selectedKidneyST1 = false;
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("KidneyST1",selectedLUTMOE430);
+		selectedJGAST1 = false;
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("JGAST1",selectedGonadalMOE430);
+		selectedPelvicGangliaST1 = false;
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PelvicGangliaST1",selectedGonadalST1);
+		
+		
+		if (debug){
+			System.out.println("updateSelectionsString"); 
+		    displayMasterTableInfo();
+		}
+
+	}
        
 	public void updateSelectedItems () {		
 		System.out.println("updateSelectedItems"); 
