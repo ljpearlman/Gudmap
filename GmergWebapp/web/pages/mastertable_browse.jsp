@@ -87,8 +87,13 @@
 --%> 
 
 			<h:panelGrid columns="3" columnClasses="leftAlign, leftAlign, leftAlign" >		
-	            <rich:dropDownMenu id="menu" style="border:1px solid #{a4jSkin.panelBorderColor}" value="Select microarray expression profiles"
-	                        direction="bottom-right" jointPoint="bl">
+	            <rich:dropDownMenu id="menu" style="border:1px solid #{a4jSkin.panelBorderColor}" direction="bottom-right" jointPoint="bl">
+		            <f:facet name="label"> 
+	                    <h:panelGroup>
+	                        <h:outputText value="Select microarray expression profiles "/>
+	                        <h:graphicImage value="/images/down.gif" styleClass="pic"/>
+	                    </h:panelGroup>
+	                </f:facet>
 	                        
 	                <rich:menuItem value="Reproductive Gonadal (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedGonadalMOE430}"/>
 	                <rich:menuItem value="Reproductive Gonadal (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedGonadalMOE430}">
