@@ -88,6 +88,20 @@ function getCrumb(node){
 
 </script>	
 
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#expanderHead").click(function(){
+		$("#expanderContent").slideToggle();
+		if ($("#expanderSign").text() == "(more...)"){
+			$("#expanderSign").html("(less...)")
+		}
+		else {
+			$("#expanderSign").text("(more...)")
+		}
+	});
+});
+</script>
 </head>
 
 
@@ -97,20 +111,21 @@ function getCrumb(node){
 	
 	
 	<h:form id="mainForm" >
+	<h:outputText styleClass="bigplaintext" value="#{GeneListTreeBean.title}" rendered="true" escape="false" />
+	<p id="expanderHead" style="cursor:pointer;">GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data.<span id="expanderSign">(more...)</span><p>
+	<div id="expanderContent" style="display:none">
 	
-
-
-
-    <p>GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data. They are spilt into those lists that have been included in publications and those that are unpublished. Lists are further sub-divided by sample datasets, microarray chip platform and developmental stage. For more info, including protocols, please see the <a href="http://www.gudmap.org/Help/Analysis_Help.html" style="font-size:inherit;">analysis help page</a>. The number of microarray probes/genes in a list is displayed in brackets. Hover over a list name for more detailed information, or click on a list (bold) to view the lists in heatmap view.</p>
-
-<p>Protocols for published gene lists can be found in their respective publications:
-<br/>
-<a href="http://www.ncbi.nlm.nih.gov/pubmed/19000842" style="font-size:inherit;">Brunskill et al. (2008)</a> Pubmed: 19000842<br/>
-<a href="http://www.ncbi.nlm.nih.gov/pubmed/19501082" style="font-size:inherit;">Georgas et al. (2009)</a> Pubmed: 19501082<br/>
-<a href="http://www.ncbi.nlm.nih.gov/pubmed/21386911" style="font-size:inherit;">Thiagarajan et al. (2011)</a> Pubmed: 21386911<br/>
-</p>
+	    <p>They are spilt into those lists that have been included in publications and those that are unpublished. Lists are further sub-divided by sample datasets, microarray chip platform and developmental stage. For more info, including protocols, please see the <a href="http://www.gudmap.org/Help/Analysis_Help.html" style="font-size:inherit;">analysis help page</a>.</p>
+	    <p>The number of microarray probes/genes in a list is displayed in brackets. Hover over a list name for more detailed information, or click on a list (bold) to view the lists in heatmap view.</p>
 	
-<%--	<h:outputText styleClass="bigplaintext" value="#{GeneListTreeBean.title}" rendered="true" escape="false" /> --%>
+		<p>Protocols for published gene lists can be found in their respective publications:
+		<br/>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/19000842" style="font-size:inherit;">Brunskill et al. (2008)</a> Pubmed: 19000842<br/>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/19501082" style="font-size:inherit;">Georgas et al. (2009)</a> Pubmed: 19501082<br/>
+		<a href="http://www.ncbi.nlm.nih.gov/pubmed/21386911" style="font-size:inherit;" >Thiagarajan et al. (2011)</a> Pubmed: 21386911<br/>
+		</p>
+		<span class="collaps2"></span>
+	</div>
 	 <h:inputText id="treeitem" value="#{GeneListTreeBean.selectedItem}" style="display:none; visibility: hidden; "/>
 <%--  	 <h:inputText id="genelist_crumb" value="#{GeneListTreeBean.crumb}" style="display:none; visibility: hidden; "/>	--%>
 	 <h:inputText id="genelist_mastertableId" value="#{GeneListTreeBean.masterTableId}" style="display:none; visibility: hidden; "/>

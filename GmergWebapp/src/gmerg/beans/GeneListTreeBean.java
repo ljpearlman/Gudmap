@@ -92,7 +92,8 @@ public class GeneListTreeBean implements Serializable
 	public String getTitle() {
 //    	createJSONFile();
 
-		return "Microarray Analysis (gene list)";  				
+//		return "Microarray Analysis (gene list)";  
+		return "Genelists from Microarray Analysis";
 	}
 	
 	private void createJSONFile(){
@@ -686,7 +687,8 @@ public class GeneListTreeBean implements Serializable
 		
 		for (GenelistTreeInfo inf : genelist){
 			JSONObject obj = new JSONObject();		
-			obj.put("data", inf.getName());
+//			obj.put("data", inf.getName());
+			obj.put("data", inf.getName() + "(" + inf.getEntityCount() + " probes, " + inf.getGeneCount() + " genes)");
 			
 			JSONObject attr = new JSONObject();
 			attr.put("id", inf.getGenelistOID());

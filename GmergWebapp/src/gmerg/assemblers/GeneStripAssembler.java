@@ -189,7 +189,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			    if (DbUtility.retrieveGeneProbeIds(geneSymbol, item.getPlatform()) != null) {//check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
 				element = new DataItem("../dynamicimages/heatmap_" + geneSymbol + ".jpg?tile=5&masterTableId="+item.getId(), 
 						       "Click to see " + item.getTitle() + " microarray expression profile for "+ symbol, 
-						       "mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId(), 15);
+						       "mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId()+"&cleartabs=true", 15);
 				if (debug) 
 				    System.out.println("GeneStripAssembler.retrieveData value = "+element.getValue()+" title = "+element.getTitle()+" link = "+element.getLink());
 				complexValue.add(element);
