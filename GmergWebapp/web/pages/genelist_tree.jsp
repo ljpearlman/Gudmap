@@ -100,20 +100,15 @@ function getCrumb(node){
 	
 
 
-<p>GUDMAP gene lists are the product analysis of GUDMAP microarray expression data. They are spilt into those lists that have been included in publications and those that are unpublished.
-</br>
-Lists are further sub-divided by sample datasets and microarray chip platform and in some cases the developmental stage of the sample on which the analysis was based.
-The datasets are groups of samples, spilt by microarray platform (MOE430 or ST1), with further sub-division by anatomy (kidney, lower urinary tract, reproductive system, pelvic ganglion and juxtaglomerular apparatus).
-</br>
-Please browse the tree for gene lists of interest, the number of microarray probes/genes which comprise each list is displayed. Hover over a list name for more detailed information, or click on a list (bold) to view the lists in heatmap view.
-</br>
-The majority of the unpublished gene lists have been produced by Dr. Bruce Aronow (CCHMC). The protocol used by the Aronow group to produce the gene lists is on the <a href="http://www.gudmap.org/Help/Analysis_Help.html">help page</a>. For any further assistance with the methodology please contact <a href="mailto:bruce.aronow@cchmc.org">Dr. Bruce Aronow</a> directly.</p>
+
+    <p>GUDMAP gene lists are the products of analyses of the GUDMAP microarray expression data. They are spilt into those lists that have been included in publications and those that are unpublished. Lists are further sub-divided by sample datasets, microarray chip platform and developmental stage. For more info, including protocols, please see the <a href="http://www.gudmap.org/Help/Analysis_Help.html" style="font-size:inherit;">analysis help page</a>. The number of microarray probes/genes in a list is displayed in brackets. Hover over a list name for more detailed information, or click on a list (bold) to view the lists in heatmap view.</p>
+
 <p>Protocols for published gene lists can be found in their respective publications:
-</br>
-<a href="http://www.ncbi.nlm.nih.gov/pubmed/19000842">Brunskill et al. (2008)</a> Pubmed: 19000842</br>
-<a href="http://www.ncbi.nlm.nih.gov/pubmed/19501082">Georgas et al. (2009)</a> Pubmed: 19501082</br>
-<a href="http://www.ncbi.nlm.nih.gov/pubmed/21386911">Thiagarajan et al. (2011)</a> Pubmed: 21386911</br>
-</p>	
+<br/>
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/19000842" style="font-size:inherit;">Brunskill et al. (2008)</a> Pubmed: 19000842<br/>
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/19501082" style="font-size:inherit;">Georgas et al. (2009)</a> Pubmed: 19501082<br/>
+<a href="http://www.ncbi.nlm.nih.gov/pubmed/21386911" style="font-size:inherit;">Thiagarajan et al. (2011)</a> Pubmed: 21386911<br/>
+</p>
 	
 <%--	<h:outputText styleClass="bigplaintext" value="#{GeneListTreeBean.title}" rendered="true" escape="false" /> --%>
 	 <h:inputText id="treeitem" value="#{GeneListTreeBean.selectedItem}" style="display:none; visibility: hidden; "/>
