@@ -84,7 +84,7 @@
 			</h:dataTable>
 		</h:panelGrid>
 
-		<h:panelGrid width="100%" columns="1" styleClass="block-stripey" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP' && (ISHSingleSubmissionBean.submission.assayType == 'ISH' || ISHSingleSubmissionBean.submission.assayType == 'ISH (sense probe)') && ISHSingleSubmissionBean.submission.specimen.assayType == 'wholemount'}">
+		<h:panelGrid width="100%" columns="1" styleClass="block-stripey" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP' && ISHSingleSubmissionBean.submission.assayType == 'ISH' && ISHSingleSubmissionBean.submission.specimen.assayType == 'wholemount'}">
 			<h:panelGroup>
 				<h:outputText styleClass="plaintextbold" value="Whole-mount in situ hybridization is subject to technical limitations that may influence accuracy of the data (" />
 				<h:outputLink styleClass="plaintext" value="#" onclick="var w=window.open('wish_moreInfo.jsf','wholemountPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;" >
