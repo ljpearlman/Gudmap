@@ -117,15 +117,11 @@ public class MasterTableBrowseBean {
 		
 		// if a new item is selected from the genelist tree then clear the selections from the dropdown menu
 		cleartabs = FacesUtil.getRequestParamValue("cleartabs");
-		String clearheatmap = (String) FacesUtil.getSessionValue("clearheatmap");		
-		if (cleartabs == null && clearheatmap.contentEquals("true")){
-			clearSelectionsString();			
-			FacesUtil.setSessionValue("clearheatmap", "");
-		}
-		else if (clearheatmap == null && cleartabs.contentEquals("true")){
+		if (cleartabs != null && cleartabs.contentEquals("true")){
 			clearSelectionsString();			
 			cleartabs = "";
-		}
+		}	
+		
 		
 		genelistId = Visit.getRequestParam("genelistId");
 		geneSymbol = Visit.getRequestParam("gene");

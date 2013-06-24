@@ -65,6 +65,13 @@
 	<h:panelGroup rendered="#{CollectionBrowseBean.collectionType=='3' || CollectionBrowseBean.collectionType=='4' && MasterTableBrowseBean.viewMode=='0'}" >
 		<h:outputText value=" Microarray Expression Profile for: " styleClass="plaintextbold" />
 		<h:outputText value="#{MasterTableBrowseBean.title}" styleClass="plaintext" />
+		
+		<h:outputLink id="topGene" target="_blank" 
+					value ="http://toppgene.cchmc.org/ToppGene/CheckInput.action?training_set=#{MasterTableBrowseBean.geneList}&type=HGNC&query=TOPPFUN">
+<%-- 			<h:outputText value="Send To ToppFun" /> --%>
+			<h:graphicImage value="../images/ToppFun_Button.png" width="60"/>
+		</h:outputLink>
+		
 		<h:outputLink styleClass="plaintextbold" value ="http://www.gudmap.org/Help/Microarray_Help.html">
 			<h:outputText value= "  (View Microarray Analysis Help)" />
 		</h:outputLink>			

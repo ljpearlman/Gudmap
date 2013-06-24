@@ -1,7 +1,9 @@
 package gmerg.beans;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException; 
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletContext;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -62,8 +64,7 @@ public class GeneListTreeBean implements Serializable
 		
 		if (genelistId.equalsIgnoreCase("0"))
 			return null;
-		
-		FacesUtil.setSessionValue("clearheatmap", "true");
+
 		return "leaf";
     }
     
@@ -73,6 +74,7 @@ public class GeneListTreeBean implements Serializable
 		HashMap<String, String> params = new HashMap<String, String>();		
     	params.put("genelistId", genelistId);
     	params.put("masterTableId", masterTableId);
+    	params.put("cleartabs", "true");
     	urlParams = Visit.packParams(params);	
     	
 				
@@ -84,7 +86,7 @@ public class GeneListTreeBean implements Serializable
 	}
 
     public String getResultURL () {
-    	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ masterTableId;
+    	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ masterTableId + "&cleartabs=true";
     	System.out.println("getSearchParams:result: " + result);
         return result;
     }
@@ -122,8 +124,11 @@ public class GeneListTreeBean implements Serializable
 //		System.out.println(outerlist);
 
 		try{
-//				FileWriter file = new FileWriter("/export/data0/bernardh/workspace_may/Gudmap/GmergWebapp/web/scripts/genelist.json");
-			FileWriter file = new FileWriter("/export/data0/bernardh/workspace_may/genelist.json");
+			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+			String realPath = ctx.getRealPath("/");
+			String path = realPath + "/scripts/genelist.json";
+			System.out.println("path = "+path);
+			FileWriter file = new FileWriter(path);
 			file.write(outerlist.toJSONString());
 			file.flush();
 			file.close();
