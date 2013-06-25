@@ -847,7 +847,7 @@ public final class DBHelper {
 			} else if(col.equals("7")) { // by age
 				orderStr = " order by col8 " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("8")) { // by sex
-				orderStr = " order by col15 " + order + ", col14, col1, CASE col3 HEN 'present' THEN 1 WHEN 'uncertain' THEN 2 WHEN 'not detect' THEN 3 ELSE 4 END, col6";
+				orderStr = " order by col15 " + order + ", col14, col1, CASE col3 WHEN 'present' THEN 1 WHEN 'uncertain' THEN 2 WHEN 'not detect' THEN 3 ELSE 4 END, col6";
 			} else if(col.equals("9")) { // by source
 				orderStr = " order by col4 " + order + "," + AdvancedSearchDBQuery.getBothDefaultSort();
 			} else if(col.equals("10")) { // by submission date
