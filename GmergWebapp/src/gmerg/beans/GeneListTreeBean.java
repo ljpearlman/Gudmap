@@ -1,7 +1,11 @@
+
+
 package gmerg.beans;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException; 
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletContext;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -62,8 +66,7 @@ public class GeneListTreeBean implements Serializable
 		
 		if (genelistId.equalsIgnoreCase("0"))
 			return null;
-		
-		FacesUtil.setSessionValue("clearheatmap", "true");
+
 		return "leaf";
     }
     
@@ -73,6 +76,7 @@ public class GeneListTreeBean implements Serializable
 		HashMap<String, String> params = new HashMap<String, String>();		
     	params.put("genelistId", genelistId);
     	params.put("masterTableId", masterTableId);
+    	params.put("cleartabs", "true");
     	urlParams = Visit.packParams(params);	
     	
 				
@@ -84,7 +88,7 @@ public class GeneListTreeBean implements Serializable
 	}
 
     public String getResultURL () {
-    	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ masterTableId;
+    	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ masterTableId + "&cleartabs=true";
     	System.out.println("getSearchParams:result: " + result);
         return result;
     }
@@ -122,8 +126,11 @@ public class GeneListTreeBean implements Serializable
 //		System.out.println(outerlist);
 
 		try{
-//				FileWriter file = new FileWriter("/export/data0/bernardh/workspace_may/Gudmap/GmergWebapp/web/scripts/genelist.json");
-			FileWriter file = new FileWriter("/export/data0/bernardh/workspace_may/genelist.json");
+			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+			String realPath = ctx.getRealPath("/");
+			String path = realPath + "/scripts/genelist.json";
+			System.out.println("path = "+path);
+			FileWriter file = new FileWriter(path);
 			file.write(outerlist.toJSONString());
 			file.flush();
 			file.close();
@@ -299,6 +306,50 @@ public class GeneListTreeBean implements Serializable
 		attr.put("title", "Dataset = "+dataset);
 		obj.put("attr", attr);
 
+		ArrayList<String> samples = new ArrayList<String>();
+		ArrayList<GenelistTreeInfo> unnamedsamples = new ArrayList<GenelistTreeInfo>();
+		for(GenelistTreeInfo inf : genelist){
+			if(dataset.equalsIgnoreCase(inf.getDataset())){
+				String sample = inf.getSample();
+				if(sample.isEmpty()){
+					unnamedsamples.add(inf);
+				}
+				else if(!samples.contains(sample)){
+//					System.out.println("createUnpublishedDatasets sample = "+ sample + " , dataset = "+ dataset);
+						samples.add(sample);
+				}
+			}
+		}
+		Collections.sort(samples);
+
+		
+		
+		JSONArray  list = new JSONArray();
+		
+		JSONArray l1 = new JSONArray();
+		list.addAll(createLevelAll(unnamedsamples));
+		
+		int id2 = -10;
+		for(String sample : samples){
+			id2 = id2-1;
+			list.add(createSamples(genelist, dataset, "", sample, id2));	
+//			}
+		}				
+		obj.put("children", list);
+				
+		return obj;
+	}	
+	private JSONObject createUnpublishedDatasets2(ArrayList<GenelistTreeInfo> genelist, String dataset, int id){
+		
+		JSONObject obj = new JSONObject();		
+		obj.put("data", dataset);
+		obj.put("state", "closed");
+		
+		JSONObject attr = new JSONObject();
+		attr.put("id", id);
+		attr.put("title", "Dataset = "+dataset);
+		obj.put("attr", attr);
+
 		ArrayList<String> stages = new ArrayList<String>();
 		ArrayList<String> multistages = new ArrayList<String>();
 		for(GenelistTreeInfo inf : genelist){
@@ -461,21 +512,51 @@ public class GeneListTreeBean implements Serializable
 		return obj;
 	}
 	
-	private JSONObject createSamples(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, String sample, int id){
+	private JSONObject createUnnamedSamples(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, String sample, int id){
 
-		JSONObject obj = new JSONObject();		
+		JSONObject obj = new JSONObject();
+		if(sample.contains("GSM") || sample.isEmpty()){
+		for(GenelistTreeInfo inf : genelist){
+			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
+				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
+					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
+					obj = new JSONObject();
+					obj.put("data", inf.getName());
+					JSONObject attr1 = new JSONObject();
+					attr1.put("id", inf.getGenelistOID());
+					String table = "";
+					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
+						table = "4_" + inf.getDatasetId();
+					else
+						table = "3_" + inf.getDatasetId();
+					attr1.put("table", table);
+					attr1.put("rel", "Role");							
+					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
+					obj.put("attr", attr1);
+					return obj;
+				}
+			}
+		}
+		}
+		
+		
+		
+
+
+
 		obj.put("data", sample);
 		obj.put("state", "closed");
 		
 		JSONObject attr = new JSONObject();
 		attr.put("id",id);
-		attr.put("title", "Dataset = "+ dataset + ", Sample = " +sample + ", " + stage);
+		attr.put("title", "Dataset = "+ dataset + ", Sample = " +sample);
 		obj.put("attr", attr);
 
 
 		ArrayList<GenelistTreeInfo> allList = new ArrayList<GenelistTreeInfo>();
 		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage()) && sample.equalsIgnoreCase(inf.getSample())){
+//			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage()) && sample.equalsIgnoreCase(inf.getSample())){
+			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
 				if(!allList.contains(inf.getSubset2()))
 					allList.add(inf);
 			}
@@ -488,8 +569,67 @@ public class GeneListTreeBean implements Serializable
 		return obj;
 	}
 
+	private JSONObject createSamples(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, String sample, int id){
+
+		JSONObject obj = new JSONObject();
+		if(sample.contains("GSM") || sample.isEmpty()){
+		for(GenelistTreeInfo inf : genelist){
+			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
+				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
+					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
+					obj = new JSONObject();
+					obj.put("data", inf.getName());
+					JSONObject attr1 = new JSONObject();
+					attr1.put("id", inf.getGenelistOID());
+					String table = "";
+					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
+						table = "4_" + inf.getDatasetId();
+					else
+						table = "3_" + inf.getDatasetId();
+					attr1.put("table", table);
+					attr1.put("rel", "Role");							
+					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
+					obj.put("attr", attr1);
+					return obj;
+				}
+			}
+		}
+		}
+		
+		
+		
+
+
+
+		obj.put("data", sample);
+		obj.put("state", "closed");
+		
+		JSONObject attr = new JSONObject();
+		attr.put("id",id);
+		attr.put("title", "Dataset = "+ dataset + ", Sample = " +sample);
+		obj.put("attr", attr);
+
+
+		ArrayList<GenelistTreeInfo> allList = new ArrayList<GenelistTreeInfo>();
+		for(GenelistTreeInfo inf : genelist){
+//			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage()) && sample.equalsIgnoreCase(inf.getSample())){
+			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
+				if(!allList.contains(inf.getSubset2()))
+					allList.add(inf);
+			}
+		}
+
+		JSONArray  list = new JSONArray();
+		list = createLevelAll(allList);
+		obj.put("children", list);
+				
+		return obj;
+	}
+	
 	private JSONArray createLevelAll(ArrayList<GenelistTreeInfo> genelist){
 
+		JSONArray  list = new JSONArray();
+		
 		ArrayList<GenelistTreeInfo> allList = new ArrayList<GenelistTreeInfo>();
 		for(GenelistTreeInfo inf : genelist){
 //			System.out.println("Subset2 = " + inf.getSubset2() + " , " + inf.getGenelistOID());
@@ -497,8 +637,26 @@ public class GeneListTreeBean implements Serializable
 				if(!allList.contains(inf.getSubset2()) && inf.getSubset2().equalsIgnoreCase("All"))
 					allList.add(inf);
 			}
+			else{
+				JSONObject obj = new JSONObject();		
+				obj.put("data", inf.getName() + "(" + inf.getEntityCount() + " probes, " + inf.getGeneCount() + " genes)");
+				String table = "";
+				if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
+					table = "4_" + inf.getDatasetId();
+				else
+					table = "3_" + inf.getDatasetId();
+				JSONObject attr = new JSONObject();
+				
+				attr.put("id", inf.getGenelistOID());
+				attr.put("table", table);
+				attr.put("rel", "Role");
+				attr.put("title", "Dataset = "+ inf.getDataset() + ", " + inf.getGenelistType() + ", " + inf.getAuthor());
+				obj.put("attr", attr);
+				System.out.println("object = "+ obj);
+				list.add(obj);
+
+			}
 		}
-		JSONArray  list = new JSONArray();
 		
 		for (GenelistTreeInfo all : allList){
 			JSONObject obj = new JSONObject();		
@@ -604,6 +762,33 @@ public class GeneListTreeBean implements Serializable
 //		attr.put("title", "Dataset = "+dataset);
 		obj.put("attr", attr);
 
+		ArrayList<GenelistTreeInfo> names = new ArrayList<GenelistTreeInfo>();
+		for(GenelistTreeInfo inf : genelist){
+			if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef())){
+				if(!names.contains(inf.getName()))
+					names.add(inf);
+			}
+		}
+
+		JSONArray  list = new JSONArray();
+		
+		list = createPublishedNames(names);
+		obj.put("children", list);
+				
+		return obj;
+	}
+
+	private JSONObject createPublisher2(ArrayList<GenelistTreeInfo> genelist, String dataset, String publisher, int id){
+		
+		JSONObject obj = new JSONObject();		
+		obj.put("data", publisher);
+		obj.put("state", "closed");
+		
+		JSONObject attr = new JSONObject();
+		attr.put("id", id);
+//		attr.put("title", "Dataset = "+dataset);
+		obj.put("attr", attr);
+
 		ArrayList<String> stages = new ArrayList<String>();
 		for(GenelistTreeInfo inf : genelist){
 			if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef())){
@@ -687,7 +872,7 @@ public class GeneListTreeBean implements Serializable
 		
 		for (GenelistTreeInfo inf : genelist){
 			JSONObject obj = new JSONObject();		
-//			obj.put("data", inf.getName());
+			//obj.put("data", inf.getName());
 			obj.put("data", inf.getName() + "(" + inf.getEntityCount() + " probes, " + inf.getGeneCount() + " genes)");
 			
 			JSONObject attr = new JSONObject();
