@@ -5,6 +5,7 @@ import gmerg.entities.submission.Person;
 import gmerg.entities.submission.Probe;
 import gmerg.entities.submission.Specimen;
 import gmerg.entities.submission.Submission;
+import gmerg.entities.submission.ImageDetail;
 import gmerg.entities.submission.ExpressionDetail;
 
 import java.util.ArrayList;
@@ -21,7 +22,10 @@ public class ISHSubmission extends Submission {
     protected ExpressionDetail [] annotatedComponents;
     protected Antibody antibody;
     protected String tissue; 
-    protected String project; 
+    /** wlzImage: filePath is the wlz download url
+     *	          clickFilePath is the iip viewer url
+    */
+    protected ImageDetail wlzImage = null;
 
     public ISHSubmission() {
     
@@ -128,11 +132,11 @@ public class ISHSubmission extends Submission {
     	this.tissue = tissue;
     }  
     
-    public String getProject() {
-    	return project;
+    public ImageDetail getWlzImage() {
+    	return wlzImage;
     }
     
-    public void setProject(String project) {
-    	this.project = project;
+    public void setWlzImage(ImageDetail input) {
+    	wlzImage = input;
     }    
 }

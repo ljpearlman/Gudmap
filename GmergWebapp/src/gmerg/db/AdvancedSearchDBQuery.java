@@ -829,7 +829,7 @@ public class AdvancedSearchDBQuery {
 														  "RPR_JAX_ACC",
 														  "SPN_WILDTYPE",
 														  "PRB_PROBE_TYPE",
-														  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_SML_FILENAME)",
+														  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_SML_FILENAME)",
 														  "REPLACE(SUB_ACCESSION_ID, ':', 'no')" };
 
       final static String getISH_BROWSE_ALL_COLUMNS() {
@@ -852,8 +852,8 @@ public class AdvancedSearchDBQuery {
 	                                                  "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
 	                                                  "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
 	                                                  "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-	                                                  "AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
-	                                                  "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 31 " +
+	                                                  "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
+	                                                  "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK " +
 	                                                  "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " ;
 	                                                  
 	  final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";

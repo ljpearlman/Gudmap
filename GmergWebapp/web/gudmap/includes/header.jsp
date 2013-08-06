@@ -300,7 +300,7 @@
 				<br/>
 	                                                <p class="db_expression_database sidebar_first_item"><a class="bigboldnavtext" href="${pageContext.request.contextPath}/pages/database_homepage.html">Expression Database</a></p>
 				<p><a  class="mediumnavtext" href="http://www.gudmap.org/Organ_Summaries/index.php">Tissue Summaries</a></p>
-				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/genelist_tree.html">Analysis</a></p>
+				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/genelist_folder.html">Analysis</a></p>
 				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/edit_entry_page_per_lab.html">Annotate</a></p>
 				<p><a  class="mediumnavtext" href="http://www.gudmap.org/Submission_Archive/index.html">Downloads</a></p>
 				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/lab_summaries.html">Data Source</a></p>
@@ -369,9 +369,7 @@
 									<c:if test="${pageName=='/pages/boolean_test.jsp'}" >
 										&nbsp;>&nbsp;Boolean Anatomy Search
 									</c:if>
-									<c:if test="${pageName=='/pages/genelist_tree.jsp'}" >
-										&nbsp;>&nbsp;Gene Lists from Microarray Analysis
-									</c:if>								</h1></span>
+								</h1></span>
 							</f:verbatim>
 						</h:panelGrid>
 					</c:if>

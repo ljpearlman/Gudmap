@@ -2141,7 +2141,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
         }
 	return genelistTitle;
     }
-
+    
     public String getAnalysisGenelist(String genelistId) {
 	long enter = 0;
 	if (performance)
@@ -2193,7 +2193,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	
 	return genelist;
     }
-    
+
     /**
      * @author xingjun - 21/11/2008
      * <p>modified by xingjun - 11/08/2009
@@ -2941,7 +2941,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
         }
         return null;
     }
- 
+    
     public ArrayList findSampleList(String dataset, String stage, String sample)
     {
         ResultSet resultSet = null;
@@ -3044,5 +3044,5 @@ public class MySQLArrayDAOImp implements ArrayDAO {
         }
 		return result;
 	}
-    
+
 }

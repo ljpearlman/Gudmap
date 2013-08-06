@@ -145,8 +145,39 @@ public class Submission {
         return authors;
     }
     
+    public int getNumImages() {
+	int ret = 0;
+	if (null != originalImages)
+	    ret = originalImages.size();
+	
+	return ret;
+    }
+
     public ArrayList getOriginalImages() {
-        return originalImages;
+	// 4 image a row
+	int iSize = 0;
+	if (null != originalImages)
+	    iSize = originalImages.size();
+	if (0 == iSize)
+	    return null;
+
+	ArrayList ret = new ArrayList();
+	ImageInfo[] row = null;
+	int index = 0;
+	int  i = 0;
+	while (index < iSize) {
+	    row = new ImageInfo[4];
+	    for (i = 0; i < 4; i++)
+		row[i] = null;
+	    for (i = 0; i < 4; i++) 
+		if (index < iSize) {
+		    row[i] = (ImageInfo)originalImages.get(index);
+		    index++;
+		}
+	    ret.add(row);
+	}
+
+	return ret;
     }
 
     public void setOriginalImages(ArrayList images) {

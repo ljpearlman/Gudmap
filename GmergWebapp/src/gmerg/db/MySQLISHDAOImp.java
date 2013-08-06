@@ -6,6 +6,7 @@ import gmerg.entities.submission.Gene;
 import gmerg.entities.submission.ish.ISHBrowseSubmission;
 import gmerg.entities.submission.Antibody;
 import gmerg.entities.submission.Allele;
+import gmerg.entities.submission.ImageInfo;
 import gmerg.entities.submission.ImageDetail;
 import gmerg.entities.submission.Person;
 import gmerg.entities.submission.Probe;
@@ -293,7 +294,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setEuregeneId((resSet.getString(27)==null)?"":resSet.getString(27));
 	    
         }
-        if (null != noteSet) {
+        if (null != noteSet && null != submissionInfo) {
 	    String str = null;
 	    List list = new ArrayList<String>();
 	    while (noteSet.next()) {
@@ -1003,9 +1004,6 @@ public class MySQLISHDAOImp implements ISHDAO {
 		str = Utility.netTrim(resSet.getString(12));
 		allele.setNotes(str);
 
-		if (debug)
-		    allele.print();
-
  		alleleList.add(allele);
  	    }
 	}
@@ -1030,7 +1028,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_IMAGES");
         String queryString = parQ.getQuerySQL();
-	//        System.out.println("findImageBySubmissionId:Query: " + queryString);
+	if (debug)
+	    System.out.println("findImageBySubmissionId:Query: " + queryString);
         PreparedStatement prepStmt = null;
         try {
 	    // if disconnected from db, re-connected
@@ -1044,7 +1043,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             // execute
             resSet = prepStmt.executeQuery();
             ImageInfo = formatImageResultSet(resSet);
-	    
+
             // close the connection
             DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
@@ -1054,7 +1053,6 @@ public class MySQLISHDAOImp implements ISHDAO {
     }
     
     /**
-     * <p>modified by xingjun - 26/05/2011 
      * - this is a temporay solution
      * - for sharing purpose (with Euregene) we have OPT related process and file extensions of OPT images are different
      * - I presume the file extensions are wlz so modified the code accordingly - filter out wlz files
@@ -1071,41 +1069,36 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @throws SQLException
      */
     private ArrayList formatImageResultSet(ResultSet resSetImage) throws SQLException {
-        ResultSetMetaData resSetData = resSetImage.getMetaData();
-        int columnCount = resSetData.getColumnCount();
         if (resSetImage.first()) {
             resSetImage.beforeFirst();
             int serialNo = 1;
-            ArrayList<String[]> results = new ArrayList<String[]>();
+            ArrayList results = new ArrayList();
 	    int dotPosition = 0;
 	    String fileExtension = null;
 	    String str = null;
-	    String[] columns = null;
+	    ImageInfo img = null;
 
             while (resSetImage.next()) {
-                columns = new String[columnCount + 1];
-                for (int i = 0; i < columnCount; i++) {
-		    if(i == 3) {
-                    	str = Utility.netTrim(resSetImage.getString(i+1));
-			if (null == str) 
-			    columns[i] = null;
-			else {
-			    dotPosition = str.lastIndexOf(".");
-			    fileExtension = str.substring(dotPosition+1).trim();
-			    if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("wlz")) {
-				columns[i] = str.substring(0, str.lastIndexOf(".")) + ".jpg";
-			    } else {
-				columns[i] = str.substring(0, str.lastIndexOf(".")) + "." + fileExtension;// xingjun - 01/08/2011 - mantis 556
-			    }
-			}
-		    }
-		    else {
-			columns[i] = resSetImage.getString(i + 1);
-		    }
-                }
-                columns[columnCount] = String.valueOf(serialNo);
+                img = new ImageInfo();
+	str = Utility.netTrim(resSetImage.getString(1));
+	if (null != str && !str.equals("")) 
+	    img.setAccessionId(str);
+	str = Utility.netTrim(resSetImage.getString(2));
+	if (null != str && !str.equals("")) 
+	    img.setFilePath(str);
+	str = Utility.netTrim(resSetImage.getString(3));
+	if (null != str && !str.equals("")) 
+	    img.setNote(str);
+	str = Utility.netTrim(resSetImage.getString(4));
+	if (null != str && !str.equals("")) 
+	    img.setSpecimenType(str);
+	str = Utility.netTrim(resSetImage.getString(5));
+	if (null != str && !str.equals("")) 
+	    img.setClickFilePath(str);
+
+	img.setSerialNo(""+serialNo);
                 serialNo++;
-                results.add(columns);
+                results.add(img);
             }
             return results;
         }
@@ -4578,6 +4571,48 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @param serialNum
      * return
      */
+    public ImageDetail findWlzImageDetailBySubmissionId(String submissionAccessionId) {
+        ImageDetail result = null;
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_WLZ_DETAIL");// in situ
+        PreparedStatement prepStmt = null;
+	
+        try {
+	    // if disconnected from db, re-connected
+	    conn = DBHelper.reconnect2DB(conn);
+	    
+	    if (debug)
+		System.out.println("findWlzImageDetailBySubmissionId:sql: " + parQ.getQuerySQL());
+	    
+	    // image detail
+	    parQ.setPrepStat(conn);
+                    prepStmt = parQ.getPrepStat();
+                    prepStmt.setString(1, submissionAccessionId);
+                    resSet = prepStmt.executeQuery();
+	    if (resSet.first()) {
+		result = new ImageDetail();
+		result.setAccessionId(resSet.getString(1));
+		result.setGeneSymbol(resSet.getString(2));
+		result.setGeneName(resSet.getString(3));
+		result.setStage(resSet.getString(4));
+		result.setSpecimenType(resSet.getString(7));
+		result.setFilePath(resSet.getString(8));
+		result.setClickFilePath(resSet.getString(9));
+            }
+	    
+            // close the db object
+            DBHelper.closePreparedStatement(prepStmt);
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * @param submissionAccessionId
+     * @param serialNum
+     * return
+     */
     public ImageDetail findImageDetailBySubmissionId(String submissionAccessionId,
                                                      int serialNum) {
         ImageDetail result = null;
@@ -4653,7 +4688,8 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @author xingjun 17th May 2006
      */
     public ImageDetail formatImageDetailResultSet(ResultSet resSet,
-						  ResultSet resSetAllImageNotesInSameSubmission,ResultSet resSetPublicImgs, int serialNum) throws SQLException {
+						  ResultSet resSetAllImageNotesInSameSubmission,
+						  ResultSet resSetPublicImgs, int serialNum) throws SQLException {
         //		  System.out.println("obtained the image detail!!!!!!!!!!!");
         if (resSet.first()) {
             ImageDetail imageDetail = new ImageDetail();
@@ -4662,10 +4698,8 @@ public class MySQLISHDAOImp implements ISHDAO {
             imageDetail.setGeneName(resSet.getString(3));
             imageDetail.setStage(resSet.getString(4));
             imageDetail.setAge(resSet.getString(5));
-            imageDetail.setAssayType(resSet.getString(6));
             imageDetail.setSpecimenType(resSet.getString(7));
             imageDetail.setFilePath(resSet.getString(8));
-            imageDetail.setImageName(resSet.getString(9));
             imageDetail.setSerialNo(Integer.toString(serialNum + 1));
 	    
             // get all image notes in the same submission: for image viewer disposal

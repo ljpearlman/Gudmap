@@ -14,6 +14,7 @@ import gmerg.entities.submission.ExpressionDetail;
 import gmerg.entities.submission.Person;
 import gmerg.entities.submission.Probe;
 import gmerg.entities.submission.Specimen;
+import gmerg.entities.submission.ImageDetail;
 import gmerg.entities.submission.Allele;
 import gmerg.entities.submission.Submission;
 import gmerg.entities.submission.StatusNote;
@@ -109,6 +110,7 @@ public class ISHSubmissionAssembler {
 		
 		// get image info
 		ArrayList images = ishDAO.findImageBySubmissionId(accessionId);
+		ImageDetail wlz = ishDAO.findWlzImageDetailBySubmissionId(accessionId);
 		
 		// get author info
 		String author = ishDAO.findAuthorBySubmissionId(accessionId);
@@ -140,6 +142,7 @@ public class ISHSubmissionAssembler {
 		ishSubmission.setSpecimen(specimen);
 		ishSubmission.setAllele(allele);
 		ishSubmission.setOriginalImages(images);
+		ishSubmission.setWlzImage(wlz);
 		ishSubmission.setAuthors(author);
 		ishSubmission.setPrincipalInvestigators(pi);
 		ishSubmission.setSubmitter(submitter);

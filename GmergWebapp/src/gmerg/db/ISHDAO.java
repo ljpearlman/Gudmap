@@ -161,6 +161,7 @@ public ArrayList getComponentCountInfoByGeneInfo(String inputType, String inputS
 	
 	// image detail popup window
 	public ImageDetail findImageDetailBySubmissionId(String submissionAccessionId, int serialNum);
+	public ImageDetail findWlzImageDetailBySubmissionId(String submissionAccessionId); // q6
 	
 	// submission collection
 	public ISHBrowseSubmission[] getSubmissionBySubmissionId(String[] submissionIds,

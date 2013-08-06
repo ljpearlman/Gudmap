@@ -1,5 +1,7 @@
 package gmerg.beans;
 
+import java.io.Serializable;
+
 import gmerg.assemblers.ISHSubmissionAssembler;
 import gmerg.entities.submission.Antibody;
 import gmerg.entities.submission.ish.ISHSubmission;
@@ -8,7 +10,7 @@ import gmerg.utils.FacesUtil;
 
 import javax.faces.context.FacesContext;
 
-public class ISHSingleSubmissionBean {
+public class ISHSingleSubmissionBean implements Serializable {
     private boolean debug = false;
 
     private ISHSubmission submission;
@@ -17,7 +19,7 @@ public class ISHSingleSubmissionBean {
     protected String id;
     private String annotationDisplayType;
     private String displayOfAnnoGps;
-    private boolean renderPage;
+    private boolean exist;
     private boolean renderPrbSeqInfo;
     private boolean renderPrbNameURL;
     private boolean expressionMapped;
@@ -97,7 +99,7 @@ public class ISHSingleSubmissionBean {
             String assayType = submission.getAssayType();
             this.setSubmissionID(subId);
             if(!onlyRetrieveTree) {
-	            if (assayType.indexOf("ISH") >=0) { // ISH data
+	            if (assayType.indexOf("ISH") >=0 && null != submission.getProbe()) { // ISH data
 	//            	System.out.println("assayType: ISH");
 	            	if (submission.getProbe().getSeqStatus() != null && !submission.getProbe().getSeqStatus().equals("Unsequenced.")) {
 	            		renderPrbSeqInfo = true;
@@ -159,15 +161,16 @@ public class ISHSingleSubmissionBean {
         return submission;
     }
     
-    public boolean isRenderPage() {
+    public boolean isExist() {
     
         if(submission == null){
-            renderPage = false;
+            exist = false;
         }
         else {
-            renderPage = true;
+            exist = true;
         }
-        return renderPage;
+
+        return exist;
     }
 
     public boolean isRenderPrbSeqInfo(){

@@ -84,9 +84,9 @@ public interface ArrayDAO {
 	public MasterTableInfo[] getMasterTableList(boolean isMaster); // keep it for time being in case required later - xingjun - 03/02/2010
 	
 	public ArrayList<String> getProbeSetIdBySymbols(String[] symbols, String platformId);
-	
+
 	public ArrayList<String> findSampleList(String dataset, String stage, String sample);
 	
 	public ArrayList<GenelistTreeInfo> getRefGenelists();
-	
+
 }

@@ -7,16 +7,18 @@
 <f:view>
   <jsp:include page="/includes/header.jsp" />
   
- 	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{MicroarraySingleSubmissionBean.id})" rendered="#{!MicroarraySingleSubmissionBean.renderPage}"/>
-	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}"/>
-	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{MicroarraySingleSubmissionBean.submission.deleted && MicroarraySingleSubmissionBean.submission.released}"/>
-	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!MicroarraySingleSubmissionBean.submission.released && MicroarraySingleSubmissionBean.submission.deleted}"/>
-	<h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}" escape="false"/>
-	<h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}">
+ 	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{MicroarraySingleSubmissionBean.id})" rendered="#{!MicroarraySingleSubmissionBean.exist}"/>
+                <h:panelGrid columns="1"  rendered="#{MicroarraySingleSubmissionBean.exist}" >
+	         <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}"/>
+	         <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{MicroarraySingleSubmissionBean.submission.deleted && MicroarraySingleSubmissionBean.submission.released}"/>
+	         <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!MicroarraySingleSubmissionBean.submission.released && MicroarraySingleSubmissionBean.submission.deleted}"/>
+	         <h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}" escape="false"/>
+	         <h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}">
 		gudmap-editors@gudmap.org
-	</h:outputLink>
+	          </h:outputLink>
+                </h:panelGrid>
 	
-	<h:form id="mainForm" rendered="#{MicroarraySingleSubmissionBean.renderPage && MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}">
+	<h:form id="mainForm" rendered="#{MicroarraySingleSubmissionBean.exist && MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}">
 
                 <h:panelGrid columns="1" width="100%" styleClass="block-stripey">
                           <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.submission.accID}" />
@@ -29,14 +31,45 @@
     	          </h:outputLink>
                </h:panelGrid>
 		
-               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty MicroarraySingleSubmissionBean.submission.originalImages}">
+               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{null != MicroarraySingleSubmissionBean.submission.originalImages}">
 		<h:outputText value="Images"  />
-		<h:dataTable columnClasses="text-normal,text-top" value="#{MicroarraySingleSubmissionBean.submission.originalImages}" var="image" >
-			<h:column>
-				<h:outputLink value="#" onclick="window.open('#{image[1]}', '', 'resizable=1,toolbar=0,scrollbars=1,width=600,height=600');return false;">
-					<h:graphicImage styleClass="icon" value="#{image[0]}" height="50" onclick=""/>
-				</h:outputLink>
-			</h:column>
+		<h:dataTable  columnClasses="text-normal,text-top" value="#{MicroarraySingleSubmissionBean.submission.originalImages}" var="image">
+			        <h:column>
+			                <h:panelGrid columns="2" width="180" >
+					<h:outputLink value="#" styleClass="plaintext" target="_blank"
+					                       onclick="mywindow=window.open('#{image[0].clickFilePath}','#{image[0].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
+						<h:graphicImage value="#{image[0].filePath}" styleClass="topAlign, leftAlign" width="80"/>
+					</h:outputLink>
+					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[0].note}"/>
+				</h:panelGrid>
+			        </h:column>
+			        <h:column>
+			                <h:panelGrid rendered="#{null!=image[1]}" columns="2" width="180" >
+					<h:outputLink value="#" styleClass="plaintext" target="_blank"
+					                       onclick="window.open('#{image[1].clickFilePath}','#{image[1].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
+						<h:graphicImage value="#{image[1].filePath}"  styleClass="topAlign" width="80"/>
+					</h:outputLink>
+					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[1].note}"/>
+				</h:panelGrid>
+			        </h:column>
+			        <h:column>
+			                <h:panelGrid rendered="#{null!=image[2]}" columns="2" width="180" >
+					<h:outputLink value="#" styleClass="plaintext" target="_blank"
+					                       onclick="window.open('#{image[2].clickFilePath}','#{image[2].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
+						<h:graphicImage value="#{image[2].filePath}"  styleClass="topAlign" width="80"/>
+					</h:outputLink>
+					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[2].note}"/>
+				</h:panelGrid>
+			        </h:column>
+			        <h:column>
+			                <h:panelGrid rendered="#{null!=image[3]}" columns="2" width="180" >
+					<h:outputLink value="#" styleClass="plaintext" target="_blank"
+					                       onclick="window.open('#{image[3].clickFilePath}','#{image[3].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
+						<h:graphicImage value="#{image[3].filePath}"  styleClass="topAlign" width="80"/>
+					</h:outputLink>
+					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[3].note}"/>
+				</h:panelGrid>
+			        </h:column>
 		</h:dataTable>
                </h:panelGrid>
 		

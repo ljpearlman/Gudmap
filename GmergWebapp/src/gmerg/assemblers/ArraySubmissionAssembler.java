@@ -80,12 +80,14 @@ public class ArraySubmissionAssembler {
 		arraySubmission.setArchiveId(submission.getArchiveId()); // added by xingjun - 03/11/2010
 		arraySubmission.setOriginalImages(images);
 
-		arraySubmission.setFilesLocation(supplementaryFiles.getFilesLocation());
-		arraySubmission.setCelFile(supplementaryFiles.getCelFile());
-		arraySubmission.setChpFile(supplementaryFiles.getChpFile());
-		arraySubmission.setRptFile(supplementaryFiles.getRptFile());
-		arraySubmission.setExpFile(supplementaryFiles.getExpFile());
-		arraySubmission.setTxtFile(supplementaryFiles.getTxtFile());
+		if (null != supplementaryFiles) {
+		    arraySubmission.setFilesLocation(supplementaryFiles.getFilesLocation());
+		    arraySubmission.setCelFile(supplementaryFiles.getCelFile());
+		    arraySubmission.setChpFile(supplementaryFiles.getChpFile());
+		    arraySubmission.setRptFile(supplementaryFiles.getRptFile());
+		    arraySubmission.setExpFile(supplementaryFiles.getExpFile());
+		    arraySubmission.setTxtFile(supplementaryFiles.getTxtFile());
+		}
 		arraySubmission.setPrincipalInvestigators(pis);
 		arraySubmission.setSubmitter(submitter);
 		arraySubmission.setSample(sample);

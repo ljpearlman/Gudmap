@@ -273,6 +273,10 @@ public class Globals {
 	"ontologydescription",
 	"series_browse",
 	"entry_page",
+	"zoom_viewer",
+	"ish_submission",
+	"mic_submission",
+	"image_matrix_browse",
 	"index"};
     
     public static String[] getNoSessionControlPages() {
@@ -332,7 +336,7 @@ public class Globals {
 	case ASSAY: 
 	    return new FilterItem(FilterType.CHECKBOX, new String[]{"ISH", "IHC", "Array", "TG"}, null);
 	case SPECIMEN: 
-	    return new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount", "wholemount-opt"}, null);
+	    return new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount", "opt_wholemount"}, null);
 	case GENOTYPE: 
 	    return new FilterItem(FilterType.LIST, new String[]{"wholemount", "section"}, null);
 	case DATE:

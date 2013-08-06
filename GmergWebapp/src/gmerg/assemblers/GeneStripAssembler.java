@@ -23,6 +23,7 @@ import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryCollectionAssembler;
 import gmerg.entities.Globals;
 import gmerg.entities.submission.array.MasterTableInfo;
+import gmerg.entities.submission.ImageInfo;
 import gmerg.entities.ChromeDetail;
 /**
  * @author xingjun
@@ -175,13 +176,6 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			}
 
 			/** 7 - array expression profile */
-			// check with mehran ------------- test code
-//			String arrayExprofile = "array expression profile";
-/*			data[i][6] = new DataItem("../dynamicimages/heatmap_" + requiredSymbols.get(i) + ".jpg?tile=5", 
-										"Click to see microarray expression profile for "+ symbol, 
-										"mastertable_browse.html?gene="+symbol, 15);
-*/
-			// xingjun - 02/06/2011 - made change for euregene app
 			ArrayList<DataItem> complexValue = new ArrayList<DataItem>();
 			MasterTableInfo[] masterTableInfo = DbUtility.getAllMasterTablesInfo();
 			String geneSymbol = requiredSymbols.get(i);
@@ -653,8 +647,6 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @return
 	 */
 	private String getThumbnailURL(Connection conn, String submissionId) {
-		// create a dao
-//		Connection conn = DBHelper.getDBConnection();
 		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 		
         // get data from database
@@ -663,11 +655,9 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		if (imageList == null || imageList.size() == 0) {
 			thumbnailURL = "";
 		} else {
-			thumbnailURL = ((String[])imageList.get(0))[3];
+		    thumbnailURL = ((ImageInfo)imageList.get(0)).getFilePath();
 		}
 
-        // release resources
-//        DBHelper.closeJDBCConnection(conn);
         ishDAO = null;
 		
         // return the value object

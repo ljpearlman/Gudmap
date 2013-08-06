@@ -12,62 +12,6 @@ var isMozillaWindows = isMozilla && Spry.is.windows;
 //var fixedTableHeaders = if (userSystem.is.ie || (userSystem.is.mozilla && !userSystem.is.windows);
 
 
-//******************************************** Zoom Viewer section (Begin) ******************************************************
-var zoomViewerLoaded;
-		
-//This is to be used whenever a zoom viewer window is required
-function openZoomViewer(id, name, serialNo, windowParams, numTries) {
-	if(!serialNo)
-		serialNo = '1';
-	if(!numTries) {
-		numTries = 0;
-		zoomViewerLoaded = false;
-   		if (!windowParams)
-   			windowParams = "toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes";
-		if (windowParams.indexOf('width') < 0) {
-			var width = 1150;
-			if(isIE) {
-				width = 1174;
-			}
-			windowParams += ', width=' + width;
-		}
-		if (windowParams.indexOf('height') < 0){
-			windowParams += ', height=' + 835;
-		}
-		if(windowParams.indexOf('top') < 0) {
-			windowParams += ', top=' + 50;
-		}
-		
-		if(windowParams.indexOf('left') < 0) {
-			windowParams += ', left=' + 50;
-		}
-	}
-	
-	var url = 'zoom_viewer.html?id=' + id + '&serialNo=' + serialNo;
-	zoomViewerWindow = window.open(url, name, windowParams);
-	if (!isIE) //This is a fix only for IE - when page fails to load it retry to load the page again for up to 5 times
-		return;
-				
-	zoomViewerId = id;						//this for the following setTimeout to pass the parameter to the function
-	zoomViewerName = name;					//this for the following setTimeout 
-	zoomViewerSerialNo = serialNo;			//this for the following setTimeout
-   	zoomViewerWindowParams = windowParams;  //this for the following setTimeout 
-   	zoomViewerNumTries = numTries;			//this for the following setTimeout
-	setTimeout('reloadZoomViewerIfNotLoaded();', 250);
-}	
-				
-function reloadZoomViewerIfNotLoaded() {
-	if(zoomViewerLoaded || zoomViewerNumTries>5) {
-		return;
-	}	
-	openZoomViewer(zoomViewerId, zoomViewerName, zoomViewerSerialNo, zoomViewerWindowParams, zoomViewerNumTries+1);
-}	
-
-function setZoomViewerLoaded() { // This is called by zoom_viewer onload funtion
-	zoomViewerLoaded = true;
-}
-//******************************************** Zoom Viewer section (End) ********************************************************
-  
 //******************************************** Login Panel section (Begin) ********************************************************
 // This is to prevent Autocomplete displayes login info. autocomplete attribute can be set to 'off' for forms 
 // but this is not stanmdard an hence not available in JSF form. This way it is gonna work for any browser that support javascript
@@ -808,7 +752,7 @@ function getChild(node, id, exactMatch) {	// exactMatch is optional default valu
 var w;
 function openDesktop1(obj) {
 	//window.name="lab_ish_edit_window" 
-	openZoomViewer(obj, 'desktop1', '1');
+	window.open('zoom_viewer.html?id=' + obj + '&serialNo=1', 'desktop1', "toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes");
 	w=window.open('ish_edit_expression.html?id='+obj,'desktop0','left=800,resizable=1,toolbar=0,scrollbars=1,width=600,height=700');
 	w.focus();
 } 

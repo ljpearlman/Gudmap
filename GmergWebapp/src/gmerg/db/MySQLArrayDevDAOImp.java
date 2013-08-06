@@ -4,6 +4,7 @@
 package gmerg.db;
 
 import gmerg.entities.submission.array.Series;
+import gmerg.entities.submission.ImageInfo;
 import gmerg.utils.Utility;
 
 import java.util.ArrayList;
@@ -605,24 +606,39 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
    	 * @throws SQLException
    	 */
 	private ArrayList formatImageResultSet(ResultSet resSetImage) throws SQLException {
-		ResultSetMetaData resSetData = resSetImage.getMetaData();
-		int columnCount = resSetData.getColumnCount();
-		if (resSetImage.first()) {
-			resSetImage.beforeFirst();
-			int serialNo = 1;
-			ArrayList<String[]> results = new ArrayList<String[]>();
-			while (resSetImage.next()) {
-				String[] columns = new String[columnCount + 1];
-				for (int i = 0; i < columnCount; i++) {
-					columns[i] = resSetImage.getString(i + 1);
-				}
-				columns[columnCount] = String.valueOf(serialNo);
-				serialNo++;
-				results.add(columns);
-			}
-			return results;
+	    if (resSetImage.first()) {
+		resSetImage.beforeFirst();
+		int serialNo = 1;
+		ArrayList results = new ArrayList();
+		int dotPosition = 0;
+		String fileExtension = null;
+		String str = null;
+		ImageInfo img = null;
+		
+		while (resSetImage.next()) {
+		    img = new ImageInfo();
+		    str = Utility.netTrim(resSetImage.getString(1));
+		    if (null != str && !str.equals("")) 
+			img.setAccessionId(str);
+		    str = Utility.netTrim(resSetImage.getString(2));
+		    if (null != str && !str.equals("")) 
+			img.setFilePath(str);
+		    str = Utility.netTrim(resSetImage.getString(3));
+		    if (null != str && !str.equals("")) 
+			img.setClickFilePath(str);
+		    
+		    // do not know the reason zoom_viewer do not work for micr array
+		    // even though microarray images have tif. so
+		    // use speciement type to mark microarray image
+		    img.setSpecimenType("microarray");
+		    img.setSerialNo(""+serialNo);
+
+		    serialNo++;
+		    results.add(img);
 		}
-		return null;
+		return results;
+	    }
+	    return null;
 	}
 	
 	/**

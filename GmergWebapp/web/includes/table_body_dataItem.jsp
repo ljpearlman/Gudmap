@@ -86,11 +86,11 @@
 		<%-- (14) opens zoom viewer page in a new window --%>
 		<h:outputLink rendered="#{TableBean.dataItemtype==14}" 
 					  value="#" styleClass="plaintext" target="_blank"
-					  onclick="openZoomViewer('#{TableBean.dataItem.link}','#{TableBean.dataItem.nameEncodedTitle}');return false">
-			<h:graphicImage styleClass="icon" height="50" value="#{TableBean.dataItem.value}" />
+					  onclick="window.open('#{TableBean.dataItem.link}','#{TableBean.dataItem.nameEncodedTitle}','#{TableBean.dataItem.windowParams}');return false">
+			<h:graphicImage height="200" value="#{TableBean.dataItem.value}" />
 		</h:outputLink>
                                      
-		<%------------------------------------ Images (15, 16, 17, 18) --------------------------------------%> 
+		<%------------------------------------ Images (15, 16) --------------------------------------%> 
 		<%-- (15) Same window --%>
 		<h:outputLink rendered="#{TableBean.dataItemtype==15}" 
 					  value="#{TableBean.dataItem.link}" styleClass="plaintext" target="_top" title="#{TableBean.dataItem.title}">
@@ -104,22 +104,6 @@
 			<h:graphicImage styleClass="icon" value="#{TableBean.dataItem.value}" />
 		</h:outputLink>
 						
-		<%-- (17) opens zoom viewer page in a new window --%>
-		<h:outputLink rendered="#{TableBean.dataItemtype==17}" 
-					  value="#" styleClass="plaintext" target="_blank" 
-					  title="#{TableBean.dataItem.title}"
-					  onclick="openZoomViewer('#{TableBean.dataItem.link}','#{TableBean.dataItem.nameEncodedValue}', '#{TableBean.dataItem.spareValue}');return false">
-			<h:graphicImage styleClass="icon" value="#{TableBean.dataItem.value}" width="200px"/>
-		</h:outputLink>
-                                     
-		<%-- (18) opens zoom viewer page in a new window with specified image icon width--%>
-		<h:outputLink rendered="#{TableBean.dataItemtype==18}" 
-					  value="#" styleClass="plaintext" target="_blank"
-					  title="#{TableBean.dataItem.title}"
-					  onclick="openZoomViewer('#{TableBean.dataItem.link}','#{TableBean.dataItem.nameEncodedValue}', '#{TableBean.dataItem.spareValue}');return false">
-			<h:graphicImage styleClass="icon" value="#{TableBean.dataItem.value}" width="#{TableBean.dataItem.width}px"/>
-		</h:outputLink>
-                                     
 		<%-- (19) Simple image without any link --%> 
 		<h:graphicImage rendered="#{TableBean.dataItemtype==19}" 
 						styleClass="icon" value="#{TableBean.dataItem.value}" width="#{TableBean.dataItem.width}" height="#{TableBean.dataItem.height}"  />

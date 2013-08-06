@@ -30,7 +30,7 @@ public class DBQuery {
 				  "SPN_ASSAY_TYPE",
 				  "IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE",
 				  "SUB_SUB_DATE",
-				  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_FILENAME)",
+				  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_FILENAME)",
 				  "REPLACE(SUB_ACCESSION_ID, ':', 'no')", 
 				  "SPN_SEX",
 				  "RPR_JAX_ACC",
@@ -59,8 +59,8 @@ public class DBQuery {
                                                   "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
                                                   "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
                                                   "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-                                                  "AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
-                                                  "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 31 ";
+                                                  "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
+                                                  "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK ";
 
   final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
   final static String FOR_ANNOTATION_ENTRIES_Q = " WHERE STA_OID = ? AND SUB_IS_DELETED = 0 ";
@@ -111,7 +111,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		"SUB_SUB_DATE QSC_SUB_SUB_DATE, SPN_SEX QSC_SPN_SEX, PRB_PROBE_NAME QSC_PRB_PROBE_NAME, " +
   		"SPN_WILDTYPE QSC_SPN_WILDTYPE, " +
   		"PRB_PROBE_TYPE QSC_PROBE_TYPE, " + 
-  		"CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_FILENAME) QSC_SUB_THUMBNAIL, " +
+  		"CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_FILENAME) QSC_SUB_THUMBNAIL, " +
   		"'' QSC_TISSUE, '' QSC_SMP_TITLE, '' QSC_SAMPLE_DESCRIPTION, '' QSC_SER_GEO_ID " + 
   		ISH_BROWSE_ALL_TABLES;
     
@@ -198,7 +198,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
 
   //query6 (find original images of a particular submission)
   final static String name6 = "SUBMISSION_IMAGES";
-  final static String query6 = "SELECT CASE SUB_ASSAY_TYPE WHEN 'OPT' THEN CONCAT(URL_URL, IMG_FILEPATH, IMG_FILENAME) ELSE CONCAT(URL_URL, IMG_FILEPATH,URL_SUFFIX, IMG_FILENAME) END,INT_VALUE, INT_OID, CONCAT(URL_URL, IMG_FILEPATH,URL_SUFFIX, IMG_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID JOIN REF_URL ON URL_OID = 31 LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1";
+  final static String query6 = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_FILENAME), INT_VALUE, SPN_ASSAY_TYPE, CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID  JOIN ISH_SPECIMEN ON SPN_SUBMISSION_FK= SUB_OID JOIN REF_URL I ON I.URL_OID = IMG_URL_FK JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' ORDER BY IMG_OID ";
 
   final static String name7 = "SUBMISSION_IMAGE_DETAIL";
   final static String query7 = "SELECT SUB_ACCESSION_ID, RPR_SYMBOL, RPR_NAME, " +
@@ -209,8 +209,22 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   				"JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK " +
   				"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
   				"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-  				"JOIN REF_URL ON URL_OID = 31 " + 
-  				" WHERE SUB_ACCESSION_ID = ? LIMIT ?,1";
+  				"JOIN REF_URL ON URL_OID = IMG_URL_FK " + 
+  				" WHERE WHERE IMG_TYPE NOT LIKE '%wlz%' AND SUB_ACCESSION_ID = ?";
+
+  final static String name245 = "SUBMISSION_WLZ_DETAIL";
+  final static String query245 = "SELECT SUB_ACCESSION_ID, RPR_SYMBOL, RPR_NAME, " +
+  		"SUB_EMBRYO_STG, " + stageFormatConcat + ", SUB_ASSAY_TYPE, SPN_ASSAY_TYPE, " +
+  				"CONCAT(I.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME), " +
+  				"CONCAT(C.URL_URL, '?greyImg=', IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) " +
+  				"FROM ISH_PROBE " +
+  				"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
+  				"JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK " +
+  				"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
+  				"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
+  				"JOIN REF_URL I ON I.URL_OID = IMG_URL_FK " + 
+  				"JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK " + 
+  				" WHERE IMG_TYPE='opt_wlz_merged'  AND SUB_ACCESSION_ID = ?";
 
   final static String name32 = "SUBMISSION_AUTHOR";
   final static String query32 = "SELECT GROUP_CONCAT(AUT_NAME SEPARATOR ', ') AS AUTHOR FROM ISH_AUTHORS, LNK_SUB_AUTHORS,  ISH_SUBMISSION WHERE SUB_ACCESSION_ID = ? AND LSA_SUB_FK = SUB_OID AND AUT_OID = LSA_AUT_FK GROUP BY LSA_SUB_FK";
@@ -543,7 +557,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                                  "PRB_SOURCE, PRB_STRAIN, PRB_TISSUE, PRB_PROBE_TYPE, "+
                                  "PRB_GENE_TYPE, PRB_LABEL_PRODUCT, PRB_VISUAL_METHOD, RPR_MTF_JAX, "+  
                                  "RPR_GENBANK, CONCAT(RPR_PREFIX,RPR_OID), "+
-                                 "CONCAT(PRB_NAME_URL.URL_URL,  CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RPR_JAX_ACC ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END) "+
+                                 "CONCAT(PRB_NAME_URL.URL_URL,  CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN RPR_JAX_ACC ELSE substring(RPR_JAX_ACC from position(':' in RPR_JAX_ACC) + 1) END), "+
                                   "CONCAT(GENBANK_URL.URL_URL,RPR_GENBANK), "+  
                                  "RPR_TYPE, RPR_5_LOC, RPR_3_LOC, RPR_5_PRIMER, RPR_3_PRIMER, '', " +
                                  "RPR_CLONE_NAME_2, PRB_LAB_ID "+ 
@@ -598,8 +612,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                         " AND IMG_OID = " +
                         "  (SELECT MIN(I.IMG_OID) " +
                         "   FROM ISH_ORIGINAL_IMAGE I " +
-                        "   WHERE I.IMG_SUBMISSION_FK = SUB_OID) " +
-      " JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 31 ";
+                        "   WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
+      " JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK ";
 
   static String expPresentQuerySection = "";
   
@@ -943,7 +957,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String name78 = "TOTAL_NUMBER_OF_SPECIMEN_TYPE_QENE_QUERY";
   final static String query78 = NUMBER_OF_SPECIMEN_TYPE;
   
-  final static String NUMBER_OF_IMAGE_GENE_QUERY = "SELECT COUNT(DISTINCT CONCAT(IMG_URL.URL_URL, IMG_FILEPATH,IMG_URL.URL_SUFFIX, IMG_FILENAME), REPLACE(SUB_ACCESSION_ID, '" + ":" + "', '" + "no" + "')) ";
+  final static String NUMBER_OF_IMAGE_GENE_QUERY = "SELECT COUNT(DISTINCT CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_FILENAME), REPLACE(SUB_ACCESSION_ID, '" + ":" + "', '" + "no" + "')) ";
   
   final static String name79 = "TOTAL_NUMBER_OF_IMAGE_QENE_QUERY";
   final static String query79 = NUMBER_OF_IMAGE_GENE_QUERY ;
@@ -975,7 +989,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		                                                      "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
   		                                                      "  AND IMG_OID = " +
   		                                                      "    (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I " +
-  		                                                      "     WHERE I.IMG_SUBMISSION_FK = SUB_OID) " +
+  		                                                      "     WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
   		                                                      "JOIN REF_PROBE WHERE ";
   
   final static String name103 = "COMPONENT_COUNT_QUERY";
@@ -1138,7 +1152,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		                                                "  AND IMG_OID = " +
   		                                                "   (SELECT MIN(I.IMG_OID) " +
   		                                                "    FROM ISH_ORIGINAL_IMAGE I " +
-  		                                                "    WHERE I.IMG_SUBMISSION_FK = SUB_OID) " +
+  		                                                "    WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
   		                                                "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 14 " + PUBLIC_ENTRIES_Q;
   
   final static String name92 = "GENE_NOT_DETECTED_IN_COMPONENT_END";
@@ -1397,10 +1411,10 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		"FROM ISH_SUBMISSION " +
   		"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
   		"LEFT JOIN ISH_IMAGE_NOTE ON IMG_OID = INT_IMAGE_FK " +
-  		"WHERE SUB_ACCESSION_ID = ? ";
+  		"WHERE IMG_TYPE NOT LIKE '%wlz%' AND SUB_ACCESSION_ID = ? ";
   
   final static String name214 = "ISH_SUBMISSION_PUBLIC_IMGS";
-  final static String query214 = "SELECT DISTINCT IMG_FILENAME FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND IMG_SUBMISSION_FK = SUB_OID WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1";
+  final static String query214 = "SELECT DISTINCT IMG_FILENAME FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND IMG_SUBMISSION_FK = SUB_OID WHERE IMG_TYPE NOT LIKE '%wlz%' AND SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1";
   
   final static String name178 = "COLLECTION_SUBMISSION_IN_SITU_PUBLIC";
   final static String query178 = "SELECT DISTINCT QIC_SUB_ACCESSION_ID QSC_SUB_ACCESSION_ID, QIC_RPR_SYMBOL QSC_RPR_SYMBOL, QIC_SUB_EMBRYO_STG QSC_SUB_EMBRYO_STG, " +
@@ -1502,9 +1516,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String query226 = query199;
   
   final static String name200 = "MIC_IMAGES";
-  final static String query200 = "SELECT CONCAT(URL_URL, IMG_FILEPATH,URL_SUFFIX, IMG_FILENAME),CONCAT(URL_URL, IMG_FILEPATH, IMG_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? "
-				+" AND  IMG_SUBMISSION_FK = SUB_OID JOIN REF_URL ON URL_OID = 31 "
-				+" LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE='Microarray' ";
+  final static String query200 = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_FILENAME), CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID  JOIN REF_URL I ON I.URL_OID = IMG_URL_FK JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' ORDER BY IMG_OID AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE='Microarray' ";
   
   /** retrieve collection info */
   // only retrieve own collection entries
@@ -1624,18 +1636,6 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		"ORDER BY AME_M_HEADER_FK, FIELD(PRS_PROBE_SET_ID, PROBE_SET_ID_ARG) ";
 
 
-  final static String name231 = "GENE_RELATED_INSITU_SUBMISSION_IMAGES";
-  final static String query231 = "SELECT SUB_ACCESSION_ID, SUB_EMBRYO_STG, SPN_ASSAY_TYPE, CONCAT(URL_URL, IMG_FILEPATH,URL_SUFFIX, IMG_FILENAME), IMG_FILENAME, IMG_PYR_TILE_SIZE " +
-  		"FROM ISH_SUBMISSION " +
-  		"JOIN REF_URL ON URL_OID = 41 " +
-  		"JOIN ISH_ORIGINAL_IMAGE ON IMG_SUBMISSION_FK = SUB_OID " +
-  		"JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " +
-  		"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
-  		"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
-  		"WHERE RPR_SYMBOL = ? " +
-  		"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
-  		"ORDER BY SUB_EMBRYO_STG, natural_sort(SUB_ACCESSION_ID)";
- 
 	final static String name235 = "GET_SUBMISSION_TISSUE";
 	final static String query235 = "SELECT DISTINCT ANO_COMPONENT_NAME FROM ANA_NODE " +
 		"JOIN ANA_TIMED_NODE ON ATN_NODE_FK = ANO_OID " +
@@ -1856,7 +1856,6 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name228,query228),
       new ParamQuery(name229,query229),
       new ParamQuery(name230,query230),
-      new ParamQuery(name231,query231),
       new ParamQuery(name232,query232),
       new ParamQuery(name233,query233),
       new ParamQuery(name234,query234),
@@ -1869,7 +1868,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name241,query241),
       new ParamQuery(name242,query242),
       new ParamQuery(name243,query243),
-      new ParamQuery(name244,query244)
+      new ParamQuery(name244,query244),
+      new ParamQuery(name245,query245)
   };
 
   // finds ParamQuery object by name and returns

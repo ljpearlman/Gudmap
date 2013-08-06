@@ -59,7 +59,8 @@
 					document.getElementById('zoomViewerSection').style.visibility = 'visible';
 					return false;
 				}
-				window.opener.setZoomViewerLoaded(); // This is to inform oppener window that the main page (not the frame) is loading
+/*				window.opener.setZoomViewerLoaded(); // This is to inform oppener window that the main page (not the frame) is loading
+*/
 				zoomViewerOriginalDomain = document.domain;
 				var newDomain = zoomViewerOriginalDomain.substring(zoomViewerOriginalDomain.indexOf('.')+1);
 				if (newDomain == zoomViewerOriginalDomain) {
