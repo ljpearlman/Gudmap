@@ -49,12 +49,12 @@ public class Probe {
 	return fullSequence;
 	}
 
-    public void setFullSequence(ArrayList fullSequence) {
-	this.fullSequence = fullSequence;
+    public void setFullSequence(ArrayList value) {
+	fullSequence = value;
     }
     
     public void setGeneSymbol(String value) {
-        this.geneSymbol = value;
+        geneSymbol = value;
     }
 
     public String getGeneSymbol() {
@@ -72,7 +72,7 @@ public class Probe {
     }
 
     public void setProbeName(String value) {
-        this.probeName = value;
+        probeName = value;
     }
 
     public String getProbeName() {
@@ -80,7 +80,7 @@ public class Probe {
     }
 
     public void setGeneID(String value) {
-        this.geneID = value;
+        geneID = value;
     }
 
     public String getGeneID() {
@@ -88,7 +88,7 @@ public class Probe {
     }
     
     public void setGeneIdUrl(String value) {
-        this.geneIdUrl = value;
+        geneIdUrl = value;
     }
 
     public String getGeneIdUrl() {
@@ -96,7 +96,7 @@ public class Probe {
     }
 
     public void setSource(String value) {
-        this.source = value;
+        source = value;
     }
 
     public String getSource() {
@@ -104,7 +104,7 @@ public class Probe {
     }
 
     public void setStrain(String value) {
-        this.strain = value;
+        strain = value;
     }
 
     public String getStrain() {
@@ -112,7 +112,7 @@ public class Probe {
     }
 
     public void setTissue(String value) {
-        this.tissue = value;
+        tissue = value;
     }
 
     public String getTissue() {
@@ -120,7 +120,7 @@ public class Probe {
     }
 
     public void setType(String value) {
-        this.type = value;
+        type = value;
     }
 
     public String getType() {
@@ -132,7 +132,7 @@ public class Probe {
     }
 
     public void setGeneType(String value) {
-        this.geneType = value;
+        geneType = value;
     }
 
     public String getLabelProduct() {
@@ -140,7 +140,7 @@ public class Probe {
     }
 
     public void setLabelProduct(String value) {
-        this.labelProduct = value;
+        labelProduct = value;
     }
 
     public String getVisMethod() {
@@ -148,7 +148,7 @@ public class Probe {
     }
 
     public void setVisMethod(String value) {
-        this.visMethod = value;
+        visMethod = value;
     }
 
     public String getGenbankID() {
@@ -156,7 +156,7 @@ public class Probe {
     }
 
     public void setGenbankID(String value) {
-        this.genbankID = value;
+        genbankID = value;
     }
 
     public String getCloneName() {
@@ -164,7 +164,7 @@ public class Probe {
     }
 
     public void setCloneName(String value) {
-        this.cloneName = value;
+        cloneName = value;
     }
 
     public String getAdditionalCloneName() {
@@ -172,7 +172,7 @@ public class Probe {
     }
 
     public void setAdditionalCloneName(String value) {
-        this.additionalCloneName = value;
+        additionalCloneName = value;
     }
 
     public String getMaprobeID() {
@@ -180,11 +180,11 @@ public class Probe {
     }
 
     public void setMaprobeID(String value) {
-        this.maprobeID = value;
+        maprobeID = value;
     }
 
     public void setNotes(String nts) {
-        this.notes = nts;
+        notes = nts;
     }
 
     public String getNotes() {
@@ -197,10 +197,15 @@ public class Probe {
 
     public void setProbeNameURL(String value) {
         if (null != probeName) {
-            this.probeNameURL = value;
+            probeNameURL = value;
         } else {
-            this.probeNameURL = null;
+            probeNameURL = null;
         }
+       if (null != probeNameURL) {
+	   probeNameURL = probeNameURL.trim();
+	   if (probeNameURL.equals(""))
+	       probeNameURL = null;
+       }
     }
 
     public String getGenbankURL() {
@@ -208,7 +213,7 @@ public class Probe {
     }
 
     public void setGenbankURL(String value) {
-        this.genbankURL = value;
+        genbankURL = value;
     }
 
     public String getMaProbeURL() {
@@ -216,7 +221,7 @@ public class Probe {
     }
 
     public void setMaProbeURL(String value) {
-        this.maProbeURL = value;
+        maProbeURL = value;
     }
 
     public String getSeqStatus() {
@@ -228,19 +233,19 @@ public class Probe {
             seqStatus = "";
 
         else if (value.equals("FULLY_SEQUENCED".trim())) {
-            this.seqStatus = "Fully Sequenced.";
+            seqStatus = "Fully Sequenced.";
         } else if (value.equals("PARTIALLY_SEQUENCED".trim())) {
-            this.seqStatus = "Partially Sequenced.";
+            seqStatus = "Partially Sequenced.";
         } else {
-            this.seqStatus = "Unsequenced.";
+            seqStatus = "Unsequenced.";
         }
     }
 
     /**
      * @param sequenceInfo
      */
-    public void setSeqInfo(String sequenceInfo) {
-        this.seqInfo = sequenceInfo;
+    public void setSeqInfo(String value) {
+        seqInfo = value;
     }
 
     public String getSeqInfo() {
@@ -265,9 +270,9 @@ public class Probe {
 
     public void setSeq3Loc(String value) {
         if (null == value || value.equals("0")) {
-            this.seq3Loc = "n/a";
+            seq3Loc = "n/a";
         } else {
-            this.seq3Loc = value;
+            seq3Loc = value;
         }
     }
     
@@ -276,44 +281,44 @@ public class Probe {
     	return seq5Primer;
     }
     
-    public void setSeq5Primer(String seq5Primer) {
-    	this.seq5Primer = seq5Primer;
+    public void setSeq5Primer(String value) {
+    	seq5Primer = value;
     }
     
     public String getSeq3Primer() {
     	return seq3Primer;
     }
     
-    public void setSeq3Primer(String seq3Primer) {
-    	this.seq3Primer = seq3Primer;
+    public void setSeq3Primer(String value) {
+    	seq3Primer = value;
     }
     
     public ArrayList getMaprobeNotes() {
     	return maprobeNotes;
     }
     
-    public void setMaprobeNotes(ArrayList maprobeNotes) {
-    	this.maprobeNotes = maprobeNotes;
+    public void setMaprobeNotes(ArrayList value) {
+    	maprobeNotes = value;
     }
     
     public String getProbeNameSource() {
     	return probeNameSource;
     }
     
-    public void setProbeNameSource(String probeNameSource) {
-    	this.probeNameSource = probeNameSource;
+    public void setProbeNameSource(String value) {
+    	probeNameSource = value;
     }
     
     public String getMaprobeNoteString() {
     	return maprobeNoteString;
     }
     
-    public void setMaprobeNoteString(String maprobeNoteString) {
-    	this.maprobeNoteString = maprobeNoteString;
+    public void setMaprobeNoteString(String value) {
+    	maprobeNoteString = value;
     }
     
-    public void setLabProbeId(String labProbeId) {
-        this.labProbeId = labProbeId;
+    public void setLabProbeId(String value) {
+        labProbeId = value;
     }
 
     public String getLabProbeId() {
@@ -321,7 +326,7 @@ public class Probe {
     }
  
     public void setIshSubmissions(ArrayList values) {
-        this.ishSubmissions = values;
+        ishSubmissions = values;
         if (null == values) {
 	    if (null != ishFilteredSubmissions)
 		ishFilteredSubmissions.clear();
@@ -333,7 +338,7 @@ public class Probe {
         for (int i=0; i<ishSubmissions.size(); i++){
         	String[] arr = (String[]) ishSubmissions.get(i);
         	if (arr[9].equalsIgnoreCase(maprobeID) || arr[6].equalsIgnoreCase(maprobeID))
-        		this.ishFilteredSubmissions.add(arr);
+        		ishFilteredSubmissions.add(arr);
         }
     }
 
