@@ -154,6 +154,9 @@ public class Submission {
     }
 
     public ArrayList getOriginalImages() {
+	return originalImages;
+
+	/*
 	// 4 image a row
 	int iSize = 0;
 	if (null != originalImages)
@@ -178,6 +181,7 @@ public class Submission {
 	}
 
 	return ret;
+	*/
     }
 
     public void setOriginalImages(ArrayList images) {
@@ -270,8 +274,10 @@ public class Submission {
     	return project;
     }
     
-    public void setProject(String project) {
-    	this.project = project;
+    public void setProject(String input) {
+    	project = input;
+	if (null == project)
+	    project = "";
     }
     public int getBatchId() {
     	return batchId;
@@ -284,25 +290,31 @@ public class Submission {
     public String getNameSpace() {
     	return nameSpace;
     }
-    
-    public void setNameSpace(String nameSpace) {
-    	this.nameSpace = nameSpace;
+
+    public void setNameSpace(String input) {
+    	nameSpace = input;
+    	if (null == nameSpace)
+	    nameSpace = "";
     }
 
     public String getOsAccession() {
     	return osAccession;
     }
     
-    public void setOsAccession(String osAccession) {
-    	this.osAccession = osAccession;
+    public void setOsAccession(String input) {
+    	osAccession = input;
+    	if (null == osAccession)
+	    osAccession = "";
     }
 
     public String getLoaclId() {
     	return loaclId;
     }
     
-    public void setLoaclId(String loaclId) {
-    	this.loaclId = loaclId;
+    public void setLoaclId(String input) {
+    	loaclId = input;
+    	if (null == loaclId)
+	    loaclId = "";
     }
 
     public String getSource() {
@@ -317,48 +329,56 @@ public class Submission {
     	return validation;
     }
     
-    public void setValidation(String validation) {
-    	this.validation = validation;
+    public void setValidation(String input) {
+    	validation = input;
+    	if (null == validation)
+	    validation = "";
     }
 
     public int getControl() {
     	return control;
     }
     
-    public void setControl(int control) {
-    	this.control = control;
+    public void setControl(int input) {
+    	control = input;
     }
 
     public String getAssessment() {
     	return assessment;
     }
     
-    public void setAssessment(String assessment) {
-    	this.assessment = assessment;
+    public void setAssessment(String input) {
+    	assessment = input;
+    	if (null == assessment)
+	    assessment = "";	
     }
 
     public int getConfidencLevel() {
     	return confidencLevel;
     }
     
-    public void setConfidencLevel(int confidencLevel) {
-    	this.confidencLevel = confidencLevel;
+    public void setConfidencLevel(int input) {
+    	confidencLevel = input;
     }
 
     public String getLocalDbName() {
     	return localDbName;
     }
     
-    public void setLocalDbName(String localDbName) {
-    	this.localDbName = localDbName;
+    public void setLocalDbName(String input) {
+    	localDbName = input;
+    	if (null == localDbName)
+	    localDbName = "";
     }
 
     public String getLabId() {
     	return labId;
     }
     
-    public void setLabId(String labId) {
-    	this.labId = labId;
+    public void setLabId(String input) {
+    	labId = input;
+    	if (null == labId)
+	    labId = "";
     }
 
     public void setPrincipalInvestigators(Person[] pis) {
@@ -373,8 +393,10 @@ public class Submission {
     	return euregeneId;
     }
     
-    public void setEuregeneId(String euregeneId) {
-    	this.euregeneId = euregeneId;
+    public void setEuregeneId(String input) {
+    	euregeneId = input;
+    	if (null == euregeneId)
+	    euregeneId = "";
     }
 
     public String[] getResultNotes() {

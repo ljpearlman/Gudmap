@@ -8,6 +8,7 @@ import javax.faces.event.ValueChangeEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 import gmerg.entities.Globals;
 import gmerg.utils.FacesUtil;
@@ -18,7 +19,7 @@ import gmerg.utils.Utility;
  * @author xingjun
  *
  */
-public class HeaderQuickSearchBean {
+public class HeaderQuickSearchBean  implements Serializable {
     private boolean debug = false;
 
 	private String quickSearchInput;

@@ -51,7 +51,11 @@ public class GudmapPageHistoryFilter implements Filter{
 		} else 
 		    System.out.println("!!! possible warning request class = "+request.getClass().getName()+" response class = "+response.getClass().getName());
 
-		filterChain.doFilter(request, response);
+		try {
+		    filterChain.doFilter(request, response);
+		} catch (javax.servlet.ServletException ee) {
+		    System.out.println("!!! ServletException in GudmapPageHistoryFilter.doFilter request = "+request+" message = "+ee.getMessage());
+		}
 	}
 
 	public void destroy() {

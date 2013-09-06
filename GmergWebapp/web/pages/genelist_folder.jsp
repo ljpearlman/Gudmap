@@ -6,7 +6,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	<h:form id="mainForm" >
-	<p>The GUDMAP analysis pages have been updated. Links from this page to the heatmap view will no longer function. The analysis lists found here are now available on the updated <a href="http:/www.gudmap.org/gudmap/pages/genelist_tree.html" style="font-size:inherit;">Gene Lists from Microarray Analysis</a> page.</p>
+	<p>The GUDMAP analysis pages have been updated. Links from this page to the heatmap view will no longer function. The analysis lists found here are now available on the updated <a href="genelist_tree.html" style="font-size:inherit;">Gene Lists from Microarray Analysis</a> page.</p>
 		<t:tree id="tree" value="#{GenelistFolderBean.treeModel}"
 				var="treeItem"
 				styleClass="treeTable; plaintext"

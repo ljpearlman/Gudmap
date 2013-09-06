@@ -29,8 +29,7 @@
 		
 		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
                                                 <h:outputText styleClass="plaintextbold" value="Data Source" />
-                        
-                                                 <h:graphicImage value="../images/gudmap_logo_small_70x63px.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
+                                                 <h:graphicImage value="../images/GUDMAP_Logo.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
                                                  <h:graphicImage value="../images/button_euregene2.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}"/>
 		</h:panelGrid>
 
@@ -58,73 +57,19 @@
 			<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
 		</h:panelGrid>
 
-		<h:panelGrid rendered="#{ISHSingleSubmissionBean.submission.numImages<2}" width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" >
+		<h:panelGrid  width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" >
 			<h:outputText value="Images" />
 			<h:dataTable  columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.originalImages}" var="image">
 			        <h:column>
 					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="mywindow=window.open('#{image[0].clickFilePath}','#{image[0].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image[0].filePath}" width="80"/>
+					                       onclick="mywindow=window.open('#{image.clickFilePath}','#{image.accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
+						<h:graphicImage value="#{image.filePath}" width="80"/>
 					</h:outputLink>
 			        </h:column>
 			        <h:column>
-					<h:outputText styleClass="notetext, topAlign" value="#{image[0].note}"/>
+					<h:outputText styleClass="notetext, topAlign" value="#{image.note}"/>
 			        </h:column>
 			</h:dataTable>
-		</h:panelGrid>
-
-		<h:panelGrid rendered="#{ISHSingleSubmissionBean.submission.numImages>1}" width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" >
-			<h:outputText value="Images" />
-			<h:dataTable  columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.originalImages}" var="image">
-			        <h:column>
-			                <h:panelGrid columns="2" width="150" >
-					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="mywindow=window.open('#{image[0].clickFilePath}','#{image[0].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image[0].filePath}" styleClass="topAlign, leftAlign" width="80"/>
-					</h:outputLink>
-					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[0].note}"/>
-				</h:panelGrid>
-			        </h:column>
-			        <h:column>
-			                <h:panelGrid rendered="#{null!=image[1]}" columns="2" width="150" >
-					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="window.open('#{image[1].clickFilePath}','#{image[1].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image[1].filePath}"  styleClass="topAlign" width="80"/>
-					</h:outputLink>
-					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[1].note}"/>
-				</h:panelGrid>
-			        </h:column>
-			        <h:column>
-			                <h:panelGrid rendered="#{null!=image[2]}" columns="2" width="150" >
-					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="window.open('#{image[2].clickFilePath}','#{image[2].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image[2].filePath}"  styleClass="topAlign" width="80"/>
-					</h:outputLink>
-					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[2].note}"/>
-				</h:panelGrid>
-			        </h:column>
-			        <h:column>
-			                <h:panelGrid rendered="#{null!=image[3]}" columns="2" width="150" >
-					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="window.open('#{image[3].clickFilePath}','#{image[3].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image[3].filePath}"  styleClass="topAlign" width="80"/>
-					</h:outputLink>
-					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[3].note}"/>
-				</h:panelGrid>
-			        </h:column>
-			</h:dataTable>
-			<h:outputText value="" rendered="#{not empty ISHSingleSubmissionBean.submission.wlzImage}" />
-			<h:outputText value="" rendered="#{not empty ISHSingleSubmissionBean.submission.wlzImage}" />
-			<h:outputText value="" rendered="#{not empty ISHSingleSubmissionBean.submission.wlzImage}" />
-			<h:panelGrid columns="1"  rendered="#{not empty ISHSingleSubmissionBean.submission.wlzImage}">
-					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="window.open('#{ISHSingleSubmissionBean.submission.wlzImage.optViewerUrl}', 'opt image viewer','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-					                <h:outputText styleClass="entrytext" value="View 3D image"></h:outputText>
-					</h:outputLink>
-				                <h:outputLink styleClass="entrytextlink" value="#{ISHSingleSubmissionBean.submission.wlzImage.filePath}">
-					                <h:outputText value="Download 3D images in woolz format "></h:outputText>
-				                </h:outputLink>
-			</h:panelGrid>
 		</h:panelGrid>
 
 		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" rendered="#{not empty ISHSingleSubmissionBean.submission.resultNotes}">
