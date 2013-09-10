@@ -27,7 +27,7 @@ public class MicroarraySingleSubmissionBean {
     private String geneListPageNum;
     private String numGeneListPages;
     private String geneSymbol; //assigned value of to user input when doing gene search
-    private boolean exist;
+    private boolean renderPage;
 
     public MicroarraySingleSubmissionBean() {
         	if (debug)
@@ -254,14 +254,14 @@ public class MicroarraySingleSubmissionBean {
         
     }
     
-    public boolean isExist() {
+    public boolean isRenderPage() {
         
         if(submission == null){
-            exist = false;
+            renderPage = false;
         }
         else {
-            exist = true;
+            renderPage = true;
         }
-        return exist;
+        return renderPage;
     }
 }

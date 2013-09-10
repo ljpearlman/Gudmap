@@ -279,46 +279,46 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setEntryBy(resSet.getInt(12));
             submissionInfo.setModifierId(resSet.getInt(13));
             submissionInfo.setDbStatusId(resSet.getInt(14));
-            submissionInfo.setProject(resSet.getString(15));
+            submissionInfo.setProject((resSet.getString(15)==null)?"":resSet.getString(15));
             submissionInfo.setBatchId(resSet.getInt(16));
-            submissionInfo.setNameSpace(resSet.getString(17));
+            submissionInfo.setNameSpace((resSet.getString(17)==null)?"":resSet.getString(17));
             submissionInfo.setOsAccession(resSet.getString(18));
-            submissionInfo.setLoaclId(resSet.getString(19));
-            submissionInfo.setSource(resSet.getString(20));
-            submissionInfo.setValidation(resSet.getString(21));
+            submissionInfo.setLoaclId((resSet.getString(19)==null)?"":resSet.getString(19));
+            submissionInfo.setSource((resSet.getString(20)==null)?"":resSet.getString(20));
+            submissionInfo.setValidation((resSet.getString(21)==null)?"":resSet.getString(21));
             submissionInfo.setControl(resSet.getInt(22));
             submissionInfo.setAssessment(resSet.getString(23));
             submissionInfo.setConfidencLevel(resSet.getInt(24));
-            submissionInfo.setLocalDbName(resSet.getString(25));
-            submissionInfo.setLabId(resSet.getString(26));
-            submissionInfo.setEuregeneId(resSet.getString(27));
+            submissionInfo.setLocalDbName((resSet.getString(25)==null)?"":resSet.getString(25));
+            submissionInfo.setLabId((resSet.getString(26)==null)?"":resSet.getString(26));
+            submissionInfo.setEuregeneId((resSet.getString(27)==null)?"":resSet.getString(27));
 	    
         }
         if (null != noteSet && null != submissionInfo) {
-	    String str = null;
-	    List list = new ArrayList<String>();
-	    while (noteSet.next()) {
-		str = noteSet.getString(2);
-		if (null != str) {
-		    str = str.trim();
-		    if (str.equals(""))
-			str = null;
-		}
-		if (null != str && str.equalsIgnoreCase("result")) {
-		    str = noteSet.getString(1);
-		    if (null != str) {
-			str = str.trim();
-			if (!str.equals("") && !list.contains(str))
-			    list.add(str);
+		    String str = null;
+		    List list = new ArrayList<String>();
+		    while (noteSet.next()) {
+				str = noteSet.getString(2);
+				if (null != str) {
+				    str = str.trim();
+				    if (str.equals(""))
+				    	str = null;
+				}
+				if (null != str && str.equalsIgnoreCase("result")) {
+				    str = noteSet.getString(1);
+				    if (null != str) {
+						str = str.trim();
+						if (!str.equals("") && !list.contains(str))
+						    list.add(str);
+				    }
+				}
 		    }
-		}
-	    }
 
-	    if (0 == list.size())
-		submissionInfo.setResultNotes(null);
-	    else 
-		submissionInfo.setResultNotes((String[])list.toArray(new String[0]));
-	}
+		    if (0 == list.size())
+		    	submissionInfo.setResultNotes(null);
+		    else 
+		    	submissionInfo.setResultNotes((String[])list.toArray(new String[0]));
+		}
 
         return submissionInfo;
     }
@@ -966,45 +966,45 @@ public class MySQLISHDAOImp implements ISHDAO {
 	Allele allele = null;
 
  	if (resSet.first()) {
-	if (debug)
-	    System.out.println("MySQLISHDAOImp.formatAlleleResultSet has allele");
+		if (debug)
+		    System.out.println("MySQLISHDAOImp.formatAlleleResultSet has allele");
  	    resSet.beforeFirst();
  	    while (resSet.next()) {
- 		allele = new Allele();
- 		str = Utility.netTrim(resSet.getString(1));
-		allele.setGeneSymbol(str);
-
- 		str = Utility.netTrim(resSet.getString(2));
-		allele.setGeneId(str);
-
- 		str = Utility.netTrim(resSet.getString(3));
-		allele.setAlleleId(str);
-		
-		// name first, then lab name
- 		str = Utility.netTrim(resSet.getString(5));
-		if (null == str)
-		    str = Utility.netTrim(resSet.getString(4));
-		allele.setAlleleName(str);
-
- 		str = Utility.netTrim(resSet.getString(7));
-		allele.setType(str);
-
- 		str = Utility.netTrim(resSet.getString(8));
-		allele.setAlleleFirstChrom(str);
-
- 		str = Utility.netTrim(resSet.getString(9));
-		allele.setAlleleSecondChrom(str);
-
- 		str = Utility.netTrim(resSet.getString(10));
-		allele.setReporter(str);
-
- 		str = Utility.netTrim(resSet.getString(11));
-		allele.setVisMethod(str);
-
-		str = Utility.netTrim(resSet.getString(12));
-		allele.setNotes(str);
-
- 		alleleList.add(allele);
+	 		allele = new Allele();
+	 		str = Utility.netTrim(resSet.getString(1));
+			allele.setGeneSymbol(str);
+	
+	 		str = Utility.netTrim(resSet.getString(2));
+			allele.setGeneId(str);
+	
+	 		str = Utility.netTrim(resSet.getString(3));
+			allele.setAlleleId(str);
+			
+			// name first, then lab name
+	 		str = Utility.netTrim(resSet.getString(5));
+			if (null == str)
+			    str = Utility.netTrim(resSet.getString(4));
+			allele.setAlleleName(str);
+	
+	 		str = Utility.netTrim(resSet.getString(7));
+			allele.setType(str);
+	
+	 		str = Utility.netTrim(resSet.getString(8));
+			allele.setAlleleFirstChrom(str);
+	
+	 		str = Utility.netTrim(resSet.getString(9));
+			allele.setAlleleSecondChrom(str);
+	
+	 		str = Utility.netTrim(resSet.getString(10));
+			allele.setReporter(str);
+	
+	 		str = Utility.netTrim(resSet.getString(11));
+			allele.setVisMethod(str);
+	
+			str = Utility.netTrim(resSet.getString(12));
+			allele.setNotes(str);
+	
+	 		alleleList.add(allele);
  	    }
 	}
 	if (debug)
@@ -1021,29 +1021,29 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     public ArrayList findImageBySubmissionId(String submissionAccessionId) {
         if (submissionAccessionId == null) {
-	    //            throw new NullPointerException("id parameter");
-	    return null;
+		    //            throw new NullPointerException("id parameter");
+		    return null;
         }
         ArrayList ImageInfo = null;
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_IMAGES");
         String queryString = parQ.getQuerySQL();
-	if (debug)
-	    System.out.println("findImageBySubmissionId:Query: " + queryString);
+        if (debug)
+        	System.out.println("findImageBySubmissionId:Query: " + queryString);
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+        	// if disconnected from db, re-connected
+        	conn = DBHelper.reconnect2DB(conn);
 	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, submissionAccessionId);
 	    
             // execute
             resSet = prepStmt.executeQuery();
             ImageInfo = formatImageResultSet(resSet);
-
+	    
             // close the connection
             DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
@@ -1073,30 +1073,30 @@ public class MySQLISHDAOImp implements ISHDAO {
             resSetImage.beforeFirst();
             int serialNo = 1;
             ArrayList results = new ArrayList();
-	    int dotPosition = 0;
-	    String fileExtension = null;
-	    String str = null;
-	    ImageInfo img = null;
+		    int dotPosition = 0;
+		    String fileExtension = null;
+		    String str = null;
+		    ImageInfo img = null;
 
             while (resSetImage.next()) {
                 img = new ImageInfo();
-	str = Utility.netTrim(resSetImage.getString(1));
-	if (null != str && !str.equals("")) 
-	    img.setAccessionId(str);
-	str = Utility.netTrim(resSetImage.getString(2));
-	if (null != str && !str.equals("")) 
-	    img.setFilePath(str);
-	str = Utility.netTrim(resSetImage.getString(3));
-	if (null != str && !str.equals("")) 
-	    img.setNote(str);
-	str = Utility.netTrim(resSetImage.getString(4));
-	if (null != str && !str.equals("")) 
-	    img.setSpecimenType(str);
-	str = Utility.netTrim(resSetImage.getString(5));
-	if (null != str && !str.equals("")) 
-	    img.setClickFilePath(str);
-
-	img.setSerialNo(""+serialNo);
+				str = Utility.netTrim(resSetImage.getString(1));
+				if (null != str && !str.equals("")) 
+				    img.setAccessionId(str);
+				str = Utility.netTrim(resSetImage.getString(2));
+				if (null != str && !str.equals("")) 
+				    img.setFilePath(str);
+				str = Utility.netTrim(resSetImage.getString(3));
+				if (null != str && !str.equals("")) 
+				    img.setNote(str);
+				str = Utility.netTrim(resSetImage.getString(4));
+				if (null != str && !str.equals("")) 
+				    img.setSpecimenType(str);
+				str = Utility.netTrim(resSetImage.getString(5));
+				if (null != str && !str.equals("")) 
+				    img.setClickFilePath(str);
+			
+				img.setSerialNo(""+serialNo);
                 serialNo++;
                 results.add(img);
             }
@@ -4565,7 +4565,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
         return result;
     }
-    
+
     /**
      * @param submissionAccessionId
      * @param serialNum
@@ -4578,26 +4578,26 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmt = null;
 	
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("findWlzImageDetailBySubmissionId:sql: " + parQ.getQuerySQL());
-	    
-	    // image detail
-	    parQ.setPrepStat(conn);
-                    prepStmt = parQ.getPrepStat();
-                    prepStmt.setString(1, submissionAccessionId);
-                    resSet = prepStmt.executeQuery();
-	    if (resSet.first()) {
-		result = new ImageDetail();
-		result.setAccessionId(resSet.getString(1));
-		result.setGeneSymbol(resSet.getString(2));
-		result.setGeneName(resSet.getString(3));
-		result.setStage(resSet.getString(4));
-		result.setSpecimenType(resSet.getString(7));
-		result.setFilePath(resSet.getString(8));
-		result.setClickFilePath(resSet.getString(9));
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    if (debug)
+		    	System.out.println("findWlzImageDetailBySubmissionId:sql: " + parQ.getQuerySQL());
+		    
+		    // image detail
+		    parQ.setPrepStat(conn);
+            prepStmt = parQ.getPrepStat();
+            prepStmt.setString(1, submissionAccessionId);
+            resSet = prepStmt.executeQuery();
+		    if (resSet.first()) {
+				result = new ImageDetail();
+				result.setAccessionId(resSet.getString(1));
+				result.setGeneSymbol(resSet.getString(2));
+				result.setGeneName(resSet.getString(3));
+				result.setStage(resSet.getString(4));
+				result.setSpecimenType(resSet.getString(7));
+				result.setFilePath(resSet.getString(8));
+				result.setClickFilePath(resSet.getString(9));
             }
 	    
             // close the db object
@@ -4607,7 +4607,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
         return result;
     }
-
+    
     /**
      * @param submissionAccessionId
      * @param serialNum
@@ -4630,13 +4630,13 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmtAllImageNotesInSameSubmission = null;
         PreparedStatement prepStmtPublicImgs = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    conn.setAutoCommit(false);
-	    //        	System.out.println("findImageDetailBySubmissionId:sql: " + parQ.getQuerySQL());
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    conn.setAutoCommit(false);
+		    //        	System.out.println("findImageDetailBySubmissionId:sql: " + parQ.getQuerySQL());
             // image detail
-	    parQ.setPrepStat(conn);
+		    parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
             prepStmt.setInt(2, serialNum);
@@ -4645,8 +4645,8 @@ public class MySQLISHDAOImp implements ISHDAO {
             // xingjun - 14/09/2011
             if (!resSet.first()) {// not a insitu submission. go to get the image from tg table
 		//            	System.out.println("findImageDetailBySubmissionId:it's a tg submission");
-		if (debug)
-		    System.out.println("MySQLISHDAOImp.sql = "+queryStringTG);
+				if (debug)
+				    System.out.println("MySQLISHDAOImp.sql = "+queryStringTG);
                 prepStmtTG = conn.prepareStatement(queryStringTG);
                 prepStmtTG.setString(1, submissionAccessionId);
                 prepStmtTG.setInt(2, serialNum);
@@ -4656,7 +4656,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
 	    
             // all image notes in the same submission
-	    parQAllImageNotesInSameSubmission.setPrepStat(conn);
+            parQAllImageNotesInSameSubmission.setPrepStat(conn);
             prepStmtAllImageNotesInSameSubmission = parQAllImageNotesInSameSubmission.getPrepStat();
             prepStmtAllImageNotesInSameSubmission.setString(1, submissionAccessionId);
             resSetAllImageNotesInSameSubmission = prepStmtAllImageNotesInSameSubmission.executeQuery();
@@ -4688,8 +4688,8 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @author xingjun 17th May 2006
      */
     public ImageDetail formatImageDetailResultSet(ResultSet resSet,
-						  ResultSet resSetAllImageNotesInSameSubmission,
-						  ResultSet resSetPublicImgs, int serialNum) throws SQLException {
+			  ResultSet resSetAllImageNotesInSameSubmission,
+			  ResultSet resSetPublicImgs, int serialNum) throws SQLException {
         //		  System.out.println("obtained the image detail!!!!!!!!!!!");
         if (resSet.first()) {
             ImageDetail imageDetail = new ImageDetail();
@@ -4707,13 +4707,13 @@ public class MySQLISHDAOImp implements ISHDAO {
             if (resSetAllImageNotesInSameSubmission.first()) {
             	ArrayList<String[]> allImageNotes = new ArrayList<String[]>();
             	resSetAllImageNotesInSameSubmission.beforeFirst();
-		String[] filenamenNote = null;
+            	String[] filenamenNote = null;
             	while (resSetAllImageNotesInSameSubmission.next()) {
-		    filenamenNote = new String[2];
-		    filenamenNote[0] = Utility.netTrim(resSetAllImageNotesInSameSubmission.getString(1));
-		    filenamenNote[1] = Utility.netTrim(resSetAllImageNotesInSameSubmission.getString(2));
-		    if (null != filenamenNote[0] || null !=  filenamenNote[1])
-		    allImageNotes.add(filenamenNote);
+				    filenamenNote = new String[2];
+				    filenamenNote[0] = Utility.netTrim(resSetAllImageNotesInSameSubmission.getString(1));
+				    filenamenNote[1] = Utility.netTrim(resSetAllImageNotesInSameSubmission.getString(2));
+				    if (null != filenamenNote[0] || null !=  filenamenNote[1])
+				    allImageNotes.add(filenamenNote);
             	}
             	imageDetail.setAllImageNotesInSameSubmission(allImageNotes);
             }
@@ -4722,7 +4722,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             	ArrayList<String> publicImgs = new ArrayList<String>();
             	resSetPublicImgs.beforeFirst();
             	while(resSetPublicImgs.next()){
-		    publicImgs.add(resSetPublicImgs.getString(1));
+            		publicImgs.add(resSetPublicImgs.getString(1));
             	}
             	imageDetail.setAllPublicImagesInSameSubmission(publicImgs);
             }

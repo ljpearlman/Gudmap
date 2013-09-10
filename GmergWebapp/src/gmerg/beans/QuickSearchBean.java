@@ -1,14 +1,14 @@
 package gmerg.beans;
 
-import java.util.HashMap;
 import java.io.Serializable;
+import java.util.HashMap;
 
 import gmerg.assemblers.QuickSearchAssembler;
 import gmerg.utils.table.*;
 import gmerg.utils.Utility;
 import gmerg.utils.Visit;
 
-public class QuickSearchBean implements Serializable {
+	public class QuickSearchBean implements Serializable {
     private boolean debug = false;
 
 	private String input;

@@ -46,11 +46,11 @@ public class Probe {
     private String maprobeNoteString;
 
     public ArrayList getFullSequence() {
-	return fullSequence;
+    	return fullSequence;
 	}
 
     public void setFullSequence(ArrayList value) {
-	fullSequence = value;
+    	fullSequence = value;
     }
     
     public void setGeneSymbol(String value) {
@@ -202,9 +202,9 @@ public class Probe {
             probeNameURL = null;
         }
        if (null != probeNameURL) {
-	   probeNameURL = probeNameURL.trim();
-	   if (probeNameURL.equals(""))
-	       probeNameURL = null;
+		   probeNameURL = probeNameURL.trim();
+		   if (probeNameURL.equals(""))
+		       probeNameURL = null;
        }
     }
 
@@ -244,8 +244,8 @@ public class Probe {
     /**
      * @param sequenceInfo
      */
-    public void setSeqInfo(String value) {
-        seqInfo = value;
+    public void setSeqInfo(String sequenceInfo) {
+        seqInfo = sequenceInfo;
     }
 
     public String getSeqInfo() {
@@ -281,44 +281,44 @@ public class Probe {
     	return seq5Primer;
     }
     
-    public void setSeq5Primer(String value) {
-    	seq5Primer = value;
+    public void setSeq5Primer(String seq5Primer) {
+    	seq5Primer = seq5Primer;
     }
     
     public String getSeq3Primer() {
     	return seq3Primer;
     }
     
-    public void setSeq3Primer(String value) {
-    	seq3Primer = value;
+    public void setSeq3Primer(String seq3Primer) {
+    	seq3Primer = seq3Primer;
     }
     
     public ArrayList getMaprobeNotes() {
     	return maprobeNotes;
     }
     
-    public void setMaprobeNotes(ArrayList value) {
-    	maprobeNotes = value;
+    public void setMaprobeNotes(ArrayList maprobeNotes) {
+    	maprobeNotes = maprobeNotes;
     }
     
     public String getProbeNameSource() {
     	return probeNameSource;
     }
     
-    public void setProbeNameSource(String value) {
-    	probeNameSource = value;
+    public void setProbeNameSource(String probeNameSource) {
+    	probeNameSource = probeNameSource;
     }
     
     public String getMaprobeNoteString() {
     	return maprobeNoteString;
     }
     
-    public void setMaprobeNoteString(String value) {
-    	maprobeNoteString = value;
+    public void setMaprobeNoteString(String maprobeNoteString) {
+    	maprobeNoteString = maprobeNoteString;
     }
     
-    public void setLabProbeId(String value) {
-        labProbeId = value;
+    public void setLabProbeId(String labProbeId) {
+        labProbeId = labProbeId;
     }
 
     public String getLabProbeId() {
@@ -328,18 +328,18 @@ public class Probe {
     public void setIshSubmissions(ArrayList values) {
         ishSubmissions = values;
         if (null == values) {
-	    if (null != ishFilteredSubmissions)
-		ishFilteredSubmissions.clear();
-	    return;
-	}
+		    if (null != ishFilteredSubmissions)
+		    	ishFilteredSubmissions.clear();
+		    return;
+        }
 
         ishFilteredSubmissions = new ArrayList<String[]>();   
-	if (null != ishSubmissions)
-        for (int i=0; i<ishSubmissions.size(); i++){
-        	String[] arr = (String[]) ishSubmissions.get(i);
-        	if (arr[9].equalsIgnoreCase(maprobeID) || arr[6].equalsIgnoreCase(maprobeID))
-        		ishFilteredSubmissions.add(arr);
-        }
+        if (null != ishSubmissions)
+	        for (int i=0; i<ishSubmissions.size(); i++){
+	        	String[] arr = (String[]) ishSubmissions.get(i);
+	        	if (arr[9].equalsIgnoreCase(maprobeID) || arr[6].equalsIgnoreCase(maprobeID))
+	        		ishFilteredSubmissions.add(arr);
+	        }
     }
 
     public ArrayList getIshSubmissions() { 	  	

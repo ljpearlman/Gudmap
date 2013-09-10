@@ -90,7 +90,7 @@
 			<h:graphicImage height="200" value="#{TableBean.dataItem.value}" />
 		</h:outputLink>
                                      
-		<%------------------------------------ Images (15, 16) --------------------------------------%> 
+		<%------------------------------------ Images (15, 16, 17, 18) --------------------------------------%> 
 		<%-- (15) Same window --%>
 		<h:outputLink rendered="#{TableBean.dataItemtype==15}" 
 					  value="#{TableBean.dataItem.link}" styleClass="plaintext" target="_top" title="#{TableBean.dataItem.title}">

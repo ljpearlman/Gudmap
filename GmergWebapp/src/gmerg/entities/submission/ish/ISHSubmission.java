@@ -27,6 +27,7 @@ public class ISHSubmission extends Submission {
     */
     protected ImageDetail wlzImage = null;
 
+
     public ISHSubmission() {
     
     }
@@ -137,6 +138,6 @@ public class ISHSubmission extends Submission {
     }
     
     public void setWlzImage(ImageDetail input) {
-    	wlzImage = input;
+    	this.wlzImage = input;
     }    
 }

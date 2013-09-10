@@ -32,7 +32,7 @@ public class MasterTableBrowseBean {
 	private boolean displayTreeView;
 	private String tableTitle;
 	private String viewMode;
-	
+
 	private String masterTableId;
 	private String platformId;
     private String collectionId;
@@ -84,16 +84,6 @@ public class MasterTableBrowseBean {
 	public MasterTableBrowseBean (){
 	if (debug)
 	    System.out.println("-------In MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol);
-
-	try {
-	    init();
-	} catch (Exception e) {
-	    System.out.println("!!! error in MasterTableBrowseBean.init message = "+e.getMessage());
-	}
-	
-	}
-
-    protected void init() {
 	int iSize = 0;
 	int i = 0;
 		displayTreeView = false;
@@ -112,7 +102,7 @@ public class MasterTableBrowseBean {
 		allMasterTables = new ArrayList<MasterTableDisplayInfo>();
 		for (MasterTableInfo info : masterTables)
 			allMasterTables.add(new MasterTableDisplayInfo(info));
-		
+			
 		String selections;
 		tableTitle = null;
 		if (TableUtil.isTableViewInSession()) {
@@ -124,45 +114,44 @@ public class MasterTableBrowseBean {
 			setVisibleMasterTables(selections);
 			return;
 		}
-
+		
 		// if a new item is selected from the genelist tree then clear the selections from the dropdown menu
 		cleartabs = FacesUtil.getRequestParamValue("cleartabs");
 		if (cleartabs != null && cleartabs.contentEquals("true")){
 			clearSelectionsString();			
 			cleartabs = "";
 		}	
-
+		
+		
 		genelistId = Visit.getRequestParam("genelistId");
 		geneSymbol = Visit.getRequestParam("gene");
 		if (FacesUtil.getRequestParamValue("actionMethod") != null) 
 			return;
-		
+
 		collectionId = Visit.getRequestParam("collectionId");
 		platformId = Visit.getRequestParam("platformId");
 
-		if (isClipboard()) {
+		if (isClipboard())
 		    try {
-			collectionType = Integer.parseInt(Visit.getRequestParam("collectionType", "0"));
+		    	collectionType = Integer.parseInt(Visit.getRequestParam("collectionType", "0"));
 		    } catch (Exception e) {
-			System.out.println("!!!possible error: "+e.getMessage());
-			collectionType = -1;
+		    	System.out.println("!!!possible error: "+e.getMessage());
+		    	collectionType = -1;
 		    }
-
-		} else if (collectionId != null)
+		else if (collectionId != null)
 			collectionType = getCollectionInfo().getType(); 
-		
-		
 		
 		masterTableId = Visit.getRequestParam("masterTableId");
 		if (masterTableId != null) // If a specific master table is requested
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
-			masterTableInfo.selected = (masterTableInfo.getInfo().getId().equals(masterTableId));
+		    	masterTableInfo.selected = (masterTableInfo.getInfo().getId().equals(masterTableId));
 		    }
 		else if (genelistId != null) {
 		    platformId = DbUtility.getGenelistPlatformId(genelistId);
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
 		    	masterTableInfo.selected = (masterTableInfo.getInfo().getPlatform().equals(platformId));
 		    }
+		    // make only Developing Kidney (MOE430) shown initially to enhance user experience (fast)
 		    String str = null;
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
 				if (masterTableInfo.selected) {
@@ -171,7 +160,7 @@ public class MasterTableBrowseBean {
 					-1 == str.indexOf("kidney"))
 					masterTableInfo.selected = false;
 				}
-		    }
+		    }		    
 		}
 		else if (platformId != null) {    
 		    for (MasterTableDisplayInfo masterTableInfo : allMasterTables) {
@@ -182,19 +171,20 @@ public class MasterTableBrowseBean {
 			for (MasterTableDisplayInfo masterTableInfo : allMasterTables)
 				masterTableInfo.selected = true;
 
-		updateSelectedItems();
-
+		
+		updateSelectedItems();	
+						
 		initialseTables(null);
 		if (debug) {
 		    System.out.println("-------End MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol+" displayTreeView = "+displayTreeView+" tableTitle="+tableTitle+" viewMode="+viewMode);
 		    iSize = 0;
 		    if (null != allMasterTables)
-			iSize = allMasterTables.size();
+		    	iSize = allMasterTables.size();
 		    MasterTableDisplayInfo item = null;
 		    for (i = 0; i < iSize; i++) {
-			item = (MasterTableDisplayInfo)allMasterTables.get(i);
-			System.out.println(i+"th MasterTableDisplayInfo");
-			item.print();
+		    	item = (MasterTableDisplayInfo)allMasterTables.get(i);
+		    	System.out.println(i+"th MasterTableDisplayInfo");
+		    	item.print();
 		    }
 		}
 	}
@@ -204,7 +194,7 @@ public class MasterTableBrowseBean {
 	// ********************************************************************************
 	public String updatePage() {
 		String prevSelections = FacesUtil.getRequestParamValue("prevSelections");
-
+		
 		initialseTables(prevSelections);
 		return null;
 	}
@@ -213,7 +203,6 @@ public class MasterTableBrowseBean {
 		displayTreeView = true;
 		return null;
 	}
-	
 
 	public CollectionInfo getCollectionInfo() {
 		if (collectionInfo == null)
@@ -236,8 +225,10 @@ public class MasterTableBrowseBean {
 	
 	private void initialseTables(String available) {
 	    if (debug)
-		System.out.println("MasterTableBrowseBean:initialseTables.   available ="+available);
+	    	System.out.println("MasterTableBrowseBean:initialseTables.   available ="+available);
+	    
 		String selectionString = getSelectionsString();
+		
 		int iSize = allMasterTables.size();
 		MasterTableDisplayInfo masterTable = null;
 		String masterTableId = null;
@@ -249,7 +240,7 @@ public class MasterTableBrowseBean {
 		    displayMasterTableInfo();
 		}
 		for(i=0; i<iSize; i++) {
-		                masterTable = allMasterTables.get(i); 
+		    masterTable = allMasterTables.get(i); 
 			masterTableId = masterTable.info.getId();
 			if (masterTable.selected) {
 				tableView = null;
@@ -269,11 +260,10 @@ public class MasterTableBrowseBean {
 	
 	private GenericTableView populateGenelistTableView(String viewName, String masterTableId) {
 	    if (debug)
-		System.out.println("===MasterTableBrowseBean===populateGenelistTableView = " + viewName + " " + masterTableId);
+	    	System.out.println("===MasterTableBrowseBean===populateGenelistTableView = " + viewName + " " + masterTableId);
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		String platformId = DbUtility.getMasterTablePlatformId(masterTableId);
 		ArrayList<String> probeIds = new ArrayList<String>();
-		
 		
 		if (collectionId != null) {
 			if (isClipboard())
@@ -302,7 +292,7 @@ public class MasterTableBrowseBean {
 
 		return ret;
 	}
-	
+
 	private String getViewName(String id) {
 		String viewName = "masterTable_";
 		if (genelistId!=null) 

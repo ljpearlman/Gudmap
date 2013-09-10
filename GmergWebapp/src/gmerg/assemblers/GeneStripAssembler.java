@@ -655,7 +655,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		if (imageList == null || imageList.size() == 0) {
 			thumbnailURL = "";
 		} else {
-		    thumbnailURL = ((ImageInfo)imageList.get(0)).getFilePath();
+			thumbnailURL = ((ImageInfo)imageList.get(0)).getFilePath();
 		}
 
         ishDAO = null;

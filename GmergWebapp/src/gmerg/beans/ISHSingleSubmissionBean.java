@@ -10,7 +10,7 @@ import gmerg.utils.FacesUtil;
 
 import javax.faces.context.FacesContext;
 
-public class ISHSingleSubmissionBean implements Serializable {
+public class ISHSingleSubmissionBean implements Serializable{
     private boolean debug = false;
 
     private ISHSubmission submission;
@@ -19,7 +19,7 @@ public class ISHSingleSubmissionBean implements Serializable {
     protected String id;
     private String annotationDisplayType;
     private String displayOfAnnoGps;
-    private boolean exist;
+    private boolean renderPage;
     private boolean renderPrbSeqInfo;
     private boolean renderPrbNameURL;
     private boolean expressionMapped;
@@ -161,16 +161,15 @@ public class ISHSingleSubmissionBean implements Serializable {
         return submission;
     }
     
-    public boolean isExist() {
+    public boolean isRenderPage() {
     
         if(submission == null){
-            exist = false;
+            renderPage = false;
         }
         else {
-            exist = true;
+            renderPage = true;
         }
-
-        return exist;
+        return renderPage;
     }
 
     public boolean isRenderPrbSeqInfo(){

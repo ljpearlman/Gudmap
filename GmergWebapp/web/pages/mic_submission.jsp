@@ -7,33 +7,31 @@
 <f:view>
   <jsp:include page="/includes/header.jsp" />
   
- 	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{MicroarraySingleSubmissionBean.id})" rendered="#{!MicroarraySingleSubmissionBean.exist}"/>
-                <h:panelGrid columns="1"  rendered="#{MicroarraySingleSubmissionBean.exist}" >
-	         <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}"/>
-	         <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{MicroarraySingleSubmissionBean.submission.deleted && MicroarraySingleSubmissionBean.submission.released}"/>
-	         <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!MicroarraySingleSubmissionBean.submission.released && MicroarraySingleSubmissionBean.submission.deleted}"/>
-	         <h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}" escape="false"/>
-	         <h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}">
+ 	<h:outputText styleClass="plaintextbold" value="There are no entries in the database matching the specified submission id (#{MicroarraySingleSubmissionBean.id})" rendered="#{!MicroarraySingleSubmissionBean.renderPage}"/>
+	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private" rendered="#{!MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}"/>
+	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as deleted" rendered="#{MicroarraySingleSubmissionBean.submission.deleted && MicroarraySingleSubmissionBean.submission.released}"/>
+	<h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.id} cannot be displayed because it is marked as private and deleted" rendered="#{!MicroarraySingleSubmissionBean.submission.released && MicroarraySingleSubmissionBean.submission.deleted}"/>
+	<h:outputText styleClass="plaintextbold" value="<br/><br/>For assistance please contact " rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}" escape="false"/>
+	<h:outputLink styleClass="text_bottom" value="mailto:GUDMAP-EDITORS@gudmap.org" rendered="#{!MicroarraySingleSubmissionBean.submission.released || MicroarraySingleSubmissionBean.submission.deleted}">
 		gudmap-editors@gudmap.org
-	          </h:outputLink>
-                </h:panelGrid>
+	</h:outputLink>
 	
-	<h:form id="mainForm" rendered="#{MicroarraySingleSubmissionBean.exist && MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}">
+	<h:form id="mainForm" rendered="#{MicroarraySingleSubmissionBean.renderPage && MicroarraySingleSubmissionBean.submission.released && !MicroarraySingleSubmissionBean.submission.deleted}">
 
-                <h:panelGrid columns="1" width="100%" styleClass="block-stripey">
-                          <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.submission.accID}" />
-                </h:panelGrid>
+		 <h:panelGrid columns="1" width="100%" styleClass="block-stripey">
+		           <h:outputText styleClass="plaintextbold" value="#{MicroarraySingleSubmissionBean.submission.accID}" />
+		 </h:panelGrid>
     
-                <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
-    	          <h:outputText value="#{stageSeriesLong} Stage" />
-    	          <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{MicroarraySingleSubmissionBean.submission.stage}definition.html">
+         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
+    	    <h:outputText value="#{stageSeriesLong} Stage" />
+    	    <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{MicroarraySingleSubmissionBean.submission.stage}definition.html">
     		<h:outputText value="#{stageSeriesShort}#{MicroarraySingleSubmissionBean.submission.stage}" />
-    	          </h:outputLink>
-               </h:panelGrid>
+    	    </h:outputLink>
+        </h:panelGrid>
 		
-               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{null != MicroarraySingleSubmissionBean.submission.originalImages}">
-		<h:outputText value="Images"  />
-		<h:dataTable  columnClasses="text-normal,text-top" value="#{MicroarraySingleSubmissionBean.submission.originalImages}" var="image">
+        <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{null != MicroarraySingleSubmissionBean.submission.originalImages}">
+			<h:outputText value="Images"  />
+			<h:dataTable  columnClasses="text-normal,text-top" value="#{MicroarraySingleSubmissionBean.submission.originalImages}" var="image">
 			        <h:column>
 			                <h:panelGrid columns="2" width="180" >
 					<h:outputLink value="#" styleClass="plaintext" target="_blank"
@@ -70,10 +68,10 @@
 					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[3].note}"/>
 				</h:panelGrid>
 			        </h:column>
-		</h:dataTable>
-               </h:panelGrid>
+			</h:dataTable>
+       	</h:panelGrid>
 		
-               <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
+        <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 		<h:outputText value="Supplemental Data Files" />
 		<h:panelGrid columns="2" columnClasses="plaintext, datatext">
 			<h:outputText value="CEL file:" />

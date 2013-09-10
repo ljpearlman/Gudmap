@@ -607,36 +607,36 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
    	 */
 	private ArrayList formatImageResultSet(ResultSet resSetImage) throws SQLException {
 	    if (resSetImage.first()) {
-		resSetImage.beforeFirst();
-		int serialNo = 1;
-		ArrayList results = new ArrayList();
-		int dotPosition = 0;
-		String fileExtension = null;
-		String str = null;
-		ImageInfo img = null;
-		
-		while (resSetImage.next()) {
-		    img = new ImageInfo();
-		    str = Utility.netTrim(resSetImage.getString(1));
-		    if (null != str && !str.equals("")) 
-			img.setAccessionId(str);
-		    str = Utility.netTrim(resSetImage.getString(2));
-		    if (null != str && !str.equals("")) 
-			img.setFilePath(str);
-		    str = Utility.netTrim(resSetImage.getString(3));
-		    if (null != str && !str.equals("")) 
-			img.setClickFilePath(str);
-		    
-		    // do not know the reason zoom_viewer do not work for micr array
-		    // even though microarray images have tif. so
-		    // use speciement type to mark microarray image
-		    img.setSpecimenType("microarray");
-		    img.setSerialNo(""+serialNo);
-
-		    serialNo++;
-		    results.add(img);
-		}
-		return results;
+			resSetImage.beforeFirst();
+			int serialNo = 1;
+			ArrayList results = new ArrayList();
+			int dotPosition = 0;
+			String fileExtension = null;
+			String str = null;
+			ImageInfo img = null;
+			
+			while (resSetImage.next()) {
+			    img = new ImageInfo();
+			    str = Utility.netTrim(resSetImage.getString(1));
+			    if (null != str && !str.equals("")) 
+			    	img.setAccessionId(str);
+			    str = Utility.netTrim(resSetImage.getString(2));
+			    if (null != str && !str.equals("")) 
+			    	img.setFilePath(str);
+			    str = Utility.netTrim(resSetImage.getString(3));
+			    if (null != str && !str.equals("")) 
+			    	img.setClickFilePath(str);
+			    
+			    // do not know the reason zoom_viewer do not work for micr array
+			    // even though microarray images have tif. so
+			    // use speciement type to mark microarray image
+			    img.setSpecimenType("microarray");
+			    img.setSerialNo(""+serialNo);
+	
+			    serialNo++;
+			    results.add(img);
+			}
+			return results;
 	    }
 	    return null;
 	}

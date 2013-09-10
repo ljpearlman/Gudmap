@@ -146,42 +146,43 @@ public class Submission {
     }
     
     public int getNumImages() {
-	int ret = 0;
-	if (null != originalImages)
-	    ret = originalImages.size();
-	
-	return ret;
+		int ret = 0;
+		if (null != originalImages)
+		    ret = originalImages.size();
+		
+		return ret;
     }
 
     public ArrayList getOriginalImages() {
-	return originalImages;
+        return originalImages;
+        
+    	/*
+    	// 4 image a row
+    	int iSize = 0;
+    	if (null != originalImages)
+    	    iSize = originalImages.size();
+    	if (0 == iSize)
+    	    return null;
 
-	/*
-	// 4 image a row
-	int iSize = 0;
-	if (null != originalImages)
-	    iSize = originalImages.size();
-	if (0 == iSize)
-	    return null;
+    	ArrayList ret = new ArrayList();
+    	ImageInfo[] row = null;
+    	int index = 0;
+    	int  i = 0;
+    	while (index < iSize) {
+    	    row = new ImageInfo[4];
+    	    for (i = 0; i < 4; i++)
+    		row[i] = null;
+    	    for (i = 0; i < 4; i++) 
+    		if (index < iSize) {
+    		    row[i] = (ImageInfo)originalImages.get(index);
+    		    index++;
+    		}
+    	    ret.add(row);
+    	}
 
-	ArrayList ret = new ArrayList();
-	ImageInfo[] row = null;
-	int index = 0;
-	int  i = 0;
-	while (index < iSize) {
-	    row = new ImageInfo[4];
-	    for (i = 0; i < 4; i++)
-		row[i] = null;
-	    for (i = 0; i < 4; i++) 
-		if (index < iSize) {
-		    row[i] = (ImageInfo)originalImages.get(index);
-		    index++;
-		}
-	    ret.add(row);
-	}
+    	return ret;
+    	*/
 
-	return ret;
-	*/
     }
 
     public void setOriginalImages(ArrayList images) {
@@ -274,10 +275,8 @@ public class Submission {
     	return project;
     }
     
-    public void setProject(String input) {
-    	project = input;
-	if (null == project)
-	    project = "";
+    public void setProject(String project) {
+    	this.project = project;
     }
     public int getBatchId() {
     	return batchId;
@@ -290,31 +289,25 @@ public class Submission {
     public String getNameSpace() {
     	return nameSpace;
     }
-
-    public void setNameSpace(String input) {
-    	nameSpace = input;
-    	if (null == nameSpace)
-	    nameSpace = "";
+    
+    public void setNameSpace(String nameSpace) {
+    	this.nameSpace = nameSpace;
     }
 
     public String getOsAccession() {
     	return osAccession;
     }
     
-    public void setOsAccession(String input) {
-    	osAccession = input;
-    	if (null == osAccession)
-	    osAccession = "";
+    public void setOsAccession(String osAccession) {
+    	this.osAccession = osAccession;
     }
 
     public String getLoaclId() {
     	return loaclId;
     }
     
-    public void setLoaclId(String input) {
-    	loaclId = input;
-    	if (null == loaclId)
-	    loaclId = "";
+    public void setLoaclId(String loaclId) {
+    	this.loaclId = loaclId;
     }
 
     public String getSource() {
@@ -329,56 +322,48 @@ public class Submission {
     	return validation;
     }
     
-    public void setValidation(String input) {
-    	validation = input;
-    	if (null == validation)
-	    validation = "";
+    public void setValidation(String validation) {
+    	this.validation = validation;
     }
 
     public int getControl() {
     	return control;
     }
     
-    public void setControl(int input) {
-    	control = input;
+    public void setControl(int control) {
+    	this.control = control;
     }
 
     public String getAssessment() {
     	return assessment;
     }
     
-    public void setAssessment(String input) {
-    	assessment = input;
-    	if (null == assessment)
-	    assessment = "";	
+    public void setAssessment(String assessment) {
+    	this.assessment = assessment;
     }
 
     public int getConfidencLevel() {
     	return confidencLevel;
     }
     
-    public void setConfidencLevel(int input) {
-    	confidencLevel = input;
+    public void setConfidencLevel(int confidencLevel) {
+    	this.confidencLevel = confidencLevel;
     }
 
     public String getLocalDbName() {
     	return localDbName;
     }
     
-    public void setLocalDbName(String input) {
-    	localDbName = input;
-    	if (null == localDbName)
-	    localDbName = "";
+    public void setLocalDbName(String localDbName) {
+    	this.localDbName = localDbName;
     }
 
     public String getLabId() {
     	return labId;
     }
     
-    public void setLabId(String input) {
-    	labId = input;
-    	if (null == labId)
-	    labId = "";
+    public void setLabId(String labId) {
+    	this.labId = labId;
     }
 
     public void setPrincipalInvestigators(Person[] pis) {
@@ -393,10 +378,8 @@ public class Submission {
     	return euregeneId;
     }
     
-    public void setEuregeneId(String input) {
-    	euregeneId = input;
-    	if (null == euregeneId)
-	    euregeneId = "";
+    public void setEuregeneId(String euregeneId) {
+    	this.euregeneId = euregeneId;
     }
 
     public String[] getResultNotes() {

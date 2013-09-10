@@ -6,6 +6,7 @@ import gmerg.utils.table.*;
 import gmerg.utils.FacesUtil;
 import gmerg.utils.Utility;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 
@@ -14,7 +15,7 @@ import java.util.HashMap;
  * a single microarray series
  */
 
-public class SeriesBean {
+public class SeriesBean implements Serializable{
     private boolean debug = false;
 
     private SeriesAssembler assembler;

@@ -5,10 +5,11 @@ package gmerg.beans;
 
 import javax.faces.model.SelectItem;
 import javax.faces.event.ValueChangeEvent;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.io.Serializable;
 
 import gmerg.entities.Globals;
 import gmerg.utils.FacesUtil;
@@ -95,6 +96,6 @@ public class HeaderQuickSearchBean  implements Serializable {
     }
 
     public String getAppUrl() {
-	return gmerg.utils.Utility.appUrl;
+    	return gmerg.utils.Utility.appUrl;
     }
 }
