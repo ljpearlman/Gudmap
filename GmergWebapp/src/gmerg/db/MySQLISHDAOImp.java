@@ -279,19 +279,19 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setEntryBy(resSet.getInt(12));
             submissionInfo.setModifierId(resSet.getInt(13));
             submissionInfo.setDbStatusId(resSet.getInt(14));
-            submissionInfo.setProject((resSet.getString(15)==null)?"":resSet.getString(15));
+            submissionInfo.setProject(resSet.getString(15));
             submissionInfo.setBatchId(resSet.getInt(16));
-            submissionInfo.setNameSpace((resSet.getString(17)==null)?"":resSet.getString(17));
+            submissionInfo.setNameSpace(resSet.getString(17));
             submissionInfo.setOsAccession(resSet.getString(18));
-            submissionInfo.setLoaclId((resSet.getString(19)==null)?"":resSet.getString(19));
-            submissionInfo.setSource((resSet.getString(20)==null)?"":resSet.getString(20));
-            submissionInfo.setValidation((resSet.getString(21)==null)?"":resSet.getString(21));
+            submissionInfo.setLoaclId(resSet.getString(19));
+            submissionInfo.setSource(resSet.getString(20));
+            submissionInfo.setValidation(resSet.getString(21));
             submissionInfo.setControl(resSet.getInt(22));
             submissionInfo.setAssessment(resSet.getString(23));
             submissionInfo.setConfidencLevel(resSet.getInt(24));
-            submissionInfo.setLocalDbName((resSet.getString(25)==null)?"":resSet.getString(25));
-            submissionInfo.setLabId((resSet.getString(26)==null)?"":resSet.getString(26));
-            submissionInfo.setEuregeneId((resSet.getString(27)==null)?"":resSet.getString(27));
+            submissionInfo.setLocalDbName(resSet.getString(25));
+            submissionInfo.setLabId(resSet.getString(26));
+            submissionInfo.setEuregeneId(resSet.getString(27));
 	    
         }
         if (null != noteSet && null != submissionInfo) {

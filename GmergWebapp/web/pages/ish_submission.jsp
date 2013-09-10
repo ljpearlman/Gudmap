@@ -56,23 +56,19 @@
 			<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
 		</h:panelGrid>
 
-		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" >
+		<h:panelGrid  width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" >
 			<h:outputText value="Images" />
-			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
-				<h:dataTable columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.originalImages}" var="image">
-					<h:column>
-						<h:outputLink rendered="#{ISHSingleSubmissionBean.submission.assayType != 'OPT'}" id="thumbnail" value="#" onclick="openZoomViewer('#{ISHSingleSubmissionBean.submission.accID}', '#{image[2]}', '#{image[4]}'); return false;" >
-							<h:graphicImage styleClass="icon" value="#{image[0]}" height="50"/>
-						</h:outputLink>
-						<h:outputLink rendered="#{ISHSingleSubmissionBean.submission.assayType == 'OPT'}" id="opt_thumbnail" value="#" onclick="window.open('#{image[0]}','#{image[2]}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,height=500,width=400'); return false;" >
-							<h:graphicImage styleClass="icon" value="#{image[3]}" height="50"/>
-						</h:outputLink>
-					</h:column>
-					<h:column>
-						<h:outputText styleClass="notetext" value="#{image[1]}"/>
-					</h:column>
-				</h:dataTable>
-			</h:panelGrid>
+			<h:dataTable  columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.originalImages}" var="image">
+			        <h:column>
+					<h:outputLink value="#" styleClass="plaintext" target="_blank"
+					                       onclick="mywindow=window.open('#{image.clickFilePath}','#{image.accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
+						<h:graphicImage value="#{image.filePath}" width="80"/>
+					</h:outputLink>
+			        </h:column>
+			        <h:column>
+					<h:outputText styleClass="notetext, topAlign" value="#{image.note}"/>
+			        </h:column>
+			</h:dataTable>
 		</h:panelGrid>
 
 		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" rendered="#{not empty ISHSingleSubmissionBean.submission.resultNotes}">

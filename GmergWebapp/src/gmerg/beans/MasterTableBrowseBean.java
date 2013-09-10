@@ -82,10 +82,20 @@ public class MasterTableBrowseBean {
 	// ********************************************************************************
 	
 	public MasterTableBrowseBean (){
-	if (debug)
-	    System.out.println("-------In MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol);
-	int iSize = 0;
-	int i = 0;
+		if (debug)
+		    System.out.println("-------In MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol);
+
+		try {
+		    init();
+		} catch (Exception e) {
+		    System.out.println("!!! error in MasterTableBrowseBean.init message = "+e.getMessage());
+		}
+		
+	}
+	
+	protected void init() {
+		int iSize = 0;
+		int i = 0;
 		displayTreeView = false;
 		viewMode = "0";
 		MasterTableInfo[] masterTables = DbUtility.getAllMasterTablesInfo();
