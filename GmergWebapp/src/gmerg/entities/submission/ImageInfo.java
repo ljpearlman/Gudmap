@@ -5,23 +5,23 @@ package gmerg.entities.submission;
 
 public class ImageInfo {
 
-	  protected String accessionId;
-	  protected String stage; // theiler stage
-	  protected String specimenType;
-	  protected String filePath;
-	  protected String clickFilePath;
-	  protected String serialNo;
-	  protected String note;
+	protected String accessionId;
+	protected String stage; // theiler stage
+	protected String specimenType;
+	protected String filePath;
+	protected String clickFilePath;
+	protected String serialNo;
+	protected String note;
 
-    public void print() {
-	System.out.println(" accessionId = "+ accessionId);
-	System.out.println(" stage = "+stage);
-	System.out.println(" specimenType = "+ specimenType);
-	System.out.println(" filePath = "+filePath);
-	System.out.println(" clickFilePath = "+ clickFilePath);
-	System.out.println(" serialNo = "+serialNo);
-	System.out.println(" note = "+note);
-    }
+	public void print() {
+		System.out.println(" accessionId = "+ accessionId);
+		System.out.println(" stage = "+stage);
+		System.out.println(" specimenType = "+ specimenType);
+		System.out.println(" filePath = "+filePath);
+		System.out.println(" clickFilePath = "+ clickFilePath);
+		System.out.println(" serialNo = "+serialNo);
+		System.out.println(" note = "+note);
+	}
 
     public String getAccessionId() {
 	return accessionId;
@@ -59,18 +59,17 @@ public class ImageInfo {
 	      // do not know why zoom-viewer dose not work for microarray tif 
 	      // so special put 'microarray' into specimenType so that
 	      // microarray click image can be treated specially
-	      if (null != specimenType &&
-		  specimenType.equals("microarray"))
-		  return filePath;
+	      if (null != specimenType && specimenType.equals("microarray"))
+	    	  return filePath;
 
 	      if (null == clickFilePath || clickFilePath.endsWith("tif")) {
-		  String ret = gmerg.utils.Utility.appUrl+"/pages/zoom_viewer.html?id="+accessionId;
-		  if (null == serialNo)
-		      ret += "&serialNo=1";
-		  else
-		      ret =ret + "&serialNo="+serialNo;
-
-		  return ret;
+			  String ret = gmerg.utils.Utility.appUrl+"/pages/zoom_viewer.html?id="+accessionId;
+			  if (null == serialNo)
+			      ret += "&serialNo=1";
+			  else
+			      ret =ret + "&serialNo="+serialNo;
+	
+			  return ret;
 	      }
 
 	    return clickFilePath;
@@ -87,10 +86,10 @@ public class ImageInfo {
 	  public void setSerialNo(String input) {
 	    serialNo = input;
 	    if (null != serialNo) {
-		serialNo = serialNo.trim();
-		if (serialNo.equals(""))
-		    serialNo = null;
-	    }
+			serialNo = serialNo.trim();
+			if (serialNo.equals(""))
+			    serialNo = null;
+		    }
 	  }
 
 	  public String getNote() {
@@ -99,5 +98,7 @@ public class ImageInfo {
 		  
 	  public void setNote(String input) {
 	    note = input;
+	    if (null == note || note.trim().toLowerCase().equals("null"))
+	    	note = "";
 	  }
 }

@@ -439,16 +439,17 @@
 						<h:outputLink styleClass="datatext" rendered="#{!ISHSingleSubmissionBean.renderPrbNameURL && ISHSingleSubmissionBean.submission.probe.maprobeID != ISHSingleSubmissionBean.submission.probe.probeName}" value="#{ISHSingleSubmissionBean.submission.probe.probeNameURL}">
 							<h:outputText value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />
 						</h:outputLink>	
-						<h:outputLink styleClass="datatext" rendered="#{!ISHSingleSubmissionBean.renderPrbNameURL && ISHSingleSubmissionBean.submission.probe.maprobeID == ISHSingleSubmissionBean.submission.probe.probeName}" value="/gudmap/pages/probe.html" target="_blank">
+					    <h:outputText value="No MGI ID " rendered="#{!ISHSingleSubmissionBean.renderPrbNameURL && ISHSingleSubmissionBean.submission.probe.maprobeID == ISHSingleSubmissionBean.submission.probe.probeName}"/>
+						<h:outputLink styleClass="datatext" rendered="#{!ISHSingleSubmissionBean.renderPrbNameURL && ISHSingleSubmissionBean.submission.probe.maprobeID == ISHSingleSubmissionBean.submission.probe.probeName}" value="probe.html" target="_blank">
 							<f:param name="probe" value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />
 							<f:param name="maprobe" value="#{ISHSingleSubmissionBean.submission.probe.maprobeID}" />
-							<h:outputText value=" #{ISHSingleSubmissionBean.submission.probe.maprobeID}" />
+							<h:outputText value="(#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
 						</h:outputLink>	
 
-						<h:outputLink styleClass="datatext" rendered="#{not empty ISHSingleSubmissionBean.submission.probe.maprobeID && ISHSingleSubmissionBean.submission.probe.maprobeID != ISHSingleSubmissionBean.submission.probe.probeName}" value="/gudmap/pages/probe.html" target="_blank">
+						<h:outputLink styleClass="datatext" rendered="#{not empty ISHSingleSubmissionBean.submission.probe.maprobeID && ISHSingleSubmissionBean.submission.probe.maprobeID != ISHSingleSubmissionBean.submission.probe.probeName}" value="probe.html" target="_blank">
 							<f:param name="probe" value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />
 							<f:param name="maprobe" value="#{ISHSingleSubmissionBean.submission.probe.maprobeID}" />
-							<h:outputText value=" (#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
+							<h:outputText value="(#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
 						</h:outputLink>
 					</h:panelGroup>
 					
