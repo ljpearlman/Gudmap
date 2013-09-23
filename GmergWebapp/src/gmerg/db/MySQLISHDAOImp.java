@@ -3858,51 +3858,67 @@ public class MySQLISHDAOImp implements ISHDAO {
      * <p>xingjun - TG query should use different query to get data (gene symbol stored in mutant table instead of probe table)</p>
      */
     public ArrayList getSubmissionsByLabId(String labId, String assayType, String submissionDate, 
-					   String archiveId, int columnIndex, boolean ascending, int offset, int num) {
-    	//System.out.println("GET SUBMISSION BY LAB ID");
-	try { // return null value if lab id is not valid
-	    Integer.parseInt(labId);
-	} catch (NumberFormatException nfe) {
-	    return null;
-	}
-	ResultSet resSet = null;
+					   String archiveId, int columnIndex, boolean ascending, int offset, int num, String batchId) {
+    	if (debug)
+    		System.out.println("GET SUBMISSION BY LAB ID");
+    	
+
+		ResultSet resSet = null;
     	ArrayList result = null;
     	ParamQuery parQ;
-    	if (assayType.equalsIgnoreCase("TG")) {
-	    parQ = InsituDBQuery.getParamQuery("ALL_ENTRIES_TG");
-    	} else {
-	    parQ = DBQuery.getParamQuery("ALL_ENTRIES_ISH");
+    	if(assayType != null){
+	    	if (assayType.equalsIgnoreCase("TG")) {
+			    parQ = InsituDBQuery.getParamQuery("ALL_ENTRIES_TG");
+	    	} else {
+			    parQ = DBQuery.getParamQuery("ALL_ENTRIES_ISH");
+	    	}
     	}
+    	else
+    		parQ = DBQuery.getParamQuery("ALL_ENTRIES_ISH");
 	
     	PreparedStatement prepStmt = null;
 	
     	// assemble the query string
     	String query = parQ.getQuerySQL();
-    	if (submissionDate == null || submissionDate.equals("")) {
-	    query += " AND SUB_PI_FK = ? ";
-    	} else {
-	    query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? ";
+    	
+    	if (labId != null && !labId.trim().equals("")) {
+    		query += " AND SUB_PI_FK = ? ";
+    	}
+   	
+    	if (submissionDate != null && !submissionDate.equals("")) {
+    		query += " AND SUB_SUB_DATE = ? ";
+    	} 
+    	
+    	if (archiveId != null && !archiveId.trim().equals("")) {
+    		query += " AND SUB_ARCHIVE_ID = ? ";
     	}
 	
-	if (archiveId != null && !archiveId.trim().equals("")) {
-	    query += " AND SUB_ARCHIVE_ID = ? ";
-	}
-	
-    	// added by xingjun - 28/08/2008
-    	if (assayType.equals("insitu")) {
-	    query += "AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC') ";
-    	} else {
-	    query += "AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
+    	if (assayType != null && !assayType.trim().equals("")) {
+	    	if (assayType.equals("insitu")) {
+	    		query += "AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC') ";
+	    	} else {
+	    		query += "AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
+	    	}
     	}
-	
+    	else
+    		query += "AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC') ";
+    	
+    	if (batchId != null && !batchId.trim().equals("")){
+    		if (!batchId.trim().equals(""))
+    			query += " AND SUB_BATCH = ? ";
+    	}
+    	
     	String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
     	String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(1, query,
 									     defaultOrder, columnIndex, ascending, offset, num);
-	//		System.out.println("getSubmissionsByLabId:queryString: " + queryString);
-	//    	System.out.println("lab id: " + labId);
-	//    	System.out.println("assayType: " + assayType);
-	//    	System.out.println("submissionDate: " + submissionDate);
-	//    	System.out.println("archiveId: " + archiveId);
+    	
+    	if (debug){
+			System.out.println("getSubmissionsByLabId:queryString: " + queryString);
+	    	System.out.println("lab id: " + labId);
+	    	System.out.println("assayType: " + assayType);
+	    	System.out.println("submissionDate: " + submissionDate);
+	    	System.out.println("archiveId: " + archiveId);
+    	}
 	
     	// execute query and assemble result
     	try {
@@ -3910,20 +3926,33 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
+	    	System.out.println("MySQLISHDAOImp.sql = "+queryString);
 	    
-	    prepStmt.setInt(1, Integer.parseInt(labId));
-	    int paramNum = 2;
+	    prepStmt = conn.prepareStatement(queryString);
+	    int paramNum = 1;
+	    
+	    if (labId != null && !labId.trim().equals("")) {
+	    	prepStmt.setInt(1, Integer.parseInt(labId));
+			paramNum ++;
+	    }
 	    
 	    if (submissionDate != null && !submissionDate.equals("")) {
-		prepStmt.setString(paramNum, submissionDate);
-		paramNum ++;
+			prepStmt.setString(paramNum, submissionDate);
+			paramNum ++;
 	    }
 	    
 	    if (archiveId != null && !archiveId.trim().equals("")) {
-		prepStmt.setInt(paramNum, Integer.parseInt(archiveId));
+	    	prepStmt.setInt(paramNum, Integer.parseInt(archiveId));
+	    	paramNum ++;
 	    }
+
+	    if (batchId != null && !batchId.trim().equals("")) {
+	    		prepStmt.setInt(paramNum, Integer.parseInt(batchId));
+	    }
+	    
+	    if (debug)
+	    	System.out.println("query = " + prepStmt);
+	    
 	    
 	    resSet = prepStmt.executeQuery();
 	    result = DBHelper.formatBrowseResultSetISH(resSet);

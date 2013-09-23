@@ -811,6 +811,11 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         	parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_FOR_SPECIFIC_LAB_INSITU");
         }
         String query = parQ.getQuerySQL();
+
+        if (labId != null && !labId.equals("")) {
+        	query += " AND SUB_PI_FK  = ? ";
+        }
+        
         if (submissionDate != null && !submissionDate.equals("")) {
         	query += "AND SUB_SUB_DATE = ? ";
         }
@@ -826,13 +831,22 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 
         try {
 		    if (debug)
-			System.out.println("MySQLFocusFowAllDAOImp.sql = "+query.toLowerCase());
+		    	System.out.println("MySQLFocusFowAllDAOImp.sql = "+query.toLowerCase());
+		    
             prepStmt = conn.prepareStatement(query);
-            prepStmt.setInt(1, Integer.parseInt(labId));
-//            prepStmt.setString(2, assayType);
-            if (submissionDate != null && !submissionDate.equals("")) {
-            	prepStmt.setString(2, submissionDate);
+            int paramNum = 1;
+
+            if (labId != null && !labId.equals("")) {
+            	prepStmt.setInt(paramNum, Integer.parseInt(labId));
+            	paramNum++;
             }
+                        
+            if (submissionDate != null && !submissionDate.equals("")) {
+            	prepStmt.setString(paramNum, submissionDate);
+            }
+            
+			if (debug)
+				System.out.println("query = "+ prepStmt);
 
             // execute
             resSet = prepStmt.executeQuery();
@@ -854,57 +868,75 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	 * @author xingjun - 01/07/2011 - overloading version
 	 * 
 	 */
-	public int getNumberOfSubmissionsForLab(String labId, String assayType, String submissionDate, String archiveId) {
-	    if (null == assayType)
-		return 0;
+	public int getNumberOfSubmissionsForLab(String labId, String assayType, String submissionDate, String archiveId, String batchId) {
 
-//      System.out.println("getNumberOfSubmissionsForLab:labId: " + labId);
-//      System.out.println("getNumberOfSubmissionsForLab:assayType: " + assayType);
-//      System.out.println("getNumberOfSubmissionsForLab:submissionDate: " + submissionDate);
-//      System.out.println("getNumberOfSubmissionsForLab:archiveId: " + archiveId);
-		try {
-			Integer.parseInt(labId);
-		} catch (NumberFormatException nfe) {
-			return 0;
+		if (debug){
+			System.out.println("getNumberOfSubmissionsForLab:labId: " + labId);
+			System.out.println("getNumberOfSubmissionsForLab:assayType: " + assayType);
+			System.out.println("getNumberOfSubmissionsForLab:submissionDate: " + submissionDate);
+			System.out.println("getNumberOfSubmissionsForLab:archiveId: " + archiveId);
 		}
 		
 		int totalNumber = 0;
         ResultSet resSet = null;
         ParamQuery parQ = null;
-        if (assayType.equals("ISH") || assayType.equals("IHC")) {
+        if (assayType == null){
+        	parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_FOR_SPECIFIC_LAB_INSITU");
+        } 
+        else if (assayType.equals("ISH") || assayType.equals("IHC")) {
             parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_FOR_SPECIFIC_LAB_INSITU");
-        } else if (assayType.equals("Microarray")) {
+        } 
+        else if (assayType.equals("Microarray")) {
         	parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_FOR_SPECIFIC_LAB_ARRAY");
-        } else if (assayType.equals("TG")) {
+        } 
+        else if (assayType.equals("TG")) {
         	parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_FOR_SPECIFIC_LAB_TG");
-        } else if (assayType.equals("insitu")) {
+        }
+        else if (assayType.equals("insitu")) {
         	parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_FOR_SPECIFIC_LAB_INSITU");
         }
+        
         String query = parQ.getQuerySQL();
+                
+        if (labId != null && !labId.equals("")) {
+        	query += " AND SUB_PI_FK  = ? ";
+        }
+               
         if (submissionDate != null && !submissionDate.equals("")) {
         	query += "AND SUB_SUB_DATE = ? ";
         }
-    	// added by xingjun - 28/08/2008
-    	if (assayType.equals("insitu")) {
-    		query += "AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC') ";
-    	} else {
-    		query += "AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
+
+    	if (assayType != null && !assayType.trim().equals("")) {
+	    	if (assayType.equals("insitu")) {
+	    		query += "AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC') ";
+	    	} else {
+	    		query += "AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
+	    	}
     	}
+    	else
+    		query += "AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC') ";
     	
-    	// xingjun - 01/07/2011
     	if (archiveId != null && !archiveId.trim().equals("")) {
     		query += "AND SUB_ARCHIVE_ID = ? ";
     	}
     	
-//        System.out.println("getNumberOfSubmissionsForLab:query: " + query);
+    	if (batchId != null && !batchId.trim().equals("")) {
+    		query += "AND SUB_BATCH = ? ";
+    	}
+   	
         PreparedStatement prepStmt = null;
 
         try {
 		    if (debug)
-			System.out.println("MySQLFocusFowAllDAOImp.sql = "+query.toLowerCase());
+		    	System.out.println("MySQLFocusFowAllDAOImp.sql = "+query.toLowerCase());
+		    
             prepStmt = conn.prepareStatement(query);
-            prepStmt.setInt(1, Integer.parseInt(labId));
-            int paramNum = 2;
+            int paramNum = 1;
+            
+			if (labId != null && !labId.trim().equals("")) {
+				prepStmt.setInt(paramNum, Integer.parseInt(labId));
+				paramNum++;
+			}
             
             if (submissionDate != null && !submissionDate.equals("")) {
             	prepStmt.setString(paramNum, submissionDate);
@@ -913,8 +945,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             
 			if (archiveId != null && !archiveId.trim().equals("")) {
 				prepStmt.setInt(paramNum, Integer.parseInt(archiveId));
+				paramNum ++;
+			}
+			
+			if (batchId != null && !batchId.trim().equals("")) {
+				prepStmt.setInt(paramNum, Integer.parseInt(batchId));
 			}
 
+			if (debug)
+				System.out.println("query = "+ prepStmt);
             // execute
             resSet = prepStmt.executeQuery();
 

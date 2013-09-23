@@ -44,7 +44,7 @@ public interface ArrayDAO {
 
 	// xingjun - 01/07/2011
 	public ArrayList getSubmissionsByLabId(String labId, String submissionDate, String archiveId,
-            int columnIndex, boolean ascending, int offset, int num);
+            int columnIndex, boolean ascending, int offset, int num, String batchId);
 	/////////////////////////////////////////////////////////////////////////////////////////
 	
 	public ArrayList findSamplesInCertainSeriesBySubmissionId(String submissionAccessionId);

@@ -27,6 +27,7 @@ public class LabArrayBrowseBean {
 		String labId = FacesUtil.getRequestParamValue("labId");
 		String date = FacesUtil.getRequestParamValue("date");
 		String archiveId = FacesUtil.getRequestParamValue("archiveId"); // xingjun 01/07/2011
+		String batchId = FacesUtil.getRequestParamValue("batchId");
 
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		queryParams.put("labId", labId);
@@ -35,6 +36,7 @@ public class LabArrayBrowseBean {
 		queryParams.put("tableType", "array");
 		queryParams.put("labIshEdit", false);
 		queryParams.put("archiveId", archiveId); // xingjun - 01/07/2011
+		queryParams.put("batchId", batchId);
 
 		LabSummaryAssembler assembler = new LabSummaryAssembler(queryParams);
 		GenericTable table = assembler.createTable();

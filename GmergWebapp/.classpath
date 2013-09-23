@@ -23,16 +23,17 @@
 	<classpathentry kind="lib" path="lib/lucene-core-2.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/luceneHtmlParser.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-3.1.12-bin.jar"/>
-	<classpathentry kind="lib" path="lib/richfaces-3.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/standard.jar"/>
 	<classpathentry kind="lib" path="lib/tomahawk-1.1.6.jar"/>
 	<classpathentry kind="lib" path="lib/TreeView.jar"/>
-	<classpathentry kind="lib" path="web/nanoxml-2.2.2.jar"/>
-	<classpathentry kind="lib" path="web/TreeView.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_git/GmergWebapp/lib/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_june/Gudmap/GmergWebapp/lib/json-simple.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_june/Gudmap/GmergWebapp/lib/analysis.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/analysis.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/mysql-connector-java-5.1.22-bin.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/nanoxml-2.2.2.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/richfaces-api-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/richfaces-impl-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/richfaces-ui-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/json-simple.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -41,6 +41,6 @@ public interface FocusForAllDAO {
 	public int getNumberOfSubmissionsForLabForAnnotation(String labId, String assayType, String submissionDate, String isPublic);
 
 	// xingjun - 01/07/2011
-	public int getNumberOfSubmissionsForLab(String labId, String assayType, String submissionDate, String archiveId);
+	public int getNumberOfSubmissionsForLab(String labId, String assayType, String submissionDate, String archiveId, String batchId);
 	public int getNumberOfSubmissionsForLabForAnnotation(String labId, String assayType, String submissionDate, String archiveId, String isPublic);
 }

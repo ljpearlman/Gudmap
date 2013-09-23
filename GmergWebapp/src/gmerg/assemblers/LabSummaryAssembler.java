@@ -32,6 +32,7 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
     String tableType;
     boolean labIshEdit;
     String archiveId; // xingjun - 01/07/2011
+    String batchId;
     
     protected boolean debug = false;
     protected RetrieveDataCache cache = null;
@@ -49,25 +50,25 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
     }
     
     public void setParams() {
-	super.setParams();
-	labId = getParam("labId");
-	assayType = getParam("assayType");
-	submissionDate = getParam("submissionDate");
-	privilege = getParam("isSubmitter");
-	isPublic = getParam("isPublic");
-	tableType = getParam("tableType");
-	labIshEdit = (Boolean)this.params.get("labIshEdit");
-	archiveId = getParam("archiveId");
+		super.setParams();
+		labId = getParam("labId");
+		assayType = getParam("assayType");
+		submissionDate = getParam("submissionDate");
+		privilege = getParam("isSubmitter");
+		isPublic = getParam("isPublic");
+		tableType = getParam("tableType");
+		labIshEdit = (Boolean)this.params.get("labIshEdit");
+		archiveId = getParam("archiveId");
+		batchId = getParam("batchId");
     }
     
     /**
      * <p>modified by xingjun - 01/07/2011 - need to pass the archive id into the dao</p>
      */
     public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
-	if (null != cache &&
-	    cache.isSameQuery(column, ascending, offset, num)) {
+	if (null != cache && cache.isSameQuery(column, ascending, offset, num)) {
 	    if (debug)
-		System.out.println("LabSummaryAssembler.retriveData data not changed");
+	    	System.out.println("LabSummaryAssembler.retriveData data not changed");
 	    
 	    return cache.getData();
 	}
@@ -81,7 +82,7 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 	    ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 	    
 	    ArrayList arrayBrowseSubmissions =
-		arrayDAO.getSubmissionsByLabId(labId, submissionDate, archiveId, column, ascending, offset, num);
+		arrayDAO.getSubmissionsByLabId(labId, submissionDate, archiveId, column, ascending, offset, num, batchId);
 	    
 	    // release db resources
 	    DBHelper.closeJDBCConnection(conn);
@@ -104,7 +105,7 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 		    ishDAO.getSubmissionsForAnnotationByLabId(labId, assayType, submissionDate, archiveId, column, ascending, offset, num, isPublic);
 	    } else {		
 		ishBrowseSubmissions = 
-		    ishDAO.getSubmissionsByLabId(labId, assayType, submissionDate, archiveId, column, ascending, offset, num);
+		    ishDAO.getSubmissionsByLabId(labId, assayType, submissionDate, archiveId, column, ascending, offset, num, batchId);
 	    }
 	    
 	    /** release the db resources */
@@ -142,7 +143,7 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 	if(null != privilege && Integer.parseInt(privilege)>=3 && FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/lab_ish_edit.jsp")) {
 	    numberOfRows = focusForAllDAO.getNumberOfSubmissionsForLabForAnnotation(labId, assayType, submissionDate, archiveId, isPublic);
 	} else {
-	    numberOfRows = focusForAllDAO.getNumberOfSubmissionsForLab(labId, assayType, submissionDate, archiveId);
+	    numberOfRows = focusForAllDAO.getNumberOfSubmissionsForLab(labId, assayType, submissionDate, archiveId, batchId);
 	}
 	// release the db resources
 	DBHelper.closeJDBCConnection(conn);

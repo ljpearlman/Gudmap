@@ -1070,82 +1070,104 @@ public class MySQLArrayDAOImp implements ArrayDAO {
      * @author xingjun - 01/07/2011 - overloading version
      */
     public ArrayList getSubmissionsByLabId(String labId, String submissionDate, String archiveId,
-					   int columnIndex, boolean ascending, int offset, int num) {
-	long enter = 0;
-	if (performance)
-	    enter = System.currentTimeMillis();
-	
-	//		System.out.println("labId: " + labId);
-	//		System.out.println("submissionDate: " + submissionDate);
-	//		System.out.println("labId: " + labId);
-	try { // return null value if lab id is not valid
-	    Integer.parseInt(labId);
-	} catch (NumberFormatException nfe) {
-	    return null;
-	}
-	
-	ResultSet resSet = null;
-	ArrayList result = null;
-	ParamQuery parQ = DBQuery.getParamQuery("ALL_ENTRIES_ARRAY");
-	PreparedStatement prepStmt = null;
-	
-	// assemble the query string
-	String query = parQ.getQuerySQL();
-	
-	if (submissionDate == null || submissionDate.equals("")) {
-	    query += " AND SUB_PI_FK = ? ";
-	} else {
-	    query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? ";
-	}
-	
-	if (archiveId != null && !archiveId.trim().equals("")) {
-	    query += " AND SUB_ARCHIVE_ID = ? ";
-	}
-	
-	String defaultOrder = new String("SUB_SUB_DATE DESC, SMP_THEILER_STAGE DESC");
-	String queryString =
-	    assembleBrowseSubmissionQueryStringArray(1, query, defaultOrder, columnIndex, ascending, offset, num);
-	//		System.out.println("array browse query: " + queryString);
-	
-	// execute query and assemble result
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase()+" 1 arg = "+labId);
-	    prepStmt = conn.prepareStatement(queryString);
-	    
-	    prepStmt.setInt(1, Integer.parseInt(labId));
-	    if (submissionDate != null && !submissionDate.equals("")) {
+					   int columnIndex, boolean ascending, int offset, int num, String batchId) {
+		long enter = 0;
+		if (performance)
+		    enter = System.currentTimeMillis();
+		
 		if (debug)
-		    System.out.println("MySQLArrayDAOImp 2 arg = "+submissionDate);
-		prepStmt.setString(2, submissionDate);
-	    }
-	    
-	    if (archiveId != null && !archiveId.trim().equals("")) {
-		if (debug)
-		    System.out.println("MySQLArrayDAOImp 3 arg = "+archiveId);
-		prepStmt.setInt(3, Integer.parseInt(archiveId));
-	    }
-	    
-	    // execute
-	    resSet = prepStmt.executeQuery();
-	    result = DBHelper.formatResultSetToArrayList(resSet);
-	    
-	    // close the connection
-	    DBHelper.closePreparedStatement(prepStmt);
-	    
-	} catch(SQLException se) {
-	    se.printStackTrace();
-	}
-	if (performance) {
-	    enter = (System.currentTimeMillis() - enter)/1000;
-	    if (2 < enter)
-		System.out.println("MySQLArrayDAOImp.getSubmissionsByLabId takes " + enter+" seconds");
-	}
+			System.out.println("GET SUBMISSION BY LAB ID");
 	
-	return result;
+		ResultSet resSet = null;
+		ArrayList result = null;
+		ParamQuery parQ = DBQuery.getParamQuery("ALL_ENTRIES_ARRAY");
+		PreparedStatement prepStmt = null;
+		
+		// assemble the query string
+		String query = parQ.getQuerySQL();
+		
+		if (debug)
+			System.out.println("query1: " + query);
+		
+		if (labId != null && !labId.trim().equals("")) {
+			query += " AND SUB_PI_FK = ? ";
+		}
+		
+		if (submissionDate != null || !submissionDate.equals("")) {
+		    query += " AND SUB_SUB_DATE = ? ";
+		}
+		
+		if (archiveId != null && !archiveId.trim().equals("")) {
+		    query += " AND SUB_ARCHIVE_ID = ? ";
+		}
+
+		if (batchId != null && !batchId.trim().equals("")) {
+			query += " AND SUB_BATCH = ? ";
+		}
+		
+		String defaultOrder = new String("SUB_SUB_DATE DESC, SMP_THEILER_STAGE DESC");
+		String queryString =
+		    assembleBrowseSubmissionQueryStringArray(1, query, defaultOrder, columnIndex, ascending, offset, num);
+		
+		if (debug)
+			System.out.println("array browse query: " + queryString);
+		
+		// execute query and assemble result
+		try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+            int paramNum = 1;
+
+		    if (labId != null && !labId.trim().equals("")) {
+				if (debug)
+				    System.out.println("MySQLArrayDAOImp  arg = "+labId);
+				prepStmt.setInt(paramNum, Integer.parseInt(labId));
+				paramNum++;
+		    }
+		    
+		    if (submissionDate != null && !submissionDate.equals("")) {
+				if (debug)
+				    System.out.println("MySQLArrayDAOImp  arg = "+submissionDate);
+				prepStmt.setString(paramNum, submissionDate);
+				paramNum++;
+		    }
+		    
+		    if (archiveId != null && !archiveId.trim().equals("")) {
+				if (debug)
+				    System.out.println("MySQLArrayDAOImp  arg = "+archiveId);
+				prepStmt.setInt(paramNum, Integer.parseInt(archiveId));
+				paramNum++;
+		    }
+
+		    if (batchId != null && !batchId.trim().equals("")) {
+				if (debug)
+				    System.out.println("MySQLArrayDAOImp  arg = "+batchId);
+				prepStmt.setInt(paramNum, Integer.parseInt(batchId));
+				paramNum++;
+		    }
+		    
+		    if (debug)
+		    	System.out.println("query = " + prepStmt);
+		    
+		    // execute
+		    resSet = prepStmt.executeQuery();
+		    result = DBHelper.formatResultSetToArrayList(resSet);
+		    
+		    // close the connection
+		    DBHelper.closePreparedStatement(prepStmt);
+		    
+		} catch(SQLException se) {
+		    se.printStackTrace();
+		}
+		if (performance) {
+		    enter = (System.currentTimeMillis() - enter)/1000;
+		    if (2 < enter)
+			System.out.println("MySQLArrayDAOImp.getSubmissionsByLabId takes " + enter+" seconds");
+		}
+		
+		return result;
     }
     
     /**

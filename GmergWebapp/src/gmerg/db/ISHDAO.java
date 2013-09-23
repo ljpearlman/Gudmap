@@ -129,7 +129,7 @@ public ArrayList getComponentCountInfoByGeneInfo(String inputType, String inputS
 
 	// xingjun - 01/07/2011
 	public ArrayList getSubmissionsByLabId(String labId, String assayType, String submissionDate, 
-			String archiveId, int columnIndex, boolean ascending, int offset, int num);
+			String archiveId, int columnIndex, boolean ascending, int offset, int num, String batchId);
 	public ArrayList getSubmissionsForAnnotationByLabId(String labId, String assayType, String submissionDate, 
 			String archiveId, int columnIndex, boolean ascending, int offset, int num, String isPublic);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
