@@ -897,7 +897,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         }
         
         String query = parQ.getQuerySQL();
-                
+
         if (labId != null && !labId.equals("")) {
         	query += " AND SUB_PI_FK  = ? ";
         }
@@ -913,8 +913,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	    		query += "AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
 	    	}
     	}
-    	else
-    		query += "AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC') ";
     	
     	if (archiveId != null && !archiveId.trim().equals("")) {
     		query += "AND SUB_ARCHIVE_ID = ? ";

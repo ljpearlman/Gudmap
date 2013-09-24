@@ -253,8 +253,8 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 	String str = null;
     	try {
     		for (int i = 0; i < queryNumber; i++) {
-			if (debug)
-			    System.out.println("MySQLTransgenicDAOImp.sql = "+queryString[i]);
+				if (debug)
+				    System.out.println("MySQLTransgenicDAOImp.sql = "+queryString[i]);
 
 			///////!!!!! poor databse table for different type of submissions
 			    ////////!!!! do not know why replaceAll does not work
@@ -279,9 +279,15 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     					prepStmt.setString(j + 1, param[i][j]);
     				}
     			}
+				if (debug)
+				    System.out.println("MySQLTransgenicDAOImp.prepStmt = "+prepStmt);
 
     			resSet = prepStmt.executeQuery();
     			result[i][1] = getStringValueFromIntegerResultSet(resSet);
+    			
+				if (debug)
+				    System.out.println("MySQLTransgenicDAOImp.result["+i+"] = "+result[i][1]);
+
     		}
     		// close the connection
     		DBHelper.closePreparedStatement(prepStmt);

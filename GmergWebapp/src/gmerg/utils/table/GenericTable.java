@@ -106,6 +106,10 @@ public abstract class GenericTable
 	public int getNumRows() {
 		return numRows;
 	}
+	
+	public void setNumRows(int value) {
+		numRows = value;
+	}
 
 	public void setTotals(int[] totals) {
 		this.totals = totals;

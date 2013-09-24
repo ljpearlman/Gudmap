@@ -12,6 +12,7 @@ import gmerg.utils.table.GenericTableView;
 import gmerg.utils.table.TableUtil;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author xingjun
@@ -19,6 +20,12 @@ import java.util.HashMap;
  */
 public class LabTGBrowseBean {
     private boolean debug = false;
+    
+    private String labId;
+    private String date;
+    private String assayType;
+    private String archiveId;
+    private String batchId;
 
 	public LabTGBrowseBean() {
 	if (debug)
@@ -37,11 +44,8 @@ public class LabTGBrowseBean {
 	}
 	
 	private GenericTableView populateTGFocusBrowseTableView(String viewName) {
-		String labId = FacesUtil.getRequestParamValue("labId");
-		String date = FacesUtil.getRequestParamValue("date");
-		String assayType = FacesUtil.getRequestParamValue("assayType");
-		String archiveId = FacesUtil.getRequestParamValue("archiveId"); // xingjun 01/07/2011
-		String batchId = FacesUtil.getRequestParamValue("batchId"); 
+
+		boolean validParams = checkParams();
 		
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		queryParams.put("labId", labId);
@@ -55,6 +59,10 @@ public class LabTGBrowseBean {
 
 		LabSummaryAssembler assembler = new LabSummaryAssembler(queryParams);
 	    GenericTable table = assembler.createTable();
+	    
+		if (!validParams)
+			table.setNumRows(0);
+	    
 		GenericTableView tableView = ISHBrowseBean.getDefaultIshBrowseTableView(viewName, table);
 		tableView.setDisplayTotals(true); // Bernie 25/3/2011 - display totals in header
 		tableView.setColHidden(9, true); // hide probe name from displaying - 29/08/2008
@@ -62,4 +70,45 @@ public class LabTGBrowseBean {
 		return  tableView;
 	}	
 
+	// check for parameter values that match the required entries
+	// looks for misspelling and missing params
+	private boolean checkParams() {
+		Map<String,String> paramMap = FacesUtil.getRequestParamMap();
+		
+		if (paramMap.isEmpty())
+			return false;
+		
+		int paramCount = paramMap.size();
+		int count = 0;
+		
+		for (Map.Entry<String,String> entry: paramMap.entrySet()){
+			String param = entry.getKey();
+			if (param.equalsIgnoreCase("labId")){
+				labId = entry.getValue();
+				count++;
+			}
+			if (param.equalsIgnoreCase("assayType")){
+				assayType = entry.getValue();
+				count++;
+			}
+			if (param.equalsIgnoreCase("date")){
+				date = entry.getValue();
+				count++;
+			}
+			if (param.equalsIgnoreCase("archiveId")){
+				archiveId = entry.getValue();
+				count++;
+			}
+			if (param.equalsIgnoreCase("batchId")){
+				batchId = entry.getValue();
+				count++;
+			}
+		}
+		
+		if (paramCount == count)
+			return true;
+		else
+			return false;
+	}
+	
 }

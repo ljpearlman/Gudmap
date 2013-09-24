@@ -76,5 +76,9 @@ public class FacesUtil {
 	public static ExternalContext getContext() {
 		return FacesContext.getCurrentInstance().getExternalContext();
 	}
+
+	public static Map<String,String> getRequestParamMap() {
+		return FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();	
+	}
 	
 }
