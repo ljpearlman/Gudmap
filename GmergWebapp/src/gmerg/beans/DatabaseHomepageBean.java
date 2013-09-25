@@ -176,8 +176,10 @@ public class DatabaseHomepageBean {
 			input = anatomyInput.trim();
 		else if("Accession ID".equals(query))
 			input = accessionInput.trim();
-		else if("Gene Function".equals(query))
+		else if("Gene Function".equals(query)){
 			input = geneFunctionInput.trim();
+			geneStage = geneFunctionStage;
+		}
 		
 		if(input == null || input.equals("")) 
 			return "noResult";
