@@ -281,44 +281,44 @@ public class Probe {
     	return seq5Primer;
     }
     
-    public void setSeq5Primer(String seq5Primer) {
-    	seq5Primer = seq5Primer;
+    public void setSeq5Primer(String value) {
+    	seq5Primer = value;
     }
     
     public String getSeq3Primer() {
     	return seq3Primer;
     }
     
-    public void setSeq3Primer(String seq3Primer) {
-    	seq3Primer = seq3Primer;
+    public void setSeq3Primer(String value) {
+    	seq3Primer = value;
     }
     
     public ArrayList getMaprobeNotes() {
     	return maprobeNotes;
     }
     
-    public void setMaprobeNotes(ArrayList maprobeNotes) {
-    	maprobeNotes = maprobeNotes;
+    public void setMaprobeNotes(ArrayList values) {
+    	maprobeNotes = values;
     }
     
     public String getProbeNameSource() {
     	return probeNameSource;
     }
     
-    public void setProbeNameSource(String probeNameSource) {
-    	probeNameSource = probeNameSource;
+    public void setProbeNameSource(String value) {
+    	probeNameSource = value;
     }
     
     public String getMaprobeNoteString() {
     	return maprobeNoteString;
     }
     
-    public void setMaprobeNoteString(String maprobeNoteString) {
-    	maprobeNoteString = maprobeNoteString;
+    public void setMaprobeNoteString(String value) {
+    	maprobeNoteString = value;
     }
     
-    public void setLabProbeId(String labProbeId) {
-        labProbeId = labProbeId;
+    public void setLabProbeId(String value) {
+        labProbeId = value;
     }
 
     public String getLabProbeId() {

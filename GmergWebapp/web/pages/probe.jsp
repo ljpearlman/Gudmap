@@ -17,9 +17,9 @@
         <h:outputText value="Probe ID" />
         <h:panelGroup>
 		<h:outputText value="No MGI ID " rendered="#{MaProbeBean.maProbe.probeName == MaProbeBean.maProbe.maprobeID}"/>
-        <h:outputLink styleClass="plaintextbold" value="#{MaProbeBean.maProbe.probeNameURL}" rendered="#{MaProbeBean.maProbe.probeNameURL != null && MaProbeBean.maProbe.probeNameURL != ''}">
+<%--       <h:outputLink styleClass="plaintextbold" value="#{MaProbeBean.maProbe.probeNameURL}" rendered="#{MaProbeBean.maProbe.probeNameURL != null && MaProbeBean.maProbe.probeNameURL != ''}"> --%> 
         <h:outputText value="(#{MaProbeBean.maProbe.probeName})" />
-        </h:outputLink>
+ <%--       </h:outputLink> --%>
         <h:outputText styleClass="plaintextbold" value="#{MaProbeBean.maProbe.probeName}" rendered="#{MaProbeBean.maProbe.probeNameURL == null || MaProbeBean.maProbe.probeNameURL == ''}" />
         <h:outputText styleClass="plaintext" value="(#{MaProbeBean.maProbe.maprobeID})" rendered="#{MaProbeBean.maProbe.probeName != MaProbeBean.maProbe.maprobeID}" />
         </h:panelGroup>
@@ -32,29 +32,18 @@
         <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.additionalCloneName}" rendered="#{MaProbeBean.maProbe.additionalCloneName != null && MaProbeBean.maProbe.additionalCloneName != ''}" />
         <f:verbatim rendered="#{MaProbeBean.maProbe.additionalCloneName != null && MaProbeBean.maProbe.additionalCloneName != ''}" >&nbsp;</f:verbatim>
         <f:verbatim rendered="#{MaProbeBean.maProbe.additionalCloneName != null && MaProbeBean.maProbe.additionalCloneName != ''}" >&nbsp;</f:verbatim>
-<%-- 
-        <h:outputText value="Sequence Status" />
-        <h:panelGroup>
-          <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seqStatus} " />
-          <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.seqInfo} " rendered="#{MaProbeBean.maProbe.seqInfo != null && MaProbeBean.maProbe.seqInfo != ''}" />
-          <h:outputLink value="#{MaProbeBean.maProbe.genbankURL}" styleClass="datatext" rendered="#{MaProbeBean.maProbe.seqInfo != null && MaProbeBean.maProbe.seqInfo != ''}">
-            <h:outputText value="#{MaProbeBean.maProbe.genbankID}" />
-          </h:outputLink>
-        </h:panelGroup>
-       
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
---%> 
+
 		<h:outputText value="Sequence ID:" />
 		<h:panelGrid  rowClasses="text-top" columns="1" border="0" >
 			<h:panelGroup>
-				<h:outputLink target="_blank" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.probe.genbankURL}" rendered="#{ISHSingleSubmissionBean.submission.probe.genbankID != ''}" >
-					<h:outputText  value="#{ISHSingleSubmissionBean.submission.probe.genbankID}" />
+				<h:outputLink target="_blank" styleClass="datatext" value="#{MaProbeBean.maProbe.genbankURL}" rendered="#{MaProbeBean.maProbe.genbankID != null && MaProbeBean.maProbe.genbankID != ''}" >
+					<h:outputText  value="#{MaProbeBean.maProbe.genbankID}" />
 				</h:outputLink>
-				<h:outputText styleClass="datatext" value="Unknown" rendered="#{ISHSingleSubmissionBean.submission.probe.genbankID == ''}" />
+				<h:outputText styleClass="datatext" value="Unknown" rendered="#{MaProbeBean.maProbe.genbankID == null || MaProbeBean.maProbe.genbankID == ''}" />
 			</h:panelGroup>
 		</h:panelGrid>
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-        
+       
         <h:outputText value="Gene" />
         <h:panelGrid columns="2" columnClasses="plaintext,datatext">
           <h:outputText value="Symbol:" />
