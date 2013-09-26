@@ -306,7 +306,7 @@
 							<h:outputText styleClass="plaintext" value="Name: " />
 							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.geneName} " />
 							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.locusTag}">
-								<h:outputText value="(#{ISHSingleSubmissionBean.submission.antibody.locusTag})" />
+								<h:outputText value=" (#{ISHSingleSubmissionBean.submission.antibody.locusTag})" />
 							</h:outputLink>
 						</h:panelGroup>
 					</h:panelGrid>
@@ -443,13 +443,13 @@
 						<h:outputLink styleClass="datatext" rendered="#{!ISHSingleSubmissionBean.renderPrbNameURL && ISHSingleSubmissionBean.submission.probe.maprobeID == ISHSingleSubmissionBean.submission.probe.probeName}" value="probe.html" target="_blank">
 							<f:param name="probe" value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />
 							<f:param name="maprobe" value="#{ISHSingleSubmissionBean.submission.probe.maprobeID}" />
-							<h:outputText value="(#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
+							<h:outputText value=" (#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
 						</h:outputLink>	
 
 						<h:outputLink styleClass="datatext" rendered="#{not empty ISHSingleSubmissionBean.submission.probe.maprobeID && ISHSingleSubmissionBean.submission.probe.maprobeID != ISHSingleSubmissionBean.submission.probe.probeName}" value="probe.html" target="_blank">
 							<f:param name="probe" value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />
 							<f:param name="maprobe" value="#{ISHSingleSubmissionBean.submission.probe.maprobeID}" />
-							<h:outputText value="(#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
+							<h:outputText value=" (#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
 						</h:outputLink>
 					</h:panelGroup>
 					

@@ -370,13 +370,13 @@ public class MySQLISHDAOImp implements ISHDAO {
             // probe note -- Mantis 558 Task5
             parQProbeNote.setPrepStat(conn);
             prepStmtProbeNote = parQProbeNote.getPrepStat();
-            prepStmtProbeNote.setString(1, probeId.replace("maprobe:", ""));
+            prepStmtProbeNote.setString(1, maprobeId.replace("maprobe:", ""));
             resSetProbeNote = prepStmtProbeNote.executeQuery();
 	    
-            // maprobe note -- Mantis 558 Task5
+            // curator note -- Mantis 558 Task5
             parQMaprobeNote.setPrepStat(conn);
             prepStmtMaprobeNote = parQMaprobeNote.getPrepStat();
-            prepStmtMaprobeNote.setString(1, probeId.replace("maprobe:", ""));
+            prepStmtMaprobeNote.setString(1, maprobeId.replace("maprobe:", ""));
             resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
 	    
 	    

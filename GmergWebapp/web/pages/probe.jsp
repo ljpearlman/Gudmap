@@ -103,27 +103,30 @@
           <h:outputText value="Tissue:" />
           <h:outputText value="#{MaProbeBean.maProbe.tissue}" />
         </h:panelGrid>
-        
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-        <h:outputText value="Probe Type" />
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>       
+      </h:panelGrid>  
+      
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{MaProbeBean.maProbe != null}">
+         <h:outputText value="Probe Type" />
         <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.type}" />
-                
-        <%--Bernie 27/6/2011 Mantis 558 Task5 - added new outputText rows 
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-        <h:outputText value="Probe Notes"/>
-        <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.notes}"/>
-        --%>
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>       
+      </h:panelGrid>     
+            
+
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{MaProbeBean.maProbe.maprobeNotes != null && MaProbeBean.maProbe.maprobeNotes != ''}">
 		<h:outputText value="Curator Notes"/>
 		<h:dataTable value="#{MaProbeBean.maProbe.maprobeNotes}" var="maprobeNote">
 			<h:column>
 				<h:outputText styleClass="datatext" value="#{maprobeNote}"/>
 			</h:column>
 		</h:dataTable>
-		
-		<%--Bernie 30/6/2011 Mantis 558 Task6 - added new outputText rows --%>
-		<%--Bernie 15/02/2012 Mantis 558 Task C2 - change field name --%>
-        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+		<h:outputText value="&nbsp" escape="false"/>
+		<h:outputText value="&nbsp" escape="false"/>       
+	  </h:panelGrid> 
+	  
+      <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{MaProbeBean.maProbe != null}">
 		<h:outputText value="ISH Data" />
 		<h:dataTable cellspacing="5" value="#{MaProbeBean.maProbe.ishFilteredSubmissions}" var="sub">
 			<h:column>
@@ -145,8 +148,7 @@
 				<h:outputText value="#{sub[3]}" styleClass="datatext" />
 			</h:column>
 		</h:dataTable>
-		<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
-        
+        </h:panelGrid>
 <%-- 
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
         <h:outputText value="Type" />
@@ -164,7 +166,7 @@
         <h:outputText value="Probe Source" />
         <h:outputText styleClass="datatext" value="#{MaProbeBean.maProbe.source}" />
 --%>                
-      </h:panelGrid>
+     
 	
 	<jsp:include page="/includes/footer.jsp" />
     
