@@ -77,7 +77,7 @@ public GeneInfoBean() {
 //			GenericTableView geneStripTableView = GeneStripBrowseBean.populateGeneStripTableView(geneStripViewName, geneId);
 			GenericTableView geneStripTableView = GeneStripBrowseBean.populateGeneStripTableView(geneStripViewName, gene.getSymbol(), false);
 			geneStripTableView.setDisplayHeader(false);
-			geneStripTableView.setNotSelectable();
+//			geneStripTableView.setNotSelectable();
 			geneStripTableView.setCollectionBottons(0);
 			geneStripTableView.setColHidden(1, true);
 			HeaderItem[] tableHeader = geneStripTableView.getTable().getHeader();
