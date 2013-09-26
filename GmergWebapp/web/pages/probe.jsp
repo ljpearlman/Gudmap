@@ -16,12 +16,12 @@
       <h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{MaProbeBean.maProbe != null}">
         <h:outputText value="Probe ID" />
         <h:panelGroup>
-		<h:outputText value="No MGI ID (#{MaProbeBean.maProbe.probeName})1" rendered="#{MaProbeBean.maProbe.probeName == MaProbeBean.maProbe.maprobeID}"/>
+		<h:outputText value="No MGI ID (#{MaProbeBean.maProbe.probeName})" rendered="#{MaProbeBean.maProbe.probeName == MaProbeBean.maProbe.maprobeID}"/>
 	    <h:outputLink styleClass="plaintextbold" value="#{MaProbeBean.maProbe.probeNameURL}" rendered="#{MaProbeBean.maProbe.probeNameURL != null && MaProbeBean.maProbe.probeNameURL != ''}">
         	<h:outputText value="#{MaProbeBean.maProbe.probeName}" rendered="#{MaProbeBean.maProbe.probeName != MaProbeBean.maProbe.maprobeID}"/>
         </h:outputLink> 
-        <h:outputText styleClass="plaintextbold" value="#{MaProbeBean.maProbe.probeName}2" rendered="#{MaProbeBean.maProbe.probeNameURL == null || MaProbeBean.maProbe.probeNameURL == ''}" />
-        <h:outputText styleClass="plaintext" value=" (#{MaProbeBean.maProbe.maprobeID})3" rendered="#{MaProbeBean.maProbe.probeName != MaProbeBean.maProbe.maprobeID}" />
+        <h:outputText styleClass="plaintextbold" value="#{MaProbeBean.maProbe.probeName}" rendered="#{MaProbeBean.maProbe.probeNameURL == null || MaProbeBean.maProbe.probeNameURL == ''}" />
+        <h:outputText styleClass="plaintext" value=" (#{MaProbeBean.maProbe.maprobeID})" rendered="#{MaProbeBean.maProbe.probeName != MaProbeBean.maProbe.maprobeID}" />
         </h:panelGroup>
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
         <h:outputText value="Name of cDNA" />
