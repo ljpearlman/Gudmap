@@ -257,11 +257,10 @@ public class Probe {
     }
 
     public void setSeq5Loc(String value) {
-        if (null == value || value.equals("0")) {
-            seq5Loc = "n/a";
-        } else {
+        if (null == value || value.equals("0") || value.equals("n/a")) 
+            seq5Loc = "";
+        else 
             seq5Loc = value;
-        }
     }
 
     public String getSeq3Loc() {
@@ -269,11 +268,10 @@ public class Probe {
     }
 
     public void setSeq3Loc(String value) {
-        if (null == value || value.equals("0")) {
-            seq3Loc = "n/a";
-        } else {
+        if (null == value || value.equals("0") || value.equals("n/a"))
+            seq3Loc = "";
+        else 
             seq3Loc = value;
-        }
     }
     
     // display info of probe database in the submission detail page
@@ -282,7 +280,10 @@ public class Probe {
     }
     
     public void setSeq5Primer(String value) {
-    	seq5Primer = value;
+        if (null == value || value.equals("n/a")) 
+        	seq5Primer = "";
+        else 
+        	seq5Primer = value;
     }
     
     public String getSeq3Primer() {
@@ -290,7 +291,10 @@ public class Probe {
     }
     
     public void setSeq3Primer(String value) {
-    	seq3Primer = value;
+        if (null == value || value.equals("n/a")) 
+        	seq3Primer = "";
+        else 
+        	seq3Primer = value;
     }
     
     public ArrayList getMaprobeNotes() {

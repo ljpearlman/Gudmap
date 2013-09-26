@@ -19,6 +19,7 @@
         <h:outputLink styleClass="plaintextbold" value="http://www.informatics.jax.org/accession/#{AntibodyBean.antibody.accessionId}" >
         <h:outputText value="#{AntibodyBean.antibody.accessionId}" />
         </h:outputLink>
+        <h:outputText styleClass="plaintext" value="No MGI ID" rendered="#{AntibodyBean.antibody.accessionId == null || AntibodyBean.antibody.accessionId == ''}" />
         <h:outputText styleClass="plaintext" value=" (#{AntibodyBean.antibody.maProbeId})" />
         </h:panelGroup>
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
