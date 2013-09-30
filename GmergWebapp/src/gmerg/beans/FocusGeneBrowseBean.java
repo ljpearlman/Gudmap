@@ -61,8 +61,7 @@ public class FocusGeneBrowseBean {
 			displayInput = input;
 		}
 		
-		String organTitle = (focusedOrgan==null || focusedOrgan=="")? "" : " in <em>" + DatabaseHomepageBean.getOrganName(focusedOrgan) + "</em>";
-		return "Result of <em>" + query + "</em> query for <em> " + displayInput + "</em>" + organTitle;
+		return "Result of <em>" + query + "</em> query for <em> " + displayInput + "</em>";
 	}
 	
 	/**
