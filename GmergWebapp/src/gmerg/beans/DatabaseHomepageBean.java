@@ -80,8 +80,8 @@ public class DatabaseHomepageBean {
 		geneInput = "";
 		anatomyInput = "";
 		geneWildcard = "contains";
-		geneStage = "ALL";
-		geneFunctionStage = "ALL";
+		geneStage = "";
+		geneFunctionStage = "";
 		geneAnnotation = "0";
 		expressionType = "";
 		includeTransitiveRels = false;
