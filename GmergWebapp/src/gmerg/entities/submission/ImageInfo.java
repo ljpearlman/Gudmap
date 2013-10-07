@@ -59,23 +59,30 @@ public class ImageInfo {
 	      // do not know why zoom-viewer dose not work for microarray tif 
 	      // so special put 'microarray' into specimenType so that
 	      // microarray click image can be treated specially
-	      if (null != specimenType && specimenType.equals("microarray"))
+	      if (null != specimenType && specimenType.equals("microarray")){
+	    	  
+//	    	  System.out.println("getClickFilePath1 = "+ filePath);
 	    	  return filePath;
+	      }
 
 	      if (null == clickFilePath || clickFilePath.endsWith("tif")) {
-			  String ret = gmerg.utils.Utility.appUrl+"/pages/zoom_viewer.html?id="+accessionId;
+			  String ret = gmerg.utils.Utility.appUrl+"pages/zoom_viewer.html?id="+accessionId;
 			  if (null == serialNo)
 			      ret += "&serialNo=1";
 			  else
 			      ret =ret + "&serialNo="+serialNo;
-	
+
+//		      System.out.println("getClickFilePath2 = "+ ret);
+			  
 			  return ret;
 	      }
-
-	    return clickFilePath;
+	      
+//	      System.out.println("getClickFilePath3 = "+ clickFilePath);
+	      return clickFilePath;
 	  }
 		  
 	  public void setClickFilePath(String input) {
+//		System.out.println("setClickFilePath = "+ input);
 	    clickFilePath = input;
 	  }
 

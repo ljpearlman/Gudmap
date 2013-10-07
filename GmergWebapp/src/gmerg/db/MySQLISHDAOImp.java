@@ -4668,7 +4668,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
-            prepStmt.setInt(2, serialNum);
+//            prepStmt.setInt(2, serialNum);
             resSet = prepStmt.executeQuery();
 	    
             // xingjun - 14/09/2011
@@ -4727,6 +4727,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             imageDetail.setGeneName(resSet.getString(3));
             imageDetail.setStage(resSet.getString(4));
             imageDetail.setAge(resSet.getString(5));
+            imageDetail.setAssayType(resSet.getString(6));
             imageDetail.setSpecimenType(resSet.getString(7));
             imageDetail.setFilePath(resSet.getString(8));
             imageDetail.setSerialNo(Integer.toString(serialNum + 1));

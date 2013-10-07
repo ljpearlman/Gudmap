@@ -16,7 +16,8 @@ public class ImageDetail extends ImageInfo {
 	  protected String age;
 	  protected ArrayList allImageNotesInSameSubmission;
 	  protected ArrayList allPublicImagesInSameSubmission;
-
+	  protected String assayType;
+	  
 	  public String getGeneSymbol() {
 		return geneSymbol;
       }
@@ -25,7 +26,15 @@ public class ImageDetail extends ImageInfo {
 		geneSymbol = input;
 	  }
 
-	  public String getGeneName() {
+	  public String getAssayType() {
+		return assayType;
+      }
+
+      public void setAssayType(String input) {
+    	  assayType = input;
+	  }
+
+      public String getGeneName() {
 		return geneName;
       }
 

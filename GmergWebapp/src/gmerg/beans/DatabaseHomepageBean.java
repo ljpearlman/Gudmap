@@ -80,8 +80,8 @@ public class DatabaseHomepageBean {
 		geneInput = "";
 		anatomyInput = "";
 		geneWildcard = "contains";
-		geneStage = "";
-		geneFunctionStage = "";
+		geneStage = "All";
+		geneFunctionStage = "All";
 		geneAnnotation = "0";
 		expressionType = "";
 		includeTransitiveRels = false;
@@ -92,6 +92,7 @@ public class DatabaseHomepageBean {
 //		uploadResultOption = "entry";
 		uploadResultOption = "genes"; // genes by default - xingjun - 14/05/2010
 		geneFunctionSearchResultOption = "entry"; // GUDMAP entries by default
+		
 	}
 
     public List autocomplete (Object input) {
@@ -187,6 +188,7 @@ public class DatabaseHomepageBean {
 	}
 
 	public String getSearchParams() {
+		
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("input", input);
 		params.put("query", query);
