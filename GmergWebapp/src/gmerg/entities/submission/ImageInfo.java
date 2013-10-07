@@ -12,6 +12,7 @@ public class ImageInfo {
 	protected String clickFilePath;
 	protected String serialNo;
 	protected String note;
+	protected String assayType;
 
 	public void print() {
 		System.out.println(" accessionId = "+ accessionId);
@@ -21,6 +22,7 @@ public class ImageInfo {
 		System.out.println(" clickFilePath = "+ clickFilePath);
 		System.out.println(" serialNo = "+serialNo);
 		System.out.println(" note = "+note);
+		System.out.println(" assayType = "+assayType);
 	}
 
     public String getAccessionId() {
@@ -108,4 +110,14 @@ public class ImageInfo {
 	    if (null == note || note.trim().toLowerCase().equals("null"))
 	    	note = "";
 	  }
+	  
+	  public String getAssayType() {
+		return assayType;
+      }
+
+      public void setAssayType(String input) {
+    	  assayType = input;
+	  }
+
+	  
 }
