@@ -156,8 +156,10 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	String queryString = null;
 	//System.out.println("QueryType:"+columnIndex+":"+queryType);
 	// order by
+	
+	String group = " GROUP BY SUB_ACCESSION_ID,SMP_GEO_ID,SMP_THEILER_STAGE,TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END), SUB_SOURCE, SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, SER_GEO_ID, SPN_ASSAY_TYPE  ";
 	if (columnIndex != -1) {
-	    queryString = query + " ORDER BY ";
+	    queryString = query + group + " ORDER BY ";
 	    
 	    // translate parameters into database column names
 	    String column = null;
@@ -169,7 +171,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    queryString += column;
 	    
 	} else { // if don't specify order by column, order by submission date & stage descending by default
-	    queryString = query + " ORDER BY " + defaultOrder;
+	    queryString = query + group + " ORDER BY " + defaultOrder;
 	    //			System.out.println("queryString: " + queryString);
 	}
 	
