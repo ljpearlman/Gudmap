@@ -33,43 +33,16 @@
 			<h:outputText value="Images"  />
 			<h:dataTable  columnClasses="text-normal,text-top" value="#{MicroarraySingleSubmissionBean.submission.originalImages}" var="image">
 			        <h:column>
-			                <h:panelGrid columns="2" width="180" >
 					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="mywindow=window.open('#{image[0].clickFilePath}','#{image[0].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image[0].filePath}" styleClass="topAlign, leftAlign" width="80"/>
+					                       onclick="mywindow=window.open('#{image.clickFilePath}','#{image.accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
+						<h:graphicImage value="#{image.filePath}" width="80"/>
 					</h:outputLink>
-					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[0].note}"/>
-				</h:panelGrid>
 			        </h:column>
 			        <h:column>
-			                <h:panelGrid rendered="#{null!=image[1]}" columns="2" width="180" >
-					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="window.open('#{image[1].clickFilePath}','#{image[1].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image[1].filePath}"  styleClass="topAlign" width="80"/>
-					</h:outputLink>
-					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[1].note}"/>
-				</h:panelGrid>
-			        </h:column>
-			        <h:column>
-			                <h:panelGrid rendered="#{null!=image[2]}" columns="2" width="180" >
-					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="window.open('#{image[2].clickFilePath}','#{image[2].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image[2].filePath}"  styleClass="topAlign" width="80"/>
-					</h:outputLink>
-					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[2].note}"/>
-				</h:panelGrid>
-			        </h:column>
-			        <h:column>
-			                <h:panelGrid rendered="#{null!=image[3]}" columns="2" width="180" >
-					<h:outputLink value="#" styleClass="plaintext" target="_blank"
-					                       onclick="window.open('#{image[3].clickFilePath}','#{image[3].accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image[3].filePath}"  styleClass="topAlign" width="80"/>
-					</h:outputLink>
-					<h:outputText styleClass="notetext, topAlign, leftAlign" value="#{image[3].note}"/>
-				</h:panelGrid>
+					<h:outputText styleClass="notetext, topAlign" value="#{image.note}"/>
 			        </h:column>
 			</h:dataTable>
-       	</h:panelGrid>
+		</h:panelGrid>
 		
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 		<h:outputText value="Supplemental Data Files" />
