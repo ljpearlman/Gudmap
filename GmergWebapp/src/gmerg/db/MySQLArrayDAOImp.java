@@ -30,7 +30,7 @@ import analysis.DataSet;
  *
  */
 public class MySQLArrayDAOImp implements ArrayDAO {
-    protected boolean debug = true;
+    protected boolean debug = false;
     protected boolean performance = true;
     Connection conn;
     
@@ -1013,31 +1013,6 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	} else {
 	    query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? ";
 	}
-
-	
-	
-//	if (labId != null && !labId.trim().equals("")) {
-//		query += " AND SUB_PI_FK = ? ";
-//	}
-//	
-//	if (submissionDate != null && !submissionDate.equals("")) {
-//		query += " AND SUB_SUB_DATE = ? ";
-//	} 
-//	
-//	if (archiveId != null && !archiveId.trim().equals("")) {
-//		query += " AND SUB_ARCHIVE_ID = ? ";
-//	}
-//
-//	if (assayType != null && !assayType.trim().equals("")) {
-//    	query += "AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
-//	}
-//	else
-//		query += "AND SUB_ASSAY_TYPE = 'TG' ";
-//	
-//	if (batchId != null && !batchId.trim().equals("")){
-//		if (!batchId.trim().equals(""))
-//			query += " AND SUB_BATCH = ? ";
-//	}
 	
 	String defaultOrder = new String("SUB_SUB_DATE DESC, SMP_THEILER_STAGE DESC");
 	String queryString =
