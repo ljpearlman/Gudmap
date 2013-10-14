@@ -30,7 +30,7 @@ import analysis.DataSet;
  *
  */
 public class MySQLArrayDAOImp implements ArrayDAO {
-    protected boolean debug = false;
+    protected boolean debug = true;
     protected boolean performance = true;
     Connection conn;
     
@@ -1013,6 +1013,31 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	} else {
 	    query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? ";
 	}
+
+	
+	
+//	if (labId != null && !labId.trim().equals("")) {
+//		query += " AND SUB_PI_FK = ? ";
+//	}
+//	
+//	if (submissionDate != null && !submissionDate.equals("")) {
+//		query += " AND SUB_SUB_DATE = ? ";
+//	} 
+//	
+//	if (archiveId != null && !archiveId.trim().equals("")) {
+//		query += " AND SUB_ARCHIVE_ID = ? ";
+//	}
+//
+//	if (assayType != null && !assayType.trim().equals("")) {
+//    	query += "AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
+//	}
+//	else
+//		query += "AND SUB_ASSAY_TYPE = 'TG' ";
+//	
+//	if (batchId != null && !batchId.trim().equals("")){
+//		if (!batchId.trim().equals(""))
+//			query += " AND SUB_BATCH = ? ";
+//	}
 	
 	String defaultOrder = new String("SUB_SUB_DATE DESC, SMP_THEILER_STAGE DESC");
 	String queryString =
@@ -1033,21 +1058,24 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
 	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+	    	System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
 	    prepStmt = conn.prepareStatement(queryString);
 	    
 	    if (submissionDate == null || submissionDate.equals("")) {
-		if (debug)
-		    System.out.println("MySQLArrayDAOImp 1 arg = "+lab);
-		prepStmt.setInt(1, lab);
+			if (debug)
+			    System.out.println("MySQLArrayDAOImp 1 arg = "+lab);
+			prepStmt.setInt(1, lab);
 	    } else {
-		if (debug)
-		    System.out.println("MySQLArrayDAOImp 1 arg = "+ labId+" 2 arg = "+submissionDate);
-
-		prepStmt.setInt(1, Integer.parseInt(labId));
-		prepStmt.setString(2, submissionDate);
+			if (debug)
+			    System.out.println("MySQLArrayDAOImp 1 arg = "+ labId+" 2 arg = "+submissionDate);
+	
+			prepStmt.setInt(1, Integer.parseInt(labId));
+			prepStmt.setString(2, submissionDate);
 	    }
 	    
+		if (debug)
+		    System.out.println("MySQLArrayDAOImp prepStmt = "+ prepStmt);
+
 	    // execute
 	    resSet = prepStmt.executeQuery();
 	    //			result = formatBrowseResultSet2ArrayList(resSet);
@@ -1095,7 +1123,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 			query += " AND SUB_PI_FK = ? ";
 		}
 		
-		if (submissionDate != null || !submissionDate.equals("")) {
+		if (submissionDate != null && !submissionDate.equals("")) {
 		    query += " AND SUB_SUB_DATE = ? ";
 		}
 		

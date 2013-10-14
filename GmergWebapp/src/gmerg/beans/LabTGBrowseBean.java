@@ -49,6 +49,8 @@ public class LabTGBrowseBean {
 		
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		queryParams.put("labId", labId);
+		if (assayType == null)
+			assayType = "TG";
 		queryParams.put("assayType", assayType);
 		queryParams.put("submissionDate", Utility.convertToDatabaseDate(date));
 		queryParams.put("isSubmitter", null);
