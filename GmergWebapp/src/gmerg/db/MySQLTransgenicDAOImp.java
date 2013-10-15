@@ -35,7 +35,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
      * <p>xingjun - now get sql from InsituDBQuery</p>
      */
     public ArrayList getAllSubmission(int columnIndex, boolean ascending, int offset, int num, 
-    		String[] organ, GenericTableFilter filter) {
+    		String[] organ, String[] archiveId, String[] batchId, GenericTableFilter filter) {
 	if (debug)
 	    System.out.println("TransgenicDAOImp:getAllSubmission entered#####");
         ResultSet resSet = null;
@@ -48,7 +48,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         String query = parQ.getQuerySQL() + "AND SUB_ASSAY_TYPE = 'TG'";
         String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
         String queryString =
-        	assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num, organ);
+        	assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num, organ, archiveId, batchId);
         
 	if (debug)
 	    System.out.println("TransgenicDAO:getAllSubmission:sql (pre filter): " + queryString);
@@ -95,7 +95,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
      * @author xingjun - 26/08/2008
      */
     private String assembleBrowseSubmissionQueryString(int queryType, String query,
-			String defaultOrder, int columnIndex, boolean ascending, int offset, int num, String[] organ) {
+			String defaultOrder, int columnIndex, boolean ascending, int offset, int num, String[] organ,String[] archiveId, String[] batchId) {
 		String queryString = null;
 		String organsql = "";
 		if(null != organ) {
@@ -125,6 +125,18 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 			query = query.replace("LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
 		}
 		
+        String archiveIdsql = "";
+        if (null != archiveId){
+        	archiveIdsql = " and (SUB_ARCHIVE_ID = " + archiveId[0] + " ) ";
+        	query += archiveIdsql;
+        }
+
+        String batchIdsql = "";
+        if (null != batchId){
+        	batchIdsql = " and (SUB_BATCH = " + batchId[0] + " ) ";
+        	query += batchIdsql;
+        }
+
 		// order by
 		if (columnIndex != -1) {
 			queryString = query + organsql + " ORDER BY ";
@@ -358,8 +370,9 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     }
     
     // xingjun - 08/09/2011 - now use the sql from InsituDBQuery
-    public int getTotalNumberOfSubmissions(String[] organ, GenericTableFilter filter) {
-        int totalNumber = 0;
+    public int getTotalNumberOfSubmissions(String[] organ, String[] archiveId, String[] batchId, GenericTableFilter filter) {
+    	
+    	int totalNumber = 0;
         ResultSet resSet = null;
         ParamQuery parQ = null;
 //    	parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_TG");
@@ -369,12 +382,12 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 		if(null != organ) {
 			String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ[0]);
 			String ids = "";
-			  for(int i = 0; i < emapids.length; i++) {
-				  ids += "'"+emapids[i] + "',";
-			  }
-			  if(emapids.length >= 1) {
-				  ids = ids.substring(0, ids.length()-1);
-			  }
+			for(int i = 0; i < emapids.length; i++) {
+				ids += "'"+emapids[i] + "',";
+			}
+			if(emapids.length >= 1) {
+				ids = ids.substring(0, ids.length()-1);
+			}
 			
 			organsql =" AND EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
 		    " from ANA_TIMED_NODE ANCES_ATN, "+
@@ -392,49 +405,62 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 		} else { // remove redundant join to speed up query
 			query = query.replace("LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
 		}
-         PreparedStatement prepStmt = null;
-         query += organsql;
-	 if (debug)
-	     System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (pre filter): " + query);
+        PreparedStatement prepStmt = null;
+        query += organsql;
+        
+        String archiveIdsql = "";
+        if (null != archiveId){
+        	archiveIdsql = " and (SUB_ARCHIVE_ID = " + archiveId[0] + " ) ";
+        	query += archiveIdsql;
+        }
+        
+        String batchIdsql = "";
+        if (null != batchId){
+        	batchIdsql = " and (SUB_BATCH = " + batchId[0] + " ) ";
+        	query += batchIdsql;
+        }
+        
+		if (debug)
+		    System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (pre filter): " + query);
          
-         if(filter!=null)
+        if(filter!=null)
  	  	  	query = filter.addFilterSql(query, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
          
-	 if (debug)
-	     System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (post filter): " + query);
+		if (debug)
+			System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:sql (post filter): " + query);
          
 	 ///////!!!!! poor databse table for different type of submissions
 	    ////////!!!! do not know why replaceAll does not work
 	    int index = query.lastIndexOf("ALE_GENE AS RPR_SYMBOL");
 	    String str = null;
 	    if (-1 != index) {
-		str = query;
-		query = str.substring(0, index) + "ALE_GENE "+str.substring(index + (new String("ALE_GENE AS RPR_SYMBOL")).length());
+			str = query;
+			query = str.substring(0, index) + "ALE_GENE "+str.substring(index + (new String("ALE_GENE AS RPR_SYMBOL")).length());
 	    }
 	    
 	    index = query.lastIndexOf("RPR_SYMBOL");
 	    while (-1 != index) {
-		str = query;
-		query = str.substring(0, index) + "ALE_GENE "+str.substring(index + (new String("RPR_SYMBOL")).length());
-		index = query.lastIndexOf("RPR_SYMBOL");
+			str = query;
+			query = str.substring(0, index) + "ALE_GENE "+str.substring(index + (new String("RPR_SYMBOL")).length());
+			index = query.lastIndexOf("RPR_SYMBOL");
 	    }
 	    ////////!!!!!!
 
-         parQ = null;
-         parQ = new ParamQuery("TOTAL_COUNT", query);
-         try {
-             parQ.setPrepStat(conn);
-             prepStmt = parQ.getPrepStat();
-             resSet = prepStmt.executeQuery();
+        parQ = null;
+        parQ = new ParamQuery("TOTAL_COUNT", query);
+        try {
+            parQ.setPrepStat(conn);
+            prepStmt = parQ.getPrepStat();
+            resSet = prepStmt.executeQuery();
 
-             if (resSet.first()) {
-                 totalNumber = resSet.getInt(1);
-             }
-             DBHelper.closePreparedStatement(prepStmt);
+            if (resSet.first()) {
+                totalNumber = resSet.getInt(1);
+            }
+            DBHelper.closePreparedStatement(prepStmt);
 
-         } catch (SQLException se) {
-             se.printStackTrace();
-         }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
  		return totalNumber;
     }    
    

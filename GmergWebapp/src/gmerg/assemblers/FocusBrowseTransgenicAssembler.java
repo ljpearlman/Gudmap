@@ -22,8 +22,10 @@ import java.util.HashMap;
  */
 public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 	String[] organs;
+	String[] archiveIds;
+	String[] batchIds;
     protected boolean debug = false;
-	    protected RetrieveDataCache cache = null;
+	protected RetrieveDataCache cache = null;
 
 	public FocusBrowseTransgenicAssembler () {
 	if (debug)
@@ -40,6 +42,8 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 	public void setParams() {
 		super.setParams();
 		organs = getParams("organs");
+		archiveIds = getParams("archiveIds");
+		batchIds = getParams("batchIds");
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
@@ -57,7 +61,7 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 		TransgenicDAO transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
 
 		// get data from database
-		ArrayList submissions = transgenicDAO.getAllSubmission(column, ascending, offset, num, organs, filter);
+		ArrayList submissions = transgenicDAO.getAllSubmission(column, ascending, offset, num, organs, archiveIds, batchIds, filter);
 		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -89,7 +93,7 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 		TransgenicDAO transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
 
 		// get data from database
-		int totalNumberOfSubmissions = transgenicDAO.getTotalNumberOfSubmissions(organs, filter);
+		int totalNumberOfSubmissions = transgenicDAO.getTotalNumberOfSubmissions(organs, archiveIds, batchIds, filter);
 		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
