@@ -11,6 +11,8 @@ public class ISHFocusBrowseBean {
 
 	private String organ;
 	private String stage;
+    private String archiveId;
+    private String batchId;
 
 	public ISHFocusBrowseBean() {
 	if (debug)
@@ -18,6 +20,9 @@ public class ISHFocusBrowseBean {
 
 		organ = Visit.getRequestParam("focusedOrgan");
 		stage = Visit.getRequestParam("stage");
+		archiveId = Visit.getRequestParam("archiveId");
+		batchId = Visit.getRequestParam("batchId");
+
 		String viewName = "focusBrowseISH";
 		if (TableUtil.isTableViewInSession())
 			return;
@@ -35,7 +40,8 @@ public class ISHFocusBrowseBean {
 		else
 			queryParams.put("assayType", "insitu"); //insitu: ish+ihc 
 		queryParams.put("organ", organs);
-		queryParams.put("stage", stage);
+		queryParams.put("archiveId", archiveId);
+		queryParams.put("batchId", batchId);
 		
 		FocusBrowseAssembler assembler = new FocusBrowseAssembler(queryParams);
 	    GenericTable table = assembler.createTable();

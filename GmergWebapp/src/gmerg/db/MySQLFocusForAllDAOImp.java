@@ -296,7 +296,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	 * @return
 	 */
 	public ArrayList getFocusBrowseList(String[] organ, int column, boolean ascending, 
-			String query, String stage, String gene, String offset, String resPerPage, GenericTableFilter filter) {
+			String query, String stage, String gene, String archiveId, String batchId, String offset, String resPerPage, GenericTableFilter filter) {
 //		System.out.println("FocusForAll:getFocusBrowseList:column: " + column);
 //		System.out.println("query type: " + query);
 		ResultSet resSet = null;
@@ -332,6 +332,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) " ;
 			}
 			////////////////// gene -------- to be implemented
+			
+			// archiveId & batchId
+	        if (null != archiveId && !archiveId.equals("")){
+	        	sql += " and (SUB_ARCHIVE_ID = " + archiveId + " ) ";
+	        }
+	        
+	        if (null != batchId && !batchId.equals("")){
+	        	sql += " and (SUB_BATCH = " + batchId + " ) ";
+	        }			
 			
 			// stage group by and order by - xingjun - 25/09/2009 - added group by clause
 			if(null == stage || stage.equals("") || stage.equals("null")) {
@@ -395,6 +404,14 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				sql = sql.replace("LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
 			}
 			// gene --------- to be implemented
+			// archiveId & batchId
+	        if (null != archiveId && !archiveId.equals("")){
+	        	sql += " and (SUB_ARCHIVE_ID = " + archiveId + " ) ";
+	        }
+	        
+	        if (null != batchId && !batchId.equals("")){
+	        	sql += " and (SUB_BATCH = " + batchId + " ) ";
+	        }			
 			// stage and order
 			if(null == stage || stage.equals("") || stage.equals("null")) {
 				sql += orderResult(column, ascending, query);
@@ -455,6 +472,14 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if (gene != null && !gene.equals("")) {
 				sql += " and RPR_SYMBOL = '" + gene + "' ";
 			}
+			// archiveId & batchId
+	        if (null != archiveId && !archiveId.equals("")){
+	        	sql += " and (SUB_ARCHIVE_ID = " + archiveId + " ) ";
+	        }
+	        
+	        if (null != batchId && !batchId.equals("")){
+	        	sql += " and (SUB_BATCH = " + batchId + " ) ";
+	        }			
 			// stage and order
 			if(null == stage || stage.equals("") || stage.equals("null")) {
 				sql += orderResult(column, ascending, query);
@@ -509,8 +534,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
      * overload version 
      * @return
      */
-    public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, GenericTableFilter filter) {
-    	ArrayList list = getFocusBrowseList(inputs, 1, true, query, stage, symbol, null, null,filter);
+    public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, String archiveId, String batchId, GenericTableFilter filter) {
+    	ArrayList list = getFocusBrowseList(inputs, 1, true, query, stage, symbol, archiveId, batchId, null, null,filter);
     	if(null == list) {
     		return 0;
     	} else {

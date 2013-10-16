@@ -28,7 +28,10 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	String[] organs;
 	String stage;
 	String gene;
-	protected RetrieveDataCache cache = null;
+    private String archiveId;
+    private String batchId;
+
+    protected RetrieveDataCache cache = null;
 
     private boolean debug = false;
 
@@ -53,6 +56,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		organs = getParams("organ");
 		stage = getParam("stage");
 		gene = getParam("gene");
+		archiveId = getParam("archiveId");
+		batchId = getParam("batchId");
 	}
 	
 	/**
@@ -81,7 +86,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		
 		ArrayList submissions =
 			focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
-					stage, gene, String.valueOf(offset), String.valueOf(num), filter);
+					stage, gene, archiveId, batchId, String.valueOf(offset), String.valueOf(num), filter);
 		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -120,7 +125,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		
         // get number of public ish sumbissions
 //		int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage);
-		int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, filter);
+		int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, filter);
 
 		// release the db resources
 		DBHelper.closeJDBCConnection(conn);
