@@ -28,7 +28,8 @@ public class MySQLIHCDAOImp implements IHCDAO {
     /**
      * 
      */
-    public ArrayList getAllSubmissionISH(int columnIndex, boolean ascending, int offset, int num, String assayType, String[] organ, GenericTableFilter filter) {
+    public ArrayList getAllSubmissionISH(int columnIndex, boolean ascending, int offset, int num, String assayType, String[] organ, String[] archiveId, String[] batchId, 
+    		GenericTableFilter filter) {
         ResultSet resSet = null;
         ArrayList result = null;
         if(null != assayType) {
@@ -45,7 +46,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
 	        String query = parQ.getQuerySQL();
 	        String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
 	        String queryString =
-	        	assembleBrowseSubmissionQueryStringISH(1, query, defaultOrder, columnIndex, ascending, offset, num, organ);
+	        	assembleBrowseSubmissionQueryStringISH(1, query, defaultOrder, columnIndex, ascending, offset, num, organ, archiveId, batchId);
 	        
 	        //*******************************************************************************************************************
 	        // Temporarily added by Mehran to implement Filter functionality 
@@ -82,7 +83,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
     /**
      * 
      */
-    public int getTotalNumberOfSubmissions(String assayType, String[] organ, GenericTableFilter filter) {
+    public int getTotalNumberOfSubmissions(String assayType, String[] organ, String[] archiveId, String[] batchId, GenericTableFilter filter) {
          int totalNumber = 0;
          ResultSet resSet = null;
          ParamQuery parQ = null;
@@ -124,6 +125,17 @@ public class MySQLIHCDAOImp implements IHCDAO {
 	        PreparedStatement prepStmt = null;
 	        query += organsql;
 	         
+	        String archiveIdsql = "";
+	        if (null != archiveId){
+	        	archiveIdsql = " and (SUB_ARCHIVE_ID = " + archiveId[0] + " ) ";
+	        	query += archiveIdsql;
+	        }
+	        
+	        String batchIdsql = "";
+	        if (null != batchId){
+	        	batchIdsql = " and (SUB_BATCH = " + batchId[0] + " ) ";
+	        	query += batchIdsql;
+	        }
 
 	        //*******************************************************************************************************************
 	        // Temporarily added by Mehran to implement Filter functionality 
@@ -169,7 +181,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
      * @return
      */
     private String assembleBrowseSubmissionQueryStringISH(int queryType, String query,
-			String defaultOrder, int columnIndex, boolean ascending, int offset, int num, String[] organ) {
+			String defaultOrder, int columnIndex, boolean ascending, int offset, int num, String[] organ, String[] archiveId, String[] batchId) {
     	
 		String queryString = null;
 		String organsql = "";
@@ -199,6 +211,18 @@ public class MySQLIHCDAOImp implements IHCDAO {
 		} else { // remove redundant join to speed up query
 			query = query.replace("LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
 		}
+
+        String archiveIdsql = "";
+        if (null != archiveId){
+        	archiveIdsql = " and (SUB_ARCHIVE_ID = " + archiveId[0] + " ) ";
+        	query += archiveIdsql;
+        }
+
+        String batchIdsql = "";
+        if (null != batchId){
+        	batchIdsql = " and (SUB_BATCH = " + batchId[0] + " ) ";
+        	query += batchIdsql;
+        }
 		
 		// order by
 		if (columnIndex != -1) {

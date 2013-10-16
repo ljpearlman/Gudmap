@@ -19,6 +19,8 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
     protected RetrieveDataCache cache = null;
 
 	String[] organs;
+	String[] archiveIds;
+	String[] batchIds;
 	
 	public FocusBrowseIHCAssembler () {
 		super();
@@ -37,6 +39,8 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	public void setParams() {
 		super.setParams();
 		organs = getParams("organs");
+		archiveIds = getParams("archiveIds");
+		batchIds = getParams("batchIds");
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
@@ -54,7 +58,7 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 		IHCDAO ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
 
 		// get data from database
-		ArrayList submissions = ihcDAO.getAllSubmissionISH(column, ascending, offset, num, "IHC", organs, filter);
+		ArrayList submissions = ihcDAO.getAllSubmissionISH(column, ascending, offset, num, "IHC", organs, archiveIds, batchIds, filter);
 		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -79,7 +83,7 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 		IHCDAO ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
 
 		// get data from database
-		int totalNumberOfSubmissions = ihcDAO.getTotalNumberOfSubmissions("IHC", organs, filter);
+		int totalNumberOfSubmissions = ihcDAO.getTotalNumberOfSubmissions("IHC", organs, archiveIds, batchIds, filter);
 		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);

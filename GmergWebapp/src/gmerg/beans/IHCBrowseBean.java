@@ -11,6 +11,8 @@ public class IHCBrowseBean {
 
 	private String organ;
 	private String gene;
+    private String archiveId;
+    private String batchId;
 
 	// ********************************************************************************
 	// Constructors & Initializers
@@ -21,6 +23,9 @@ public class IHCBrowseBean {
 
 		organ = Visit.getRequestParam("focusedOrgan");
 		gene = Visit.getRequestParam("gene");
+		archiveId = Visit.getRequestParam("archiveId");
+		batchId = Visit.getRequestParam("batchId");
+
 		String viewName = "focusBrowseIHC";
         if (TableUtil.isTableViewInSession())
 			return;                 
@@ -31,8 +36,18 @@ public class IHCBrowseBean {
 		String[] organs = null;
 		if (organ!=null)
 			organs = new String[]{organ};
+		String[] archiveIds = null;
+		if (archiveId!=null)
+			archiveIds = new String[]{archiveId};
+		String[] batchIds = null;
+		if (batchId!=null)
+			batchIds = new String[]{batchId};
+
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		queryParams.put("organs", organs);
+		queryParams.put("archiveIds", archiveIds);
+		queryParams.put("batchIds", batchIds);
+
 		FocusBrowseIHCAssembler assembler = new FocusBrowseIHCAssembler(queryParams);
 		GenericTable table = assembler.createTable();
 		table.getAssembler().setFilter(ISHBrowseBean.getDefaultIshFilter());
