@@ -24,10 +24,10 @@ import java.util.HashMap;
  */
 public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	
-	String assayType;
-	String[] organs;
-	String stage;
-	String gene;
+	private String assayType;
+	private String[] organs;
+	private String stage;
+	private String gene;
     private String archiveId;
     private String batchId;
 

@@ -12,6 +12,8 @@ public class ArrayFocusBrowseBean {
 
 	private String organ;
 	private String stage;
+	private String archiveId;
+	private String batchId;
 	
 	public ArrayFocusBrowseBean() {
 	    if (debug)
@@ -19,6 +21,9 @@ public class ArrayFocusBrowseBean {
 
 		organ = Visit.getRequestParam("focusedOrgan");
 		stage = Visit.getRequestParam("stage");
+		archiveId = Visit.getRequestParam("archiveId");
+		batchId = Visit.getRequestParam("batchId");
+
 		String viewName = "focusBrowseArray";
 		if (TableUtil.isTableViewInSession())
 			return;
@@ -33,6 +38,8 @@ public class ArrayFocusBrowseBean {
 		queryParams.put("assayType", "array");
 		queryParams.put("organ", organs);
 		queryParams.put("stage", stage);
+		queryParams.put("archiveId", archiveId);
+		queryParams.put("batchId", batchId);
 		FocusBrowseAssembler assembler = new FocusBrowseAssembler(queryParams); 
 		GenericTable table = assembler.createTable();
 		GenericTableView tableView = getDefaultArrayBrowseTableView(viewName, table);
