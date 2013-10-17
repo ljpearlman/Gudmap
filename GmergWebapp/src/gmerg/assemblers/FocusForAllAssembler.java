@@ -23,6 +23,8 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	String exp;
 	String[] widecard;
 	String transitiveRelations;
+	String archiveId;
+	String batchId;
 
 	public FocusForAllAssembler () {
 	    if (debug)
@@ -48,6 +50,8 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 		exp = getParam("exp");
 		widecard = getParams("widecard");
 		transitiveRelations = getParam("transitiveRelations");
+		archiveId = getParam("archiveId");
+		batchId = getParam("batchId");
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
@@ -67,7 +71,7 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 		////////////////////////////////////////////////////////
 		// Bernie - 9/5/2011 - Mantis 328 - added filter
 		ArrayList list =  advancedQDAO.getFocusQuery(query, input, column, ascending, String.valueOf(offset), String.valueOf(num), 
-													organ, sub, exp, widecard, transitiveRelations, filter);
+													organ, sub, exp, widecard, transitiveRelations, archiveId, batchId, filter);
 		////////////////////////////////////////////////////////
 		DBHelper.closeJDBCConnection(conn);
 		
@@ -94,7 +98,7 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO advancedDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		// Bernie - 9/5/2011 - Mantis 328 - added filter
-		int n =  advancedDAO.getNumberOfRows(query, input, organ, sub, exp, widecard, transitiveRelations, filter);
+		int n =  advancedDAO.getNumberOfRows(query, input, organ, sub, exp, widecard, transitiveRelations, archiveId, batchId, filter);
 		DBHelper.closeJDBCConnection(conn);
 
 		if (debug)
@@ -114,7 +118,7 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO advancedQueryDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 		// Bernie - 9/5/2011 - Mantis 328 - added filter
-		int[] totals =  advancedQueryDAO.getNumberOfRowsInGroups(query, input, organ, sub, exp, widecard, transitiveRelations, filter);
+		int[] totals =  advancedQueryDAO.getNumberOfRowsInGroups(query, input, organ, sub, exp, widecard, transitiveRelations, archiveId, batchId, filter);
 		DBHelper.closeJDBCConnection(conn);
 		this.table.setTotals(totals);
 		return totals;

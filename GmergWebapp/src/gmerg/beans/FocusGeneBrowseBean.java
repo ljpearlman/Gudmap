@@ -20,10 +20,14 @@ public class FocusGeneBrowseBean {
     private String query;
     private String input;
     private String focusedOrgan;
+    private String archiveId;
+    private String batchId;
 	
 	public FocusGeneBrowseBean() {
 	    query = Visit.getRequestParam("query");
 		input = Visit.getRequestParam("input");
+		archiveId = Visit.getRequestParam("archiveId");
+		batchId = Visit.getRequestParam("batchId");
 
 	    if (debug)
 		System.out.println("FocusGeneBrowseBean constructor: query = "+query+" input = "+input);
@@ -139,6 +143,8 @@ System.out.println("widecard2="+ wildcards[2]);
 		queryParams.put("exp", exp);
 		queryParams.put("widecard", wildcards);
 		queryParams.put("transitiveRelations", ttvRels);
+		queryParams.put("archiveId", archiveId);
+		queryParams.put("batchId", batchId);
 		FocusForAllAssembler assembler = new FocusForAllAssembler(queryParams);
 		//Bernie 10/5/2011 - Mantis 328 - added call to set filter
 		assembler.setFilter(getFilter(assembler.getTableviewToSqlColMap()));

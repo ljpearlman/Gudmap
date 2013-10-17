@@ -40,6 +40,7 @@ public class ISHFocusBrowseBean {
 		else
 			queryParams.put("assayType", "insitu"); //insitu: ish+ihc 
 		queryParams.put("organ", organs);
+		queryParams.put("stage", stage);
 		queryParams.put("archiveId", archiveId);
 		queryParams.put("batchId", batchId);
 		

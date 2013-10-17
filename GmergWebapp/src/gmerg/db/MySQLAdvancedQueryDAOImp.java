@@ -1186,97 +1186,101 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     public ArrayList<String[]> getFocusQuery(String type, 
 					     String[] input, int orderby, boolean asc, 
 					     String offset, String resperpage, String organ,
-					     String sub, String exp, String[] queryCriteria, String transitiveRelations, GenericTableFilter filter) {
-	if (debug) {
-	    System.out.println("=============getFocusQuery===============");
-	    System.out.println("sub1:" + sub);
-	    System.out.println("wildcard:" + queryCriteria[0]);
-	}
+					     String sub, String exp, String[] queryCriteria, String transitiveRelations, 
+					     String archiveId, String batchId, GenericTableFilter filter) {
+    	
+		if (debug) {
+		    System.out.println("=============getFocusQuery===============");
+		    System.out.println("sub1:" + sub);
+		    System.out.println("wildcard:" + queryCriteria[0]);
+		}
 	
 	
-	String assayValue = filter.getActiveAssay();
-	if (assayValue != null){
-	    if(assayValue.equalsIgnoreCase("Array"))
-		sub = "mic";
-	    if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
-		sub = "ish";
-	    if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
-		sub = null;
-	}
+		String assayValue = filter.getActiveAssay();
+		if (assayValue != null){
+		    if(assayValue.equalsIgnoreCase("Array"))
+		    	sub = "mic";
+		    if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+		    	sub = "ish";
+		    if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
+		    	sub = null;
+		}
 	
-	ArrayList <String []> list = assembleSQL(type, input, 0, true, null, 
-						 null, organ, sub, exp, queryCriteria, transitiveRelations);
+		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, 
+							 null, organ, sub, exp, queryCriteria, transitiveRelations, archiveId, batchId);
+		
+		if(list == null){
+		    return null;
+		}
 	
-	if(list == null){
-	    return null;
-	}
-	
-	String[] sql = (String [])list.get(0);
-	if (debug) {
-	    for (int i=0;i<input.length;i++)
-		System.out.println("input:" + input[i]);
-	}	
-	ArrayList<String[]> result = null;
-	ResultSet resSet = null;
+		String[] sql = (String [])list.get(0);
+		if (debug) {
+		    for (int i=0;i<input.length;i++)
+		    	System.out.println("input:" + input[i]);
+		}
+		
+		ArrayList<String[]> result = null;
+		ResultSet resSet = null;
     	PreparedStatement prepStmt = null;
 	
     	if(null != sql && null != sql[0]) {
-	    try {
-		if (debug)
-		    System.out.println("before adding filter"+sql[0]);
-
-		sql[0] = filter.addFilterSql(sql[0], null);
-		if (debug)
-		    System.out.println("after adding filter sql[0] = "+sql[0] );
+		    try {
+				if (debug)
+				    System.out.println("before adding filter"+sql[0]);
 		
-		// they do not want low level QIC_ANO_COMPONENT_NAME
-		// they want high level in ISH_SP_TISSUE 
-		// so add this "post-process" block
-		if (-1 != sql[0].indexOf("QIC_ANO_COMPONENT_NAME") ||
-		    -1 != sql[0].indexOf("qic_ano_component_name")) {
-		    sql[0] = sql[0].replaceAll("QIC_ANO_COMPONENT_NAME", "ANO_COMPONENT_NAME");
-		    sql[0] = sql[0].replaceAll("QSC_ISH_CACHE", "QSC_ISH_CACHE "+AdvancedSearchDBQuery.fromISHTissue());
-		}
-		
-        	String orderpart = DBHelper.orderResult(orderby, asc) + 
-		    new String((null == offset || offset.trim().equals(""))&& (resperpage==null || resperpage.trim().equals(""))? " ":" limit "+ offset + "," + resperpage + " ");
-		
-		sql[0] = "SELECT DISTINCT x.col1, GROUP_CONCAT(DISTINCT x.col2), x.col3, x.col4, x.col5, x.col6, x.col7, x.col8, x.col9, x.col10, x.col11, x.col12, x.col13, x.col14, x.col15 FROM ("+sql[0]+") AS x GROUP BY x.col10 " + orderpart.replaceAll("col", "x.col");
-		
-		prepStmt = conn.prepareStatement(sql[0]);
-		int ishIterations = 0;
-		ishIterations = Integer.parseInt(sql[3]);
-		
-		input = (String [])list.get(1);
-		for(int i=0;i< ishIterations;i++){
-		    for(int j=0;j<input.length;j++){
-			prepStmt.setString((i*input.length)+j+1, input[j]);
-		    }
-		}
-		
-		int micIterations = 0;
-		micIterations = Integer.parseInt(sql[4]);
-		String []micinput = (String [])list.get(2);
-		
-		for(int i=ishIterations*input.length;i< ishIterations*input.length+micIterations;i++){
-		    for(int j=0;j<micinput.length;j++){
-			prepStmt.setString(i+j+1, micinput[j]);
-		    }
-		}
-		
-		if (debug)
-		    System.out.println("before executing sql = "+prepStmt.toString());
-		resSet = prepStmt.executeQuery();
-		
-		result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
-		DBHelper.closePreparedStatement(prepStmt);
-		
-		return result;
-	    } catch (Exception se) {
-                se.printStackTrace();
-            }
+				sql[0] = filter.addFilterSql(sql[0], null);
+				if (debug)
+				    System.out.println("after adding filter sql[0] = "+sql[0] );
+				
+				// they do not want low level QIC_ANO_COMPONENT_NAME
+				// they want high level in ISH_SP_TISSUE 
+				// so add this "post-process" block
+				if (-1 != sql[0].indexOf("QIC_ANO_COMPONENT_NAME") ||
+				    -1 != sql[0].indexOf("qic_ano_component_name")) {
+				    sql[0] = sql[0].replaceAll("QIC_ANO_COMPONENT_NAME", "ANO_COMPONENT_NAME");
+				    sql[0] = sql[0].replaceAll("QSC_ISH_CACHE", "QSC_ISH_CACHE "+AdvancedSearchDBQuery.fromISHTissue());
+				}
+			
+	        	String orderpart = DBHelper.orderResult(orderby, asc) + 
+			    new String((null == offset || offset.trim().equals(""))&& (resperpage==null || resperpage.trim().equals(""))? " ":" limit "+ offset + "," + resperpage + " ");
+			
+				sql[0] = "SELECT DISTINCT x.col1, GROUP_CONCAT(DISTINCT x.col2), x.col3, x.col4, x.col5, x.col6, x.col7, x.col8, x.col9, x.col10, x.col11, x.col12, x.col13, x.col14, x.col15 FROM ("+sql[0]+") AS x GROUP BY x.col10 " + orderpart.replaceAll("col", "x.col");
+				
+				prepStmt = conn.prepareStatement(sql[0]);
+				int ishIterations = 0;
+				ishIterations = Integer.parseInt(sql[3]);
+			
+				input = (String [])list.get(1);
+				for(int i=0;i< ishIterations;i++){
+				    for(int j=0;j<input.length;j++){
+				    	prepStmt.setString((i*input.length)+j+1, input[j]);
+				    }
+				}
+				
+				int micIterations = 0;
+				micIterations = Integer.parseInt(sql[4]);
+				String []micinput = (String [])list.get(2);
+			
+				for(int i=ishIterations*input.length;i< ishIterations*input.length+micIterations;i++){
+				    for(int j=0;j<micinput.length;j++){
+				    	prepStmt.setString(i+j+1, micinput[j]);
+				    }
+				}
+				
+				if (debug)
+				    System.out.println("before executing sql = "+prepStmt.toString());
+				resSet = prepStmt.executeQuery();
+				
+				result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
+				DBHelper.closePreparedStatement(prepStmt);
+			
+				return result;
+		    } 
+		    catch (Exception se) {
+		                se.printStackTrace();
+	        }
     	}
-    	return result;
+		return result;
     }
     
     /**
@@ -1291,95 +1295,99 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
      */
     
     public int getNumberOfRows(String type, String[] input, String organ,
-			       String sub, String exp, String[] queryCriteria, String transitiveRelations, GenericTableFilter filter) {
-	if (debug) {
-	    System.out.println("enter getNumberOfRows method!!!!!!!");
-	    for (int i=0;i<input.length;i++)
-		System.out.println("input for getNumberOfRows:" + input[i]);
-	}
-	
-	String assayValue = filter.getActiveAssay();
-	if (assayValue != null){
-	    if(assayValue.equalsIgnoreCase("Array"))
-		sub = "mic";
-	    if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
-		sub = "ish";
-	    if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
-		sub = null;
-	}
-	
-	ArrayList <String []> list = assembleSQL(type, input, 0, true, null, null, organ, sub, exp, queryCriteria, transitiveRelations);
-	if(list == null){
-	    return 0;
-	}
+			       String sub, String exp, String[] queryCriteria, String transitiveRelations, 
+			       String archiveId, String batchId, GenericTableFilter filter) {
+    	
+		if (debug) {
+		    System.out.println("enter getNumberOfRows method!!!!!!!");
+		    for (int i=0;i<input.length;i++)
+			System.out.println("input for getNumberOfRows:" + input[i]);
+		}
+		
+		String assayValue = filter.getActiveAssay();
+		if (assayValue != null){
+		    if(assayValue.equalsIgnoreCase("Array"))
+		    	sub = "mic";
+		    if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+		    	sub = "ish";
+		    if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
+		    	sub = null;
+		}
+		
+		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, null, organ, sub, exp, queryCriteria, transitiveRelations, archiveId, batchId);
+		if(list == null){
+		    return 0;
+		}
     	String[] sql = (String [])list.get(0);
 	
-	ResultSet resSet = null;
+    	ResultSet resSet = null;
     	PreparedStatement prepStmt = null;
     	String ish = null;
     	String mic = null;
 	
     	if(null != sql) {
-	    try {
-		if(null != sql[1]) {
-		    sql[1] = filter.addFilterCountSql(sql[1]);
-		    prepStmt = conn.prepareStatement(sql[1]);
-
-		    int iterations = 0;
-		    iterations = Integer.parseInt(sql[3]);
-		    input = (String [])list.get(1);
-		    for(int i=0;i< iterations;i++){
-			for(int j=0;j<input.length;j++){
-			    prepStmt.setString((i*input.length)+j+1, input[j]);
-			}
-		    }
-		    if (debug)
-			System.out.println("SELECT222(ish)======prepStmt= "+prepStmt.toString());	    			
-		    resSet = prepStmt.executeQuery();
-		    if(resSet.first()) {
-			ish = resSet.getString(1);
-			if (debug)
-			    System.out.println("ISH number = "+ ish);
-		    }
-		}
+		    try {
+				if(null != sql[1]) {
+				    sql[1] = filter.addFilterCountSql(sql[1]);
+				    prepStmt = conn.prepareStatement(sql[1]);
 		
-		if(null != sql[2]) {
-		    sql[2] = filter.addFilterCountSql(sql[2]);
-		    prepStmt = conn.prepareStatement(sql[2]);
-		    int iterations = 0;
-		    iterations = Integer.parseInt(sql[4]);
-		    
-		    input = (String [])list.get(2);
-		    for(int i=0;i < iterations;i++){
-			for(int j=0;j<input.length;j++){
-			    prepStmt.setString((i*input.length)+j+1, input[j]);
-			}
+				    int iterations = 0;
+				    iterations = Integer.parseInt(sql[3]);
+				    input = (String [])list.get(1);
+				    for(int i=0;i< iterations;i++){
+						for(int j=0;j<input.length;j++){
+						    prepStmt.setString((i*input.length)+j+1, input[j]);
+						}
+				    }
+				    if (debug)
+				    	System.out.println("SELECT222(ish)======prepStmt= "+prepStmt.toString());
+				    
+				    resSet = prepStmt.executeQuery();
+				    if(resSet.first()) {
+				    	ish = resSet.getString(1);
+						if (debug)
+						    System.out.println("ISH number = "+ ish);
+				    }
+				}
+			
+				if(null != sql[2]) {
+				    sql[2] = filter.addFilterCountSql(sql[2]);
+				    prepStmt = conn.prepareStatement(sql[2]);
+				    int iterations = 0;
+				    iterations = Integer.parseInt(sql[4]);
+				    
+				    input = (String [])list.get(2);
+				    for(int i=0;i < iterations;i++){
+						for(int j=0;j<input.length;j++){
+						    prepStmt.setString((i*input.length)+j+1, input[j]);
+						}
+				    }
+				    if (debug)
+					System.out.println("SELECT333(mic)======prepStmt= "+prepStmt.toString());
+				    
+				    resSet = prepStmt.executeQuery();
+				    if(resSet.first()) {
+						mic = resSet.getString(1);
+						if (debug)
+						    System.out.println("MIC number = "+ mic);
+				    }
+				    
+				}
+				int total = (null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic));
+			
+			
+				return total;
+			
+		    } 
+		    catch (Exception se) {
+	                se.printStackTrace();
+	        }
+		    finally {
+		    	DBHelper.closePreparedStatement(prepStmt);
 		    }
-		    if (debug)
-			System.out.println("SELECT333(mic)======prepStmt= "+prepStmt.toString());
-		    resSet = prepStmt.executeQuery();
-		    if(resSet.first()) {
-			mic = resSet.getString(1);
-			if (debug)
-			    System.out.println("MIC number = "+ mic);
-
-		    }
-		    
-		}
-		int total = (null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic));
-		
-		
-		return total;
-		
-	    } catch (Exception se) {
-                se.printStackTrace();
-            }
-	    finally {
-		DBHelper.closePreparedStatement(prepStmt);
-	    }
     	}
-	if (debug)
-	    System.out.println("getNumberOfRows@total number: " + 0);
+		if (debug)
+		    System.out.println("getNumberOfRows@total number: " + 0);
     	return 0;
     }
     
@@ -1397,89 +1405,92 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
      */
     
     public int[] getNumberOfRowsInGroups(String type, String[] input, String organ,
-					 String sub, String exp, String[] queryCriteria, String transitiveRelations, GenericTableFilter filter) {
-	if (debug)
-	    System.out.println("enter getNumberOfRowsInGroups method!!!!!!!");
+					 String sub, String exp, String[] queryCriteria, String transitiveRelations, 
+					 String archiveId, String batchId, GenericTableFilter filter) {
+    	
+		if (debug)
+		    System.out.println("enter getNumberOfRowsInGroups method!!!!!!!");
+		
+		String assayValue = filter.getActiveAssay();
+		if (assayValue != null){
+		    if(assayValue.equalsIgnoreCase("Array"))
+		    	sub = "mic";
+		    if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+		    	sub = "ish";
+		    if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
+		    	sub = null;
+		}
 	
-	String assayValue = filter.getActiveAssay();
-	if (assayValue != null){
-	    if(assayValue.equalsIgnoreCase("Array"))
-		sub = "mic";
-	    if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
-		sub = "ish";
-	    if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
-		sub = null;
-	}
-	
-	ArrayList <String []> list = assembleSQL(type, input, 0, true, null, null, organ, sub, exp, queryCriteria, transitiveRelations); 
-	
-	if(list == null){
-	    return new int[]{0, 0};
-	}
+		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, null, organ, sub, exp, queryCriteria, transitiveRelations, archiveId, batchId); 
+		
+		if(list == null){
+		    return new int[]{0, 0};
+		}
 	
     	String[] sql = (String [])list.get(0);
-	ResultSet resSet = null;
+    	ResultSet resSet = null;
     	PreparedStatement prepStmt = null;
     	String ish = null;
     	String mic = null;
 	
     	if(null != sql) {
-	    try {
-		if(null != sql[1]) {
-		    String ishsql = filter.addFilterCountSql(sql[1]);
-
-		    prepStmt = conn.prepareStatement(ishsql);
-		    
-		    int iterations = 0;
-		    iterations = Integer.parseInt(sql[3]);
-		    input = (String [])list.get(1);
-		    for(int i=0;i< iterations;i++){
-			for(int j=0;j<input.length;j++){
-			    prepStmt.setString((i*input.length)+j+1, input[j]);
-			}
-		    }
-		    if (debug)
-			System.out.println("SELECT444(ish)======prepStmt= "+prepStmt.toString());	    	
-		    resSet = prepStmt.executeQuery();
-		    if(resSet.first()) {
-			ish = resSet.getString(1);
-			if (debug)
-			    System.out.println("~~~ish total = "+ish);
-		    }
-		}
+		    try {
+				if(null != sql[1]) {
+				    String ishsql = filter.addFilterCountSql(sql[1]);
 		
-		if(null != sql[2]) {
-		    sql[2] = filter.addFilterCountSql(sql[2]);
-
-		    prepStmt = conn.prepareStatement(sql[2]);	    					    
-		    int iterations = 0;
-		    iterations = Integer.parseInt(sql[4]);
-		    
-		    input = (String [])list.get(2);
-		    for(int i=0;i < iterations;i++){
-			for(int j=0;j<input.length;j++){
-			    prepStmt.setString((i*input.length)+j+1, input[j]);
-			}
-		    }
-		    if (debug)
-			System.out.println("SELECT555(mic)======prepStmt= "+prepStmt.toString());	    			
-		    resSet = prepStmt.executeQuery();
-		    if(resSet.first()) {
-			mic = resSet.getString(1);
-			if (debug)
-			    System.out.println("~~~mic total = "+mic);
-		    }
-		    
-		}
-		int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};
+				    prepStmt = conn.prepareStatement(ishsql);
+				    
+				    int iterations = 0;
+				    iterations = Integer.parseInt(sql[3]);
+				    input = (String [])list.get(1);
+				    for(int i=0;i< iterations;i++){
+						for(int j=0;j<input.length;j++){
+						    prepStmt.setString((i*input.length)+j+1, input[j]);
+						}
+				    }
+				    if (debug)
+				    	System.out.println("SELECT444(ish)======prepStmt= "+prepStmt.toString());	    	
+				    resSet = prepStmt.executeQuery();
+				    if(resSet.first()) {
+						ish = resSet.getString(1);
+						if (debug)
+						    System.out.println("~~~ish total = "+ish);
+				    }
+				}
+			
+				if(null != sql[2]) {
+				    sql[2] = filter.addFilterCountSql(sql[2]);
 		
-		return total;    			
-	    } catch (Exception se) {
-                se.printStackTrace();
-            }
-	    finally {
-		DBHelper.closePreparedStatement(prepStmt);
-	    }
+				    prepStmt = conn.prepareStatement(sql[2]);	    					    
+				    int iterations = 0;
+				    iterations = Integer.parseInt(sql[4]);
+				    
+				    input = (String [])list.get(2);
+				    for(int i=0;i < iterations;i++){
+						for(int j=0;j<input.length;j++){
+						    prepStmt.setString((i*input.length)+j+1, input[j]);
+						}
+				    }
+				    if (debug)
+				    	System.out.println("SELECT555(mic)======prepStmt= "+prepStmt.toString());	    			
+				    resSet = prepStmt.executeQuery();
+				    if(resSet.first()) {
+						mic = resSet.getString(1);
+						if (debug)
+						    System.out.println("~~~mic total = "+mic);
+				    }
+				    
+				}
+				int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};
+			
+				return total;    			
+		    } 
+		    catch (Exception se) {
+	             se.printStackTrace();
+	        }
+		    finally {
+		    	DBHelper.closePreparedStatement(prepStmt);
+		    }
     	}
     	return new int[]{0, 0};
     } // end of getNumberOfRowsInGroups
@@ -1508,37 +1519,46 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
      */
     public ArrayList<String[]> assembleSQL(String queryType, String[] input, 
 					   int orderby, boolean asc, String offset, String recordNumber, 
-					   String organ, String subType, String expStrength, String[] queryCriteria, String transitiveRelations) {
-	if (debug) {
-	    System.out.println("assembleSQL############");
-	    System.out.println("AssembleSQLForFocusQuery:queryType: " + queryType);
-	    System.out.println("AssembleSQLForFocusQuery:subType: " + subType);
-	    System.out.println("AssembleSQLForFocusQuery:transitiveRelations: " + transitiveRelations);
-	    System.out.println("AssembleSQLForFocusQuery:organ: " + organ);
-	    for (int i=0;i<input.length;i++) System.out.println("AdvancedQueryDAO:assembleSQL:input( " + i + "): " + input[i]); 
-	    for (int i=0;i<queryCriteria.length;i++) System.out.println("AdvancedQueryDAO:assembleSQL:queryCriteria( " + i + "): " + queryCriteria[i]);
-	}
+					   String organ, String subType, String expStrength, String[] queryCriteria, String transitiveRelations, String archiveId, String batchId) {
+
+    	// TODO in order to use archiveId and batchId as part of url we need to add the archiveID and batchID to the cache tables in the database
+    	// this has still to be implemented, so the updated sql has not been added to this method yet. - Bernie
+    	
+    	
+    	if (debug) {
+		    System.out.println("assembleSQL############");
+		    System.out.println("AssembleSQLForFocusQuery:queryType: " + queryType);
+		    System.out.println("AssembleSQLForFocusQuery:subType: " + subType);
+		    System.out.println("AssembleSQLForFocusQuery:transitiveRelations: " + transitiveRelations);
+		    System.out.println("AssembleSQLForFocusQuery:organ: " + organ);
+		    System.out.println("AssembleSQLForFocusQuery:archiveId: " + archiveId);
+		    System.out.println("AssembleSQLForFocusQuery:batchId: " + batchId);
+		    for (int i=0;i<input.length;i++) 
+		    	System.out.println("AdvancedQueryDAO:assembleSQL:input( " + i + "): " + input[i]); 
+		    for (int i=0;i<queryCriteria.length;i++) 
+		    	System.out.println("AdvancedQueryDAO:assembleSQL:queryCriteria( " + i + "): " + queryCriteria[i]);
+		}
 	
     	ArrayList<String[]> sqlAndParams = new ArrayList <String[]>();
 	
     	if (input == null) { // user didn't provide any keyword
-	    return null;
-	}
+    		return null;
+    	}
 	
     	//need to remove strings containing only white space or empty strings from array
     	ArrayList<String> tmpList = new ArrayList<String>();
     	for(int i = 0;i<input.length;i++) {
-	    if(input[i]!= null && input[i].trim().length() >= 1){
-		tmpList.add(input[i].trim());
-	    }
+		    if(input[i]!= null && input[i].trim().length() >= 1){
+		    	tmpList.add(input[i].trim());
+		    }
     	}
     	//put the new values back into the input array
     	input = new String[tmpList.size()];
     	for(int i=0;i<input.length;i++){
-	    input[i] = tmpList.get(i);
+    		input[i] = tmpList.get(i);
     	}
 	
-	String inputStr = "";  //contains list of input parameters or '?' for each input parameter
+    	String inputStr = "";  //contains list of input parameters or '?' for each input parameter
         String ishStr = "";
         String micStr = "";
         String[] all = null;
@@ -1555,853 +1575,853 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	
     	//specific focus organ has been selected so sql will have to be modified accordingly
     	if(null != organ && !organ.equals("") && !organ.equals("null")) {
-	    if (debug)
-    		System.out.println("OUTPUT ORGAN:"+organ+":"+organ);
-	    String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ);
-	    String ids = "";
-	    if(null != emapids) {
-		for(int i = 0; i < emapids.length; i++) {
-		    ids += "'"+emapids[i] + "',";
-		}
-		if(emapids.length >= 1) {
-		    ids = ids.substring(0, ids.length()-1);
-		}
-		String temp = "in (select QAI_COMPONENT_ID from QSC_ANA_INDEX where QAI_ORGAN_KEY = " + organ + ") ";
-		organISHStr = " AND QIC_ATN_PUBLIC_ID " + temp;
-		organMicStr = " AND QMC_ATN_PUBLIC_ID " + temp;
-	    }
+		    if (debug)
+	    		System.out.println("OUTPUT ORGAN:"+organ+":"+organ);
+		    String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ);
+		    String ids = "";
+		    if(null != emapids) {
+				for(int i = 0; i < emapids.length; i++) {
+				    ids += "'"+emapids[i] + "',";
+				}
+				if(emapids.length >= 1) {
+				    ids = ids.substring(0, ids.length()-1);
+				}
+				String temp = "in (select QAI_COMPONENT_ID from QSC_ANA_INDEX where QAI_ORGAN_KEY = " + organ + ") ";
+				organISHStr = " AND QIC_ATN_PUBLIC_ID " + temp;
+				organMicStr = " AND QMC_ATN_PUBLIC_ID " + temp;
+		    }
     	}
 	
     	//specific assay type has been selected so need to make relevant modification to sql
-	if(null != expStrength) {
-	    if(expStrength.equals("present")) {
-		organISHStr += " AND QIC_EXP_STRENGTH='present' ";
-	    } else if (expStrength.equals("absent")) {
-		organISHStr += " AND QIC_EXP_STRENGTH='not detected' ";
-	    } else if (expStrength.equals("unknown")) {
-		organISHStr += " AND QIC_EXP_STRENGTH not in ('not detected', 'present') ";
-	    } else { 
-		organISHStr += " AND QIC_EXP_STRENGTH='uncertain' ";
-	    }
-	    if(expStrength.equals("P")) {
-		organMicStr += " AND MBC_GLI_DETECTION='P' ";
-	    } else if (expStrength.equals("A")) {
-		organMicStr += " AND MBC_GLI_DETECTION='A' ";
-	    } else if (expStrength.equals("M")){
-		organMicStr += " AND MBC_GLI_DETECTION='M' ";
-	    }
-	}
+		if(null != expStrength) {
+		    if(expStrength.equals("present")) {
+		    	organISHStr += " AND QIC_EXP_STRENGTH='present' ";
+		    } else if (expStrength.equals("absent")) {
+		    	organISHStr += " AND QIC_EXP_STRENGTH='not detected' ";
+		    } else if (expStrength.equals("unknown")) {
+		    	organISHStr += " AND QIC_EXP_STRENGTH not in ('not detected', 'present') ";
+		    } else { 
+		    	organISHStr += " AND QIC_EXP_STRENGTH='uncertain' ";
+		    }
+		    
+		    if(expStrength.equals("P")) {
+		    	organMicStr += " AND MBC_GLI_DETECTION='P' ";
+		    } else if (expStrength.equals("A")) {
+		    	organMicStr += " AND MBC_GLI_DETECTION='A' ";
+		    } else if (expStrength.equals("M")){
+		    	organMicStr += " AND MBC_GLI_DETECTION='M' ";
+		    }
+		}
 	
     	//user query is based on gene query
-	if(queryType.equals("Gene")) {
-	    //need to set query criteria params if none specified by user
-	    if(null == queryCriteria) {
-		queryCriteria = new String[3];
-		queryCriteria[0] = "equals";
-		queryCriteria[1] = "All";
-		queryCriteria[2] = "0";
-	    }
-	    // need to modify later to a mixture of input including gene symbols and MTFs - xingjun - 22/10/2010
-	    //value to determine whether user wants to search for MTFs in db
-	    int findMTFs = -1;
-	    //if the user is only going to search for all MTFs
-	    if(input.length == 1 && input[0] != null && input[0].trim().equalsIgnoreCase("MTF#")){
-		input = new String[0];
-		findMTFs = 0;
-	    }
-	    //else if the user wants to search for more that 1 MTF
-	    else if(input.length >= 1 && input[0] != null && input[0].toUpperCase().indexOf("MTF#") == 0){
-		findMTFs = 1;
-		ish = new String[0];
-	    }
-	    else {
-		//change input to the result of query to find all symbols related to users original input strings  
-		input = this.getSymbolsFromGeneInputParams(input, queryCriteria[0]);	
-	    }
-	    
-	    if(input == null){ //no gene symbols have been found based on users input
-		return null;
-	    }
-	    
-	    // assemble stage string (only needs to be done if specific stage has been entered by user)
-	    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
-		ishStageString = " AND QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
-		micStageString = " AND QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
-	    }
-	    
-	    // assemble annotation string - user is only looking for genes with expression annotation
-	    if (queryCriteria[2] != null && queryCriteria[2].equalsIgnoreCase("1")) {
-		ishAnnotationString = " AND LENGTH(QIC_ATN_PUBLIC_ID) > 0 ";
-		micAnnotationString = " AND LENGTH(QMC_ATN_PUBLIC_ID) > 0 ";
-	    }
-	    
-	    //set '?' in query as param for each input
-	    for(int i = 0; i < input.length; i++) {
-		if(i == input.length-1){
-		    inputStr = inputStr + "?";
-		}
-		else {
-		    inputStr = inputStr + " ?,";
-		}
-	    }
-	    
-	    //if the number of inputs is at least 1
-	    if(input.length >= 1) {
-		inputStr = " in (" + inputStr + ") ";
-		for(int i = 0; i < ish.length; i++) {
-		    if(i == ish.length-1){
-			ishStr = ishStr + ish[i] + inputStr;
+		if(queryType.equals("Gene")) {
+		    //need to set query criteria params if none specified by user
+		    if(null == queryCriteria) {
+				queryCriteria = new String[3];
+				queryCriteria[0] = "equals";
+				queryCriteria[1] = "All";
+				queryCriteria[2] = "0";
+		    }
+		    // need to modify later to a mixture of input including gene symbols and MTFs - xingjun - 22/10/2010
+		    //value to determine whether user wants to search for MTFs in db
+		    int findMTFs = -1;
+		    //if the user is only going to search for all MTFs
+		    if(input.length == 1 && input[0] != null && input[0].trim().equalsIgnoreCase("MTF#")){
+				input = new String[0];
+				findMTFs = 0;
+		    }
+		    //else if the user wants to search for more that 1 MTF
+		    else if(input.length >= 1 && input[0] != null && input[0].toUpperCase().indexOf("MTF#") == 0){
+				findMTFs = 1;
+				ish = new String[0];
 		    }
 		    else {
-			ishStr = ishStr + ish[i] + inputStr + " OR ";
+				//change input to the result of query to find all symbols related to users original input strings  
+				input = this.getSymbolsFromGeneInputParams(input, queryCriteria[0]);	
 		    }
-		}
-		
-		for(int i = 0; i < mic.length; i++) {
-		    micStr = micStr + AdvancedSearchDBQuery.getMICSelectForMerhan()+
-			AdvancedSearchDBQuery.getMICFrom() +
-			//added for organ
-			organMicStr + " AND ( " + mic[i] + inputStr + ")";
-		    if(i < mic.length-1){
-			micStr += AdvancedSearchDBQuery.getUnion();
+	    
+		    if(input == null){ //no gene symbols have been found based on users input
+		    	return null;
 		    }
-		    
-		}
-	    }
 	    
-	    String mtfStr = "";
-	    
-	    //how do you want to order the result
-	    String orderStr = DBHelper.orderResult(orderby, asc);
-	    all = new String[5];        	
-	    
-	    //ishpart - string to contain the query to interrogate the ish cache tables
-	    // Bernie 26/10/2010 - added AdvancedSearchDBQuery.fromISHTissue() to return tissue values
-	    String ishpart = 
-		AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() + " WHERE "+ ishStr;  
-	    
-	    if(findMTFs == 0){
-		mtfStr = " QIC_RPR_MTF_JAX LIKE 'MTF#%' ";
-		ishpart += mtfStr;
-	    }
-	    else if(findMTFs == 1){
-		mtfStr = " QIC_RPR_MTF_JAX " + inputStr;
-		ishpart += mtfStr;
-	    }
-	    //Bernie 27/10/2010 - added groupart to return tissue values
-	    String grouppart = "GROUP BY col10";
-	    
-	    //added for organ
-	    ishpart += organISHStr + ishStageString + ishAnnotationString + grouppart + ") ";
-	    
-	    //micpart - string to contain the query to interrogate the microarray cache tables
-	    String micpart = micStr + micStageString + micAnnotationString + ")";
-	    
-	    String orderpart = orderStr + 
-        	new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
-	    
-	    if(null != subType) {
-		if(subType.equals("ish")) {
-		    all[0] = ishpart + orderpart;
-		    all[1] = AdvancedSearchDBQuery.getISHCount() + AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
-            		//added for organ
-            		organISHStr + ishStageString + ishAnnotationString;
-		    all[2] = null;
-		    all[3] = String.valueOf(ish.length);  //how many times you have to cycle through the list of inputs to set the params in the sql
-		    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql
-		} else if(subType.equals("mic")) {
-		    
-		    //if user is looking for mtfs but has specified array assay types
-		    if(findMTFs > -1)
-			return null;
-		    
-		    all[0] = micpart + orderpart;
-		    all[1] = null;
-		    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
-		    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
-		    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
-		}
-	    } else {
-		
-		if(findMTFs > -1) {
-		    all[0] = ishpart + orderpart;
-		    all[1] = AdvancedSearchDBQuery.getISHCount()+ AdvancedSearchDBQuery.getISHFrom() +" WHERE " + mtfStr + 
-            		//added for organ
-            		organISHStr + ishStageString + ishAnnotationString;
-		    all[2] = null;
-		    if(findMTFs == 0)
-			all[3] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql for ish
-		    else {
-			all[3] = "1";
+		    // assemble stage string (only needs to be done if specific stage has been entered by user)
+		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
+				ishStageString = " AND QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+				micStageString = " AND QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
 		    }
-		    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql for array
-		}
-		else {
-		    all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart + orderpart;
-		    all[1] = AdvancedSearchDBQuery.getISHCount()+ AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
-            		//added for organ
-            		organISHStr + ishStageString + ishAnnotationString;
-		    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
-		    all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
-		    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
-		}
-	    }
-	    sqlAndParams.add(all);
-	    sqlAndParams.add(input);
-	    sqlAndParams.add(input);
 	    
-	}
-	//if user is searching for gene symbols
-	else if (queryType.equalsIgnoreCase("GeneSymbol")){
-	    //need to set query criteria params if none specified by user
-	    if(null == queryCriteria) {
-		queryCriteria = new String[3];
-		queryCriteria[0] = "equals";
-		queryCriteria[1] = "All";
-		queryCriteria[2] = "0";
-	    }
-	    
-	    // assemble stage string (only needs to be done if specific stage has been entered by user)
-	    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
-		//stageString = " AND QSC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
-		ishStageString = " AND QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
-		micStageString = " AND QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
-	    }
-	    
-	    // assemble annotation string - user is only looking for genes with expression annotation
-	    if (queryCriteria[2] != null && queryCriteria[2].equalsIgnoreCase("1")) {
-		//annotationString = " AND LENGTH(QSC_ATN_PUBLIC_ID) > 0 ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
-		ishAnnotationString = " AND LENGTH(QIC_ATN_PUBLIC_ID) > 0 ";
-		micAnnotationString = " AND LENGTH(QMC_ATN_PUBLIC_ID) > 0 ";
-	    }
-	    
-	    //set '?' in query as param for each input
-	    for(int i = 0; i < input.length; i++) {
-		if(i == input.length-1){
-		    inputStr = inputStr + "?";
-		}
-		else {
-		    inputStr = inputStr + " ?,";
-		}
-	    }
-	    
-	    //if the number of inputs is at least 1
-	    if(input.length >= 1) {
-		inputStr = " in (" + inputStr + ") ";
-		for(int i = 0; i < ish.length; i++) {
-		    if(i == ish.length-1){
-			ishStr = ishStr + ish[i] + inputStr;
+		    // assemble annotation string - user is only looking for genes with expression annotation
+		    if (queryCriteria[2] != null && queryCriteria[2].equalsIgnoreCase("1")) {
+				ishAnnotationString = " AND LENGTH(QIC_ATN_PUBLIC_ID) > 0 ";
+				micAnnotationString = " AND LENGTH(QMC_ATN_PUBLIC_ID) > 0 ";
 		    }
-		    else {
-			ishStr = ishStr + ish[i] + inputStr + " OR ";
-		    }
-		}
-		
-		for(int i = 0; i < mic.length; i++) {
-		    micStr = micStr + AdvancedSearchDBQuery.getMICSelectForMerhan()+
-			AdvancedSearchDBQuery.getMICFrom() +
-			//added for organ
-			organMicStr + " AND ( " + mic[i] + inputStr + ")";
-		    if(i < mic.length-1){
-			micStr += AdvancedSearchDBQuery.getUnion();
-		    }
-		    
-		}
-	    }
-	    //Bernie 27/10/2010 - added groupart to return tissue values
-	    String grouppart = "GROUP BY col10";
 	    
-	    //how do you want to order the result
-	    String orderStr = DBHelper.orderResult(orderby, asc);
-	    all = new String[5];        	
-	    
-	    //ishpart - string to contain the query to interrogate the ish cache tables
-	    String ishpart = 
-		AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() + " WHERE "+ ishStr;
-	    
-	    //added for organ
-	    ishpart += organISHStr + ishStageString + ishAnnotationString + grouppart + ") ";
-	    
-	    //micpart - string to contain the query to interrogate the microarray cache tables
-	    String micpart = micStr + micStageString + micAnnotationString + ")";
-	    
-	    String orderpart = orderStr + 
-        	new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
-	    
-	    if(null != subType) {
-		if(subType.equals("ish")) {
-		    all[0] = ishpart + orderpart;
-		    all[1] = AdvancedSearchDBQuery.getISHCount() + AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
-            		//added for organ
-            		organISHStr + ishStageString + ishAnnotationString;
-		    all[2] = null;
-		    all[3] = String.valueOf(ish.length);  //how many times you have to cycle through the list of inputs to set the params in the sql
-		    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql
-		} else if(subType.equals("mic")) {
-		    
-		    all[0] = micpart + orderpart;
-		    all[1] = null;
-		    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
-		    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
-		    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
-		}
-	    } else {
-		all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart + orderpart;
-            	all[1] = AdvancedSearchDBQuery.getISHCount()+ AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
-		    //added for organ
-		    organISHStr + ishStageString + ishAnnotationString;
-            	all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
-            	all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
-            	all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
-		
-	    }
-	    
-	    sqlAndParams.add(all);
-	    sqlAndParams.add(input);
-	    sqlAndParams.add(input);
-	    
-	}
-	else if (queryType.equalsIgnoreCase("Gene Function")){
-	    //need to set query criteria params if none specified by user
-	    if(null == queryCriteria) {
-		queryCriteria = new String[3];
-		queryCriteria[0] = "equals";
-		queryCriteria[1] = "All";
-		queryCriteria[2] = "0";
-	    }
-	    //change input to the result of query to find all symbols related to users original input strings
-	    input = this.getSymbolsFromGeneFunctionInputParams(input, queryCriteria[0]);
-	    
-	    if(input == null){ //no gene symbols have been found based on users input
-		return null;
-	    }
-	    
-	    // assemble stage string (only needs to be done if specific stage has been entered by user)
-	    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
-		//stageString = " AND QSC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
-		ishStageString = " AND QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
-		micStageString = " AND QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
-	    }
-	    
-	    // assemble annotation string - user is only looking for genes with expression annotation
-	    if (queryCriteria[2] != null && queryCriteria[2].equalsIgnoreCase("1")) {
-		//annotationString = " AND LENGTH(QSC_ATN_PUBLIC_ID) > 0 ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
-		ishAnnotationString = " AND LENGTH(QIC_ATN_PUBLIC_ID) > 0 ";
-		micAnnotationString = " AND LENGTH(QMC_ATN_PUBLIC_ID) > 0 ";
-	    }
-	    
-	    //set '?' in query as param for each input
-	    inputStr = this.formatParamsForFocusQuery(input);
-	    
-	    //if the number of inputs is at least 1
-	    if(input.length >= 1) {
-		inputStr = " in (" + inputStr + ") ";
-		for(int i = 0; i < ish.length; i++) {
-		    if(i == ish.length-1){
-			ishStr = ishStr + ish[i] + inputStr;
-		    }
-		    else {
-			ishStr = ishStr + ish[i] + inputStr + " OR ";
-		    }
-		}
-		
-		for(int i = 0; i < mic.length; i++) {
-		    micStr = micStr + AdvancedSearchDBQuery.getMICSelectForMerhan()+
-			AdvancedSearchDBQuery.getMICFrom() +
-			//added for organ
-			organMicStr + " AND ( " + mic[i] + inputStr + ")";
-		    if(i < mic.length-1){
-			micStr += AdvancedSearchDBQuery.getUnion();
-		    }
-		    
-		}
-	    }
-	    //Bernie 27/10/2010 - added groupart to return tissue values
-	    String grouppart = "GROUP BY col10";
-	    
-	    //how do you want to order the result
-	    String orderStr = DBHelper.orderResult(orderby, asc);
-	    all = new String[5];        	
-	    
-	    //ishpart - string to contain the query to interrogate the ish cache tables
-	    String ishpart = 
-		AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() + " WHERE "+ ishStr;
-	    
-	    //added for organ
-	    ishpart += organISHStr + ishStageString + ishAnnotationString + grouppart + ") ";
-	    
-	    //micpart - string to contain the query to interrogate the microarray cache tables
-	    String micpart = micStr + micStageString + micAnnotationString + ")";
-	    
-	    String orderpart = orderStr + 
-        	new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
-	    
-	    /*TEMP CODE - ONLY FINDS ISH RESULTS. IGNORES ARRAY DATA*/
-	    all[0] = "(" + ishpart + orderpart + ")";
-	    all[1] = AdvancedSearchDBQuery.getISHCount() + AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
-    		//added for organ
-    		organISHStr + ishStageString + ishAnnotationString;
-	    all[2] = null;
-	    all[3] = String.valueOf(ish.length);  //how many times you have to cycle through the list of inputs to set the params in the sql
-	    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql
-	    /*END TEMP CODE*/
-	    
-	    sqlAndParams.add(all);
-	    sqlAndParams.add(input);
-	    sqlAndParams.add(input);
-	    
-	}
-	//if user is searching for a specific accession id
-	else if (queryType.equals("Accession ID")) {
-	    
-	    
-	    //set '?' in query as param for each input
-	    for(int i = 0; i < input.length; i++) {
-		if(i == input.length-1){
-		    inputStr = inputStr + "?";
-		}
-		else {
-		    inputStr = inputStr + " ?,";
-		}
-	    }
-	    
-	    /*for(int i = 0; i < input.length; i++) {
-	      inputStr = inputStr + "'"+ input[i] + "'" +",";
-	      } 
-	      
-	      if(input.length >= 1) {
-	      inputStr = inputStr.substring(0,inputStr.length()-1);
-	      }*/
-	    
-	    if(input.length >= 1) {
-		inputStr = " in (" + inputStr + ") ";
-		
-		ishStr = " ( ";
-		for(int i = 0; i < ish.length; i++) {
-		    if(i == ish.length-1){
-			ishStr = ishStr + ish[i] + inputStr;
-		    }
-		    else {
-			ishStr = ishStr + ish[i] + inputStr + " OR ";
-		    }
-		}
-		ishStr += " ) ";
-		
-		for(int i = 0; i < mic.length; i++) {
-		    micStr = micStr + AdvancedSearchDBQuery.getMICSelectForMerhan()+
-			AdvancedSearchDBQuery.getMICFrom() +
-			//added for organ
-			organMicStr + " AND ( " + mic[i] + inputStr + ")";
-		    if(i < mic.length-1){
-			micStr += AdvancedSearchDBQuery.getUnion();
-		    }
-		    
-		}
-	    }
-	    //Bernie 27/10/2010 - added groupart to return tissue values
-	    String grouppart = "GROUP BY col10";
-	    
-	    String orderStr = DBHelper.orderResult(orderby, asc);
-	    all = new String[5];        	
-	    
-	    String ishpart = AdvancedSearchDBQuery.getISHSelect()+
-    		AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() +
-    		" WHERE "+ishStr + 
-    		//added for organ
-    		organISHStr + grouppart + " ) ";
-	    String micpart = micStr +")";
-	    String orderpart = orderStr + 
-        	new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
-	    
-	    if(null != subType) {
-		if(subType.equals("ish")) {
-		    all[0] = ishpart + orderpart;
-		    all[1] = AdvancedSearchDBQuery.getISHCount()+
-            		AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
-            		//added for organ
-            		organISHStr;
-		    all[2] = null;
-		    all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
-		    all[4] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for array
-		} else if(subType.equals("mic")) {
-		    all[0] = micpart + orderpart;
-		    all[1] = null;
-		    all[2] = countMicStr + micStr + ") as tablea";
-		    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
-		    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
-		}
-	    } else {
-		all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart +
-		    //micStr+
-		    orderpart;
-		
-		all[1] = AdvancedSearchDBQuery.getISHCount()+
-		    AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
-		    //added for organ
-		    organISHStr;
-		
-		all[2] = countMicStr + micStr + ") as tablea";
-		all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
-		all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
-		
-	    }
-
-	    sqlAndParams.add(all);
-	    sqlAndParams.add(input);
-	    sqlAndParams.add(input);
-	    
-	}
-	//else if the user is looking for data on an anatomy component
-	else if(queryType.equals("Anatomy")) {
-	    
-	    ///////////////////////////////////////////////
-	    //need to set query criteria params if none specified by user
-	    if(null == queryCriteria) {
-		queryCriteria = new String[3];
-		queryCriteria[0] = "equals";
-		queryCriteria[1] = "All";
-		queryCriteria[2] = "0";
-	    }
-	    
-	    // assemble stage string (only needs to be done if specific stage has been entered by user)
-	    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
-		
-		ishStageString = "QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
-		micStageString = "QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
-	    }
-	    /////////////////////////////////////////////
-		
-		//contains the ish part of the query
-		StringBuffer ishQuery = new StringBuffer("");
-		//contains the array part of the query
-		StringBuffer micQuery = new StringBuffer("");
-		
-		//contains params for the ish query
-		ArrayList <String[]> ishParamsContainer = new ArrayList<String[]>();
-		//contains params for the mic query
-		ArrayList <String[]> micParamsContainer = new ArrayList<String[]>();
-		
-		int totalIshComps = 0;
-		int totalMicComps = 0;
-		
-		//for each user-specified input
-		String worker = null;
-		String inputString = null;
-		
-		for(int i=0;i<input.length;i++){
-		    inputString = Utility.normaliseApostrophe(input[i]);
-		    worker = AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ";
-		    //			    worker = AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+AdvancedSearchDBQuery.fromISHTissue()+" WHERE ";
-		    
-		    //get a list of emap components based on the single input of the user
-		    String [] comps = this.getTimedComponentIdsFromInput(input[i]);
-		    //contains list of descendents of values in 'comps'
-		    String [] subComps = null;
-		    //contains list of ancestors of values in 'comps'
-		    String [] superComps = null;
-		    
-		    //if no EMAP components were found, dont continue with the query constructions for this input element
-		    if(comps!= null){
-			//strings to contain queries including sub and super components of user input in searches
-			StringBuffer ishPresQuery = new StringBuffer("");
-			StringBuffer ishNotDetectedQuery = new StringBuffer("");
-			StringBuffer ishPossibleQuery = new StringBuffer("");
-			//					StringBuffer ishUncertainQuery = new StringBuffer("");
-			
-			//if the user only wants to find direct annotation, don't find the transitive Relations of the input
-			if(transitiveRelations != null && transitiveRelations.equals("0")) {
-			    subComps = comps;
-			    superComps = comps;
-			} else {
-			    subComps = this.getTransitiveRelations(comps, "descendent");
-			    superComps = this.getTransitiveRelations(comps, "ancestor");
-			}
-			
-			//param values for subcomponents query
-			StringBuffer subParamsString = new StringBuffer(" in (");
-			for(int j=0;j<subComps.length;j++){
-			    if(j == subComps.length-1){
-				subParamsString.append("?");
-			    }
-			    else {
-				subParamsString.append(" ?,");
-			    }
-			}
-			subParamsString.append(")");
-			
-			//param values for super components query
-			StringBuffer superParamsString = new StringBuffer(" in (");
-			for(int j=0;j<superComps.length;j++){
-			    if(j == superComps.length-1){
-				superParamsString.append("?");
-			    }
-			    else {
-				superParamsString.append(" ?,");
-			    }
-			}
-			superParamsString.append(")");
-			
-			//param values for direct annotations
-			StringBuffer paramsString = new StringBuffer(" in (");
-			for(int j=0;j<comps.length;j++){
-			    if(j == comps.length-1){
-				paramsString.append("?");
-			    }
-			    else {
-				paramsString.append(" ?,");
-			    }
-			}
-			paramsString.append(")");
-			
-			String [] allComps = null;
-			if(expStrength == null) {
-			    totalIshComps += subComps.length + superComps.length + comps.length;
-			    allComps = new String [subComps.length + superComps.length+ comps.length];
-			    
-			    int allIndex = 0;
-			    for(int j=0;j<subComps.length;j++){
-				allComps[allIndex] = subComps[j];
-				allIndex++;
-			    }
-			    for(int j=0;j<superComps.length;j++){
-				allComps[allIndex] = superComps[j];
-				allIndex++;
-			    }
-			    for(int j=0;j<comps.length;j++){
-				allComps[allIndex] = comps[j];
-				allIndex++;
-			    }
-			    
-			    //build the queries
-			    
-			    ishPresQuery.append(worker);
-			    ishNotDetectedQuery.append(AdvancedSearchDBQuery.getUnion()+worker);
-			    ishPossibleQuery.append(AdvancedSearchDBQuery.getUnion()+worker);
-			    
-			    if (!ishStageString.equals("")) {
-				ishPresQuery.append(ishStageString + "AND ");
-				ishNotDetectedQuery.append(ishStageString + "AND ");
-				ishPossibleQuery.append(ishStageString + "AND ");
-			    }
-			    
-			    for(int j=0;j<ish.length;j++){
-				ishPresQuery.append(" (");
-				if(j == 0) {
-				    ishPresQuery.append(ish[j] + subParamsString);
-				} else {
-				    ishPresQuery.append(" OR "+ish[j] + subParamsString);
-				}
-				ishPresQuery.append(") ");
-			    }
-			    ishPresQuery.append(" AND QIC_EXP_STRENGTH='present' ) ");
-			    
-			    
-			    for(int j=0;j<ish.length;j++){
-				ishNotDetectedQuery.append(" (");
-				if(j == 0) {
-				    ishNotDetectedQuery.append(ish[j] + superParamsString.toString());
+		    //set '?' in query as param for each input
+		    for(int i = 0; i < input.length; i++) {
+				if(i == input.length-1){
+				    inputStr = inputStr + "?";
 				}
 				else {
-				    ishNotDetectedQuery.append(" OR "+ish[j] + superParamsString.toString());
+				    inputStr = inputStr + " ?,";
 				}
-				ishNotDetectedQuery.append(") ");
-			    }
-			    ishNotDetectedQuery.append(" AND QIC_EXP_STRENGTH='not detected') ");
-			    
-			    for(int j=0;j<ish.length;j++){
-				ishPossibleQuery.append(" (");
-				if(j==0){
-				    ishPossibleQuery.append(ish[j] + paramsString);
-				}
-				else {
-				    ishPossibleQuery.append(" OR "+ish[j] + paramsString);
-				}
-				ishPossibleQuery.append(") ");
-			    }
-			    ishPossibleQuery.append(" AND QIC_EXP_STRENGTH not in('present', 'not detected') ) ");
-			    //						ishPossibleQuery.append(" AND QIC_EXP_STRENGTH not in('present', 'not detected', 'uncertain') ) ");
-			    
-			}
-			else {
-			    if(expStrength.equalsIgnoreCase("present")) {
-				totalIshComps += subComps.length;
-				allComps = subComps;
-				
-				ishPresQuery.append(worker);
-				
-				if (!ishStageString.equals("")) {
-				    ishPresQuery.append(ishStageString + "AND ");
-				}
-				
-				for(int j=0;j<ish.length;j++){
-				    ishPresQuery.append(" (");
-				    if(j == 0) {
-					ishPresQuery.append(ish[j] + subParamsString);
-				    } else {
-					ishPresQuery.append(" OR "+ish[j] + subParamsString);
-				    }
-				    ishPresQuery.append(") ");
-				}
-				ishPresQuery.append(" AND QIC_EXP_STRENGTH='present' ) ");
-				
-			    }
-			    
-			    else if(expStrength.equalsIgnoreCase("absent")) {
-				totalIshComps += superComps.length;
-				allComps = superComps;
-				
-				ishNotDetectedQuery.append(worker);
-				
-				if (!ishStageString.equals("")) {
-				    ishNotDetectedQuery.append(ishStageString + "AND ");
-				}
-				
-				for(int j=0;j<ish.length;j++){
-				    ishNotDetectedQuery.append(" (");
-				    if(j == 0) {
-					ishNotDetectedQuery.append(ish[j] + superParamsString.toString());
-				    } else {
-					ishNotDetectedQuery.append(" OR "+ish[j] + superParamsString.toString());
-				    }
-				    ishNotDetectedQuery.append(") ");
-				}
-				ishNotDetectedQuery.append(" AND QIC_EXP_STRENGTH='not detected') ");
-			    }
-			    else if(expStrength.equalsIgnoreCase("unknown")) {
-				totalIshComps += comps.length;
-				allComps = comps;
-				
-				ishPossibleQuery.append(worker);
-				if (!ishStageString.equals("")) {
-				    ishPossibleQuery.append(ishStageString + "AND ");
-				}
-				
-				for(int j=0;j<ish.length;j++){
-				    ishPossibleQuery.append(" (");
-				    if(j==0){
-					ishPossibleQuery.append(ish[j] + paramsString);
+		    }
+	    
+		    //if the number of inputs is at least 1
+		    if(input.length >= 1) {
+				inputStr = " in (" + inputStr + ") ";
+				for(int i = 0; i < ish.length; i++) {
+				    if(i == ish.length-1){
+				    	ishStr = ishStr + ish[i] + inputStr;
 				    }
 				    else {
-					ishPossibleQuery.append(" OR "+ish[j] + paramsString);
+				    	ishStr = ishStr + ish[i] + inputStr + " OR ";
 				    }
-				    ishPossibleQuery.append(") ");
 				}
-				ishPossibleQuery.append(" AND QIC_EXP_STRENGTH not in('present', 'not detected') ) ");
-				//							ishPossibleQuery.append(" AND QIC_EXP_STRENGTH not in('present', 'not detected', 'uncertain') ) ");
-			    }
-			    else {
-				return null;
-			    }
-			}
-			if(allComps != null) {
-			    ishParamsContainer.add(allComps);
-			}
+		
+				for(int i = 0; i < mic.length; i++) {
+				    micStr = micStr + AdvancedSearchDBQuery.getMICSelectForMerhan()+
+					AdvancedSearchDBQuery.getMICFrom() +
+					//added for organ
+					organMicStr + " AND ( " + mic[i] + inputStr + ")";
+				    if(i < mic.length-1){
+				    	micStr += AdvancedSearchDBQuery.getUnion();
+				    }
+				    
+				}
+		    }
+	    
+		    String mtfStr = "";
+	    
+		    //how do you want to order the result
+		    String orderStr = DBHelper.orderResult(orderby, asc);
+		    all = new String[5];        	
+	    
+		    //ishpart - string to contain the query to interrogate the ish cache tables
+		    // Bernie 26/10/2010 - added AdvancedSearchDBQuery.fromISHTissue() to return tissue values
+		    String ishpart = 
+			AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() + " WHERE "+ ishStr;  
+		    
+		    if(findMTFs == 0){
+				mtfStr = " QIC_RPR_MTF_JAX LIKE 'MTF#%' ";
+				ishpart += mtfStr;
+		    }
+		    else if(findMTFs == 1){
+				mtfStr = " QIC_RPR_MTF_JAX " + inputStr;
+				ishpart += mtfStr;
+		    }
+		    //Bernie 27/10/2010 - added groupart to return tissue values
+		    String grouppart = "GROUP BY col10";
+		    
+		    //added for organ
+		    ishpart += organISHStr + ishStageString + ishAnnotationString + grouppart + ") ";
+	    
+		    //micpart - string to contain the query to interrogate the microarray cache tables
+		    String micpart = micStr + micStageString + micAnnotationString + ")";
+		    
+		    String orderpart = orderStr + 
+	        	new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
+	    
+		    if(null != subType) {
+				if(subType.equals("ish")) {
+				    all[0] = ishpart + orderpart;
+				    all[1] = AdvancedSearchDBQuery.getISHCount() + AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
+		            		//added for organ
+		            		organISHStr + ishStageString + ishAnnotationString;
+				    all[2] = null;
+				    all[3] = String.valueOf(ish.length);  //how many times you have to cycle through the list of inputs to set the params in the sql
+				    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql
+				} else if(subType.equals("mic")) {
+		    
+				    //if user is looking for mtfs but has specified array assay types
+				    if(findMTFs > -1)
+					return null;
+		    
+				    all[0] = micpart + orderpart;
+				    all[1] = null;
+				    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
+				    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				}
+		    } else {
+		
+				if(findMTFs > -1) {
+				    all[0] = ishpart + orderpart;
+				    all[1] = AdvancedSearchDBQuery.getISHCount()+ AdvancedSearchDBQuery.getISHFrom() +" WHERE " + mtfStr + 
+		            		//added for organ
+		            		organISHStr + ishStageString + ishAnnotationString;
+				    all[2] = null;
+				    if(findMTFs == 0)
+					all[3] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				    else {
+					all[3] = "1";
+				    }
+				    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				}
+				else {
+				    all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart + orderpart;
+				    all[1] = AdvancedSearchDBQuery.getISHCount()+ AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
+		            		//added for organ
+		            		organISHStr + ishStageString + ishAnnotationString;
+				    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
+				    all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				}
+		    }
+		    sqlAndParams.add(all);
+		    sqlAndParams.add(input);
+		    sqlAndParams.add(input);
+		    
+		}
+		//if user is searching for gene symbols
+		else if (queryType.equalsIgnoreCase("GeneSymbol")){
+		    //need to set query criteria params if none specified by user
+		    if(null == queryCriteria) {
+				queryCriteria = new String[3];
+				queryCriteria[0] = "equals";
+				queryCriteria[1] = "All";
+				queryCriteria[2] = "0";
+		    }
+	    
+		    // assemble stage string (only needs to be done if specific stage has been entered by user)
+		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
+				//stageString = " AND QSC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
+				ishStageString = " AND QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+				micStageString = " AND QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+		    }
+	    
+		    // assemble annotation string - user is only looking for genes with expression annotation
+		    if (queryCriteria[2] != null && queryCriteria[2].equalsIgnoreCase("1")) {
+				//annotationString = " AND LENGTH(QSC_ATN_PUBLIC_ID) > 0 ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
+				ishAnnotationString = " AND LENGTH(QIC_ATN_PUBLIC_ID) > 0 ";
+				micAnnotationString = " AND LENGTH(QMC_ATN_PUBLIC_ID) > 0 ";
+		    }
+		    
+		    //set '?' in query as param for each input
+		    for(int i = 0; i < input.length; i++) {
+				if(i == input.length-1){
+				    inputStr = inputStr + "?";
+				}
+				else {
+				    inputStr = inputStr + " ?,";
+				}
+		    }
+	    
+		    //if the number of inputs is at least 1
+		    if(input.length >= 1) {
+				inputStr = " in (" + inputStr + ") ";
+				for(int i = 0; i < ish.length; i++) {
+				    if(i == ish.length-1){
+				    	ishStr = ishStr + ish[i] + inputStr;
+				    }
+				    else {
+				    	ishStr = ishStr + ish[i] + inputStr + " OR ";
+				    }
+				}
+				
+				for(int i = 0; i < mic.length; i++) {
+				    micStr = micStr + AdvancedSearchDBQuery.getMICSelectForMerhan()+
+					AdvancedSearchDBQuery.getMICFrom() +
+					//added for organ
+					organMicStr + " AND ( " + mic[i] + inputStr + ")";
+				    if(i < mic.length-1){
+				    	micStr += AdvancedSearchDBQuery.getUnion();
+				    }
+				    
+				}
+		    }
+		    //Bernie 27/10/2010 - added groupart to return tissue values
+		    String grouppart = "GROUP BY col10";
+		    
+		    //how do you want to order the result
+		    String orderStr = DBHelper.orderResult(orderby, asc);
+		    all = new String[5];        	
+		    
+		    //ishpart - string to contain the query to interrogate the ish cache tables
+		    String ishpart = 
+			AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() + " WHERE "+ ishStr;
+		    
+		    //added for organ
+		    ishpart += organISHStr + ishStageString + ishAnnotationString + grouppart + ") ";
+		    
+		    //micpart - string to contain the query to interrogate the microarray cache tables
+		    String micpart = micStr + micStageString + micAnnotationString + ")";
+		    
+		    String orderpart = orderStr + 
+	        	new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
+	    
+		    if(null != subType) {
+				if(subType.equals("ish")) {
+				    all[0] = ishpart + orderpart;
+				    all[1] = AdvancedSearchDBQuery.getISHCount() + AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
+		            		//added for organ
+		            		organISHStr + ishStageString + ishAnnotationString;
+				    all[2] = null;
+				    all[3] = String.valueOf(ish.length);  //how many times you have to cycle through the list of inputs to set the params in the sql
+				    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql
+				} else if(subType.equals("mic")) {
+				    
+				    all[0] = micpart + orderpart;
+				    all[1] = null;
+				    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
+				    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				}
+		    } else {
+				all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart + orderpart;
+	            all[1] = AdvancedSearchDBQuery.getISHCount()+ AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
+			    //added for organ
+			    organISHStr + ishStageString + ishAnnotationString;
+	        	all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
+	        	all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+	        	all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
 			
-			// if there is more than 1 input value, 'union' the queries produced
+		    }
+		    
+		    sqlAndParams.add(all);
+		    sqlAndParams.add(input);
+		    sqlAndParams.add(input);
+	    
+		}
+		else if (queryType.equalsIgnoreCase("Gene Function")){
+		    //need to set query criteria params if none specified by user
+		    if(null == queryCriteria) {
+				queryCriteria = new String[3];
+				queryCriteria[0] = "equals";
+				queryCriteria[1] = "All";
+				queryCriteria[2] = "0";
+		    }
+		    //change input to the result of query to find all symbols related to users original input strings
+		    input = this.getSymbolsFromGeneFunctionInputParams(input, queryCriteria[0]);
+		    
+		    if(input == null){ //no gene symbols have been found based on users input
+		    	return null;
+		    }
+	    
+		    // assemble stage string (only needs to be done if specific stage has been entered by user)
+		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
+				//stageString = " AND QSC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
+				ishStageString = " AND QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+				micStageString = " AND QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+		    }
+		    
+		    // assemble annotation string - user is only looking for genes with expression annotation
+		    if (queryCriteria[2] != null && queryCriteria[2].equalsIgnoreCase("1")) {
+				//annotationString = " AND LENGTH(QSC_ATN_PUBLIC_ID) > 0 ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
+				ishAnnotationString = " AND LENGTH(QIC_ATN_PUBLIC_ID) > 0 ";
+				micAnnotationString = " AND LENGTH(QMC_ATN_PUBLIC_ID) > 0 ";
+		    }
+		    
+		    //set '?' in query as param for each input
+		    inputStr = this.formatParamsForFocusQuery(input);
+	    
+		    //if the number of inputs is at least 1
+		    if(input.length >= 1) {
+				inputStr = " in (" + inputStr + ") ";
+				for(int i = 0; i < ish.length; i++) {
+				    if(i == ish.length-1){
+				    	ishStr = ishStr + ish[i] + inputStr;
+				    }
+				    else {
+				    	ishStr = ishStr + ish[i] + inputStr + " OR ";
+				    }
+				}
+		
+				for(int i = 0; i < mic.length; i++) {
+				    micStr = micStr + AdvancedSearchDBQuery.getMICSelectForMerhan()+
+					AdvancedSearchDBQuery.getMICFrom() +
+					//added for organ
+					organMicStr + " AND ( " + mic[i] + inputStr + ")";
+				    if(i < mic.length-1){
+				    	micStr += AdvancedSearchDBQuery.getUnion();
+				    }
+			    
+				}
+		    }
+		    //Bernie 27/10/2010 - added groupart to return tissue values
+		    String grouppart = "GROUP BY col10";
+		    
+		    //how do you want to order the result
+		    String orderStr = DBHelper.orderResult(orderby, asc);
+		    all = new String[5];        	
+		    
+		    //ishpart - string to contain the query to interrogate the ish cache tables
+		    String ishpart = 
+			AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() + " WHERE "+ ishStr;
+	    
+		    //added for organ
+		    ishpart += organISHStr + ishStageString + ishAnnotationString + grouppart + ") ";
+		    
+		    //micpart - string to contain the query to interrogate the microarray cache tables
+		    String micpart = micStr + micStageString + micAnnotationString + ")";
+		    
+		    String orderpart = orderStr + 
+	        	new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
+		    
+		    /*TEMP CODE - ONLY FINDS ISH RESULTS. IGNORES ARRAY DATA*/
+		    all[0] = "(" + ishpart + orderpart + ")";
+		    all[1] = AdvancedSearchDBQuery.getISHCount() + AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
+	    		//added for organ
+	    		organISHStr + ishStageString + ishAnnotationString;
+		    all[2] = null;
+		    all[3] = String.valueOf(ish.length);  //how many times you have to cycle through the list of inputs to set the params in the sql
+		    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql
+		    /*END TEMP CODE*/
+	    
+		    sqlAndParams.add(all);
+		    sqlAndParams.add(input);
+		    sqlAndParams.add(input);
+		    
+		}
+		//if user is searching for a specific accession id
+		else if (queryType.equals("Accession ID")) {
+	    
+	    
+		    //set '?' in query as param for each input
+		    for(int i = 0; i < input.length; i++) {
+				if(i == input.length-1){
+				    inputStr = inputStr + "?";
+				}
+				else {
+				    inputStr = inputStr + " ?,";
+				}
+		    }
+	    
+		    /*for(int i = 0; i < input.length; i++) {
+		      inputStr = inputStr + "'"+ input[i] + "'" +",";
+		      } 
+		      
+		      if(input.length >= 1) {
+		      inputStr = inputStr.substring(0,inputStr.length()-1);
+		      }*/
+	    
+		    if(input.length >= 1) {
+				inputStr = " in (" + inputStr + ") ";
+				
+				ishStr = " ( ";
+				for(int i = 0; i < ish.length; i++) {
+				    if(i == ish.length-1){
+				    	ishStr = ishStr + ish[i] + inputStr;
+				    }
+				    else {
+				    	ishStr = ishStr + ish[i] + inputStr + " OR ";
+				    }
+				}
+				ishStr += " ) ";
+		
+				for(int i = 0; i < mic.length; i++) {
+				    micStr = micStr + AdvancedSearchDBQuery.getMICSelectForMerhan()+
+					AdvancedSearchDBQuery.getMICFrom() +
+					//added for organ
+					organMicStr + " AND ( " + mic[i] + inputStr + ")";
+				    if(i < mic.length-1){
+				    	micStr += AdvancedSearchDBQuery.getUnion();
+				    }
+				    
+				}
+		    }
+		    //Bernie 27/10/2010 - added groupart to return tissue values
+		    String grouppart = "GROUP BY col10";
+		    
+		    String orderStr = DBHelper.orderResult(orderby, asc);
+		    all = new String[5];        	
+		    
+		    String ishpart = AdvancedSearchDBQuery.getISHSelect()+
+	    		AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() +
+	    		" WHERE "+ishStr + 
+	    		//added for organ
+	    		organISHStr + grouppart + " ) ";
+		    String micpart = micStr +")";
+		    String orderpart = orderStr + 
+	        	new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
+	    
+		    if(null != subType) {
+				if(subType.equals("ish")) {
+				    all[0] = ishpart + orderpart;
+				    all[1] = AdvancedSearchDBQuery.getISHCount()+
+		            		AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
+		            		//added for organ
+		            		organISHStr;
+				    all[2] = null;
+				    all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				    all[4] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				} else if(subType.equals("mic")) {
+				    all[0] = micpart + orderpart;
+				    all[1] = null;
+				    all[2] = countMicStr + micStr + ") as tablea";
+				    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				}
+		    } else {
+				all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart +
+				    //micStr+
+				    orderpart;
+				
+				all[1] = AdvancedSearchDBQuery.getISHCount()+
+				    AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
+				    //added for organ
+				    organISHStr;
+				
+				all[2] = countMicStr + micStr + ") as tablea";
+				all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
 			
-			if(i > 0) {
+		    }
 
-			    if (!ishQuery.toString().trim().equals("")) {
-				ishQuery.append(AdvancedSearchDBQuery.getUnion());
-			    }
-			    if (!micQuery.toString().trim().equals("")) {
-				micQuery.append(AdvancedSearchDBQuery.getUnion());
+		    sqlAndParams.add(all);
+		    sqlAndParams.add(input);
+		    sqlAndParams.add(input);
+		    
+		}
+		//else if the user is looking for data on an anatomy component
+		else if(queryType.equals("Anatomy")) {
+		    
+		    ///////////////////////////////////////////////
+		    //need to set query criteria params if none specified by user
+		    if(null == queryCriteria) {
+				queryCriteria = new String[3];
+				queryCriteria[0] = "equals";
+				queryCriteria[1] = "All";
+				queryCriteria[2] = "0";
+		    }
+	    
+		    // assemble stage string (only needs to be done if specific stage has been entered by user)
+		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {		
+				ishStageString = "QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+				micStageString = "QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+		    }
+		    /////////////////////////////////////////////
+			
+			//contains the ish part of the query
+			StringBuffer ishQuery = new StringBuffer("");
+			//contains the array part of the query
+			StringBuffer micQuery = new StringBuffer("");
+			
+			//contains params for the ish query
+			ArrayList <String[]> ishParamsContainer = new ArrayList<String[]>();
+			//contains params for the mic query
+			ArrayList <String[]> micParamsContainer = new ArrayList<String[]>();
+			
+			int totalIshComps = 0;
+			int totalMicComps = 0;
+		
+			//for each user-specified input
+			String worker = null;
+			String inputString = null;
+		
+			for(int i=0;i<input.length;i++){
+			    inputString = Utility.normaliseApostrophe(input[i]);
+			    worker = AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+" WHERE ";
+			    //			    worker = AdvancedSearchDBQuery.getISHSelectForAnatomy(inputString) + AdvancedSearchDBQuery.getISHFrom()+AdvancedSearchDBQuery.fromISHTissue()+" WHERE ";
+			    
+			    //get a list of emap components based on the single input of the user
+			    String [] comps = this.getTimedComponentIdsFromInput(input[i]);
+			    //contains list of descendents of values in 'comps'
+			    String [] subComps = null;
+			    //contains list of ancestors of values in 'comps'
+			    String [] superComps = null;
+			    
+			    //if no EMAP components were found, dont continue with the query constructions for this input element
+			    if(comps!= null){
+					//strings to contain queries including sub and super components of user input in searches
+					StringBuffer ishPresQuery = new StringBuffer("");
+					StringBuffer ishNotDetectedQuery = new StringBuffer("");
+					StringBuffer ishPossibleQuery = new StringBuffer("");
+					//					StringBuffer ishUncertainQuery = new StringBuffer("");
+				
+					//if the user only wants to find direct annotation, don't find the transitive Relations of the input
+					if(transitiveRelations != null && transitiveRelations.equals("0")) {
+					    subComps = comps;
+					    superComps = comps;
+					} else {
+					    subComps = this.getTransitiveRelations(comps, "descendent");
+					    superComps = this.getTransitiveRelations(comps, "ancestor");
+					}
+				
+					//param values for subcomponents query
+					StringBuffer subParamsString = new StringBuffer(" in (");
+					for(int j=0;j<subComps.length;j++){
+					    if(j == subComps.length-1){
+					    	subParamsString.append("?");
+					    }
+					    else {
+					    	subParamsString.append(" ?,");
+					    }
+					}
+					subParamsString.append(")");
+				
+					//param values for super components query
+					StringBuffer superParamsString = new StringBuffer(" in (");
+					for(int j=0;j<superComps.length;j++){
+					    if(j == superComps.length-1){
+					    	superParamsString.append("?");
+					    }
+					    else {
+					    	superParamsString.append(" ?,");
+					    }
+					}
+					superParamsString.append(")");
+				
+					//param values for direct annotations
+					StringBuffer paramsString = new StringBuffer(" in (");
+					for(int j=0;j<comps.length;j++){
+					    if(j == comps.length-1){
+					    	paramsString.append("?");
+					    }
+					    else {
+					    	paramsString.append(" ?,");
+					    }
+					}
+					paramsString.append(")");
+				
+					String [] allComps = null;
+					if(expStrength == null) {
+					    totalIshComps += subComps.length + superComps.length + comps.length;
+					    allComps = new String [subComps.length + superComps.length+ comps.length];
+					    
+					    int allIndex = 0;
+					    for(int j=0;j<subComps.length;j++){
+							allComps[allIndex] = subComps[j];
+							allIndex++;
+					    }
+					    for(int j=0;j<superComps.length;j++){
+							allComps[allIndex] = superComps[j];
+							allIndex++;
+					    }
+					    for(int j=0;j<comps.length;j++){
+							allComps[allIndex] = comps[j];
+							allIndex++;
+					    }
+					    
+					    //build the queries
+					    
+					    ishPresQuery.append(worker);
+					    ishNotDetectedQuery.append(AdvancedSearchDBQuery.getUnion()+worker);
+					    ishPossibleQuery.append(AdvancedSearchDBQuery.getUnion()+worker);
+					    
+					    if (!ishStageString.equals("")) {
+							ishPresQuery.append(ishStageString + "AND ");
+							ishNotDetectedQuery.append(ishStageString + "AND ");
+							ishPossibleQuery.append(ishStageString + "AND ");
+					    }
+				    
+					    for(int j=0;j<ish.length;j++){
+							ishPresQuery.append(" (");
+							if(j == 0) {
+							    ishPresQuery.append(ish[j] + subParamsString);
+							} else {
+							    ishPresQuery.append(" OR "+ish[j] + subParamsString);
+							}
+							ishPresQuery.append(") ");
+					    }
+					    ishPresQuery.append(" AND QIC_EXP_STRENGTH='present' ) ");
+				    
+				    
+					    for(int j=0;j<ish.length;j++){
+							ishNotDetectedQuery.append(" (");
+							if(j == 0) {
+							    ishNotDetectedQuery.append(ish[j] + superParamsString.toString());
+							}
+							else {
+							    ishNotDetectedQuery.append(" OR "+ish[j] + superParamsString.toString());
+							}
+							ishNotDetectedQuery.append(") ");
+					    }
+					    ishNotDetectedQuery.append(" AND QIC_EXP_STRENGTH='not detected') ");
+				    
+					    for(int j=0;j<ish.length;j++){
+							ishPossibleQuery.append(" (");
+							if(j==0){
+							    ishPossibleQuery.append(ish[j] + paramsString);
+							}
+							else {
+							    ishPossibleQuery.append(" OR "+ish[j] + paramsString);
+							}
+							ishPossibleQuery.append(") ");
+					    }
+					    ishPossibleQuery.append(" AND QIC_EXP_STRENGTH not in('present', 'not detected') ) ");
+					    //						ishPossibleQuery.append(" AND QIC_EXP_STRENGTH not in('present', 'not detected', 'uncertain') ) ");
+					    
+					}
+					else {
+					    if(expStrength.equalsIgnoreCase("present")) {
+							totalIshComps += subComps.length;
+							allComps = subComps;
+							
+							ishPresQuery.append(worker);
+							
+							if (!ishStageString.equals("")) {
+							    ishPresQuery.append(ishStageString + "AND ");
+							}
+							
+							for(int j=0;j<ish.length;j++){
+							    ishPresQuery.append(" (");
+							    if(j == 0) {
+							    	ishPresQuery.append(ish[j] + subParamsString);
+							    } else {
+							    	ishPresQuery.append(" OR "+ish[j] + subParamsString);
+							    }
+							    ishPresQuery.append(") ");
+							}
+							ishPresQuery.append(" AND QIC_EXP_STRENGTH='present' ) ");
+					
+					    }				    
+					    else if(expStrength.equalsIgnoreCase("absent")) {
+							totalIshComps += superComps.length;
+							allComps = superComps;
+						
+							ishNotDetectedQuery.append(worker);
+							
+							if (!ishStageString.equals("")) {
+							    ishNotDetectedQuery.append(ishStageString + "AND ");
+							}
+						
+							for(int j=0;j<ish.length;j++){
+							    ishNotDetectedQuery.append(" (");
+							    if(j == 0) {
+							    	ishNotDetectedQuery.append(ish[j] + superParamsString.toString());
+							    } else {
+							    	ishNotDetectedQuery.append(" OR "+ish[j] + superParamsString.toString());
+							    }
+							    ishNotDetectedQuery.append(") ");
+							}
+							ishNotDetectedQuery.append(" AND QIC_EXP_STRENGTH='not detected') ");
+					    }
+					    else if(expStrength.equalsIgnoreCase("unknown")) {
+							totalIshComps += comps.length;
+							allComps = comps;
+							
+							ishPossibleQuery.append(worker);
+							if (!ishStageString.equals("")) {
+							    ishPossibleQuery.append(ishStageString + "AND ");
+							}
+					
+							for(int j=0;j<ish.length;j++){
+							    ishPossibleQuery.append(" (");
+							    if(j==0){
+							    	ishPossibleQuery.append(ish[j] + paramsString);
+							    }
+							    else {
+							    	ishPossibleQuery.append(" OR "+ish[j] + paramsString);
+							    }
+							    ishPossibleQuery.append(") ");
+							}
+							ishPossibleQuery.append(" AND QIC_EXP_STRENGTH not in('present', 'not detected') ) ");
+							//							ishPossibleQuery.append(" AND QIC_EXP_STRENGTH not in('present', 'not detected', 'uncertain') ) ");
+					    }
+					    else {
+					    	return null;
+					    }
+					}
+					
+					if(allComps != null) {
+					    ishParamsContainer.add(allComps);
+					}
+					
+					// if there is more than 1 input value, 'union' the queries produced
+				
+					if(i > 0) {
+		
+					    if (!ishQuery.toString().trim().equals("")) {
+					    	ishQuery.append(AdvancedSearchDBQuery.getUnion());
+					    }
+					    if (!micQuery.toString().trim().equals("")) {
+					    	micQuery.append(AdvancedSearchDBQuery.getUnion());
+					    }
+					}
+					// 'IF' statements below commented and modified by xingjun - 21/10/2010 - end
+					
+					ishQuery.append(ishPresQuery.toString() + ishNotDetectedQuery.toString() + ishPossibleQuery.toString());
+					
+					//contsturct the array query
+					micQuery.append(AdvancedSearchDBQuery.getMICSelectForAnatomy()+ AdvancedSearchDBQuery.getMICFromForAnatomy() + " WHERE ");
+					
+					if (!micStageString.equals("")) {
+					    micQuery.append(micStageString + "AND ");
+					}
+				
+					//params addition
+					for(int j=0;j<mic.length;j++){
+					    micQuery.append(" (");
+					    if(j == 0) {
+					    	micQuery.append(mic[j] + subParamsString);
+					    } else {
+					    	micQuery.append(" OR "+mic[j] + subParamsString);
+					    }
+					    micQuery.append(")) ");
+					}
+				
+					totalMicComps += subComps.length;
+					micParamsContainer.add(subComps);
 			    }
 			}
-			// 'IF' statements below commented and modified by xingjun - 21/10/2010 - end
-			
-			ishQuery.append(ishPresQuery.toString() + ishNotDetectedQuery.toString() + ishPossibleQuery.toString());
-			
-			//contsturct the array query
-			micQuery.append(AdvancedSearchDBQuery.getMICSelectForAnatomy()+ AdvancedSearchDBQuery.getMICFromForAnatomy() + " WHERE ");
-			
-			if (!micStageString.equals("")) {
-			    micQuery.append(micStageString + "AND ");
+			//if there are no components to query then no point in doing the query
+			if(totalIshComps == 0 && totalMicComps == 0){
+			    return null;
 			}
-			
-			//params addition
-			for(int j=0;j<mic.length;j++){
-			    micQuery.append(" (");
-			    if(j == 0) {
-				micQuery.append(mic[j] + subParamsString);
-			    } else {
-				micQuery.append(" OR "+mic[j] + subParamsString);
+		
+			//add all components from all arrays produced above to a single array.
+			//This will be processed and added to the query at query execution time
+			String [] allIshComps = new String [totalIshComps];
+			String [] allMicComps = new String [totalMicComps];
+			int index = 0;
+			for(int i=0;i<ishParamsContainer.size();i++){
+			    String [] tmp = ishParamsContainer.get(i);
+			    for(int j=0;j<tmp.length;j++){
+					allIshComps[index] = tmp[j];
+					index++;
 			    }
-			    micQuery.append(")) ");
 			}
+			index = 0;
+			for(int i=0;i<micParamsContainer.size();i++){
+			    String [] tmp = micParamsContainer.get(i);
+			    for(int j=0;j<tmp.length;j++){
+					allMicComps[index] = tmp[j];
+					index++;
+			    }
+			}
+			//input = allComps;
+			String orderStr = DBHelper.orderResult(orderby, asc);
 			
-			totalMicComps += subComps.length;
-			micParamsContainer.add(subComps);
-		    }
-		}
-		//if there are no components to query then no point in doing the query
-		if(totalIshComps == 0 && totalMicComps == 0){
-		    return null;
-		}
+			all = new String[5];
+			
+			String orderpart = orderStr+ 
+			    new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
 		
-		//add all components from all arrays produced above to a single array.
-		//This will be processed and added to the query at query execution time
-		String [] allIshComps = new String [totalIshComps];
-		String [] allMicComps = new String [totalMicComps];
-		int index = 0;
-		for(int i=0;i<ishParamsContainer.size();i++){
-		    String [] tmp = ishParamsContainer.get(i);
-		    for(int j=0;j<tmp.length;j++){
-			allIshComps[index] = tmp[j];
-			index++;
-		    }
-		}
-		index = 0;
-		for(int i=0;i<micParamsContainer.size();i++){
-		    String [] tmp = micParamsContainer.get(i);
-		    for(int j=0;j<tmp.length;j++){
-			allMicComps[index] = tmp[j];
-			index++;
-		    }
-		}
-		//input = allComps;
-		String orderStr = DBHelper.orderResult(orderby, asc);
-		
-		all = new String[5];
-		
-		String orderpart = orderStr+ 
-		    new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
-		
-		if(null != subType){
-		    if(subType.equals("ish")){
-			all[0] = ishQuery.toString() + orderpart;
-			all[1] = countStr + "("+ishQuery.toString() + ") as tablea";
-			all[2] = null;
-			all[3] = "1";
-			all[4] = "0";
-		    }
-		    else if(subType.equals("mic")) {
-			all[0] = micQuery.toString() + orderpart;
-			all[1] = null;
-			all[2] = countMicStr + "("+micQuery.toString() + ") as tablea";
-			all[3] = "0";
-			all[4] = "1";					
-		    }
-		}
-		else {
-		    all[0] = ishQuery.toString() + AdvancedSearchDBQuery.getUnion() + micQuery.toString() + orderpart;
-		    all[1] = countStr + "("+ishQuery.toString() + ") as tablea";
-		    all[2] = countMicStr + "("+micQuery.toString() + ") as tablea";				
-		    all[3] = "1";
-		    all[4] = "1";
-		    //input = allComps;
-		}
+			if(null != subType){
+			    if(subType.equals("ish")){
+					all[0] = ishQuery.toString() + orderpart;
+					all[1] = countStr + "("+ishQuery.toString() + ") as tablea";
+					all[2] = null;
+					all[3] = "1";
+					all[4] = "0";
+			    }
+			    else if(subType.equals("mic")) {
+					all[0] = micQuery.toString() + orderpart;
+					all[1] = null;
+					all[2] = countMicStr + "("+micQuery.toString() + ") as tablea";
+					all[3] = "0";
+					all[4] = "1";					
+			    }
+			}
+			else {
+			    all[0] = ishQuery.toString() + AdvancedSearchDBQuery.getUnion() + micQuery.toString() + orderpart;
+			    all[1] = countStr + "("+ishQuery.toString() + ") as tablea";
+			    all[2] = countMicStr + "("+micQuery.toString() + ") as tablea";				
+			    all[3] = "1";
+			    all[4] = "1";
+			    //input = allComps;
+			}
 
-		sqlAndParams.add(all);
-		sqlAndParams.add(allIshComps);
-		sqlAndParams.add(allMicComps);
-	}
+			sqlAndParams.add(all);
+			sqlAndParams.add(allIshComps);
+			sqlAndParams.add(allMicComps);
+		}
 	
-	//sqlAndParams.add(all);
-	//sqlAndParams.add(input);
-	
-	return sqlAndParams;
-    } // end of AssembleSQLForFocusQuery
+		//sqlAndParams.add(all);
+		//sqlAndParams.add(input);
+		
+		return sqlAndParams;
+	} // end of AssembleSQLForFocusQuery
     
     /**
      * method to return a string containing correct number of parameters for an sql query based on the size of user input
@@ -2412,14 +2432,14 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	StringBuffer inputStr = new StringBuffer("");
 	
     	for(int i = 0; i < input.length; i++) {
-	    if(i == input.length-1){
-		inputStr.append("?");
-	    }
-	    else {
-		inputStr.append("?,");
-	    }
-	    
-	}
+		    if(i == input.length-1){
+		    	inputStr.append("?");
+		    }
+		    else {
+		    	inputStr.append("?,");
+		    }
+		    
+		}
 	
     	return inputStr.toString();
     }
