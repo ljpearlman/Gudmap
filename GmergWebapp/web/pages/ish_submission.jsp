@@ -69,6 +69,19 @@
 					<h:outputText styleClass="notetext, topAlign" value="#{image.note}"/>
 			        </h:column>
 			</h:dataTable>
+			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}"/>
+			<h:panelGroup rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}">
+					<h:outputText  value="View 3D opt image: "></h:outputText>
+					<h:outputLink value="#{ISHSingleSubmissionBean.submission.wlzImage.clickFilePath}">
+						<h:graphicImage value="../images/opt_logo.png" height="30" width="30"/>
+					</h:outputLink>
+
+			</h:panelGroup>
+			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}" />
+			<h:outputLink value="#{ISHSingleSubmissionBean.submission.wlzImage.filePath}" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}">
+					<h:outputText value="Download 3D images in woolz format "></h:outputText>
+			</h:outputLink>
+
 		</h:panelGrid>
 
 		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" rendered="#{not empty ISHSingleSubmissionBean.submission.resultNotes}">
