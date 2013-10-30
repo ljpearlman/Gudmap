@@ -10,7 +10,7 @@ import gmerg.utils.Utility;
 
 public class DBQuery {
 
-    static protected boolean debug = false;
+    static protected boolean debug = true;
 
   static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
   
@@ -30,7 +30,7 @@ public class DBQuery {
 				  "SPN_ASSAY_TYPE",
 				  "IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE",
 				  "SUB_SUB_DATE",
-				  "CONCAT(IMG_URL.URL_URL, IMG_SML_FILEPATH, IMG_SML_FILENAME)",
+				  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_SML_FILENAME)",
 				  "REPLACE(SUB_ACCESSION_ID, ':', 'no')", 
 				  "SPN_SEX",
 				  "RPR_JAX_ACC",
