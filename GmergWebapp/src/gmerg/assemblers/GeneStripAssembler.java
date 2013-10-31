@@ -537,7 +537,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		for (int i=0;i<len;i++) {
 			String stage = ((String[])insituSubmissions.get(i))[2];
 			String assayType = ((String[])insituSubmissions.get(i))[3];
-			if (stage.equals("TS23") && assayType.trim().equalsIgnoreCase("wholemount")) {
+			if (stage.equals("TS23") && (assayType.trim().equalsIgnoreCase("wholemount") || assayType.trim().equalsIgnoreCase("opt-wholemount"))) {
 				submissionId = ((String[])insituSubmissions.get(i))[0];
 //				System.out.println("submission id(" + submissionId +") chosen at ts23 - wholemount!!");
 				break;
@@ -568,7 +568,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		for (int i=0;i<len;i++) {
 			String stage = ((String[])insituSubmissions.get(i))[2];
 			String assayType = ((String[])insituSubmissions.get(i))[3];
-			if (stage.equals("TS21") && assayType.trim().equalsIgnoreCase("wholemount")) {
+			if (stage.equals("TS21") && (assayType.trim().equalsIgnoreCase("wholemount") || assayType.trim().equalsIgnoreCase("opt-wholemount"))) {
 				submissionId = ((String[])insituSubmissions.get(i))[0];
 //				System.out.println("submission id(" + submissionId +") chosen at ts21 - wholemount!!");
 				break;
@@ -596,7 +596,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		for (int i=0;i<len;i++) {
 			String stage = ((String[])insituSubmissions.get(i))[2];
 			String assayType = ((String[])insituSubmissions.get(i))[3];
-			if (stage.equals("TS20") && assayType.trim().equalsIgnoreCase("wholemount")) {
+			if (stage.equals("TS20") && (assayType.trim().equalsIgnoreCase("wholemount") || assayType.trim().equalsIgnoreCase("opt-wholemount"))) {
 				submissionId = ((String[])insituSubmissions.get(i))[0];
 //				System.out.println("submission id(" + submissionId +") chosen at ts20 - wholemount!!");
 				break;
@@ -625,7 +625,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		// try to find the first submission with assay type 'wholemount'
 		for (int i=0;i<len;i++) {
 			String assayType = ((String[])insituSubmissions.get(i))[3];
-			if (assayType.trim().equalsIgnoreCase("wholemount")) {
+			if (assayType.trim().equalsIgnoreCase("wholemount") || assayType.trim().equalsIgnoreCase("opt-wholemount")) {
 				submissionId = ((String[])insituSubmissions.get(i))[0];
 				String stage = ((String[])insituSubmissions.get(i))[2];
 //				System.out.println("submission id(" + submissionId +") chosen at " + stage + " - wholemount!!");
