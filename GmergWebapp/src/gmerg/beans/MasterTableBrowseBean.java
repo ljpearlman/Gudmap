@@ -404,8 +404,8 @@ public class MasterTableBrowseBean {
 		    for(MasterTableDisplayInfo masterTable : allMasterTables)
 			selectionsString += masterTable.selected? "1" : "0";
 		
-		
-		System.out.println("selectionstring = "+ selectionsString );
+		if (debug)
+		    System.out.println("selectionstring = "+ selectionsString );
 		return selectionsString;
 		
 	}
@@ -547,7 +547,8 @@ public class MasterTableBrowseBean {
 
 	}
        
-	public void updateSelectedItems () {		
+	public void updateSelectedItems () {	
+	    if (debug)
 		System.out.println("updateSelectedItems"); 
 		
 		for(MasterTableDisplayInfo masterTable : allMasterTables){
@@ -621,7 +622,8 @@ public class MasterTableBrowseBean {
 		
 	    for(int i=0; i<allMasterTables.size(); i++) {
 	    	masterTable = allMasterTables.get(i); 
-	    	System.out.println(i+"th master table Id = "+ masterTable.info.getId()+"  Title = "+ masterTable.info.getTitle()+"  selected = "+ masterTable.getSelected());
+		if (debug)
+		    System.out.println(i+"th master table Id = "+ masterTable.info.getId()+"  Title = "+ masterTable.info.getTitle()+"  selected = "+ masterTable.getSelected());
 	    }
 
 	}
