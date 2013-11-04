@@ -400,7 +400,8 @@ public class MasterTableBrowseBean {
 		updateSelectionsString();		
 		
 		String selectionsString = "";
-		for(MasterTableDisplayInfo masterTable : allMasterTables)
+		if (null != allMasterTables)
+		    for(MasterTableDisplayInfo masterTable : allMasterTables)
 			selectionsString += masterTable.selected? "1" : "0";
 		
 		

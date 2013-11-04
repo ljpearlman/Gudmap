@@ -10,7 +10,7 @@ import gmerg.utils.Utility;
 
 public class DBQuery {
 
-    static protected boolean debug = true;
+    static protected boolean debug = false;
 
   static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
   
