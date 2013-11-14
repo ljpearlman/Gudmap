@@ -48,8 +48,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 //        String query = parQ.getQuerySQL();
         String query = parQ.getQuerySQL() + AdvancedSearchDBQuery.getAssayType(new String[]{"ISH", "IHC"});
         String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
-        String queryString =
-        	assembleBrowseSubmissionQueryStringISH(1, query, defaultOrder, columnIndex, ascending, offset, num);
+        String queryString = assembleBrowseSubmissionQueryStringISH(1, query, defaultOrder, columnIndex, ascending, offset, num);
 //        System.out.println("ISHDevDAO:getAllSubmissionInsitu:queryString: " + queryString);
         
 		if(filter!=null)
@@ -130,19 +129,18 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
     	String orderByString = new String("");
     	String order = (ascending == true ? "ASC": "DESC"); 
     	String[] ISHBrowseAllColumnList =
-    	{"CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED)", // 0
-    			"natural_sort(TRIM(RPR_SYMBOL))", // 1
-    			"SUB_EMBRYO_STG", // 2
-//    			"CONCAT(SPN_STAGE,SPN_STAGE_FORMAT)", // 3
-    			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", // 3
-    			"SUB_SOURCE", // 4
-    			"SUB_SUB_DATE", // 5
-    			"SUB_ASSAY_TYPE", // 6
-    			"SPN_ASSAY_TYPE", // 7
-    			"SPN_SEX", // 8
-    			"RPR_JAX_ACC", // 9
-    			"SPN_WILDTYPE", // 10
-    			"PRB_PROBE_TYPE" //11
+        	{
+    			"natural_sort(TRIM(RPR_SYMBOL))", 
+    			"CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED)",
+    			"SUB_SOURCE", 
+    			"SUB_SUB_DATE", 
+    			"SUB_ASSAY_TYPE", 
+    			"RPR_JAX_ACC",    			
+    			"SUB_EMBRYO_STG", 
+    			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", 
+    			"SPN_SEX", 
+    			"SPN_WILDTYPE", 
+    			"SPN_ASSAY_TYPE" 
     	};
     	String geneSymbolCol;
     	
@@ -158,33 +156,31 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         
         } else {
         	if(columnIndex == 0) {
-        		if (queryType == 1) {
-        			orderByString = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + 
-        			order +", " + geneSymbolCol;
-        		}
+           		orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
         	} else if (columnIndex == 1) {
-       			orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
+        		if (queryType == 0) {
+	    			orderByString = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + 
+	    			order +", " + geneSymbolCol;
+        		} 
         	} else if (columnIndex == 2) {
-        		orderByString = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol;
+        		orderByString = "SUB_SOURCE" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 3) {
+        		orderByString = "SUB_SUB_DATE" + " " + order +", " + geneSymbolCol;
+        	} else if (columnIndex == 4) {
+        		orderByString = "SUB_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
+        	} else if (columnIndex == 5) {
+        		orderByString = "NATURAL_SORT(TRIM(RPR_JAX_ACC))" + " " + order + ", " + geneSymbolCol;
+        	} else if (columnIndex == 6) {
+        		orderByString = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol;
+        	} else if (columnIndex == 7) {
 //        		orderByString = "CONCAT(SPN_STAGE,SPN_STAGE_FORMAT)" + " " + order +", " + geneSymbolCol;
         		orderByString = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol;
-        	} else if (columnIndex == 4) {
-        		orderByString = "SUB_SOURCE" + " " + order +", " + geneSymbolCol;
-        	} else if (columnIndex == 5) {
-        		orderByString = "SUB_SUB_DATE" + " " + order +", " + geneSymbolCol;
-        	} else if (columnIndex == 6) {
-        		orderByString = "SUB_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
-        	} else if (columnIndex == 7) {
-        		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
         	}else if (columnIndex == 8) {
         		orderByString = "SPN_SEX" + " " + order + ", " + geneSymbolCol;
         	}else if (columnIndex == 9) {
-        		orderByString = "NATURAL_SORT(TRIM(RPR_JAX_ACC))" + " " + order + ", " + geneSymbolCol;
-        	}else if (columnIndex == 10) {
         		orderByString = "SPN_WILDTYPE" + " " + order + ", " + geneSymbolCol;
-        	}else if (columnIndex == 11) {
-        		orderByString = "PRB_PROBE_TYPE" + " " + order + ", " + geneSymbolCol;
+        	} else if (columnIndex == 10) {
+        		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
         	} else {
        			orderByString = geneSymbolCol + ", SUB_EMBRYO_STG ";
         	}
@@ -211,29 +207,28 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		String str = null;
 
             while (resSet.next()) {
-                ishBrowseSubmission = new String[13];
-                ishBrowseSubmission[ 0] = resSet.getString(1); // id
-                ishBrowseSubmission[ 1] = resSet.getString(2); // symbol
-                ishBrowseSubmission[ 2] = resSet.getString(3); // ts
-                ishBrowseSubmission[ 3] = resSet.getString(4); // age
-                ishBrowseSubmission[ 4] = resSet.getString(5); // lab
-                ishBrowseSubmission[ 5] = resSet.getString(8); // date
-                ishBrowseSubmission[ 6] = resSet.getString(7); // assay
-                ishBrowseSubmission[ 7] = resSet.getString(6); // specimen
-                ishBrowseSubmission[ 8] = resSet.getString(11); // sex
-                ishBrowseSubmission[ 9] = resSet.getString(12); // probe name
-                ishBrowseSubmission[10] = resSet.getString(13); // genotype
-                ishBrowseSubmission[11] = resSet.getString(14); // probe type
-                str = Utility.netTrim(resSet.getString(7));
+                ishBrowseSubmission = new String[12];
+                ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
+                ishBrowseSubmission[ 1] = resSet.getString(2); // id
+                ishBrowseSubmission[ 2] = resSet.getString(3); // source
+                ishBrowseSubmission[ 3] = resSet.getString(4); // date
+                ishBrowseSubmission[ 4] = resSet.getString(5); // assay
+                ishBrowseSubmission[ 5] = resSet.getString(6); // probe name
+                ishBrowseSubmission[ 6] = resSet.getString(7); // ts
+                ishBrowseSubmission[ 7] = resSet.getString(8); // age
+                ishBrowseSubmission[ 8] = resSet.getString(9); // sex
+                ishBrowseSubmission[ 9] = resSet.getString(10); // genotype
+                ishBrowseSubmission[10] = resSet.getString(11); // specimen
+                str = Utility.netTrim(resSet.getString(6));
                 if(null != str && str.trim().equalsIgnoreCase("OPT")){
-		    str = Utility.netTrim(resSet.getString(9));
-		    if (null == str)
-                	ishBrowseSubmission[12] = null;
-		    else
-                	ishBrowseSubmission[12] = str.substring(0, str.lastIndexOf(".")) + ".jpg"; //thumbnail for OPT data
+                	str = Utility.netTrim(resSet.getString(12));
+				    if (null == str)
+		                	ishBrowseSubmission[11] = null;
+				    else
+		                	ishBrowseSubmission[11] = str.substring(0, str.lastIndexOf(".")) + ".jpg"; //thumbnail for OPT data
                 }
                 else {
-                	ishBrowseSubmission[12] = resSet.getString(9); // thumbnail
+                	ishBrowseSubmission[11] = resSet.getString(12); // thumbnail
                 }
                 results.add(ishBrowseSubmission);
             }
@@ -450,10 +445,10 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         PreparedStatement prepStmt = null;
         try {
             for (int i = 0; i < queryNumber; i++) {
-		if (debug)
-			System.out.println("MySQLISHDevDAOImp.sql "+i+" th= "+queryString[i].toLowerCase());
+				if (debug)
+					System.out.println("MySQLISHDevDAOImp.sql "+i+" th= "+queryString[i].toLowerCase());
+				
                 prepStmt = conn.prepareStatement(queryString[i]);
-//                System.out.println("sql: " + queryString[i]);
                 if (param != null &&
                     param[i] != null) { // set query criteria if it's not null
                     int parameterNumber = param[i].length;
@@ -461,6 +456,11 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                         prepStmt.setString(j + 1, param[i][j]);
                     }
                 }
+
+			    if (debug)
+			    	System.out.println("MySQLISHDevDAOImp.sql prepStmt = "+ prepStmt);
+                
+                
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
             }

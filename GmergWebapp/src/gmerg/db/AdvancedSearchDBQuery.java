@@ -21,11 +21,9 @@ public class AdvancedSearchDBQuery {
 	  
  
 	  final static public String[] getISHDefaultTitle(){
-	      return new String[]{Utility.getProject()+" Entry Details", "Gene", Utility.getStageSeriesMed()+" Stage", 
-					 "Age", "Source", "Submission Date", 
-					 "Assay Type", "Specimen Type", "Sex", 
-					 "Probe Name", "Genotype", "Probe Type", 
-					 "Images"};			  
+	      return new String[]{"Gene", Utility.getProject()+" Entry Details", "Source", "Submission Date", 
+	    		  	 "Assay Type", "Probe Name", Utility.getStageSeriesMed()+" Stage", 
+					 "Age", "Sex", "Genotype", "Specimen Type", "Images"};			  
 	  }
 	  
 	  final static public String[] getISHEditDefaultTitle(){
@@ -817,20 +815,19 @@ public class AdvancedSearchDBQuery {
 		   "SUB_SUB_DATE,SMP_SEX,SRM_SAMPLE_DESCRIPTION,SMP_TITLE, " +
 		   "SER_GEO_ID, GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', '), ALE_GENE, SUB_ASSAY_TYPE , SPN_ASSAY_TYPE,  PER_OID " + endsBrowseSubmissionArray;
 
-	final static String[] ISH_BROWSE_ALL_SQL_COLUMNS = {"SUB_ACCESSION_ID", 
-														  "RPR_SYMBOL",
-														  "SUB_EMBRYO_STG",
-														  stageFormatConcat,
-														  "SUB_SOURCE",
-														  "SUB_SUB_DATE",
-														  "IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE",
-														  "SPN_ASSAY_TYPE",
-														  "SPN_SEX",
-														  "RPR_JAX_ACC",
-														  "SPN_WILDTYPE",
-														  "PRB_PROBE_TYPE",
-														  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_SML_FILENAME)",
-														  "REPLACE(SUB_ACCESSION_ID, ':', 'no')" };
+		final static String[] ISH_BROWSE_ALL_SQL_COLUMNS = {"RPR_SYMBOL",
+															"SUB_ACCESSION_ID",
+															"SUB_SOURCE",
+															"SUB_SUB_DATE", 
+															"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE",
+															"RPR_JAX_ACC",
+															"SUB_EMBRYO_STG",
+															stageFormatConcat,
+															"SPN_SEX",
+															"SPN_WILDTYPE",
+															"SPN_ASSAY_TYPE",
+															"CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_SML_FILENAME)",
+															"REPLACE(SUB_ACCESSION_ID, ':', 'no')" };
 
       final static String getISH_BROWSE_ALL_COLUMNS() {
     	  String s = "SELECT DISTINCT ";
@@ -853,8 +850,7 @@ public class AdvancedSearchDBQuery {
               "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
               "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
               "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
-              "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK " +
-              "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " ;
+              "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK"; 
 	                                                  
 	  final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 	  final static public String getAssayType(String type) {

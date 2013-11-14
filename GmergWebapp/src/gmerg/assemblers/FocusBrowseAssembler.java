@@ -145,18 +145,18 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
 
 		// get data from database
-		String [] allColTotalsQueries = {"TOTAL_NUMBER_OF_SUBMISSION",
+		String [] allColTotalsQueries = {
                 "TOTAL_NUMBER_OF_GENE_SYMBOL",
-                "TOTAL_NUMBER_OF_THEILER_STAGE",
-                "TOTAL_NUMBER_OF_GIVEN_STAGE",
+                "TOTAL_NUMBER_OF_SUBMISSION",
                 "TOTAL_NUMBER_OF_LAB",
                 "TOTAL_NUMBER_OF_SUBMISSION_DATE",
                 "TOTAL_NUMBER_OF_ASSAY_TYPE",
-                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
-                "TOTAL_NUMBER_OF_SEX",
                 "TOTAL_NUMBER_OF_PROBE_NAME",
+                "TOTAL_NUMBER_OF_THEILER_STAGE",
+                "TOTAL_NUMBER_OF_GIVEN_STAGE",
+                "TOTAL_NUMBER_OF_SEX",
                 "TOTAL_NUMBER_OF_GENOTYPE",
-                "TOTAL_NUMBER_OF_PROBE_TYPE",
+                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
                 "TOTAL_NUMBER_OF_IMAGE",
                 };
 		String endingClause = " AND (SUB_ASSAY_TYPE = 'ISH') "; // Bernie 17/11/2010 - added endingClause to get correct totals

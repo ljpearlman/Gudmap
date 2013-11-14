@@ -116,18 +116,17 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 		
 		// get data from database
 		String [] allColTotalsQueries = {
-				"TOTAL_NUMBER_OF_SUBMISSION_TG",
 				"TOTAL_NUMBER_OF_GENE_SYMBOL_TG",
-				"TOTAL_NUMBER_OF_THEILER_STAGE_TG",
-				"TOTAL_NUMBER_OF_GIVEN_STAGE_TG",
+				"TOTAL_NUMBER_OF_SUBMISSION_TG",
 				"TOTAL_NUMBER_OF_LAB_TG",
 				"TOTAL_NUMBER_OF_SUBMISSION_DATE_TG",
 				"TOTAL_NUMBER_OF_ASSAY_TYPE_TG",
-				"TOTAL_NUMBER_OF_SPECIMEN_TYPE_TG",
-				"TOTAL_NUMBER_OF_SEX_TG",
 				"TOTAL_NUMBER_OF_PROBE_NAME_TG",
+				"TOTAL_NUMBER_OF_THEILER_STAGE_TG",
+				"TOTAL_NUMBER_OF_GIVEN_STAGE_TG",
+				"TOTAL_NUMBER_OF_SEX_TG",
 				"TOTAL_NUMBER_OF_GENOTYPE_TG",
-				"TOTAL_NUMBER_OF_PROBE_TYPE_TG",
+				"TOTAL_NUMBER_OF_SPECIMEN_TYPE_TG",
 				"TOTAL_NUMBER_OF_IMAGE_TG"
 		};
 //		String endingClause = " AND SUB_ASSAY_TYPE = 'TG' ";	// Bernie 16/11/2010 mod to ensure correct totals are returned

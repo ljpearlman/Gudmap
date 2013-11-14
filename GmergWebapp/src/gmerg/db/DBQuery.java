@@ -22,20 +22,21 @@ public class DBQuery {
 		  "WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" :
           "CONCAT(SPN_STAGE_FORMAT, SPN_STAGE)";
   
-	final static String[] ISH_BROWSE_ALL_SQL_COLUMNS = {"SUB_ACCESSION_ID", 
-				  "RPR_SYMBOL",
-				  "SUB_EMBRYO_STG",
-				  stageFormatConcat,
-				  "SUB_SOURCE",
-				  "SPN_ASSAY_TYPE",
-				  "IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE",
-				  "SUB_SUB_DATE",
-				  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_SML_FILENAME)",
-				  "REPLACE(SUB_ACCESSION_ID, ':', 'no')", 
-				  "SPN_SEX",
-				  "RPR_JAX_ACC",
-				  "SPN_WILDTYPE",
-				  "PRB_PROBE_TYPE" };
+	final static String[] ISH_BROWSE_ALL_SQL_COLUMNS = {
+		  "RPR_SYMBOL",
+		  "SUB_ACCESSION_ID", 
+		  "SUB_SOURCE",
+		  "SUB_SUB_DATE",
+		  "IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE",
+		  "RPR_JAX_ACC",
+		  "SUB_EMBRYO_STG",
+		  stageFormatConcat,
+		  "SPN_SEX",
+		  "SPN_WILDTYPE",
+		  "SPN_ASSAY_TYPE",
+		  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_FILENAME)",
+		  "REPLACE(SUB_ACCESSION_ID, ':', 'no')"
+		  };
 
     final static String getISH_BROWSE_ALL_COLUMNS() {
 		String s = "SELECT DISTINCT ";
@@ -676,7 +677,9 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String NUMBER_OF_GENOTYPE = "SELECT COUNT(DISTINCT SPN_WILDTYPE) ";
   
   final static String NUMBER_OF_PROBE_TYPE = "SELECT COUNT(DISTINCT PRB_PROBE_TYPE) ";
-  
+
+  final static String NUMBER_OF_ISH_EXPRESSION = "SELECT COUNT(DISTINCT EXP_STRENGTH) "; 
+
   
   final static String name129 = "TOTAL_NUMBER_OF_SEX";
   final static String query129 = NUMBER_OF_SEX + endsBrowseSubmissionISH;
@@ -699,6 +702,9 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String name135 = "TOTAL_NUMBER_OF_PROBE_TYPE";
   final static String query135 = NUMBER_OF_PROBE_TYPE + endsBrowseSubmissionISH;
   
+  final static String name246 = "TOTAL_NUMBER_OF_ISH_EXPRESSION";
+  final static String query246 = NUMBER_OF_ISH_EXPRESSION + endsBrowseSubmissionISH;
+
   // query to build anatomy tree for displaying annotation
   final static String name47 = "ANNOT_TREE_CONTENT";
   final static String query47 = "SELECT APO_DEPTH,APO_SEQUENCE, PATN.ATN_PUBLIC_ID, PARENT.ANO_COMPONENT_NAME, CONCAT('(',strt.STG_NAME,'-',end.sTG_NAME,')') AS 'RANGE', " +
@@ -1866,7 +1872,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name242,query242),
       new ParamQuery(name243,query243),
       new ParamQuery(name244,query244),
-      new ParamQuery(name245,query245)
+      new ParamQuery(name245,query245),
+      new ParamQuery(name246,query246)      
   };
 
   // finds ParamQuery object by name and returns

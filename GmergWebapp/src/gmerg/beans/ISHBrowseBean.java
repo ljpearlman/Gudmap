@@ -101,22 +101,22 @@ public class ISHBrowseBean extends MultipleInstanceBean {
 		tableView.addCollection(0, 0);
 		tableView.addCollection(1, 1);
 		tableView.setDisplayTotals(true);
-		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, true, false, false, false, false, true, true, false, true});
+		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, false, true, true, false, true, false, false, true});
 		
 		return tableView;
 	}
 
 	public static GenericTableFilter getDefaultIshFilter() { //this is compatible with AdvancedSearchQuery version
 		GenericTableFilter filter = new GenericTableFilter();
-		filter.addFilter(new FilterItem(1));
-		filter.addFilter(2, Globals.getPredefinedFilter(PredefinedFilters.STAGE));
+		filter.addFilter(new FilterItem(0));
 		if(Utility.getProject().equalsIgnoreCase("gudmap")) 
-			filter.addFilter(4, Globals.getPredefinedFilter(PredefinedFilters.LAB));
-		filter.addFilter(5, Globals.getPredefinedFilter(PredefinedFilters.DATE));
-		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.ASSAY));
-		filter.addFilter(7, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
+			filter.addFilter(2, Globals.getPredefinedFilter(PredefinedFilters.LAB));
+		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.DATE));
+		filter.addFilter(4, Globals.getPredefinedFilter(PredefinedFilters.ASSAY));
+		filter.addFilter(new FilterItem(5));
+		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.STAGE));
 		filter.addFilter(8, Globals.getPredefinedFilter(PredefinedFilters.SEX));
-		filter.addFilter(new FilterItem(9));
+		filter.addFilter(10, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
 		return filter;
 	}
 }

@@ -258,33 +258,31 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			} else if(query.equals("ish") || query.equals("insitu")) {
 				if(orderby < 0) {
 					orderStr = " order by " + AdvancedSearchDBQuery.getISHDefaultSort(); 
-				} else if(0 == orderby) {
-					orderStr = " order by CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort(); 
-				} else if(1 == orderby){
+				} else if(0 == orderby){
 					orderStr = " order by NATURAL_SORT(RPR_SYMBOL) " + order + "," + "SUB_EMBRYO_STG, SPN_SEX";
+				} else if(1 == orderby) {
+					orderStr = " order by CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort(); 
 				}  else if(2 == orderby){
-					orderStr = " order by SUB_EMBRYO_STG " + order + "," + "NATURAL_SORT(RPR_SYMBOL), SPN_SEX";
+					orderStr = " order by SUB_SOURCE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(3 == orderby){
+					orderStr = " order by SUB_SUB_DATE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+				}  else if(4 == orderby){
+					orderStr = " order by SUB_ASSAY_TYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+				}  else if(5 == orderby){
+					orderStr = " order by NATURAL_SORT(TRIM(RPR_JAX_ACC)) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+				}  else if(6 == orderby){
+					orderStr = " order by SUB_EMBRYO_STG " + order + "," + "NATURAL_SORT(RPR_SYMBOL), SPN_SEX";
+				}  else if(7 == orderby){
 					orderStr = " order by TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) " 
 						+ order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
-				}  else if(4 == orderby){
-					orderStr = " order by SUB_SOURCE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
-				}  else if(5 == orderby){
-					orderStr = " order by SUB_SUB_DATE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
-				}  else if(6 == orderby){
-					orderStr = " order by SUB_ASSAY_TYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
-				}  else if(7 == orderby){
-					orderStr = " order by SPN_ASSAY_TYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(8 == orderby){
 					orderStr = " order by SPN_SEX " + order + "," + "NATURAL_SORT(RPR_SYMBOL), SUB_EMBRYO_STG, SPN_SEX";
 				}  else if(9 == orderby){
-					orderStr = " order by NATURAL_SORT(TRIM(RPR_JAX_ACC)) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
-				}  else if(10 == orderby){
 					orderStr = " order by SPN_WILDTYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+				}  else if(10 == orderby){
+					orderStr = " order by SPN_ASSAY_TYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}   else if(11 == orderby){
-					orderStr = " order by PRB_PROBE_TYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
-				}   else if(12 == orderby){
-					orderStr = " order by CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_SML_FILENAME) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+					orderStr = " order by CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}   				
 			}
 		return orderStr;

@@ -87,18 +87,18 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
 
 		// get data from database
-		String [] allColTotalsQueries = {"TOTAL_NUMBER_OF_SUBMISSION",
+		String [] allColTotalsQueries = {
                 "TOTAL_NUMBER_OF_GENE_SYMBOL",
-                "TOTAL_NUMBER_OF_THEILER_STAGE",
-                "TOTAL_NUMBER_OF_GIVEN_STAGE",
+                "TOTAL_NUMBER_OF_SUBMISSION",
                 "TOTAL_NUMBER_OF_LAB",
                 "TOTAL_NUMBER_OF_SUBMISSION_DATE",
                 "TOTAL_NUMBER_OF_ASSAY_TYPE",
-                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
-                "TOTAL_NUMBER_OF_SEX",
                 "TOTAL_NUMBER_OF_PROBE_NAME",
+                "TOTAL_NUMBER_OF_THEILER_STAGE",
+                "TOTAL_NUMBER_OF_GIVEN_STAGE",
+                "TOTAL_NUMBER_OF_SEX",
                 "TOTAL_NUMBER_OF_GENOTYPE",
-                "TOTAL_NUMBER_OF_PROBE_TYPE",
+                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
                 "TOTAL_NUMBER_OF_IMAGE",
                 };
 		String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, filter);
@@ -176,46 +176,66 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 	//************************************************************************************************
 
 	static public void convertIshRowToDataItemFormat (DataItem[] formatedRow, String[] row) {
-		
-		if("Microarray".equalsIgnoreCase(row[6])) 
-			formatedRow[0] = new DataItem(row[0], "Click to view Samples page","mic_submission.html?id="+row[0], 10);			//sub id
-		else if ("ISH".equalsIgnoreCase(row[6]) || "ISH control".equalsIgnoreCase(row[6])  || "IHC".equalsIgnoreCase(row[6]) || "OPT".equalsIgnoreCase(row[6])) 
-			formatedRow[0] = new DataItem(row[0], row[0], "ish_submission.html?id="+row[0], 10);	  			// Id
-		else if ("TG".equalsIgnoreCase(row[6])) // added by xingjun - 27/08/2008 - transgenic data 
-			formatedRow[0] = new DataItem(row[0], row[0], "ish_submission.html?id="+row[0], 10);	  			// Id
+
+		// Gene
+		formatedRow[ 0] = new DataItem(row[0], "", "gene.html?gene="+row[0], 10);					
+
+		// GUDMAP entry details
+		if("Microarray".equalsIgnoreCase(row[4])) 
+			formatedRow[1] = new DataItem(row[1], "Click to view Samples page","mic_submission.html?id="+row[0], 10);			//sub id
+		else if ("ISH".equalsIgnoreCase(row[4]) || "ISH control".equalsIgnoreCase(row[4])  || "IHC".equalsIgnoreCase(row[4]) || "OPT".equalsIgnoreCase(row[4])) 
+			formatedRow[1] = new DataItem(row[1], row[1], "ish_submission.html?id="+row[1], 10);	  			// Id
+		else if ("TG".equalsIgnoreCase(row[4])) // added by xingjun - 27/08/2008 - transgenic data 
+			formatedRow[1] = new DataItem(row[1], row[1], "ish_submission.html?id="+row[1], 10);	  			// Id
 		else
-			formatedRow[0] = new DataItem(row[0]);	// Id
-				
-		formatedRow[ 1] = new DataItem(row[1], "", "gene.html?gene="+row[1], 10);					// Gene Symbol
-		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
-		    formatedRow[ 2] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);								// Theiler Stage
-		else 
-		    formatedRow[ 2] = new DataItem(row[2]);                                                                       // Theiler Stage
-		formatedRow[ 3] = new DataItem(row[3]);	// Age
+			formatedRow[1] = new DataItem(row[10]);	// Id
 
-		formatedRow[ 4] = new DataItem(row[4], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);	// Source
+		// Source
+		formatedRow[ 2] = new DataItem(row[2], "Source details", "lab_detail.html?id="+row[1], 6, 251, 500);	
 
-		formatedRow[ 5] = new DataItem(Utility.convertToDisplayDate(row[5]));	// submission Date
-		formatedRow[ 6] = new DataItem(row[6]);	// Assay Type
-		formatedRow[ 7] = new DataItem(row[7]);	// Specimen Type
-		formatedRow[ 8] = new DataItem(row[8]);	// Sex
+		// Submission Date
+		formatedRow[ 3] = new DataItem(Utility.convertToDisplayDate(row[3]));	
+
+		// Assay Type
+		formatedRow[ 4] = new DataItem(row[4]);
+
+		// Probe Name
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
-			if ("IHC".equalsIgnoreCase(row[6]))
-				formatedRow[ 9] = new DataItem(row[9], "Antibody Details", "antibody.html?antibody="+row[9], 10);	
+			if ("IHC".equalsIgnoreCase(row[4]))
+				formatedRow[ 5] = new DataItem(row[5], "Antibody Details", "antibody.html?antibody="+row[5], 10);	
 			else
-				formatedRow[ 9] = new DataItem(row[9], "Probe Details", "probe.html?probe="+row[9], 10);
-		}// Probe Name
-			formatedRow[ 9] = new DataItem(row[9]);																// Probe Name
-		formatedRow[10] = new DataItem(row[10]);															// genotype
-		formatedRow[11] = new DataItem(row[11]);															// Probe Type
-		if(row[12] == null || row[12].trim().equals(""))
-			formatedRow[12] = new DataItem("");	// microarrays don't have thumbnails to display
-		else if(row[6].equals("OPT")) {
-			formatedRow[12] = new DataItem(row[12].substring(0,row[12].lastIndexOf("."))+".jpg", "Click to see submission details for "+ row[0], "ish_submission.html?id="+row[0], 13); // thumbnail (only for OPT)
+				formatedRow[ 5] = new DataItem(row[5], "Probe Details", "probe.html?probe="+row[5], 10);
+		}
+		
+		// Theiler Stage
+		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
+		    formatedRow[ 6] = new DataItem(row[6], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[6]+"definition.html", 10);								// Theiler Stage
+		else 
+		    formatedRow[ 6] = new DataItem(row[6]);  
+		
+		// Age
+		formatedRow[ 7] = new DataItem(row[7]);	
+		
+		// Sex
+		formatedRow[ 8] = new DataItem(row[8]);
+		
+		// Genotype
+		formatedRow[9] = new DataItem(row[9]);
+
+		// In Situ Expression
+//		formatedRow[ 10] = new DataItem(row[10]);
+
+		// Specimen Type
+		formatedRow[ 10] = new DataItem(row[10]);
+		
+		// Image
+		if(row[11] == null || row[11].trim().equals(""))
+			formatedRow[11] = new DataItem("");	// microarrays don't have thumbnails to display
+		else if(row[4].equals("OPT")) {
+			formatedRow[11] = new DataItem(row[11].substring(0,row[11].lastIndexOf("."))+".jpg", "Click to see submission details for "+ row[1], "ish_submission.html?id="+row[1], 13); // thumbnail (only for OPT)
 		}
 		else
-			formatedRow[12] = new DataItem(row[12], "Click to see submission details for "+ row[0], "ish_submission.html?id="+row[0], 13);	// thumbnail
-		
+			formatedRow[11] = new DataItem(row[11], "Click to see submission details for "+ row[1], "ish_submission.html?id="+row[1], 13);	// thumbnail
 		
 	}
 

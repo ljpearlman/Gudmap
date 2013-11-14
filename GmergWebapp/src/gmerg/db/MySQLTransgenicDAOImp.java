@@ -168,18 +168,18 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     	String orderByString = new String("");
     	String order = (ascending == true ? "ASC": "DESC");
     	String[] ISHBrowseAllColumnList = {
-    			"natural_sort(SUB_ACCESSION_ID)", // 0
-    			"natural_sort(TRIM(RPR_SYMBOL))", // 1
-    			"SUB_EMBRYO_STG", // 2
+    			"natural_sort(TRIM(RPR_SYMBOL))", 
+    			"natural_sort(SUB_ACCESSION_ID)", 
+    			"SUB_SOURCE", 
+    			"SUB_SUB_DATE", 
+    			"SUB_ASSAY_TYPE", 
+    			"RPR_JAX_ACC", 
+    			"SUB_EMBRYO_STG", 
     			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", // 3
-    			"SUB_SOURCE", // 4
-    			"SUB_SUB_DATE", // 5
-    			"SUB_ASSAY_TYPE", // 6
-    			"SPN_ASSAY_TYPE", // 7
-    			"SPN_SEX", // 8
-    			"RPR_JAX_ACC", // 9
-    			"SPN_WILDTYPE", // 10
-    			"PRB_PROBE_TYPE" //11
+    			"SPN_ASSAY_TYPE", 
+    			"SPN_SEX", 
+    			"SPN_WILDTYPE", 
+    			"SPN_ASSAY_TYPE"
     	};
     	String geneSymbolCol;
     	
@@ -195,34 +195,30 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         
         } else {
         	if(columnIndex == 0) {
+       			orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
+        	} else if (columnIndex == 1) {
         		if (queryType == 1) {
         			orderByString = "natural_sort(SUB_ACCESSION_ID) " + 
         			order +", " + geneSymbolCol;
         		} 
-        	} else if (columnIndex == 1) {
-       			orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
         	} else if (columnIndex == 2) {
-        		orderByString = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol;
-        	} else if (columnIndex == 3) {
-//        		orderByString = "CONCAT(SPN_STAGE,SPN_STAGE_FORMAT)" + " " + order +", " + geneSymbolCol;
-//        		orderByString = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol;
-        		orderByString = "AGE" + " " + order +", " + geneSymbolCol;
-        	} else if (columnIndex == 4) {
         		orderByString = "SUB_SOURCE" + " " + order +", " + geneSymbolCol;
-        	} else if (columnIndex == 5) {
+        	} else if (columnIndex == 3) {
         		orderByString = "SUB_SUB_DATE" + " " + order +", " + geneSymbolCol;
-        	} else if (columnIndex == 6) {
+        	} else if (columnIndex == 4) {
         		orderByString = "SUB_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
+        	}else if (columnIndex == 5) {
+        		orderByString = "NATURAL_SORT(TRIM(RPR_JAX_ACC))" + " " + order + ", " + geneSymbolCol;
+        	} else if (columnIndex == 6) {
+        		orderByString = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 7) {
-        		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
+        		orderByString = "AGE" + " " + order +", " + geneSymbolCol;
         	}else if (columnIndex == 8) {
         		orderByString = "SPN_SEX" + " " + order + ", " + geneSymbolCol;
         	}else if (columnIndex == 9) {
-        		orderByString = "NATURAL_SORT(TRIM(RPR_JAX_ACC))" + " " + order + ", " + geneSymbolCol;
-        	}else if (columnIndex == 10) {
         		orderByString = "SPN_WILDTYPE" + " " + order + ", " + geneSymbolCol;
-        	}else if (columnIndex == 11) {
-        		orderByString = "PRB_PROBE_TYPE" + " " + order + ", " + geneSymbolCol;
+        	}else if (columnIndex == 10) {
+        		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
         	} else {
        			orderByString = geneSymbolCol + ", SUB_EMBRYO_STG ";
         	}
@@ -341,27 +337,19 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
             ArrayList<String[]> results = new ArrayList<String[]>();
             while (resSet.next()) {
                 String[] ishBrowseSubmission = new String[13];
-                ishBrowseSubmission[0] = resSet.getString(1); // id
-                ishBrowseSubmission[1] = resSet.getString(2); // symbol
-                ishBrowseSubmission[2] = resSet.getString(3); // ts
-                ishBrowseSubmission[3] = resSet.getString(4); // age
-                ishBrowseSubmission[4] = resSet.getString(5); // lab
-//                ishBrowseSubmission[5] = resSet.getString(6); // date
-                ishBrowseSubmission[5] = resSet.getString(8); // date
-                String assay = resSet.getString(7);
-                ishBrowseSubmission[6] = (assay.equals("TG")? "Tg":assay); // assay
-//                ishBrowseSubmission[7] = resSet.getString(8); // specimen
-                ishBrowseSubmission[7] = resSet.getString(6); // specimen
-//                ishBrowseSubmission[8] = resSet.getString(9); // sex
-                ishBrowseSubmission[8] = resSet.getString(11); // sex
-//                ishBrowseSubmission[9] = resSet.getString(10); // probe name
-                ishBrowseSubmission[9] = resSet.getString(12); // probe name
-//                ishBrowseSubmission[10] = resSet.getString(11); // genotype
-                ishBrowseSubmission[10] = resSet.getString(13); // genotype
-//                ishBrowseSubmission[11] = resSet.getString(12); // probe type
-                ishBrowseSubmission[11] = resSet.getString(14); // no probe type for tg data
-//                ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
-                ishBrowseSubmission[12] = resSet.getString(9); // thumbnail
+                ishBrowseSubmission[0] = resSet.getString(1); // symbol
+                ishBrowseSubmission[1] = resSet.getString(2); // id
+                ishBrowseSubmission[2] = resSet.getString(3); // source
+                ishBrowseSubmission[3] = resSet.getString(4); // date
+                String assay = resSet.getString(5);
+                ishBrowseSubmission[4] = (assay.equals("TG")? "Tg":assay); // assay
+                ishBrowseSubmission[5] = resSet.getString(6); // probe name
+                ishBrowseSubmission[6] = resSet.getString(7); // ts
+                ishBrowseSubmission[7] = resSet.getString(8); // age
+                ishBrowseSubmission[8] = resSet.getString(9); // sex
+                ishBrowseSubmission[9] = resSet.getString(10); // genotype
+                ishBrowseSubmission[10] = resSet.getString(11); // specimen
+                ishBrowseSubmission[11] = resSet.getString(12); // thumbnail
                 results.add(ishBrowseSubmission);
             }
             return results;
