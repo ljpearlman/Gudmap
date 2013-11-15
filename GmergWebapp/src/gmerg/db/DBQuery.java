@@ -33,6 +33,7 @@ public class DBQuery {
 		  stageFormatConcat,
 		  "SPN_SEX",
 		  "SPN_WILDTYPE",
+		  "EXP_STRENGTH",
 		  "SPN_ASSAY_TYPE",
 		  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_FILENAME)",
 		  "REPLACE(SUB_ACCESSION_ID, ':', 'no')"
@@ -58,6 +59,7 @@ public class DBQuery {
                                                   "JOIN ISH_PROBE ON SUB_OID = PRB_SUBMISSION_FK " +
                                                   "JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
                                                   "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
+                                                  "JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " +
                                                   "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
                                                   "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
                                                   "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+

@@ -280,8 +280,10 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}  else if(9 == orderby){
 					orderStr = " order by SPN_WILDTYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(10 == orderby){
+					orderStr = " order by EXP_STRENGTH " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+				}  else if(11 == orderby){
 					orderStr = " order by SPN_ASSAY_TYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
-				}   else if(11 == orderby){
+				}   else if(12 == orderby){
 					orderStr = " order by CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}   				
 			}

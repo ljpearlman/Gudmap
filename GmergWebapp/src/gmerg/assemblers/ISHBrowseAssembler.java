@@ -98,6 +98,7 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
                 "TOTAL_NUMBER_OF_GIVEN_STAGE",
                 "TOTAL_NUMBER_OF_SEX",
                 "TOTAL_NUMBER_OF_GENOTYPE",
+                "TOTAL_NUMBER_OF_ISH_EXPRESSION",
                 "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
                 "TOTAL_NUMBER_OF_IMAGE",
                 };
@@ -223,19 +224,19 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		formatedRow[9] = new DataItem(row[9]);
 
 		// In Situ Expression
-//		formatedRow[ 10] = new DataItem(row[10]);
+		formatedRow[ 10] = new DataItem(row[10]);
 
 		// Specimen Type
-		formatedRow[ 10] = new DataItem(row[10]);
+		formatedRow[ 11] = new DataItem(row[11]);
 		
 		// Image
-		if(row[11] == null || row[11].trim().equals(""))
-			formatedRow[11] = new DataItem("");	// microarrays don't have thumbnails to display
+		if(row[12] == null || row[12].trim().equals(""))
+			formatedRow[12] = new DataItem("");	// microarrays don't have thumbnails to display
 		else if(row[4].equals("OPT")) {
-			formatedRow[11] = new DataItem(row[11].substring(0,row[11].lastIndexOf("."))+".jpg", "Click to see submission details for "+ row[1], "ish_submission.html?id="+row[1], 13); // thumbnail (only for OPT)
+			formatedRow[12] = new DataItem(row[12].substring(0,row[12].lastIndexOf("."))+".jpg", "Click to see submission details for "+ row[1], "ish_submission.html?id="+row[1], 13); // thumbnail (only for OPT)
 		}
 		else
-			formatedRow[11] = new DataItem(row[11], "Click to see submission details for "+ row[1], "ish_submission.html?id="+row[1], 13);	// thumbnail
+			formatedRow[12] = new DataItem(row[12], "Click to see submission details for "+ row[1], "ish_submission.html?id="+row[1], 13);	// thumbnail
 		
 	}
 

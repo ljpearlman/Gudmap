@@ -146,6 +146,7 @@ public class InsituDBQuery {
 	"JOIN ISH_ALLELE ON SAL_ALE_OID_FK=ALE_OID " +
 	"JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
 	"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
+	"JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " +
 	"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
 	"AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
 	"JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK ";
@@ -161,6 +162,7 @@ public class InsituDBQuery {
 		"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) AGE",
 		"SPN_SEX",
 		"SPN_WILDTYPE",
+		"EXP_STRENGTH",
 		"SPN_ASSAY_TYPE",
 		"CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_FILENAME) THUMBNAIL",
 		"REPLACE(SUB_ACCESSION_ID, ':', 'no')",
@@ -210,6 +212,7 @@ public class InsituDBQuery {
 	
 	final static String NUMBER_OF_IMAGE = "SELECT COUNT(DISTINCT CONCAT(IMG_FILEPATH,IMG_SML_FILENAME)) ";
 
+	final static String NUMBER_OF_ISH_EXPRESSION = "SELECT COUNT(DISTINCT EXP_STRENGTH) "; 
 	
 	static String getAssayType(String[] type) {
 		String assayType = " AND (SUB_ASSAY_TYPE = '";
@@ -269,6 +272,9 @@ public class InsituDBQuery {
 	final static String name113 = "TOTAL_NUMBER_OF_IMAGE_TG";
 	final static String query113 = NUMBER_OF_IMAGE + BROWSE_ALL_TABLES_TG + PUBLIC_ENTRIES_Q + getAssayType("TG");
 	
+	final static String name114 = "TOTAL_NUMBER_OF_ISH_EXPRESSION_TG";
+	final static String query114 = NUMBER_OF_ISH_EXPRESSION + BROWSE_ALL_TABLES_TG + PUBLIC_ENTRIES_Q + getAssayType("TG");
+	
 	public static String stageFormatConcat = bundle.getString("project").equals("GUDMAP") ?
 			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) " +
 			"WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" :
@@ -321,6 +327,7 @@ public class InsituDBQuery {
 		new ParamQuery(name111, query111),
 		new ParamQuery(name112, query112),
 		new ParamQuery(name113, query113),
+		new ParamQuery(name114, query114),
 		new ParamQuery(name16, query16)
 	};
 	

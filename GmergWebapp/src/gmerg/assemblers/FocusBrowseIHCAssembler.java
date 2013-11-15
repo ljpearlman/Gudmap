@@ -121,6 +121,7 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
                 "TOTAL_NUMBER_OF_GIVEN_STAGE",
                 "TOTAL_NUMBER_OF_SEX",
                 "TOTAL_NUMBER_OF_GENOTYPE",
+                "TOTAL_NUMBER_OF_ISH_EXPRESSION",
                 "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
                 "TOTAL_NUMBER_OF_IMAGE",
                 };

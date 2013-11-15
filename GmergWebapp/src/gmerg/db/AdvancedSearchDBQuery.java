@@ -23,7 +23,7 @@ public class AdvancedSearchDBQuery {
 	  final static public String[] getISHDefaultTitle(){
 	      return new String[]{"Gene", Utility.getProject()+" Entry Details", "Source", "Submission Date", 
 	    		  	 "Assay Type", "Probe Name", Utility.getStageSeriesMed()+" Stage", 
-					 "Age", "Sex", "Genotype", "Specimen Type", "Images"};			  
+					 "Age", "Sex", "Genotype", "In Situ Expression", "Specimen Type", "Images"};			  
 	  }
 	  
 	  final static public String[] getISHEditDefaultTitle(){
@@ -844,6 +844,7 @@ public class AdvancedSearchDBQuery {
       // - changed back and expression table join will be handled in the DAO code
       // - use LEFT JOIN instead of JOIN to include submissions without expression info - 22/09/2009
 	  final static String ISH_BROWSE_ALL_TABLES = "FROM ISH_SUBMISSION " +
+			  "JOIN ISH_EXPRESSION ON EXP_SUBMISSION_FK = SUB_OID " +
               "JOIN ISH_PROBE ON SUB_OID = PRB_SUBMISSION_FK " +
               "JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
               "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +

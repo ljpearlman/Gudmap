@@ -270,6 +270,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
         			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", 
         			"SPN_SEX", 
         			"SPN_WILDTYPE", 
+        			"EXP_STRENGTH",
         			"SPN_ASSAY_TYPE" 
         	};
     	String geneSymbolCol;
@@ -310,6 +311,8 @@ public class MySQLIHCDAOImp implements IHCDAO {
         	}else if (columnIndex == 9) {
         		orderByString = "SPN_WILDTYPE" + " " + order + ", " + geneSymbolCol;
         	} else if (columnIndex == 10) {
+        		orderByString = "EXP_STRENGTH" + " " + order +", " + geneSymbolCol;
+        	} else if (columnIndex == 11) {
         		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
         	} else {
        			orderByString = geneSymbolCol + ", SUB_EMBRYO_STG ";
@@ -334,7 +337,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
             ArrayList<String[]> results = new ArrayList<String[]>();
 
             while (resSet.next()) {
-                String[] ishBrowseSubmission = new String[12];
+                String[] ishBrowseSubmission = new String[13];
                 ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
                 ishBrowseSubmission[ 1] = resSet.getString(2); // id
                 ishBrowseSubmission[ 2] = resSet.getString(3); // source
@@ -345,9 +348,9 @@ public class MySQLIHCDAOImp implements IHCDAO {
                 ishBrowseSubmission[ 7] = resSet.getString(8); // age
                 ishBrowseSubmission[ 8] = resSet.getString(9); // sex
                 ishBrowseSubmission[ 9] = resSet.getString(10); // genotype
-//                ishBrowseSubmission[10] = resSet.getString(11); // in situ expression
-                ishBrowseSubmission[10] = resSet.getString(11); // specimen
-                ishBrowseSubmission[11] = resSet.getString(12); // thumbnail
+                ishBrowseSubmission[10] = resSet.getString(11); // in situ expression
+                ishBrowseSubmission[11] = resSet.getString(12); // specimen
+                ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
                 results.add(ishBrowseSubmission);
             }
             return results;

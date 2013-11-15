@@ -63,7 +63,7 @@ public class TransgenicBrowseBean {
 		table.getAssembler().setFilter(ISHBrowseBean.getDefaultIshFilter());
 		GenericTableView tableView = ISHBrowseBean.getDefaultIshBrowseTableView(viewName, table);
 //		tableView.setDisplayTotals(true); // Bernie 04/11/2010 - display totals in header
-		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, false, false, true, false, false, true, false, true});
+		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, false, false, true, false, false, true, false, false, true});
 		tableView.setColHidden(5, true); // hide probe name from displaying - 29/08/2008
 		return  tableView;
 	}

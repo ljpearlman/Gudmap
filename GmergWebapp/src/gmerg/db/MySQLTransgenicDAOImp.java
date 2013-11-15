@@ -46,7 +46,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 
         // assemble the query string
         String query = parQ.getQuerySQL() + "AND SUB_ASSAY_TYPE = 'TG'";
-        String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
+        String defaultOrder = " GROUP BY SUB_ACCESSION_ID " + DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
         String queryString =
         	assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num, organ, archiveId, batchId);
         
@@ -179,6 +179,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     			"SPN_ASSAY_TYPE", 
     			"SPN_SEX", 
     			"SPN_WILDTYPE", 
+    			"EXP_STRENGTH", 
     			"SPN_ASSAY_TYPE"
     	};
     	String geneSymbolCol;
@@ -218,6 +219,8 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         	}else if (columnIndex == 9) {
         		orderByString = "SPN_WILDTYPE" + " " + order + ", " + geneSymbolCol;
         	}else if (columnIndex == 10) {
+        		orderByString = "EXP_STRENGTH" + " " + order +", " + geneSymbolCol;
+        	}else if (columnIndex == 11) {
         		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
         	} else {
        			orderByString = geneSymbolCol + ", SUB_EMBRYO_STG ";
@@ -244,14 +247,17 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     		if (endingClause != null && !endingClause.equals("")) {
     			queryString[i] += endingClause;
     		}
-		if (debug)
-		    System.out.println("Q (preFilter): "  + queryString[i]);
+    		
+			if (debug)
+			    System.out.println("Q (preFilter): "  + queryString[i]);
+			
     		if (filter!=null)
     			queryString[i] = filter.addFilterSql(queryString[i], InsituDBQuery.TG_BROWSE_ALL_SQL_COLUMNS);
-		if (debug)
-		    System.out.println("Q (postFilter): "  + queryString[i]);
-    		result[i][0] = query[i];
-    	}
+    		
+			if (debug)
+			    System.out.println("Q (postFilter): "  + queryString[i]);
+	    		result[i][0] = query[i];
+	    	}
     	
     	// start to execute query
     	// Connection conn = DBUtil.getDBConnection();
@@ -348,8 +354,9 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
                 ishBrowseSubmission[7] = resSet.getString(8); // age
                 ishBrowseSubmission[8] = resSet.getString(9); // sex
                 ishBrowseSubmission[9] = resSet.getString(10); // genotype
-                ishBrowseSubmission[10] = resSet.getString(11); // specimen
-                ishBrowseSubmission[11] = resSet.getString(12); // thumbnail
+                ishBrowseSubmission[10] = resSet.getString(11); // insitu expression
+                ishBrowseSubmission[11] = resSet.getString(12); // specimen
+                ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
                 results.add(ishBrowseSubmission);
             }
             return results;
