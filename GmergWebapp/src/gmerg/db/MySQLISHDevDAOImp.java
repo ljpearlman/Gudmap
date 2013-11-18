@@ -59,7 +59,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
             parQ.setQuerySQL(queryString);
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
-
+            
+            System.out.println("MySQLISHDevDAOImp:prepStmt: " + prepStmt);
             // execute
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);

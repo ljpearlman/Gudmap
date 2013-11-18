@@ -30,7 +30,7 @@ import java.text.DateFormat;
  *
  */
 public class MySQLISHDAOImp implements ISHDAO {
-    private boolean debug = false;
+    private boolean debug = true;
     private Connection conn;
     
     // default constructor
@@ -166,12 +166,13 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             for (int i = 0; i < queryNumber; i++) {
-		if (debug)
-		    System.out.println("MySQLISHDAOImp.sql "+i+"th = "+queryString[i]);
+				if (debug)
+				    System.out.println("MySQLISHDAOImp.sql "+i+"th = "+queryString[i]);
+				
                 prepStmt = conn.prepareStatement(queryString[i]);
                 if (param != null &&
                     param[i] != null) { // set query criteria if it's not null
@@ -324,9 +325,13 @@ public class MySQLISHDAOImp implements ISHDAO {
     }
     
     public Probe findMaProbeByProbeId(String probeId, String maprobeId){
+    	
+//    	if (debug) 
+    		System.out.println("probeId = "+ probeId + " maprobeId = " + maprobeId);
+
     	if(probeId == null){
-	    System.out.println("MySQLISHDAOImp.findMaProbeByProbeId !!!possible error: null probe id");
-	    return null;
+		    System.out.println("MySQLISHDAOImp.findMaProbeByProbeId !!!possible error: null probe id");
+		    return null;
     	}
 	
     	Probe maProbe = null;
@@ -334,16 +339,15 @@ public class MySQLISHDAOImp implements ISHDAO {
     	PreparedStatement prepStmtProbe = null;
     	ResultSet resSetProbe = null;
     	ParamQuery parQProbe = null;
-    	if (maprobeId == null){
-	    parQProbe = DBQuery.getParamQuery("MAPROBE_DETAILS");
+    	if (maprobeId == null || maprobeId == ""){
+    		parQProbe = DBQuery.getParamQuery("MAPROBE_DETAILS");
     	}
     	else{
-	    parQProbe = DBQuery.getParamQuery("MAPROBE_DETAILS_EXTRA");
-	    
+    		parQProbe = DBQuery.getParamQuery("MAPROBE_DETAILS_EXTRA");	    
     	}
 	
-	if (debug) 
-	    System.out.println("MySQLISHDAOImp.findMaProbeByProbeId sql = "+parQProbe.getQuerySQL());
+    	if (debug) 
+    		System.out.println("MySQLISHDAOImp.findMaProbeByProbeId sql = "+parQProbe.getQuerySQL());
 
         PreparedStatement prepStmtProbeNote = null;
         ResultSet resSetProbeNote = null;
@@ -355,17 +359,17 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQMaprobeNote = DBQuery.getParamQuery("MAPROBE_NOTE");
 	
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             conn.setAutoCommit(false);
 	    
             parQProbe.setPrepStat(conn);
-	    prepStmtProbe = parQProbe.getPrepStat();
-	    prepStmtProbe.setString(1, probeId);
-	    if (maprobeId != null)
-		prepStmtProbe.setString(2, maprobeId);
-	    resSetProbe = prepStmtProbe.executeQuery();
+		    prepStmtProbe = parQProbe.getPrepStat();
+		    prepStmtProbe.setString(1, probeId);
+		    if (maprobeId != null)
+		    	prepStmtProbe.setString(2, maprobeId);
+		    resSetProbe = prepStmtProbe.executeQuery();
 	    
             // probe note -- Mantis 558 Task5
             parQProbeNote.setPrepStat(conn);
@@ -383,7 +387,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             conn.commit();
             conn.setAutoCommit(true);
 	    
-	    maProbe = this.formatProbeResultSet(resSetProbe, resSetProbeNote, resSetMaprobeNote, null);
+            maProbe = this.formatProbeResultSet(resSetProbe, resSetProbeNote, resSetMaprobeNote, null);
 	    
     	}
     	catch(SQLException e){

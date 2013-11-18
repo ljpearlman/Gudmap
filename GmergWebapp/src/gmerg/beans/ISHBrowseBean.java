@@ -101,6 +101,7 @@ public class ISHBrowseBean extends MultipleInstanceBean {
 		tableView.addCollection(0, 0);
 		tableView.addCollection(1, 1);
 		tableView.setDisplayTotals(true);
+//		tableView.setDisplayTotals(false);
 		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, false, true, true, false, true, false, false, false, true});
 		
 		return tableView;
