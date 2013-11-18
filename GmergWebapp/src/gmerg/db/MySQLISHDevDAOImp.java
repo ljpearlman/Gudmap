@@ -210,7 +210,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		String str = null;
 
             while (resSet.next()) {
-                ishBrowseSubmission = new String[12];
+                ishBrowseSubmission = new String[13];
                 ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
                 ishBrowseSubmission[ 1] = resSet.getString(2); // id
                 ishBrowseSubmission[ 2] = resSet.getString(3); // source

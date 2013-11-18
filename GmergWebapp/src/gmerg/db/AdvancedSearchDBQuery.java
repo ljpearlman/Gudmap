@@ -825,6 +825,7 @@ public class AdvancedSearchDBQuery {
 															stageFormatConcat,
 															"SPN_SEX",
 															"SPN_WILDTYPE",
+															"EXP_STRENGTH",
 															"SPN_ASSAY_TYPE",
 															"CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_SML_FILENAME)",
 															"REPLACE(SUB_ACCESSION_ID, ':', 'no')" };
