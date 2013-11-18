@@ -284,7 +284,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}  else if(11 == orderby){
 					orderStr = " order by SPN_ASSAY_TYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}   else if(12 == orderby){
-					orderStr = " order by CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_FILENAME) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+					orderStr = " order by CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_SML_FILENAME) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}   				
 			}
 		return orderStr;
