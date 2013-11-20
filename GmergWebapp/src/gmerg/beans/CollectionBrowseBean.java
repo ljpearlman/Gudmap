@@ -256,7 +256,7 @@ public class CollectionBrowseBean {
 	}
 	
 	public String getStatus() {
-		if (collectionInfo.getStatus()==0)
+		if (null != collectionInfo && collectionInfo.getStatus()==0)
 			return "private";
 		return "public";
 	}

@@ -186,11 +186,21 @@ public class Utility {
     
     public static User getUser() {
 	UserBean userBean = (UserBean)FacesUtil.getSessionValue("UserBean");
+
+	//!!! it is important to have this test
+	// because there may not be UserBean
+	if (null == userBean)
+	    return null;
 	return userBean.getUser();
     }
     
     public static boolean isUserLoggedIn() {
 	UserBean userBean = (UserBean)FacesUtil.getSessionValue("UserBean");
+
+	//!!! it is important to have this test
+	// because there may not be UserBean
+	if (null == userBean)
+	    return false;
 	return userBean.isUserLoggedIn();
     }
     

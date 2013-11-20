@@ -89,12 +89,20 @@
     <jar   jarfile="${dist}/${name}.war"
            basedir="${build}"
            includes="**" />
+
+<!-- When compiling jar file for other application such as EmageWebapp
+    <jar   jarfile="${name}.jar"
+           basedir="${build}/WEB-INF/classes"
+           includes="**" />
+-->
+
   </target>
 
 
   <!-- ==================== Administrative targets  ======================= -->
   <target name="clean">
     <delete dir="${build}"/>
+    <delete file="${name}.jar"/>
   </target>
   <target name="all" depends="clean,dist"/>
   <target name="main" depends="webapps"/>
