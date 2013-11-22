@@ -193,39 +193,53 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		/** ---get data--- */
-		if (type.equals("image")) { // posibly need further implementation
-			return null;
+		ISHDAO ishDAO;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
-		} else if (type.equals("anatomy")) {
-			
-			ArrayList componentCountInfo = ishDAO.getComponentCountInfoByGeneInfo(inputType, 
-					inputString,
-					stage, criteria, columnIndex, ascending, offset, num);
-			
-			// release the db resources
-			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
-			
-			/** ---return the object--- */
-			return componentCountInfo;
-			
-		} else if (type.equals("gene")){
-
-			// gene query
-		    ArrayList submissions = ishDAO.getSubmissionByGeneInfo(inputType, 
-		    		ignoreExpression, inputString,
-		    		stage, criteria, columnIndex, ascending, offset, num);
-
-			// release the db resources
-			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
-			
-			/** ---return the object--- */
-			return submissions;
+			/** ---get data--- */
+			if (type.equals("image")) { // posibly need further implementation
+				// release the db resources
+				DBHelper.closeJDBCConnection(conn);
+				ishDAO = null;
+				
+				return null;
+				
+			} else if (type.equals("anatomy")) {
+				
+				ArrayList componentCountInfo = ishDAO.getComponentCountInfoByGeneInfo(inputType, 
+						inputString,
+						stage, criteria, columnIndex, ascending, offset, num);
+				
+				// release the db resources
+				DBHelper.closeJDBCConnection(conn);
+				ishDAO = null;
+				
+				/** ---return the object--- */
+				return componentCountInfo;
+				
+			} else if (type.equals("gene")){
+	
+				// gene query
+			    ArrayList submissions = ishDAO.getSubmissionByGeneInfo(inputType, 
+			    		ignoreExpression, inputString,
+			    		stage, criteria, columnIndex, ascending, offset, num);
+	
+				// release the db resources
+				DBHelper.closeJDBCConnection(conn);
+				ishDAO = null;
+				
+				/** ---return the object--- */
+				return submissions;
+			}
 		}
+		catch(Exception e){
+			System.out.println("QuickAssembler::getDataByGene failed !!!");
+		}
+		// release the db resources
+		DBHelper.closeJDBCConnection(conn);
+		ishDAO = null;
+		
 		return null;
 	} // end of getDataByGene
         
@@ -242,13 +256,18 @@ public class QueryAssembler extends OffMemoryTableAssembler {
         /** ---get data from dao--- */
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-        
-        // get the value
-        totalComponents +=
-        	ishDAO.getTotalISHComponentsExpressingGeneQuery(inputType, 
-        			ignoreExpression, inputString, stage, criteria);
-        
+        ISHDAO ishDAO;
+        try{
+	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+	        
+	        // get the value
+	        totalComponents +=
+	        	ishDAO.getTotalISHComponentsExpressingGeneQuery(inputType, 
+	        			ignoreExpression, inputString, stage, criteria);
+        }
+		catch(Exception e){
+			System.out.println("QuickAssembler::getTotalISHComponentsExpressingGene failed !!!");
+		}
         // release db resources
         DBHelper.closeJDBCConnection(conn);
         ishDAO = null;
@@ -268,13 +287,19 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao--- */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// get the value
-		totalSubmissions +=
-			ishDAO.getTotalNumberOfISHSubmissionsForGeneQuery(inputType,
-					ignoreExpression, inputString, stage, criteria);
-		
+		ISHDAO ishDAO;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// get the value
+			totalSubmissions +=
+				ishDAO.getTotalNumberOfISHSubmissionsForGeneQuery(inputType,
+						ignoreExpression, inputString, stage, criteria);
+		}
+		catch(Exception e){
+			System.out.println("QuickAssembler::getTotalISHSubmissionsForGeneQuery failed !!!");
+		}
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDAO = null;
@@ -297,12 +322,18 @@ public class QueryAssembler extends OffMemoryTableAssembler {
         /** ---get data from dao--- */
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-                
-        // get the value
-        totalSubmissions += ishDAO.getTotalNumberOfISHSubmissionsForGeneQuery(inputType, 
-        		ignoreExpression, inputString, component, stage, criteria);
-                
+        ISHDAO ishDAO;
+        try{
+	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+	                
+	        // get the value
+	        totalSubmissions += ishDAO.getTotalNumberOfISHSubmissionsForGeneQuery(inputType, 
+	        		ignoreExpression, inputString, component, stage, criteria);
+        }
+		catch(Exception e){
+			System.out.println("QuickAssembler::getTotalISHSubmissionsForGeneQuery failed !!!");
+		}
+        
         // release db resources
         DBHelper.closeJDBCConnection(conn);
         ishDAO = null;
@@ -312,48 +343,58 @@ public class QueryAssembler extends OffMemoryTableAssembler {
     }
 	
     public String getTotalISHSubmissionsForComponentQuery(String component) {
-                String totalSubmissions = new String("");
+        String totalSubmissions = new String("");
                 
-                /** ---get data from dao--- */
-                // create a dao
-                Connection conn = DBHelper.getDBConnection();
-                ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-                
-                // get the value
-                totalSubmissions += 
-                	ishDAO.getTotalNumberOfISHSubmissionsForComponentQuery(component);
-                
-                // release db resources
-                DBHelper.closeJDBCConnection(conn);
-                ishDAO = null;
+        /** ---get data from dao--- */
+        // create a dao
+        Connection conn = DBHelper.getDBConnection();
+        ISHDAO ishDAO;
+        try{
+	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+	        
+	        // get the value
+	        totalSubmissions += 
+	        	ishDAO.getTotalNumberOfISHSubmissionsForComponentQuery(component);
+        }
+		catch(Exception e){
+			System.out.println("QuickAssembler::getTotalISHSubmissionsForComponentQuery failed !!!");
+		}
+        // release db resources
+        DBHelper.closeJDBCConnection(conn);
+        ishDAO = null;
 
-                /** return the value  */
-                return totalSubmissions;
-            }
+        /** return the value  */
+        return totalSubmissions;
+    }
     
     /**
          * @param components - timed organism component id (e.g.EMAP no's in mouse anatomy) 
          * @return
          */
          
-        public String getTotalSubmissionsForComponents(String [] components){
-            String totalSubmissions = new String("");
-            
-            /** ---get data from dao--- */
-            // create a dao
-            Connection conn = DBHelper.getDBConnection();
-            ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-            
-            // get the value
-            totalSubmissions += ishDAO.getTotalNumberOfSubmissionsForComponentsQuery(components);
-            
-            // release db resources
-            DBHelper.closeJDBCConnection(conn);
-            ishDAO = null;
-
-            /** return the value  */
-            return totalSubmissions;
+    public String getTotalSubmissionsForComponents(String [] components){
+        String totalSubmissions = new String("");
+        
+        /** ---get data from dao--- */
+        // create a dao
+        Connection conn = DBHelper.getDBConnection();
+        ISHDAO ishDAO;
+        try{
+	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+	        
+	        // get the value
+	        totalSubmissions += ishDAO.getTotalNumberOfSubmissionsForComponentsQuery(components);
         }
+		catch(Exception e){
+			System.out.println("QuickAssembler::getTotalSubmissionsForComponents failed !!!");
+		}
+        // release db resources
+        DBHelper.closeJDBCConnection(conn);
+        ishDAO = null;
+
+        /** return the value  */
+        return totalSubmissions;
+    }
 
     /**
      * @param components
@@ -366,13 +407,19 @@ public class QueryAssembler extends OffMemoryTableAssembler {
             /** ---get data from dao--- */
             // create a dao
             Connection conn = DBHelper.getDBConnection();
-            ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-            
-            // get the value
-            totalSubmissions +=
-            	ishDAO.getTotalNumberOfSubmissionsForComponentsQuery(components, 
-            			startStg, endStg, expTypes, criteria);
-            
+            ISHDAO ishDAO;
+            try{
+	            ishDAO = MySQLDAOFactory.getISHDAO(conn);
+	            
+	            // get the value
+	            totalSubmissions +=
+	            	ishDAO.getTotalNumberOfSubmissionsForComponentsQuery(components, 
+	            			startStg, endStg, expTypes, criteria);
+            }		
+            catch(Exception e){
+    			System.out.println("QuickAssembler::getTotalSubmissionsForComponentsQuery failed !!!");
+    		}
+
             // release db resources
             DBHelper.closeJDBCConnection(conn);
             ishDAO = null;
@@ -398,85 +445,91 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		Submission submission = null;
-		ISHSubmission ishSubmission = null;
-		ArraySubmission arraySubmission = null;
-		String assayType = null;
-		if (accessionId.indexOf(":") != -1) {
-			//System.out.println("accid: " + accessionId);
-			assayType = ishDAO.findAssayTypeBySubmissionId(accessionId);
-			submission = ishDAO.findSubmissionById(accessionId);
-//			System.out.println("assay type: " + assayType);
+		ISHDAO ishDAO;
+		SubmissionData submissionData = null;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
-		} else {
-			boolean isAnInteger = true;
-			try {
-				Integer.parseInt(accessionId);
-			} catch(NumberFormatException nfe) {
-				isAnInteger = false;
-			}
-			if (isAnInteger) {
-//				assayType = ishDAO.findAssayTypeBySubmissionId("GUDMAP:" + accessionId);
-					assayType = ishDAO.findAssayTypeBySubmissionId("GUDMAP:" + accessionId);
-//				System.out.println("assay type: " + assayType);
-//				submission = ishDAO.findSubmissionById("GUDMAP:" + accessionId);
-					submission = ishDAO.findSubmissionById("GUDMAP:" + accessionId);
+			Submission submission = null;
+			ISHSubmission ishSubmission = null;
+			ArraySubmission arraySubmission = null;
+			String assayType = null;
+			if (accessionId.indexOf(":") != -1) {
+				//System.out.println("accid: " + accessionId);
+				assayType = ishDAO.findAssayTypeBySubmissionId(accessionId);
+				submission = ishDAO.findSubmissionById(accessionId);
+	//			System.out.println("assay type: " + assayType);
 				
-			} else {// id is not valid
+			} else {
+				boolean isAnInteger = true;
+				try {
+					Integer.parseInt(accessionId);
+				} catch(NumberFormatException nfe) {
+					isAnInteger = false;
+				}
+				if (isAnInteger) {
+	//				assayType = ishDAO.findAssayTypeBySubmissionId("GUDMAP:" + accessionId);
+						assayType = ishDAO.findAssayTypeBySubmissionId("GUDMAP:" + accessionId);
+	//				System.out.println("assay type: " + assayType);
+	//				submission = ishDAO.findSubmissionById("GUDMAP:" + accessionId);
+						submission = ishDAO.findSubmissionById("GUDMAP:" + accessionId);
+					
+				} else {// id is not valid
+					return null;
+				}
+			}
+			
+			if (submission == null) {
 				return null;
 			}
+			
+	        /********* add by Xingjun Pi 18/04/2007 begin ***********/
+			// if it is a non-public submission, return null value for the submission query
+			if (!submission.isReleased()) {
+				return null;
+			}
+	        /********* add by Xingjun Pi 18/04/2007 end ***********/
+	
+			// get submission data
+			// if assay type is 'ISH', get ish submisison; else if assay type is 'Microarray', 
+			// get array submission
+	//		System.out.println("assay type: " + assayType);
+			if (assayType.indexOf("ISH") >=0) {
+				ISHSubmissionAssembler isa = new ISHSubmissionAssembler();
+	//			System.out.println("acc: " + submission.getAccID());
+				ishSubmission = isa.getData(submission.getAccID(), false, false, userBean, false);
+				
+				// assemble submission result
+				submissionData = new SubmissionData();
+				submissionData.setSubmission(ishSubmission);
+				submissionData.setSubmissionType(0); // ish submission
+				
+			} else if (assayType.equals("Microarray")) {
+	//			System.out.println("mic");
+				
+				ArraySubmissionAssembler asa = new ArraySubmissionAssembler();
+				arraySubmission = asa.getData(submission.getAccID());
+	
+				// assemble submission result
+				submissionData = new SubmissionData();
+				submissionData.setSubmission(arraySubmission);
+				submissionData.setSubmissionType(1); // array submission
+				
+			} else if(assayType.equals("IHC")) { // added by xingjun -- 06/08/2007
+				ISHSubmissionAssembler isa = new ISHSubmissionAssembler();
+	//			System.out.println("acc: " + submission.getAccID());
+				ishSubmission = isa.getData(submission.getAccID(), false, false, userBean, false);
+				
+				// assemble submission result
+				submissionData = new SubmissionData();
+				submissionData.setSubmission(ishSubmission);
+				submissionData.setSubmissionType(0); // ish submission
+			}
 		}
-		
-		if (submission == null) {
-			return null;
+        catch(Exception e){
+			System.out.println("QuickAssembler::getSubmissionQueryData failed !!!");
+			submissionData = null;
 		}
-		
-        /********* add by Xingjun Pi 18/04/2007 begin ***********/
-		// if it is a non-public submission, return null value for the submission query
-		if (!submission.isReleased()) {
-			return null;
-		}
-        /********* add by Xingjun Pi 18/04/2007 end ***********/
-
-		// get submission data
-		// if assay type is 'ISH', get ish submisison; else if assay type is 'Microarray', 
-		// get array submission
-		SubmissionData submissionData = null;
-//		System.out.println("assay type: " + assayType);
-		if (assayType.indexOf("ISH") >=0) {
-			ISHSubmissionAssembler isa = new ISHSubmissionAssembler();
-//			System.out.println("acc: " + submission.getAccID());
-			ishSubmission = isa.getData(submission.getAccID(), false, false, userBean, false);
-			
-			// assemble submission result
-			submissionData = new SubmissionData();
-			submissionData.setSubmission(ishSubmission);
-			submissionData.setSubmissionType(0); // ish submission
-			
-		} else if (assayType.equals("Microarray")) {
-//			System.out.println("mic");
-			
-			ArraySubmissionAssembler asa = new ArraySubmissionAssembler();
-			arraySubmission = asa.getData(submission.getAccID());
-
-			// assemble submission result
-			submissionData = new SubmissionData();
-			submissionData.setSubmission(arraySubmission);
-			submissionData.setSubmissionType(1); // array submission
-			
-		} else if(assayType.equals("IHC")) { // added by xingjun -- 06/08/2007
-			ISHSubmissionAssembler isa = new ISHSubmissionAssembler();
-//			System.out.println("acc: " + submission.getAccID());
-			ishSubmission = isa.getData(submission.getAccID(), false, false, userBean, false);
-			
-			// assemble submission result
-			submissionData = new SubmissionData();
-			submissionData.setSubmission(ishSubmission);
-			submissionData.setSubmissionType(0); // ish submission
-		}
-
 		// release the db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDAO = null;

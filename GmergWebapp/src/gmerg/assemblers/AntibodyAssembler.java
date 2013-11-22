@@ -20,17 +20,25 @@ public class AntibodyAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-
-		Antibody antibody = ishDAO.findAntibodyByAntibodyId(antibodyId);
-
-
-		//get related ihc submissions
-		if (antibody.getGeneSymbol() != null){
-			ArrayList relatedSubmissionISH = ishDAO.findRelatedSubmissionBySymbolISH(antibody.getGeneSymbol());		
-			if (null != relatedSubmissionISH) {
-				antibody.setIshSubmissions(relatedSubmissionISH);
+		ISHDAO ishDAO;
+		Antibody antibody = null;
+		
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			antibody = ishDAO.findAntibodyByAntibodyId(antibodyId);
+		
+			//get related ihc submissions
+			if (antibody.getGeneSymbol() != null){
+				ArrayList relatedSubmissionISH = ishDAO.findRelatedSubmissionBySymbolISH(antibody.getGeneSymbol());		
+				if (null != relatedSubmissionISH) {
+					antibody.setIshSubmissions(relatedSubmissionISH);
+				}
 			}
+		}
+		catch(Exception e){
+			System.out.println("AntibodyAssembler::getData failed !!!");
+			antibody = null;
 		}
 
 		// release the db resources

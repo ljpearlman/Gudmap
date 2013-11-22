@@ -32,14 +32,19 @@ public class AnatomyStructureAssembler {
 	if (debug)
 	    System.out.println("AnatomyStructureAssembler.getStageRanges");
 		
-        /** ---get data from dao---  */
+		ArrayList stageRanges = null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnatomyDAO anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
-		
-		// get data
-		ArrayList stageRanges = anatomyDAO.getTheilerStageRanges();
-		
+		AnatomyDAO anatomyDAO;
+		try{
+			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+			// get data
+			stageRanges = anatomyDAO.getTheilerStageRanges();
+		}
+		catch(Exception e){
+			System.out.println("AnatomyStructureAssembler::getStageRanges failed !!!");
+			stageRanges = null;
+		}
 		/** release the db resources */
 		DBHelper.closeJDBCConnection(conn);
 		anatomyDAO = null;
@@ -52,14 +57,19 @@ public class AnatomyStructureAssembler {
 	if (debug)
 	    System.out.println("AnatomyStructureAssembler.getComponentNameFromId");
 		
-		/** ---get data from dao---  */
+		String componentName = null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnatomyDAO anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
-		
-		// get data
-		String componentName = anatomyDAO.getAnatomyTermFromPublicId(id);
-		
+		AnatomyDAO anatomyDAO;
+		try{
+			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+			// get data
+			componentName = anatomyDAO.getAnatomyTermFromPublicId(id);
+		}
+		catch(Exception e){
+			System.out.println("AnatomyStructureAssembler::getComponentNameFromId failed !!!");
+			componentName = null;				
+		}
 		/** release the db resources */
 		DBHelper.closeJDBCConnection(conn);
 		anatomyDAO = null;
@@ -72,13 +82,19 @@ public class AnatomyStructureAssembler {
 	if (debug)
 	    System.out.println("AnatomyStructureAssembler.getOntologyTerms");
 		
-		/** ---get data from dao---  */
+		String ontologyTerms = null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnatomyDAO anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
-		
-		// get data
-		String ontologyTerms = anatomyDAO.getOnlogyTerms();
+		AnatomyDAO anatomyDAO;
+		try{
+			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+			// get data
+			ontologyTerms = anatomyDAO.getOnlogyTerms();
+		}
+		catch(Exception e){
+			System.out.println("AnatomyStructureAssembler::getOntologyTerms failed !!!");
+			ontologyTerms = null;				
+		}
 		
 		/** release the db resources */
 		DBHelper.closeJDBCConnection(conn);
@@ -102,19 +118,24 @@ public class AnatomyStructureAssembler {
         	return false;
         }
         
-		/** ---get data from dao---  */
+        boolean isValid = true;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnatomyDAO anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
-		
-		// get data
-		int startStageSequence = anatomyDAO.findSequencebyStageName(startStage);
-		int endStageSequence = anatomyDAO.findSequencebyStageName(endStage);
-			
-		// make the judgement
-		boolean isValid = true;
-		if (startStageSequence == -1 || endStageSequence == -1 || startStageSequence > endStageSequence) {
-			isValid = false;
+		AnatomyDAO anatomyDAO;
+		try{
+			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+			// get data
+			int startStageSequence = anatomyDAO.findSequencebyStageName(startStage);
+			int endStageSequence = anatomyDAO.findSequencebyStageName(endStage);
+				
+			// make the judgement
+			if (startStageSequence == -1 || endStageSequence == -1 || startStageSequence > endStageSequence) {
+				isValid = false;
+			}
+		}
+		catch(Exception e){
+			System.out.println("AnatomyStructureAssembler::stageRangesAreValid failed !!!");
+			isValid = false;				
 		}
 
 		/** release the db resources */
@@ -139,14 +160,20 @@ public class AnatomyStructureAssembler {
         	return null;
         }
         
-        /** ---get data from dao---  */
+        ArrayList anatomyTree = null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnatomyDAO anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+		AnatomyDAO anatomyDAO;
+		try{
+			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+			// get data
+			anatomyTree = anatomyDAO.getAnatomyTreeByStages(startStage, endStage, isForBooleanQ);
+		}
+		catch(Exception e){
+			System.out.println("AnatomyStructureAssembler::buildTree failed !!!");
+			anatomyTree = null;				
+		}
 		
-		// get data
-		ArrayList anatomyTree = anatomyDAO.getAnatomyTreeByStages(startStage, endStage, isForBooleanQ);
-
 		/** release the db resources */
 		DBHelper.closeJDBCConnection(conn);
 		anatomyDAO = null;
@@ -188,21 +215,27 @@ public class AnatomyStructureAssembler {
 			return null;
 		}
 
-        /** ---get data from dao---  */
+		ISHBrowseSubmission[] annotatedSubmissions = null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnatomyDAO anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
-		
-		// get data
-		ArrayList publicIds = anatomyDAO.findPublicIdByComponentIdAndStage(components, startStage, endStage);
-		ISHBrowseSubmission[] annotatedSubmissions = null;
-		if (publicIds == null || publicIds.size() == 0) {
-//			System.out.println("bad public id!!!!!!!");
-			return null;
-		} else {
-			annotatedSubmissions =
-				anatomyDAO.getAnnotatedSubmissionByPublicIdAndStage(publicIds, startStage, endStage, expressionState,
-						order, offset, num);
+		AnatomyDAO anatomyDAO;
+		try{
+			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+			// get data
+			ArrayList publicIds = anatomyDAO.findPublicIdByComponentIdAndStage(components, startStage, endStage);
+			if (publicIds == null || publicIds.size() == 0) {
+	//			System.out.println("bad public id!!!!!!!");
+				DBHelper.closeJDBCConnection(conn);
+				return null;
+			} else {
+				annotatedSubmissions =
+					anatomyDAO.getAnnotatedSubmissionByPublicIdAndStage(publicIds, startStage, endStage, expressionState,
+							order, offset, num);
+			}
+		}
+		catch(Exception e){
+			System.out.println("AnatomyStructureAssembler::getISHBrowseSubmission failed !!!");
+			annotatedSubmissions = null;				
 		}
 
 		/** release the db resources */

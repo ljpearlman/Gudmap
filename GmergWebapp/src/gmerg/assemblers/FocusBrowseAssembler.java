@@ -64,30 +64,37 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	 * <p>xingjun - 17/01/2009 - add gene parameter into the invocation method of the getting data</p>
 	 */
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
-	if (debug)
-	    System.out.println("FocusBrowseAssembler.retrieveData");
-
-	    if (null != cache &&
-		cache.isSameQuery(column, ascending, offset, num)) {
 		if (debug)
-		    System.out.println("FocusBrowseAssembler.retriveData data not changed");
-		
-		return cache.getData();
+		    System.out.println("FocusBrowseAssembler.retrieveData");
+
+	    if (null != cache && cache.isSameQuery(column, ascending, offset, num)) {
+			if (debug)
+			    System.out.println("FocusBrowseAssembler.retriveData data not changed");
+			
+			return cache.getData();
 	    }
 
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		// get data from database
-		FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-//		ArrayList submissions =
-//			focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
-//					stage, String.valueOf(offset), String.valueOf(num));
-		
-		ArrayList submissions =
-			focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
-					stage, gene, archiveId, batchId, String.valueOf(offset), String.valueOf(num), filter);
-		
+		FocusForAllDAO focusForAllDAO;
+		ArrayList submissions = null;
+		try{
+			// get data from database
+			focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+//			ArrayList submissions =
+//				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
+//						stage, String.valueOf(offset), String.valueOf(num));
+			
+			submissions =
+				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
+						stage, gene, archiveId, batchId, String.valueOf(offset), String.valueOf(num), filter);
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseAssembler::retrieveData !!!");
+			submissions = null;
+		}
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		focusForAllDAO = null;
@@ -121,14 +128,22 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
         /** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-		
-        // get number of public ish sumbissions
-//		int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage);
-		int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, filter);
-
+		FocusForAllDAO focusForAllDAO;
+		int n = 0;
+		try{
+			focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+			
+	        // get number of public ish sumbissions
+	//		int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage);
+			n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, filter);
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseAssembler::retrieveNumberOfRows !!!");
+			n = 0;
+		}
 		// release the db resources
 		DBHelper.closeJDBCConnection(conn);
+		focusForAllDAO = null;
 		
 		return n;
 	}
@@ -142,33 +157,41 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-
-		// get data from database
-		String [] allColTotalsQueries = {
-                "TOTAL_NUMBER_OF_GENE_SYMBOL",
-                "TOTAL_NUMBER_OF_SUBMISSION",
-                "TOTAL_NUMBER_OF_LAB",
-                "TOTAL_NUMBER_OF_SUBMISSION_DATE",
-                "TOTAL_NUMBER_OF_ASSAY_TYPE",
-                "TOTAL_NUMBER_OF_PROBE_NAME",
-                "TOTAL_NUMBER_OF_THEILER_STAGE",
-                "TOTAL_NUMBER_OF_GIVEN_STAGE",
-                "TOTAL_NUMBER_OF_SEX",
-                "TOTAL_NUMBER_OF_GENOTYPE",
-                "TOTAL_NUMBER_OF_ISH_EXPRESSION",
-                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
-                "TOTAL_NUMBER_OF_IMAGE",
-                };
-		String endingClause = " AND (SUB_ASSAY_TYPE = 'ISH') "; // Bernie 17/11/2010 - added endingClause to get correct totals
-		String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
-		//String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, filter);
-		
-		// convert to integer array, each tuple consists of column index and the number
-		int len = columnNumbers.length;
-		int[] totalNumbers = new int[len];
-		for (int i=0;i<len;i++) {
-			totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+		ISHDevDAO ishDevDAO;
+		int[] totalNumbers = null;
+		try{
+			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+	
+			// get data from database
+			String [] allColTotalsQueries = {
+	                "TOTAL_NUMBER_OF_GENE_SYMBOL",
+	                "TOTAL_NUMBER_OF_SUBMISSION",
+	                "TOTAL_NUMBER_OF_LAB",
+	                "TOTAL_NUMBER_OF_SUBMISSION_DATE",
+	                "TOTAL_NUMBER_OF_ASSAY_TYPE",
+	                "TOTAL_NUMBER_OF_PROBE_NAME",
+	                "TOTAL_NUMBER_OF_THEILER_STAGE",
+	                "TOTAL_NUMBER_OF_GIVEN_STAGE",
+	                "TOTAL_NUMBER_OF_SEX",
+	                "TOTAL_NUMBER_OF_GENOTYPE",
+	                "TOTAL_NUMBER_OF_ISH_EXPRESSION",
+	                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
+	                "TOTAL_NUMBER_OF_IMAGE",
+	                };
+			String endingClause = " AND (SUB_ASSAY_TYPE = 'ISH') "; // Bernie 17/11/2010 - added endingClause to get correct totals
+			String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
+			//String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, filter);
+			
+			// convert to integer array, each tuple consists of column index and the number
+			int len = columnNumbers.length;
+			totalNumbers = new int[len];
+			for (int i=0;i<len;i++) {
+				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+			}
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseAssembler::retrieveTotals !!!");
+			totalNumbers = new int[0];
 		}
 
 		// return result
@@ -216,11 +239,18 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
-		
-		// get data from database
-		ArrayList[][] browseSeries = focusStageDAO.getStageList(stage);
-		
+		FocusStageDAO focusStageDAO;
+		ArrayList[][] browseSeries = null;
+		try{
+			focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			
+			// get data from database
+			browseSeries = focusStageDAO.getStageList(stage);
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseAssembler::getStageList !!!");
+			browseSeries = null;
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		focusStageDAO = null;
@@ -239,16 +269,23 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		
 		/** create dao */
 		Connection conn = DBHelper.getDBConnection();
-		FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
-		
-		/** get data from database */
-		// get insitu stage list
-		String[][] stageList = focusStageDAO.getStageList(stage, organ);
-		
-		// get microarray stage list
-		
-		// get age (dpc) stage list
-		
+		FocusStageDAO focusStageDAO;
+		String[][] stageList = null;
+		try{
+			focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			
+			/** get data from database */
+			// get insitu stage list
+			stageList = focusStageDAO.getStageList(stage, organ);
+			
+			// get microarray stage list
+			
+			// get age (dpc) stage list
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseAssembler::getStageList !!!");
+			stageList = null;
+		}
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		focusStageDAO = null;
@@ -273,32 +310,40 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	    System.out.println("FocusBrowseAssembler.getStageList");
 		/** create dao */
 		Connection conn = DBHelper.getDBConnection();
-		FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
-		
-		/** get data from database */
-		// get insitu stage list
-		String[] insituStageList = 
-			focusStageDAO.getStageList("insitu", stage, organ, symbol);
-		
-		// get microarray stage list
-		String[] arrayStageList = 
-			focusStageDAO.getStageList("Microarray", stage, organ, symbol);
-		
-		// get age (dpc) stage list
-		int len = stage.length;
-		String[] dpcStageList = new String[len];
-		for (int i=0;i<len;i++) {
-			dpcStageList[i] = focusStageDAO.getDpcStageValue(stage[i]);
+		FocusStageDAO focusStageDAO;
+		String[][] stageLists = null;
+		try{
+			focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			
+			/** get data from database */
+			// get insitu stage list
+			String[] insituStageList = 
+				focusStageDAO.getStageList("insitu", stage, organ, symbol);
+			
+			// get microarray stage list
+			String[] arrayStageList = 
+				focusStageDAO.getStageList("Microarray", stage, organ, symbol);
+			
+			// get age (dpc) stage list
+			int len = stage.length;
+			String[] dpcStageList = new String[len];
+			for (int i=0;i<len;i++) {
+				dpcStageList[i] = focusStageDAO.getDpcStageValue(stage[i]);
+			}
+			
+			// put them together
+			stageLists = new String[len][3];
+			for (int i=0;i<len;i++) {
+				stageLists[i][0] = dpcStageList[i];
+				stageLists[i][1] = insituStageList[i];
+				stageLists[i][2] = arrayStageList[i];
+			}
 		}
-		
-		// put them together
-		String[][] stageLists = new String[len][3];
-		for (int i=0;i<len;i++) {
-			stageLists[i][0] = dpcStageList[i];
-			stageLists[i][1] = insituStageList[i];
-			stageLists[i][2] = arrayStageList[i];
+		catch(Exception e){
+			System.out.println("FocusBrowseAssembler::getStageList !!!");
+			stageLists = null;
 		}
-		
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		focusStageDAO = null;

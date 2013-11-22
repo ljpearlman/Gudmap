@@ -23,7 +23,10 @@ public class FocusDBSummaryAssembler {
         /** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+		FocusForAllDAO focusForAllDAO;
+		DBSummary dbSummary = null;
+		try{
+		focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
 		
 		
         // get number of public ish sumbissions
@@ -67,7 +70,7 @@ public class FocusDBSummaryAssembler {
 		
 		
 		/** ---complement summary object--- */
-		DBSummary dbSummary = new DBSummary();
+		dbSummary = new DBSummary();
 
 		dbSummary.setTotIshGenes(Integer.toString(numberOfPublicGenesISH));
 		dbSummary.setTotIhcGenes(Integer.toString(numberOfPublicGenesIHC));
@@ -80,7 +83,12 @@ public class FocusDBSummaryAssembler {
 		dbSummary.setTotalAvailableSubmissionsTG(Integer.toString(numberOfPublicSubmissionsTG));
 
 		dbSummary.setDatabaseServer(databaseHost);
-		dbSummary.setProject(project);		
+		dbSummary.setProject(project);
+		}
+		catch(Exception e){
+			System.out.println("FocusDBSummaryAssembler::getData !!!");
+			dbSummary = null;
+		}		
 		// release the db resources
 		DBHelper.closeJDBCConnection(conn);
 		focusForAllDAO = null;

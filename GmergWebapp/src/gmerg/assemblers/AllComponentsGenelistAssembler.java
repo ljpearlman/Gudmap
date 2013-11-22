@@ -39,64 +39,84 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 	}
 
     public DataItem[][] retrieveData() {
-	if (null != cache) {
-		if (debug)
-		    System.out.println("AllComponentGenelistAssembler.retriveData data not changed");
+    	if (null != cache) {
+			if (debug)
+			    System.out.println("AllComponentGenelistAssembler.retriveData data not changed");
 		
-		return cache.getData();
+			return cache.getData();
 	    }
+    	
+    	String[][] data = null;
+  	    	
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
-		
-    	ArrayList<GenelistInfo> allAnalysisGenelists = genelistDAO.getAllAnalysisGeneLists();
+		GenelistDAO genelistDAO;
+		try{
+			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+					
+	    	ArrayList<GenelistInfo> allAnalysisGenelists = genelistDAO.getAllAnalysisGeneLists();
+	    	
+	    	// convert to desired data structure
+	    	if (allAnalysisGenelists != null && allAnalysisGenelists.size() != 0) {
+	    		int row = allAnalysisGenelists.size();
+				data = new String[row][7];
+	    		for (int i= 0;i<row;i++) {
+	    			data[i][0] = allAnalysisGenelists.get(i).getGenelistId();
+	    			data[i][1] = allAnalysisGenelists.get(i).getTitle();
+	       			data[i][2] = allAnalysisGenelists.get(i).getSubmitter();
+	        		data[i][3] = allAnalysisGenelists.get(i).getSummary();
+	                data[i][4] = allAnalysisGenelists.get(i).getFilename();
+	//                System.out.println("ass:filename: " + allAnalysisGenelists.get(i).getFilename());
+	                String cdtFileName = allAnalysisGenelists.get(i).getCdtFileName();
+	                if (cdtFileName == null || cdtFileName.equals("")) {
+	                    data[i][5] = null;
+	                } else {
+	                    data[i][5] = cdtFileName;
+	                }
+	                data[i][6] = null;
+	    		}
+	    	}
+		} catch(Exception e){
+			System.out.println("AllComponentsGenelistAssembler::retrieveData failed !!!");
+			data = null;
+		}
     	
-    	// convert to desired data structure
-    	String[][] data = null;
-    	if (allAnalysisGenelists != null && allAnalysisGenelists.size() != 0) {
-    		int row = allAnalysisGenelists.size();
-			data = new String[row][7];
-    		for (int i= 0;i<row;i++) {
-    			data[i][0] = allAnalysisGenelists.get(i).getGenelistId();
-    			data[i][1] = allAnalysisGenelists.get(i).getTitle();
-       			data[i][2] = allAnalysisGenelists.get(i).getSubmitter();
-        		data[i][3] = allAnalysisGenelists.get(i).getSummary();
-                data[i][4] = allAnalysisGenelists.get(i).getFilename();
-//                System.out.println("ass:filename: " + allAnalysisGenelists.get(i).getFilename());
-                String cdtFileName = allAnalysisGenelists.get(i).getCdtFileName();
-                if (cdtFileName == null || cdtFileName.equals("")) {
-                    data[i][5] = null;
-                } else {
-                    data[i][5] = cdtFileName;
-                }
-                data[i][6] = null;
-    		}
-    	}
+    	// release db resources
+    	DBHelper.closeJDBCConnection(conn);
+    	genelistDAO = null;
     	
 		/** ---return the composite value object---  */
     	DataItem[][] dataItems = getTableDataFormatFromListOfgenelists(data);
 
-	if (null == cache)
-	    cache = new RetrieveDataCache();
-	cache.setData(dataItems);
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(dataItems);
 
 		return dataItems;
 	}
     
     public ArrayList getProbeSetIdsByGenelistId(String genelistId) {
+    			
+		ArrayList<String> probeSetIds = new ArrayList<String>();
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-
-        // get data from database
-		ArrayList<String> probeSetIds = null;
-		
+		try{
+	
+	        // get data from database
+					
+		}
+		catch(Exception e){
+			System.out.println("AllComponentsGenelistAssembler::getProbeSetIdsByGenelistId failed !!!");
+		}		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		arrayDAO = null;
 
 		// return value
     	return probeSetIds;
+		
     }
     
 	/********************************************************************************
@@ -173,17 +193,25 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 	 * @return
 	 */
 	public static ArrayList<GenelistInfo> retrieveAllAnalysisGenelists() {
+		
+		ArrayList<GenelistInfo> allGenelists = new ArrayList<GenelistInfo>();
+		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
-		
-		// get data
-		ArrayList<GenelistInfo> allGenelists = 
-			genelistDAO.getAllAnalysisGenelistsWithFolderIds();
-		
+		GenelistDAO genelistDAO;
+		try{
+			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+			// get data
+			allGenelists = genelistDAO.getAllAnalysisGenelistsWithFolderIds();
+		}
+		catch(Exception e){
+			System.out.println("AllComponentsGenelistAssembler::retrieveAllAnalysisGenelists !!!");
+			allGenelists = new ArrayList<GenelistInfo>();
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
-
+		genelistDAO = null;
+		
 		// return value
 		return allGenelists;
 	}
@@ -193,17 +221,25 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 	 * @return
 	 */
 	public static ArrayList<GenelistInfo> retrieveAllClusters(String genelistId) {
+		
+		ArrayList<GenelistInfo> allGenelists = new ArrayList<GenelistInfo>();
+	
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
-		
-		// get data
-		ArrayList<GenelistInfo> allGenelists = 
-			genelistDAO.retrieveClustersForGenelist(genelistId);
-		
+		GenelistDAO genelistDAO;
+		try{
+			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+			// get data
+			allGenelists = genelistDAO.retrieveClustersForGenelist(genelistId);
+		}
+		catch(Exception e){
+			System.out.println("AllComponentsGenelistAssembler::retrieveAllClusters !!!");
+			allGenelists = new ArrayList<GenelistInfo>();			
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
-
+		genelistDAO = null;
+		
 		// return value
 		return allGenelists;
 	}

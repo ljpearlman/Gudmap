@@ -66,40 +66,47 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
     public DataItem[][] retrieveData(int columnIndex, boolean ascending, int offset, int num){
 	    if (null != cache &&
 		cache.isSameQuery(columnIndex, ascending, offset, num)) {
-		if (debug)
-		    System.out.println("SeriesAssembler.retriveData data not changed");
-		
-		return cache.getData();
+			if (debug)
+			    System.out.println("SeriesAssembler.retriveData data not changed");
+			
+			return cache.getData();
 	    }	
 	    
-            // create a dao
-            Connection conn = DBHelper.getDBConnection();
-            ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-            
+        // create a dao
+        Connection conn = DBHelper.getDBConnection();
+        ArrayDevDAO arrayDevDAO;
+        ArrayList seriesSamples = null;
+        try{    
+            arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
             // get data from database
-            ArrayList seriesSamples;
             if (geoId)
             	seriesSamples = arrayDevDAO.getSamplesForSeries(seriesId, columnIndex, ascending, offset, num);
             else
             	seriesSamples = arrayDevDAO.getSamplesBySeriesOid(seriesId, columnIndex, ascending, offset, num);
             
-            // release db resources
-            DBHelper.closeJDBCConnection(conn);
-            arrayDevDAO = null;
             
-            // return the value object
-            DataItem[][] ret = getTableDataFormatFromSampleList(seriesSamples);
+        }
+		catch(Exception e){
+			System.out.println("SeriesAssembler::retrieveData failed !!!");
+			seriesSamples = null;
+		}		
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		arrayDevDAO = null;
+		
+        // return the value object
+        DataItem[][] ret = getTableDataFormatFromSampleList(seriesSamples);
 
-	if (null == cache)
-	    cache = new RetrieveDataCache();
-	cache.setData(ret);
-	cache.setColumn(columnIndex);
-	cache.setAscending(ascending);
-	cache.setOffset(offset);
-	cache.setNum(num);
+		if (null == cache)
+		    cache = new RetrieveDataCache();
+		cache.setData(ret);
+		cache.setColumn(columnIndex);
+		cache.setAscending(ascending);
+		cache.setOffset(offset);
+		cache.setNum(num);
 
 	    return ret;
-        }
+    }
     
     public int retrieveNumberOfRows() {
     	int n = 0;
@@ -125,20 +132,27 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-
-        String[] allColTotalsQueries =
-        { "TOTAL_SAMPLES", "TOTAL_GEO_IDS", "TOTAL_SAMPLE_IDS",
-          "TOTAL_SAMPLE_DESCRIPTIONS", "TOTAL_COMPONENT" };
-        String[][] param = { {seriesId}, {seriesId}, {seriesId}, {seriesId}, {seriesId}, {seriesId} };
-        String[][] columnNumbers = arrayDevDAO.getStringArrayFromBatchQuery(param, allColTotalsQueries);
-        // convert to interger array, each tuple consists of column index and the number
-        int len = columnNumbers.length;
-        int[] totalNumbers = new int[len];
-        for (int i = 0; i < len; i++) {
-            totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+        ArrayDevDAO arrayDevDAO;
+        int[] totalNumbers = null;
+        try{
+	        arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+	
+	        String[] allColTotalsQueries =
+	        { "TOTAL_SAMPLES", "TOTAL_GEO_IDS", "TOTAL_SAMPLE_IDS",
+	          "TOTAL_SAMPLE_DESCRIPTIONS", "TOTAL_COMPONENT" };
+	        String[][] param = { {seriesId}, {seriesId}, {seriesId}, {seriesId}, {seriesId}, {seriesId} };
+	        String[][] columnNumbers = arrayDevDAO.getStringArrayFromBatchQuery(param, allColTotalsQueries);
+	        // convert to interger array, each tuple consists of column index and the number
+	        int len = columnNumbers.length;
+	        totalNumbers = new int[len];
+	        for (int i = 0; i < len; i++) {
+	            totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+	        }
         }
-
+		catch(Exception e){
+			System.out.println("SeriesAssembler::retrieveTotals failed !!!");
+			totalNumbers = new int[0];
+		}		
         // release db resources
         DBHelper.closeJDBCConnection(conn);
         arrayDevDAO = null;
@@ -173,28 +187,36 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-		// get series details
-		Series series = arrayDAO.findSeriesBySubmissionId(submissionAccessionId);
-		
-		// get related sample info
-		ArrayList relatedSamples = arrayDAO.findSamplesInCertainSeriesBySubmissionId(submissionAccessionId);
-		
-		// convert to meet the display demand
-		ArrayList<String[]> samples = new ArrayList<String[]>();
-		int sampleNumber = relatedSamples.size();
-		for (int i=0;i<sampleNumber;i++) {
-			String[] source = (String[])relatedSamples.get(i);
-			String[] target = this.addExtraColumnFromStartOfStringArray(source, ("Sample"+ Integer.toString(i+1)));
-			samples.add(target);
+		ArrayDAO arrayDAO;
+		Series series = null;
+		try{
+			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			
+			// get series details
+			series = arrayDAO.findSeriesBySubmissionId(submissionAccessionId);
+			
+			// get related sample info
+			ArrayList relatedSamples = arrayDAO.findSamplesInCertainSeriesBySubmissionId(submissionAccessionId);
+			
+			// convert to meet the display demand
+			ArrayList<String[]> samples = new ArrayList<String[]>();
+			int sampleNumber = relatedSamples.size();
+			for (int i=0;i<sampleNumber;i++) {
+				String[] source = (String[])relatedSamples.get(i);
+				String[] target = this.addExtraColumnFromStartOfStringArray(source, ("Sample"+ Integer.toString(i+1)));
+				samples.add(target);
+			}
+			
+			/** ---finish the series value object--- */
+			if (relatedSamples != null && relatedSamples.size() > 0) {
+				series.setSummaryResults(samples);
+			}
 		}
-		
-		/** ---finish the series value object--- */
-		if (relatedSamples != null && relatedSamples.size() > 0) {
-			series.setSummaryResults(samples);
-		}
-		
+		catch(Exception e){
+			System.out.println("SeriesAssembler::retrieveTotals failed !!!");
+			series = null;
+		}		
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		arrayDAO = null;
@@ -239,14 +261,21 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
             /** ---get data from dao---  */
             // create a dao
             Connection conn = DBHelper.getDBConnection();
-            ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-            
-            // get series details
-            Series series;
-            if (geoId)
-            	series = arrayDevDAO.findSeriesById(seriesId);
-            else
-            	series = arrayDevDAO.findSeriesByOid(seriesId);
+            ArrayDevDAO arrayDevDAO;
+            Series series = null;
+            try{
+	            arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+	            
+	            // get series details
+	            if (geoId)
+	            	series = arrayDevDAO.findSeriesById(seriesId);
+	            else
+	            	series = arrayDevDAO.findSeriesByOid(seriesId);
+            }
+    		catch(Exception e){
+    			System.out.println("SeriesAssembler::getSeriesMetaData failed !!!");
+    			series = null;
+    		}		
             
             // release db resources
             DBHelper.closeJDBCConnection(conn);

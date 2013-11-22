@@ -105,18 +105,31 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-		// get data
-		// get component list
-		ArrayList componentNames = arrayDAO.getComponentListByName(componentName);
-		if (componentNames == null || componentNames.size()== 0) {
-			return null;
+		ArrayDAO arrayDAO;
+		ArrayList genelistHeaders = null;
+		try{
+			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			
+			// get data
+			// get component list
+			ArrayList componentNames = arrayDAO.getComponentListByName(componentName);
+			if (componentNames == null || componentNames.size()== 0) {
+				
+				// release db resources
+				DBHelper.closeJDBCConnection(conn);
+				arrayDAO = null;
+				
+				return null;
+			}
+			
+			// get genelists
+			genelistHeaders = arrayDAO.getGenelistHeadersByComponentNames(componentNames);
 		}
-		
-		// get genelists
-		ArrayList genelistHeaders = arrayDAO.getGenelistHeadersByComponentNames(componentNames);
-		
+		catch(Exception e){
+			System.out.println("ProcessedGenelistAssembler::retrieveGenelistByComponentName failed !!!");
+			genelistHeaders = null;
+		}
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		arrayDAO = null;
@@ -139,11 +152,19 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-		// get genelists
-		ArrayList genelistHeaders = arrayDAO.getGenelistHeadersByLabId(labId);
-		
+		ArrayDAO arrayDAO;
+		ArrayList genelistHeaders = null;
+		try{
+			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			
+			// get genelists
+			genelistHeaders = arrayDAO.getGenelistHeadersByLabId(labId);
+		}
+		catch(Exception e){
+			System.out.println("ProcessedGenelistAssembler::retrieveGenelistByLabName failed !!!");
+			genelistHeaders = null;
+		}
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		arrayDAO = null;

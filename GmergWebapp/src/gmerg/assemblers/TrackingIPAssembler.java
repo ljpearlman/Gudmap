@@ -9,20 +9,28 @@ import java.util.ArrayList;
 
 public class TrackingIPAssembler {
     private boolean debug = false;
+    
     public TrackingIPAssembler() {
 	if (debug)
 	    System.out.println("TrackingIPAssembler.constructor");
-
     }
+    
 	public boolean updateIPLog(String ip, String viewid, String browser, String platform) {
-		/** ---get data from dao---  */
+		
+		boolean result = false;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		TrackingIPDAO ipDAO = MySQLDAOFactory.getTrackingIPDAO(conn);
+		TrackingIPDAO ipDAO;
+		try{
+			ipDAO = MySQLDAOFactory.getTrackingIPDAO(conn);
 		
-		// get data
-		boolean result = ipDAO.updateIPLog(ip, viewid, browser, platform);
-		
+			// get data
+			result = ipDAO.updateIPLog(ip, viewid, browser, platform);
+		} 
+		catch(Exception e){
+			System.out.println("TrackingIPAssembler::updateIPLog failed !!!");
+			result = false;
+		}
 		/** release the db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ipDAO = null;

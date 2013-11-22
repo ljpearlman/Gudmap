@@ -44,22 +44,29 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	}
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
-	    if (null != cache &&
-		cache.isSameQuery(column, ascending, offset, num)) {
-		if (debug)
-		    System.out.println("FocusBrowseIHCAssembler.retriveData data not changed");
-		
-		return cache.getData();
+	    if (null != cache && cache.isSameQuery(column, ascending, offset, num)) {
+			if (debug)
+			    System.out.println("FocusBrowseIHCAssembler.retriveData data not changed");
+			
+			return cache.getData();
 	    }
 
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		IHCDAO ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
+		IHCDAO ihcDAO;
+		ArrayList submissions = null;
+		try{
+			ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
+	
+			// get data from database
+			submissions = ihcDAO.getAllSubmissionISH(column, ascending, offset, num, "IHC", organs, archiveIds, batchIds, filter);
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseIHCAssembler::retrieveData !!!");
+			submissions = null;
+		}
 
-		// get data from database
-		ArrayList submissions = ihcDAO.getAllSubmissionISH(column, ascending, offset, num, "IHC", organs, archiveIds, batchIds, filter);
-		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ihcDAO = null;
@@ -80,11 +87,18 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	public int retrieveNumberOfRows() {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		IHCDAO ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
-
-		// get data from database
-		int totalNumberOfSubmissions = ihcDAO.getTotalNumberOfSubmissions("IHC", organs, archiveIds, batchIds, filter);
-		
+		IHCDAO ihcDAO;
+		int totalNumberOfSubmissions = 0;
+		try{
+			ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
+	
+			// get data from database
+			totalNumberOfSubmissions = ihcDAO.getTotalNumberOfSubmissions("IHC", organs, archiveIds, batchIds, filter);
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseIHCAssembler::retrieveNumberOfRows !!!");
+			totalNumberOfSubmissions = 0;
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ihcDAO = null;
@@ -107,32 +121,43 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-
-		// get data from database
-		String [] allColTotalsQueries = {
-                "TOTAL_NUMBER_OF_GENE_SYMBOL",
-                "TOTAL_NUMBER_OF_SUBMISSION",
-                "TOTAL_NUMBER_OF_LAB",
-                "TOTAL_NUMBER_OF_SUBMISSION_DATE",
-                "TOTAL_NUMBER_OF_ASSAY_TYPE",
-                "TOTAL_NUMBER_OF_PROBE_NAME",
-                "TOTAL_NUMBER_OF_THEILER_STAGE",
-                "TOTAL_NUMBER_OF_GIVEN_STAGE",
-                "TOTAL_NUMBER_OF_SEX",
-                "TOTAL_NUMBER_OF_GENOTYPE",
-                "TOTAL_NUMBER_OF_ISH_EXPRESSION",
-                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
-                "TOTAL_NUMBER_OF_IMAGE",
-                };
-		
-		String endingClause = " AND (SUB_ASSAY_TYPE = 'IHC') "; // Bernie 04/11/2010 - added endingClause to get correct totals
-		String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
-		// convert to integer array, each tuple consists of column index and the number
-		int len = columnNumbers.length;
-		int[] totalNumbers = new int[len];
-		for (int i=0;i<len;i++)
-			totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+		ISHDevDAO ishDevDAO;
+		int[] totalNumbers = null;
+		try{
+			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+	
+			// get data from database
+			String [] allColTotalsQueries = {
+	                "TOTAL_NUMBER_OF_GENE_SYMBOL",
+	                "TOTAL_NUMBER_OF_SUBMISSION",
+	                "TOTAL_NUMBER_OF_LAB",
+	                "TOTAL_NUMBER_OF_SUBMISSION_DATE",
+	                "TOTAL_NUMBER_OF_ASSAY_TYPE",
+	                "TOTAL_NUMBER_OF_PROBE_NAME",
+	                "TOTAL_NUMBER_OF_THEILER_STAGE",
+	                "TOTAL_NUMBER_OF_GIVEN_STAGE",
+	                "TOTAL_NUMBER_OF_SEX",
+	                "TOTAL_NUMBER_OF_GENOTYPE",
+	                "TOTAL_NUMBER_OF_ISH_EXPRESSION",
+	                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
+	                "TOTAL_NUMBER_OF_IMAGE",
+	                };
+			
+			String endingClause = " AND (SUB_ASSAY_TYPE = 'IHC') "; // Bernie 04/11/2010 - added endingClause to get correct totals
+			String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
+			// convert to integer array, each tuple consists of column index and the number
+			int len = columnNumbers.length;
+			totalNumbers = new int[len];
+			for (int i=0;i<len;i++)
+				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseIHCAssembler::retrieveTotals !!!");
+			totalNumbers = new int[0];
+		}
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		ishDevDAO = null;
 
 		// return result
 		return totalNumbers;

@@ -50,12 +50,18 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
     	 
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-        
-        // get data from database
-        ArrayList collectionData =
-        	collectionDAO.getCollections(userId, collectionType, status, column, ascending, offset, num);
-        
+        CollectionDAO collectionDAO;
+        ArrayList collectionData = new ArrayList();
+        try{
+            collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+	        // get data from database
+	        collectionData = collectionDAO.getCollections(userId, collectionType, status, column, ascending, offset, num);
+        }
+		catch(Exception e){
+			System.out.println("CollectionListAssembler::retrieveData failed !!!");
+			collectionData = new ArrayList();
+		}
+
         // release db resources
         DBHelper.closeJDBCConnection(conn);
         collectionDAO = null;
@@ -66,12 +72,21 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
     public int retrieveNumberOfRows() {
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-        
-        // get data from database
-        int totalNumber =
-        	collectionDAO.getTotalNumberOfCollections(userId, collectionType, status);
-        
+        CollectionDAO collectionDAO;
+        int totalNumber = 0;
+        try{
+            collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+	        // get data from database
+	        totalNumber = collectionDAO.getTotalNumberOfCollections(userId, collectionType, status);
+        }
+		catch(Exception e){
+			System.out.println("CollectionListAssembler::retrieveNumberOfRows failed !!!");
+			totalNumber = 0;
+		}
+        // release db resources
+        DBHelper.closeJDBCConnection(conn);
+        collectionDAO = null;
+
         return totalNumber;
     }
 

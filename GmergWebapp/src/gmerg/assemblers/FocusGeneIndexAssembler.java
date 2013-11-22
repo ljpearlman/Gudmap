@@ -17,11 +17,19 @@ public class FocusGeneIndexAssembler {
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
-		
-		// get data from database
-		Object[][] browseSeries = focusStageDAO.getGeneIndex(prefix, organ);
-		
+		FocusStageDAO focusStageDAO;
+		Object[][] browseSeries = null;
+		try{
+			focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			
+			// get data from database
+			browseSeries = focusStageDAO.getGeneIndex(prefix, organ);
+		}
+		catch(Exception e){
+			System.out.println("FocusGeneIndexAssembler::getGeneIndex !!!");
+			browseSeries = null;
+		}		
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		focusStageDAO = null;

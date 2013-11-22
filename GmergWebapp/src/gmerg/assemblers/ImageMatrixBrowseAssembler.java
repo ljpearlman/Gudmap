@@ -185,14 +185,21 @@ public class ImageMatrixBrowseAssembler extends OffMemoryCollectionAssembler {
     private ArrayList getInsituSubmissionImagesByImageIds(ArrayList<String> imageIds) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
+		GeneStripDAO geneStripDAO;
+		ArrayList images = null;
+		try{
+		geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
 		
 		// get data from database
-		ArrayList images = 
-		    geneStripDAO.getInsituSubmissionImagesByImageId(imageIds);
-		
+		images = geneStripDAO.getInsituSubmissionImagesByImageId(imageIds);
+		}
+		catch(Exception e){
+			System.out.println("ImageMatrixBrowseAssembler::getInsituSubmissionImagesByImageIds !!!");
+			images = new ArrayList();
+		}
+
 		// release resources
-	        DBHelper.closeJDBCConnection(conn);
+	    DBHelper.closeJDBCConnection(conn);
 		geneStripDAO = null;
 		
 		// return results

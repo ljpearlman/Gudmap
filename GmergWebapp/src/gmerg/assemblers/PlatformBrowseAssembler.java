@@ -45,10 +45,18 @@ public class PlatformBrowseAssembler extends OffMemoryTableAssembler{
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-		
-		// get data from database
-		ArrayList platformsList = focusForAllDAO.getPlatformList(columnIndex, ascending, offset, num, organ);
+		FocusForAllDAO focusForAllDAO;
+		ArrayList platformsList = null;
+		try{
+			focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+			
+			// get data from database
+			platformsList = focusForAllDAO.getPlatformList(columnIndex, ascending, offset, num, organ);
+		}
+		catch(Exception e){
+			System.out.println("PlatformBrowseAssembler::retrieveData failed !!!");
+			platformsList = null;
+		}
 		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -74,11 +82,19 @@ public class PlatformBrowseAssembler extends OffMemoryTableAssembler{
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-		
-		// get data from database
-		int numberOfPlatforms = focusForAllDAO.getNumberOfPlatform(organ);
-		
+		FocusForAllDAO focusForAllDAO;
+		int numberOfPlatforms = 0;
+		try{
+			focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+			
+			// get data from database
+			numberOfPlatforms = focusForAllDAO.getNumberOfPlatform(organ);
+		}
+		catch(Exception e){
+			System.out.println("PlatformBrowseAssembler::retrieveNumberOfRows failed !!!");
+			numberOfPlatforms = 0;
+		}
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		focusForAllDAO = null;

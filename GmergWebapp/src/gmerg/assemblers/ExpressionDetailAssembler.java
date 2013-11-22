@@ -36,68 +36,75 @@ public class ExpressionDetailAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+		ISHDAO ishDAO;
 		ExpressionDetail expressionDetail = null;
-		
-		// get expressionDetail
-		// if expression is null
-		//    get stage
-		//    get component details
-		//    get parent node
-		//    if has parent node: inferred not detected
-		//    else get children
-		//      if child node: inferred present
-		//      else: not examined
-		// else
-		//    get notes
-		//    assemble and return
-		expressionDetail =
-			ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
-		if (expressionDetail != null) {
-			String expressionNotes = ishDAO.findAnnotationNote(submissionAccessionId, componentId);
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
-			ExpressionPattern [] patterns = 
-				ishDAO.findPatternsAndLocations(String.valueOf(expressionDetail.getExpressionId()));
-			expressionDetail.setPattern(patterns);
-                        
-			// fill out the expression detail object
-			expressionDetail.setSubmissionId(submissionAccessionId);
-			expressionDetail.setExpressionNote(expressionNotes);
-			
-		} else {
-                
-			String stage = ishDAO.findStageBySubmissionId(submissionAccessionId);
-			ArrayList componentDetail = ishDAO.findComponentDetailById(componentId);
-			expressionDetail = new ExpressionDetail();
-			expressionDetail.setSubmissionId(submissionAccessionId);
-			expressionDetail.setStage(stage);
-			expressionDetail.setComponentId(((String)componentDetail.get(0)));
-			expressionDetail.setComponentName(((String)componentDetail.get(1)));
-			expressionDetail.setComponentDescription(((ArrayList)componentDetail.get(2)));
-			
-//			expressionDetail.setPattern("not applicable");
-			ExpressionPattern[] patterns = new ExpressionPattern[1];
-			ExpressionPattern pattern = new ExpressionPattern();
-			pattern.setPattern("not applicable");
-			patterns[0] = pattern;
-			expressionDetail.setPattern(patterns);
-			
-			boolean hasParent = ishDAO.hasParentNode(componentId, stage, submissionAccessionId);
-			if (hasParent) {
-				// inferred not detected
-				expressionDetail.setPrimaryStrength("inferred not detected");
+			// get expressionDetail
+			// if expression is null
+			//    get stage
+			//    get component details
+			//    get parent node
+			//    if has parent node: inferred not detected
+			//    else get children
+			//      if child node: inferred present
+			//      else: not examined
+			// else
+			//    get notes
+			//    assemble and return
+			expressionDetail =
+				ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
+			if (expressionDetail != null) {
+				String expressionNotes = ishDAO.findAnnotationNote(submissionAccessionId, componentId);
+				
+				ExpressionPattern [] patterns = 
+					ishDAO.findPatternsAndLocations(String.valueOf(expressionDetail.getExpressionId()));
+				expressionDetail.setPattern(patterns);
+	                        
+				// fill out the expression detail object
+				expressionDetail.setSubmissionId(submissionAccessionId);
+				expressionDetail.setExpressionNote(expressionNotes);
 				
 			} else {
-				boolean hasChild = ishDAO.hasChildenNode(componentId, stage, submissionAccessionId);
-				if (hasChild) {
-					// inferred present
-					expressionDetail.setPrimaryStrength("inferred present");
+	                
+				String stage = ishDAO.findStageBySubmissionId(submissionAccessionId);
+				ArrayList componentDetail = ishDAO.findComponentDetailById(componentId);
+				expressionDetail = new ExpressionDetail();
+				expressionDetail.setSubmissionId(submissionAccessionId);
+				expressionDetail.setStage(stage);
+				expressionDetail.setComponentId(((String)componentDetail.get(0)));
+				expressionDetail.setComponentName(((String)componentDetail.get(1)));
+				expressionDetail.setComponentDescription(((ArrayList)componentDetail.get(2)));
+				
+	//			expressionDetail.setPattern("not applicable");
+				ExpressionPattern[] patterns = new ExpressionPattern[1];
+				ExpressionPattern pattern = new ExpressionPattern();
+				pattern.setPattern("not applicable");
+				patterns[0] = pattern;
+				expressionDetail.setPattern(patterns);
+				
+				boolean hasParent = ishDAO.hasParentNode(componentId, stage, submissionAccessionId);
+				if (hasParent) {
+					// inferred not detected
+					expressionDetail.setPrimaryStrength("inferred not detected");
 					
 				} else {
-					// not examined
-					expressionDetail.setPrimaryStrength("not examined");
+					boolean hasChild = ishDAO.hasChildenNode(componentId, stage, submissionAccessionId);
+					if (hasChild) {
+						// inferred present
+						expressionDetail.setPrimaryStrength("inferred present");
+						
+					} else {
+						// not examined
+						expressionDetail.setPrimaryStrength("not examined");
+					}
 				}
 			}
+		}
+		catch(Exception e){
+			System.out.println("ExpressionDetailAssembler::getData !!!");
+			expressionDetail = null;
 		}
 
 		// release db resources

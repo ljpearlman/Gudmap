@@ -66,10 +66,17 @@ public class MasterTableAssembler {
 	public HeatmapData retrieveProbelistExpressions(ArrayList<String> probeSetIds, String genelistId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-        // get data from database
-		HeatmapData expressions = arrayDAO.getExpressionByGivenProbeSetIds(probeSetIds, masterTableId, genelistId);
-		
+		ArrayDAO arrayDAO;
+		HeatmapData expressions = null;
+		try{
+			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+	        // get data from database
+			expressions = arrayDAO.getExpressionByGivenProbeSetIds(probeSetIds, masterTableId, genelistId);
+		}
+		catch(Exception e){
+			System.out.println("MasterTableAssembler::retrieveProbelistExpressions failed !!!");
+			expressions = null;
+		}
         // release db resources
         DBHelper.closeJDBCConnection(conn);
         arrayDAO = null;
@@ -97,10 +104,20 @@ public class MasterTableAssembler {
 	 */
 	public String[][] retrieveProbelistAnnotations(ArrayList probeSetIds) {
 		Connection conn = DBHelper.getDBConnection();
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
-		String[][] annotations = 
-			genelistDAO.getAnnotationByProbeSetIds(probeSetIds);
-		
+		GenelistDAO genelistDAO;
+		String[][] annotations = null;
+		try{
+			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+			annotations = genelistDAO.getAnnotationByProbeSetIds(probeSetIds);
+		}
+		catch(Exception e){
+			System.out.println("MasterTableAssembler::retrieveProbelistExpressions failed !!!");
+			annotations = null;
+		}
+        // release db resources
+        DBHelper.closeJDBCConnection(conn);
+        genelistDAO = null;
+
 		return annotations;
 	}
 
@@ -112,14 +129,22 @@ public class MasterTableAssembler {
 	public static BrowseTableTitle[] retrieveExpressionTitles(String masterTableId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
-
-        // get data from database
-		BrowseTableTitle[] expressionTitles = genelistDAO.getMasterTableExpressionTitles(masterTableId);
-		
+		GenelistDAO genelistDAO;
+		BrowseTableTitle[] expressionTitles = null;
+		try{
+			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+	
+	        // get data from database
+			expressionTitles = genelistDAO.getMasterTableExpressionTitles(masterTableId);
+		}
+		catch(Exception e){
+			System.out.println("MasterTableAssembler::retrieveExpressionTitles failed !!!");
+			expressionTitles = null;
+		}
         // release db resources
         DBHelper.closeJDBCConnection(conn);
-
+        genelistDAO = null;
+        
         // return the value object
         return expressionTitles;
 	}

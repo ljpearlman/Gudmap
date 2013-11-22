@@ -48,117 +48,125 @@ public class ISHSubmissionAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		AnatomyDAO anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+		ISHDAO ishDAO;
+		AnatomyDAO anatomyDAO;
+		ISHSubmission ishSubmission;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+			
+			// get basic submission info and create submission object
+			Submission submission = ishDAO.findSubmissionById(accessionId);
+			
+			if(submission == null){
+				return null;
+			}
+			
+			ArrayList annotationTree = null;
+			ExpressionDetail [] annotComp = null;
+			
+			if(displayAnnotationAsTree) {
+			// get expression info -- discuss with chris
+				annotationTree = anatomyDAO.findAnnotationTreeBySubmissionId(accessionId, isEditor, userBean);
+			}
+			else {
+			annotComp = anatomyDAO.findAnnotatedListBySubmissionIds(accessionId, isEditor);
+			}		
+			
+			// get probe info or antibody -- modified by xingjun 09-July-2007
+			String assayType = submission.getAssayType();
+			/** ---composite a ish submission object---  */
+			ishSubmission = new ISHSubmission();
+			ishSubmission.setAccID(submission.getAccID());
+			ishSubmission.setPublicFlag(submission.getPublicFlag());
+			ishSubmission.setDeletedFlag(submission.getDeletedFlag());
+			ishSubmission.setStage(submission.getStage());
+			ishSubmission.setAssayType(assayType);
+			ishSubmission.setArchiveId(submission.getArchiveId());
+			ishSubmission.setAnnotationTree(annotationTree);
+			ishSubmission.setAnnotatedComponents(annotComp);
+			ishSubmission.setLabId(submission.getLabId());// added by xingjun - 12/08/2010
+			ishSubmission.setProject(submission.getProject());
+			ishSubmission.setEuregeneId(submission.getEuregeneId());
+			ishSubmission.setResultNotes(submission.getResultNotes());
+			
+			if(onlyRetrieveTree) {
+				// release the db resources
+				DBHelper.closeJDBCConnection(conn);
+				ishDAO = null;
+				anatomyDAO = null;
+				return ishSubmission;
+			}
 		
-		// get basic submission info and create submission object
-		Submission submission = ishDAO.findSubmissionById(accessionId);
-		
-		if(submission == null){
-			return null;
-		}
-		
-		ArrayList annotationTree = null;
-		ExpressionDetail [] annotComp = null;
-		
-		if(displayAnnotationAsTree) {
-		// get expression info -- discuss with chris
-			annotationTree = anatomyDAO.findAnnotationTreeBySubmissionId(accessionId, isEditor, userBean);
-		}
-		else {
-		annotComp = anatomyDAO.findAnnotatedListBySubmissionIds(accessionId, isEditor);
-		}		
-		
-		// get probe info or antibody -- modified by xingjun 09-July-2007
-		String assayType = submission.getAssayType();
-		/** ---composite a ish submission object---  */
-		ISHSubmission ishSubmission = new ISHSubmission();
-		ishSubmission.setAccID(submission.getAccID());
-		ishSubmission.setPublicFlag(submission.getPublicFlag());
-		ishSubmission.setDeletedFlag(submission.getDeletedFlag());
-		ishSubmission.setStage(submission.getStage());
-		ishSubmission.setAssayType(assayType);
-		ishSubmission.setArchiveId(submission.getArchiveId());
-		ishSubmission.setAnnotationTree(annotationTree);
-		ishSubmission.setAnnotatedComponents(annotComp);
-		ishSubmission.setLabId(submission.getLabId());// added by xingjun - 12/08/2010
-		ishSubmission.setProject(submission.getProject());
-		ishSubmission.setEuregeneId(submission.getEuregeneId());
-		ishSubmission.setResultNotes(submission.getResultNotes());
-		
-		if(onlyRetrieveTree) {
-			// release the db resources
-			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
-		anatomyDAO = null;
-		return ishSubmission;
-		}
+			Probe probe = null;
+			Antibody antibody = null;
+			if (assayType.indexOf("ISH") >= 0) {
+				probe = ishDAO.findProbeBySubmissionId(accessionId);
+			} else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
+				antibody = ishDAO.findAntibodyBySubmissionId(accessionId);
+			}
+			
+			// get specimen info
+			Specimen specimen = ishDAO.findSpecimenBySubmissionId(accessionId);
 	
-		Probe probe = null;
-		Antibody antibody = null;
-		if (assayType.indexOf("ISH") >= 0) {
-			probe = ishDAO.findProbeBySubmissionId(accessionId);
-		} else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
-			antibody = ishDAO.findAntibodyBySubmissionId(accessionId);
+			// get allel info
+			Allele[] allele = ishDAO.findAlleleBySubmissionId(accessionId);
+			
+			// get image info
+			ArrayList images = ishDAO.findImageBySubmissionId(accessionId);
+			ImageDetail wlz = ishDAO.findWlzImageDetailBySubmissionId(accessionId);
+			
+			// get author info
+			String author = ishDAO.findAuthorBySubmissionId(accessionId);
+			
+			// get pi info
+			Person[] pi = ishDAO.findPIsBySubmissionId(accessionId);
+			
+			// get submitter info
+			Person submitter = ishDAO.findSubmitterBySubmissionId(accessionId);
+			
+			// get publication info
+			ArrayList publication = ishDAO.findPublicationBySubmissionId(accessionId);
+			
+			// get acknowledgement 
+			String[] acknowledgement = ishDAO.findAcknowledgementBySubmissionId(accessionId);
+	
+			ArrayList linkedSubmissionsRaw = ishDAO.findLinkedSubmissionBySubmissionId(accessionId);
+			
+			// format the linked submission raw data into appropriate data structure
+			ArrayList linkedSubmission = formatLinkedSubmissionData(linkedSubmissionsRaw);
+			
+	        if (assayType.indexOf("ISH") >=0) {
+	//        	System.out.println("add probe into submission");
+	    		ishSubmission.setProbe(probe);
+	        } else if (assayType.indexOf("IHC") >=0) {
+	        	ishSubmission.setAntibody(antibody);
+	        }
+			
+			ishSubmission.setSpecimen(specimen);
+			ishSubmission.setAllele(allele);
+			ishSubmission.setOriginalImages(images);
+			ishSubmission.setWlzImage(wlz);
+			ishSubmission.setAuthors(author);
+			ishSubmission.setPrincipalInvestigators(pi);
+			ishSubmission.setSubmitter(submitter);
+	
+			ishSubmission.setLinkedPublications(publication);
+			ishSubmission.setAcknowledgements(acknowledgement);
+	        ishSubmission.setLinkedSubmissions(linkedSubmission);
+	        
+	        // added by Bernie - 23/09/2010
+	        String tissue = ishDAO.findTissueBySubmissionId(accessionId);
+	        ishSubmission.setTissue(tissue);
 		}
-		
-		// get specimen info
-		Specimen specimen = ishDAO.findSpecimenBySubmissionId(accessionId);
-
-		// get allel info
-		Allele[] allele = ishDAO.findAlleleBySubmissionId(accessionId);
-		
-		// get image info
-		ArrayList images = ishDAO.findImageBySubmissionId(accessionId);
-		ImageDetail wlz = ishDAO.findWlzImageDetailBySubmissionId(accessionId);
-		
-		// get author info
-		String author = ishDAO.findAuthorBySubmissionId(accessionId);
-		
-		// get pi info
-		Person[] pi = ishDAO.findPIsBySubmissionId(accessionId);
-		
-		// get submitter info
-		Person submitter = ishDAO.findSubmitterBySubmissionId(accessionId);
-		
-		// get publication info
-		ArrayList publication = ishDAO.findPublicationBySubmissionId(accessionId);
-		
-		// get acknowledgement 
-		String[] acknowledgement = ishDAO.findAcknowledgementBySubmissionId(accessionId);
-
-		ArrayList linkedSubmissionsRaw = ishDAO.findLinkedSubmissionBySubmissionId(accessionId);
-		
-		// format the linked submission raw data into appropriate data structure
-		ArrayList linkedSubmission = formatLinkedSubmissionData(linkedSubmissionsRaw);
-		
-        if (assayType.indexOf("ISH") >=0) {
-//        	System.out.println("add probe into submission");
-    		ishSubmission.setProbe(probe);
-        } else if (assayType.indexOf("IHC") >=0) {
-        	ishSubmission.setAntibody(antibody);
-        }
-		
-		ishSubmission.setSpecimen(specimen);
-		ishSubmission.setAllele(allele);
-		ishSubmission.setOriginalImages(images);
-		ishSubmission.setWlzImage(wlz);
-		ishSubmission.setAuthors(author);
-		ishSubmission.setPrincipalInvestigators(pi);
-		ishSubmission.setSubmitter(submitter);
-
-		ishSubmission.setLinkedPublications(publication);
-		ishSubmission.setAcknowledgements(acknowledgement);
-        ishSubmission.setLinkedSubmissions(linkedSubmission);
-        
-        // added by Bernie - 23/09/2010
-        String tissue = ishDAO.findTissueBySubmissionId(accessionId);
-        ishSubmission.setTissue(tissue);
-
+		catch(Exception e){
+			System.out.println("ISHSubmissionAssembler::getData !!!");
+			ishSubmission = null;
+		}
 		// release the db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDAO = null;
-                anatomyDAO = null;
+        anatomyDAO = null;
 		
 		/** ---return the composite value object---  */
 		return ishSubmission;
@@ -430,10 +438,22 @@ public class ISHSubmissionAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+		ISHDAO ishDAO;
+		Person pi = null;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// get pi info
+			pi = ishDAO.findPersonById(personId);
+		}
+		catch(Exception e){
+			System.out.println("ISHSubmissionAssembler::getPersonById !!!");
+			pi = null;
+		}
+		// release the db resources
+		DBHelper.closeJDBCConnection(conn);
+		ishDAO = null;
 		
-		// get pi info
-		Person pi = ishDAO.findPersonById(personId);
 		return pi;
 	}	
 
@@ -447,10 +467,22 @@ public class ISHSubmissionAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// get status notes
-		StatusNote[] statusNotes = ishDAO.getStatusNotesBySubmissionId(accessionId);
+		ISHDAO ishDAO;
+		StatusNote[] statusNotes = null;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// get status notes
+			statusNotes = ishDAO.getStatusNotesBySubmissionId(accessionId);
+		}
+		catch(Exception e){
+			System.out.println("ISHSubmissionAssembler::getStatusNotes !!!");
+			statusNotes = null;
+		}
+		// release the db resources
+		DBHelper.closeJDBCConnection(conn);
+		ishDAO = null;
+
 		return statusNotes;
 	}
 	
@@ -467,10 +499,22 @@ public class ISHSubmissionAssembler {
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// get pi info
-		Person[] pis = ishDAO.findPIsBySubmissionId(submissionId);
+		ISHDAO ishDAO;
+		Person[] pis = null;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// get pi info
+			pis = ishDAO.findPIsBySubmissionId(submissionId);
+		}
+		catch(Exception e){
+			System.out.println("ISHSubmissionAssembler::getStatusNotes !!!");
+			pis = null;
+		}
+		// release the db resources
+		DBHelper.closeJDBCConnection(conn);
+		ishDAO = null;
+
 		return pis;
 	}
 }

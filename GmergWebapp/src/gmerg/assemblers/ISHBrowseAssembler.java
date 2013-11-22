@@ -48,11 +48,18 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-
-		// get data from database
-		ArrayList browseSubmissions = ishDevDAO.getAllSubmissionInsitu(column, ascending, offset, num, filter);
-		
+		ISHDevDAO ishDevDAO;
+		ArrayList browseSubmissions = null;
+		try{
+			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+	
+			// get data from database
+			browseSubmissions = ishDevDAO.getAllSubmissionInsitu(column, ascending, offset, num, filter);
+		}
+		catch(Exception e){
+			System.out.println("ISHBrowseAssembler::retrieveData !!!");
+			browseSubmissions = null;
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDevDAO = null;
@@ -84,32 +91,43 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-
-		// get data from database
-		String [] allColTotalsQueries = {
-                "TOTAL_NUMBER_OF_GENE_SYMBOL",
-                "TOTAL_NUMBER_OF_SUBMISSION",
-                "TOTAL_NUMBER_OF_LAB",
-                "TOTAL_NUMBER_OF_SUBMISSION_DATE",
-                "TOTAL_NUMBER_OF_ASSAY_TYPE",
-                "TOTAL_NUMBER_OF_PROBE_NAME",
-                "TOTAL_NUMBER_OF_THEILER_STAGE",
-                "TOTAL_NUMBER_OF_GIVEN_STAGE",
-                "TOTAL_NUMBER_OF_SEX",
-                "TOTAL_NUMBER_OF_GENOTYPE",
-                "TOTAL_NUMBER_OF_ISH_EXPRESSION",
-                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
-                "TOTAL_NUMBER_OF_IMAGE",
-                };
-		String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, filter);
-		
-		// convert to interger array, each tuple consists of column index and the number
-		int len = columnNumbers.length;
-		int[] totalNumbers = new int[len];
-		for (int i=0;i<len;i++) {
-			totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+		ISHDevDAO ishDevDAO;
+		int[] totalNumbers = null;
+		try{
+			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+	
+			// get data from database
+			String [] allColTotalsQueries = {
+	                "TOTAL_NUMBER_OF_GENE_SYMBOL",
+	                "TOTAL_NUMBER_OF_SUBMISSION",
+	                "TOTAL_NUMBER_OF_LAB",
+	                "TOTAL_NUMBER_OF_SUBMISSION_DATE",
+	                "TOTAL_NUMBER_OF_ASSAY_TYPE",
+	                "TOTAL_NUMBER_OF_PROBE_NAME",
+	                "TOTAL_NUMBER_OF_THEILER_STAGE",
+	                "TOTAL_NUMBER_OF_GIVEN_STAGE",
+	                "TOTAL_NUMBER_OF_SEX",
+	                "TOTAL_NUMBER_OF_GENOTYPE",
+	                "TOTAL_NUMBER_OF_ISH_EXPRESSION",
+	                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
+	                "TOTAL_NUMBER_OF_IMAGE",
+	                };
+			String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, filter);
+			
+			// convert to interger array, each tuple consists of column index and the number
+			int len = columnNumbers.length;
+			totalNumbers = new int[len];
+			for (int i=0;i<len;i++) {
+				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+			}
 		}
+		catch(Exception e){
+			System.out.println("ISHBrowseAssembler::retrieveTotals !!!");
+			totalNumbers = new int[0];
+		}
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		ishDevDAO = null;
 
 		// return result
 		return totalNumbers;
@@ -124,11 +142,18 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-
-		// get data from database
-		int totalNumberOfSubmissions = ishDevDAO.getTotalNumberOfSubmissions(filter);
-		
+		ISHDevDAO ishDevDAO;
+		int totalNumberOfSubmissions = 0;		
+		try{
+		ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+	
+			// get data from database
+			totalNumberOfSubmissions = ishDevDAO.getTotalNumberOfSubmissions(filter);
+		}
+		catch(Exception e){
+			System.out.println("ISHBrowseAssembler::retrieveNumberOfRows !!!");
+			totalNumberOfSubmissions = 0;
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDevDAO = null;
@@ -158,11 +183,19 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+		ISHEditDAO ishEditDAO;
 		
-		// delete
-		submissionDeleted = ishEditDAO.deleteSelectedSubmission(selectedSubmissions);
-		
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// delete
+			submissionDeleted = ishEditDAO.deleteSelectedSubmission(selectedSubmissions);
+		}
+		catch(Exception e){
+			System.out.println("ISHBrowseAssembler::deleteSelectedSubmissions !!!");
+			submissionDeleted = false;
+		}
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;

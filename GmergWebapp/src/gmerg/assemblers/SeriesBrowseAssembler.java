@@ -48,31 +48,40 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 	public DataItem[][] retrieveData(int columnIndex, boolean ascending, int offset, int num) {
 	    if (null != cache &&
 		cache.isSameQuery(columnIndex, ascending, offset, num)) {
-		if (debug)
-		    System.out.println("SeriesBrowseAssembler.retriveData data not changed");
-		
-		return cache.getData();
+			if (debug)
+			    System.out.println("SeriesBrowseAssembler.retriveData data not changed");
+			
+			return cache.getData();
 	    }	
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
+		ArrayDevDAO arrayDevDAO;
+		FocusForAllDAO focusForAllDAO;
 		ArrayList seriesList = null;
 
-		if (organ == null) {
-			ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-			// get data from database
-			seriesList = arrayDevDAO.getAllSeries(columnIndex, ascending, offset, num, platform);
-			arrayDevDAO = null;
+		try{
+			if (organ == null) {
+				arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+				// get data from database
+				seriesList = arrayDevDAO.getAllSeries(columnIndex, ascending, offset, num, platform);
+				arrayDevDAO = null;
+			}
+			else {
+				focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+				// get data from database
+				seriesList = focusForAllDAO.getSeriesList(columnIndex, ascending, offset, num, organ, platform);
+				focusForAllDAO = null;
+			}
 		}
-		else {
-			FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-			// get data from database
-			seriesList = focusForAllDAO.getSeriesList(columnIndex, ascending, offset, num, organ, platform);
-			focusForAllDAO = null;
-		}
-		
+		catch(Exception e){
+			System.out.println("SeriesBrowseAssembler::retrieveData failed !!!");
+			seriesList = null;
+		}		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
+		focusForAllDAO = null;
+		arrayDevDAO = null;
 		
 		// return the value object
 		DataItem[][] ret = getTableDataFormatFromSeriesList(seriesList);
@@ -91,20 +100,28 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 	public int retrieveNumberOfRows() {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
+		ArrayDevDAO arrayDevDAO;
 		int totalNumberOfSeries = 0;
-		//System.out.println("ORGAN 0827:"+organ);
-		if (organ == null) {
-			ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-			// get data from database
-			totalNumberOfSeries = arrayDevDAO.getTotalNumberOfSeries(platform);
-			arrayDevDAO = null;
+		
+		try{
+			//System.out.println("ORGAN 0827:"+organ);
+			if (organ == null) {
+				arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+				// get data from database
+				totalNumberOfSeries = arrayDevDAO.getTotalNumberOfSeries(platform);
+				arrayDevDAO = null;
+			}
+			else {
+				FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+				// get data from database
+				totalNumberOfSeries = focusForAllDAO.getNumberOfSeries(organ, platform);
+				focusForAllDAO = null;
+			}
 		}
-		else {
-			FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-			// get data from database
-			totalNumberOfSeries = focusForAllDAO.getNumberOfSeries(organ, platform);
-			focusForAllDAO = null;
-		}
+		catch(Exception e){
+			System.out.println("SeriesBrowseAssembler::retrieveNumberOfRows failed !!!");
+			totalNumberOfSeries = 0;
+		}		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		
@@ -118,24 +135,35 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-		
-		// get data from database
-		String [] allColTotalsQueries = {"TOTAL_NUMBER_OF_EXPERIMENT_NAME",
-                "TOTAL_NUMBER_OF_SAMPLE_NUMBERS",
-                "TOTAL_NUMBER_OF_SERIES_GEO_ID",
-                "TOTAL_NUMBER_OF_SERIES_LAB",
-                "TOTAL_NUMBER_OF_SERIES_PLATFORM",
-                };
-		String[][] columnNumbers = arrayDevDAO.getSeriesBrowseTotals(null, allColTotalsQueries, organ);
-		
-		// convert to interger array, each tuple consists of column index and the number
-		int len = columnNumbers.length;
-		int[] totalNumbers = new int[len];
-		for (int i=0;i<len;i++) {
-			totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+		ArrayDevDAO arrayDevDAO;
+		int[] totalNumbers = null;
+		try{
+			arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+			
+			// get data from database
+			String [] allColTotalsQueries = {"TOTAL_NUMBER_OF_EXPERIMENT_NAME",
+	                "TOTAL_NUMBER_OF_SAMPLE_NUMBERS",
+	                "TOTAL_NUMBER_OF_SERIES_GEO_ID",
+	                "TOTAL_NUMBER_OF_SERIES_LAB",
+	                "TOTAL_NUMBER_OF_SERIES_PLATFORM",
+	                };
+			String[][] columnNumbers = arrayDevDAO.getSeriesBrowseTotals(null, allColTotalsQueries, organ);
+			
+			// convert to interger array, each tuple consists of column index and the number
+			int len = columnNumbers.length;
+			totalNumbers = new int[len];
+			for (int i=0;i<len;i++) {
+				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+			}
 		}
-
+		catch(Exception e){
+			System.out.println("SeriesBrowseAssembler::retrieveNumberOfRows failed !!!");
+			totalNumbers = new int[0];
+		}		
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		arrayDevDAO = null;
+		
 		return totalNumbers;
 	}
 	

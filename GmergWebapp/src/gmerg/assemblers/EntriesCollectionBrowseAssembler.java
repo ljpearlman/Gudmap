@@ -62,18 +62,25 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-
-		String[] subIds = (String[]) ids.toArray(new String[ids.size()]);
-
-		int userPrivilege = Utility.getUserPriviledges();
-//		int askedSubmissionNumber = ids.size();
-//		System.out.println("EntriesCollectionAssembler:retrieveData:askedSubNum: " + askedSubmissionNumber);
-//		System.out.println("EntriesCollectionAssembler:retrieveData:userPrivilege: " + userPrivilege);
-		
-		ArrayList viewableSubmissions = ishDevDAO.getCollectionSubmissionBySubmissionId(userPrivilege, 0, subIds, columnIndex, ascending, offset, num);
-//		System.out.println("EntriesCollectionBrowseAssembler:retrieveData:entries: " + viewableSubmissions);
-
+		ISHDevDAO ishDevDAO;
+		ArrayList viewableSubmissions = null;
+		try{
+			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+	
+			String[] subIds = (String[]) ids.toArray(new String[ids.size()]);
+	
+			int userPrivilege = Utility.getUserPriviledges();
+//			int askedSubmissionNumber = ids.size();
+//			System.out.println("EntriesCollectionAssembler:retrieveData:askedSubNum: " + askedSubmissionNumber);
+//			System.out.println("EntriesCollectionAssembler:retrieveData:userPrivilege: " + userPrivilege);
+			
+			viewableSubmissions = ishDevDAO.getCollectionSubmissionBySubmissionId(userPrivilege, 0, subIds, columnIndex, ascending, offset, num);
+//			System.out.println("EntriesCollectionBrowseAssembler:retrieveData:entries: " + viewableSubmissions);
+		}
+		catch(Exception e){
+			System.out.println("EntriesCollectionBrowseAssembler::retrieveData !!!");
+			viewableSubmissions = null;
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDevDAO = null;
@@ -133,63 +140,76 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		/** ---get data from dao--- */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-
-		// get data from database
-		String[] allColTotalsQueries = {
-				"TOTAL_NUMBER_OF_SUBMISSION_MIX",
-				"TOTAL_NUMBER_OF_GENE_SYMBOL_MIX",
-				"TOTAL_NUMBER_OF_THEILER_STAGE_MIX",
-				"TOTAL_NUMBER_OF_AGE_MIX",
-				"TOTAL_NUMBER_OF_LAB_MIX",
-				"TOTAL_NUMBER_OF_SUBMISSION_DATE_MIX",
-				"TOTAL_NUMBER_OF_ASSAY_TYPE_MIX",
-				"TOTAL_NUMBER_OF_SPECIMEN_TYPE_MIX",
-				"TOTAL_NUMBER_OF_SEX_MIX",
-				// "TOTAL_NUMBER_OF_CONFIDENCE_LEVEL_MIX",
-				"TOTAL_NUMBER_OF_PROBE_NAME_MIX",
-				// "TOTAL_NUMBER_OF_ANTIBODY_NAME_MIX",
-				// "TOTAL_NUMBER_OF_ANTIBODY_GENE_SYMBOL_MIX",
-				"TOTAL_NUMBER_OF_GENOTYPE_MIX",
-				"TOTAL_NUMBER_OF_PROBE_TYPE_MIX",
-				"TOTAL_NUMBER_OF_THUMBNAIL_MIX", "TOTAL_NUMBER_OF_TISSUE_MIX",
-				"TOTAL_NUMBER_OF_SAMPLE_TITLE_MIX",
-				"TOTAL_NUMBER_OF_SAMPLE_DESCRIPTION_MIX",
-				"TOTAL_NUMBER_OF_SERIES_MIX" };
-
-		// use for EuReGene Projects
-		String[] allColTotalsQueriesISH = { "TOTAL_NUMBER_OF_SUBMISSION",
-				"TOTAL_NUMBER_OF_GENE_SYMBOL", "TOTAL_NUMBER_OF_THEILER_STAGE",
-				"TOTAL_NUMBER_OF_GIVEN_STAGE", "TOTAL_NUMBER_OF_LAB",
-				"TOTAL_NUMBER_OF_SUBMISSION_DATE",
-				"TOTAL_NUMBER_OF_ASSAY_TYPE", "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
-				"TOTAL_NUMBER_OF_SEX", "TOTAL_NUMBER_OF_PROBE_NAME",
-				"TOTAL_NUMBER_OF_GENOTYPE", "TOTAL_NUMBER_OF_PROBE_TYPE",
-				"TOTAL_NUMBER_OF_IMAGE" };
-
-		String[] subIds = (String[]) ids
-				.toArray(new String[ids.size()]);
-		String endingClause = "";
-		String[][] columnNumbers;
-		if (Utility.getProject().equals("GUDMAP")) {
-			int userPrivilege = Utility.getUserPriviledges();
-//			endingClause = ishDevDAO.getCollectionTotalsQueryEndingClause(subIds);
-			endingClause = ishDevDAO.getCollectionTotalsQueryEndingClause(userPrivilege, subIds);
-			columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
-		} 
-		else {
-			endingClause = ishDAO.getCollectionTotalsSubmissionISHQuerySection(subIds);
-			columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueriesISH, endingClause, filter);
+		ISHDevDAO ishDevDAO;
+		ISHDAO ishDAO;
+		int[] totalNumbers = null;
+		try{
+			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+	
+			// get data from database
+			String[] allColTotalsQueries = {
+					"TOTAL_NUMBER_OF_SUBMISSION_MIX",
+					"TOTAL_NUMBER_OF_GENE_SYMBOL_MIX",
+					"TOTAL_NUMBER_OF_THEILER_STAGE_MIX",
+					"TOTAL_NUMBER_OF_AGE_MIX",
+					"TOTAL_NUMBER_OF_LAB_MIX",
+					"TOTAL_NUMBER_OF_SUBMISSION_DATE_MIX",
+					"TOTAL_NUMBER_OF_ASSAY_TYPE_MIX",
+					"TOTAL_NUMBER_OF_SPECIMEN_TYPE_MIX",
+					"TOTAL_NUMBER_OF_SEX_MIX",
+					// "TOTAL_NUMBER_OF_CONFIDENCE_LEVEL_MIX",
+					"TOTAL_NUMBER_OF_PROBE_NAME_MIX",
+					// "TOTAL_NUMBER_OF_ANTIBODY_NAME_MIX",
+					// "TOTAL_NUMBER_OF_ANTIBODY_GENE_SYMBOL_MIX",
+					"TOTAL_NUMBER_OF_GENOTYPE_MIX",
+					"TOTAL_NUMBER_OF_PROBE_TYPE_MIX",
+					"TOTAL_NUMBER_OF_THUMBNAIL_MIX", "TOTAL_NUMBER_OF_TISSUE_MIX",
+					"TOTAL_NUMBER_OF_SAMPLE_TITLE_MIX",
+					"TOTAL_NUMBER_OF_SAMPLE_DESCRIPTION_MIX",
+					"TOTAL_NUMBER_OF_SERIES_MIX" };
+	
+			// use for EuReGene Projects
+			String[] allColTotalsQueriesISH = { "TOTAL_NUMBER_OF_SUBMISSION",
+					"TOTAL_NUMBER_OF_GENE_SYMBOL", "TOTAL_NUMBER_OF_THEILER_STAGE",
+					"TOTAL_NUMBER_OF_GIVEN_STAGE", "TOTAL_NUMBER_OF_LAB",
+					"TOTAL_NUMBER_OF_SUBMISSION_DATE",
+					"TOTAL_NUMBER_OF_ASSAY_TYPE", "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
+					"TOTAL_NUMBER_OF_SEX", "TOTAL_NUMBER_OF_PROBE_NAME",
+					"TOTAL_NUMBER_OF_GENOTYPE", "TOTAL_NUMBER_OF_PROBE_TYPE",
+					"TOTAL_NUMBER_OF_IMAGE" };
+	
+			String[] subIds = (String[]) ids
+					.toArray(new String[ids.size()]);
+			String endingClause = "";
+			String[][] columnNumbers;
+			if (Utility.getProject().equals("GUDMAP")) {
+				int userPrivilege = Utility.getUserPriviledges();
+	//			endingClause = ishDevDAO.getCollectionTotalsQueryEndingClause(subIds);
+				endingClause = ishDevDAO.getCollectionTotalsQueryEndingClause(userPrivilege, subIds);
+				columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
+			} 
+			else {
+				endingClause = ishDAO.getCollectionTotalsSubmissionISHQuerySection(subIds);
+				columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueriesISH, endingClause, filter);
+			}
+	
+			// convert to interger array, each tuple consists of column index and
+			// the number
+			int len = columnNumbers.length;
+			totalNumbers = new int[len];
+			
+			for (int i = 0; i < len; i++) 
+				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
 		}
-
-		// convert to interger array, each tuple consists of column index and
-		// the number
-		int len = columnNumbers.length;
-		int[] totalNumbers = new int[len];
-		
-		for (int i = 0; i < len; i++) 
-			totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+		catch(Exception e){
+			System.out.println("EntriesCollectionBrowseAssembler::retrieveTotals !!!");
+			totalNumbers = new int[0];
+		}
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		ishDevDAO = null;
+		ishDAO = null;
 
 		// return result
 		return totalNumbers;

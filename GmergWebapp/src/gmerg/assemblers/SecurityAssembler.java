@@ -21,10 +21,21 @@ public class SecurityAssembler {
         }
         
         Connection conn = DBHelper.getDBConnection();
-        SecurityDAO securityDAO = MySQLDAOFactory.getSecurityDAO(conn);
-        
-        User user = securityDAO.getUserWithUsernameAndPassword(username, password);
-        
+        SecurityDAO securityDAO;
+        User user = null;
+        try{
+	        securityDAO = MySQLDAOFactory.getSecurityDAO(conn);
+	        
+	        user = securityDAO.getUserWithUsernameAndPassword(username, password);
+        }
+		catch(Exception e){
+			System.out.println("SeriesBrowseAssembler::retrieveNumberOfRows failed !!!");
+			user = null;
+		}		
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		securityDAO = null;
+		
         return user;
         
     }

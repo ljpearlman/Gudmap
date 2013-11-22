@@ -58,11 +58,18 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		TransgenicDAO transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
-
-		// get data from database
-		ArrayList submissions = transgenicDAO.getAllSubmission(column, ascending, offset, num, organs, archiveIds, batchIds, filter);
-		
+		TransgenicDAO transgenicDAO;
+		ArrayList submissions = null;
+		try{
+			transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
+	
+			// get data from database
+			submissions = transgenicDAO.getAllSubmission(column, ascending, offset, num, organs, archiveIds, batchIds, filter);
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseTransgenicAssembler::retrieveData !!!");
+			submissions = null;
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		transgenicDAO = null;
@@ -90,11 +97,18 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		TransgenicDAO transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
-
-		// get data from database
-		int totalNumberOfSubmissions = transgenicDAO.getTotalNumberOfSubmissions(organs, archiveIds, batchIds, filter);
-		
+		TransgenicDAO transgenicDAO;
+		int totalNumberOfSubmissions = 0;
+		try{
+			transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
+	
+			// get data from database
+			totalNumberOfSubmissions = transgenicDAO.getTotalNumberOfSubmissions(organs, archiveIds, batchIds, filter);
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseTransgenicAssembler::retrieveNumberOfRows !!!");
+			totalNumberOfSubmissions = 0;
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		transgenicDAO = null;
@@ -112,37 +126,45 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		TransgenicDAO transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
-		
-		// get data from database
-		String [] allColTotalsQueries = {
-				"TOTAL_NUMBER_OF_GENE_SYMBOL_TG",
-				"TOTAL_NUMBER_OF_SUBMISSION_TG",
-				"TOTAL_NUMBER_OF_LAB_TG",
-				"TOTAL_NUMBER_OF_SUBMISSION_DATE_TG",
-				"TOTAL_NUMBER_OF_ASSAY_TYPE_TG",
-				"TOTAL_NUMBER_OF_PROBE_NAME_TG",
-				"TOTAL_NUMBER_OF_THEILER_STAGE_TG",
-				"TOTAL_NUMBER_OF_GIVEN_STAGE_TG",
-				"TOTAL_NUMBER_OF_SEX_TG",
-				"TOTAL_NUMBER_OF_GENOTYPE_TG",
-                "TOTAL_NUMBER_OF_ISH_EXPRESSION_TG",
-				"TOTAL_NUMBER_OF_SPECIMEN_TYPE_TG",
-				"TOTAL_NUMBER_OF_IMAGE_TG"
-		};
-//		String endingClause = " AND SUB_ASSAY_TYPE = 'TG' ";	// Bernie 16/11/2010 mod to ensure correct totals are returned
-//		String[][] columnNumbers = transgenicDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
-		String[][] columnNumbers = transgenicDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, "", filter);
-		
-		// convert to interger array, each tuple consists of column index and the number
-		int len = columnNumbers.length;
-		int[] totalNumbers = new int[len];
-		for (int i=0;i<len;i++) {
-			if (columnNumbers[i][1] != null) {
-				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
-			} else {
-				totalNumbers[i] = 0;
+		TransgenicDAO transgenicDAO;
+		int[] totalNumbers = null;
+		try{
+			transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
+			
+			// get data from database
+			String [] allColTotalsQueries = {
+					"TOTAL_NUMBER_OF_GENE_SYMBOL_TG",
+					"TOTAL_NUMBER_OF_SUBMISSION_TG",
+					"TOTAL_NUMBER_OF_LAB_TG",
+					"TOTAL_NUMBER_OF_SUBMISSION_DATE_TG",
+					"TOTAL_NUMBER_OF_ASSAY_TYPE_TG",
+					"TOTAL_NUMBER_OF_PROBE_NAME_TG",
+					"TOTAL_NUMBER_OF_THEILER_STAGE_TG",
+					"TOTAL_NUMBER_OF_GIVEN_STAGE_TG",
+					"TOTAL_NUMBER_OF_SEX_TG",
+					"TOTAL_NUMBER_OF_GENOTYPE_TG",
+	                "TOTAL_NUMBER_OF_ISH_EXPRESSION_TG",
+					"TOTAL_NUMBER_OF_SPECIMEN_TYPE_TG",
+					"TOTAL_NUMBER_OF_IMAGE_TG"
+			};
+	//		String endingClause = " AND SUB_ASSAY_TYPE = 'TG' ";	// Bernie 16/11/2010 mod to ensure correct totals are returned
+	//		String[][] columnNumbers = transgenicDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
+			String[][] columnNumbers = transgenicDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, "", filter);
+			
+			// convert to interger array, each tuple consists of column index and the number
+			int len = columnNumbers.length;
+			totalNumbers = new int[len];
+			for (int i=0;i<len;i++) {
+				if (columnNumbers[i][1] != null) {
+					totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+				} else {
+					totalNumbers[i] = 0;
+				}
 			}
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseTransgenicAssembler::retrieveTotals !!!");
+			totalNumbers = new int[0];
 		}
 
 		// return result

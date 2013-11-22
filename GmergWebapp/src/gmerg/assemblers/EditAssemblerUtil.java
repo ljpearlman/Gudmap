@@ -167,10 +167,18 @@ public final class EditAssemblerUtil {
 	public static LockingInfo getLockingInfo(String submissionId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// retrieve data
-		LockingInfo lockingInfo = ishDAO.getLockingInfo(submissionId);
+		ISHDAO ishDAO;
+		LockingInfo lockingInfo = null;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// retrieve data
+			lockingInfo = ishDAO.getLockingInfo(submissionId);
+		}
+		catch(Exception e){
+			System.out.println("EditAssemblerUtil::getLockingInfo !!!");
+			lockingInfo = null;
+		}		
 
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -191,11 +199,18 @@ public final class EditAssemblerUtil {
 //				FacesContext.getCurrentInstance().getViewRoot().getViewId());
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		// lock
-		int submissionLocked =
-			ishEditDAO.insertSubmissionLockingInfo(submissionId, userName);
+		ISHEditDAO ishEditDAO;
+		int submissionLocked = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// lock
+			submissionLocked = ishEditDAO.insertSubmissionLockingInfo(submissionId, userName);
+		}
+		catch(Exception e){
+			System.out.println("EditAssemblerUtil::lockSubmission !!!");
+			submissionLocked = 0;
+		}		
 
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -217,11 +232,18 @@ public final class EditAssemblerUtil {
 //				FacesContext.getCurrentInstance().getViewRoot().getViewId());
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		// lock
-		int submissionLocked =
-			ishEditDAO.insertSubmissionLockingInfo(submissionId, user.getUserId());
+		ISHEditDAO ishEditDAO;
+		int submissionLocked = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// lock
+			submissionLocked = ishEditDAO.insertSubmissionLockingInfo(submissionId, user.getUserId());
+		}
+		catch(Exception e){
+			System.out.println("EditAssemblerUtil::lockSubmission !!!");
+			submissionLocked = 0;
+		}		
 
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -242,11 +264,18 @@ public final class EditAssemblerUtil {
 	public static int relockSubmission(String submissionId, String userName) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		// lock
-		int submissionRelocked =
-			ishEditDAO.updateSubmissionLockingInfo(submissionId, userName);
+		ISHEditDAO ishEditDAO;
+		int submissionRelocked = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// lock
+			submissionRelocked = ishEditDAO.updateSubmissionLockingInfo(submissionId, userName);
+		}
+		catch(Exception e){
+			System.out.println("EditAssemblerUtil::relockSubmission !!!");
+			submissionRelocked = 0;
+		}		
 
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -266,11 +295,18 @@ public final class EditAssemblerUtil {
 	public static int relockSubmission(String submissionId, User user) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		// lock
-		int submissionRelocked =
-			ishEditDAO.updateSubmissionLockingInfo(submissionId, user.getUserId());
+		ISHEditDAO ishEditDAO;
+		int submissionRelocked = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// lock
+			submissionRelocked = ishEditDAO.updateSubmissionLockingInfo(submissionId, user.getUserId());
+		}
+		catch(Exception e){
+			System.out.println("EditAssemblerUtil::relockSubmission !!!");
+			submissionRelocked = 0;
+		}		
 
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -289,12 +325,19 @@ public final class EditAssemblerUtil {
 	public static int unlockSubmission(String submissionId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		// lock
-		int submissionUnlocked =
-			ishEditDAO.deleteSubmissionLockingInfo(submissionId);
-		
+		ISHEditDAO ishEditDAO;
+		int submissionUnlocked = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// lock
+			submissionUnlocked = ishEditDAO.deleteSubmissionLockingInfo(submissionId);
+		}
+		catch(Exception e){
+			System.out.println("EditAssemblerUtil::unlockSubmission !!!");
+			submissionUnlocked = 0;
+		}		
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -312,13 +355,20 @@ public final class EditAssemblerUtil {
 	public static int unlockSubmissions(String userName) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		// lock
-		int submissionsUnlocked =
-			ishEditDAO.deleteUserLockingInfo(userName);
-//		System.out.println("submissionsUnlocked: " + submissionsUnlocked);
-		
+		ISHEditDAO ishEditDAO ;
+		int submissionsUnlocked = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// lock
+			submissionsUnlocked = ishEditDAO.deleteUserLockingInfo(userName);
+//			System.out.println("submissionsUnlocked: " + submissionsUnlocked);
+		}
+		catch(Exception e){
+			System.out.println("EditAssemblerUtil::unlockSubmissions !!!");
+			submissionsUnlocked = 0;
+		}		
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -339,13 +389,20 @@ public final class EditAssemblerUtil {
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		// lock
-		int submissionsUnlocked =
-			ishEditDAO.deleteUserLockingInfo(user.getUserId());
-//		System.out.println("submissionsUnlocked: " + submissionsUnlocked);
-		
+		ISHEditDAO ishEditDAO;
+		int submissionsUnlocked = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// lock
+			submissionsUnlocked = ishEditDAO.deleteUserLockingInfo(user.getUserId());
+//			System.out.println("submissionsUnlocked: " + submissionsUnlocked);
+		}
+		catch(Exception e){
+			System.out.println("EditAssemblerUtil::unlockSubmissions !!!");
+			submissionsUnlocked = 0;
+		}		
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;

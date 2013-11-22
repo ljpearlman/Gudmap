@@ -76,37 +76,49 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
-		
-        // get data from database
-		ArrayList<String> onePageIds = new ArrayList<String>();
-		if (columnId == 0) {
-			Collections.sort(ids);
-			if (!ascending) 
-				Collections.reverse(ids);
-		}
-		
-//		if (columnId > 0) 
-//			onePageIds = arrayDAO.getExpressionSortedByGivenProbeSetIds(ids, columnId, ascending, offset, num);
-//		else
+		ArrayDAO arrayDAO;
+		GenelistDAO genelistDAO;
+		HeatmapData expressions = null;
+		String[][] annotations = null;
+		ArrayList<String> onePageIds = null;
+		try{
+			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
 			
-		for(int i=0; i<num && i+offset<ids.size(); i++)
-			onePageIds.add(ids.get(i+offset));
-		
-//		double[][] expressions = arrayDAO.getExpressionByGivenProbeSetIds(ids, columnId, ascending, offset, num);
-//		String[][] annotations = genelistDAO.getAnnotationByProbeSetIds(ids, columnId, ascending, offset, num);
-		HeatmapData expressions = arrayDAO.getExpressionByGivenProbeSetIds(onePageIds, masterTableId, genelistId);
-
-		String[][] annotations = genelistDAO.getAnnotationByProbeSetIds(onePageIds);
-
+	        // get data from database
+			onePageIds = new ArrayList<String>();
+			if (columnId == 0) {
+				Collections.sort(ids);
+				if (!ascending) 
+					Collections.reverse(ids);
+			}
+			
+//			if (columnId > 0) 
+//				onePageIds = arrayDAO.getExpressionSortedByGivenProbeSetIds(ids, columnId, ascending, offset, num);
+//			else
+			
+			for(int i=0; i<num && i+offset<ids.size(); i++)
+				onePageIds.add(ids.get(i+offset));
+			
+//			double[][] expressions = arrayDAO.getExpressionByGivenProbeSetIds(ids, columnId, ascending, offset, num);
+//			String[][] annotations = genelistDAO.getAnnotationByProbeSetIds(ids, columnId, ascending, offset, num);
+			expressions = arrayDAO.getExpressionByGivenProbeSetIds(onePageIds, masterTableId, genelistId);
+	
+			annotations = genelistDAO.getAnnotationByProbeSetIds(onePageIds);
+		}
+		catch(Exception e){
+			System.out.println("MasterTableBrowseAssembler::retrieveData failed !!!");
+			onePageIds = null;
+			expressions = null;
+			annotations = null;
+		}
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
         arrayDAO = null;
         genelistDAO = null;
         
         if (debug) 
-	    System.out.println("MasterTableBrowseAssembler.retrieveData  expression = "+expressions+" annotations = "+annotations);
+        	System.out.println("MasterTableBrowseAssembler.retrieveData  expression = "+expressions+" annotations = "+annotations);
 
 		// return value
 		DataItem[][] ret = getTableDataFormatFromMastertableData(onePageIds, expressions ,annotations);

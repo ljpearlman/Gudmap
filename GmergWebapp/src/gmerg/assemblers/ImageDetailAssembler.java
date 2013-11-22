@@ -4,6 +4,7 @@
 package gmerg.assemblers;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import gmerg.db.DBHelper;
 import gmerg.db.ISHDAO;
@@ -37,11 +38,18 @@ public class ImageDetailAssembler {
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		/** ---get data--- */
-		ImageDetail imageDetail =
-			ishDAO.findImageDetailBySubmissionId(submissionAccessionId, Integer.parseInt(serialNum)-1);
+		ISHDAO ishDAO;
+		ImageDetail imageDetail = null;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			/** ---get data--- */
+			imageDetail = ishDAO.findImageDetailBySubmissionId(submissionAccessionId, Integer.parseInt(serialNum)-1);
+		}
+		catch(Exception e){
+			System.out.println("ImageDetailAssembler::getData !!!");
+			imageDetail = null;
+		}
 
 		// release the db resources
 		DBHelper.closeJDBCConnection(conn);
