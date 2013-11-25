@@ -146,7 +146,7 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	
 	public static HeaderItem[] createHeaderForSearchResultTable() {
 
-	    System.out.println("QuickSearchAssembler.createHeaderForSearchResultTable");
+//	    System.out.println("QuickSearchAssembler.createHeaderForSearchResultTable");
 
 		 String headerTitles[] = AdvancedSearchDBQuery.getBothDefaultTitle();
 		 boolean headerSortable[] = {true, true, true, true, true, true, true, true, true, true, true, true, false};
@@ -170,7 +170,7 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	 */
 	public static DataItem[][] getTableDataFormatFromArrayList(ArrayList list) {
 
-	    System.out.println("QuickSearchAssembler.getTableDataFormatFromArrayList");
+//	    System.out.println("QuickSearchAssembler.getTableDataFormatFromArrayList");
 
 	    if (list == null){
 			System.out.println("No data is retrieved");

@@ -27,6 +27,7 @@ import java.util.HashMap;
 
 public class GeneListTreeBean implements Serializable
 {
+    protected boolean debug = false;
 
 	private static final long serialVersionUID = 1L;
  
@@ -56,13 +57,14 @@ public class GeneListTreeBean implements Serializable
 	}
 	
     public void processAction(ActionEvent event) throws AbortProcessingException,Exception {    
-		
-		System.out.println("GeneListTreeBean:processAction");
+		if (debug)
+			System.out.println("GeneListTreeBean:processAction");
     }
 
     public String findNode()
-    {    	
-    	System.out.println("GeneListTreeBean:findNode");
+    {   
+    	if (debug)
+    		System.out.println("GeneListTreeBean:findNode");
 		
 		if (genelistId.equalsIgnoreCase("0"))
 			return null;
@@ -79,17 +81,21 @@ public class GeneListTreeBean implements Serializable
     	params.put("cleartabs", "true");
     	urlParams = Visit.packParams(params);	
     	
+		if(debug)
+			System.out.println("getSearchParams:urlParams: " + urlParams);
 				
 		if (urlParams==null)
 			return "";
-		System.out.println("getSearchParams:urlParams: " + urlParams);
 		return "?" + urlParams;
 
 	}
 
     public String getResultURL () {
     	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ masterTableId + "&cleartabs=true";
-    	System.out.println("getSearchParams:result: " + result);
+    	
+    	if (debug)
+    		System.out.println("getSearchParams:result: " + result);
+    	
         return result;
     }
 
@@ -129,7 +135,10 @@ public class GeneListTreeBean implements Serializable
 			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
 			String realPath = ctx.getRealPath("/");
 			String path = realPath + "/scripts/genelist.json";
+			
+			if (debug)
 			System.out.println("path = "+path);
+			
 			FileWriter file = new FileWriter(path);
 			file.write(outerlist.toJSONString());
 			file.flush();
@@ -467,8 +476,9 @@ public class GeneListTreeBean implements Serializable
 	}
 
 	private JSONObject createMultiStages(ArrayList<GenelistTreeInfo> genelist, String dataset, String stage, int id){
-
-		System.out.println("dataset = "+ dataset + " stage = "+ stage);
+		
+		if (debug)
+			System.out.println("dataset = "+ dataset + " stage = "+ stage);
 
 		ArrayList<String> samples = new ArrayList<String>();
 		for(GenelistTreeInfo inf : genelist){
@@ -483,7 +493,8 @@ public class GeneListTreeBean implements Serializable
 		for(GenelistTreeInfo inf : genelist){
 			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
 				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
+					if (debug)
+						System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
 					obj = new JSONObject();
 					obj.put("data", inf.getName());
 					JSONObject attr1 = new JSONObject();
@@ -519,7 +530,8 @@ public class GeneListTreeBean implements Serializable
 		for(GenelistTreeInfo inf : genelist){
 			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
 				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
+					if (debug)
+						System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
 					obj = new JSONObject();
 					obj.put("data", inf.getName());
 					JSONObject attr1 = new JSONObject();
@@ -573,34 +585,30 @@ public class GeneListTreeBean implements Serializable
 
 		JSONObject obj = new JSONObject();
 		if(sample.contains("GSM") || sample.isEmpty()){
-		for(GenelistTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
-				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-					System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
-					obj = new JSONObject();
-					obj.put("data", inf.getName());
-					JSONObject attr1 = new JSONObject();
-					attr1.put("id", inf.getGenelistOID());
-					String table = "";
-					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
-						table = "4_" + inf.getDatasetId();
-					else
-						table = "3_" + inf.getDatasetId();
-					attr1.put("table", table);
-					attr1.put("rel", "Role");							
-					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
-					obj.put("attr", attr1);
-					return obj;
+			for(GenelistTreeInfo inf : genelist){
+				if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
+					if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
+						if (debug)
+							System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
+						obj = new JSONObject();
+						obj.put("data", inf.getName());
+						JSONObject attr1 = new JSONObject();
+						attr1.put("id", inf.getGenelistOID());
+						String table = "";
+						if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
+							table = "4_" + inf.getDatasetId();
+						else
+							table = "3_" + inf.getDatasetId();
+						attr1.put("table", table);
+						attr1.put("rel", "Role");							
+						attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
+						obj.put("attr", attr1);
+						return obj;
+					}
 				}
-			}
+			}	
 		}
-		}
 		
-		
-		
-
-
-
 		obj.put("data", sample);
 		obj.put("state", "closed");
 		

@@ -30,7 +30,7 @@ import java.text.DateFormat;
  *
  */
 public class MySQLISHDAOImp implements ISHDAO {
-    private boolean debug = true;
+    private boolean debug = false;
     private Connection conn;
     
     // default constructor
@@ -369,18 +369,24 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    prepStmtProbe.setString(1, probeId);
 		    if (maprobeId != null)
 		    	prepStmtProbe.setString(2, maprobeId);
+		    if (debug)
+		    	System.out.println("prepStmtProbe = "+ prepStmtProbe);
 		    resSetProbe = prepStmtProbe.executeQuery();
 	    
             // probe note -- Mantis 558 Task5
             parQProbeNote.setPrepStat(conn);
             prepStmtProbeNote = parQProbeNote.getPrepStat();
             prepStmtProbeNote.setString(1, maprobeId.replace("maprobe:", ""));
+		    if (debug)
+		    	System.out.println("prepStmtProbeNote = "+ prepStmtProbeNote);
             resSetProbeNote = prepStmtProbeNote.executeQuery();
 	    
             // curator note -- Mantis 558 Task5
             parQMaprobeNote.setPrepStat(conn);
             prepStmtMaprobeNote = parQMaprobeNote.getPrepStat();
             prepStmtMaprobeNote.setString(1, maprobeId.replace("maprobe:", ""));
+		    if (debug)
+		    	System.out.println("prepStmtMaprobeNote = "+ prepStmtMaprobeNote);
             resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
 	    
 	    
@@ -520,19 +526,20 @@ public class MySQLISHDAOImp implements ISHDAO {
             probe.setSeq5Loc(resSetProbe.getString(18));
             probe.setSeq3Loc(resSetProbe.getString(19));
 	    
-	    String str = null;
-            str = Utility.netTrim(resSetProbe.getString(20));
-	    if (null == str)
-		probe.setSeq5Primer(null);
-	    else
-		probe.setSeq5Primer(str.toUpperCase());
+		    String str = null;
+	            str = Utility.netTrim(resSetProbe.getString(20));
+		    if (null == str)
+		    	probe.setSeq5Primer(null);
+		    else
+		    	probe.setSeq5Primer(str.toUpperCase());
+		    
             str = Utility.netTrim(resSetProbe.getString(21));
-	    if (null == str)
-		probe.setSeq3Primer(null);
-	    else
-		probe.setSeq3Primer(str.toUpperCase());
-            probe.setGeneIdUrl(resSetProbe.getString(22));
-	    
+		    if (null == str)
+		    	probe.setSeq3Primer(null);
+		    else
+		    	probe.setSeq3Primer(str.toUpperCase());
+		    
+            probe.setGeneIdUrl(resSetProbe.getString(22));	    
             probe.setAdditionalCloneName(resSetProbe.getString(23));
 	    
             // xingjun - 19/01/2011
@@ -554,28 +561,29 @@ public class MySQLISHDAOImp implements ISHDAO {
             	ArrayList<String> maprobeNotes = new ArrayList<String>();
                 resSetMaprobeNote.beforeFirst();
                 String notes = null;
-		String[] separatedNote = null;
+                String[] separatedNote = null;
                 while (resSetMaprobeNote.next()) {
-		    notes = Utility.netTrim(resSetMaprobeNote.getString(1));
-		    if (null != notes) {
-			notes = notes.replaceAll("\\s", " ").trim();
-			if (notes.equals(""))
-			    notes = null;
-		    }
-		    if (null != notes) {
+				    notes = Utility.netTrim(resSetMaprobeNote.getString(1));
+				    if (null != notes) {
+						notes = notes.replaceAll("\\s", " ").trim();
+						if (notes.equals(""))
+						    notes = null;
+				    }
+				    if (null != notes) {
                         separatedNote = notes.split("\\|");
                     	if(null != separatedNote && separatedNote.length > 1) {
-			    for(int i = 0; i < separatedNote.length; i++) {
-				maprobeNotes.add(separatedNote[i]);
-			    }
-                    	} else {
-			    //                    		System.out.println("note added: " + notes);
-			    maprobeNotes.add(notes);
+						    for(int i = 0; i < separatedNote.length; i++) {
+						    	maprobeNotes.add(separatedNote[i]);
+						    }
+                    	} 
+                    	else {
+						    //                    		System.out.println("note added: " + notes);
+						    maprobeNotes.add(notes);
                     	}
                     }
                 }
                 if (maprobeNotes.size() == 0) {
-		    probe.setMaprobeNotes(null);
+            		probe.setMaprobeNotes(null);
                 } else {
                     probe.setMaprobeNotes(maprobeNotes);
                 }
@@ -587,22 +595,22 @@ public class MySQLISHDAOImp implements ISHDAO {
             	resSetFullSequence.beforeFirst();
             	String fullSeq = new String();
                 while (resSetFullSequence.next()) {
-		    fullSeq += resSetFullSequence.getString(1);
+				    fullSeq += resSetFullSequence.getString(1);
                 }
                 String origin = null;
                 int count;                
                 if(null != fullSeq) {               
-		    seqs = new ArrayList<String>();
-		    origin = fullSeq.trim();
-		    count = origin.length() / 60;
-		    for(int i = 0; i < count; i++) {
-			seqs.add(origin.substring(i*60, i*60+60));
-		    }
-                    int remainder = origin.length() / 60;
+				    seqs = new ArrayList<String>();
+				    origin = fullSeq.trim();
+				    count = origin.length() / 60;
+				    for(int i = 0; i < count; i++) {
+				    	seqs.add(origin.substring(i*60, i*60+60));
+				    }
+	                int remainder = origin.length() / 60;
 		    
-                    if (remainder > 0) {
-                    	seqs.add(origin.substring(count*60));
-                    }               	
+	                if (remainder > 0) {
+	                	seqs.add(origin.substring(count*60));
+	                }               	
                 }     	
                 probe.setFullSequence(seqs);
             } else {
@@ -610,8 +618,8 @@ public class MySQLISHDAOImp implements ISHDAO {
             }
         }
 
-	if (null == probe) 
-	    System.out.println("MySQLISHDAOImp.formatProbeResultSet   !!!possible error: null probe");
+		if (null == probe) 
+		    System.out.println("MySQLISHDAOImp.formatProbeResultSet   !!!possible error: null probe");
 
         return probe;
     }
@@ -5598,12 +5606,12 @@ public class MySQLISHDAOImp implements ISHDAO {
         Statement stmt = null;
 	//        System.out.println("getAppVersion sql: " + parQ.getQuerySQL());
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    //            parQ.setPrepStat(conn);
+		    //            prepStmt = parQ.getPrepStat();
+		    //            resSet = prepStmt.executeQuery();
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
@@ -5630,8 +5638,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("GET_SUBMISSION_TISSUE");
         PreparedStatement prepStmt = null;        
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();

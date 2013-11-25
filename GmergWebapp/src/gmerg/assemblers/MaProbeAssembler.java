@@ -15,8 +15,11 @@ public class MaProbeAssembler {
 	if (debug)
 	    System.out.println("MaProbeAssembler.constructor");
     }
-
+    
+    
 	public Probe getData(String probeId, String maprobeId) {
+		
+	    System.out.println("probeId="+probeId+" maprobeId="+maprobeId);
 
 		if ((probeId == null || probeId.equals("")) && (maprobeId == null || maprobeId.equals(""))) {
 		    System.out.println("MaProbeAssembler.getData  !!! possible error: null probeId and maprobeId");
