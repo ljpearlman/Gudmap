@@ -61,8 +61,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * 
 	 */
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
-	    if (null != cache &&
-		cache.isSameQuery(column, ascending, offset, num)) {
+	    if (null != cache && cache.isSameQuery(column, ascending, offset, num)) {
 		if (debug)
 		    System.out.println("GeneStripAssembler.retriveData data not changed");
 		
@@ -74,10 +73,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			Collections.sort(ids);// natural sort the gene symbols
 		else
 			Collections.sort(ids, Collections.reverseOrder());// natural sort the gene symbols
-    if (debug) {
-	System.out.println("geneStripAssembler:retrieveData:original symbol number: " + ids.size());
-	System.out.println("geneStripAssembler:retrieveData:original symbols: " + ids.toString());
-    }
+		
+	    if (debug) {
+		System.out.println("geneStripAssembler:retrieveData:original symbol number: " + ids.size());
+		System.out.println("geneStripAssembler:retrieveData:original symbols: " + ids.toString());
+	    }
 
 		int len = ids.size();
 		
@@ -104,136 +104,142 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 
 		// connect to database
 		Connection conn = DBHelper.getDBConnection();
-    DataItem element = null;
-		for (int i=0;i<geneStripArraySize;i++) {
-			/** 1 - symbol */
-			String symbol = requiredSymbols.get(i);
-			if (getParam("geneSymbolNoLink")!=null)	// this is used for display of genestrip in the gene details page inwhich symbol shouldn't be a link
-				data[i][0] = new DataItem(symbol);
-			else
-				data[i][0] = new DataItem(symbol, "Click to see detailed information for "+symbol, "gene.html?gene="+symbol, 10);
-
-			/** 2 - synonyms */
-			String synonyms = this.getSynonyms(conn, symbol);
-			data[i][1] = new DataItem(synonyms);
-
-			// get relevant submissions and their ts, specimen type info
-			ArrayList relatedInsituSubmissions = this.getRelatedInsituSubmissions(conn, symbol);
-
-			/** 3 - number of diseases */
-			int diseaseNumber = this.getNumberOfDisease(conn, symbol);
-			String diseaseString = "OMIM(" + Integer.toString(diseaseNumber) + ")";
-			// not display link if there's no relevant disease
-			if (diseaseNumber ==0) {
-				data[i][2] = new DataItem(diseaseString);
-			} else {
-				data[i][2] = 
-					new DataItem(diseaseString, "Click to see disease detail for "+symbol, 
-							gmerg.utils.Utility.domainUrl+"gudmap_dis/Gene_Result.jsp?gene="+symbol+"&gene_text="+symbol, 10);
-			}
-
-			/** 4 - developmental stage */
-			// insitu stages
-			String[] insituGeneStages = this.getGeneStagesInsitu(conn, symbol);
-			// array stages
-			String[] arrayGeneStages = this.getGeneStagesArray(conn, symbol);
-			String[] geneStageRange = this.getGeneStages(insituGeneStages, arrayGeneStages);
-			// stage string
-			String stage = "";
-			if (geneStageRange[0] != "-1" || geneStageRange[1] != "-1") {
-				stage = "TS" + geneStageRange[0] + "-" + geneStageRange[1];
-//				System.out.println("stage range: " + stage);
-				data[i][3] = 
-					new DataItem(stage, "Click to see stage summary for "+symbol, 
-							"focus_stage_browse.html?gene="+symbol, 10);
-			} else {
-				stage = "N/A";
-				data[i][3] = 
-					new DataItem(stage);
-			}
-
-			/** 5 - in situe expression profile */
-			double[] insituExprofile = this.getExpressionProfile(symbol);
-//			for (int j=0;j<insituExprofile.length;j++) System.out.println("insituEF-" +i+ "-" + j + ": " + insituExprofile[j]);
-			String[] interestedAnatomyStructures = 
-				AdvancedSearchDBQuery.getInterestedAnatomyStructureIds();
-			data[i][4] = 
-				new DataItem(getExpressionHtmlCode(insituExprofile, interestedAnatomyStructures, symbol), 50);
-
-			/** 6 - representative image */
-			// choose the 'right' one based on the discussion with DD
-			String candidateSubmission = 
-				this.chooseRepresentativeInsituSubmission(relatedInsituSubmissions);
-			String thumbnail = null;
-			// get the image and put the url into the string
-			if (candidateSubmission != null) {
-				thumbnail = this.getThumbnailURL(conn, candidateSubmission);
-//				data[i][5] = new DataItem(thumbnail, "Click to see submission details for "+ candidateSubmission, "image_matrix_browse.html?gene="+symbol, 13);
-				data[i][5] = new DataItem(thumbnail, "Click to see image matrix for "+symbol, "image_matrix_browse.html?gene="+symbol, 13);
-			} else {
-				thumbnail = "N/A";
-				data[i][5] = new DataItem(thumbnail);
-			}
-
-			/** 7 - array expression profile */
-			ArrayList<DataItem> complexValue = new ArrayList<DataItem>();
-			MasterTableInfo[] masterTableInfo = DbUtility.getAllMasterTablesInfo();
-			String geneSymbol = requiredSymbols.get(i);
-			for (MasterTableInfo item : masterTableInfo) 
-			    if (DbUtility.retrieveGeneProbeIds(geneSymbol, item.getPlatform()) != null) {//check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
-				element = new DataItem("../dynamicimages/heatmap_" + geneSymbol + ".jpg?tile=5&masterTableId="+item.getId(), 
-						       "Click to see " + item.getTitle() + " microarray expression profile for "+ symbol, 
-						       "mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId()+"&cleartabs=true", 15);
-				if (debug) 
-				    System.out.println("GeneStripAssembler.retrieveData value = "+element.getValue()+" title = "+element.getTitle()+" link = "+element.getLink());
-				complexValue.add(element);
-			    }
-			
-			data[i][6] = new DataItem(complexValue, 81);	// 81 is complex & centre aligned
-			
-			/** 8 - RNA_SEQ */
-			// Bernie 5/7/2011 - added new column for RNA_SEQ
-			// requires link to USCS Browser
-			String ucscUrlPrefix = "http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr";
-			
-			// used when accessed by session id
-			String ucscUrlSuffix = "&hgsid=";
-			String nextGenSeqString = "View on UCSC Browser";
-			String ucscSessionId = "203342519";
-			
-			// used when accessed by user name and session name
-			String ucscUrlHgS_doOtherUser = "hgS_doOtherUser=" + "submit";
-			//String ucscUrlHgS_OtherUserName= "hgS_doOtherUser" + "R.thiagarajan26";
-			String ucscUrlHgS_OtherUserName= "hgS_otherUserName=" + "Simon%20Harding";
-			//String ucscUrlHgs_OtherUserSessionName = "hgS_otherUserSessionName=" + "UQGUDMAP";
-			String ucscUrlHgs_OtherUserSessionName = "hgS_otherUserSessionName=" + "gudmap_1";
-			boolean ucscUrlWithSessionId = false;
-
-			// get chrome info from the database
-			ChromeDetail chromeDetail = this.getChromeDetail(conn, symbol);
-			if (chromeDetail == null) {
-				data[i][7] = new DataItem(nextGenSeqString);
-			} else {
-				String ucscUrl = "";
-				if (ucscUrlWithSessionId) { // access by session id
-					ucscUrl = ucscUrlPrefix + chromeDetail.getChromeName() + ":" + 
-					chromeDetail.getChromeStart() + "-" + chromeDetail.getChromeEnd() + ucscUrlSuffix + ucscSessionId;
-				} else { // access by user name and session name
-					ucscUrl = ucscUrlPrefix + chromeDetail.getChromeName() + ":" + 
-					chromeDetail.getChromeStart() + "-" + chromeDetail.getChromeEnd() + "&" +
-					ucscUrlHgS_doOtherUser + "&" + ucscUrlHgS_OtherUserName + "&" + ucscUrlHgs_OtherUserSessionName;
+		try{
+			DataItem element = null;
+			for (int i=0;i<geneStripArraySize;i++) {
+				/** 1 - symbol */
+				String symbol = requiredSymbols.get(i);
+				if (getParam("geneSymbolNoLink")!=null)	// this is used for display of genestrip in the gene details page inwhich symbol shouldn't be a link
+					data[i][0] = new DataItem(symbol);
+				else
+					data[i][0] = new DataItem(symbol, "Click to see detailed information for "+symbol, "gene.html?gene="+symbol, 10);
+	
+				/** 2 - synonyms */
+				String synonyms = this.getSynonyms(conn, symbol);
+				data[i][1] = new DataItem(synonyms);
+	
+				// get relevant submissions and their ts, specimen type info
+				ArrayList relatedInsituSubmissions = this.getRelatedInsituSubmissions(conn, symbol);
+	
+				/** 3 - number of diseases */
+				int diseaseNumber = this.getNumberOfDisease(conn, symbol);
+				String diseaseString = "OMIM(" + Integer.toString(diseaseNumber) + ")";
+				// not display link if there's no relevant disease
+				if (diseaseNumber ==0) {
+					data[i][2] = new DataItem(diseaseString);
+				} else {
+					data[i][2] = 
+						new DataItem(diseaseString, "Click to see disease detail for "+symbol, 
+								gmerg.utils.Utility.domainUrl+"gudmap_dis/Gene_Result.jsp?gene="+symbol+"&gene_text="+symbol, 10);
 				}
-				data[i][7] = 
-					new DataItem(nextGenSeqString, "Kidney 15.5 dpc data. See Thiagarajan et al. (2011). PMID: 21888672.", ucscUrl, 10);
-					//new DataItem(nextGenSeqString, "Click to see RNA-SEQ data on UCSC genome browser for " + symbol, ucscUrl, 10);
+	
+				/** 4 - developmental stage */
+				// insitu stages
+				String[] insituGeneStages = this.getGeneStagesInsitu(conn, symbol);
+				// array stages
+				String[] arrayGeneStages = this.getGeneStagesArray(conn, symbol);
+				String[] geneStageRange = this.getGeneStages(insituGeneStages, arrayGeneStages);
+				// stage string
+				String stage = "";
+				if (geneStageRange[0] != "-1" || geneStageRange[1] != "-1") {
+					stage = "TS" + geneStageRange[0] + "-" + geneStageRange[1];
+	//				System.out.println("stage range: " + stage);
+					data[i][3] = 
+						new DataItem(stage, "Click to see stage summary for "+symbol, 
+								"focus_stage_browse.html?gene="+symbol, 10);
+				} else {
+					stage = "N/A";
+					data[i][3] = 
+						new DataItem(stage);
+				}
+	
+				/** 5 - in situe expression profile */
+				double[] insituExprofile = this.getExpressionProfile(symbol);
+	//			for (int j=0;j<insituExprofile.length;j++) System.out.println("insituEF-" +i+ "-" + j + ": " + insituExprofile[j]);
+				String[] interestedAnatomyStructures = 
+					AdvancedSearchDBQuery.getInterestedAnatomyStructureIds();
+				data[i][4] = 
+					new DataItem(getExpressionHtmlCode(insituExprofile, interestedAnatomyStructures, symbol), 50);
+	
+				/** 6 - representative image */
+				// choose the 'right' one based on the discussion with DD
+				String candidateSubmission = 
+					this.chooseRepresentativeInsituSubmission(relatedInsituSubmissions);
+				String thumbnail = null;
+				// get the image and put the url into the string
+				if (candidateSubmission != null) {
+					thumbnail = this.getThumbnailURL(conn, candidateSubmission);
+	//				data[i][5] = new DataItem(thumbnail, "Click to see submission details for "+ candidateSubmission, "image_matrix_browse.html?gene="+symbol, 13);
+					data[i][5] = new DataItem(thumbnail, "Click to see image matrix for "+symbol, "image_matrix_browse.html?gene="+symbol, 13);
+				} else {
+					thumbnail = "N/A";
+					data[i][5] = new DataItem(thumbnail);
+				}
+	
+				/** 7 - array expression profile */
+				ArrayList<DataItem> complexValue = new ArrayList<DataItem>();
+				MasterTableInfo[] masterTableInfo = DbUtility.getAllMasterTablesInfo();
+				String geneSymbol = requiredSymbols.get(i);
+				for (MasterTableInfo item : masterTableInfo) 
+				    if (DbUtility.retrieveGeneProbeIds(geneSymbol, item.getPlatform()) != null) {//check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
+					element = new DataItem("../dynamicimages/heatmap_" + geneSymbol + ".jpg?tile=5&masterTableId="+item.getId(), 
+							       "Click to see " + item.getTitle() + " microarray expression profile for "+ symbol, 
+							       "mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId()+"&cleartabs=true", 15);
+					if (debug) 
+					    System.out.println("GeneStripAssembler.retrieveData value = "+element.getValue()+" title = "+element.getTitle()+" link = "+element.getLink());
+					complexValue.add(element);
+				    }
+				
+				data[i][6] = new DataItem(complexValue, 81);	// 81 is complex & centre aligned
+				
+				/** 8 - RNA_SEQ */
+				// Bernie 5/7/2011 - added new column for RNA_SEQ
+				// requires link to USCS Browser
+				String ucscUrlPrefix = "http://genome.ucsc.edu/cgi-bin/hgTracks?position=chr";
+				
+				// used when accessed by session id
+				String ucscUrlSuffix = "&hgsid=";
+				String nextGenSeqString = "View on UCSC Browser";
+				String ucscSessionId = "203342519";
+				
+				// used when accessed by user name and session name
+				String ucscUrlHgS_doOtherUser = "hgS_doOtherUser=" + "submit";
+				//String ucscUrlHgS_OtherUserName= "hgS_doOtherUser" + "R.thiagarajan26";
+				String ucscUrlHgS_OtherUserName= "hgS_otherUserName=" + "Simon%20Harding";
+				//String ucscUrlHgs_OtherUserSessionName = "hgS_otherUserSessionName=" + "UQGUDMAP";
+				String ucscUrlHgs_OtherUserSessionName = "hgS_otherUserSessionName=" + "gudmap_1";
+				boolean ucscUrlWithSessionId = false;
+	
+				// get chrome info from the database
+				ChromeDetail chromeDetail = this.getChromeDetail(conn, symbol);
+				if (chromeDetail == null) {
+					data[i][7] = new DataItem(nextGenSeqString);
+				} else {
+					String ucscUrl = "";
+					if (ucscUrlWithSessionId) { // access by session id
+						ucscUrl = ucscUrlPrefix + chromeDetail.getChromeName() + ":" + 
+						chromeDetail.getChromeStart() + "-" + chromeDetail.getChromeEnd() + ucscUrlSuffix + ucscSessionId;
+					} else { // access by user name and session name
+						ucscUrl = ucscUrlPrefix + chromeDetail.getChromeName() + ":" + 
+						chromeDetail.getChromeStart() + "-" + chromeDetail.getChromeEnd() + "&" +
+						ucscUrlHgS_doOtherUser + "&" + ucscUrlHgS_OtherUserName + "&" + ucscUrlHgs_OtherUserSessionName;
+					}
+					data[i][7] = 
+						new DataItem(nextGenSeqString, "Kidney 15.5 dpc data. See Thiagarajan et al. (2011). PMID: 21888672.", ucscUrl, 10);
+						//new DataItem(nextGenSeqString, "Click to see RNA-SEQ data on UCSC genome browser for " + symbol, ucscUrl, 10);
+				}
+	
+				/** 9 - geneset */
+				// not decided yet, check with ED & duncan
+				// leave it for time being ///////////////
+	//			String geneSetNumber = "0";
+				data[i][8] = new DataItem("Genesets(n)");
 			}
-
-			/** 9 - geneset */
-			// not decided yet, check with ED & duncan
-			// leave it for time being ///////////////
-//			String geneSetNumber = "0";
-			data[i][8] = new DataItem("Genesets(n)");
 		}
+		catch(Exception e){
+			System.out.println("GeneStripAssembler::retrieveData !!!");
+			data = new DataItem[0][0];
+		}		
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 
@@ -688,59 +694,70 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		
 		/** create a dao */
 		Connection conn = DBHelper.getDBConnection();
-		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		
-		/** calculate expression profile for all given structures */
-		for (int i=0;i<analen;i++) {
-//			System.out.println("structure: " + i);
-			// get component ids
-			String[] componentIds = 
-				(String[])AdvancedSearchDBQuery.getEMAPID().get(interestedAnatomyStructures[i]);
+		GeneStripDAO geneStripDAO;
+		try{
+			geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
 			
-			// put component ids into componentIdsInAll arrayList
-			int eLen = componentIds.length;
-//			System.out.println("component id number: " + eLen);
-			for (int j=0;j<eLen;j++) {
-				componentsOfAllGivenStructures.add(componentIds[j]);
-			}
-
-			// get expression info
-			ArrayList expressionOfGivenComponents = 
-				geneStripDAO.getGeneExpressionForStructure(symbol, componentIds, true);
-			
-			// start to calculate - only relevant expression exists
-			double indicator = 0;
-			if (expressionOfGivenComponents != null 
-					&& expressionOfGivenComponents.size() != 0) {
-				int compLen = expressionOfGivenComponents.size();
-				// look for 'present'
-				for (int j=0;j<compLen;j++) {
-					String expression = ((String[])expressionOfGivenComponents.get(j))[1];
-					if (expression.equalsIgnoreCase("present")) {
-						indicator = 1.00;
-						break;
-					}
-				}
+			/** calculate expression profile for all given structures */
+			for (int i=0;i<analen;i++) {
+	//			System.out.println("structure: " + i);
+				// get component ids
+				String[] componentIds = 
+					(String[])AdvancedSearchDBQuery.getEMAPID().get(interestedAnatomyStructures[i]);
 				
-				if (indicator == 0) { // there's no component with expression value of 'present'
-					// look for 'not detected'
+				// put component ids into componentIdsInAll arrayList
+				int eLen = componentIds.length;
+	//			System.out.println("component id number: " + eLen);
+				for (int j=0;j<eLen;j++) {
+					componentsOfAllGivenStructures.add(componentIds[j]);
+				}
+	
+				// get expression info
+				ArrayList expressionOfGivenComponents = 
+					geneStripDAO.getGeneExpressionForStructure(symbol, componentIds, true);
+				
+				// start to calculate - only relevant expression exists
+				double indicator = 0;
+				if (expressionOfGivenComponents != null 
+						&& expressionOfGivenComponents.size() != 0) {
+					int compLen = expressionOfGivenComponents.size();
+					// look for 'present'
 					for (int j=0;j<compLen;j++) {
 						String expression = ((String[])expressionOfGivenComponents.get(j))[1];
-						if (expression.equalsIgnoreCase("not detected")) {
-							indicator = -1.00;
+						if (expression.equalsIgnoreCase("present")) {
+							indicator = 1.00;
 							break;
 						}
 					}
+					
+					if (indicator == 0) { // there's no component with expression value of 'present'
+						// look for 'not detected'
+						for (int j=0;j<compLen;j++) {
+							String expression = ((String[])expressionOfGivenComponents.get(j))[1];
+							if (expression.equalsIgnoreCase("not detected")) {
+								indicator = -1.00;
+								break;
+							}
+						}
+					}
 				}
+				
+				// put calculation result into expression profile array
+				expressionProfiles[i] = indicator*barHeight;
 			}
-			
-			// put calculation result into expression profile array
-			expressionProfiles[i] = indicator*barHeight;
-		}
 		
 		/** calculate expression profile for other structures */
 		//////// comment the code for time being - in case they will be used in future
-		
+		}
+		catch(Exception e){
+			System.out.println("GeneStripAssembler::getExpressionProfile !!!");
+			expressionProfiles = new double[0];
+		}		
+    
+		// release the db resources
+		DBHelper.closeJDBCConnection(conn);
+		geneStripDAO = null;
+
 		/** return result */
 		return expressionProfiles;
 	} // end of getExpressionProfile

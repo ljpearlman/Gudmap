@@ -57,14 +57,22 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-        
-        // get data from database
-		// - use symbol from gene object instead of geneId params 
-		// - sometimes geneId is actually synonym of the gene and symbol of gene object 
-		//   will always be the real symbol
-        ArrayList arraysForGene = ishDAO.findRelatedSubmissionBySymbolArray(gene.getSymbol(), columnIndex, ascending, offset, num);
-        
+        ISHDAO ishDAO;
+        ArrayList arraysForGene = new ArrayList();
+        try{
+	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+	        
+	        // get data from database
+			// - use symbol from gene object instead of geneId params 
+			// - sometimes geneId is actually synonym of the gene and symbol of gene object 
+			//   will always be the real symbol
+	        arraysForGene = ishDAO.findRelatedSubmissionBySymbolArray(gene.getSymbol(), columnIndex, ascending, offset, num);
+		}
+		catch(Exception e){
+			System.out.println("GeneAssembler::retrieveData !!!");
+			arraysForGene = new ArrayList();
+		}		
+
         // release db resources
         DBHelper.closeJDBCConnection(conn);
         ishDAO = null;
@@ -106,22 +114,30 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-
-        String[] allColTotalsQueries =
-        { "TOTAL_GENE_RELATED_ARRAYS", "TOTAL_GENE_PROBEIDS", "TOTAL_GENE_SIGNAL",
-          "TOTAL_GENE_DETECTION", "TOTAL_GENE_PVALUE" };
-        String[][] param = { { gene.getSymbol() }, { gene.getSymbol() }, { gene.getSymbol() }, { gene.getSymbol() }, { gene.getSymbol() }};
-        String[][] columnNumbers = ishDAO.getStringArrayFromBatchQuery(param,
-                                                     allColTotalsQueries);;
-            
-
-        // convert to interger array, each tuple consists of column index and the number
-        int len = columnNumbers.length;
-        int[] totalNumbers = new int[len];
-        for (int i = 0; i < len; i++) {
-            totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
-        }
+        ISHDAO ishDAO;
+        int[] totalNumbers = new int[0];
+        try{
+	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+	
+	        String[] allColTotalsQueries =
+	        { "TOTAL_GENE_RELATED_ARRAYS", "TOTAL_GENE_PROBEIDS", "TOTAL_GENE_SIGNAL",
+	          "TOTAL_GENE_DETECTION", "TOTAL_GENE_PVALUE" };
+	        String[][] param = { { gene.getSymbol() }, { gene.getSymbol() }, { gene.getSymbol() }, { gene.getSymbol() }, { gene.getSymbol() }};
+	        String[][] columnNumbers = ishDAO.getStringArrayFromBatchQuery(param,
+	                                                     allColTotalsQueries);;
+	            
+	
+	        // convert to interger array, each tuple consists of column index and the number
+	        int len = columnNumbers.length;
+	        totalNumbers = new int[len];
+	        for (int i = 0; i < len; i++) {
+	            totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+	        }
+		}
+		catch(Exception e){
+			System.out.println("GeneAssembler::retrieveTotals !!!");
+			totalNumbers = new int[0];
+		}		
 
         // release db resources
         DBHelper.closeJDBCConnection(conn);
@@ -170,57 +186,65 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		// get gene info
-		Gene geneInfo = ishDAO.findGeneInfoBySymbol(geneSymbol);
-		
-		// might not find the gene
-		if (geneInfo == null) {
-//			System.out.println("GeneAssembler:getData:geneInfo not found by ish#####: ");
-			ArrayList<String> synonymsAndSymbol = new ArrayList<String>();
-			synonymsAndSymbol.add(geneSymbol);
-			GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
-			alternateSymbol = geneDAO.findSymbolBySynonym(symbol);
-//			System.out.println("alternateSymbol: " + alternateSymbol);
-			if (alternateSymbol != null && !alternateSymbol.equals("")) {
-				synonymsAndSymbol.add(alternateSymbol);
+		ISHDAO ishDAO;
+		Gene geneInfo = null;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			// get gene info
+			geneInfo = ishDAO.findGeneInfoBySymbol(geneSymbol);
+			
+			// might not find the gene
+			if (geneInfo == null) {
+	//			System.out.println("GeneAssembler:getData:geneInfo not found by ish#####: ");
+				ArrayList<String> synonymsAndSymbol = new ArrayList<String>();
+				synonymsAndSymbol.add(geneSymbol);
+				GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
+				alternateSymbol = geneDAO.findSymbolBySynonym(symbol);
+	//			System.out.println("alternateSymbol: " + alternateSymbol);
+				if (alternateSymbol != null && !alternateSymbol.equals("")) {
+					synonymsAndSymbol.add(alternateSymbol);
+				}
+				
+				ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+				
+				// find gene info
+				geneInfo = arrayDAO.findGeneInfoBySymbol(synonymsAndSymbol);
+				if(geneInfo == null){
+	//				System.out.println("geneInfo is null############### ");
+			    	return null;
+				} else {
+	//		    	System.out.println("GeneAssembler:geneInfo by array:synonym: " + geneInfo.getSynonyms());
+	//		    	System.out.println("geneInfo is not null############### ");
+	//		    	System.out.println("gene symbol: " + geneInfo.getSymbol());
+			    	geneInfo = ishDAO.findFurtherGeneInfoForMicroarray(geneInfo);
+			    	// should use alternate symbol to make query
+			    	geneSymbol = alternateSymbol;
+	//		    	System.out.println("GeneAssembler:geneInfo by further array search:synonym: " + geneInfo.getSynonyms());
+			    }
+			}
+	
+			// get associated probe
+			ArrayList associatedProbe = ishDAO.findRelatedMAProbeBySymbol(geneSymbol);
+			
+			//get related ish submissions
+			ArrayList relatedSubmissionISH = ishDAO.findRelatedSubmissionBySymbolISH(geneSymbol);
+			
+			/** ---complete gene object---  */
+			if (null != relatedSubmissionISH) {
+				geneInfo.setIshSubmissions(relatedSubmissionISH);
+			}
+			if (null != associatedProbe) {
+				geneInfo.setAssocProbes(associatedProbe);
 			}
 			
-			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			
-			// find gene info
-			geneInfo = arrayDAO.findGeneInfoBySymbol(synonymsAndSymbol);
-			if(geneInfo == null){
-//				System.out.println("geneInfo is null############### ");
-		    	return null;
-			} else {
-//		    	System.out.println("GeneAssembler:geneInfo by array:synonym: " + geneInfo.getSynonyms());
-//		    	System.out.println("geneInfo is not null############### ");
-//		    	System.out.println("gene symbol: " + geneInfo.getSymbol());
-		    	geneInfo = ishDAO.findFurtherGeneInfoForMicroarray(geneInfo);
-		    	// should use alternate symbol to make query
-		    	geneSymbol = alternateSymbol;
-//		    	System.out.println("GeneAssembler:geneInfo by further array search:synonym: " + geneInfo.getSynonyms());
-		    }
+			// get translational links info
+			geneInfo = ishDAO.addGeneInfoIuphar(geneInfo);
 		}
-
-		// get associated probe
-		ArrayList associatedProbe = ishDAO.findRelatedMAProbeBySymbol(geneSymbol);
-		
-		//get related ish submissions
-		ArrayList relatedSubmissionISH = ishDAO.findRelatedSubmissionBySymbolISH(geneSymbol);
-		
-		/** ---complete gene object---  */
-		if (null != relatedSubmissionISH) {
-			geneInfo.setIshSubmissions(relatedSubmissionISH);
-		}
-		if (null != associatedProbe) {
-			geneInfo.setAssocProbes(associatedProbe);
-		}
-		
-		// get translational links info
-		geneInfo = ishDAO.addGeneInfoIuphar(geneInfo);
-		    
+		catch(Exception e){
+			System.out.println("GeneAssembler::getData !!!");
+			geneInfo = null;
+		}		
+    
 		// release the db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDAO = null;

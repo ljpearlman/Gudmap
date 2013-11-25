@@ -33,32 +33,35 @@ public class EditExpressionAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+		ISHDAO ishDAO;
 		ExpressionDetail expressionDetail = null;
-		
-		// get expressionDetail
-		// if expression is null
-		//    get stage
-		//    get component details
-		//    set strength as 'not examined'
-		// else
-		//    get notes
-		//    assemble and return
-		expressionDetail =
-			ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
-		if (expressionDetail != null) {
-//			System.out.println("strength: " + expressionDetail.getPrimaryStrength());
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
-			expressionDetail.setAnnotated(true);
-			String expressionNotes = ishDAO.findAnnotationNote(submissionAccessionId, componentId);
-			ExpressionPattern [] patterns = ishDAO.findPatternsAndLocations(String.valueOf(expressionDetail.getExpressionId()));
-			expressionDetail.setPattern(patterns);
-                        
-			// fill out the expression detail object
-			expressionDetail.setSubmissionId(submissionAccessionId);
-			expressionDetail.setExpressionNote(expressionNotes);
-		} else {
-			try {
+			
+			// get expressionDetail
+			// if expression is null
+			//    get stage
+			//    get component details
+			//    set strength as 'not examined'
+			// else
+			//    get notes
+			//    assemble and return
+			expressionDetail =
+				ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
+			if (expressionDetail != null) {
+	//			System.out.println("strength: " + expressionDetail.getPrimaryStrength());
+				
+				expressionDetail.setAnnotated(true);
+				String expressionNotes = ishDAO.findAnnotationNote(submissionAccessionId, componentId);
+				ExpressionPattern [] patterns = ishDAO.findPatternsAndLocations(String.valueOf(expressionDetail.getExpressionId()));
+				expressionDetail.setPattern(patterns);
+	                        
+				// fill out the expression detail object
+				expressionDetail.setSubmissionId(submissionAccessionId);
+				expressionDetail.setExpressionNote(expressionNotes);
+			} 
+			else {
 				expressionDetail = new ExpressionDetail();
 				expressionDetail.setAnnotated(false);
 				
@@ -78,11 +81,13 @@ public class EditExpressionAssembler {
 //				pattern.setPattern("");
 //				patterns[0] = pattern;
 //				expressionDetail.setPattern(patterns);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
-		
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::getData failed !!!");
+			expressionDetail = null;
+		}
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDAO = null;
@@ -108,64 +113,69 @@ public class EditExpressionAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		AnnotationTestDAO annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+		ISHDAO ishDAO;
+		AnnotationTestDAO annotationTestDAO;
 		ExpressionDetail expressionDetail = null;
 		
-		// get expressionDetail
-		// if expression is null
-		//    get stage
-		//    get component details
-		//    set strength as 'not examined'
-		// else
-		//    get notes
-		//    assemble and return
-		expressionDetail =
-			ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
-		if (expressionDetail != null) {
-//			System.out.println("##############edit expression detail is not null############");
-//			System.out.println("strength: " + expressionDetail.getPrimaryStrength());
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
 			
-			String expressionNotes = ishDAO.findAnnotationNote(submissionAccessionId, componentId);
-			
-//			ExpressionPattern [] patterns = ishDAO.findPatternsAndLocations(String.valueOf(expressionDetail.getExpressionId()));
-//			expressionDetail.setPattern(patterns);
-                        
-			// fill out the expression detail object
-			expressionDetail.setSubmissionId(submissionAccessionId);
-			expressionDetail.setExpressionNote(expressionNotes);
-			expressionDetail.setAnnotated(true);
-			
-		} else {
-//			System.out.println("##############edit expression detail is null############");
-			try {
-				// xingjun - 24/11/2009 - start
-				Submission submission = annotationTestDAO.getSubmissionSummary(submissionAccessionId);
-//				String stage = ishDAO.findStageBySubmissionId(submissionAccessionId);
-				String stage = submission.getStage();
-				int dbStatus = submission.getDbStatusId();
-				// xingjun - 24/11/2009 - end
-				ArrayList componentDetail = ishDAO.findComponentDetailById(componentId);
-				expressionDetail = new ExpressionDetail();
+			// get expressionDetail
+			// if expression is null
+			//    get stage
+			//    get component details
+			//    set strength as 'not examined'
+			// else
+			//    get notes
+			//    assemble and return
+			expressionDetail =
+				ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
+			if (expressionDetail != null) {
+	//			System.out.println("##############edit expression detail is not null############");
+	//			System.out.println("strength: " + expressionDetail.getPrimaryStrength());
+				
+				String expressionNotes = ishDAO.findAnnotationNote(submissionAccessionId, componentId);
+				
+	//			ExpressionPattern [] patterns = ishDAO.findPatternsAndLocations(String.valueOf(expressionDetail.getExpressionId()));
+	//			expressionDetail.setPattern(patterns);
+	                        
+				// fill out the expression detail object
 				expressionDetail.setSubmissionId(submissionAccessionId);
-				expressionDetail.setStage(stage);
-				expressionDetail.setSubmissionDbStatus(dbStatus);// xingjun - 24/11/2009
+				expressionDetail.setExpressionNote(expressionNotes);
+				expressionDetail.setAnnotated(true);
 				
-				expressionDetail.setComponentId(((String)componentDetail.get(0)));
-				expressionDetail.setComponentName(((String)componentDetail.get(1)));
-				expressionDetail.setComponentDescription(((ArrayList)componentDetail.get(2)));
-				
-				expressionDetail.setPrimaryStrength("");
-				expressionDetail.setAnnotated(false);
-			} catch (Exception e) {
-				e.printStackTrace();
+			} else {
+	//			System.out.println("##############edit expression detail is null############");
+					// xingjun - 24/11/2009 - start
+					Submission submission = annotationTestDAO.getSubmissionSummary(submissionAccessionId);
+	//				String stage = ishDAO.findStageBySubmissionId(submissionAccessionId);
+					String stage = submission.getStage();
+					int dbStatus = submission.getDbStatusId();
+					// xingjun - 24/11/2009 - end
+					ArrayList componentDetail = ishDAO.findComponentDetailById(componentId);
+					expressionDetail = new ExpressionDetail();
+					expressionDetail.setSubmissionId(submissionAccessionId);
+					expressionDetail.setStage(stage);
+					expressionDetail.setSubmissionDbStatus(dbStatus);// xingjun - 24/11/2009
+					
+					expressionDetail.setComponentId(((String)componentDetail.get(0)));
+					expressionDetail.setComponentName(((String)componentDetail.get(1)));
+					expressionDetail.setComponentDescription(((ArrayList)componentDetail.get(2)));
+					
+					expressionDetail.setPrimaryStrength("");
+					expressionDetail.setAnnotated(false);
 			}
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::getExpression failed !!!");
+			expressionDetail = null;
 		}
 
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDAO = null;
-		
+		annotationTestDAO = null;
 		/** ---return the value object---  */
 //		System.out.println("editExpressionAssembler:getExpression: " + expressionDetail == null?"not expressed":"expressed");
 		return expressionDetail;
@@ -180,11 +190,19 @@ public class EditExpressionAssembler {
 //		System.out.println("getPatterns method in assembler########");
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// retrieve data
-		ExpressionPattern [] patterns = ishDAO.findPatternsAndLocations(true, expressionId);
-		
+		ISHDAO ishDAO;
+		ExpressionPattern [] patterns;;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// retrieve data
+			patterns = ishDAO.findPatternsAndLocations(true, expressionId);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::getPatterns failed !!!");
+			patterns = new ExpressionPattern[0];
+		}
+
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
 		ishDAO = null;
@@ -201,10 +219,18 @@ public class EditExpressionAssembler {
 	public LockingInfo getLockingInfo(String submissionId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// retrieve data
-		LockingInfo lockingInfo = ishDAO.getLockingInfo(submissionId);
+		ISHDAO ishDAO;
+		LockingInfo lockingInfo = null;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// retrieve data
+			lockingInfo = ishDAO.getLockingInfo(submissionId);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::getLockingInfo failed !!!");
+			lockingInfo = null;
+		}
 
 		// release db resources
 		DBHelper.closeJDBCConnection(conn);
@@ -275,47 +301,56 @@ public class EditExpressionAssembler {
 //		System.out.println("componentId: " + componentId);
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		int errorCode = 0;
-		
-		/** add & log */
-		// insert new expression record
-		if (primaryStrength.equals("present") 
-				|| primaryStrength.equals("not detected") 
-				|| primaryStrength.equals("uncertain")) {
-			errorCode = 
-				ishEditDAO.existConflict(submissionId, stage, componentId, primaryStrength);
-//			System.out.println("conflictCode: " + errorCode);
-			if (errorCode != 0) {
-//				System.out.println("confliction exists#######");
-//				return false;
-				return errorCode;
+		ISHEditDAO ishEditDAO;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			int errorCode = 0;
+			
+			/** add & log */
+			// insert new expression record
+			if (primaryStrength.equals("present") 
+					|| primaryStrength.equals("not detected") 
+					|| primaryStrength.equals("uncertain")) {
+				errorCode = 
+					ishEditDAO.existConflict(submissionId, stage, componentId, primaryStrength);
+	//			System.out.println("conflictCode: " + errorCode);
+				if (errorCode != 0) {
+	//				System.out.println("confliction exists#######");
+	//				return false;
+					/** release db resources */
+					DBHelper.closeJDBCConnection(conn);
+					ishEditDAO = null;
+					return errorCode;
+				}
 			}
-		}
-		
-		// insert expression
-		int addedStrengthRecordNumber =
-			ishEditDAO.insertExpression(submissionId, componentId, primaryStrength, secondaryStrength, userName);
-		if (addedStrengthRecordNumber == 0) {
-			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
-			return 7; // failed to add data into database
-		}
-
-		// insert pattern info
-		if (patterns != null && patterns.length > 0 && patterns[0].getPattern() != null && !patterns[0].getPattern().equals("")) {
-//			System.out.println("pattern is not null, now is adding...");
-			int addedPatternRowNumber = 
-				this.insertMultiplePatternAndLocation(ishEditDAO, patterns, submissionId, componentId, userName);
-//			System.out.println("addedPatternRowNumber: " + addedPatternRowNumber);
-			if (addedPatternRowNumber == 0) {
-//				return false;
+			
+			// insert expression
+			int addedStrengthRecordNumber =
+				ishEditDAO.insertExpression(submissionId, componentId, primaryStrength, secondaryStrength, userName);
+			if (addedStrengthRecordNumber == 0) {
 				DBHelper.closeJDBCConnection(conn);
 				ishEditDAO = null;
-				return 7; // failed to insert data into database
+				return 7; // failed to add data into database
+			}
+	
+			// insert pattern info
+			if (patterns != null && patterns.length > 0 && patterns[0].getPattern() != null && !patterns[0].getPattern().equals("")) {
+	//			System.out.println("pattern is not null, now is adding...");
+				int addedPatternRowNumber = 
+					this.insertMultiplePatternAndLocation(ishEditDAO, patterns, submissionId, componentId, userName);
+	//			System.out.println("addedPatternRowNumber: " + addedPatternRowNumber);
+				if (addedPatternRowNumber == 0) {
+	//				return false;
+					DBHelper.closeJDBCConnection(conn);
+					ishEditDAO = null;
+					return 7; // failed to insert data into database
+				}
 			}
 		}
-		
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::addAnnotation failed !!!");
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -340,25 +375,33 @@ public class EditExpressionAssembler {
 			ExpressionPattern[] patterns, String userName) {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		/** delete & log */
-		// delete pattern and location
-		if (patterns != null && patterns.length > 0 && patterns[0].getPattern() != null && !patterns[0].getPattern().equals("")) {
-//			System.out.println("pattern is not null#########");
-			int deletedPatternNumber = 
-				this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patterns, userName);
-			if (deletedPatternNumber == 0) {
-				DBHelper.closeJDBCConnection(conn);
-				ishEditDAO = null;
-				return false;
+		ISHEditDAO ishEditDAO;
+		int deletedExpressionNumber = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			/** delete & log */
+			// delete pattern and location
+			if (patterns != null && patterns.length > 0 && patterns[0].getPattern() != null && !patterns[0].getPattern().equals("")) {
+	//			System.out.println("pattern is not null#########");
+				int deletedPatternNumber = 
+					this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patterns, userName);
+				if (deletedPatternNumber == 0) {
+					DBHelper.closeJDBCConnection(conn);
+					ishEditDAO = null;
+					return false;
+				}
 			}
+	//		System.out.println("pattern is null#########");
+			
+			// delete expression
+			deletedExpressionNumber = ishEditDAO.deleteExpression(submissionId, componentId, userName);
 		}
-//		System.out.println("pattern is null#########");
-		
-		// delete expression
-		int deletedExpressionNumber = ishEditDAO.deleteExpression(submissionId, componentId, userName);
-		
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::deleteAnnotation failed !!!");
+			deletedExpressionNumber = 0;
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -409,514 +452,520 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		int errorCode = 0;
-		
-//		if (patternInDB == null)
-//			System.out.println("patternInDB is null#########");
-
-		// update
-		int updatedStrengthRowNumber = 0;
-		int updatedPatternNumber = 0;
-		if (oldPrimaryStrength.equals("present") || oldPrimaryStrength.equals("uncertain")) {
-			if (newPrimaryStrength.equals(oldPrimaryStrength)) {
-				// update secondary strength if not identical
-				if (newSecondaryStrength != null && !newSecondaryStrength.equals("")) {
-//					System.out.println("newSecondaryStrength is not null#######");
-					if (oldSecondaryStrength == null 
-							|| !oldSecondaryStrength.equals(newSecondaryStrength)) {
-						updatedStrengthRowNumber = ishEditDAO.updateExpressionStrengh(submissionId, 
-								componentId, 1, newSecondaryStrength, userName);
-						if (updatedStrengthRowNumber == 0) {
-//							 return false;
-							DBHelper.closeJDBCConnection(conn);
-							ishEditDAO = null;
-							return 7; // failed to update database
-						}
-					}
-				} else {
-					if (oldSecondaryStrength != null && !oldSecondaryStrength.equals("")) {
-						updatedStrengthRowNumber = ishEditDAO.updateExpressionStrengh(submissionId, 
-								componentId, 1, "", userName);
-						if (updatedStrengthRowNumber == 0) {
-//							return false;
-							DBHelper.closeJDBCConnection(conn);
-							ishEditDAO = null;
-							return 7; // failed to update database
-						}
-					}
-				}
-				// pattern updation
-//				if (patternInDB == null) { // pattern info not exists in database
-				if (patternInDBIsNull) {	
-//					if (patternOnPage != null) {
-					if (!patternOnPageIsNull) {
-						// record by record, insert pattern and/or location value 
-						// into the database & log it
-						updatedPatternNumber = 
-							this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
-						if (updatedPatternNumber == 0) {
-//							return false;
-							DBHelper.closeJDBCConnection(conn);
-							ishEditDAO = null;
-							return 7; // failed to update database
-						}
-					}
-				} else { // pattern in database is not null
-//					System.out.println("pattern in database is not null########");
-//					if (patternOnPage == null) { // pattern on page is null
-					if (patternOnPageIsNull) {
-						// delete pattern and location in database & log it
-//						System.out.println("pattern in db is not null: deleteAllPatternAndLocation####");
-						updatedPatternNumber = 
-							this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
-						if (updatedPatternNumber == 0){
-//							return false;
-							DBHelper.closeJDBCConnection(conn);
-							ishEditDAO = null;
-							return 7; // failed to update database
-						}
-						
-					} else {
-						int patternNumberInDB = patternInDB.length;
-						int patternNumberOnPage = patternOnPage.length;
-						if (patternNumberInDB == patternNumberOnPage) { // pattern numbers in db and on page are the same
-//							System.out.println("patternNumberInDB == patternNumberOnPage");
-							// check if only modified location
-							if (patternValuesAreEqual(patternInDB, patternOnPage, patternNumberInDB)) {
-//								System.out.print("patternValuesAreEqual");
-								// record by record, update pattern/location value where appropriate & log it
-								for (int i=0;i<patternNumberInDB;i++) {
-									String ld = patternInDB[i].getLocations();
-//									String lp = patternOnPage[i].getLocations();
-									String la = patternOnPage[i].getLocationAPart();
-									String lpa = (la==null || la.equals("")) ? "" : la;
-									String ln = patternOnPage[i].getLocationNPart();
-									String lpn = (ln==null || ln.equals("")) ? "" : ln;
-									String lp = (lpa + " " + lpn).trim();
-									if (ld != null && !ld.equals("")) { // locaiton in database is not null
-										if (lp != null && !lp.equals("")) { // location on page is not null
-											if (!lp.equals(ld)) { // location on page is different from the one in DB
-//												System.out.println("location on page is different from the one in DB");
-												updatedPatternNumber = 
-													ishEditDAO.updateLocation(patternInDB[i].getPatternId(), patternInDB[i].getLocationId(), lp, userName);
-												if (updatedPatternNumber == 0) {
-//													return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
-													return 7; // failed to update database
-												}
-											}
-										} else { // location on page is null
-											// delete location
-//											System.out.println("delete location");
-											updatedPatternNumber =  ishEditDAO.deleteLocation(patternInDB[i].getLocationId(), userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-										}
-									} else { // location in database is null
-										if (lp != null && !lp.equals("")) { // location on page is not null, insert where appropriate
-											updatedPatternNumber = 
-												ishEditDAO.insertLocation(submissionId, componentId, patternInDB[i].getPattern(), lp, userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-										}
-									}
-								}
-							} else { // pattern values are not the same
-								// delete original pattern and location and insert new values
-//								System.out.println("pattern values are not the same: deleteAllPatternAndLocation####");
-								updatedPatternNumber = 
-									this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
-								if (updatedPatternNumber == 0) {
-//									return false;
-									DBHelper.closeJDBCConnection(conn);
-									ishEditDAO = null;
-									return 7; // failed to update database
-								}
-								// insert
-								updatedPatternNumber = 
-									this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
-								if (updatedPatternNumber == 0) {
-//									return false;
-									DBHelper.closeJDBCConnection(conn);
-									ishEditDAO = null;
-									return 7; // failed to update database
-								}
-							}
-							
-						} else if (patternNumberInDB > patternNumberOnPage) { // pattern numbers in db and on page are not identical
-//							System.out.println("patternNumberInDB > patternNumberOnPage");
-//							System.out.println("patternNumberInDB: " + patternNumberInDB);
-//							System.out.println("patternNumberOnPage: " + patternNumberOnPage);
-							if (patternValuesAreEqual(patternInDB, patternOnPage, patternNumberOnPage)) {
-								for (int i=0;i<patternNumberOnPage;i++) {
-									// compare locations, update values in database where appropriate & log it
-									String ld = patternInDB[i].getLocations();
-//									String lp = patternOnPage[i].getLocations();
-									String la = patternOnPage[i].getLocationAPart();
-									String lpa = (la==null || la.equals("")) ? "" : la;
-									String ln = patternOnPage[i].getLocationNPart();
-									String lpn = (ln==null || ln.equals("")) ? "" : ln;
-									String lp = (lpa + " " + lpn).trim();
-									int pid = patternInDB[i].getPatternId();
-									int lid = patternInDB[i].getLocationId();
-									if (ld != null && !ld.equals("")) { // locaiton in database is not null
-										if (lp != null && !lp.equals("")) { // location on page is not null
-											if (!lp.equals(ld)) { // location on page is different from the one in DB, update
-												updatedPatternNumber = 
-													ishEditDAO.updateLocation(pid, lid, lp, userName);
-												if (updatedPatternNumber == 0) {
-//													return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
-													return 7; // failed to update database
-												}
-											}
-										} else {
-											// delete location
-											updatedPatternNumber =  ishEditDAO.deleteLocation(lid, userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-										}
-									} else { // location in database is null
-										if (lp != null && !lp.equals("")) { // location on page is not null, insert where appropriate
-											// add location
-											updatedPatternNumber = 
-												ishEditDAO.insertLocation(submissionId, componentId, patternInDB[i].getPattern(), lp, userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-										}
-									}
-								} // end of for loop
-								// delete other pattern and location in database & log it
-								int startIndexForDeletion = patternNumberOnPage;
-								for (int i=startIndexForDeletion;i<patternNumberInDB;i++) {
-									if (patternInDB[i].getPatternId() == patternInDB[startIndexForDeletion-1].getPatternId()) {
-										// pattern values are equal, delete location only
-										if (patternInDB[i].getLocations() != null) {
-											updatedPatternNumber = ishEditDAO.deleteLocation(patternInDB[i].getLocationId(), userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-										}
-									} else { // delete pattern AND location info
-										// delete location from database
-										if (patternInDB[i].getLocations() != null) {
-											updatedPatternNumber = 
-												ishEditDAO.deleteLocationByPattern(submissionId, componentId, patternInDB[i].getPattern(), userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-										}
-										
-										// delete pattern from database
-										updatedPatternNumber =
-											ishEditDAO.deletePatternById(patternInDB[i].getPatternId(), userName);
-										if (updatedPatternNumber == 0) {
-//											return false;
-											DBHelper.closeJDBCConnection(conn);
-											ishEditDAO = null;
-											return 7; // failed to update database
-										}
-									}
-								}
-							} else { // pattern values in db and on page are not identical
-								// delete all pattern and location values and insert new ones
-//								System.out.println("pattern values in db and on page are not identical: deleteAllPatternAndLocation####");
-								updatedPatternNumber = 
-									this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
-								if (updatedPatternNumber == 0) {
-//									return false;
-									DBHelper.closeJDBCConnection(conn);
-									ishEditDAO = null;
-									return 7; // failed to update database
-								}
-								// insert
-								updatedPatternNumber = 
-									this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
-								if (updatedPatternNumber == 0) {
-//									return false;
-									DBHelper.closeJDBCConnection(conn);
-									ishEditDAO = null;
-									return 7; // failed to update database
-								}
-							}
-							
-						} else { // patternNumberInDB < patternNumberOnPage
-//							System.out.println("patternNumberInDB < patternNumberOnPage");
-//							System.out.println("patternNumberInDB: " + patternNumberInDB);
-//							System.out.println("patternNumberOnPage: " + patternNumberOnPage);
-							if (patternValuesAreEqual(patternInDB, patternOnPage, patternNumberInDB)) {
-//								System.out.println("patternValuesAreEqual#######");
-								for (int i=0;i<patternNumberInDB;i++) {
-									// compare pattern and location, update value in database where appropriate & log it
-									String ld = patternInDB[i].getLocations();
-//									String lp = patternOnPage[i].getLocations();
-									String la = patternOnPage[i].getLocationAPart();
-									String lpa = (la==null || la.equals("")) ? "" : la;
-									String ln = patternOnPage[i].getLocationNPart();
-									String lpn = (ln==null || ln.equals("")) ? "" : ln;
-									String lp = (lpa + " " + lpn).trim();
-									int pid = patternInDB[i].getPatternId();
-									int lid = patternInDB[i].getLocationId();
-									if (ld != null && !ld.equals("")) { // location in database is not null
-										if (lp != null && !lp.equals("")) { // location on page is not null
-											if (!lp.equals(ld)) { // location on page is different from the one in DB, update
-												updatedPatternNumber = 
-													ishEditDAO.updateLocation(pid, lid, lp, userName);
-												if (updatedPatternNumber == 0) {
-//													return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
-													return 7; // failed to update database
-												}
-											}
-										} else { // location on page is null
-											// delete location from database
-											updatedPatternNumber =  ishEditDAO.deleteLocation(lid, userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-										}
-									} else { // location in database is null
-										if (lp != null && !lp.equals("")) { // location on page is not null, insert where appropriate
-											// add location
-											updatedPatternNumber = 
-												ishEditDAO.insertLocation(submissionId, componentId, patternInDB[i].getPattern(), lp, userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-										}
-									}
-								}
-								// insert other pattern and/or location value into the database & log it
-								int startIndexForAdding = patternNumberInDB;
-//								System.out.println("startIndexForAdding: " + startIndexForAdding);
-								ArrayList patternList = getAllPatternsInPatternArray(patternInDB);
-//								for (int i=0;i<patternList.size();i++)
-//									System.out.println("pattern list: " + i + ": " + patternList.get(i).toString());
-								ArrayList patternModified = 
-									getPatternAndLocationListFromPatternArray(patternInDB);
-								for (int i=startIndexForAdding;i<patternNumberOnPage;i++) {
-									String pattern = patternOnPage[i].getPattern();
-//									String location = patternOnPage[i].getLocations();
-									String la = patternOnPage[i].getLocationAPart();
-									String locationAPart = (la==null || la.equals("")) ? "" : la;
-									String ln = patternOnPage[i].getLocationNPart();
-									String locationNPart = (ln==null || ln.equals("")) ? "" : ln;
-									String location = (locationAPart + " " + locationNPart).trim();
-//									System.out.println("pattern value: " + pattern);
-//									System.out.println("location value: " + location);
-									int patternId = this.getIdForPattern(patternInDB, patternOnPage[i].getPattern());
-									if (patternList.contains(pattern)) { // pattern value already existed
-//										System.out.println("pattern value alread existed######");
-										// insert location where appropriate
-										if (location != null && !location.equals("") && !specifiedLocationForPatternExists(patternModified, pattern, location)) {
-											updatedPatternNumber =
-												ishEditDAO.insertLocation(submissionId, componentId, pattern, location,
-														userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-											String[] patternAndLocation = new String[2];
-											patternAndLocation[0] = pattern;
-											patternAndLocation[1] = location;
-											patternModified.add(patternAndLocation);
-										}
-										
-									} else { // insert pattern AND location info
-										// pattern
-										updatedPatternNumber =
-											ishEditDAO.insertPattern(submissionId, componentId,
-													pattern, userName);
-										if (updatedPatternNumber == 0) {
-//											return false;
-											DBHelper.closeJDBCConnection(conn);
-											ishEditDAO = null;
-											return 7; // failed to update database
-										}
-										// location
-										if (updatedPatternNumber != 0 && location != null) {
-											updatedPatternNumber =
-												ishEditDAO.insertLocation(submissionId, componentId,
-														pattern, location, userName);
-											if (updatedPatternNumber == 0) {
-//												return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
-												return 7; // failed to update database
-											}
-											String[] patternAndLocation = new String[2];
-											patternAndLocation[0] = pattern;
-											patternAndLocation[1] = location;
-											patternModified.add(patternAndLocation);
-										}
-									}
-								} // end of for loop
-							} else { // patterns on page are totally different from the ones in DB
-								// delete all pattern and location values and insert new ones
-//								System.out.println("pattern on page are totally different from the ones in db: deleteAllPatternAndLocation####");
-								updatedPatternNumber = 
-									this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
-								if (updatedPatternNumber == 0) {
-//									return false;
-									DBHelper.closeJDBCConnection(conn);
-									ishEditDAO = null;
-									return 7; // failed to update database
-								}
-								// insert
-								updatedPatternNumber = 
-									this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
-								if (updatedPatternNumber == 0) {
-//									return false;
-									DBHelper.closeJDBCConnection(conn);
-									ishEditDAO = null;
-									return 7; // failed to update database
-								}
-							}
-						}
-					}
-				} // end of pattern updation				
-			} else { // expression (primary strength) are not identical
-				
-				// should judge if the change will bring about confliction for the annotation
-				errorCode = ishEditDAO.existConflict(submissionId, stage, componentId, newPrimaryStrength);
-				if (errorCode != 0) { // confliction exists, updating denied
-					// for time being only deny updating. in the future could return more informative info###########
-//					return false;
-					DBHelper.closeJDBCConnection(conn);
-					ishEditDAO = null;
-					return errorCode;
-				} else { // there's no confliction
-
-					// update primary strength
-					updatedStrengthRowNumber =
-						ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, newPrimaryStrength, userName);
-					if (updatedStrengthRowNumber == 0) {
-//						return false;
-						DBHelper.closeJDBCConnection(conn);
-						ishEditDAO = null;
-						return 7; // failed to update database
-					}
-					
-					// delete secondary strength
-					updatedStrengthRowNumber =
-						ishEditDAO.updateExpressionStrengh(submissionId, componentId, 1, "", userName);
-					if (updatedStrengthRowNumber == 0) {
-//						return false;
-						DBHelper.closeJDBCConnection(conn);
-						ishEditDAO = null;
-						return 7; // failed to update database
-					}
-					
-					// delete pattern if there's any in DB
-//					System.out.println("strength on page are not present: deleteAllPatternAndLocation####");
-//					if (patternInDB != null) {
-					if (!patternInDBIsNull) {
-						updatedPatternNumber = 
-							this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
-						if (updatedPatternNumber == 0) {
-//							return false;
-							DBHelper.closeJDBCConnection(conn);
-							ishEditDAO = null;
-							return 7; // failed to update database
-						}
-					}
-				}
-			}
-		} else { // not detected in DB
-			if (newPrimaryStrength.equals("present") || newPrimaryStrength.equals("uncertain")) { // present/uncertain on page
-				
-				// should judge if the change will bring about confliction for the annotation
-				errorCode = ishEditDAO.existConflict(submissionId, stage, componentId, newPrimaryStrength);
-				if (errorCode != 0) { // confliction exists, updating denied
-					// for time being only deny updating. in the future could return more informative info###########
-//					return false;
-					DBHelper.closeJDBCConnection(conn);
-					ishEditDAO = null;
-					return errorCode;
-				} else { // there's no confliction
-					// update primary strength
-					updatedStrengthRowNumber =
-						ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, newPrimaryStrength, userName);
-					if (updatedStrengthRowNumber == 0) {
-//						return false;
-						DBHelper.closeJDBCConnection(conn);
-						ishEditDAO = null;
-						return 7; // failed to update database
-					}
-					
-					// set secondary strength if there's one
+		ISHEditDAO ishEditDAO;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			int errorCode = 0;
+			
+	//		if (patternInDB == null)
+	//			System.out.println("patternInDB is null#########");
+	
+			// update
+			int updatedStrengthRowNumber = 0;
+			int updatedPatternNumber = 0;
+			if (oldPrimaryStrength.equals("present") || oldPrimaryStrength.equals("uncertain")) {
+				if (newPrimaryStrength.equals(oldPrimaryStrength)) {
+					// update secondary strength if not identical
 					if (newSecondaryStrength != null && !newSecondaryStrength.equals("")) {
+	//					System.out.println("newSecondaryStrength is not null#######");
+						if (oldSecondaryStrength == null 
+								|| !oldSecondaryStrength.equals(newSecondaryStrength)) {
+							updatedStrengthRowNumber = ishEditDAO.updateExpressionStrengh(submissionId, 
+									componentId, 1, newSecondaryStrength, userName);
+							if (updatedStrengthRowNumber == 0) {
+	//							 return false;
+								DBHelper.closeJDBCConnection(conn);
+								ishEditDAO = null;
+								return 7; // failed to update database
+							}
+						}
+					} else {
+						if (oldSecondaryStrength != null && !oldSecondaryStrength.equals("")) {
+							updatedStrengthRowNumber = ishEditDAO.updateExpressionStrengh(submissionId, 
+									componentId, 1, "", userName);
+							if (updatedStrengthRowNumber == 0) {
+	//							return false;
+								DBHelper.closeJDBCConnection(conn);
+								ishEditDAO = null;
+								return 7; // failed to update database
+							}
+						}
+					}
+					// pattern updation
+	//				if (patternInDB == null) { // pattern info not exists in database
+					if (patternInDBIsNull) {	
+	//					if (patternOnPage != null) {
+						if (!patternOnPageIsNull) {
+							// record by record, insert pattern and/or location value 
+							// into the database & log it
+							updatedPatternNumber = 
+								this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
+							if (updatedPatternNumber == 0) {
+	//							return false;
+								DBHelper.closeJDBCConnection(conn);
+								ishEditDAO = null;
+								return 7; // failed to update database
+							}
+						}
+					} else { // pattern in database is not null
+	//					System.out.println("pattern in database is not null########");
+	//					if (patternOnPage == null) { // pattern on page is null
+						if (patternOnPageIsNull) {
+							// delete pattern and location in database & log it
+	//						System.out.println("pattern in db is not null: deleteAllPatternAndLocation####");
+							updatedPatternNumber = 
+								this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
+							if (updatedPatternNumber == 0){
+	//							return false;
+								DBHelper.closeJDBCConnection(conn);
+								ishEditDAO = null;
+								return 7; // failed to update database
+							}
+							
+						} else {
+							int patternNumberInDB = patternInDB.length;
+							int patternNumberOnPage = patternOnPage.length;
+							if (patternNumberInDB == patternNumberOnPage) { // pattern numbers in db and on page are the same
+	//							System.out.println("patternNumberInDB == patternNumberOnPage");
+								// check if only modified location
+								if (patternValuesAreEqual(patternInDB, patternOnPage, patternNumberInDB)) {
+	//								System.out.print("patternValuesAreEqual");
+									// record by record, update pattern/location value where appropriate & log it
+									for (int i=0;i<patternNumberInDB;i++) {
+										String ld = patternInDB[i].getLocations();
+	//									String lp = patternOnPage[i].getLocations();
+										String la = patternOnPage[i].getLocationAPart();
+										String lpa = (la==null || la.equals("")) ? "" : la;
+										String ln = patternOnPage[i].getLocationNPart();
+										String lpn = (ln==null || ln.equals("")) ? "" : ln;
+										String lp = (lpa + " " + lpn).trim();
+										if (ld != null && !ld.equals("")) { // locaiton in database is not null
+											if (lp != null && !lp.equals("")) { // location on page is not null
+												if (!lp.equals(ld)) { // location on page is different from the one in DB
+	//												System.out.println("location on page is different from the one in DB");
+													updatedPatternNumber = 
+														ishEditDAO.updateLocation(patternInDB[i].getPatternId(), patternInDB[i].getLocationId(), lp, userName);
+													if (updatedPatternNumber == 0) {
+	//													return false;
+														DBHelper.closeJDBCConnection(conn);
+														ishEditDAO = null;
+														return 7; // failed to update database
+													}
+												}
+											} else { // location on page is null
+												// delete location
+	//											System.out.println("delete location");
+												updatedPatternNumber =  ishEditDAO.deleteLocation(patternInDB[i].getLocationId(), userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+											}
+										} else { // location in database is null
+											if (lp != null && !lp.equals("")) { // location on page is not null, insert where appropriate
+												updatedPatternNumber = 
+													ishEditDAO.insertLocation(submissionId, componentId, patternInDB[i].getPattern(), lp, userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+											}
+										}
+									}
+								} else { // pattern values are not the same
+									// delete original pattern and location and insert new values
+	//								System.out.println("pattern values are not the same: deleteAllPatternAndLocation####");
+									updatedPatternNumber = 
+										this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
+									if (updatedPatternNumber == 0) {
+	//									return false;
+										DBHelper.closeJDBCConnection(conn);
+										ishEditDAO = null;
+										return 7; // failed to update database
+									}
+									// insert
+									updatedPatternNumber = 
+										this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
+									if (updatedPatternNumber == 0) {
+	//									return false;
+										DBHelper.closeJDBCConnection(conn);
+										ishEditDAO = null;
+										return 7; // failed to update database
+									}
+								}
+								
+							} else if (patternNumberInDB > patternNumberOnPage) { // pattern numbers in db and on page are not identical
+	//							System.out.println("patternNumberInDB > patternNumberOnPage");
+	//							System.out.println("patternNumberInDB: " + patternNumberInDB);
+	//							System.out.println("patternNumberOnPage: " + patternNumberOnPage);
+								if (patternValuesAreEqual(patternInDB, patternOnPage, patternNumberOnPage)) {
+									for (int i=0;i<patternNumberOnPage;i++) {
+										// compare locations, update values in database where appropriate & log it
+										String ld = patternInDB[i].getLocations();
+	//									String lp = patternOnPage[i].getLocations();
+										String la = patternOnPage[i].getLocationAPart();
+										String lpa = (la==null || la.equals("")) ? "" : la;
+										String ln = patternOnPage[i].getLocationNPart();
+										String lpn = (ln==null || ln.equals("")) ? "" : ln;
+										String lp = (lpa + " " + lpn).trim();
+										int pid = patternInDB[i].getPatternId();
+										int lid = patternInDB[i].getLocationId();
+										if (ld != null && !ld.equals("")) { // locaiton in database is not null
+											if (lp != null && !lp.equals("")) { // location on page is not null
+												if (!lp.equals(ld)) { // location on page is different from the one in DB, update
+													updatedPatternNumber = 
+														ishEditDAO.updateLocation(pid, lid, lp, userName);
+													if (updatedPatternNumber == 0) {
+	//													return false;
+														DBHelper.closeJDBCConnection(conn);
+														ishEditDAO = null;
+														return 7; // failed to update database
+													}
+												}
+											} else {
+												// delete location
+												updatedPatternNumber =  ishEditDAO.deleteLocation(lid, userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+											}
+										} else { // location in database is null
+											if (lp != null && !lp.equals("")) { // location on page is not null, insert where appropriate
+												// add location
+												updatedPatternNumber = 
+													ishEditDAO.insertLocation(submissionId, componentId, patternInDB[i].getPattern(), lp, userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+											}
+										}
+									} // end of for loop
+									// delete other pattern and location in database & log it
+									int startIndexForDeletion = patternNumberOnPage;
+									for (int i=startIndexForDeletion;i<patternNumberInDB;i++) {
+										if (patternInDB[i].getPatternId() == patternInDB[startIndexForDeletion-1].getPatternId()) {
+											// pattern values are equal, delete location only
+											if (patternInDB[i].getLocations() != null) {
+												updatedPatternNumber = ishEditDAO.deleteLocation(patternInDB[i].getLocationId(), userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+											}
+										} else { // delete pattern AND location info
+											// delete location from database
+											if (patternInDB[i].getLocations() != null) {
+												updatedPatternNumber = 
+													ishEditDAO.deleteLocationByPattern(submissionId, componentId, patternInDB[i].getPattern(), userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+											}
+											
+											// delete pattern from database
+											updatedPatternNumber =
+												ishEditDAO.deletePatternById(patternInDB[i].getPatternId(), userName);
+											if (updatedPatternNumber == 0) {
+	//											return false;
+												DBHelper.closeJDBCConnection(conn);
+												ishEditDAO = null;
+												return 7; // failed to update database
+											}
+										}
+									}
+								} else { // pattern values in db and on page are not identical
+									// delete all pattern and location values and insert new ones
+	//								System.out.println("pattern values in db and on page are not identical: deleteAllPatternAndLocation####");
+									updatedPatternNumber = 
+										this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
+									if (updatedPatternNumber == 0) {
+	//									return false;
+										DBHelper.closeJDBCConnection(conn);
+										ishEditDAO = null;
+										return 7; // failed to update database
+									}
+									// insert
+									updatedPatternNumber = 
+										this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
+									if (updatedPatternNumber == 0) {
+	//									return false;
+										DBHelper.closeJDBCConnection(conn);
+										ishEditDAO = null;
+										return 7; // failed to update database
+									}
+								}
+								
+							} else { // patternNumberInDB < patternNumberOnPage
+	//							System.out.println("patternNumberInDB < patternNumberOnPage");
+	//							System.out.println("patternNumberInDB: " + patternNumberInDB);
+	//							System.out.println("patternNumberOnPage: " + patternNumberOnPage);
+								if (patternValuesAreEqual(patternInDB, patternOnPage, patternNumberInDB)) {
+	//								System.out.println("patternValuesAreEqual#######");
+									for (int i=0;i<patternNumberInDB;i++) {
+										// compare pattern and location, update value in database where appropriate & log it
+										String ld = patternInDB[i].getLocations();
+	//									String lp = patternOnPage[i].getLocations();
+										String la = patternOnPage[i].getLocationAPart();
+										String lpa = (la==null || la.equals("")) ? "" : la;
+										String ln = patternOnPage[i].getLocationNPart();
+										String lpn = (ln==null || ln.equals("")) ? "" : ln;
+										String lp = (lpa + " " + lpn).trim();
+										int pid = patternInDB[i].getPatternId();
+										int lid = patternInDB[i].getLocationId();
+										if (ld != null && !ld.equals("")) { // location in database is not null
+											if (lp != null && !lp.equals("")) { // location on page is not null
+												if (!lp.equals(ld)) { // location on page is different from the one in DB, update
+													updatedPatternNumber = 
+														ishEditDAO.updateLocation(pid, lid, lp, userName);
+													if (updatedPatternNumber == 0) {
+	//													return false;
+														DBHelper.closeJDBCConnection(conn);
+														ishEditDAO = null;
+														return 7; // failed to update database
+													}
+												}
+											} else { // location on page is null
+												// delete location from database
+												updatedPatternNumber =  ishEditDAO.deleteLocation(lid, userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+											}
+										} else { // location in database is null
+											if (lp != null && !lp.equals("")) { // location on page is not null, insert where appropriate
+												// add location
+												updatedPatternNumber = 
+													ishEditDAO.insertLocation(submissionId, componentId, patternInDB[i].getPattern(), lp, userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+											}
+										}
+									}
+									// insert other pattern and/or location value into the database & log it
+									int startIndexForAdding = patternNumberInDB;
+	//								System.out.println("startIndexForAdding: " + startIndexForAdding);
+									ArrayList patternList = getAllPatternsInPatternArray(patternInDB);
+	//								for (int i=0;i<patternList.size();i++)
+	//									System.out.println("pattern list: " + i + ": " + patternList.get(i).toString());
+									ArrayList patternModified = 
+										getPatternAndLocationListFromPatternArray(patternInDB);
+									for (int i=startIndexForAdding;i<patternNumberOnPage;i++) {
+										String pattern = patternOnPage[i].getPattern();
+	//									String location = patternOnPage[i].getLocations();
+										String la = patternOnPage[i].getLocationAPart();
+										String locationAPart = (la==null || la.equals("")) ? "" : la;
+										String ln = patternOnPage[i].getLocationNPart();
+										String locationNPart = (ln==null || ln.equals("")) ? "" : ln;
+										String location = (locationAPart + " " + locationNPart).trim();
+	//									System.out.println("pattern value: " + pattern);
+	//									System.out.println("location value: " + location);
+										int patternId = this.getIdForPattern(patternInDB, patternOnPage[i].getPattern());
+										if (patternList.contains(pattern)) { // pattern value already existed
+	//										System.out.println("pattern value alread existed######");
+											// insert location where appropriate
+											if (location != null && !location.equals("") && !specifiedLocationForPatternExists(patternModified, pattern, location)) {
+												updatedPatternNumber =
+													ishEditDAO.insertLocation(submissionId, componentId, pattern, location,
+															userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+												String[] patternAndLocation = new String[2];
+												patternAndLocation[0] = pattern;
+												patternAndLocation[1] = location;
+												patternModified.add(patternAndLocation);
+											}
+											
+										} else { // insert pattern AND location info
+											// pattern
+											updatedPatternNumber =
+												ishEditDAO.insertPattern(submissionId, componentId,
+														pattern, userName);
+											if (updatedPatternNumber == 0) {
+	//											return false;
+												DBHelper.closeJDBCConnection(conn);
+												ishEditDAO = null;
+												return 7; // failed to update database
+											}
+											// location
+											if (updatedPatternNumber != 0 && location != null) {
+												updatedPatternNumber =
+													ishEditDAO.insertLocation(submissionId, componentId,
+															pattern, location, userName);
+												if (updatedPatternNumber == 0) {
+	//												return false;
+													DBHelper.closeJDBCConnection(conn);
+													ishEditDAO = null;
+													return 7; // failed to update database
+												}
+												String[] patternAndLocation = new String[2];
+												patternAndLocation[0] = pattern;
+												patternAndLocation[1] = location;
+												patternModified.add(patternAndLocation);
+											}
+										}
+									} // end of for loop
+								} else { // patterns on page are totally different from the ones in DB
+									// delete all pattern and location values and insert new ones
+	//								System.out.println("pattern on page are totally different from the ones in db: deleteAllPatternAndLocation####");
+									updatedPatternNumber = 
+										this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
+									if (updatedPatternNumber == 0) {
+	//									return false;
+										DBHelper.closeJDBCConnection(conn);
+										ishEditDAO = null;
+										return 7; // failed to update database
+									}
+									// insert
+									updatedPatternNumber = 
+										this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
+									if (updatedPatternNumber == 0) {
+	//									return false;
+										DBHelper.closeJDBCConnection(conn);
+										ishEditDAO = null;
+										return 7; // failed to update database
+									}
+								}
+							}
+						}
+					} // end of pattern updation				
+				} else { // expression (primary strength) are not identical
+					
+					// should judge if the change will bring about confliction for the annotation
+					errorCode = ishEditDAO.existConflict(submissionId, stage, componentId, newPrimaryStrength);
+					if (errorCode != 0) { // confliction exists, updating denied
+						// for time being only deny updating. in the future could return more informative info###########
+	//					return false;
+						DBHelper.closeJDBCConnection(conn);
+						ishEditDAO = null;
+						return errorCode;
+					} else { // there's no confliction
+	
+						// update primary strength
 						updatedStrengthRowNumber =
-							ishEditDAO.updateExpressionStrengh(submissionId, componentId, 1, newSecondaryStrength, userName);
+							ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, newPrimaryStrength, userName);
 						if (updatedStrengthRowNumber == 0) {
-//							return false;
+	//						return false;
 							DBHelper.closeJDBCConnection(conn);
 							ishEditDAO = null;
 							return 7; // failed to update database
 						}
-					}
 						
-					// add pattern info if there are any
-//					if (patternOnPage != null) {
-					if (!patternOnPageIsNull) {
-						// record by record, insert pattern and/or location value into the database & log it
-						updatedPatternNumber = 
-							this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
-						if (updatedPatternNumber == 0) {
-//							return false;
+						// delete secondary strength
+						updatedStrengthRowNumber =
+							ishEditDAO.updateExpressionStrengh(submissionId, componentId, 1, "", userName);
+						if (updatedStrengthRowNumber == 0) {
+	//						return false;
 							DBHelper.closeJDBCConnection(conn);
 							ishEditDAO = null;
 							return 7; // failed to update database
+						}
+						
+						// delete pattern if there's any in DB
+	//					System.out.println("strength on page are not present: deleteAllPatternAndLocation####");
+	//					if (patternInDB != null) {
+						if (!patternInDBIsNull) {
+							updatedPatternNumber = 
+								this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
+							if (updatedPatternNumber == 0) {
+	//							return false;
+								DBHelper.closeJDBCConnection(conn);
+								ishEditDAO = null;
+								return 7; // failed to update database
+							}
 						}
 					}
 				}
-			} else if(!newPrimaryStrength.equals(oldPrimaryStrength)) {
-				// update primary strength
-				updatedStrengthRowNumber =
-					ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, newPrimaryStrength, userName);
-				if (updatedStrengthRowNumber == 0) {
-//					return false;
-					DBHelper.closeJDBCConnection(conn);
-					ishEditDAO = null;
-					return 7; // failed to update database
+			} else { // not detected in DB
+				if (newPrimaryStrength.equals("present") || newPrimaryStrength.equals("uncertain")) { // present/uncertain on page
+					
+					// should judge if the change will bring about confliction for the annotation
+					errorCode = ishEditDAO.existConflict(submissionId, stage, componentId, newPrimaryStrength);
+					if (errorCode != 0) { // confliction exists, updating denied
+						// for time being only deny updating. in the future could return more informative info###########
+	//					return false;
+						DBHelper.closeJDBCConnection(conn);
+						ishEditDAO = null;
+						return errorCode;
+					} else { // there's no confliction
+						// update primary strength
+						updatedStrengthRowNumber =
+							ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, newPrimaryStrength, userName);
+						if (updatedStrengthRowNumber == 0) {
+	//						return false;
+							DBHelper.closeJDBCConnection(conn);
+							ishEditDAO = null;
+							return 7; // failed to update database
+						}
+						
+						// set secondary strength if there's one
+						if (newSecondaryStrength != null && !newSecondaryStrength.equals("")) {
+							updatedStrengthRowNumber =
+								ishEditDAO.updateExpressionStrengh(submissionId, componentId, 1, newSecondaryStrength, userName);
+							if (updatedStrengthRowNumber == 0) {
+	//							return false;
+								DBHelper.closeJDBCConnection(conn);
+								ishEditDAO = null;
+								return 7; // failed to update database
+							}
+						}
+							
+						// add pattern info if there are any
+	//					if (patternOnPage != null) {
+						if (!patternOnPageIsNull) {
+							// record by record, insert pattern and/or location value into the database & log it
+							updatedPatternNumber = 
+								this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
+							if (updatedPatternNumber == 0) {
+	//							return false;
+								DBHelper.closeJDBCConnection(conn);
+								ishEditDAO = null;
+								return 7; // failed to update database
+							}
+						}
+					}
+				} else if(!newPrimaryStrength.equals(oldPrimaryStrength)) {
+					// update primary strength
+					updatedStrengthRowNumber =
+						ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, newPrimaryStrength, userName);
+					if (updatedStrengthRowNumber == 0) {
+	//					return false;
+						DBHelper.closeJDBCConnection(conn);
+						ishEditDAO = null;
+						return 7; // failed to update database
+					}
 				}
 			}
 		}
-		
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::updateAnnotation failed !!!");
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -1159,12 +1208,19 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		/** add & log */
-		int addedRowNumber = 
-			ishEditDAO.addExpressionNote(submissionId, componentId, note, 1, userName);
-		
+		ISHEditDAO ishEditDAO;
+		int addedRowNumber = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			/** add & log */
+			addedRowNumber =  ishEditDAO.addExpressionNote(submissionId, componentId, note, 1, userName);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::addNote failed !!!");
+			addedRowNumber = 0;
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -1187,11 +1243,19 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		/** delete & log */
-		int deletedRowNumber = ishEditDAO.deleteExpressionNotes(submissionId, componentId, userName);
-		
+		ISHEditDAO ishEditDAO;
+		int deletedRowNumber = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			/** delete & log */
+			deletedRowNumber = ishEditDAO.deleteExpressionNotes(submissionId, componentId, userName);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::deleteNote failed !!!");
+			deletedRowNumber = 0;
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -1216,15 +1280,22 @@ public class EditExpressionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		/** update & log */
-		int updatedRowNumber = ishEditDAO.updateExpressionNotes(submissionId, componentId, notesOnpage, userName);
-		
+		ISHEditDAO ishEditDAO;
+		int updatedRowNumber = 0;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			/** update & log */
+			updatedRowNumber = ishEditDAO.updateExpressionNotes(submissionId, componentId, notesOnpage, userName);			
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::updateNote failed !!!");
+			updatedRowNumber = 0;
+		}
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
-		
+
 		/** return */
 		if (updatedRowNumber == 0) {
 			return false;
@@ -1237,11 +1308,19 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		/** update & log */
-		boolean result = ishEditDAO.signOffAnnotation(submissionId, status);
-		
+		ISHEditDAO ishEditDAO;
+		boolean result = false;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			/** update & log */
+			result = ishEditDAO.signOffAnnotation(submissionId, status);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::signOffAnnotation failed !!!");
+			result = false;
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -1253,11 +1332,19 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		/** update & log */
-		boolean result = ishEditDAO.signOffAnnotation(submissionId, oldStatus, newStatus);
-		
+		ISHEditDAO ishEditDAO;
+		boolean result = false;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			/** update & log */
+			result = ishEditDAO.signOffAnnotation(submissionId, oldStatus, newStatus);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::signOffOrEditAnnotation failed !!!");
+			result = false;
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -1269,11 +1356,19 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		/** update & log */
-		boolean result = ishEditDAO.setPublicSubmission(submissionId, status);
-		
+		ISHEditDAO ishEditDAO;
+		boolean result = false;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			/** update & log */
+			result = ishEditDAO.setPublicSubmission(submissionId, status);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::setPublicSubmission failed !!!");
+			result = false;
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -1285,11 +1380,19 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		/** update & log */
-		boolean result = ishEditDAO.signOffAnnotationAndSetPublicSubmission(submissionId, dbstatus, substatus);
-		
+		ISHEditDAO ishEditDAO;
+		boolean result = false;
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			/** update & log */
+			result = ishEditDAO.signOffAnnotationAndSetPublicSubmission(submissionId, dbstatus, substatus);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::signOffAnnotationAndSetPublicSubmission failed !!!");
+			result = false;
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -1306,11 +1409,19 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		/** update & log */
-		ArrayList result = ishEditDAO.getPIBySubID(submissionId);
-		
+		ISHEditDAO ishEditDAO;
+		ArrayList result = new ArrayList();
+		try{
+			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			/** update & log */
+			result = ishEditDAO.getPIBySubID(submissionId);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::getPIBySubID failed !!!");
+			result = new ArrayList();
+		}
+
 		/** release db resources */
 		DBHelper.closeJDBCConnection(conn);
 		ishEditDAO = null;
@@ -1326,11 +1437,23 @@ public class EditExpressionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// get data
-		ArrayList patternList = ishDAO.getPatternList();
-		
+		ISHDAO ishDAO;
+		ArrayList patternList = new ArrayList();
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// get data
+			patternList = ishDAO.getPatternList();
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::getPatternList failed !!!");
+			patternList = new ArrayList();
+		}
+
+		/** release db resources */
+		DBHelper.closeJDBCConnection(conn);
+		ishDAO = null;
+
 		// return
 		return patternList;
 	}
@@ -1342,11 +1465,23 @@ public class EditExpressionAssembler {
 	public ArrayList getLocationList() {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// get data
-		ArrayList locationList = ishDAO.getLocationList();
-		
+		ISHDAO ishDAO;
+		ArrayList locationList = new ArrayList();
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// get data
+			locationList = ishDAO.getLocationList();
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::getLocationList failed !!!");
+			locationList = new ArrayList();
+		}
+
+		/** release db resources */
+		DBHelper.closeJDBCConnection(conn);
+		ishDAO = null;
+
 		// return
 		return locationList;
 	}
@@ -1360,11 +1495,23 @@ public class EditExpressionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// get data
-		ArrayList componentListAtTheStage = ishDAO.getComponentListAtGivenStage(stage);
-		
+		ISHDAO ishDAO;
+		ArrayList componentListAtTheStage = new ArrayList();
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// get data
+			componentListAtTheStage = ishDAO.getComponentListAtGivenStage(stage);
+		}
+		catch(Exception e){
+			System.out.println("EditExpressionAssembler::getComponentListAtTheStage failed !!!");
+			componentListAtTheStage = new ArrayList();
+		}
+
+		/** release db resources */
+		DBHelper.closeJDBCConnection(conn);
+		ishDAO = null;
+
 		// return
 		return componentListAtTheStage;
 	}

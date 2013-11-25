@@ -38,36 +38,47 @@ public class GenelistExpressionAssembler {
 	// *****  this should return a data set
 	public DataSet retrieveExpressionData() {
 		Connection conn = DBHelper.getDBConnection();
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
-		
-		double[][] data = genelistDAO.getAllAnalysisData(genelistId);
-
-		String[] expressionHeader = genelistDAO.getAnalysisTitles(genelistId);
-		String[][] arrayAnnotation = new String[expressionHeader.length][1];
-		for(int i=0; i<expressionHeader.length; i++)
-			arrayAnnotation[i][0] = expressionHeader[i];
-
-		String[] expressionIds =  genelistDAO.getAllIds(genelistId);
-		String[][] geneAnnotations = new String[expressionIds.length][2];
-		String[][] allOntologies = genelistDAO.getAllOntologies(genelistId);
-
-		for(int i=0; i<expressionIds.length; i++) { 
-			geneAnnotations[i][0] = expressionIds[i];
-			String geneSymbols = allOntologies[i][2]; //should be retreived from database (now it is taken from ontology columns)
-			if (geneSymbols==null || geneSymbols=="")
-				geneSymbols = "-";
-			else
-				geneSymbols = geneSymbols.replace("///", ",");
-			geneAnnotations[i][1] = geneSymbols;  
+		GenelistDAO genelistDAO;
+		DataSet dataSet = null;
+		try{
+			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+			
+			double[][] data = genelistDAO.getAllAnalysisData(genelistId);
+	
+			String[] expressionHeader = genelistDAO.getAnalysisTitles(genelistId);
+			String[][] arrayAnnotation = new String[expressionHeader.length][1];
+			for(int i=0; i<expressionHeader.length; i++)
+				arrayAnnotation[i][0] = expressionHeader[i];
+	
+			String[] expressionIds =  genelistDAO.getAllIds(genelistId);
+			String[][] geneAnnotations = new String[expressionIds.length][2];
+			String[][] allOntologies = genelistDAO.getAllOntologies(genelistId);
+	
+			for(int i=0; i<expressionIds.length; i++) { 
+				geneAnnotations[i][0] = expressionIds[i];
+				String geneSymbols = allOntologies[i][2]; //should be retreived from database (now it is taken from ontology columns)
+				if (geneSymbols==null || geneSymbols=="")
+					geneSymbols = "-";
+				else
+					geneSymbols = geneSymbols.replace("///", ",");
+				geneAnnotations[i][1] = geneSymbols;  
+			}
+			dataSet = new DataSet(data, null, data.length, data[0].length, geneAnnotations, arrayAnnotation);
+	
+			String[] arrayHeader = {"Sample ID"};
+			String[] geneHeader =  {"ProbeID", "GeneSymbol"};
+			boolean[] geneHeadersClickable = {false, true};
+			dataSet.setGeneHeaders(geneHeader);
+			dataSet.setArrayHeaders(arrayHeader);
+			dataSet.setGeneHeadersClickable(geneHeadersClickable);
 		}
-		DataSet dataSet = new DataSet(data, null, data.length, data[0].length, geneAnnotations, arrayAnnotation);
-
-		String[] arrayHeader = {"Sample ID"};
-		String[] geneHeader =  {"ProbeID", "GeneSymbol"};
-		boolean[] geneHeadersClickable = {false, true};
-		dataSet.setGeneHeaders(geneHeader);
-		dataSet.setArrayHeaders(arrayHeader);
-		dataSet.setGeneHeadersClickable(geneHeadersClickable);
+		catch(Exception e){
+			System.out.println("GenelistExpressionAssembler::retrieveExpressionData !!!");
+			dataSet = null;
+		}		
+		// release the db resources
+		DBHelper.closeJDBCConnection(conn);
+		genelistDAO = null;
 
 		return dataSet;
 	}
