@@ -328,21 +328,20 @@ public final class DBHelper {
             while (resSet.next()) {
             	String[] ishBrowseSubmission = new String[13];
             	
-                ishBrowseSubmission[ 0] = resSet.getString(1); // id
-                ishBrowseSubmission[ 1] = resSet.getString(2); // symbol
-                ishBrowseSubmission[ 2] = resSet.getString(3); // ts
-                ishBrowseSubmission[ 3] = resSet.getString(4); // age
-                ishBrowseSubmission[ 4] = resSet.getString(5); // source
-                ishBrowseSubmission[ 5] = resSet.getString(8); // date
-                ishBrowseSubmission[ 6] = resSet.getString(7); // assay
-                String assay = resSet.getString(7);
-                ishBrowseSubmission[ 6] = (assay.equals("TG")? "Tg":assay); // assay
-                ishBrowseSubmission[ 7] = resSet.getString(6); // specimen
-                ishBrowseSubmission[ 8] = resSet.getString(11); // sex
-                ishBrowseSubmission[ 9] = resSet.getString(12); // probe name
-                ishBrowseSubmission[10] = resSet.getString(13); // genotype
-                ishBrowseSubmission[11] = resSet.getString(14); // probe type
-                ishBrowseSubmission[12] = resSet.getString(9); // thumbnail
+                ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
+                ishBrowseSubmission[ 1] = resSet.getString(2); // id
+                ishBrowseSubmission[ 2] = resSet.getString(3); // source
+                ishBrowseSubmission[ 3] = resSet.getString(4); // date
+                String assay = resSet.getString(5);
+                ishBrowseSubmission[ 4] = (assay.equals("TG")? "Tg":assay); // assay
+                ishBrowseSubmission[ 5] = resSet.getString(6); // probe name
+                ishBrowseSubmission[ 6] = resSet.getString(7); // ts
+                ishBrowseSubmission[ 7] = resSet.getString(8); // age
+                ishBrowseSubmission[ 8] = resSet.getString(9); // sex name
+                ishBrowseSubmission[9] = resSet.getString(10); // genotype
+                ishBrowseSubmission[10] = resSet.getString(11); // insitu strength
+                ishBrowseSubmission[11] = resSet.getString(12); // speciman
+                ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
                 
                 results.add(ishBrowseSubmission);
             }
