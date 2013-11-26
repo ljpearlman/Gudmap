@@ -1040,18 +1040,16 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_IMAGES");
         String queryString = parQ.getQuerySQL();
-        if (debug)
-        	System.out.println("findImageBySubmissionId:Query: " + queryString);
         PreparedStatement prepStmt = null;
         try {
         	// if disconnected from db, re-connected
         	conn = DBHelper.reconnect2DB(conn);
 	    
-		    if (debug)
-		    	System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, submissionAccessionId);
 	    
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:findImageBySubmissionId = "+prepStmt);
             // execute
             resSet = prepStmt.executeQuery();
             ImageInfo = formatImageResultSet(resSet);
@@ -4622,13 +4620,15 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    // if disconnected from db, re-connected
 		    conn = DBHelper.reconnect2DB(conn);
 		    
-		    if (debug)
-		    	System.out.println("findWlzImageDetailBySubmissionId:sql: " + parQ.getQuerySQL());
 		    
 		    // image detail
 		    parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
+            
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:findWlzImageDetailBySubmissionId:sql: " + prepStmt);
+            
             resSet = prepStmt.executeQuery();
 		    if (resSet.first()) {
 				result = new ImageDetail();
