@@ -170,8 +170,6 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    conn = DBHelper.reconnect2DB(conn);
 	    
             for (int i = 0; i < queryNumber; i++) {
-				if (debug)
-				    System.out.println("MySQLISHDAOImp.sql "+i+"th = "+queryString[i]);
 				
                 prepStmt = conn.prepareStatement(queryString[i]);
                 if (param != null &&
@@ -181,6 +179,8 @@ public class MySQLISHDAOImp implements ISHDAO {
                         prepStmt.setString(j + 1, param[i][j]);
                     }
                 }
+				if (debug)
+				    System.out.println("MySQLISHDAOImp:getStringArrayFromBatchQuery["+i+"] = "+prepStmt);
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
             }
@@ -218,7 +218,7 @@ public class MySQLISHDAOImp implements ISHDAO {
     public Submission findSubmissionById(String submissionAccessionId) {
         if (submissionAccessionId == null) {
 	    //            throw new NullPointerException("id parameter");
-	    return null;
+        	return null;
         }
 	
         Submission submissionInfo = null;
@@ -229,22 +229,24 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmt = null;
         try {
 	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, submissionAccessionId);
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:findSubmissionById resSet= "+prepStmt);
 	    
             // execute
             resSet = prepStmt.executeQuery();
 
             // get notes
             parQ = DBQuery.getParamQuery("SUBMISSION_NOTES");
-	    queryString = parQ.getQuerySQL();
+            queryString = parQ.getQuerySQL();
 	    
-	    prepStmt = conn.prepareStatement(queryString);
+            prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, submissionAccessionId);
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:findSubmissionById resSetNote= "+prepStmt);
             ResultSet resSetNote = prepStmt.executeQuery();
 	    
             submissionInfo = formatSubmissionResultSet(resSet, resSetNote);
@@ -640,8 +642,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmtAntibodyVariant = null;
 	//        System.out.println("sql for antibody: " + parQAntibody.getQuerySQL());
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             conn.setAutoCommit(false);
 	    
@@ -649,24 +651,32 @@ public class MySQLISHDAOImp implements ISHDAO {
             parQAntibody.setPrepStat(conn);
             prepStmtAntibody = parQAntibody.getPrepStat();
             prepStmtAntibody.setString(1, antibodyId);
+            if (debug)
+            	System.out.println("MySQLISHDAOImp:findAntibodyByAntibodyId prepStmtAntibody =" + prepStmtAntibody);
             resSetAntibody = prepStmtAntibody.executeQuery();
 	    
             // antibody note
             parQAntibodyNote.setPrepStat(conn);
             prepStmtAntibodyNote = parQAntibodyNote.getPrepStat();
             prepStmtAntibodyNote.setString(1, antibodyId);
+            if (debug)
+            	System.out.println("MySQLISHDAOImp:findAntibodyByAntibodyId prepStmtAntibodyNote =" + prepStmtAntibodyNote);
             resSetAntibodyNote = prepStmtAntibodyNote.executeQuery();
 
             // species specificity 
             parQSpeciesSpecificity.setPrepStat(conn);
             prepStmtSpeciesSpecificity = parQSpeciesSpecificity.getPrepStat();
             prepStmtSpeciesSpecificity.setString(1, antibodyId);
+            if (debug)
+            	System.out.println("MySQLISHDAOImp:findAntibodyByAntibodyId prepStmtSpeciesSpecificity =" + prepStmtSpeciesSpecificity);
             resSetSpeciesSpecificity = prepStmtSpeciesSpecificity.executeQuery();
 	    
             // antibody variant
             parQAntibodyVariant.setPrepStat(conn);
             prepStmtAntibodyVariant = parQAntibodyVariant.getPrepStat();
             prepStmtAntibodyVariant.setString(1, antibodyId);
+            if (debug)
+            	System.out.println("MySQLISHDAOImp:findAntibodyByAntibodyId prepStmtAntibodyVariant =" + prepStmtAntibodyVariant);
             resSetAntibodyVariant = prepStmtAntibodyVariant.executeQuery();
 	    
             conn.commit();
@@ -709,39 +719,35 @@ public class MySQLISHDAOImp implements ISHDAO {
             conn.setAutoCommit(false);
 	    
             // antibody
-	if (debug) 
-	    System.out.println(" to do sql for antibody: " + parQAntibody.getQuerySQL());
-
             parQAntibody.setPrepStat(conn);
             prepStmtAntibody = parQAntibody.getPrepStat();
             prepStmtAntibody.setString(1, submissionAccessionId);
+        	if (debug) 
+        	    System.out.println(" to do sql for antibody: " + prepStmtAntibody);
             resSetAntibody = prepStmtAntibody.executeQuery();
 	    
             // antibody note
-	if (debug) 
-	    System.out.println("to do sql for antibody note: " + parQAntibodyNote.getQuerySQL());
-
             parQAntibodyNote.setPrepStat(conn);
             prepStmtAntibodyNote = parQAntibodyNote.getPrepStat();
             prepStmtAntibodyNote.setString(1, submissionAccessionId);
+        	if (debug) 
+        	    System.out.println("to do sql for antibody note: " + prepStmtAntibodyNote);
             resSetAntibodyNote = prepStmtAntibodyNote.executeQuery();
 	    
             // species specificity 
-	if (debug) 
-	    System.out.println("to sql for antibody specificity: " + parQSpeciesSpecificity.getQuerySQL());
-
             parQSpeciesSpecificity.setPrepStat(conn);
             prepStmtSpeciesSpecificity = parQSpeciesSpecificity.getPrepStat();
             prepStmtSpeciesSpecificity.setString(1, submissionAccessionId);
+        	if (debug) 
+        	    System.out.println("to sql for antibody specificity: " + prepStmtSpeciesSpecificity);
             resSetSpeciesSpecificity = prepStmtSpeciesSpecificity.executeQuery();
 	    
             // antibody variant
-	if (debug) 
-	    System.out.println("sql for antibody variant: " + parQAntibodyVariant.getQuerySQL());
-
             parQAntibodyVariant.setPrepStat(conn);
             prepStmtAntibodyVariant = parQAntibodyVariant.getPrepStat();
             prepStmtAntibodyVariant.setString(1, submissionAccessionId);
+        	if (debug) 
+        	    System.out.println("sql for antibody variant: " + prepStmtAntibodyVariant);
             resSetAntibodyVariant = prepStmtAntibodyVariant.executeQuery();
 	    
             conn.commit();
@@ -1636,13 +1642,13 @@ public class MySQLISHDAOImp implements ISHDAO {
             assembleSeriesQStringForGene(query, defaultOrder, columnIndex,
                                          ascending, offset, num);
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, symbol);
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:findRelatedSubmissionBySymbolArray = "+prepStmt);
             resSet = prepStmt.executeQuery();
             ArrayList relatedSubmissionArray =
                 DBHelper.formatResultSetToArrayList(resSet);
@@ -2018,12 +2024,12 @@ public class MySQLISHDAOImp implements ISHDAO {
         String totalNumber = new String("");
 	
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query);
             prepStmt = conn.prepareStatement(query);
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:getTotalNumberOfISHSubmissionsForGeneQuery = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
                 totalNumber = Integer.toString(resSet.getInt(1));
@@ -2233,9 +2239,9 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
             for (int i = 0; i < queryNumber; i++) {
-		if (debug)
-		    System.out.println("MySQLISHDAOImp.sql = "+queryString[i]);
                 prepStmt = conn.prepareStatement(queryString[i]);
+    		    if (debug)
+    		    	System.out.println("MySQLISHDAOImp:getTotalNumberOfColumnsGeneQuery["+i+"] = "+prepStmt);
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
             }
@@ -2333,10 +2339,9 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    conn = DBHelper.reconnect2DB(conn);
 	    
             for (int i = 0; i < queryNumber; i++) {
-		if (debug)
-		    System.out.println("MySQLISHDAOImp.sql = "+queryString[i]);
                 prepStmt = conn.prepareStatement(queryString[i]);
-		//                System.out.println("total Number sql: " + queryString[i]);
+        		if (debug)
+        		    System.out.println("MySQLISHDAOImp:getTotalNumberOfColumnsGeneQuery["+i+"] = "+prepStmt);
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
             }
@@ -2403,17 +2408,17 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
     	// execute query
     	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
-	    resSet = prepStmt.executeQuery();
-	    result = DBHelper.formatResultSetToArrayList(resSet);
-	    
-	    // close database object
-	    DBHelper.closePreparedStatement(prepStmt);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getComponentCountInfoByGeneInfo = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    result = DBHelper.formatResultSetToArrayList(resSet);
+		    
+		    // close database object
+		    DBHelper.closePreparedStatement(prepStmt);
     	} catch (SQLException se) {
 	    se.printStackTrace();
     	}
@@ -2447,12 +2452,12 @@ public class MySQLISHDAOImp implements ISHDAO {
 	//        System.out.println(query);
         String totalNumber = new String("");
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query);
-            prepStmt = conn.prepareStatement(query);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+	        prepStmt = conn.prepareStatement(query);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getTotalISHComponentsExpressingGeneQuery = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
                 totalNumber = Integer.toString(resSet.getInt(1));
@@ -2581,8 +2586,6 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
 	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
 	    
             if (stage == null || stage.equals("")) {
@@ -2591,6 +2594,8 @@ public class MySQLISHDAOImp implements ISHDAO {
                 prepStmt.setString(1, componentId);
                 prepStmt.setString(2, stageValue);
             }
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:getSubmissionByComponentId = "+prepStmt);
 	    
             // execute
             resSet = prepStmt.executeQuery();
@@ -2654,25 +2659,25 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
     	// execute query and assemble result
     	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
-	    if (stage == null || stage.equals("")) {
-		prepStmt.setString(1, componentId);
-	    } else {
-		prepStmt.setString(1, componentId);
-		prepStmt.setString(2, stageValue);
-	    }
-	    
-	    // execute
-	    resSet = prepStmt.executeQuery();
-	    result = DBHelper.formatBrowseResultSetISH(resSet);
-	    
-	    // close the connection
-	    DBHelper.closePreparedStatement(prepStmt);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    if (stage == null || stage.equals("")) {
+		    	prepStmt.setString(1, componentId);
+		    } else {
+				prepStmt.setString(1, componentId);
+				prepStmt.setString(2, stageValue);
+		    }
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getSubmissionByComponentId = "+prepStmt);
+		    
+		    // execute
+		    resSet = prepStmt.executeQuery();
+		    result = DBHelper.formatBrowseResultSetISH(resSet);
+		    
+		    // close the connection
+		    DBHelper.closePreparedStatement(prepStmt);
     	} catch (SQLException se) {
 	    se.printStackTrace();
     	}
@@ -2736,12 +2741,12 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
         // execute query and assemble result
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-            prepStmt = conn.prepareStatement(queryString);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+	        prepStmt = conn.prepareStatement(queryString);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getSubmissionByComponentIds = "+prepStmt);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
 	    
@@ -2773,27 +2778,27 @@ public class MySQLISHDAOImp implements ISHDAO {
     	String componentIds = "";
     	int componentNumber = components.length;
     	if (componentNumber == 1) {
-	    if (components[0].indexOf(":") == -1) {
-		componentIds += "'EMAP:" + components[0] + "'";
-	    } else {
-		componentIds += "'" + components[0] + "'";
-	    }
+		    if (components[0].indexOf(":") == -1) {
+		    	componentIds += "'EMAP:" + components[0] + "'";
+		    } else {
+		    	componentIds += "'" + components[0] + "'";
+		    }
     	} else {
 	    // add the first component id into the component string
-	    if (components[0].indexOf(":") == -1) {
-		componentIds += "'EMAP:" + components[0] + "'";
-	    } else {
-		componentIds += "'" + components[0] + "'";
-	    }
-	    
-	    // add other component ids into the component string
-	    for (int i = 1; i < componentNumber; i++) {
-		if (components[i].indexOf(":") == -1) {
-		    componentIds += ", 'EMAP:" + components[i] + "'";
-		} else {
-		    componentIds += ", '" + components[i] + "'";
-		}
-	    }
+		    if (components[0].indexOf(":") == -1) {
+				componentIds += "'EMAP:" + components[0] + "'";
+		    } else {
+		    	componentIds += "'" + components[0] + "'";
+		    }
+		    
+		    // add other component ids into the component string
+		    for (int i = 1; i < componentNumber; i++) {
+				if (components[i].indexOf(":") == -1) {
+				    componentIds += ", 'EMAP:" + components[i] + "'";
+				} else {
+				    componentIds += ", '" + components[i] + "'";
+				}
+		    }
     	}
 	//    	System.out.println("component list: " + componentIds);
 	
@@ -2811,17 +2816,17 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
     	// execute query and assemble result
     	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
-	    resSet = prepStmt.executeQuery();
-	    result = DBHelper.formatBrowseResultSetISH(resSet);
-	    
-	    // close the database object
-	    DBHelper.closePreparedStatement(prepStmt);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getSubmissionByComponentIds = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    result = DBHelper.formatBrowseResultSetISH(resSet);
+		    
+		    // close the database object
+		    DBHelper.closePreparedStatement(prepStmt);
     	} catch (SQLException se) {
 	    se.printStackTrace();
     	}
@@ -2931,7 +2936,8 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    prepStat.setString(componentList.length+3, end);
 		}
 	    }
-	    //             System.out.println("\n\n"+prepStat.toString()+"\n\n");
+	    if (debug)
+	    	System.out.println("MySQLISHDAOImp:getSubmissionByComponentIds = "+prepStat);
 	    
 	    resSet = prepStat.executeQuery();
 	    //System.out.println("query executed");
@@ -3127,12 +3133,12 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
         String query = DBQuery.NUMBER_OF_SUBMISSION + DBQuery.ISH_BROWSE_ALL_TABLES + DBQuery.endsComponentQueryWithoutStagePart1 +" ? "+ DBQuery.endsComponentQueryWithoutStagePart2;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
             prepStmt = conn.prepareStatement(query);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getTotalNumberOfISHSubmissionsForComponentQuery = "+prepStmt);
             prepStmt.setString(1, componentId);
 	    
             // execute
@@ -3153,56 +3159,56 @@ public class MySQLISHDAOImp implements ISHDAO {
      * 
      */
     public String getTotalNumberOfSubmissionsForComponentsQuery(String [] components){
-	String totalNumber = new String("");
-	ResultSet resSet = null;
-	PreparedStatement prepStmt = null;
-	String componentIds = "";
-	int componentNumber = components.length;
-	if (componentNumber == 1) {
-	    if (components[0].indexOf(":") == -1) {
-		componentIds += "'EMAP:" + components[0] + "'";
-	    } else {
-		componentIds += "'" + components[0] + "'";
-	    }
-	    
-	} else {
-	    // add the first component id into the component string
-	    if (components[0].indexOf(":") == -1) {
-		componentIds += "'EMAP:" + components[0] + "'";
-	    } else {
-		componentIds += "'" + components[0] + "'";
-	    }
-	    
-	    // add other component ids into the component string
-	    for (int i = 1; i < componentNumber; i++) {
-		if (components[i].indexOf(":") == -1) {
-		    componentIds += ", 'EMAP:" + components[i] + "'";
+		String totalNumber = new String("");
+		ResultSet resSet = null;
+		PreparedStatement prepStmt = null;
+		String componentIds = "";
+		int componentNumber = components.length;
+		if (componentNumber == 1) {
+		    if (components[0].indexOf(":") == -1) {
+		    	componentIds += "'EMAP:" + components[0] + "'";
+		    } else {
+		    	componentIds += "'" + components[0] + "'";
+		    }
+		    
 		} else {
-		    componentIds += ", '" + components[i] + "'";
+	    // add the first component id into the component string
+		    if (components[0].indexOf(":") == -1) {
+		    	componentIds += "'EMAP:" + components[0] + "'";
+		    } else {
+		    	componentIds += "'" + components[0] + "'";
+		    }
+	    
+		    // add other component ids into the component string
+		    for (int i = 1; i < componentNumber; i++) {
+				if (components[i].indexOf(":") == -1) {
+				    componentIds += ", 'EMAP:" + components[i] + "'";
+				} else {
+				    componentIds += ", '" + components[i] + "'";
+				}
+		    }
 		}
-	    }
-	}
-	String queryString = DBQuery.NUMBER_OF_SUBMISSION + DBQuery.ISH_BROWSE_ALL_TABLES + DBQuery.endsComponentQueryWithoutStagePart1;
-	queryString += componentIds;
-	queryString += DBQuery.endsComponentQueryWithoutStagePart2;
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
-	    resSet = prepStmt.executeQuery();
-	    if (resSet.first()) {
-		totalNumber = Integer.toString(resSet.getInt(1));
-	    }
-	    
-	    // close the database object
-	    DBHelper.closePreparedStatement(prepStmt);
-	} catch (SQLException se) {
-	    se.printStackTrace();
-	}
-	return totalNumber;
+		String queryString = DBQuery.NUMBER_OF_SUBMISSION + DBQuery.ISH_BROWSE_ALL_TABLES + DBQuery.endsComponentQueryWithoutStagePart1;
+		queryString += componentIds;
+		queryString += DBQuery.endsComponentQueryWithoutStagePart2;
+		try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getTotalNumberOfSubmissionsForComponentsQuery = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    if (resSet.first()) {
+		    	totalNumber = Integer.toString(resSet.getInt(1));
+		    }
+		    
+		    // close the database object
+		    DBHelper.closePreparedStatement(prepStmt);
+		} catch (SQLException se) {
+		    se.printStackTrace();
+		}
+		return totalNumber;
     }
     
     /**
@@ -3765,11 +3771,9 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
         // execute query and assemble result
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
             prepStmt = conn.prepareStatement(queryString);
 	    
             if (submissionDate == null || submissionDate.equals("")) {
@@ -3778,6 +3782,8 @@ public class MySQLISHDAOImp implements ISHDAO {
                 prepStmt.setInt(1, Integer.parseInt(labId));
                 prepStmt.setString(2, submissionDate);
             }
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getSubmissionsByLabId = "+prepStmt);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
 	    
@@ -3796,12 +3802,12 @@ public class MySQLISHDAOImp implements ISHDAO {
     public ArrayList getSubmissionsByLabId(String labId, String assayType,
 					   String submissionDate, int columnIndex, boolean ascending, int offset, int num) {
     	//System.out.println("GET SUBMISSION BY LAB ID");
-	try { // return null value if lab id is not valid
-	    Integer.parseInt(labId);
-	} catch (NumberFormatException nfe) {
-	    return null;
-	}
-	ResultSet resSet = null;
+		try { // return null value if lab id is not valid
+		    Integer.parseInt(labId);
+		} catch (NumberFormatException nfe) {
+		    return null;
+		}
+		ResultSet resSet = null;
     	ArrayList result = null;
     	ParamQuery parQ = DBQuery.getParamQuery("ALL_ENTRIES_ISH");
     	PreparedStatement prepStmt = null;
@@ -3838,25 +3844,25 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
     	// execute query and assemble result
     	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
-	    
-	    if (submissionDate == null || submissionDate.equals("")) {
-		prepStmt.setInt(1, lab);
-	    } else {
-		prepStmt.setInt(1, Integer.parseInt(labId));
-		prepStmt.setString(2, submissionDate);
-	    }
-	    resSet = prepStmt.executeQuery();
-	    //    		result = formatBrowseResultSet2ArrayList(resSet);
-	    result = DBHelper.formatBrowseResultSetISH(resSet);
-	    
-	    // close the connection
-	    DBHelper.closePreparedStatement(prepStmt);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    
+		    if (submissionDate == null || submissionDate.equals("")) {
+		    	prepStmt.setInt(1, lab);
+		    } else {
+				prepStmt.setInt(1, Integer.parseInt(labId));
+				prepStmt.setString(2, submissionDate);
+		    }
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getSubmissionsByLabId = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    //    		result = formatBrowseResultSet2ArrayList(resSet);
+		    result = DBHelper.formatBrowseResultSetISH(resSet);
+		    
+		    // close the connection
+		    DBHelper.closePreparedStatement(prepStmt);
     	} catch (SQLException se) {
 	    se.printStackTrace();
     	}
@@ -3935,9 +3941,6 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
 	    
-	    if (debug)
-	    	System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    
 	    prepStmt = conn.prepareStatement(queryString);
 	    int paramNum = 1;
 	    
@@ -3961,8 +3964,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    }
 	    
 	    if (debug)
-	    	System.out.println("query = " + prepStmt);
-	    
+	    	System.out.println("MySQLISHDAOImp:getSubmissionsByLabId = "+prepStmt);
 	    
 	    resSet = prepStmt.executeQuery();
 	    result = DBHelper.formatBrowseResultSetISH(resSet);
@@ -3978,12 +3980,12 @@ public class MySQLISHDAOImp implements ISHDAO {
     public ArrayList getSubmissionsForAnnotationByLabId(String labId, String assayType,
 							String submissionDate, int columnIndex, boolean ascending, int offset, int num, String isPublic) {
     	//System.out.println("GET SUBMISSION BY LAB ID");
-	try { // return null value if lab id is not valid
-	    Integer.parseInt(labId);
-	} catch (NumberFormatException nfe) {
-	    return null;
-	}
-	ResultSet resSet = null;
+		try { // return null value if lab id is not valid
+		    Integer.parseInt(labId);
+		} catch (NumberFormatException nfe) {
+		    return null;
+		}
+		ResultSet resSet = null;
     	ArrayList result = null;
     	ParamQuery parQ = DBQuery.getParamQuery("ALL_ENTRIES_ISH_FOR_ANNOTATION");
     	PreparedStatement prepStmt = null;
@@ -3991,46 +3993,43 @@ public class MySQLISHDAOImp implements ISHDAO {
     	// assemble the query string
     	String query = parQ.getQuerySQL();
     	if (submissionDate == null || submissionDate.equals("")) {
-	    query += " AND SUB_PI_FK = ? AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
+    		query += " AND SUB_PI_FK = ? AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
     	} else {
-	    query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? AND SUB_ASSAY_TYPE = '" + assayType + "' ";
+    		query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? AND SUB_ASSAY_TYPE = '" + assayType + "' ";
     	}
     	String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
     	String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(1, query,
 									     defaultOrder, columnIndex, ascending, offset, num);
-	//    	System.out.println("queryString: " + queryString);
 	
     	int lab = -1;
     	try {
-	    lab = Integer.parseInt(labId);
+    		lab = Integer.parseInt(labId);
     	} catch (NumberFormatException nfe) {
-	    lab = 0;
+    		lab = 0;
     	}
-	//    	System.out.println("lab id: " + lab);
-	//    	System.out.println("submissionDate: " + submissionDate);
-    	//System.out.println("QueryString: " + queryString);
+
     	// execute query and assemble result
     	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
-	    if (submissionDate == null || submissionDate.equals("")) {
-		prepStmt.setString(1, isPublic);
-		prepStmt.setInt(2, lab);
-	    } else {
-		prepStmt.setString(1, isPublic);
-		prepStmt.setInt(2, Integer.parseInt(labId));
-		prepStmt.setString(3, submissionDate);
-	    }
-	    resSet = prepStmt.executeQuery();
-	    //    		result = formatBrowseResultSet2ArrayList(resSet);
-	    result = DBHelper.formatBrowseResultSetISHForAnnotation(resSet);
-	    
-	    // close the connection
-	    DBHelper.closePreparedStatement(prepStmt);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    if (submissionDate == null || submissionDate.equals("")) {
+				prepStmt.setString(1, isPublic);
+				prepStmt.setInt(2, lab);
+		    } else {
+				prepStmt.setString(1, isPublic);
+				prepStmt.setInt(2, Integer.parseInt(labId));
+				prepStmt.setString(3, submissionDate);
+		    }
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getSubmissionsForAnnotationByLabId = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    //    		result = formatBrowseResultSet2ArrayList(resSet);
+		    result = DBHelper.formatBrowseResultSetISHForAnnotation(resSet);
+		    
+		    // close the connection
+		    DBHelper.closePreparedStatement(prepStmt);
     	} catch (SQLException se) {
 	    se.printStackTrace();
     	}
@@ -4042,14 +4041,13 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     public ArrayList getSubmissionsForAnnotationByLabId(String labId, String assayType, String submissionDate, 
 							String archiveId, int columnIndex, boolean ascending, int offset, int num, String isPublic) {
-    	//System.out.println("GET SUBMISSION BY LAB ID");
-	//    	System.out.println("submissionDate: " + submissionDate);
-	try { // return null value if lab id is not valid
-	    Integer.parseInt(labId);
-	} catch (NumberFormatException nfe) {
-	    return null;
-	}
-	ResultSet resSet = null;
+
+		try { // return null value if lab id is not valid
+		    Integer.parseInt(labId);
+		} catch (NumberFormatException nfe) {
+		    return null;
+		}
+		ResultSet resSet = null;
     	ArrayList result = null;
     	ParamQuery parQ = DBQuery.getParamQuery("ALL_ENTRIES_ISH_FOR_ANNOTATION");
     	PreparedStatement prepStmt = null;
@@ -4062,41 +4060,41 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? AND SUB_ASSAY_TYPE = '" + assayType + "' ";
     	}
 	
-	if (archiveId != null && !archiveId.trim().equals("")) {
-	    query += " AND SUB_ARCHIVE_ID = ? ";
-	}
-	
-	String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
+		if (archiveId != null && !archiveId.trim().equals("")) {
+		    query += " AND SUB_ARCHIVE_ID = ? ";
+		}
+		
+		String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
     	String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(1, query,
 									     defaultOrder, columnIndex, ascending, offset, num);
-	//    	System.out.println("queryString: " + queryString);
+
 	
     	// execute query and assemble result
     	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
-	    prepStmt.setString(1, isPublic);
-	    prepStmt.setInt(2, Integer.parseInt(labId));
-	    int paramNum = 3;
-	    
-	    if (submissionDate != null && !submissionDate.equals("")) {
-		prepStmt.setString(paramNum, submissionDate);
-		paramNum ++;
-	    }
-	    
-	    if (archiveId != null && !archiveId.trim().equals("")) {
-		prepStmt.setInt(paramNum, Integer.parseInt(archiveId));
-	    }
-	    
-	    resSet = prepStmt.executeQuery();
-	    result = DBHelper.formatBrowseResultSetISHForAnnotation(resSet);
-	    
-	    // close the connection
-	    DBHelper.closePreparedStatement(prepStmt);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    prepStmt.setString(1, isPublic);
+		    prepStmt.setInt(2, Integer.parseInt(labId));
+		    int paramNum = 3;
+		    
+		    if (submissionDate != null && !submissionDate.equals("")) {
+				prepStmt.setString(paramNum, submissionDate);
+				paramNum ++;
+		    }
+		    
+		    if (archiveId != null && !archiveId.trim().equals("")) {
+		    	prepStmt.setInt(paramNum, Integer.parseInt(archiveId));
+		    }
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getSubmissionsForAnnotationByLabId = "+prepStmt);
+		    
+		    resSet = prepStmt.executeQuery();
+		    result = DBHelper.formatBrowseResultSetISHForAnnotation(resSet);
+		    
+		    // close the connection
+		    DBHelper.closePreparedStatement(prepStmt);
     	} catch (SQLException se) {
 	    se.printStackTrace();
     	}
@@ -4126,11 +4124,9 @@ public class MySQLISHDAOImp implements ISHDAO {
             lab = 0;
         }
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query);
             prepStmt = conn.prepareStatement(query);
             if (submissionDate == null || submissionDate.equals("")) {
                 prepStmt.setInt(1, lab);
@@ -4138,6 +4134,8 @@ public class MySQLISHDAOImp implements ISHDAO {
                 prepStmt.setInt(1, Integer.parseInt(labId));
                 prepStmt.setString(2, submissionDate);
             }
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:getTotalNumberOfISHSubmissionsForLabQuery = "+prepStmt);
 	    
             // execute
             resSet = prepStmt.executeQuery();
@@ -4176,11 +4174,9 @@ public class MySQLISHDAOImp implements ISHDAO {
             lab = 0;
         }
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query);
             prepStmt = conn.prepareStatement(query);
             if (submissionDate == null || submissionDate.equals("")) {
                 prepStmt.setInt(1, lab);
@@ -4188,6 +4184,8 @@ public class MySQLISHDAOImp implements ISHDAO {
                 prepStmt.setInt(1, Integer.parseInt(labId));
                 prepStmt.setString(2, submissionDate);
             }
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:getTotalNumberOfIHCSubmissionsForLabQuery = "+prepStmt);
 	    
             // execute
             resSet = prepStmt.executeQuery();
@@ -4473,21 +4471,15 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
         }
         PreparedStatement prepStmt = null;
-	//        String queryString = parQ.getQuerySQL();
-	//        Statement stmt = null;
 	
         String queryString = parQ.getQuerySQL().replace("?", "'"+assayType+"'");
-	//        System.out.println("findNumberOfPublicGenes query(" + assayType + "): "	+ queryString);
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
             prepStmt = conn.prepareStatement(queryString);
-	    //            prepStmt.setString(1, assayType);
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:findNumberOfPublicGenes = "+prepStmt);
             resSet = prepStmt.executeQuery();
-	    //            stmt = conn.createStatement();
-	    //            resSet = stmt.executeQuery(queryString);
 	    
             if (resSet.first()) {
                 result = resSet.getInt(1);
@@ -4680,17 +4672,18 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
-//            prepStmt.setInt(2, serialNum);
+			if (debug)
+			    System.out.println("MySQLISHDAOImpfindImageDetailBySubmissionId prepStmtTG= "+prepStmt);
             resSet = prepStmt.executeQuery();
 	    
             // xingjun - 14/09/2011
             if (!resSet.first()) {// not a insitu submission. go to get the image from tg table
 		//            	System.out.println("findImageDetailBySubmissionId:it's a tg submission");
-				if (debug)
-				    System.out.println("MySQLISHDAOImp.sql = "+queryStringTG);
                 prepStmtTG = conn.prepareStatement(queryStringTG);
                 prepStmtTG.setString(1, submissionAccessionId);
                 prepStmtTG.setInt(2, serialNum);
+				if (debug)
+				    System.out.println("MySQLISHDAOImpfindImageDetailBySubmissionId prepStmtTG= "+prepStmtTG);
                 resSet = prepStmtTG.executeQuery();
             }
             resSet.beforeFirst();// reset the pointer for resSet
@@ -4700,12 +4693,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             parQAllImageNotesInSameSubmission.setPrepStat(conn);
             prepStmtAllImageNotesInSameSubmission = parQAllImageNotesInSameSubmission.getPrepStat();
             prepStmtAllImageNotesInSameSubmission.setString(1, submissionAccessionId);
+			if (debug)
+			    System.out.println("MySQLISHDAOImpfindImageDetailBySubmissionId prepStmtAllImageNotesInSameSubmission= "+prepStmtAllImageNotesInSameSubmission);
             resSetAllImageNotesInSameSubmission = prepStmtAllImageNotesInSameSubmission.executeQuery();
 	    
             //all public images
             parQPublicImgs.setPrepStat(conn);
             prepStmtPublicImgs =parQPublicImgs.getPrepStat();
             prepStmtPublicImgs.setString(1, submissionAccessionId);
+			if (debug)
+			    System.out.println("MySQLISHDAOImpfindImageDetailBySubmissionId prepStmtPublicImgs= "+prepStmtPublicImgs);
             resSetPublicImgs = prepStmtPublicImgs.executeQuery();
             if (resSet.first()) {
                 result = formatImageDetailResultSet(resSet, resSetAllImageNotesInSameSubmission,resSetPublicImgs, serialNum);
@@ -4813,12 +4810,12 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
         // execute query and assemble result
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
             prepStmt = conn.prepareStatement(queryString);
+    	    if (debug)
+    	    	System.out.println("MySQLISHDAOImp:getSubmissionBySubmissionId = "+prepStmt);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
 	    
@@ -4934,13 +4931,15 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("EXPRESSION_NOTE");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
             prepStmt.setString(2, componentId);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:findAnnotationNote = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
                 expressionNote = DBHelper.formatResultSetToString(resSet);
@@ -5265,27 +5264,29 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("COMPONENT_DETAIL");
         PreparedStatement prepStmt = null;
-	String [] components = null;
-	ArrayList componentList = null;
-	String str = null;
+		String [] components = null;
+		ArrayList componentList = null;
+		String str = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, componentId);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:findComponentDetailById = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
                 componentDetail = new ArrayList<Object>();
                 componentDetail.add(resSet.getString(1));
                 componentDetail.add(resSet.getString(2));
                 str = Utility.netTrim(resSet.getString(3));
-		if (null != str) {
-                components = str.split("\\.");
-                componentList = reformatComponentFullPath(components);
-                componentDetail.add(componentList);
-		}
+				if (null != str) {
+		                components = str.split("\\.");
+		                componentList = reformatComponentFullPath(components);
+		                componentDetail.add(componentList);
+				}
             }
             // close the db object
             DBHelper.closePreparedStatement(prepStmt);
@@ -5308,12 +5309,14 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmt = null;
         //		  System.out.println("submissionAccessionId: " + submissionAccessionId);
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:findStageBySubmissionId = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
                 stage = "TS" + resSet.getString(2);
@@ -5339,14 +5342,16 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("PARENT_NODES");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, componentId);
             prepStmt.setString(2, stageName);
             prepStmt.setString(3, submissionAccessionId);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:hasParentNode = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
                 // close the db object
@@ -5370,14 +5375,16 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("CHILD_NODES");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, componentId);
             prepStmt.setString(2, stageName);
             prepStmt.setString(3, submissionAccessionId);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:hasChildenNode = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
                 // close the db object
@@ -5401,31 +5408,31 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query);
-	    prepStmt = conn.prepareStatement(query);
-	    prepStmt.setInt(1, Integer.parseInt(accessionId.substring(7)));
-	    resSet = prepStmt.executeQuery();
-	    if (resSet.first()) {
-		resSet.beforeFirst();
-		ArrayList<StatusNote> sns = new ArrayList<StatusNote>();
-		StatusNote statusNote = null;
-		while (resSet.next()) {
-		    statusNote = new StatusNote();
-		    statusNote.setStatusNoteId(resSet.getInt(1));
-		    statusNote.setSubmissionId(resSet.getString(2));
-		    statusNote.setStatusNote(resSet.getString(3));
-		    statusNote.setSelected(false);
-		    sns.add(statusNote);
-		}
-		statusNotes = sns.toArray(new StatusNote[0]);
-	    }
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(query);
+		    prepStmt.setInt(1, Integer.parseInt(accessionId.substring(7)));
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getStatusNotesBySubmissionId = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    if (resSet.first()) {
+				resSet.beforeFirst();
+				ArrayList<StatusNote> sns = new ArrayList<StatusNote>();
+				StatusNote statusNote = null;
+				while (resSet.next()) {
+				    statusNote = new StatusNote();
+				    statusNote.setStatusNoteId(resSet.getInt(1));
+				    statusNote.setSubmissionId(resSet.getString(2));
+				    statusNote.setStatusNote(resSet.getString(3));
+				    statusNote.setSelected(false);
+				    sns.add(statusNote);
+				}
+				statusNotes = sns.toArray(new StatusNote[0]);
+		    }
 	    
             // close the db object
-	    DBHelper.closeResultSet(resSet);
+		    DBHelper.closeResultSet(resSet);
             DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
 	    se.printStackTrace();
@@ -5437,33 +5444,33 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @author xingjun - 13/06/2008
      */
     public ArrayList getPatternList() {
-	ArrayList<String> patternList = null;
+    	ArrayList<String> patternList = null;
         ParamQuery parQ = DBQuery.getParamQuery("PATTERN_LIST");
         String query = parQ.getQuerySQL();
 	//        System.out.println("pattern list query: " + query);
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
-	String str = null;
+        String str = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query);
-	    prepStmt = conn.prepareStatement(query);
-	    resSet = prepStmt.executeQuery();
-	    if (resSet.first()) {
-		resSet.beforeFirst();
-		patternList = new ArrayList<String>();
-		while (resSet.next()) {
-		    str = Utility.netTrim(resSet.getString(1));
-		    if (null != str)
-			patternList.add(str);
-		}
-	    }
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(query);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getPatternList = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    if (resSet.first()) {
+				resSet.beforeFirst();
+				patternList = new ArrayList<String>();
+				while (resSet.next()) {
+				    str = Utility.netTrim(resSet.getString(1));
+				    if (null != str)
+				    	patternList.add(str);
+				}
+		    }
 	    
             // close the db object
-	    DBHelper.closeResultSet(resSet);
+		    DBHelper.closeResultSet(resSet);
             DBHelper.closePreparedStatement(prepStmt);
 	    
         } catch (SQLException se) {
@@ -5479,30 +5486,30 @@ public class MySQLISHDAOImp implements ISHDAO {
 	ArrayList<String> locationList = null;
         ParamQuery parQ = DBQuery.getParamQuery("LOCATION_LIST");
         String query = parQ.getQuerySQL();
-	//        System.out.println("location list query: " + query);
+
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
-	String str = null;
+        String str = null;
         try {
 	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query);
-	    prepStmt = conn.prepareStatement(query);
-	    resSet = prepStmt.executeQuery();
-	    if (resSet.first()) {
-		resSet.beforeFirst();
-		locationList = new ArrayList<String>();
-		while (resSet.next()) {
-		    str = Utility.netTrim(resSet.getString(1));
-		    if (null != str)
-			locationList.add(str);
-		}
-	    }
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(query);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getLocationList = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    if (resSet.first()) {
+				resSet.beforeFirst();
+				locationList = new ArrayList<String>();
+				while (resSet.next()) {
+				    str = Utility.netTrim(resSet.getString(1));
+				    if (null != str)
+				    	locationList.add(str);
+				}
+		    }
 	    
             // close the db object
-	    DBHelper.closeResultSet(resSet);
+		    DBHelper.closeResultSet(resSet);
             DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
 	    se.printStackTrace();
@@ -5515,7 +5522,7 @@ public class MySQLISHDAOImp implements ISHDAO {
      * 
      */
     public ArrayList getComponentListAtGivenStage(String stage) {
-	ArrayList<String[]> componentList = null;
+    	ArrayList<String[]> componentList = null;
         ParamQuery parQ = DBQuery.getParamQuery("COMPONENT_LIST_AT_GIVEN_STAGE");
         String query = parQ.getQuerySQL();
 	//        System.out.println("component list query: " + query);
@@ -5524,31 +5531,31 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+query);
-	    prepStmt = conn.prepareStatement(query);
-	    prepStmt.setString(1, stage);
-	    resSet = prepStmt.executeQuery();
-	    String str = null;
-	    String[] component = null;
-	    if (resSet.first()) {
-		resSet.beforeFirst();
-		componentList = new ArrayList<String[]>();
-		while (resSet.next()) {
-		    component = new String[2];
-		    str = Utility.netTrim(resSet.getString(1));
-		    component[0] = str;
-		    str = Utility.netTrim(resSet.getString(2));
-		    component[1] = str;
-		    if (null != component[0] || str != component[1])
-			componentList.add(component);
-		}
-	    }
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(query);
+		    prepStmt.setString(1, stage);
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getComponentListAtGivenStage = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    String str = null;
+		    String[] component = null;
+		    if (resSet.first()) {
+				resSet.beforeFirst();
+				componentList = new ArrayList<String[]>();
+				while (resSet.next()) {
+				    component = new String[2];
+				    str = Utility.netTrim(resSet.getString(1));
+				    component[0] = str;
+				    str = Utility.netTrim(resSet.getString(2));
+				    component[1] = str;
+				    if (null != component[0] || str != component[1])
+					componentList.add(component);
+				}
+		    }
             // close the db object
-	    DBHelper.closeResultSet(resSet);
+	    	DBHelper.closeResultSet(resSet);
             DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
 	    se.printStackTrace();
@@ -5564,34 +5571,34 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @return
      */
     public LockingInfo getLockingInfo(String accessionId) {
-	LockingInfo lockingInfo = null;
-	ParamQuery parQ = DBQuery.getParamQuery("GET_LOCKING_INFO_BY_SUBMISSION_ID");
-	String queryString = parQ.getQuerySQL();
+		LockingInfo lockingInfo = null;
+		ParamQuery parQ = DBQuery.getParamQuery("GET_LOCKING_INFO_BY_SUBMISSION_ID");
+		String queryString = parQ.getQuerySQL();
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    if (debug)
-		System.out.println("MySQLISHDAOImp.sql = "+queryString);
-	    prepStmt = conn.prepareStatement(queryString);
-	    prepStmt.setString(1, accessionId);
-	    resSet = prepStmt.executeQuery();
-	    if (resSet.first()) {
-		lockingInfo = new LockingInfo();
-		lockingInfo.setsubmissionId(resSet.getString(1));
-		lockingInfo.setLockedBy(resSet.getString(2));
-		lockingInfo.setLockTime(resSet.getInt(3));
-	    }
-	    // release db resources
-	    DBHelper.closeResultSet(resSet);
-	    DBHelper.closePreparedStatement(prepStmt);
-	} catch(SQLException se) {
-	    se.printStackTrace();
-	}
-	// return
-	return lockingInfo;
+		try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    prepStmt.setString(1, accessionId);
+		    if (debug)
+				System.out.println("MySQLISHDAOImp:getLockingInfo = "+prepStmt);
+		    resSet = prepStmt.executeQuery();
+		    if (resSet.first()) {
+				lockingInfo = new LockingInfo();
+				lockingInfo.setsubmissionId(resSet.getString(1));
+				lockingInfo.setLockedBy(resSet.getString(2));
+				lockingInfo.setLockTime(resSet.getInt(3));
+		    }
+		    // release db resources
+		    DBHelper.closeResultSet(resSet);
+		    DBHelper.closePreparedStatement(prepStmt);
+		} catch(SQLException se) {
+		    se.printStackTrace();
+		}
+		// return
+		return lockingInfo;
     }
     
     /**
@@ -5602,25 +5609,25 @@ public class MySQLISHDAOImp implements ISHDAO {
         String result = "";
         ResultSet resSet = null;
         ParamQuery parQ = InsituDBQuery.getParamQuery("APPLICATION_VERSION");
-	//        PreparedStatement prepStmt = null;
-        Statement stmt = null;
-	//        System.out.println("getAppVersion sql: " + parQ.getQuerySQL());
+        PreparedStatement prepStmt = null;
+
         try {
 		    // if disconnected from db, re-connected
 		    conn = DBHelper.reconnect2DB(conn);
 		    
-		    //            parQ.setPrepStat(conn);
-		    //            prepStmt = parQ.getPrepStat();
-		    //            resSet = prepStmt.executeQuery();
-            stmt = conn.createStatement();
-            resSet = stmt.executeQuery(parQ.getQuerySQL());
+            parQ.setPrepStat(conn);
+            prepStmt = parQ.getPrepStat();
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:getApplicationVersion = "+prepStmt);
+    	    
+            resSet = prepStmt.executeQuery();
             if (resSet.first()) {
             	result = resSet.getString(1);
             }
 	    
             // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            DBHelper.closePreparedStatement(prepStmt);
+
         } catch (SQLException se) {
             se.printStackTrace();
         }
@@ -5632,8 +5639,8 @@ public class MySQLISHDAOImp implements ISHDAO {
     // added by Bernie - 23/09/2010
     public String findTissueBySubmissionId(String submissionId)
     {
-	//		System.out.println("MySQLISHDAOImp-findTissueBySubmissionId for " + submissionId);
-	String tissue = null;
+		//		System.out.println("MySQLISHDAOImp-findTissueBySubmissionId for " + submissionId);
+		String tissue = null;
         ResultSet resultSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("GET_SUBMISSION_TISSUE");
         PreparedStatement prepStmt = null;        
@@ -5644,11 +5651,17 @@ public class MySQLISHDAOImp implements ISHDAO {
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionId);
+    	    if (debug)
+    			System.out.println("MySQLISHDAOImp:findTissueBySubmissionId = "+prepStmt);
+    	    
             resultSet = prepStmt.executeQuery();
-            if (resultSet.first()) {
+            
+            if (resultSet.first()) 
                 tissue = resultSet.getString(1);
-		//                System.out.println("tissue: " + tissue);
-            }
+            
+	        if (debug) 	    
+            	System.out.println("tissue: " + tissue);
+
             // close the db object
             DBHelper.closePreparedStatement(prepStmt);
             return tissue;
