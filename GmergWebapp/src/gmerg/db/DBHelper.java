@@ -327,7 +327,7 @@ public final class DBHelper {
             
             while (resSet.next()) {
             	String[] ishBrowseSubmission = new String[13];
-            	
+         	
                 ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
                 ishBrowseSubmission[ 1] = resSet.getString(2); // id
                 ishBrowseSubmission[ 2] = resSet.getString(3); // source
@@ -338,7 +338,7 @@ public final class DBHelper {
                 ishBrowseSubmission[ 6] = resSet.getString(7); // ts
                 ishBrowseSubmission[ 7] = resSet.getString(8); // age
                 ishBrowseSubmission[ 8] = resSet.getString(9); // sex name
-                ishBrowseSubmission[9] = resSet.getString(10); // genotype
+                ishBrowseSubmission[ 9] = resSet.getString(10); // genotype
                 ishBrowseSubmission[10] = resSet.getString(11); // insitu strength
                 ishBrowseSubmission[11] = resSet.getString(12); // speciman
                 ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
