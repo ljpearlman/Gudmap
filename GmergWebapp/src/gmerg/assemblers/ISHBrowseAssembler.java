@@ -235,6 +235,7 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 
 		// Probe Name
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
+			
 			if ("IHC".equalsIgnoreCase(row[4]))
 				formatedRow[ 5] = new DataItem(row[5], "Antibody Details", "antibody.html?antibody="+row[5], 10);	
 			else
@@ -254,10 +255,18 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		formatedRow[ 8] = new DataItem(row[8]);
 		
 		// Genotype
-		formatedRow[9] = new DataItem(row[9]);
+		formatedRow[ 9] = new DataItem(row[9]);
 
 		// In Situ Expression
-		formatedRow[ 10] = new DataItem(row[10]);
+		String expression = row[10];
+		if (expression.contains("present"))
+			formatedRow[10] = new DataItem("present");
+		else if (expression.contains("uncertain"))
+			formatedRow[10] = new DataItem("uncertain");
+		else if (expression.contains("not detected"))
+			formatedRow[10] = new DataItem("not detected");
+		else
+			formatedRow[10] = new DataItem("");
 
 		// Specimen Type
 		formatedRow[ 11] = new DataItem(row[11]);

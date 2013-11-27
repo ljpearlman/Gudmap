@@ -340,6 +340,16 @@ public final class DBHelper {
                 ishBrowseSubmission[ 8] = resSet.getString(9); // sex name
                 ishBrowseSubmission[ 9] = resSet.getString(10); // genotype
                 ishBrowseSubmission[10] = resSet.getString(11); // insitu strength
+        		String expression = resSet.getString(11); // insitu strength
+        		if (expression.contains("present"))
+        			ishBrowseSubmission[10] = "present";
+        		else if (expression.contains("uncertain"))
+        			ishBrowseSubmission[10] = "uncertain";
+        		else if (expression.contains("not detected"))
+        			ishBrowseSubmission[10] = "not detected";
+        		else
+        			ishBrowseSubmission[10] = "";
+                
                 ishBrowseSubmission[11] = resSet.getString(12); // speciman
                 ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
                 
@@ -444,10 +454,10 @@ public final class DBHelper {
 		String queryString = null;
 		// order by
 		if (columnIndex != -1) {
-			queryString = query + " ORDER BY ";
+			queryString = query + " GROUP BY SUB_ACCESSION_ID ORDER BY ";
 			
 			// translate parameters into database column names
-			String column = getBrowseSubmissionOrderByColumnISH(queryType, columnIndex, ascending, defaultOrder);
+			String column = getLabOrderByColumnISH(columnIndex, ascending, defaultOrder);
 			
 			queryString += column;
 			
@@ -650,6 +660,44 @@ public final class DBHelper {
 		return column;
 	} // end of getBrowseSubmissionOrderByColumnISH
 
+	private static String getLabOrderByColumnISH(int columnIndex, boolean ascending, String defaultOrder) {
+		
+		String column = new String("");
+		String order = (ascending == true ? "ASC" : "DESC");
+		String geneSymbolCol = "natural_sort(TRIM(RPR_SYMBOL))";
+		
+		
+		// start to translate
+		if(columnIndex == 0) // symbol
+			column = geneSymbolCol + " " + order +", SUB_EMBRYO_STG ";
+		else if (columnIndex == 1)  // gudmap id
+			column = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS SIGNED) " + order + ", " + geneSymbolCol;
+		else if (columnIndex == 2)  // source
+			column = "SUB_SOURCE" + " " + order +", " + geneSymbolCol; 
+		else if (columnIndex == 3) // submission date
+			column = "SUB_SUB_DATE" + " " + order +", " + geneSymbolCol; 
+		else if (columnIndex == 4)  // assay type
+			column = "SUB_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
+		else if (columnIndex == 5)  // probe name
+			column = "NATURAL_SORT(TRIM(RPR_JAX_ACC))" + " " + order +", " + geneSymbolCol;
+		else if (columnIndex == 6)  // stage 
+			column = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol; 
+		else if (columnIndex == 7)  // age
+			column = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol; 
+		else if (columnIndex == 8)  // sex
+			column = "SPN_SEX" + " " + order +", " + geneSymbolCol; 
+		else if (columnIndex == 9)  // genotype
+			column = "SPN_WILDTYPE" + " " + order +", " + geneSymbolCol;
+		else if (columnIndex == 10)  // ish expression
+			column = "EXP_STRENGTH" + " " + order +", " + geneSymbolCol;
+		else if (columnIndex == 11)  // specimen
+			column = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
+		else
+			column = geneSymbolCol + " " + order +", SUB_EMBRYO_STG ";
+			
+		return column;
+	} 
+	
 	/**
 	 * 
 	 * @param value

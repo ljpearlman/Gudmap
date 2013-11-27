@@ -353,7 +353,15 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
                 ishBrowseSubmission[7] = resSet.getString(8); // age
                 ishBrowseSubmission[8] = resSet.getString(9); // sex
                 ishBrowseSubmission[9] = resSet.getString(10); // genotype
-                ishBrowseSubmission[10] = resSet.getString(11); // insitu expression
+        		String expression = resSet.getString(11); // insitu strength
+        		if (expression.contains("present"))
+        			ishBrowseSubmission[10] = "present";
+        		else if (expression.contains("uncertain"))
+        			ishBrowseSubmission[10] = "uncertain";
+        		else if (expression.contains("not detected"))
+        			ishBrowseSubmission[10] = "not detected";
+        		else
+        			ishBrowseSubmission[10] = "";
                 ishBrowseSubmission[11] = resSet.getString(12); // specimen
                 ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
                 results.add(ishBrowseSubmission);

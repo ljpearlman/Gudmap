@@ -44,7 +44,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
 	
 	        // assemble the query string
 	        String query = parQ.getQuerySQL();
-	        String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
+	        String defaultOrder = " GROUP BY SUB_ACCESSION_ID " + DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
 	        String queryString = assembleBrowseSubmissionQueryStringISH(1, query, defaultOrder, columnIndex, ascending, offset, num, organ, archiveId, batchId);
 	        
 	        //*******************************************************************************************************************
@@ -225,7 +225,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
 		
 		// order by
 		if (columnIndex != -1) {
-			queryString = query + organsql + " ORDER BY ";
+			queryString = query + organsql + " GROUP BY SUB_ACCESSION_ID ORDER BY ";
 			
 			// translate parameters into database column names
 			String column = getBrowseSubmissionOrderByColumnISH(queryType, columnIndex, ascending);
@@ -289,7 +289,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
         	if(columnIndex == 0) {
            		orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
         	} else if (columnIndex == 1) {
-        		if (queryType == 0) {
+        		if (queryType == 1) {
 	    			orderByString = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + 
 	    			order +", " + geneSymbolCol;
         		} 
@@ -304,7 +304,6 @@ public class MySQLIHCDAOImp implements IHCDAO {
         	} else if (columnIndex == 6) {
         		orderByString = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 7) {
-//        		orderByString = "CONCAT(SPN_STAGE,SPN_STAGE_FORMAT)" + " " + order +", " + geneSymbolCol;
         		orderByString = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol;
         	}else if (columnIndex == 8) {
         		orderByString = "SPN_SEX" + " " + order + ", " + geneSymbolCol;
@@ -348,7 +347,15 @@ public class MySQLIHCDAOImp implements IHCDAO {
                 ishBrowseSubmission[ 7] = resSet.getString(8); // age
                 ishBrowseSubmission[ 8] = resSet.getString(9); // sex
                 ishBrowseSubmission[ 9] = resSet.getString(10); // genotype
-                ishBrowseSubmission[10] = resSet.getString(11); // in situ expression
+        		String expression = resSet.getString(11); // insitu strength
+        		if (expression.contains("present"))
+        			ishBrowseSubmission[10] = "present";
+        		else if (expression.contains("uncertain"))
+        			ishBrowseSubmission[10] = "uncertain";
+        		else if (expression.contains("not detected"))
+        			ishBrowseSubmission[10] = "not detected";
+        		else
+        			ishBrowseSubmission[10] = "";
                 ishBrowseSubmission[11] = resSet.getString(12); // specimen
                 ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
                 results.add(ishBrowseSubmission);

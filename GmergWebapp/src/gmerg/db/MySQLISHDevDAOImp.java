@@ -47,7 +47,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         // added extra part into query - 15/09/2009 
 //        String query = parQ.getQuerySQL();
         String query = parQ.getQuerySQL() + AdvancedSearchDBQuery.getAssayType(new String[]{"ISH", "IHC"});
-        String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
+        String defaultOrder = " GROUP BY SUB_ACCESSION_ID " + DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
         String queryString = assembleBrowseSubmissionQueryStringISH(1, query, defaultOrder, columnIndex, ascending, offset, num);
 //        System.out.println("ISHDevDAO:getAllSubmissionInsitu:queryString: " + queryString);
         
@@ -97,7 +97,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		
 		// order by
 		if (columnIndex != -1) {
-			queryString = query + " ORDER BY ";
+			queryString = query + " GROUP BY SUB_ACCESSION_ID ORDER BY ";
 			
 			// translate parameters into database column names
 			String column = getBrowseSubmissionOrderByColumnISH(queryType, columnIndex, ascending);
@@ -161,7 +161,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         	if(columnIndex == 0) {
            		orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
         	} else if (columnIndex == 1) {
-        		if (queryType == 0) {
+        		if (queryType == 1) {
 	    			orderByString = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + 
 	    			order +", " + geneSymbolCol;
         		} 
@@ -223,7 +223,15 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                 ishBrowseSubmission[ 7] = resSet.getString(8); // age
                 ishBrowseSubmission[ 8] = resSet.getString(9); // sex
                 ishBrowseSubmission[ 9] = resSet.getString(10); // genotype
-                ishBrowseSubmission[10] = resSet.getString(11); // insitu expression
+        		String expression = resSet.getString(11); // insitu strength
+        		if (expression.contains("present"))
+        			ishBrowseSubmission[10] = "present";
+        		else if (expression.contains("uncertain"))
+        			ishBrowseSubmission[10] = "uncertain";
+        		else if (expression.contains("not detected"))
+        			ishBrowseSubmission[10] = "not detected";
+        		else
+        			ishBrowseSubmission[10] = "";
                 ishBrowseSubmission[11] = resSet.getString(12); // specimen
                 str = Utility.netTrim(resSet.getString(5));
                 if(null != str && str.trim().equalsIgnoreCase("OPT")){

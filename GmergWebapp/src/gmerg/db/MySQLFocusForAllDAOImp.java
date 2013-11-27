@@ -413,10 +413,11 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	        	sql += " and (SUB_BATCH = " + batchId + " ) ";
 	        }			
 			// stage and order
+	        String group = " GROUP BY SUB_ACCESSION_ID";
 			if(null == stage || stage.equals("") || stage.equals("null")) {
-				sql += orderResult(column, ascending, query);
+				sql += group + orderResult(column, ascending, query);
 			} else {
-				sql += " and SUB_EMBRYO_STG='"+stage+"' " + orderResult(column, ascending, query);
+				sql += " and SUB_EMBRYO_STG='"+stage+"' " + group + orderResult(column, ascending, query);
 			}
 			// offset and limit
 			sql+= new String(null == resPerPage?

@@ -3924,7 +3924,7 @@ public class MySQLISHDAOImp implements ISHDAO {
     			query += " AND SUB_BATCH = ? ";
     	}
     	
-    	String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
+    	String defaultOrder = " GROUP BY SUB_ACCESSION_ID " + DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
     	String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(1, query,
 									     defaultOrder, columnIndex, ascending, offset, num);
     	
@@ -3968,6 +3968,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
 	    resSet = prepStmt.executeQuery();
 	    result = DBHelper.formatBrowseResultSetISH(resSet);
+//	    result = DBHelper.formatLabISHBrowseResultSet(resSet);
 	    
 	    // close the connection
 	    DBHelper.closePreparedStatement(prepStmt);

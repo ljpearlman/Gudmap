@@ -33,7 +33,7 @@ public class DBQuery {
 		  stageFormatConcat,
 		  "SPN_SEX",
 		  "SPN_WILDTYPE",
-		  "EXP_STRENGTH",
+		  "GROUP_CONCAT(DISTINCT EXP_STRENGTH)",
 		  "SPN_ASSAY_TYPE",
 		  "CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_SML_FILENAME)",
 		  "REPLACE(SUB_ACCESSION_ID, ':', 'no')"
