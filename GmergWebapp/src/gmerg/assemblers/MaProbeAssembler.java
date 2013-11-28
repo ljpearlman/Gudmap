@@ -11,18 +11,20 @@ import java.util.ArrayList;
 
 public class MaProbeAssembler {
     private boolean debug = false;
+    
     public MaProbeAssembler() {
-	if (debug)
-	    System.out.println("MaProbeAssembler.constructor");
+		if (debug)
+		    System.out.println("MaProbeAssembler.constructor");
     }
 
 	public Probe getData(String probeId, String maprobeId) {
 
-		if (probeId == null || probeId.equals("")) {
-		    System.out.println("MaProbeAssembler.getData  !!! possible error: null probeId");
+		if ((probeId == null || probeId.equals("")) && (maprobeId == null || maprobeId.equals(""))) {
+		    System.out.println("MaProbeAssembler.getData  !!! possible error: null probeId and maprobeId");
 			return null;
 		}
 
+	    System.out.println("  probeId="+probeId+"  maprobeId="+maprobeId);
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();

@@ -24,6 +24,9 @@ import java.util.ResourceBundle;
  */
 public final class DBHelper {
     private static boolean debug = false;
+    ///??????????
+	private static int count = 0;
+    ///???????????
 	private static String browseColumnsISH[][] = {
 		{"0", ""}, {"1", ""},{"2", ""}
 	};
@@ -67,6 +70,11 @@ public final class DBHelper {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url, userName, passWord);
+			///////???????????
+			count++;
+			if (10 < count)
+			    System.out.println("!!!!!!possible leaking: "+count+" DB connections open");
+			////????????????
 		} catch (Exception se) {
 			se.printStackTrace();
 		} 
@@ -82,6 +90,9 @@ public final class DBHelper {
 		if (conn != null) {
 			try {
 				conn.close();
+				///////???????????
+				count--;
+				////????????????
 			} catch (SQLException se) {
 				se.printStackTrace();
 			}

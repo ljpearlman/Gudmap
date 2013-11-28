@@ -45,13 +45,12 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         PreparedStatement prepStmt = null;
 
         // assemble the query string
-        String query = parQ.getQuerySQL() + "AND SUB_ASSAY_TYPE = 'TG'";
+        String query = parQ.getQuerySQL() + "AND SUB_ASSAY_TYPE = 'TG' AND SAL_ORDER = 1 GROUP BY SUB_ACCESSION_ID ";
         String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
-        String queryString =
-        	assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num, organ, archiveId, batchId);
+        String queryString = assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num, organ, archiveId, batchId);
         
-	if (debug)
-	    System.out.println("TransgenicDAO:getAllSubmission:sql (pre filter): " + queryString);
+		if (debug)
+		    System.out.println("TransgenicDAO:getAllSubmission:sql (pre filter): " + queryString);
         
         if(filter!=null)
 	  	  	queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
