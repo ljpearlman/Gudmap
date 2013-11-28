@@ -887,6 +887,9 @@ public class AdvancedSearchDBQuery {
 	  final static String name3 = "ALL_ENTRIES_TG";
 	  final static String query3 = getISH_BROWSE_ALL_COLUMNS() + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("TG");
 	  
+	  final static String name144 = "ALL_ISH_IHC_TG";
+	  final static String query144 = getISH_BROWSE_ALL_COLUMNS() + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType(new String[]{"ISH", "IHC", "TG"});
+  	  
 	  private static String endsBrowseSubmissionISH = ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("ISH");
 	  
 	  private static String endsBrowseSubmissionIHC = ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("IHC");
@@ -1115,6 +1118,7 @@ public class AdvancedSearchDBQuery {
 	      new ParamQuery(name141, query141),
 	      new ParamQuery(name142, query142),
 	      new ParamQuery(name143, query143),
+	      new ParamQuery(name144, query144),
 	  };
 
 	  //  finds ParamQuery object by name and returns

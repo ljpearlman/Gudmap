@@ -255,7 +255,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				} else if(11 == orderby){
 					orderStr = " order by GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', ') " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				} 
-			} else if(query.equals("ish") || query.equals("insitu")) {
+			} else if(query.equals("ish") || query.equals("insitu") || query.equals("insitu_all")) {
 				if(orderby < 0) {
 					orderStr = " order by " + AdvancedSearchDBQuery.getISHDefaultSort(); 
 				} else if(0 == orderby){
@@ -440,6 +440,75 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			}			
 		} else if(query.equals("insitu")) {
 			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_INSITU");
+			// assemble the query string
+			String sql = parQ.getQuerySQL();	
+			// organ
+			if(null != organ) {
+				String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ[0]);
+				String ids = "";
+				  for(int i = 0; i < emapids.length; i++) {
+					  ids += "'"+emapids[i] + "',";
+				  }
+				  if(emapids.length >= 1) {
+					  ids = ids.substring(0, ids.length()-1);
+				  }
+				
+				sql+=" AND EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
+			    " from ANA_TIMED_NODE ANCES_ATN, "+
+			         " ANAD_RELATIONSHIP_TRANSITIVE, "+
+			         " ANA_TIMED_NODE DESCEND_ATN, "+
+			         " ANA_NODE, "+
+			         " ANAD_PART_OF "+
+			    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
+			      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
+			      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
+			      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
+			      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
+			      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) " ;
+			} else { // remove redunant join to speed up query
+				sql = sql.replace(" LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
+			}
+			// gene ---------------- to be implemented
+			if (gene != null && !gene.equals("")) {
+				sql += " and RPR_SYMBOL = '" + gene + "' ";
+			}
+			// archiveId & batchId
+	        if (null != archiveId && !archiveId.equals("")){
+	        	sql += " and (SUB_ARCHIVE_ID = " + archiveId + " ) ";
+	        }
+	        
+	        if (null != batchId && !batchId.equals("")){
+	        	sql += " and (SUB_BATCH = " + batchId + " ) ";
+	        }			
+			// stage and order
+			if(null == stage || stage.equals("") || stage.equals("null")) {
+				sql += orderResult(column, ascending, query);
+			} else {
+				sql += " and SUB_EMBRYO_STG='"+stage+"' " + orderResult(column, ascending, query);
+			}
+			// offset and limit
+			sql+= new String(null == resPerPage?
+    	    	    " ":" limit "+offset+","+resPerPage+"  ");
+			
+			if(filter!=null) 
+				sql = filter.addFilterSql(sql, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
+			parQ = null;
+			parQ = new ParamQuery("FOCUS_INSITU_BROWSE",sql);
+
+//			System.out.println("INSITUbrowseall:"+sql);
+			try {
+				parQ.setPrepStat(conn);
+				prepStmt = parQ.getPrepStat();
+				// execute
+				resSet = prepStmt.executeQuery();
+				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
+				// close the connection
+				DBHelper.closePreparedStatement(prepStmt);
+			} catch(SQLException se) {
+				se.printStackTrace();
+			}			
+		} else if(query.equals("insitu_all")) {
+			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ISH_IHC_TG");
 			// assemble the query string
 			String sql = parQ.getQuerySQL();	
 			// organ

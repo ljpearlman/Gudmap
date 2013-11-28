@@ -11,9 +11,10 @@ import java.util.ArrayList;
 
 public class MaProbeAssembler {
     private boolean debug = false;
+    
     public MaProbeAssembler() {
-	if (debug)
-	    System.out.println("MaProbeAssembler.constructor");
+		if (debug)
+		    System.out.println("MaProbeAssembler.constructor");
     }
 
 	public Probe getData(String probeId, String maprobeId) {
@@ -23,6 +24,7 @@ public class MaProbeAssembler {
 			return null;
 		}
 
+	    System.out.println("  probeId="+probeId+"  maprobeId="+maprobeId);
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();

@@ -180,7 +180,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	if (debug)
 	    System.out.println("FocusBrowseAssembler.createHeader");
 		HeaderItem[] header = null;
-		if ("ish".equalsIgnoreCase(assayType) || "insitu".equalsIgnoreCase(assayType)) {
+		if ("ish".equalsIgnoreCase(assayType) || "insitu".equalsIgnoreCase(assayType) || "insitu_all".equalsIgnoreCase(assayType)) {
 			header = ISHBrowseAssembler.createHeaderForISHBrowseTable();
 			if (stage!=null)
 				header[2].setSortable(false);
