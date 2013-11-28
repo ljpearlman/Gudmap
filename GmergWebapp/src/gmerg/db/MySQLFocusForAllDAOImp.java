@@ -11,7 +11,7 @@ import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
     private Connection conn;
     private int MAX_COLUMNS = 12; // added extra column ALE_GENE
@@ -90,7 +90,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 //		System.out.println("FocusForAllDAO:findNumberOfPublicSubmissionArray:sql: " + queryString);
         try {
 		    if (debug)
-			System.out.println("MySQLFocusFowAllDAOImp.sql = "+queryString.toLowerCase());
+		    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicSubmissionArray Sql = "+queryString.toLowerCase());
             stmt = conn.prepareStatement(queryString);
             resultSet = stmt.executeQuery(queryString);
             
@@ -200,7 +200,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
           	conn = DBHelper.reconnect2DB(conn);
               stmt = conn.createStatement();
 		    if (debug)
-			System.out.println("MySQLFocusFowAllDAOImp.sql = "+queryString.toLowerCase());
+		    	System.out.println("MySQLFocusFowAllDAOImp.sql = "+queryString.toLowerCase());
               resSet = stmt.executeQuery(queryString);
               
               if (resSet.first()) {
@@ -361,6 +361,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			try {
 				parQ.setPrepStat(conn);
 				prepStmt = parQ.getPrepStat();
+				if (debug)
+					System.out.println("MySQLFocusForAllDAO:getFocusBrowseList - prepStmt" + prepStmt);
 				
 				// execute
 				resSet = prepStmt.executeQuery();
@@ -431,6 +433,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			try {
 				parQ.setPrepStat(conn);
 				prepStmt = parQ.getPrepStat();
+				if (debug)
+					System.out.println("MySQLFocusForAllDAO:getFocusBrowseList - prepStmt" + prepStmt);
 				// execute
 				resSet = prepStmt.executeQuery();
 				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
@@ -500,6 +504,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			try {
 				parQ.setPrepStat(conn);
 				prepStmt = parQ.getPrepStat();
+				if (debug)
+					System.out.println("MySQLFocusForAllDAO:getFocusBrowseList - prepStmt" + prepStmt);
 				// execute
 				resSet = prepStmt.executeQuery();
 				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
@@ -600,6 +606,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if(null != platform && !platform.equals("")) {
 				prepStmt.setString(1, platform);
 			}
+			if (debug)
+				System.out.println("MySQLFocusForAllDAO:getFocusBrowseList - prepStmt" + prepStmt);
 			resSet = prepStmt.executeQuery();
 			result = formatBrowseSeriesResultSet(resSet);
 			
@@ -744,10 +752,10 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 //	    System.out.println("FocusPlatform:"+queryString);
 		// execute the query
 		try {
-		    if (debug)
-			System.out.println("MySQLFocusFowAllDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			
+			if (debug)
+				System.out.println("MySQLFocusForAllDAO:getPlatformList - prepStmt" + prepStmt);
 			resSet = prepStmt.executeQuery();
 			result = formatBrowseSeriesResultSet(resSet);
 			
@@ -872,7 +880,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             }
             
 			if (debug)
-				System.out.println("query = "+ prepStmt);
+				System.out.println("MySQLFocusForAllDAO:getNumberOfSubmissionsForLab - prepStmt" + prepStmt);
 
             // execute
             resSet = prepStmt.executeQuery();
@@ -951,8 +959,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         PreparedStatement prepStmt = null;
 
         try {
-		    if (debug)
-		    	System.out.println("MySQLFocusFowAllDAOImp.sql = "+query.toLowerCase());
 		    
             prepStmt = conn.prepareStatement(query);
             int paramNum = 1;
@@ -977,7 +983,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			}
 
 			if (debug)
-				System.out.println("query = "+ prepStmt);
+				System.out.println("MySQLFocusForAllDAO:getNumberOfSubmissionsForLab - prepStmt" + prepStmt);
             // execute
             resSet = prepStmt.executeQuery();
 
@@ -1014,8 +1020,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         PreparedStatement prepStmt = null;
 
         try {
-		    if (debug)
-			System.out.println("MySQLFocusFowAllDAOImp.sql = "+query.toLowerCase());
             prepStmt = conn.prepareStatement(query);
             prepStmt.setInt(1, Integer.parseInt(labId));
             prepStmt.setString(2, assayType);
@@ -1023,6 +1027,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             if (submissionDate != null && !submissionDate.equals("")) {
             	prepStmt.setString(4, submissionDate);
             }
+			if (debug)
+				System.out.println("MySQLFocusForAllDAO:getNumberOfSubmissionsForLabForAnnotation - prepStmt" + prepStmt);
 
             // execute
             resSet = prepStmt.executeQuery();
@@ -1067,8 +1073,6 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         PreparedStatement prepStmt = null;
 
         try {
-		    if (debug)
-			System.out.println("MySQLFocusFowAllDAOImp.sql = "+query.toLowerCase());
             prepStmt = conn.prepareStatement(query);
             prepStmt.setInt(1, Integer.parseInt(labId));
             prepStmt.setString(2, assayType);
@@ -1082,6 +1086,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if (archiveId != null && !archiveId.trim().equals("")) {
 				prepStmt.setInt(paramNum, Integer.parseInt(archiveId));
 			}
+			
+			if (debug)
+				System.out.println("MySQLFocusForAllDAO:getNumberOfSubmissionsForLabForAnnotation - prepStmt" + prepStmt);
 			
             // execute
             resSet = prepStmt.executeQuery();
