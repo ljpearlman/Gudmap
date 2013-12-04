@@ -1267,9 +1267,9 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    }
 				}
 				
-				if (debug)
-				    System.out.println("before executing sql = "+prepStmt.toString());
 				resSet = prepStmt.executeQuery();
+				if (debug)
+				    System.out.println("MySQLAdvancedQueryDAOImp:getFocusQuery-prepStmt= "+prepStmt.toString());
 				
 				result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
 				DBHelper.closePreparedStatement(prepStmt);
@@ -1277,7 +1277,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				return result;
 		    } 
 		    catch (Exception se) {
-		                se.printStackTrace();
+		    	se.printStackTrace();
 	        }
     	}
 		return result;
@@ -1301,7 +1301,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		if (debug) {
 		    System.out.println("enter getNumberOfRows method!!!!!!!");
 		    for (int i=0;i<input.length;i++)
-			System.out.println("input for getNumberOfRows:" + input[i]);
+			 System.out.println("input for getNumberOfRows:" + input[i]);
 		}
 		
 		String assayValue = filter.getActiveAssay();
@@ -1340,7 +1340,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 						}
 				    }
 				    if (debug)
-				    	System.out.println("SELECT222(ish)======prepStmt= "+prepStmt.toString());
+				    	System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRows1-prepStmt= "+prepStmt.toString());
 				    
 				    resSet = prepStmt.executeQuery();
 				    if(resSet.first()) {
@@ -1363,7 +1363,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 						}
 				    }
 				    if (debug)
-					System.out.println("SELECT333(mic)======prepStmt= "+prepStmt.toString());
+				    	System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRows2-prepStmt= "+prepStmt.toString());
 				    
 				    resSet = prepStmt.executeQuery();
 				    if(resSet.first()) {
@@ -1449,7 +1449,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 						}
 				    }
 				    if (debug)
-				    	System.out.println("SELECT444(ish)======prepStmt= "+prepStmt.toString());	    	
+			    		System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRowsInGroups1 - prepStmt= "+prepStmt.toString());
 				    resSet = prepStmt.executeQuery();
 				    if(resSet.first()) {
 						ish = resSet.getString(1);
@@ -1472,7 +1472,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 						}
 				    }
 				    if (debug)
-				    	System.out.println("SELECT555(mic)======prepStmt= "+prepStmt.toString());	    			
+			    		System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRowsInGroups2 - prepStmt= "+prepStmt.toString());
 				    resSet = prepStmt.executeQuery();
 				    if(resSet.first()) {
 						mic = resSet.getString(1);
