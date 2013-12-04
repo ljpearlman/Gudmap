@@ -36,8 +36,9 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
      */
     public ArrayList getAllSubmission(int columnIndex, boolean ascending, int offset, int num, 
     		String[] organ, String[] archiveId, String[] batchId, GenericTableFilter filter) {
-	if (debug)
-	    System.out.println("TransgenicDAOImp:getAllSubmission entered#####");
+		if (debug)
+		    System.out.println("TransgenicDAOImp:getAllSubmission entered#####");
+		
         ResultSet resSet = null;
         ArrayList result = null;
         ParamQuery parQ = null;
@@ -49,14 +50,14 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
         String queryString = assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num, organ, archiveId, batchId);
         
-	if (debug)
-	    System.out.println("TransgenicDAO:getAllSubmission:sql (pre filter): " + queryString);
+		if (debug)
+		    System.out.println("TransgenicDAO:getAllSubmission:sql (pre filter): " + queryString);
         
         if(filter!=null)
 	  	  	queryString = filter.addFilterSql(queryString, AdvancedSearchDBQuery.ISH_BROWSE_ALL_SQL_COLUMNS);
         
-	if (debug)
-	    System.out.println("TransgenicDAOImp:getAllSubmission:sql (post filter): " + queryString);
+		if (debug)
+		    System.out.println("TransgenicDAOImp:getAllSubmission:sql (post filter): " + queryString);
         
         try {
 	 ///////!!!!! poor databse table for different type of submissions

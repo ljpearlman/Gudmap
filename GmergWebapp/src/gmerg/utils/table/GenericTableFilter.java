@@ -179,7 +179,7 @@ public class GenericTableFilter {
 		int iSize = items.length;
 		Matcher matcher = p1.matcher(currentSql);
 		if (matcher.find()) {
-		    after = "ORDER BY " + items[iSize-1] + after;
+		    after = " ORDER BY " + items[iSize-1] + after;
 		}
 
 		p1 = Pattern.compile("union");

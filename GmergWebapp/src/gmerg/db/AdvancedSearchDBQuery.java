@@ -84,7 +84,7 @@ public class AdvancedSearchDBQuery {
 					// added by xingjun as required by Editors - 04/12/2007
 					"EMAP:3238","EMAP:3847","EMAP:4594","EMAP:5517","EMAP:6689","EMAP:2575",
 					"EMAP:3239","EMAP:3848","EMAP:4595","EMAP:5521","EMAP:6692","EMAP:8243",
-					"EMAP:9553","EMAP:10913","EMAP:12273","EMAP:30416","EMAP:29475"});
+					"EMAP:9553","EMAP:10913","EMAP:12273","EMAP:30416","EMAP:29475","EMAP:30902"});
 			// added by xingjun - used for in situ expression profile display - 17/11/2008
 			lookupsection.put("6", new String[]{// Mesonephros (11 all parts, all stages)
 					"EMAP:2576", "EMAP:3229", "EMAP:27645",
@@ -825,7 +825,7 @@ public class AdvancedSearchDBQuery {
 															stageFormatConcat,
 															"SPN_SEX",
 															"SPN_WILDTYPE",
-															"EXP_STRENGTH",
+															"GROUP_CONCAT(DISTINCT EXP_STRENGTH)",
 															"SPN_ASSAY_TYPE",
 															"CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_SML_FILENAME)",
 															"REPLACE(SUB_ACCESSION_ID, ':', 'no')" };
@@ -886,6 +886,9 @@ public class AdvancedSearchDBQuery {
 	  
 	  final static String name3 = "ALL_ENTRIES_TG";
 	  final static String query3 = getISH_BROWSE_ALL_COLUMNS() + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("TG");
+
+	  final static String name144 = "ALL_ISH_IHC_TG";
+	  final static String query144 = getISH_BROWSE_ALL_COLUMNS() + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType(new String[]{"ISH", "IHC", "TG"});;
 	  
 	  private static String endsBrowseSubmissionISH = ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType("ISH");
 	  
@@ -1115,6 +1118,7 @@ public class AdvancedSearchDBQuery {
 	      new ParamQuery(name141, query141),
 	      new ParamQuery(name142, query142),
 	      new ParamQuery(name143, query143),
+	      new ParamQuery(name144, query144),
 	  };
 
 	  //  finds ParamQuery object by name and returns

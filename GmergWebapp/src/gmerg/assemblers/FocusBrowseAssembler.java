@@ -82,9 +82,6 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		try{
 			// get data from database
 			focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-//			ArrayList submissions =
-//				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
-//						stage, String.valueOf(offset), String.valueOf(num));
 			
 			submissions =
 				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
@@ -122,8 +119,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	 * add gene parameter into the invocation method of the getting data
 	 */
 	public int retrieveNumberOfRows() {
-	if (debug)
-	    System.out.println("FocusBrowseAssembler.retrieveNumberOfRows");
+		if (debug)
+		    System.out.println("FocusBrowseAssembler.retrieveNumberOfRows");
 
         /** ---get data from dao---  */
 		// create a dao
@@ -150,10 +147,10 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	
 	// Bernie - 09/11/2010 - added to provide Totals
     public int[] retrieveTotals() {
-	if (debug)
-	    System.out.println("FocusBrowseAssembler.retrieveTotals");
-	// force new data
-	cache = null;
+		if (debug)
+		    System.out.println("FocusBrowseAssembler.retrieveTotals");
+		// force new data
+		cache = null;
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
@@ -200,10 +197,10 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	
 
 	public HeaderItem[] createHeader() {
-	if (debug)
-	    System.out.println("FocusBrowseAssembler.createHeader");
+		if (debug)
+		    System.out.println("FocusBrowseAssembler.createHeader");
 		HeaderItem[] header = null;
-		if ("ish".equalsIgnoreCase(assayType) || "insitu".equalsIgnoreCase(assayType)) {
+		if ("ish".equalsIgnoreCase(assayType) || "insitu".equalsIgnoreCase(assayType) || "insitu_all".equalsIgnoreCase(assayType)) {
 			header = ISHBrowseAssembler.createHeaderForISHBrowseTable();
 			if (stage!=null)
 				header[2].setSortable(false);
@@ -234,8 +231,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	}
 
 	public ArrayList[][] getStageList(String[] stage) {
-	if (debug)
-	    System.out.println("FocusBrowseAssembler.getStageList stage");
+		if (debug)
+		    System.out.println("FocusBrowseAssembler.getStageList stage");
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
@@ -264,8 +261,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	 * <p>return submission summary information (in situ & microarray) categorised by stages</p>
 	 */
 	public String[][] getStageList(String[] stage, String organ) {
-	if (debug)
-	    System.out.println("FocusBrowseAssembler.getStageList stage organ");
+		if (debug)
+		    System.out.println("FocusBrowseAssembler.getStageList stage organ");
 		
 		/** create dao */
 		Connection conn = DBHelper.getDBConnection();
@@ -306,8 +303,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	 * @return
 	 */
 	public String[][] getStageList(String[] stage, String organ, String symbol) {
-	if (debug)
-	    System.out.println("FocusBrowseAssembler.getStageList");
+		if (debug)
+		    System.out.println("FocusBrowseAssembler.getStageList");
 		/** create dao */
 		Connection conn = DBHelper.getDBConnection();
 		FocusStageDAO focusStageDAO;
