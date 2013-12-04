@@ -161,6 +161,7 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	//Bernie 01/03/2012 - Mantis 620 - added SEX to filter choice
 	public static int[] getTableviewToSqlColMap() {
 		int[] map = {0, 9, 13, 2, 11, 1, 5, 7, 14, 3, 4, 6, 8};
+//		int[] map = {0, 9, 3, 4, 13, 5, 7, 14, 1, 2, 11, 6, 8};
 		return map;
 	}
 
