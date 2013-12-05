@@ -74,7 +74,7 @@ public class AdvancedSearchDBQuery {
 			lookupsection.put("4",new String[]{// Female Reproductive System (9)
 					"EMAP:28872","EMAP:5523","EMAP:6694","EMAP:8245",
 					"EMAP:9557","EMAP:10917","EMAP:12277","EMAP:29396","EMAP:30203"}); 
-			lookupsection.put("5",new String[]{// Lower Urinary Tract (37)
+			lookupsection.put("5",new String[]{// Lower Urinary Tract (39)
 					"EMAP:6668", "EMAP:8219","EMAP:9528",
 					"EMAP:10888","EMAP:12248","EMAP:29457",
 					"EMAP:30374","EMAP:28749","EMAP:28750","EMAP:28751",
@@ -84,7 +84,8 @@ public class AdvancedSearchDBQuery {
 					// added by xingjun as required by Editors - 04/12/2007
 					"EMAP:3238","EMAP:3847","EMAP:4594","EMAP:5517","EMAP:6689","EMAP:2575",
 					"EMAP:3239","EMAP:3848","EMAP:4595","EMAP:5521","EMAP:6692","EMAP:8243",
-					"EMAP:9553","EMAP:10913","EMAP:12273","EMAP:30416","EMAP:29475"});
+					"EMAP:9553","EMAP:10913","EMAP:12273","EMAP:30416","EMAP:29475",
+					"EMAP:30902", "EMAP:31643"});
 			// added by xingjun - used for in situ expression profile display - 17/11/2008
 			lookupsection.put("6", new String[]{// Mesonephros (11 all parts, all stages)
 					"EMAP:2576", "EMAP:3229", "EMAP:27645",
