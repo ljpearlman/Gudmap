@@ -86,7 +86,8 @@ public class AdvancedSearchDBQuery {
 					// added by xingjun as required by Editors - 04/12/2007
 					"EMAP:3238","EMAP:3847","EMAP:4594","EMAP:5517","EMAP:6689","EMAP:2575",
 					"EMAP:3239","EMAP:3848","EMAP:4595","EMAP:5521","EMAP:6692","EMAP:8243",
-					"EMAP:9553","EMAP:10913","EMAP:12273","EMAP:30416","EMAP:29475"});
+					"EMAP:9553","EMAP:10913","EMAP:12273","EMAP:30416","EMAP:29475",
+					"EMAP:30902","EMAP:31643"});
 			// added by xingjun - used for in situ expression profile display - 17/11/2008
 			lookupsection.put("6", new String[]{// Mesonephros (11 all parts, all stages)
 					"EMAP:2576", "EMAP:3229", "EMAP:27645",
