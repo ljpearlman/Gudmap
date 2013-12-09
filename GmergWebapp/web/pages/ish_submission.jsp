@@ -462,7 +462,6 @@
 						<h:outputLink styleClass="datatext" rendered="#{not empty ISHSingleSubmissionBean.submission.probe.maprobeID && ISHSingleSubmissionBean.submission.probe.maprobeID != ISHSingleSubmissionBean.submission.probe.probeName}" value="probe.html" target="_blank">
 							<f:param name="probe" value="#{ISHSingleSubmissionBean.submission.probe.probeName}" />
 							<f:param name="maprobe" value="#{ISHSingleSubmissionBean.submission.probe.maprobeID}" />
-							<f:param name="gudmapid" "#{ISHSingleSubmissionBean.submission.accID}" />
 							<h:outputText value=" (#{ISHSingleSubmissionBean.submission.probe.maprobeID})" />
 						</h:outputLink>
 					</h:panelGroup>
