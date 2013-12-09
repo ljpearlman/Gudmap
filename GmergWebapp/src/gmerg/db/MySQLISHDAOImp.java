@@ -372,7 +372,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    if (maprobeId != null)
 		    	prepStmtProbe.setString(2, maprobeId);
 		    if (debug)
-		    	System.out.println("prepStmtProbe = "+ prepStmtProbe);
+		    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtProbe = "+ prepStmtProbe);
 		    resSetProbe = prepStmtProbe.executeQuery();
 	    
             // probe note -- Mantis 558 Task5
@@ -380,7 +380,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             prepStmtProbeNote = parQProbeNote.getPrepStat();
             prepStmtProbeNote.setString(1, maprobeId.replace("maprobe:", ""));
 		    if (debug)
-		    	System.out.println("prepStmtProbeNote = "+ prepStmtProbeNote);
+		    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtProbeNote = "+ prepStmtProbeNote);
             resSetProbeNote = prepStmtProbeNote.executeQuery();
 	    
             // curator note -- Mantis 558 Task5
@@ -388,7 +388,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             prepStmtMaprobeNote = parQMaprobeNote.getPrepStat();
             prepStmtMaprobeNote.setString(1, maprobeId.replace("maprobe:", ""));
 		    if (debug)
-		    	System.out.println("prepStmtMaprobeNote = "+ prepStmtMaprobeNote);
+		    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtMaprobeNote = "+ prepStmtMaprobeNote);
             resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
 	    
 	    
@@ -399,7 +399,8 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
     	}
     	catch(SQLException e){
-	    e.printStackTrace();
+    		System.out.println("MySQLISHDAOImp.findMaProbeByProbeId FAILED");
+    		e.printStackTrace();
     	}
     	finally {
 	    

@@ -16,6 +16,10 @@ public class MaProbeBean {
 
 		String probeId = FacesUtil.getRequestParamValue("probe");
 		String maprobeId = FacesUtil.getRequestParamValue("maprobe");
+		String gudmapId = FacesUtil.getRequestParamValue("gudmapid");
+
+	    System.out.println("MaProbeBean probeId="+probeId+" maprobeId="+maprobeId+" gudmapId="+gudmapId);
+		
 		if (maprobeId != null && 8 < maprobeId.length())
 			maprobeId = maprobeId.substring(8);
 		
