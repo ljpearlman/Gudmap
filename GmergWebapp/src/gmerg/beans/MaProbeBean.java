@@ -22,6 +22,9 @@ public class MaProbeBean {
 		if (maprobeId != null && 8 < maprobeId.length())
 			maprobeId = maprobeId.substring(8);
 		
+		if ((maprobeId == null || maprobeId.length() == 0 )&& probeId.contains("maprobe"))
+			maprobeId = probeId.substring(8);
+		
 		assembler = new MaProbeAssembler();
 		maProbe = assembler.getData(probeId, maprobeId);
 	}
