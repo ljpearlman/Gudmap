@@ -190,6 +190,9 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			System.out.println("FocusBrowseAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
 		}
+		// release db resources
+		DBHelper.closeJDBCConnection(conn);
+		ishDevDAO = null;
 
 		// return result
 		return totalNumbers;
