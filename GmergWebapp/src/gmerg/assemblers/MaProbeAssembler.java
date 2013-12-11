@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class MaProbeAssembler {
 	
-    private boolean debug = false;
+    private boolean debug = true;
     
     public MaProbeAssembler() {
 		if (debug)
@@ -28,7 +28,11 @@ public class MaProbeAssembler {
 			return null;
 		}
 
+
 		Probe probe = null;
+		if (debug)
+			System.out.println("  probeId="+probeId+"  maprobeId="+maprobeId);
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		ISHDAO ishDAO;

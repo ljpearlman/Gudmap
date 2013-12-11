@@ -516,8 +516,11 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				se.printStackTrace();
 			}			
 		} else if(query.equals("insitu_all")) {
+
 			if(debug)
 				System.out.println("MySQLFocusForAllDAO:getFocusBrowseList - insitu_all" + prepStmt);
+
+
 			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ISH_IHC_TG");
 			// assemble the query string
 			String sql = parQ.getQuerySQL();	
@@ -560,6 +563,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	        	sql += " and (SUB_BATCH = " + batchId + " ) ";
 	        }			
 			// stage and order
+
 	        String group = " GROUP BY SUB_ACCESSION_ID ";
 			if(null == stage || stage.equals("") || stage.equals("null")) {
 				sql += group + orderResult(column, ascending, query);
@@ -575,11 +579,14 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			parQ = null;
 			parQ = new ParamQuery("FOCUS_INSITU_BROWSE",sql);
 
+
 			try {
 				parQ.setPrepStat(conn);
 				prepStmt = parQ.getPrepStat();
 				if (debug)
 					System.out.println("MySQLFocusForAllDAO:getFocusBrowseList insitu_all- prepStmt" + prepStmt);
+
+
 				// execute
 				resSet = prepStmt.executeQuery();
 				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
@@ -588,7 +595,10 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			} catch(SQLException se) {
 				se.printStackTrace();
 			}			
-		}		return result;
+
+		}
+		return result;
+
 	} // end of getFocusBrowseList()
 	
     private ArrayList formatResultSet(ResultSet resSetImage,int length) throws SQLException {     

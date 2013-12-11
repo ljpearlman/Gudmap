@@ -35,7 +35,7 @@ public class InsituFocusBrowseBean {
 		if (organ!=null)
 			organs = new String[]{organ};
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
-//		queryParams.put("assayType", "insitu");
+
 		queryParams.put("assayType", "insitu_all");
 		queryParams.put("organ", organs);
 		queryParams.put("stage", stage);
