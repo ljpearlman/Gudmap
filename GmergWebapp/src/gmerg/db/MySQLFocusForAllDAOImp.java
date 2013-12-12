@@ -11,7 +11,7 @@ import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
-    protected boolean debug = true;
+    protected boolean debug = false;
 
     private Connection conn;
     private int MAX_COLUMNS = 12; // added extra column ALE_GENE
@@ -198,9 +198,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
           try {
           	// if disconnected from db, re-connected
           	conn = DBHelper.reconnect2DB(conn);
-              stmt = conn.createStatement();
+            stmt = conn.createStatement();
 		    if (debug)
-		    	System.out.println("MySQLFocusFowAllDAOImp.sql = "+queryString.toLowerCase());
+		    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicGenes sql = "+queryString.toLowerCase());
               resSet = stmt.executeQuery(queryString);
               
               if (resSet.first()) {
@@ -684,7 +684,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 		// execute the query
 		try {
 		    if (debug)
-			System.out.println("MySQLFocusFowAllDAOImp.sql = "+queryString.toLowerCase());
+		    	System.out.println("MySQLFocusFowAllDAOImp:getSeriesList sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			if(null != platform && !platform.equals("")) {
 				prepStmt.setString(1, platform);
@@ -948,7 +948,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 
         try {
 		    if (debug)
-		    	System.out.println("MySQLFocusFowAllDAOImp.sql = "+query.toLowerCase());
+		    	System.out.println("MySQLFocusForAllDAO:getNumberOfSubmissionsForLab sql = "+query.toLowerCase());
 		    
             prepStmt = conn.prepareStatement(query);
             int paramNum = 1;

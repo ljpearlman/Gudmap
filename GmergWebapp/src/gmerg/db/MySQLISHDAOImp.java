@@ -30,7 +30,7 @@ import java.text.DateFormat;
  *
  */
 public class MySQLISHDAOImp implements ISHDAO {
-    private boolean debug = true;
+    private boolean debug = false;
     private Connection conn;
     
     // default constructor
@@ -442,9 +442,6 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQFullSequence = DBQuery.getParamQuery("SUBMISSION_FULL_SEQUENCE");
         PreparedStatement prepStmtFullSequence = null;
 	
-	if (debug) 
-	    System.out.println(" to do sql for rna probe: " + parQProbe.getQuerySQL());
-
         try {
 	    // if disconnected from db, re-connected
 	    conn = DBHelper.reconnect2DB(conn);
@@ -453,28 +450,41 @@ public class MySQLISHDAOImp implements ISHDAO {
             // probe
             parQProbe.setPrepStat(conn);
             prepStmtProbe = parQProbe.getPrepStat();
-	    if (-1 == submissionAccessionId.indexOf("GUDMAP:"))
-		prepStmtProbe.setString(1, "GUDMAP:"+submissionAccessionId);
-	    else
-		prepStmtProbe.setString(1, submissionAccessionId);
+		    if (-1 == submissionAccessionId.indexOf("GUDMAP:"))
+		    	prepStmtProbe.setString(1, "GUDMAP:"+submissionAccessionId);
+		    else
+		    	prepStmtProbe.setString(1, submissionAccessionId);
+		    
+			if (debug) 
+			    System.out.println("MySQLISHDAOImp:findProbeBySubmissionId  prepStmtProbe = " + prepStmtProbe);
+		    
             resSetProbe = prepStmtProbe.executeQuery();
 	    
             // probe note
             parQProbeNote.setPrepStat(conn);
             prepStmtProbeNote = parQProbeNote.getPrepStat();
             prepStmtProbeNote.setString(1, submissionAccessionId);
+			if (debug) 
+			    System.out.println("MySQLISHDAOImp:findProbeBySubmissionId  prepStmtProbeNote = " + prepStmtProbeNote);
+            
             resSetProbeNote = prepStmtProbeNote.executeQuery();
 	    
             // maprobe note --- 02/05/2007
             parQMaprobeNote.setPrepStat(conn);
             prepStmtMaprobeNote = parQMaprobeNote.getPrepStat();
             prepStmtMaprobeNote.setString(1, submissionAccessionId);
+			if (debug) 
+			    System.out.println("MySQLISHDAOImp:findProbeBySubmissionId  prepStmtMaprobeNote = " + prepStmtMaprobeNote);
+            
             resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
 	    
 	    // maprobe full sequence
             parQFullSequence.setPrepStat(conn);
             prepStmtFullSequence = parQFullSequence.getPrepStat();
             prepStmtFullSequence.setString(1, submissionAccessionId);
+			if (debug) 
+			    System.out.println("MySQLISHDAOImp:findProbeBySubmissionId  prepStmtFullSequence = " + prepStmtFullSequence);
+
             resSetFullSequence = prepStmtFullSequence.executeQuery();
 	    
             conn.commit();
@@ -492,8 +502,9 @@ public class MySQLISHDAOImp implements ISHDAO {
             se.printStackTrace();
         }
 
-	if (null == probeInfo)
-	    System.out.println("MySQLISHDAOImp.findProbeBySubmissionId !!!possible error: submission "+submissionAccessionId+" has no probe");
+		if (null == probeInfo)
+		    System.out.println("MySQLISHDAOImp.findProbeBySubmissionId !!!possible error: submission "+submissionAccessionId+" has no probe");
+		
         return probeInfo;
     }
     

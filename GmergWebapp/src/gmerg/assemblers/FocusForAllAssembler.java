@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FocusForAllAssembler extends OffMemoryTableAssembler {
-    protected boolean debug = true; 
+    protected boolean debug = false; 
     protected RetrieveDataCache cache = null;
 
 	String organ;
@@ -28,20 +28,20 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 
 	public FocusForAllAssembler () {
 	    if (debug)
-		System.out.println("FocusForAllAssembler.constructor no argument");
+	    	System.out.println("FocusForAllAssembler.constructor no argument");
 	    
 	}
 
 	public FocusForAllAssembler (HashMap params) {
 		super(params);
-	if (debug)
-	    System.out.println("FocusForAllAssembler.constructor");
+		if (debug)
+		    System.out.println("FocusForAllAssembler.constructor");
 
 	}
 
 	public void setParams() {
 	    if (debug)
-		System.out.println("FocusForAllAssembler.setParams");
+	    	System.out.println("FocusForAllAssembler.setParams");
 		super.setParams();
 		organ = getParam("organ");
 		input = getParams("geneSymbols");
@@ -56,7 +56,7 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
 	    if (debug)
-		System.out.println("FocusForAllAssembler.retrieveData");
+	    	System.out.println("FocusForAllAssembler.retrieveData");
 
 	    if (null != cache && cache.isSameQuery(column, ascending, offset, num)) {
 			if (debug)
@@ -100,7 +100,7 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	    cache = null;
 
 	    if (debug)
-		System.out.println("+++FocusForAllAssembler:retrieveNumberOfRows");
+	    	System.out.println("+++FocusForAllAssembler:retrieveNumberOfRows");
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO advancedDAO;
 		int n = 0;
@@ -129,7 +129,7 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	 */
 	public int[] retrieveNumberOfRowsInGroups() {
 	    if (debug)
-		System.out.println("+++FocusForAllAssembler:retrieveNumberOfRowsInGroups");
+	    	System.out.println("+++FocusForAllAssembler:retrieveNumberOfRowsInGroups");
 		Connection conn = DBHelper.getDBConnection();
 		AdvancedQueryDAO advancedQueryDAO;
 		int[] totals = null;
@@ -152,7 +152,7 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 		
 	public HeaderItem[] createHeader() {
 	    if (debug)
-		System.out.println("FocusForAllAssembler.createHeader");
+	    	System.out.println("FocusForAllAssembler.createHeader");
 
 		return QuickSearchAssembler.createHeaderForSearchResultTable();
 	}
@@ -160,7 +160,7 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 	// Bernie - 9/5/2011 - Mantis 328 - added method
 	public int[] getTableviewToSqlColMap() {
 	    if (debug)
-		System.out.println("FocusForAllAssembler.getTableviewToSqlColMap");
+	    	System.out.println("FocusForAllAssembler.getTableviewToSqlColMap");
 
 		return QuickSearchAssembler.getTableviewToSqlColMap();
 	}

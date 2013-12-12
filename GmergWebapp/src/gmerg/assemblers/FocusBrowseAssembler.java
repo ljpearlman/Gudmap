@@ -33,7 +33,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 
     protected RetrieveDataCache cache = null;
 
-    private boolean debug = true;
+    private boolean debug = false;
 
 	public FocusBrowseAssembler () {
 	      	if (debug)
@@ -43,14 +43,15 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	
 	public FocusBrowseAssembler (HashMap params) {
 		super(params);
-	if (debug)
-	    System.out.println("FocusBrowseAssembler.constructor with params");
+		if (debug)
+		    System.out.println("FocusBrowseAssembler.constructor with params");
 
 	}
 
 	public void setParams() {
-	if (debug)
-	    System.out.println("FocusBrowseAssembler.setParams");
+		if (debug)
+		    System.out.println("FocusBrowseAssembler.setParams");
+		
 		super.setParams();
 		assayType = getParam("assayType");
 		organs = getParams("organ");
