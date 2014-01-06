@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FocusForAllAssembler extends OffMemoryTableAssembler {
-    protected boolean debug = false; 
+    protected boolean debug = true; 
     protected RetrieveDataCache cache = null;
 
 	String organ;

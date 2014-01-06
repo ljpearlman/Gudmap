@@ -5,7 +5,7 @@ import gmerg.utils.FacesUtil;
 import gmerg.assemblers.MaProbeAssembler;
 
 public class MaProbeBean {
-    private boolean debug = false;
+    private boolean debug = true;
 
 	private Probe maProbe;
 	private MaProbeAssembler assembler;

@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  */
 public class ISHBrowseAssembler extends OffMemoryTableAssembler{
-    protected boolean debug = false;
+    protected boolean debug = true;
     protected RetrieveDataCache cache = null;
 
     public ISHBrowseAssembler() {
