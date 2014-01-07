@@ -121,7 +121,7 @@ public class TableBean extends MultipleInstanceBean {
 		return TableUtil.getSelectedIdsFromTableView(tableView, selectionsString, idCol, 0);//offset);
 	}
 
-	static int logLevel=0; //0-2;
+	static int logLevel=2; //0-2;
 	private void log(String message) {
 		log(message, 2);
 	}

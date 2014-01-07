@@ -161,10 +161,10 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         	if(columnIndex == 0) {
            		orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
         	} else if (columnIndex == 1) {
-        		if (queryType == 1) {
+//        		if (queryType == 1) {
 	    			orderByString = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + 
 	    			order +", " + geneSymbolCol;
-        		} 
+//        		} 
         	} else if (columnIndex == 2) {
         		orderByString = "SUB_SOURCE" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 3) {
