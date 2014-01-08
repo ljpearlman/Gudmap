@@ -70,7 +70,7 @@ public final class DBHelper {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url, userName, passWord);
-			System.out.println("DBHelper:getDBConnection "+conn);
+			System.out.println("DBHelper:getDBConnection "+conn + " DB connections open " + count);
 			///////???????????
 			count++;
 			if (10 < count)
@@ -91,7 +91,7 @@ public final class DBHelper {
 		if (conn != null) {
 			try {
 				conn.close();
-		    	System.out.println("DBHelper:closeJDBCConnection "+conn);
+		    	System.out.println("DBHelper:closeJDBCConnection "+conn + " DB connections open " + count);
 				///////???????????
 				count--;
 				////????????????
