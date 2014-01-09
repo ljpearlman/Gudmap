@@ -22,7 +22,7 @@ import java.util.Locale;
  *
  */
 public class MySQLCollectionDAOImp implements CollectionDAO {
-    private boolean debug = false;
+    private boolean debug = true;
     private Connection conn;
     
     // default constructor
@@ -664,10 +664,12 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
         	// if disconnected from db, re-connected
         	conn = DBHelper.reconnect2DB(conn);
 
-		    if (debug)
-			System.out.println("MySQLCollectionDAOImp.sql = "+queryString.toLowerCase());
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, symbol);
+        	
+		    if (debug)
+		    	System.out.println("MySQLCollectionDAOImp:getInsituSubmissionImageIdByGene prepStmt = "+prepStmt);        	
+        	
         	resSet = prepStmt.executeQuery();
         	if (resSet.first()) {
         		imageIds = new ArrayList<String>();

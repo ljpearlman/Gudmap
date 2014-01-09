@@ -62,7 +62,7 @@
 			        <h:column>
 					<h:outputLink value="#" styleClass="plaintext" target="_blank"
 					                       onclick="mywindow=window.open('#{image.clickFilePath}','#{image.accessionId}','toolbar=no,menubar=no,directories=no,resizable=yes,scrollbars=yes,width=1000,height=1000');return false">
-						<h:graphicImage value="#{image.filePath}" width="80"/>
+						<h:graphicImage value="#{image.filePath}"/>
 					</h:outputLink>
 			        </h:column>
 			        <h:column>
