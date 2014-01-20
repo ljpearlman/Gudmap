@@ -30,7 +30,7 @@ import java.text.DateFormat;
  *
  */
 public class MySQLISHDAOImp implements ISHDAO {
-    private boolean debug = true;
+    private boolean debug = false;
     private Connection conn;
     
     // default constructor
@@ -179,8 +179,8 @@ public class MySQLISHDAOImp implements ISHDAO {
                         prepStmt.setString(j + 1, param[i][j]);
                     }
                 }
-				if (debug)
-				    System.out.println("MySQLISHDAOImp:getStringArrayFromBatchQuery["+i+"] = "+prepStmt);
+		if (debug)
+		    System.out.println("MySQLISHDAOImp:getStringArrayFromBatchQuery["+i+"] = "+prepStmt);
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
             }
@@ -328,7 +328,7 @@ public class MySQLISHDAOImp implements ISHDAO {
     
     public Probe findMaProbeByProbeId(String probeId, String maprobeId){
     	
-//    	if (debug) 
+    	if (debug) 
     		System.out.println("probeId = "+ probeId + " maprobeId = " + maprobeId);
 
     	if(probeId == null){
@@ -966,6 +966,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             specimen.setStrain(resSetSpecimen.getString(5));
             specimen.setStageFormat(resSetSpecimen.getString(6));
             specimen.setOtherStageValue(resSetSpecimen.getString(7));
+            specimen.setPhase(resSetSpecimen.getString(11));
             specimen.setSex(resSetSpecimen.getString(9));
 	    
             List<String> notes = new ArrayList<String>();

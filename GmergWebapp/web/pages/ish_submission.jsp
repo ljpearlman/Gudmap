@@ -551,20 +551,9 @@
 					<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
 				</h:outputLink>
 
-				<h:outputText value="Other Staging System:" />
-				<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.specimen.stageFormat != 'dpc' && ISHSingleSubmissionBean.submission.specimen.stageFormat != 'P'}">
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.otherStageValue}" />
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.stageFormat} " />
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.specimen.stageFormat == 'dpc'}">
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.otherStageValue}" />
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.stageFormat} " />
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ISHSingleSubmissionBean.submission.specimen.stageFormat == 'P'}">
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.stageFormat} " />
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.otherStageValue}" />
-				</h:panelGroup>
-								
+				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="Other Staging System:" />
+				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="#{ISHSingleSubmissionBean.submission.specimen.otherStage}" />
+
 				<h:outputText value="Tissue:" />
 				<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}" />
 					
