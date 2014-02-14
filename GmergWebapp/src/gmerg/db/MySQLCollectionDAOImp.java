@@ -22,7 +22,7 @@ import java.util.Locale;
  *
  */
 public class MySQLCollectionDAOImp implements CollectionDAO {
-    private boolean debug = true;
+    private boolean debug = false;
     private Connection conn;
     
     // default constructor

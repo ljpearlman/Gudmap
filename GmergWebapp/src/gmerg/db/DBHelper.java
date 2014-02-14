@@ -14,6 +14,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import java.sql.DriverManager;
 import java.util.ResourceBundle;
@@ -26,6 +29,7 @@ public final class DBHelper {
     private static boolean debug = false;
     ///??????????
 	private static int count = 0;
+	private static HashMap<Connection, Long> connMap = new HashMap<Connection, Long>();
     ///???????????
 	private static String browseColumnsISH[][] = {
 		{"0", ""}, {"1", ""},{"2", ""}
@@ -52,14 +56,14 @@ public final class DBHelper {
 	    Connection ret = null;
 
 	    try {
-		ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-		Class.forName(bundle.getString("db_driver"));
-		String url = bundle.getString("host") + bundle.getString("database");
-		String userName = bundle.getString("user");
-		String passWord = bundle.getString("password");
-		ret = getDBConnection(url, userName, passWord);
+			ResourceBundle bundle = ResourceBundle.getBundle("configuration");
+			Class.forName(bundle.getString("db_driver"));
+			String url = bundle.getString("host") + bundle.getString("database");
+			String userName = bundle.getString("user");
+			String passWord = bundle.getString("password");
+			ret = getDBConnection(url, userName, passWord);
 	    } catch (Exception se) {
-		se.printStackTrace();
+			se.printStackTrace();
 	    }
 
 	    return ret;
@@ -69,12 +73,27 @@ public final class DBHelper {
 		
 		Connection conn = null;
 		try {
+			Long connectionTime = System.currentTimeMillis();
 			conn = DriverManager.getConnection(url, userName, passWord);
+			connMap.put(conn, connectionTime);
+			System.out.println("key: " + conn + " value: " + connMap.get(conn));
 			System.out.println("DBHelper:getDBConnection "+conn + " DB connections open " + count);
 			///////???????????
 			count++;
-			if (10 < count)
+			if (20 < count){
 			    System.out.println("!!!!!!possible leaking: "+count+" DB connections open");
+			    
+			    Iterator<Connection> keySetIterator = connMap.keySet().iterator();
+			    Connection key = keySetIterator.next();
+			    Connection oldestKey = key;
+			    while(keySetIterator.hasNext()){
+			    	key = keySetIterator.next();
+			    	if (connMap.get(oldestKey) > connMap.get(key))
+			    		oldestKey = key;
+			    }
+			    connMap.remove(oldestKey);
+			    
+			}
 			////????????????
 		} catch (Exception se) {
 			se.printStackTrace();
@@ -91,6 +110,7 @@ public final class DBHelper {
 		if (conn != null) {
 			try {
 				conn.close();
+				connMap.remove(conn);
 		    	System.out.println("DBHelper:closeJDBCConnection "+conn + " DB connections open " + count);
 				///////???????????
 				count--;

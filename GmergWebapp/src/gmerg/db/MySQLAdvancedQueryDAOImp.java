@@ -13,7 +13,7 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
-    protected boolean debug = true;
+    protected boolean debug = false;
     
     private Connection conn;
     private int ColumnNumbers = 15;// 14 //Bernie - 01/03/2012 - (Mantis 619) added 'sex column so increase from 14 to 15'

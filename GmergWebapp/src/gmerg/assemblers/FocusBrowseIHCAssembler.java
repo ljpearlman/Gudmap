@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	
-    private boolean debug = true;
+    private boolean debug = false;
     protected RetrieveDataCache cache = null;
 
 	String[] organs;
