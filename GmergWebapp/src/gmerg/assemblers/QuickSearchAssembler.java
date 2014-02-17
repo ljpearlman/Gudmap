@@ -65,26 +65,32 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			int[] total = null;
 	   	
 			list = advancedQDAO.getQuickSearch(type, input, column, ascending, String.valueOf(offset), String.valueOf(num), total);
+
+			DataItem[][] ret = getTableDataFormatFromArrayList(list);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("QuickSearchAssembler::retrieveData failed !!!");
 			list = new ArrayList();
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		advancedQDAO = null;
-		
-		DataItem[][] ret = getTableDataFormatFromArrayList(list);
 
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(column);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
+			DataItem[][] ret = getTableDataFormatFromArrayList(list);
 
-		return ret;
+			return ret;
+		}	
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			advancedQDAO = null;
+		}
 	}
 	
 	public int retrieveNumberOfRows() {
@@ -97,18 +103,20 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 		try{
 			ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 			n = ishDAO.getQuickNumberOfRows(query, input);
+
+			if(null != n)
+				return n[0];
+	        return 0;
 		}
 		catch(Exception e){
 			System.out.println("QuickSearchAssembler::retrieveNumberOfRows failed !!!");
-			n = null;
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		if(null != n)
-			return n[0];
-        return 0;
+			return 0;
+		}
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 		
 	/**
@@ -125,19 +133,21 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 		try{
 			ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 			n = ishDAO.getQuickNumberOfRows(query, input);
+
+			if(null != n) {
+				return new int[]{n[1], n[2]};
+			} 
+	        return new int[]{0,0};
 		}
 		catch(Exception e){
 			System.out.println("QuickSearchAssembler::retrieveNumberOfRowsInGroups failed !!!");
-			n = null;
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		if(null != n) {
-			return new int[]{n[1], n[2]};
-		} 
-        return new int[]{0,0};
+			return new int[]{0,0};
+		}	
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 	
 	public HeaderItem[] createHeader() {

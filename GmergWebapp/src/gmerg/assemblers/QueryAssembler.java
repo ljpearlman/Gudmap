@@ -232,15 +232,17 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 				/** ---return the object--- */
 				return submissions;
 			}
+			return null;
 		}
 		catch(Exception e){
 			System.out.println("QuickAssembler::getDataByGene failed !!!");
+			return null;
 		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		return null;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	} // end of getDataByGene
         
     public String getTotalISHComponentsExpressingGene(String ignoreExpression, 
@@ -264,15 +266,18 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 	        totalComponents +=
 	        	ishDAO.getTotalISHComponentsExpressingGeneQuery(inputType, 
 	        			ignoreExpression, inputString, stage, criteria);
+
+	        return totalComponents;
         }
 		catch(Exception e){
 			System.out.println("QuickAssembler::getTotalISHComponentsExpressingGene failed !!!");
+	        return "0";
 		}
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        ishDAO = null;
-        
-        return totalComponents;
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ishDAO = null;
+        }
     }
         
     public String getTotalISHSubmissionsForGeneQuery(String ignoreExpression, 
@@ -295,17 +300,19 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 			totalSubmissions +=
 				ishDAO.getTotalNumberOfISHSubmissionsForGeneQuery(inputType,
 						ignoreExpression, inputString, stage, criteria);
+
+			/** return the value  */
+			return totalSubmissions;
 		}
 		catch(Exception e){
 			System.out.println("QuickAssembler::getTotalISHSubmissionsForGeneQuery failed !!!");
+			return "0";
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		/** return the value  */
-		return totalSubmissions;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 		
 	}
 
@@ -329,17 +336,19 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 	        // get the value
 	        totalSubmissions += ishDAO.getTotalNumberOfISHSubmissionsForGeneQuery(inputType, 
 	        		ignoreExpression, inputString, component, stage, criteria);
+
+	        /** return the value  */
+	        return totalSubmissions;
         }
 		catch(Exception e){
 			System.out.println("QuickAssembler::getTotalISHSubmissionsForGeneQuery failed !!!");
+	        return "0";
 		}
-        
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        ishDAO = null;
-
-        /** return the value  */
-        return totalSubmissions;
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ishDAO = null;
+        }
     }
 	
     public String getTotalISHSubmissionsForComponentQuery(String component) {
@@ -355,16 +364,19 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 	        // get the value
 	        totalSubmissions += 
 	        	ishDAO.getTotalNumberOfISHSubmissionsForComponentQuery(component);
+
+	        /** return the value  */
+	        return totalSubmissions;
         }
 		catch(Exception e){
 			System.out.println("QuickAssembler::getTotalISHSubmissionsForComponentQuery failed !!!");
+	        return "0";
 		}
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        ishDAO = null;
-
-        /** return the value  */
-        return totalSubmissions;
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ishDAO = null;
+        }
     }
     
     /**
@@ -384,16 +396,18 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 	        
 	        // get the value
 	        totalSubmissions += ishDAO.getTotalNumberOfSubmissionsForComponentsQuery(components);
+	        /** return the value  */
+	        return totalSubmissions;
         }
 		catch(Exception e){
 			System.out.println("QuickAssembler::getTotalSubmissionsForComponents failed !!!");
+	        return "0";
 		}
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        ishDAO = null;
-
-        /** return the value  */
-        return totalSubmissions;
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ishDAO = null;
+        }
     }
 
     /**
@@ -415,16 +429,19 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 	            totalSubmissions +=
 	            	ishDAO.getTotalNumberOfSubmissionsForComponentsQuery(components, 
 	            			startStg, endStg, expTypes, criteria);
+
+	            /** return the value  */
+	            return totalSubmissions;
             }		
             catch(Exception e){
     			System.out.println("QuickAssembler::getTotalSubmissionsForComponentsQuery failed !!!");
+                return "0";
     		}
-
-            // release db resources
-            DBHelper.closeJDBCConnection(conn);
-            ishDAO = null;
-            /** return the value  */
-            return totalSubmissions;
+            finally{
+	            // release db resources
+	            DBHelper.closeJDBCConnection(conn);
+	            ishDAO = null;
+            }
         }
 
 	/**
@@ -525,16 +542,17 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 				submissionData.setSubmission(ishSubmission);
 				submissionData.setSubmissionType(0); // ish submission
 			}
+			/** ---return the composite value object---  */
+			return submissionData;
 		}
         catch(Exception e){
 			System.out.println("QuickAssembler::getSubmissionQueryData failed !!!");
-			submissionData = null;
+			return null;
 		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		/** ---return the composite value object---  */
-		return submissionData;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 }

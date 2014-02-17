@@ -158,18 +158,19 @@ public class ISHSubmissionAssembler {
 	        // added by Bernie - 23/09/2010
 	        String tissue = ishDAO.findTissueBySubmissionId(accessionId);
 	        ishSubmission.setTissue(tissue);
+			/** ---return the composite value object---  */
+			return ishSubmission;
 		}
 		catch(Exception e){
 			System.out.println("ISHSubmissionAssembler::getData !!!");
-			ishSubmission = null;
+			return null;
 		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-        anatomyDAO = null;
-		
-		/** ---return the composite value object---  */
-		return ishSubmission;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+	        anatomyDAO = null;
+		}
 	}
 	
 	/**
@@ -445,16 +446,17 @@ public class ISHSubmissionAssembler {
 			
 			// get pi info
 			pi = ishDAO.findPersonById(personId);
+			return pi;
 		}
 		catch(Exception e){
 			System.out.println("ISHSubmissionAssembler::getPersonById !!!");
-			pi = null;
+			return null;
 		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		return pi;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}	
 
 	/**
@@ -474,16 +476,17 @@ public class ISHSubmissionAssembler {
 			
 			// get status notes
 			statusNotes = ishDAO.getStatusNotesBySubmissionId(accessionId);
+			return statusNotes;
 		}
 		catch(Exception e){
 			System.out.println("ISHSubmissionAssembler::getStatusNotes !!!");
-			statusNotes = null;
+			return null;
 		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-
-		return statusNotes;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 	
 	/**
@@ -506,15 +509,16 @@ public class ISHSubmissionAssembler {
 			
 			// get pi info
 			pis = ishDAO.findPIsBySubmissionId(submissionId);
+			return pis;
 		}
 		catch(Exception e){
 			System.out.println("ISHSubmissionAssembler::getStatusNotes !!!");
-			pis = null;
+			return null;
 		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-
-		return pis;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 }

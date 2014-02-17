@@ -67,28 +67,34 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 			// - sometimes geneId is actually synonym of the gene and symbol of gene object 
 			//   will always be the real symbol
 	        arraysForGene = ishDAO.findRelatedSubmissionBySymbolArray(gene.getSymbol(), columnIndex, ascending, offset, num);
-		}
+
+	        // return the value object
+	        DataItem[][] ret =  getTableDataFormatFromSamplesList(arraysForGene);
+		
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(columnIndex);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);	
+			
+			return ret;
+        }
 		catch(Exception e){
 			System.out.println("GeneAssembler::retrieveData !!!");
 			arraysForGene = new ArrayList();
+			
+	        // return the value object
+	        DataItem[][] ret =  getTableDataFormatFromSamplesList(arraysForGene);
+		
+			return ret;
 		}		
-
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        ishDAO = null;
-        
-        // return the value object
-        DataItem[][] ret =  getTableDataFormatFromSamplesList(arraysForGene);
-	
-	if (null == cache)
-	    cache = new RetrieveDataCache();
-	cache.setData(ret);
-	cache.setColumn(columnIndex);
-	cache.setAscending(ascending);
-	cache.setOffset(offset);
-	cache.setNum(num);	
-	
-	return ret;
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ishDAO = null;
+        }
 
     }
 
@@ -133,18 +139,20 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 	        for (int i = 0; i < len; i++) {
 	            totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
 	        }
+	        // return result
+	        return totalNumbers;
 		}
 		catch(Exception e){
 			System.out.println("GeneAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
+	        // return result
+	        return totalNumbers;
 		}		
-
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        ishDAO = null;
-
-        // return result
-        return totalNumbers;
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ishDAO = null;
+        }
     }
     
 	/**
@@ -239,18 +247,18 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 			
 			// get translational links info
 			geneInfo = ishDAO.addGeneInfoIuphar(geneInfo);
+			/** ---return the composite value object---  */
+			return geneInfo;
 		}
 		catch(Exception e){
 			System.out.println("GeneAssembler::getData !!!");
-			geneInfo = null;
+			return null;
 		}		
-    
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-//		System.out.println("GeneAssembler:geneInfo before return:synonym: " + geneInfo.getSynonyms());
-		/** ---return the composite value object---  */
-		return geneInfo;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
         
 	public static DataItem[][] getTableDataFormatFromSamplesList(ArrayList samples) {

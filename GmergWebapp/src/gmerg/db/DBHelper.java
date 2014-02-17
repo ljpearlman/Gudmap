@@ -15,6 +15,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -29,7 +30,7 @@ public final class DBHelper {
     private static boolean debug = false;
     ///??????????
 	private static int count = 0;
-	private static HashMap<Connection, Long> connMap = new HashMap<Connection, Long>();
+	private static HashMap<Long, Connection> connMap = new HashMap<Long, Connection>();
     ///???????????
 	private static String browseColumnsISH[][] = {
 		{"0", ""}, {"1", ""},{"2", ""}
@@ -73,26 +74,28 @@ public final class DBHelper {
 		
 		Connection conn = null;
 		try {
+			Date date = new Date();
 			Long connectionTime = System.currentTimeMillis();
 			conn = DriverManager.getConnection(url, userName, passWord);
-			connMap.put(conn, connectionTime);
-			System.out.println("key: " + conn + " value: " + connMap.get(conn));
-			System.out.println("DBHelper:getDBConnection "+conn + " DB connections open " + count);
-			///////???????????
 			count++;
+			
+			connMap.put(connectionTime, conn);
+			System.out.println(date.toString() +" key: " + connectionTime + " value: " + connMap.get(connectionTime) + " DB connections open " + count);
+			///////???????????
+;
 			if (20 < count){
 			    System.out.println("!!!!!!possible leaking: "+count+" DB connections open");
 			    
-			    Iterator<Connection> keySetIterator = connMap.keySet().iterator();
-			    Connection key = keySetIterator.next();
-			    Connection oldestKey = key;
+			    Iterator<Long> keySetIterator = connMap.keySet().iterator();
+			    Long key = keySetIterator.next();
+			    Long oldestKey = key;
 			    while(keySetIterator.hasNext()){
 			    	key = keySetIterator.next();
-			    	if (connMap.get(oldestKey) > connMap.get(key))
+			    	if (oldestKey > key)
 			    		oldestKey = key;
 			    }
+			    System.out.println("!!!!!!possible leaking: removed connection " + connMap.get(oldestKey));
 			    connMap.remove(oldestKey);
-			    
 			}
 			////????????????
 		} catch (Exception se) {
@@ -111,10 +114,10 @@ public final class DBHelper {
 			try {
 				conn.close();
 				connMap.remove(conn);
-		    	System.out.println("DBHelper:closeJDBCConnection "+conn + " DB connections open " + count);
-				///////???????????
+				
 				count--;
-				////????????????
+		    	System.out.println("DBHelper:closeJDBCConnection "+conn + " DB connections open " + count);
+
 			} catch (SQLException se) {
 				se.printStackTrace();
 			}

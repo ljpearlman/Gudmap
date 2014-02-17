@@ -45,18 +45,18 @@ public class ImageDetailAssembler {
 			
 			/** ---get data--- */
 			imageDetail = ishDAO.findImageDetailBySubmissionId(submissionAccessionId, Integer.parseInt(serialNum)-1);
+			/** ---return the object--- */
+			return imageDetail;
 		}
 		catch(Exception e){
 			System.out.println("ImageDetailAssembler::getData !!!");
-			imageDetail = null;
+			return null;
 		}
-
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		/** ---return the object--- */
-		return imageDetail;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 
 }

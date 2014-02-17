@@ -87,32 +87,42 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			submissions =
 				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
 						stage, gene, archiveId, batchId, String.valueOf(offset), String.valueOf(num), filter);
+
+			/** ---return the value object---  */
+			DataItem[][] ret = null;
+			if ("array".equals(getParam("assayType")))
+				ret = getTableDataFormatFromArrayList(submissions);
+			else
+				ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseAssembler::retrieveData !!!");
 			submissions = null;
+
+			/** ---return the value object---  */
+			DataItem[][] ret = null;
+			if ("array".equals(getParam("assayType")))
+				ret = getTableDataFormatFromArrayList(submissions);
+			else
+				ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+
+			return ret;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		focusForAllDAO = null;
-		
-		/** ---return the value object---  */
-		DataItem[][] ret = null;
-		if ("array".equals(getParam("assayType")))
-			ret = getTableDataFormatFromArrayList(submissions);
-		else
-			ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(column);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-
-		return ret;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			focusForAllDAO = null;
+		}
 	}
 	
 	/**
@@ -134,16 +144,17 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	        // get number of public ish sumbissions
 	//		int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage);
 			n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, filter);
+			return n;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseAssembler::retrieveNumberOfRows !!!");
-			n = 0;
+			return 0;
 		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		focusForAllDAO = null;
-		
-		return n;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			focusForAllDAO = null;
+		}
 	}
 	
 	// Bernie - 09/11/2010 - added to provide Totals
@@ -186,17 +197,20 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			for (int i=0;i<len;i++) {
 				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
 			}
+			// return result
+			return totalNumbers;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
+			// return result
+			return totalNumbers;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDevDAO = null;
-
-		// return result
-		return totalNumbers;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+		}
 	}
 	
 
@@ -247,17 +261,18 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			
 			// get data from database
 			browseSeries = focusStageDAO.getStageList(stage);
+			// return the value object
+			return browseSeries;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseAssembler::getStageList !!!");
-			browseSeries = null;
+			return null;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		focusStageDAO = null;
-		
-		// return the value object
-		return browseSeries;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			focusStageDAO = null;
+		}
 	}
 	
 	/**
@@ -282,17 +297,18 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			// get microarray stage list
 			
 			// get age (dpc) stage list
+			/** return the value object */
+			return stageList;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseAssembler::getStageList !!!");
-			stageList = null;
+			return null;
 		}
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		focusStageDAO = null;
-		
-		/** return the value object */
-		return stageList;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			focusStageDAO = null;
+		}
 	}
 	
 	/**
@@ -339,18 +355,18 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 				stageLists[i][1] = insituStageList[i];
 				stageLists[i][2] = arrayStageList[i];
 			}
+			/** return the value object */
+			return stageLists;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseAssembler::getStageList !!!");
-			stageLists = null;
+			return null;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		focusStageDAO = null;
-		
-		/** return the value object */
-		return stageLists;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			focusStageDAO = null;
+		}
 	}
 
 	/**

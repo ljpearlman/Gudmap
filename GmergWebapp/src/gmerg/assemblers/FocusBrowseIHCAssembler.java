@@ -61,27 +61,31 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	
 			// get data from database
 			submissions = ihcDAO.getAllSubmissionISH(column, ascending, offset, num, "IHC", organs, archiveIds, batchIds, filter);
+			/** ---return the value object---  */
+			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseIHCAssembler::retrieveData !!!");
 			submissions = null;
+			/** ---return the value object---  */
+			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+
+			return ret;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ihcDAO = null;
-		
-		/** ---return the value object---  */
-		DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(column);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-
-		return ret;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ihcDAO = null;
+		}
 	}
 	
 	public int retrieveNumberOfRows() {
@@ -94,17 +98,18 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 	
 			// get data from database
 			totalNumberOfSubmissions = ihcDAO.getTotalNumberOfSubmissions("IHC", organs, archiveIds, batchIds, filter);
+			//* ---return the value---  * /
+			return totalNumberOfSubmissions;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseIHCAssembler::retrieveNumberOfRows !!!");
-			totalNumberOfSubmissions = 0;
+			return 0;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ihcDAO = null;
-		
-		//* ---return the value---  * /
-		return totalNumberOfSubmissions;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ihcDAO = null;
+		}
 	}
 	
 	public HeaderItem[] createHeader() {
@@ -150,17 +155,20 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 			totalNumbers = new int[len];
 			for (int i=0;i<len;i++)
 				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+			// return result
+			return totalNumbers;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseIHCAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
+			// return result
+			return totalNumbers;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDevDAO = null;
-
-		// return result
-		return totalNumbers;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+		}
 	}
 	
 	

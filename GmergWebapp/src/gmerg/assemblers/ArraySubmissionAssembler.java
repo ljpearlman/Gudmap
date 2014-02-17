@@ -107,19 +107,19 @@ public class ArraySubmissionAssembler {
 	        // added by Bernie - 23/09/2010
 	        String tissue = arrayDAO.findTissueBySubmissionId(accessionId);
 	        arraySubmission.setTissue(tissue);
+			/** ---return the array submission  */
+			return arraySubmission;
 		}
 		catch(Exception e){
 			System.out.println("ArraySubmissionAssembler::getData failed !!!");
-			arraySubmission = null;
+			return null;
 		}
-
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		ishDAO = null;
-		
-		/** ---return the array submission  */
-		return arraySubmission;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+			ishDAO = null;
+		}
 	}
 	
 	/**
@@ -140,18 +140,20 @@ public class ArraySubmissionAssembler {
 			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			// get the value
 			totalGeneListItems += arrayDAO.getTotalNumberOfGeneListItemsBySubmissionId(accessionId);
+			/** ---return the gene list info---  */
+			return totalGeneListItems;
 		}
 		catch(Exception e){
 			System.out.println("ArraySubmissionAssembler::getTotalGeneListItems failed !!!");
 			totalGeneListItems = "0";
+			/** ---return the gene list info---  */
+			return totalGeneListItems;
 		}
-
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the gene list info---  */
-		return totalGeneListItems;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 	
 	/**
@@ -169,18 +171,20 @@ public class ArraySubmissionAssembler {
 			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			// get page number from DAO
 			pageNum = arrayDAO.getRowNumOf1stOccurrenceOfGeneInArrayGeneList(accessionId, geneSymbol);
+			/** ---return the pageNum---  */
+			return pageNum;
 		}
 		catch(Exception e){
 			System.out.println("ArraySubmissionAssembler::getRowNumberOfFirstOccurrenceOfGene failed !!!");
 			pageNum = 0;
+			/** ---return the pageNum---  */
+			return pageNum;
 		}
-
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the gene list info---  */
-		return pageNum;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 
 }

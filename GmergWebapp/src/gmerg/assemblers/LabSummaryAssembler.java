@@ -86,17 +86,32 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 		    
 		    arrayBrowseSubmissions =
 			arrayDAO.getSubmissionsByLabId(labId, submissionDate, archiveId, column, ascending, offset, num, batchId);
+		    /** ---return the composite value object---  */
+		    ret = FocusBrowseAssembler.getTableDataFormatFromArrayList(arrayBrowseSubmissions); 
+
+		    if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+			
+			return ret;
 	    }
 		catch(Exception e){
 			System.out.println("LabSummaryAssembler:: microarray retrieveData failed !!!");
 			arrayBrowseSubmissions = null;
-		}
+		    /** ---return the composite value object---  */
+		    ret = FocusBrowseAssembler.getTableDataFormatFromArrayList(arrayBrowseSubmissions); 
 
-	    // release db resources
-	    DBHelper.closeJDBCConnection(conn);
-	    arrayDAO = null;
-	    /** ---return the composite value object---  */
-	    ret = FocusBrowseAssembler.getTableDataFormatFromArrayList(arrayBrowseSubmissions); 
+			return ret;
+		}
+	    finally{
+		    // release db resources
+		    DBHelper.closeJDBCConnection(conn);
+		    arrayDAO = null;
+	    }
 	} else {
 	    
 	    //else they are ISH, IHC, or Tg data
@@ -117,32 +132,42 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 			ishBrowseSubmissions = 
 			    ishDAO.getSubmissionsByLabId(labId, assayType, submissionDate, archiveId, column, ascending, offset, num, batchId);
 		    }
+		    
+		    /** ---return the composite value object---  */
+		    if(null != privilege && Integer.parseInt(privilege)>=3 && labIshEdit)
+			ret = ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions, privilege); 
+		    else
+			ret = ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions);
+
+		    if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+			
+			return ret;
 	    }
 		catch(Exception e){
 			System.out.println("LabSummaryAssembler:: ISH, IHC, or Tg retrieveData failed !!!");
 			ishBrowseSubmissions = null;
-		}
+			
+		    /** ---return the composite value object---  */
+		    if(null != privilege && Integer.parseInt(privilege)>=3 && labIshEdit)
+			ret = ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions, privilege); 
+		    else
+			ret = ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions);
 
-	    /** release the db resources */
-	    DBHelper.closeJDBCConnection(conn);
-	    ishDAO = null;
-	    
-	    /** ---return the composite value object---  */
-	    if(null != privilege && Integer.parseInt(privilege)>=3 && labIshEdit)
-		ret = ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions, privilege); 
-	    else
-		ret = ISHBrowseAssembler.getTableDataFormatFromIshList(ishBrowseSubmissions);
+			return ret;
+		}
+	    finally{
+		    /** release the db resources */
+		    DBHelper.closeJDBCConnection(conn);
+		    ishDAO = null;
+	    }
 	}
 	
-	if (null == cache)
-	    cache = new RetrieveDataCache();
-	cache.setData(ret);
-	cache.setColumn(column);
-	cache.setAscending(ascending);
-	cache.setOffset(offset);
-	cache.setNum(num);
-	
-	return ret;
     }
     
     /**
@@ -151,27 +176,28 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
      */
     public int retrieveNumberOfRows() {
         /** ---get data from dao---  */
-	// create a dao
-	Connection conn = DBHelper.getDBConnection();
-	FocusForAllDAO focusForAllDAO;
-	int numberOfRows = 0;
-	try{
-		focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-		if(null != privilege && Integer.parseInt(privilege)>=3 && FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/lab_ish_edit.jsp")) {
-		    numberOfRows = focusForAllDAO.getNumberOfSubmissionsForLabForAnnotation(labId, assayType, submissionDate, archiveId, isPublic);
-		} else {
-		    numberOfRows = focusForAllDAO.getNumberOfSubmissionsForLab(labId, assayType, submissionDate, archiveId, batchId);
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		FocusForAllDAO focusForAllDAO;
+		int numberOfRows = 0;
+		try{
+			focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+			if(null != privilege && Integer.parseInt(privilege)>=3 && FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/lab_ish_edit.jsp")) {
+			    numberOfRows = focusForAllDAO.getNumberOfSubmissionsForLabForAnnotation(labId, assayType, submissionDate, archiveId, isPublic);
+			} else {
+			    numberOfRows = focusForAllDAO.getNumberOfSubmissionsForLab(labId, assayType, submissionDate, archiveId, batchId);
+			}
+			return numberOfRows;
 		}
-	}
-	catch(Exception e){
-		System.out.println("LabSummaryAssembler::retrieveNumberOfRows !!!");
-		numberOfRows = 0;
-	}
-	// release the db resources
-	DBHelper.closeJDBCConnection(conn);
-	focusForAllDAO = null;
-	
-	return numberOfRows;
+		catch(Exception e){
+			System.out.println("LabSummaryAssembler::retrieveNumberOfRows !!!");
+			return 0;
+		}
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			focusForAllDAO = null;
+		}
     }
     
     // Bernie 25/3/2011 mod to return totals 
@@ -206,20 +232,26 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 			};
 			String endingClause = " AND (SUB_ASSAY_TYPE = 'TG') ";
 			columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
+
+			// convert to interger array, each tuple consists of column index and the number
+			int len = columnNumbers.length;
+			int[] totalNumbers = new int[len];
+			for (int i=0;i<len;i++) {
+			    totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+			}
+			
+			// return result
+			return totalNumbers;
 		}
 		catch(Exception e){
 			System.out.println("LabSummaryAssembler::retrieveTotals !!!");
+			return new int[0];
 		}
-	
-		// convert to interger array, each tuple consists of column index and the number
-		int len = columnNumbers.length;
-		int[] totalNumbers = new int[len];
-		for (int i=0;i<len;i++) {
-		    totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;		
 		}
-		
-		// return result
-		return totalNumbers;
     }
     
     
@@ -252,18 +284,19 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 		
 	        // get the value
 	        totalSubmissions += ishDAO.getTotalNumberOfISHSubmissionsForLabQuery(labId, date);
+	        /** return the value  */
+	        return totalSubmissions;
         }
 		catch(Exception e){
 			System.out.println("LabSummaryAssembler::getTotalISHSubmissionsForLab !!!");
 			totalSubmissions = new String("");
+	        return totalSubmissions;
 		}
-        
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        ishDAO = null;
-	
-        /** return the value  */
-        return totalSubmissions;
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ishDAO = null;
+        }
     }
     
     
@@ -279,18 +312,19 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 		
 	        // get the value
 	        totalSubmissions += ishDAO.getTotalNumberOfIHCSubmissionsForLabQuery(labId, date);
+	        /** return the value  */
+	        return totalSubmissions;
         }
 		catch(Exception e){
 			System.out.println("LabSummaryAssembler::getTotalIHCSubmissionsForLab !!!");
 			totalSubmissions = new String("");
+	        return totalSubmissions;
 		}
-
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        ishDAO = null;
-	
-        /** return the value  */
-        return totalSubmissions;
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ishDAO = null;
+        }
     }
     
     
@@ -360,18 +394,19 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 			
 			labSummaries[i] = labSummary;
 		    }
+		    /** ---return the composite value object---  */
+		    return labSummaries;
 		}
 		catch(Exception e){
 			System.out.println("LabSummaryAssembler::getSummaryData !!!");
 			labSummaries = new LabSummary[0];
+		    return labSummaries;
 		}
-
-	    /** release the db resources */
-	    DBHelper.closeJDBCConnection(conn);
-	    ishDAO = null;
-	    
-	    /** ---return the composite value object---  */
-	    return labSummaries;
+		finally{
+		    /** release the db resources */
+		    DBHelper.closeJDBCConnection(conn);
+		    ishDAO = null;
+		}
     }
     
     public LabSummary[] getSummaryDataPerLab(String username, int privilege) {
@@ -794,27 +829,27 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
      */
     public String getPIName() {
         /** ---get data from dao---  */
-	// create a dao
-	Connection conn = DBHelper.getDBConnection();
-	ISHDAO ishDAO;
-	String piName;
-	try{
-		ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-		// get data
-		piName = ishDAO.findPIByLabId(labId);
-	}
-	catch(Exception e){
-		System.out.println("LabSummaryAssembler::getPIName !!!");
-		piName = "";
-	}
-
-	/** release the db resources */
-	DBHelper.closeJDBCConnection(conn);
-	ishDAO = null;
-	
-	/** ---return the composite value object---  */
-	return piName;
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		ISHDAO ishDAO;
+		String piName;
+		try{
+			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			
+			// get data
+			piName = ishDAO.findPIByLabId(labId);
+			return piName;
+		}
+		catch(Exception e){
+			System.out.println("LabSummaryAssembler::getPIName !!!");
+			piName = "";
+			return piName;
+		}
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+	    }
     }
     
 }

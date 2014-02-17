@@ -55,29 +55,35 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 	
 			// get data from database
 			browseSubmissions = ishDevDAO.getAllSubmissionInsitu(column, ascending, offset, num, filter);
+
+//			System.out.println("============ BrowsIsh: Data retrieved")	;
+			DataItem[][] ret = getTableDataFormatFromIshList(browseSubmissions);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+		
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("ISHBrowseAssembler::retrieveData !!!");
 			browseSubmissions = null;
+
+			DataItem[][] ret = getTableDataFormatFromIshList(browseSubmissions);
+
+			return ret;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDevDAO = null;
-		
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+		}
 		/** ---return the value object---  */
 		
-//		System.out.println("============ BrowsIsh: Data retrieved")	;
-		DataItem[][] ret = getTableDataFormatFromIshList(browseSubmissions);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(column);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-	
-		return ret;
 	}
 	
 	/**
@@ -120,17 +126,20 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 			for (int i=0;i<len;i++) {
 				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
 			}
+			// return result
+			return totalNumbers;
 		}
 		catch(Exception e){
 			System.out.println("ISHBrowseAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
+			// return result
+			return totalNumbers;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDevDAO = null;
-
-		// return result
-		return totalNumbers;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+		}
 	}
 	
 	/**
@@ -149,17 +158,18 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 	
 			// get data from database
 			totalNumberOfSubmissions = ishDevDAO.getTotalNumberOfSubmissions(filter);
+			/** ---return the value---  */
+			return totalNumberOfSubmissions;
 		}
 		catch(Exception e){
 			System.out.println("ISHBrowseAssembler::retrieveNumberOfRows !!!");
-			totalNumberOfSubmissions = 0;
+			return 0;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDevDAO = null;
-		
-		/** ---return the value---  */
-		return totalNumberOfSubmissions;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+		}
 	}	
 	
 	public HeaderItem[] createHeader() {
@@ -190,18 +200,18 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 			
 			// delete
 			submissionDeleted = ishEditDAO.deleteSelectedSubmission(selectedSubmissions);
+			// return
+			return submissionDeleted;
 		}
 		catch(Exception e){
 			System.out.println("ISHBrowseAssembler::deleteSelectedSubmissions !!!");
-			submissionDeleted = false;
+			return false;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		// return
-		return submissionDeleted;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	

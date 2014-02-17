@@ -39,16 +39,17 @@ public class PredictiveTextSearchAssembler {
 			
 			// get data from db
 	        genes = ptsDAO.getGeneSymbolsAndSynonyms(input, searchPattern, num);
+	        return genes;
         }
 		catch(Exception e){
 			System.out.println("PredictiveTextSearchAssembler::getGenes failed !!!");
-			genes = null;
+			return null;
 		}
-        // release resources
-        DBHelper.closeJDBCConnection(conn);
-        ptsDAO = null;
-
-        return genes;
+        finally{
+	        // release resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ptsDAO = null;
+        }
 	}
 	
 	/**
@@ -69,17 +70,17 @@ public class PredictiveTextSearchAssembler {
 			
 			// get data from db
 	        anatomyTerms = ptsDAO.getAnnatomyTerms(input, searchPattern, num);
+	        return anatomyTerms;
         }
 		catch(Exception e){
 			System.out.println("PredictiveTextSearchAssembler::getAnatomyStructures failed !!!");
-			anatomyTerms = null;
+			return null;
 		}
-
-        // release resources
-        DBHelper.closeJDBCConnection(conn);
-        ptsDAO = null;
-
-        return anatomyTerms;
+        finally{
+	        // release resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ptsDAO = null;
+        }
 	}
 	
 	/**
@@ -99,18 +100,18 @@ public class PredictiveTextSearchAssembler {
 			
 			// get data from db
 	        goTerms = ptsDAO.getGoTerms(input, searchPattern, num);
+	        // return
+			return goTerms;
         }
 		catch(Exception e){
 			System.out.println("PredictiveTextSearchAssembler::getGeneFunctions failed !!!");
-			goTerms = null;
+			return null;
 		}
-
-        // release resources
-        DBHelper.closeJDBCConnection(conn);
-        ptsDAO = null;
-        
-        // return
-		return goTerms;
+        finally{
+	        // release resources
+	        DBHelper.closeJDBCConnection(conn);
+	        ptsDAO = null;
+        }
 	}
 	
 }

@@ -72,27 +72,31 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 			
 			// get data
 			genelistItems = arrayDAO.getGenelistItemsByGenelistId(genelistId, columnId+1, ascending, offset+1, num );
+
+			/** ---return the composite value object---  */
+			DataItem[][] ret = getTableDataFormatFromGenelistData(genelistItems);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(columnId);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("ProcessedGenelistDataAssembler::retrieveData failed !!!");
 			genelistItems = null;
+			DataItem[][] ret = getTableDataFormatFromGenelistData(genelistItems);
+			return ret;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the composite value object---  */
-		DataItem[][] ret = getTableDataFormatFromGenelistData(genelistItems);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(columnId);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-
-		return ret;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 
 	/**
@@ -111,18 +115,18 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 			
 			// get data
 			total = arrayDAO.getGenelistsEntryNumber(genelistId);
+			/** ---return the composite value object---  */
+			return total;
 		}
 		catch(Exception e){
 			System.out.println("ProcessedGenelistDataAssembler::retrieveNumberOfRows failed !!!");
-			total = 0;
+			return 0;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the composite value object---  */
-		return total;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 		
 	public HeaderItem[] createHeader() {
@@ -158,18 +162,20 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 			
 			// get data
 			externalLinks = arrayDAO.getGenelistExternalLinks();
+
+			return externalLinks;
 		}
 		catch(Exception e){
 			System.out.println("ProcessedGenelistDataAssembler::retrieveSearchLinks failed !!!");
 			externalLinks = new ArrayList();	
-		}
 
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the composite value object---  */
-		return externalLinks;
+			return externalLinks;
+		}
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 
 	/********************************************************************************

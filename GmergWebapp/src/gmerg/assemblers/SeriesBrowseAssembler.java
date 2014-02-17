@@ -73,28 +73,31 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 				seriesList = focusForAllDAO.getSeriesList(columnIndex, ascending, offset, num, organ, platform);
 				focusForAllDAO = null;
 			}
+			// return the value object
+			DataItem[][] ret = getTableDataFormatFromSeriesList(seriesList);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(columnIndex);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("SeriesBrowseAssembler::retrieveData failed !!!");
 			seriesList = null;
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		focusForAllDAO = null;
-		arrayDevDAO = null;
-		
-		// return the value object
-		DataItem[][] ret = getTableDataFormatFromSeriesList(seriesList);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(columnIndex);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-
-		return ret;
+			DataItem[][] ret = getTableDataFormatFromSeriesList(seriesList);
+			return ret;
+		}	
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			focusForAllDAO = null;
+			arrayDevDAO = null;
+		}
 	}
 	
 	public int retrieveNumberOfRows() {
@@ -117,16 +120,17 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 				totalNumberOfSeries = focusForAllDAO.getNumberOfSeries(organ, platform);
 				focusForAllDAO = null;
 			}
+			// return the value object
+			return totalNumberOfSeries;
 		}
 		catch(Exception e){
 			System.out.println("SeriesBrowseAssembler::retrieveNumberOfRows failed !!!");
-			totalNumberOfSeries = 0;
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		
-		// return the value object
-		return totalNumberOfSeries;
+			return 0;
+		}	
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+		}
 	}
 	
 	public int[] retrieveTotals() {
@@ -155,16 +159,18 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 			for (int i=0;i<len;i++) {
 				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
 			}
+			return totalNumbers;
 		}
 		catch(Exception e){
 			System.out.println("SeriesBrowseAssembler::retrieveNumberOfRows failed !!!");
 			totalNumbers = new int[0];
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDevDAO = null;
-		
-		return totalNumbers;
+			return totalNumbers;
+		}	
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDevDAO = null;
+		}
 	}
 	
 	public HeaderItem[] createHeader() {

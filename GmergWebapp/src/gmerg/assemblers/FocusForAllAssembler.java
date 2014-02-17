@@ -72,26 +72,32 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 			advancedQDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 			list =  advancedQDAO.getFocusQuery(query, input, column, ascending, String.valueOf(offset), String.valueOf(num), 
 														organ, sub, exp, widecard, transitiveRelations, archiveId, batchId, filter);
+
+			DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("FocusForAllAssembler::retrieveData !!!");
 			list = null;
-		}		
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		advancedQDAO = null;
-		
-		DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
 
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(column);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
+			DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
 
-		return ret;
+			return ret;
+		}
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			advancedQDAO = null;
+		}
 	}
 	
 	public int retrieveNumberOfRows() {
@@ -107,19 +113,21 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 		try{
 			advancedDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 			n =  advancedDAO.getNumberOfRows(query, input, organ, sub, exp, widecard, transitiveRelations, archiveId, batchId, filter);
+
+			if (debug)
+				System.out.println("FocusForAllAssembler:retrieveNumberOfRows return = "+n);
+			    
+			return n;
 		}
 		catch(Exception e){
 			System.out.println("FocusForAllAssembler::retrieveNumberOfRows !!!");
-			n = 0;
-		}		
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		advancedDAO = null;
-		
-		if (debug)
-			System.out.println("FocusForAllAssembler:retrieveNumberOfRows return = "+n);
-		    
-		return n;
+			return 0;
+		}	
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			advancedDAO = null;
+		}
 	}
 	
 	
@@ -137,17 +145,21 @@ public class FocusForAllAssembler extends OffMemoryTableAssembler {
 			advancedQueryDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 	
 			totals =  advancedQueryDAO.getNumberOfRowsInGroups(query, input, organ, sub, exp, widecard, transitiveRelations, archiveId, batchId, filter);
+
+			this.table.setTotals(totals);
+			return totals;
 		}
 		catch(Exception e){
 			System.out.println("FocusForAllAssembler::retrieveNumberOfRowsInGroups !!!");
 			totals = new int[0];
-		}		
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		advancedQueryDAO = null;
-		
-		this.table.setTotals(totals);
-		return totals;
+
+			return totals;
+		}	
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			advancedQueryDAO = null;
+		}
 	}
 		
 	public HeaderItem[] createHeader() {

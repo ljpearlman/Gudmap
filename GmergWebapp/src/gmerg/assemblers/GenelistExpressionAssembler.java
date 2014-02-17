@@ -71,16 +71,18 @@ public class GenelistExpressionAssembler {
 			dataSet.setGeneHeaders(geneHeader);
 			dataSet.setArrayHeaders(arrayHeader);
 			dataSet.setGeneHeadersClickable(geneHeadersClickable);
+			
+			return dataSet;
 		}
 		catch(Exception e){
 			System.out.println("GenelistExpressionAssembler::retrieveExpressionData !!!");
-			dataSet = null;
-		}		
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		genelistDAO = null;
-
-		return dataSet;
+			return null;
+		}	
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			genelistDAO = null;
+		}
 	}
 	
 

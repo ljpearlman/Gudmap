@@ -35,17 +35,17 @@ public class AntibodyAssembler {
 					antibody.setIshSubmissions(relatedSubmissionISH);
 				}
 			}
+			return antibody;
 		}
 		catch(Exception e){
 			System.out.println("AntibodyAssembler::getData failed !!!");
-			antibody = null;
+			return null;
 		}
-
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-
-		return antibody;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 	
 }

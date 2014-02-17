@@ -65,27 +65,32 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 	
 			// get data from database
 			submissions = transgenicDAO.getAllSubmission(column, ascending, offset, num, organs, archiveIds, batchIds, filter);
+			/** ---return the value object---  */
+			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+			
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseTransgenicAssembler::retrieveData !!!");
 			submissions = null;
-		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		transgenicDAO = null;
-		
-		/** ---return the value object---  */
-		DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
+			/** ---return the value object---  */
+			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
 
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(column);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-		
-		return ret;
+			return ret;
+		}
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			transgenicDAO = null;
+		}
 	}
 	
 	public int retrieveNumberOfRows() {
@@ -104,17 +109,18 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 	
 			// get data from database
 			totalNumberOfSubmissions = transgenicDAO.getTotalNumberOfSubmissions(organs, archiveIds, batchIds, filter);
+			//* ---return the value---  * /
+			return totalNumberOfSubmissions;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseTransgenicAssembler::retrieveNumberOfRows !!!");
-			totalNumberOfSubmissions = 0;
+			return 0;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		transgenicDAO = null;
-		
-		//* ---return the value---  * /
-		return totalNumberOfSubmissions;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			transgenicDAO = null;
+		}
 	}
 	
 	public int[] retrieveTotals() {
@@ -161,14 +167,20 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 					totalNumbers[i] = 0;
 				}
 			}
+			// return result
+			return totalNumbers;
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseTransgenicAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
+			// return result
+			return totalNumbers;
 		}
-
-		// return result
-		return totalNumbers;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			transgenicDAO = null;			
+		}
 	}
 
 	public HeaderItem[] createHeader() {

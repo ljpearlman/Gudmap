@@ -124,18 +124,18 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 			
 			// get genelists
 			genelistHeaders = arrayDAO.getGenelistHeadersByComponentNames(componentNames);
+			/** ---return the composite value object---  */
+			return genelistHeaders;
 		}
 		catch(Exception e){
 			System.out.println("ProcessedGenelistAssembler::retrieveGenelistByComponentName failed !!!");
-			genelistHeaders = null;
+			return null;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the composite value object---  */
-		return genelistHeaders;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 	
 	/**
@@ -159,18 +159,18 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 			
 			// get genelists
 			genelistHeaders = arrayDAO.getGenelistHeadersByLabId(labId);
+			/** ---return the composite value object---  */
+			return genelistHeaders;
 		}
 		catch(Exception e){
 			System.out.println("ProcessedGenelistAssembler::retrieveGenelistByLabName failed !!!");
-			genelistHeaders = null;
+			return null;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the composite value object---  */
-		return genelistHeaders;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 	
 

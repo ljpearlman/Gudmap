@@ -11,7 +11,7 @@ import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
     private Connection conn;
     private int MAX_COLUMNS = 12; // added extra column ALE_GENE
@@ -46,17 +46,23 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         	// if disconnected from db, re-connected
         	conn = DBHelper.reconnect2DB(conn);
             stmt = conn.createStatement();
+            
+		    if (debug)
+		    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicSubmissionISH = "+parQ.getQuerySQL());
+                        
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
             }
-
-            // close the db object
-            DBHelper.closeStatement(stmt);
+            return result;
         } catch (SQLException se) {
             se.printStackTrace();
+        	return 0;
         }
-        return result;
+        finally{
+	        DBHelper.closeStatement(stmt);
+	        DBHelper.closeResultSet(resSet);        	
+        }
 	}
 //	 get total number of ihc submissions
 	public int findTotalNumberOfSubmissionArray(String[] emapids)
@@ -87,11 +93,11 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 		
 		// group by clause
 		queryString += AdvancedSearchDBQuery.groupBySubmissionArray;
-//		System.out.println("FocusForAllDAO:findNumberOfPublicSubmissionArray:sql: " + queryString);
         try {
 		    if (debug)
 		    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicSubmissionArray Sql = "+queryString.toLowerCase());
-            stmt = conn.prepareStatement(queryString);
+
+		    stmt = conn.prepareStatement(queryString);
             resultSet = stmt.executeQuery(queryString);
             
             ArrayList arraySubmissions = this.formatResultSet(resultSet, this.MAX_COLUMNS);
@@ -101,13 +107,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             	result = arraySubmissions.size();
             }
 
-            // close the db object
-            DBHelper.closeStatement(stmt);
-
+            return result;
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+	        DBHelper.closeStatement(stmt);
+	        DBHelper.closeResultSet(resultSet);        	
+        }
 	}
 
 	// get number of public ihc sumbissions
@@ -122,17 +130,23 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         	// if disconnected from db, re-connected
         	conn = DBHelper.reconnect2DB(conn);
             stmt = conn.createStatement();
-            resSet = stmt.executeQuery(parQ.getQuerySQL());
+		    if (debug)
+		    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicSubmissionIHC sql = "+parQ.getQuerySQL());
+
+		    resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
-            }
+            }            
+            return result;
 
-            // close the db object
-            DBHelper.closeStatement(stmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+	        DBHelper.closeStatement(stmt);
+	        DBHelper.closeResultSet(resSet);        	
+        }
 	}
 	
 	/**
@@ -150,17 +164,24 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         	// if disconnected from db, re-connected
         	conn = DBHelper.reconnect2DB(conn);
             stmt = conn.createStatement();
+            
+		    if (debug)
+		    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicSubmissionTG sql = "+parQ.getQuerySQL());
+            
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
             }
 
-            // close the db object
-            DBHelper.closeStatement(stmt);
+            return result;
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+	        DBHelper.closeStatement(stmt);
+	        DBHelper.closeResultSet(resSet);        	
+        }
 	}
 	
 	/**
@@ -195,25 +216,29 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         
         queryString = queryString.replace("?", "'"+assayType+"'");
             
-          try {
-          	// if disconnected from db, re-connected
-          	conn = DBHelper.reconnect2DB(conn);
-            stmt = conn.createStatement();
+        try {
+	      	// if disconnected from db, re-connected
+	      	conn = DBHelper.reconnect2DB(conn);
+	        stmt = conn.createStatement(); 
 		    if (debug)
 		    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicGenes sql = "+queryString.toLowerCase());
-              resSet = stmt.executeQuery(queryString);
-              
-              if (resSet.first()) {
-                  result = resSet.getInt(1);
-              }
 
-              // close the db object
-              DBHelper.closeStatement(stmt);
-              DBHelper.closeResultSet(resSet);
-        } catch (SQLException se) {
-            se.printStackTrace();
+		    resSet = stmt.executeQuery(queryString);
+	          
+			if (resSet.first()) {
+				result = resSet.getInt(1);
+			}
+	
+	        return result;
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return 0;
+	    }
+        finally{
+	        DBHelper.closeStatement(stmt);
+	        DBHelper.closeResultSet(resSet);        	
         }
-        return result;
+
 	}
 	
 	/**

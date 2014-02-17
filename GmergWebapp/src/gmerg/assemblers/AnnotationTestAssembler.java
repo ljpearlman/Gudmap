@@ -39,18 +39,20 @@ public class AnnotationTestAssembler {
 			// get data
 //			ArrayList stageRanges = testDAO.getTheilerStageRanges();
 			stageRanges = testDAO.getStageRanges();
+			/** ---return the composite value object---  */
+			return stageRanges;
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::getStagesInPerspective failed !!!");
 			stageRanges = null;
+			/** ---return the composite value object---  */
+			return stageRanges;
 		}
-		
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		
-		/** ---return the composite value object---  */
-		return stageRanges;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			testDAO = null;
+		}
 	}
 	
 	public ArrayList<String> getTreeContent(String stage, String id) {
@@ -63,18 +65,20 @@ public class AnnotationTestAssembler {
 			testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
 			// get data
 			treeContent = testDAO.getTreeContent(stage, id);
+			/** ---return the composite value object---  */
+			return treeContent;
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::getTreeContent failed !!!");
 			treeContent = null;
+			/** ---return the composite value object---  */
+			return treeContent;
 		}
-
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		
-		/** ---return the composite value object---  */
-		return treeContent;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			testDAO = null;
+		}
 	}
 	
 	public String getStageFromSubmission(String id) {
@@ -86,18 +90,20 @@ public class AnnotationTestAssembler {
 			testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
 			// get data
 			stage = testDAO.getStageFromSubmission(id);
+			/** ---return the composite value object---  */
+			return stage;
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::getStageFromSubmission failed !!!");
 			stage = null;
+			/** ---return the composite value object---  */
+			return stage;
 		}
-
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		
-		/** ---return the composite value object---  */
-		return stage;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			testDAO = null;
+		}
 	}
 	
 	public Submission getSubmissionSummary(String submissionId) {
@@ -110,17 +116,20 @@ public class AnnotationTestAssembler {
 			annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
 			// get data
 			submission = annotationTestDAO.getSubmissionSummary(submissionId);
+			/** ---return the composite value object---  */
+			return submission;
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::getSubmissionSummary failed !!!");
 			submission = null;
+			/** ---return the composite value object---  */
+			return submission;
 		}
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		annotationTestDAO = null;
-		
-		/** ---return the composite value object---  */
-		return submission;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			annotationTestDAO = null;
+		}
 	}
 	
 	/**
@@ -147,20 +156,12 @@ public class AnnotationTestAssembler {
 			
 			/** compare */
 			if (stageInDB.equals(stage)) {
-				DBHelper.closeJDBCConnection(conn);
-				testDAO = null;
-				ishDAO = null;
-				editDAO = null;
 				return 2;
 			} else {
 				String userName = user.getUserName();
 				// change stage;
 				int updatedRecordNumber = testDAO.updateStage(submissionId, stage, userName);
 				if (updatedRecordNumber == 0) {
-					DBHelper.closeJDBCConnection(conn);
-					testDAO = null;
-					ishDAO = null;
-					editDAO = null;
 					return 0;
 				}
 				
@@ -168,10 +169,6 @@ public class AnnotationTestAssembler {
 				// - include component id, expression, strength, pattern, and note
 				ArrayList<String[]> expressionInDB = testDAO.getComponentAndExpression(submissionId);
 				if (expressionInDB == null) {
-					DBHelper.closeJDBCConnection(conn);
-					testDAO = null;
-					ishDAO = null;
-					editDAO = null;
 					return 3;
 				} else {
 					int len = expressionInDB.size();
@@ -182,10 +179,6 @@ public class AnnotationTestAssembler {
 						if (expressionNote != null && !expressionNote.equals("")) {
 	//						System.out.println("start to delete expression note@changeStage!");
 							if (editDAO.deleteExpressionNotes(submissionId, componentId, userName)== 0) {
-								DBHelper.closeJDBCConnection(conn);
-								testDAO = null;
-								editDAO = null;
-								editDAO = null;
 								return 0;
 							}
 						}
@@ -196,41 +189,31 @@ public class AnnotationTestAssembler {
 							testDAO.deleteLocation(submissionId, componentId, userName);
 	//						System.out.println("start to delete pattern@changeStage!");
 							if (testDAO.deletePattern(submissionId, componentId, userName) == 0) {
-								DBHelper.closeJDBCConnection(conn);
-								testDAO = null;
-								editDAO = null;
-								editDAO = null;
 								return 0;
 							}
 						}
 						// delete expression;
 	//					System.out.println("start to delete expression@changeStage!");
 						if (editDAO.deleteExpression(submissionId, componentId, userName) == 0) {
-							DBHelper.closeJDBCConnection(conn);
-							testDAO = null;
-							editDAO = null;
-							editDAO = null;
 							return 0;
 						}
 					} // end of for loop
 				} // end of expression is not null 
 			}
 			
-			DBHelper.closeJDBCConnection(conn);
-			testDAO = null;
-			ishDAO = null;
-			editDAO = null;
 			return 1; // success
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::changeStage failed !!!");
+			return 0; // failed
 		}
-		// release resources
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		ishDAO = null;
-		editDAO = null;
-		return 0; // failed
+		finally{
+			// release resources
+			DBHelper.closeJDBCConnection(conn);
+			testDAO = null;
+			ishDAO = null;
+			editDAO = null;
+		}
 	}
 	
 	/**
@@ -310,9 +293,6 @@ public class AnnotationTestAssembler {
 				}
 			} // end of for loop
 			
-			DBHelper.closeJDBCConnection(conn);
-			annotationTestDAO = null;
-			ishEditDAO = null;
 			// if the counter > 0 return 2
 			// else return 1;
 			// during the modification, if db connection failed, return 0
@@ -324,12 +304,13 @@ public class AnnotationTestAssembler {
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::updatePatterns failed !!!");
+			return 0;
 		}
-		
-		DBHelper.closeJDBCConnection(conn);
-		annotationTestDAO = null;
-		ishEditDAO = null;
-		return 0;
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+			annotationTestDAO = null;
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -416,9 +397,6 @@ public class AnnotationTestAssembler {
 							// delete note
 	//						System.out.println("start to delete expression note@not examined!");
 							if (ishEditDAO.deleteExpressionNotes(submissionId, componentId, userName)== 0) {
-								DBHelper.closeJDBCConnection(conn);
-								testDAO = null;
-								ishEditDAO = null;
 								return 0;
 							}
 						}
@@ -430,18 +408,12 @@ public class AnnotationTestAssembler {
 							testDAO.deleteLocation(submissionId, componentId, userName);
 	//						System.out.println("start to delete pattern@not examined!");
 							if (testDAO.deletePattern(submissionId, componentId, userName) == 0) {
-								DBHelper.closeJDBCConnection(conn);
-								testDAO = null;
-								ishEditDAO = null;
 								return 0;
 							}
 						}
 						// delete expression;
 	//					System.out.println("start to delete expression@not examined!");
 						if (ishEditDAO.deleteExpression(submissionId, componentId, userName) == 0) {
-							DBHelper.closeJDBCConnection(conn);
-							testDAO = null;
-							ishEditDAO = null;
 							return 0;
 						}
 					}
@@ -470,9 +442,6 @@ public class AnnotationTestAssembler {
 							testDAO.checkConflict(compIds[i], componentsWithOpposedExpression, stage, expressionOnPage);
 	//					System.out.println(i + compIds[i] + ":conflictCode: " + conflictCode);
 						if (conflictCode != 0) {
-							DBHelper.closeJDBCConnection(conn);
-							testDAO = null;
-							ishEditDAO = null;
 							return 2;
 						}
 					}
@@ -487,9 +456,6 @@ public class AnnotationTestAssembler {
 									// update strength
 	//								System.out.println("start to update strength@p on page!");
 									if (ishEditDAO.updateExpressionStrengh(submissionId, componentId, 1, strengthOnPage, userName) == 0) {
-										DBHelper.closeJDBCConnection(conn);
-										testDAO = null;
-										ishEditDAO = null;
 										return 0;
 									}
 								}
@@ -497,17 +463,11 @@ public class AnnotationTestAssembler {
 								// update expression
 	//							System.out.println("start to update expression@ne/p on page and nd/u in db");
 								if (ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, expressionOnPage, userName) == 0) {
-									DBHelper.closeJDBCConnection(conn);
-									testDAO = null;
-									ishEditDAO = null;
 									return 0;
 								}
 								// update strength
 	//							System.out.println("start to update strength@ne/u on page and p in db");
 								if (ishEditDAO.updateExpressionStrengh(submissionId, componentId, 1, strengthOnPage, userName) == 0) {
-									DBHelper.closeJDBCConnection(conn);
-									testDAO = null;
-									ishEditDAO = null;
 									return 0;
 								}
 							}
@@ -541,27 +501,18 @@ public class AnnotationTestAssembler {
 	//								System.out.println("start to delete location@ne/u on page and p in db");
 									testDAO.deleteLocation(submissionId, componentId, userName);
 									if (testDAO.deletePattern(submissionId, componentId, userName) == 0) {
-										DBHelper.closeJDBCConnection(conn);
-										testDAO = null;
-										ishEditDAO = null;
 										return 0;
 									}
 								}
 								// update expression
 	//							System.out.println("start to update expression@ne/u on page and p in db");
 								if (ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, expressionOnPage, userName) == 0) {
-									DBHelper.closeJDBCConnection(conn);
-									testDAO = null;
-									ishEditDAO = null;
 									return 0;
 								}
 								// update strength - set to null
 	//							System.out.println("start to update strength@ne/u on page and p in db");
 								if (strengthInDB != null && !strengthInDB.equals("")) {
 									if (ishEditDAO.updateExpressionStrengh(submissionId, componentId, 1, strengthOnPage, userName) == 0) {
-										DBHelper.closeJDBCConnection(conn);
-										testDAO = null;
-										ishEditDAO = null;
 										return 0;
 									}
 								}
@@ -569,9 +520,6 @@ public class AnnotationTestAssembler {
 								// update expression
 	//							System.out.println("start to update expression@ne/u on page and ne/u in db");
 								if (ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, expressionOnPage, userName) == 0) {
-									DBHelper.closeJDBCConnection(conn);
-									testDAO = null;
-									ishEditDAO = null;
 									return 0;
 								}
 							}
@@ -592,9 +540,6 @@ public class AnnotationTestAssembler {
 						// insert expression
 	//					System.out.println("start to insert expression@residue!");
 						if (ishEditDAO.insertExpression(submissionId, componentId, expressionOnPage, strengthOnPage, userName) == 0) {
-							DBHelper.closeJDBCConnection(conn);
-							testDAO = null;
-							ishEditDAO = null;
 							return 0;
 						}
 					}
@@ -605,32 +550,24 @@ public class AnnotationTestAssembler {
 				
 				for (int i=0;i<cLen;i++) {
 					if (ishEditDAO.insertExpression(submissionId, compIds[i], expressionOnPage, strengthOnPage, userName) == 0) {
-						DBHelper.closeJDBCConnection(conn);
-						testDAO = null;
-						ishEditDAO = null;
 						return 0;
 					}
 				}
 			}
-			
-			/** release the db resources */
-			DBHelper.closeJDBCConnection(conn);
-			testDAO = null;
-			ishEditDAO = null;
-			
 			/** success */
 			return 1;
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::updateExpression failed !!!");
+			/** fail */
+			return 0;
 		}
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		ishEditDAO = null;
-		
-		/** fail */
-		return 0;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			testDAO = null;
+			ishEditDAO = null;
+		}
 	} // end of updateExpression
 	
 	/**

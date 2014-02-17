@@ -174,18 +174,18 @@ public final class EditAssemblerUtil {
 			
 			// retrieve data
 			lockingInfo = ishDAO.getLockingInfo(submissionId);
+			/** ---return the value object---  */
+			return lockingInfo;
 		}
 		catch(Exception e){
 			System.out.println("EditAssemblerUtil::getLockingInfo !!!");
-			lockingInfo = null;
+			return null;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		/** ---return the value object---  */
-		return lockingInfo;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 	
 	/**
@@ -206,18 +206,18 @@ public final class EditAssemblerUtil {
 			
 			// lock
 			submissionLocked = ishEditDAO.insertSubmissionLockingInfo(submissionId, userName);
+			// return
+			return submissionLocked;
 		}
 		catch(Exception e){
 			System.out.println("EditAssemblerUtil::lockSubmission !!!");
-			submissionLocked = 0;
+			return 0;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		// return
-		return submissionLocked;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -239,18 +239,18 @@ public final class EditAssemblerUtil {
 			
 			// lock
 			submissionLocked = ishEditDAO.insertSubmissionLockingInfo(submissionId, user.getUserId());
+			// return
+			return submissionLocked;
 		}
 		catch(Exception e){
 			System.out.println("EditAssemblerUtil::lockSubmission !!!");
-			submissionLocked = 0;
+			return 0;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		// return
-		return submissionLocked;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -271,18 +271,18 @@ public final class EditAssemblerUtil {
 			
 			// lock
 			submissionRelocked = ishEditDAO.updateSubmissionLockingInfo(submissionId, userName);
+			// return
+			return submissionRelocked;
 		}
 		catch(Exception e){
 			System.out.println("EditAssemblerUtil::relockSubmission !!!");
-			submissionRelocked = 0;
+			return 0;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		// return
-		return submissionRelocked;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -302,18 +302,18 @@ public final class EditAssemblerUtil {
 			
 			// lock
 			submissionRelocked = ishEditDAO.updateSubmissionLockingInfo(submissionId, user.getUserId());
+			// return
+			return submissionRelocked;
 		}
 		catch(Exception e){
 			System.out.println("EditAssemblerUtil::relockSubmission !!!");
-			submissionRelocked = 0;
+			return 0;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		// return
-		return submissionRelocked;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -332,18 +332,18 @@ public final class EditAssemblerUtil {
 			
 			// lock
 			submissionUnlocked = ishEditDAO.deleteSubmissionLockingInfo(submissionId);
+			// return
+			return submissionUnlocked;
 		}
 		catch(Exception e){
 			System.out.println("EditAssemblerUtil::unlockSubmission !!!");
-			submissionUnlocked = 0;
+			return 0;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		// return
-		return submissionUnlocked;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -363,18 +363,18 @@ public final class EditAssemblerUtil {
 			// lock
 			submissionsUnlocked = ishEditDAO.deleteUserLockingInfo(userName);
 //			System.out.println("submissionsUnlocked: " + submissionsUnlocked);
+
+			return submissionsUnlocked;
 		}
 		catch(Exception e){
 			System.out.println("EditAssemblerUtil::unlockSubmissions !!!");
-			submissionsUnlocked = 0;
+			return 0;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		// return
-		return submissionsUnlocked;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -397,18 +397,18 @@ public final class EditAssemblerUtil {
 			// lock
 			submissionsUnlocked = ishEditDAO.deleteUserLockingInfo(user.getUserId());
 //			System.out.println("submissionsUnlocked: " + submissionsUnlocked);
+
+			return submissionsUnlocked;
 		}
 		catch(Exception e){
 			System.out.println("EditAssemblerUtil::unlockSubmissions !!!");
-			submissionsUnlocked = 0;
+			return 0;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		// return
-		return submissionsUnlocked;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 }

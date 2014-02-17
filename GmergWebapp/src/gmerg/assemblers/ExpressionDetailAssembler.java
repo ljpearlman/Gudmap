@@ -101,18 +101,18 @@ public class ExpressionDetailAssembler {
 					}
 				}
 			}
+			/** ---return the value object---  */
+			return expressionDetail;
 		}
 		catch(Exception e){
 			System.out.println("ExpressionDetailAssembler::getData !!!");
-			expressionDetail = null;
+			return null;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		/** ---return the value object---  */
-		return expressionDetail;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 	
 }

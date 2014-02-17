@@ -82,18 +82,18 @@ public class EditExpressionAssembler {
 //				patterns[0] = pattern;
 //				expressionDetail.setPattern(patterns);
 			}
+			/** ---return the value object---  */
+			return expressionDetail;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getData failed !!!");
-			expressionDetail = null;
+			return null;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		/** ---return the value object---  */
-		return expressionDetail;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	} // getData
 	
 	/**
@@ -166,19 +166,20 @@ public class EditExpressionAssembler {
 					expressionDetail.setPrimaryStrength("");
 					expressionDetail.setAnnotated(false);
 			}
+			/** ---return the value object---  */
+//			System.out.println("editExpressionAssembler:getExpression: " + expressionDetail == null?"not expressed":"expressed");
+			return expressionDetail;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getExpression failed !!!");
-			expressionDetail = null;
+			return null;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		annotationTestDAO = null;
-		/** ---return the value object---  */
-//		System.out.println("editExpressionAssembler:getExpression: " + expressionDetail == null?"not expressed":"expressed");
-		return expressionDetail;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+			annotationTestDAO = null;
+		}
 	} // getExpression
 	
 	/**
@@ -197,18 +198,20 @@ public class EditExpressionAssembler {
 			
 			// retrieve data
 			patterns = ishDAO.findPatternsAndLocations(true, expressionId);
+			/** ---return the value object---  */
+			return patterns;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getPatterns failed !!!");
 			patterns = new ExpressionPattern[0];
+			/** ---return the value object---  */
+			return patterns;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		/** ---return the value object---  */
-		return patterns;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 	
 	/**
@@ -226,18 +229,18 @@ public class EditExpressionAssembler {
 			
 			// retrieve data
 			lockingInfo = ishDAO.getLockingInfo(submissionId);
+			/** ---return the value object---  */
+			return lockingInfo;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getLockingInfo failed !!!");
-			lockingInfo = null;
+			return null;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		/** ---return the value object---  */
-		return lockingInfo;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 	
 	/** editing methods **/
@@ -317,9 +320,6 @@ public class EditExpressionAssembler {
 				if (errorCode != 0) {
 	//				System.out.println("confliction exists#######");
 	//				return false;
-					/** release db resources */
-					DBHelper.closeJDBCConnection(conn);
-					ishEditDAO = null;
 					return errorCode;
 				}
 			}
@@ -328,8 +328,6 @@ public class EditExpressionAssembler {
 			int addedStrengthRecordNumber =
 				ishEditDAO.insertExpression(submissionId, componentId, primaryStrength, secondaryStrength, userName);
 			if (addedStrengthRecordNumber == 0) {
-				DBHelper.closeJDBCConnection(conn);
-				ishEditDAO = null;
 				return 7; // failed to add data into database
 			}
 	
@@ -340,23 +338,22 @@ public class EditExpressionAssembler {
 					this.insertMultiplePatternAndLocation(ishEditDAO, patterns, submissionId, componentId, userName);
 	//			System.out.println("addedPatternRowNumber: " + addedPatternRowNumber);
 				if (addedPatternRowNumber == 0) {
-	//				return false;
-					DBHelper.closeJDBCConnection(conn);
-					ishEditDAO = null;
 					return 7; // failed to insert data into database
 				}
 			}
+			/** return */
+			return 0;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::addAnnotation failed !!!");
+			/** return */
+			return 0;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		/** return */
-		return 0;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	} // end of addAnnotation
 	
 	
@@ -387,8 +384,6 @@ public class EditExpressionAssembler {
 				int deletedPatternNumber = 
 					this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patterns, userName);
 				if (deletedPatternNumber == 0) {
-					DBHelper.closeJDBCConnection(conn);
-					ishEditDAO = null;
 					return false;
 				}
 			}
@@ -396,19 +391,19 @@ public class EditExpressionAssembler {
 			
 			// delete expression
 			deletedExpressionNumber = ishEditDAO.deleteExpression(submissionId, componentId, userName);
+			/** return */
+			if (deletedExpressionNumber == 0) return false;
+			else return true;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::deleteAnnotation failed !!!");
-			deletedExpressionNumber = 0;
+			return false;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		/** return */
-		if (deletedExpressionNumber == 0) return false;
-		else return true;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	} // end of deleteAnnotation
 	
 
@@ -473,9 +468,6 @@ public class EditExpressionAssembler {
 							updatedStrengthRowNumber = ishEditDAO.updateExpressionStrengh(submissionId, 
 									componentId, 1, newSecondaryStrength, userName);
 							if (updatedStrengthRowNumber == 0) {
-	//							 return false;
-								DBHelper.closeJDBCConnection(conn);
-								ishEditDAO = null;
 								return 7; // failed to update database
 							}
 						}
@@ -484,9 +476,6 @@ public class EditExpressionAssembler {
 							updatedStrengthRowNumber = ishEditDAO.updateExpressionStrengh(submissionId, 
 									componentId, 1, "", userName);
 							if (updatedStrengthRowNumber == 0) {
-	//							return false;
-								DBHelper.closeJDBCConnection(conn);
-								ishEditDAO = null;
 								return 7; // failed to update database
 							}
 						}
@@ -501,9 +490,6 @@ public class EditExpressionAssembler {
 							updatedPatternNumber = 
 								this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
 							if (updatedPatternNumber == 0) {
-	//							return false;
-								DBHelper.closeJDBCConnection(conn);
-								ishEditDAO = null;
 								return 7; // failed to update database
 							}
 						}
@@ -516,9 +502,6 @@ public class EditExpressionAssembler {
 							updatedPatternNumber = 
 								this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
 							if (updatedPatternNumber == 0){
-	//							return false;
-								DBHelper.closeJDBCConnection(conn);
-								ishEditDAO = null;
 								return 7; // failed to update database
 							}
 							
@@ -546,9 +529,6 @@ public class EditExpressionAssembler {
 													updatedPatternNumber = 
 														ishEditDAO.updateLocation(patternInDB[i].getPatternId(), patternInDB[i].getLocationId(), lp, userName);
 													if (updatedPatternNumber == 0) {
-	//													return false;
-														DBHelper.closeJDBCConnection(conn);
-														ishEditDAO = null;
 														return 7; // failed to update database
 													}
 												}
@@ -557,9 +537,6 @@ public class EditExpressionAssembler {
 	//											System.out.println("delete location");
 												updatedPatternNumber =  ishEditDAO.deleteLocation(patternInDB[i].getLocationId(), userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 											}
@@ -568,9 +545,6 @@ public class EditExpressionAssembler {
 												updatedPatternNumber = 
 													ishEditDAO.insertLocation(submissionId, componentId, patternInDB[i].getPattern(), lp, userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 											}
@@ -582,18 +556,12 @@ public class EditExpressionAssembler {
 									updatedPatternNumber = 
 										this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
 									if (updatedPatternNumber == 0) {
-	//									return false;
-										DBHelper.closeJDBCConnection(conn);
-										ishEditDAO = null;
 										return 7; // failed to update database
 									}
 									// insert
 									updatedPatternNumber = 
 										this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
 									if (updatedPatternNumber == 0) {
-	//									return false;
-										DBHelper.closeJDBCConnection(conn);
-										ishEditDAO = null;
 										return 7; // failed to update database
 									}
 								}
@@ -620,9 +588,6 @@ public class EditExpressionAssembler {
 													updatedPatternNumber = 
 														ishEditDAO.updateLocation(pid, lid, lp, userName);
 													if (updatedPatternNumber == 0) {
-	//													return false;
-														DBHelper.closeJDBCConnection(conn);
-														ishEditDAO = null;
 														return 7; // failed to update database
 													}
 												}
@@ -630,9 +595,6 @@ public class EditExpressionAssembler {
 												// delete location
 												updatedPatternNumber =  ishEditDAO.deleteLocation(lid, userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 											}
@@ -642,9 +604,6 @@ public class EditExpressionAssembler {
 												updatedPatternNumber = 
 													ishEditDAO.insertLocation(submissionId, componentId, patternInDB[i].getPattern(), lp, userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 											}
@@ -658,9 +617,6 @@ public class EditExpressionAssembler {
 											if (patternInDB[i].getLocations() != null) {
 												updatedPatternNumber = ishEditDAO.deleteLocation(patternInDB[i].getLocationId(), userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 											}
@@ -670,9 +626,6 @@ public class EditExpressionAssembler {
 												updatedPatternNumber = 
 													ishEditDAO.deleteLocationByPattern(submissionId, componentId, patternInDB[i].getPattern(), userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 											}
@@ -681,9 +634,6 @@ public class EditExpressionAssembler {
 											updatedPatternNumber =
 												ishEditDAO.deletePatternById(patternInDB[i].getPatternId(), userName);
 											if (updatedPatternNumber == 0) {
-	//											return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
 												return 7; // failed to update database
 											}
 										}
@@ -694,18 +644,12 @@ public class EditExpressionAssembler {
 									updatedPatternNumber = 
 										this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
 									if (updatedPatternNumber == 0) {
-	//									return false;
-										DBHelper.closeJDBCConnection(conn);
-										ishEditDAO = null;
 										return 7; // failed to update database
 									}
 									// insert
 									updatedPatternNumber = 
 										this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
 									if (updatedPatternNumber == 0) {
-	//									return false;
-										DBHelper.closeJDBCConnection(conn);
-										ishEditDAO = null;
 										return 7; // failed to update database
 									}
 								}
@@ -733,9 +677,6 @@ public class EditExpressionAssembler {
 													updatedPatternNumber = 
 														ishEditDAO.updateLocation(pid, lid, lp, userName);
 													if (updatedPatternNumber == 0) {
-	//													return false;
-														DBHelper.closeJDBCConnection(conn);
-														ishEditDAO = null;
 														return 7; // failed to update database
 													}
 												}
@@ -743,9 +684,6 @@ public class EditExpressionAssembler {
 												// delete location from database
 												updatedPatternNumber =  ishEditDAO.deleteLocation(lid, userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 											}
@@ -755,9 +693,6 @@ public class EditExpressionAssembler {
 												updatedPatternNumber = 
 													ishEditDAO.insertLocation(submissionId, componentId, patternInDB[i].getPattern(), lp, userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 											}
@@ -790,9 +725,6 @@ public class EditExpressionAssembler {
 													ishEditDAO.insertLocation(submissionId, componentId, pattern, location,
 															userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 												String[] patternAndLocation = new String[2];
@@ -807,9 +739,6 @@ public class EditExpressionAssembler {
 												ishEditDAO.insertPattern(submissionId, componentId,
 														pattern, userName);
 											if (updatedPatternNumber == 0) {
-	//											return false;
-												DBHelper.closeJDBCConnection(conn);
-												ishEditDAO = null;
 												return 7; // failed to update database
 											}
 											// location
@@ -818,9 +747,6 @@ public class EditExpressionAssembler {
 													ishEditDAO.insertLocation(submissionId, componentId,
 															pattern, location, userName);
 												if (updatedPatternNumber == 0) {
-	//												return false;
-													DBHelper.closeJDBCConnection(conn);
-													ishEditDAO = null;
 													return 7; // failed to update database
 												}
 												String[] patternAndLocation = new String[2];
@@ -836,18 +762,12 @@ public class EditExpressionAssembler {
 									updatedPatternNumber = 
 										this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
 									if (updatedPatternNumber == 0) {
-	//									return false;
-										DBHelper.closeJDBCConnection(conn);
-										ishEditDAO = null;
 										return 7; // failed to update database
 									}
 									// insert
 									updatedPatternNumber = 
 										this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
 									if (updatedPatternNumber == 0) {
-	//									return false;
-										DBHelper.closeJDBCConnection(conn);
-										ishEditDAO = null;
 										return 7; // failed to update database
 									}
 								}
@@ -860,9 +780,6 @@ public class EditExpressionAssembler {
 					errorCode = ishEditDAO.existConflict(submissionId, stage, componentId, newPrimaryStrength);
 					if (errorCode != 0) { // confliction exists, updating denied
 						// for time being only deny updating. in the future could return more informative info###########
-	//					return false;
-						DBHelper.closeJDBCConnection(conn);
-						ishEditDAO = null;
 						return errorCode;
 					} else { // there's no confliction
 	
@@ -870,9 +787,6 @@ public class EditExpressionAssembler {
 						updatedStrengthRowNumber =
 							ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, newPrimaryStrength, userName);
 						if (updatedStrengthRowNumber == 0) {
-	//						return false;
-							DBHelper.closeJDBCConnection(conn);
-							ishEditDAO = null;
 							return 7; // failed to update database
 						}
 						
@@ -880,9 +794,6 @@ public class EditExpressionAssembler {
 						updatedStrengthRowNumber =
 							ishEditDAO.updateExpressionStrengh(submissionId, componentId, 1, "", userName);
 						if (updatedStrengthRowNumber == 0) {
-	//						return false;
-							DBHelper.closeJDBCConnection(conn);
-							ishEditDAO = null;
 							return 7; // failed to update database
 						}
 						
@@ -893,9 +804,6 @@ public class EditExpressionAssembler {
 							updatedPatternNumber = 
 								this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
 							if (updatedPatternNumber == 0) {
-	//							return false;
-								DBHelper.closeJDBCConnection(conn);
-								ishEditDAO = null;
 								return 7; // failed to update database
 							}
 						}
@@ -908,18 +816,12 @@ public class EditExpressionAssembler {
 					errorCode = ishEditDAO.existConflict(submissionId, stage, componentId, newPrimaryStrength);
 					if (errorCode != 0) { // confliction exists, updating denied
 						// for time being only deny updating. in the future could return more informative info###########
-	//					return false;
-						DBHelper.closeJDBCConnection(conn);
-						ishEditDAO = null;
 						return errorCode;
 					} else { // there's no confliction
 						// update primary strength
 						updatedStrengthRowNumber =
 							ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, newPrimaryStrength, userName);
 						if (updatedStrengthRowNumber == 0) {
-	//						return false;
-							DBHelper.closeJDBCConnection(conn);
-							ishEditDAO = null;
 							return 7; // failed to update database
 						}
 						
@@ -928,9 +830,6 @@ public class EditExpressionAssembler {
 							updatedStrengthRowNumber =
 								ishEditDAO.updateExpressionStrengh(submissionId, componentId, 1, newSecondaryStrength, userName);
 							if (updatedStrengthRowNumber == 0) {
-	//							return false;
-								DBHelper.closeJDBCConnection(conn);
-								ishEditDAO = null;
 								return 7; // failed to update database
 							}
 						}
@@ -942,9 +841,6 @@ public class EditExpressionAssembler {
 							updatedPatternNumber = 
 								this.insertMultiplePatternAndLocation(ishEditDAO, patternOnPage, submissionId, componentId, userName);
 							if (updatedPatternNumber == 0) {
-	//							return false;
-								DBHelper.closeJDBCConnection(conn);
-								ishEditDAO = null;
 								return 7; // failed to update database
 							}
 						}
@@ -954,24 +850,23 @@ public class EditExpressionAssembler {
 					updatedStrengthRowNumber =
 						ishEditDAO.updateExpressionStrengh(submissionId, componentId, 0, newPrimaryStrength, userName);
 					if (updatedStrengthRowNumber == 0) {
-	//					return false;
-						DBHelper.closeJDBCConnection(conn);
-						ishEditDAO = null;
 						return 7; // failed to update database
 					}
 				}
 			}
+			/** return */
+			return 0;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::updateAnnotation failed !!!");
+			/** return */
+			return 0;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		/** return */
-		return 0;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	} // end of updateAnnotation
 	
 	/**
@@ -1215,21 +1110,21 @@ public class EditExpressionAssembler {
 			
 			/** add & log */
 			addedRowNumber =  ishEditDAO.addExpressionNote(submissionId, componentId, note, 1, userName);
+			/** return */
+			if (addedRowNumber == 0) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::addNote failed !!!");
-			addedRowNumber = 0;
-		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		/** return */
-		if (addedRowNumber == 0) {
 			return false;
-		} else {
-			return true;
+		}
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
 		}
 	}
 	
@@ -1250,21 +1145,21 @@ public class EditExpressionAssembler {
 			
 			/** delete & log */
 			deletedRowNumber = ishEditDAO.deleteExpressionNotes(submissionId, componentId, userName);
+			/** return */
+			if (deletedRowNumber == 0) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::deleteNote failed !!!");
-			deletedRowNumber = 0;
-		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		/** return */
-		if (deletedRowNumber == 0) {
 			return false;
-		} else {
-			return true;
+		}
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
 		}
 	}
 	
@@ -1287,20 +1182,21 @@ public class EditExpressionAssembler {
 			
 			/** update & log */
 			updatedRowNumber = ishEditDAO.updateExpressionNotes(submissionId, componentId, notesOnpage, userName);			
+			/** return */
+			if (updatedRowNumber == 0) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::updateNote failed !!!");
-			updatedRowNumber = 0;
-		}
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-
-		/** return */
-		if (updatedRowNumber == 0) {
 			return false;
-		} else {
-			return true;
+		}
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
 		}
 	}
 	
@@ -1315,17 +1211,17 @@ public class EditExpressionAssembler {
 			
 			/** update & log */
 			result = ishEditDAO.signOffAnnotation(submissionId, status);
+			return result;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::signOffAnnotation failed !!!");
-			result = false;
+			return false;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		return result;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	public boolean signOffOrEditAnnotation(String submissionId, String oldStatus, String newStatus) {
@@ -1339,17 +1235,17 @@ public class EditExpressionAssembler {
 			
 			/** update & log */
 			result = ishEditDAO.signOffAnnotation(submissionId, oldStatus, newStatus);
+			return result;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::signOffOrEditAnnotation failed !!!");
-			result = false;
+			return false;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		return result;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	public boolean setPublicSubmission(String submissionId, String status) {
@@ -1363,17 +1259,17 @@ public class EditExpressionAssembler {
 			
 			/** update & log */
 			result = ishEditDAO.setPublicSubmission(submissionId, status);
+			return result;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::setPublicSubmission failed !!!");
-			result = false;
+			return false;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		return result;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	public boolean signOffAnnotationAndSetPublicSubmission(String submissionId, String dbstatus, String substatus) {
@@ -1387,17 +1283,17 @@ public class EditExpressionAssembler {
 			
 			/** update & log */
 			result = ishEditDAO.signOffAnnotationAndSetPublicSubmission(submissionId, dbstatus, substatus);
+			return result;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::signOffAnnotationAndSetPublicSubmission failed !!!");
-			result = false;
+			return false;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		return result;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -1416,17 +1312,18 @@ public class EditExpressionAssembler {
 			
 			/** update & log */
 			result = ishEditDAO.getPIBySubID(submissionId);
+			return result;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getPIBySubID failed !!!");
 			result = new ArrayList();
+			return result;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		return result;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -1444,18 +1341,20 @@ public class EditExpressionAssembler {
 			
 			// get data
 			patternList = ishDAO.getPatternList();
+			// return
+			return patternList;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getPatternList failed !!!");
 			patternList = new ArrayList();
+			// return
+			return patternList;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-
-		// return
-		return patternList;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 	
 	/**
@@ -1472,18 +1371,20 @@ public class EditExpressionAssembler {
 			
 			// get data
 			locationList = ishDAO.getLocationList();
+			// return
+			return locationList;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getLocationList failed !!!");
 			locationList = new ArrayList();
+			// return
+			return locationList;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-
-		// return
-		return locationList;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 	
 	/**
@@ -1502,18 +1403,20 @@ public class EditExpressionAssembler {
 			
 			// get data
 			componentListAtTheStage = ishDAO.getComponentListAtGivenStage(stage);
+			// return
+			return componentListAtTheStage;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getComponentListAtTheStage failed !!!");
 			componentListAtTheStage = new ArrayList();
+			// return
+			return componentListAtTheStage;
 		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-
-		// return
-		return componentListAtTheStage;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 		
 }

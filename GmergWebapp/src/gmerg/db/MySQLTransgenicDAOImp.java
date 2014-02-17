@@ -82,13 +82,16 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         	prepStmt = conn.prepareStatement(queryString);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
+            return result;
 
-            // release db resource
-            DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return result;
         }
-        return result;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
 
     /**
@@ -303,13 +306,15 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 				    System.out.println("MySQLTransgenicDAOImp.result["+i+"] = "+result[i][1]);
 
     		}
-    		// close the connection
-    		DBHelper.closePreparedStatement(prepStmt);
-//			DBUtil.closeJDBCConnection(conn);
+        	return result;
     	} catch (SQLException se) {
     		se.printStackTrace();
+        	return result;
     	}
-    	return result;
+    	finally{
+    		DBHelper.closePreparedStatement(prepStmt);
+    		DBHelper.closeResultSet(resSet);    		
+    	}
     }
     
     /**
@@ -459,12 +464,17 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
             if (resSet.first()) {
                 totalNumber = resSet.getInt(1);
             }
-            DBHelper.closePreparedStatement(prepStmt);
-
+     		return totalNumber;
+     		
         } catch (SQLException se) {
             se.printStackTrace();
+     		return totalNumber;
         }
- 		return totalNumber;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+
+        }
     }    
    
 }

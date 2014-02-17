@@ -26,16 +26,17 @@ public class TrackingIPAssembler {
 		
 			// get data
 			result = ipDAO.updateIPLog(ip, viewid, browser, platform);
+			/** ---return the composite value object---  */
+			return result;
 		} 
 		catch(Exception e){
 			System.out.println("TrackingIPAssembler::updateIPLog failed !!!");
-			result = false;
+			return false;
 		}
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ipDAO = null;
-		
-		/** ---return the composite value object---  */
-		return result;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ipDAO = null;
+		}
 	}
 }

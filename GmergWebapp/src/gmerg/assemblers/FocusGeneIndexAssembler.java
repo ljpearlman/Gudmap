@@ -24,17 +24,17 @@ public class FocusGeneIndexAssembler {
 			
 			// get data from database
 			browseSeries = focusStageDAO.getGeneIndex(prefix, organ);
+			// return the value object
+			return browseSeries;
 		}
 		catch(Exception e){
 			System.out.println("FocusGeneIndexAssembler::getGeneIndex !!!");
-			browseSeries = null;
+			return null;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		focusStageDAO = null;
-		
-		// return the value object
-		return browseSeries;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			focusStageDAO = null;
+		}
 	}
 }

@@ -56,17 +56,20 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
             collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 	        // get data from database
 	        collectionData = collectionDAO.getCollections(userId, collectionType, status, column, ascending, offset, num);
+	        /** ---return the value object---  */
+	        return getTableDataFormatFromIshList(collectionData);
         }
 		catch(Exception e){
 			System.out.println("CollectionListAssembler::retrieveData failed !!!");
 			collectionData = new ArrayList();
+	        /** ---return the value object---  */
+	        return getTableDataFormatFromIshList(collectionData);
 		}
-
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        collectionDAO = null;
-        /** ---return the value object---  */
-        return getTableDataFormatFromIshList(collectionData);
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        collectionDAO = null;
+        }
     }
    
     public int retrieveNumberOfRows() {
@@ -78,16 +81,17 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
             collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 	        // get data from database
 	        totalNumber = collectionDAO.getTotalNumberOfCollections(userId, collectionType, status);
+	        return totalNumber;
         }
 		catch(Exception e){
 			System.out.println("CollectionListAssembler::retrieveNumberOfRows failed !!!");
-			totalNumber = 0;
+			return 0;
 		}
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        collectionDAO = null;
-
-        return totalNumber;
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        collectionDAO = null;
+        }
     }
 
 	public HeaderItem[] createHeader() {

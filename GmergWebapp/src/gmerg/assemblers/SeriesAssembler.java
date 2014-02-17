@@ -85,27 +85,33 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
             	seriesSamples = arrayDevDAO.getSamplesBySeriesOid(seriesId, columnIndex, ascending, offset, num);
             
             
-        }
+            // return the value object
+            DataItem[][] ret = getTableDataFormatFromSampleList(seriesSamples);
+
+    		if (null == cache)
+    		    cache = new RetrieveDataCache();
+    		cache.setData(ret);
+    		cache.setColumn(columnIndex);
+    		cache.setAscending(ascending);
+    		cache.setOffset(offset);
+    		cache.setNum(num);
+
+    	    return ret;
+       }
 		catch(Exception e){
 			System.out.println("SeriesAssembler::retrieveData failed !!!");
 			seriesSamples = null;
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDevDAO = null;
-		
-        // return the value object
-        DataItem[][] ret = getTableDataFormatFromSampleList(seriesSamples);
+			
+	        // return the value object
+	        DataItem[][] ret = getTableDataFormatFromSampleList(seriesSamples);
 
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(columnIndex);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-
-	    return ret;
+		    return ret;
+		}
+        finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDevDAO = null;
+        }
     }
     
     public int retrieveNumberOfRows() {
@@ -148,17 +154,20 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 	        for (int i = 0; i < len; i++) {
 	            totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
 	        }
+	        
+	        // return result
+	        return totalNumbers;
         }
 		catch(Exception e){
 			System.out.println("SeriesAssembler::retrieveTotals failed !!!");
 			totalNumbers = new int[0];
-		}		
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        arrayDevDAO = null;
-
-        // return result
-        return totalNumbers;
+	        return totalNumbers;
+		}	
+        finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        arrayDevDAO = null;
+        }
     }
 
     public HeaderItem [] createHeader() {
@@ -211,18 +220,18 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 			if (relatedSamples != null && relatedSamples.size() > 0) {
 				series.setSummaryResults(samples);
 			}
+			/** ---return the composite value object---  */
+			return series;
 		}
 		catch(Exception e){
 			System.out.println("SeriesAssembler::retrieveTotals failed !!!");
-			series = null;
+			return null;
 		}		
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the composite value object---  */
-		return series;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 	
 	/**
@@ -271,18 +280,19 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 	            	series = arrayDevDAO.findSeriesById(seriesId);
 	            else
 	            	series = arrayDevDAO.findSeriesByOid(seriesId);
+
+	            /** ---return the composite value object---  */
+	            return series;
             }
     		catch(Exception e){
     			System.out.println("SeriesAssembler::getSeriesMetaData failed !!!");
-    			series = null;
+    			return null;
     		}		
-            
-            // release db resources
-            DBHelper.closeJDBCConnection(conn);
-            arrayDevDAO = null;
-            
-            /** ---return the composite value object---  */
-            return series;
+            finally{
+	            // release db resources
+	            DBHelper.closeJDBCConnection(conn);
+	            arrayDevDAO = null;
+            }
         }
 
 

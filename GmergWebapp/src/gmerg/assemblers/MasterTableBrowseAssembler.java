@@ -105,33 +105,39 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 			expressions = arrayDAO.getExpressionByGivenProbeSetIds(onePageIds, masterTableId, genelistId);
 	
 			annotations = genelistDAO.getAnnotationByProbeSetIds(onePageIds);
+			
+	        if (debug) 
+	        	System.out.println("MasterTableBrowseAssembler.retrieveData  expression = "+expressions+" annotations = "+annotations);
+
+			// return value
+			DataItem[][] ret = getTableDataFormatFromMastertableData(onePageIds, expressions ,annotations);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(columnId);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("MasterTableBrowseAssembler::retrieveData failed !!!");
 			onePageIds = null;
 			expressions = null;
 			annotations = null;
+
+			DataItem[][] ret = getTableDataFormatFromMastertableData(onePageIds, expressions ,annotations);
+
+			return ret;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-        arrayDAO = null;
-        genelistDAO = null;
-        
-        if (debug) 
-        	System.out.println("MasterTableBrowseAssembler.retrieveData  expression = "+expressions+" annotations = "+annotations);
-
-		// return value
-		DataItem[][] ret = getTableDataFormatFromMastertableData(onePageIds, expressions ,annotations);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(columnId);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-
-		return ret;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+	        arrayDAO = null;
+	        genelistDAO = null;
+		}
 
 	}
 	

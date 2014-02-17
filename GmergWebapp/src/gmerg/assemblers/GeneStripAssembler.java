@@ -235,23 +235,26 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	//			String geneSetNumber = "0";
 				data[i][8] = new DataItem("Genesets(n)");
 			}
+			
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(data);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);	
+
+			return data;
 		}
 		catch(Exception e){
 			System.out.println("GeneStripAssembler::retrieveData !!!");
 			data = new DataItem[0][0];
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(data);
-		cache.setColumn(column);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);	
-
-		return data;
+			return data;
+		}	
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+		}
 	}
 	
 	public HeaderItem[] createHeader()	{
@@ -745,6 +748,8 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				// put calculation result into expression profile array
 				expressionProfiles[i] = indicator*barHeight;
 			}
+			/** return result */
+			return expressionProfiles;
 		
 		/** calculate expression profile for other structures */
 		//////// comment the code for time being - in case they will be used in future
@@ -752,14 +757,14 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		catch(Exception e){
 			System.out.println("GeneStripAssembler::getExpressionProfile !!!");
 			expressionProfiles = new double[0];
+			/** return result */
+			return expressionProfiles;
 		}		
-    
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		geneStripDAO = null;
-
-		/** return result */
-		return expressionProfiles;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			geneStripDAO = null;
+		}
 	} // end of getExpressionProfile
 	
 	/**

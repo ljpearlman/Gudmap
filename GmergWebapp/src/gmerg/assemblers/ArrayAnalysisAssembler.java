@@ -38,18 +38,18 @@ public class ArrayAnalysisAssembler {
 			 arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			// get data
 			sampleIds = arrayDAO.findSampleIdsBySeriesId(seriesGEOId);
+			/** ---return the value object---  */
+			return sampleIds;
 		}
 		catch(Exception e){
 			System.out.println("ArrayAnalysisAssembler::retrieveSampleIds failed !!!");
-			sampleIds = null;
+			return null;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the value object---  */
-		return sampleIds;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 	
 	/**
@@ -67,17 +67,18 @@ public class ArrayAnalysisAssembler {
 			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 	        // get data
 			analysisDataSet = arrayDAO.getAnalysisDataSetBySampleIds(samplesInfo);
+			/** ---return the value object---  */
+			return analysisDataSet;
 		}
 		catch(Exception e){
 			System.out.println("ArrayAnalysisAssembler::retrieveExpressionData failed !!!");
-			analysisDataSet = null;
+			return null;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the value object---  */
-		return analysisDataSet;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 	
 	/**
@@ -94,18 +95,20 @@ public class ArrayAnalysisAssembler {
 			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			// get data
 			seriesGEOIds = arrayDAO.getAllSeriesGEOIds();
+			/** ---return the value object---  */
+			return seriesGEOIds;
 		}
 		catch(Exception e){
 			System.out.println("ArrayAnalysisAssembler::getSeriesGEOIds failed !!!");
 			seriesGEOIds = new ArrayList();
+			/** ---return the value object---  */
+			return seriesGEOIds;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the value object---  */
-		return seriesGEOIds;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
 	}
 
 }

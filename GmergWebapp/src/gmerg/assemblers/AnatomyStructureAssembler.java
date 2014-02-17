@@ -40,17 +40,22 @@ public class AnatomyStructureAssembler {
 			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
 			// get data
 			stageRanges = anatomyDAO.getTheilerStageRanges();
+			
+			/** ---return the composite value object---  */
+			return stageRanges;
 		}
 		catch(Exception e){
 			System.out.println("AnatomyStructureAssembler::getStageRanges failed !!!");
 			stageRanges = null;
+			
+			/** ---return the composite value object---  */
+			return stageRanges;
 		}
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		anatomyDAO = null;
-		
-		/** ---return the composite value object---  */
-		return stageRanges;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			anatomyDAO = null;
+		}
 	}
 	
 	public String getComponentNameFromId(String id){
@@ -65,17 +70,20 @@ public class AnatomyStructureAssembler {
 			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
 			// get data
 			componentName = anatomyDAO.getAnatomyTermFromPublicId(id);
+			/** ---return the composite value object---  */
+			return componentName;
 		}
 		catch(Exception e){
 			System.out.println("AnatomyStructureAssembler::getComponentNameFromId failed !!!");
 			componentName = null;				
+			/** ---return the composite value object---  */
+			return componentName;
 		}
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		anatomyDAO = null;
-		
-		/** ---return the composite value object---  */
-		return componentName;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			anatomyDAO = null;
+		}
 	}
 	
 	public String getOntologyTerms() {
@@ -90,18 +98,20 @@ public class AnatomyStructureAssembler {
 			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
 			// get data
 			ontologyTerms = anatomyDAO.getOnlogyTerms();
+			/** ---return the composite value object---  */
+			return ontologyTerms;
 		}
 		catch(Exception e){
 			System.out.println("AnatomyStructureAssembler::getOntologyTerms failed !!!");
 			ontologyTerms = null;				
+			/** ---return the composite value object---  */
+			return ontologyTerms;
 		}
-		
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		anatomyDAO = null;
-		
-		/** ---return the composite value object---  */
-		return ontologyTerms;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			anatomyDAO = null;
+		}
 	}
 	
 	/**
@@ -132,18 +142,20 @@ public class AnatomyStructureAssembler {
 			if (startStageSequence == -1 || endStageSequence == -1 || startStageSequence > endStageSequence) {
 				isValid = false;
 			}
+			/** ---return the composite value object---  */
+			return isValid;
 		}
 		catch(Exception e){
 			System.out.println("AnatomyStructureAssembler::stageRangesAreValid failed !!!");
 			isValid = false;				
+			/** ---return the composite value object---  */
+			return isValid;
 		}
-
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		anatomyDAO = null;
-		
-		/** ---return the composite value object---  */
-		return isValid;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			anatomyDAO = null;
+		}
 	}
 	
 	/**
@@ -168,18 +180,20 @@ public class AnatomyStructureAssembler {
 			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
 			// get data
 			anatomyTree = anatomyDAO.getAnatomyTreeByStages(startStage, endStage, isForBooleanQ);
+			/** ---return the composite value object---  */
+			return anatomyTree;
 		}
 		catch(Exception e){
 			System.out.println("AnatomyStructureAssembler::buildTree failed !!!");
 			anatomyTree = null;				
+			/** ---return the composite value object---  */
+			return anatomyTree;
 		}
-		
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		anatomyDAO = null;
-		
-		/** ---return the composite value object---  */
-		return anatomyTree;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			anatomyDAO = null;
+		}
 	}
 	
 	/**
@@ -232,19 +246,22 @@ public class AnatomyStructureAssembler {
 					anatomyDAO.getAnnotatedSubmissionByPublicIdAndStage(publicIds, startStage, endStage, expressionState,
 							order, offset, num);
 			}
+			/** ---return the composite value object---  */
+//			System.out.println("got the value!!!!!!!");
+			return annotatedSubmissions;
 		}
 		catch(Exception e){
 			System.out.println("AnatomyStructureAssembler::getISHBrowseSubmission failed !!!");
 			annotatedSubmissions = null;				
+			/** ---return the composite value object---  */
+//			System.out.println("got the value!!!!!!!");
+			return annotatedSubmissions;
 		}
-
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		anatomyDAO = null;
-		
-		/** ---return the composite value object---  */
-//		System.out.println("got the value!!!!!!!");
-		return annotatedSubmissions;
+		finally{
+			/** release the db resources */
+			DBHelper.closeJDBCConnection(conn);
+			anatomyDAO = null;
+		}
 	}
 
 }

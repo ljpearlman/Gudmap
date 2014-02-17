@@ -61,17 +61,17 @@ public class MaProbeAssembler {
 					}
 			    }
 			}
+			return probe;
 		}
 		catch(Exception e){
 			System.out.println("MaProbeAssembler::getData failed !!!");
-			probe = null;
+			return null;
 		}
-		
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-
-		return probe;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 
 }

@@ -76,27 +76,32 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 			
 			viewableSubmissions = ishDevDAO.getCollectionSubmissionBySubmissionId(userPrivilege, 0, subIds, columnIndex, ascending, offset, num);
 //			System.out.println("EntriesCollectionBrowseAssembler:retrieveData:entries: " + viewableSubmissions);
+			/** ---return the value object--- */
+			DataItem[][] ret = getTableDataFormatFromCollectionList(viewableSubmissions);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(columnIndex);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("EntriesCollectionBrowseAssembler::retrieveData !!!");
 			viewableSubmissions = null;
+			/** ---return the value object--- */
+			DataItem[][] ret = getTableDataFormatFromCollectionList(viewableSubmissions);
+
+			return ret;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDevDAO = null;
-		
-		/** ---return the value object--- */
-		DataItem[][] ret = getTableDataFormatFromCollectionList(viewableSubmissions);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(columnIndex);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-
-		return ret;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+		}
 	}
 	
 	//Note: this is exceptionally overwrites the super class method; because multiple rows can be displayed for the same entry ID (due to different tissue types)
@@ -201,18 +206,22 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 			
 			for (int i = 0; i < len; i++) 
 				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
+			
+			// return result
+			return totalNumbers;
 		}
 		catch(Exception e){
 			System.out.println("EntriesCollectionBrowseAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
+			// return result
+			return totalNumbers;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDevDAO = null;
-		ishDAO = null;
-
-		// return result
-		return totalNumbers;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+			ishDAO = null;
+		}
 	}
 	
 	public HeaderItem[] createHeader()	{

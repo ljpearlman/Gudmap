@@ -24,19 +24,19 @@ public class SecurityAssembler {
         SecurityDAO securityDAO;
         User user = null;
         try{
-	        securityDAO = MySQLDAOFactory.getSecurityDAO(conn);
-	        
+	        securityDAO = MySQLDAOFactory.getSecurityDAO(conn);	        
 	        user = securityDAO.getUserWithUsernameAndPassword(username, password);
+	        return user;
         }
 		catch(Exception e){
 			System.out.println("SeriesBrowseAssembler::retrieveNumberOfRows failed !!!");
-			user = null;
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		securityDAO = null;
-		
-        return user;
+			return null;
+		}
+        finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			securityDAO = null;
+        }
         
     }
     

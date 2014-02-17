@@ -52,30 +52,34 @@ public class PlatformBrowseAssembler extends OffMemoryTableAssembler{
 			
 			// get data from database
 			platformsList = focusForAllDAO.getPlatformList(columnIndex, ascending, offset, num, organ);
+//			System.out.println("ser num: " + ((String[])platformsList.get(0))[4]);
+//			System.out.println("ser num: " + ((String[])platformsList.get(1))[4]);
+//			System.out.println("ser num: " + ((String[])platformsList.get(2))[4]);
+			// return the value object
+			DataItem[][] ret = getTableDataFormatFromPlatformsList(platformsList);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(columnIndex);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);	
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("PlatformBrowseAssembler::retrieveData failed !!!");
 			platformsList = null;
+			DataItem[][] ret = getTableDataFormatFromPlatformsList(platformsList);
+
+			return ret;
 		}
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		focusForAllDAO = null;
-//		System.out.println("ser num: " + ((String[])platformsList.get(0))[4]);
-//		System.out.println("ser num: " + ((String[])platformsList.get(1))[4]);
-//		System.out.println("ser num: " + ((String[])platformsList.get(2))[4]);
-		// return the value object
-		DataItem[][] ret = getTableDataFormatFromPlatformsList(platformsList);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(columnIndex);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);	
-
-		return ret;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			focusForAllDAO = null;
+		}
 	}
 	
 	public int retrieveNumberOfRows() {
@@ -89,18 +93,18 @@ public class PlatformBrowseAssembler extends OffMemoryTableAssembler{
 			
 			// get data from database
 			numberOfPlatforms = focusForAllDAO.getNumberOfPlatform(organ);
+			// return the value object
+			return numberOfPlatforms;
 		}
 		catch(Exception e){
 			System.out.println("PlatformBrowseAssembler::retrieveNumberOfRows failed !!!");
-			numberOfPlatforms = 0;
+			return 0;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		focusForAllDAO = null;
-		
-		// return the value object
-		return numberOfPlatforms;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			focusForAllDAO = null;
+		}
 	}
 	
 	public HeaderItem[] createHeader()	{

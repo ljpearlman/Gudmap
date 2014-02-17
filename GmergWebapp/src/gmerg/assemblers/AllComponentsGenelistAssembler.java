@@ -76,23 +76,33 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 	                data[i][6] = null;
 	    		}
 	    	}
+	    	
+	    	DataItem[][] dataItems = getTableDataFormatFromListOfgenelists(data);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(dataItems);	
+			
+			return dataItems;
+    	
 		} catch(Exception e){
 			System.out.println("AllComponentsGenelistAssembler::retrieveData failed !!!");
 			data = null;
+			
+			/** ---return the composite value object---  */
+	    	DataItem[][] dataItems = getTableDataFormatFromListOfgenelists(data);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(dataItems);	
+
+			return dataItems;
 		}
-    	
-    	// release db resources
-    	DBHelper.closeJDBCConnection(conn);
-    	genelistDAO = null;
-    	
-		/** ---return the composite value object---  */
-    	DataItem[][] dataItems = getTableDataFormatFromListOfgenelists(data);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(dataItems);
-
-		return dataItems;
+    	finally{
+	    	// release db resources
+	    	DBHelper.closeJDBCConnection(conn);
+	    	genelistDAO = null;
+    	}	
 	}
     
     public ArrayList getProbeSetIdsByGenelistId(String genelistId) {
@@ -105,18 +115,20 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 		try{
 	
 	        // get data from database
+			// return value
+	    	return probeSetIds;
 					
 		}
 		catch(Exception e){
 			System.out.println("AllComponentsGenelistAssembler::getProbeSetIdsByGenelistId failed !!!");
-		}		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-
-		// return value
-    	return probeSetIds;
-		
+			// return value
+	    	return probeSetIds;
+		}	
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			arrayDAO = null;
+		}
     }
     
 	/********************************************************************************
@@ -203,17 +215,22 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
 			// get data
 			allGenelists = genelistDAO.getAllAnalysisGenelistsWithFolderIds();
+			
+			// return value
+			return allGenelists;
 		}
 		catch(Exception e){
 			System.out.println("AllComponentsGenelistAssembler::retrieveAllAnalysisGenelists !!!");
 			allGenelists = new ArrayList<GenelistInfo>();
+			
+			// return value
+			return allGenelists;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		genelistDAO = null;
-		
-		// return value
-		return allGenelists;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			genelistDAO = null;
+		}
 	}
 	
 	/**
@@ -231,17 +248,20 @@ public class AllComponentsGenelistAssembler extends InMemoryTableAssembler{
 			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
 			// get data
 			allGenelists = genelistDAO.retrieveClustersForGenelist(genelistId);
+			// return value
+			return allGenelists;
 		}
 		catch(Exception e){
 			System.out.println("AllComponentsGenelistAssembler::retrieveAllClusters !!!");
 			allGenelists = new ArrayList<GenelistInfo>();			
+			// return value
+			return allGenelists;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		genelistDAO = null;
-		
-		// return value
-		return allGenelists;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			genelistDAO = null;
+		}
 	}
 	
 	final static String clusterIdMark = "_@_!_"; 

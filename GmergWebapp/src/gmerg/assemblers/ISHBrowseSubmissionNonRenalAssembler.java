@@ -44,28 +44,34 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 	
 			// get data from database
 			browseSubmissionsNonRenal = ishDevDAO.getAllSubmissionsNonRenal(column, ascending, offset, num);
+
+			/** ---return the value object---  */
+			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(browseSubmissionsNonRenal);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);	
+
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("ISHBrowseSubmissionNonRenalAssembler::retrieveData !!!");
 			browseSubmissionsNonRenal = null;
+
+			/** ---return the value object---  */
+			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(browseSubmissionsNonRenal);
+
+			return ret;
 		}
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDevDAO = null;
-		
-		/** ---return the value object---  */
-		DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(browseSubmissionsNonRenal);
-
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(column);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);	
-
-		return ret;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+		}
 	}
 	
 	/**
@@ -110,14 +116,22 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 			for (int i=0;i<len;i++) {
 				totalNumbers[i] = Integer.parseInt(columnNumbers[i][1]);
 			}
+
+			// return result
+			return totalNumbers;
 		}
 		catch(Exception e){
 			System.out.println("ISHBrowseSubmissionNonRenalAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
-		}
 
-		// return result
-		return totalNumbers;
+			// return result
+			return totalNumbers;
+		}
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+		}
 	}
 	
 	public int retrieveNumberOfRows() {
@@ -132,18 +146,19 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 	
 			// get data from database
 			totalNumberOfSubmissions = ishDevDAO.getTotalNumberOfNonRenalSubmissions();
+
+			/** ---return the value---  */
+			return totalNumberOfSubmissions;
 		}
 		catch(Exception e){
 			System.out.println("ISHBrowseSubmissionNonRenalAssembler::retrieveNumberOfRows !!!");
-			totalNumberOfSubmissions =0;
+			return 0;
 		}
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDevDAO = null;
-		
-		/** ---return the value---  */
-		return totalNumberOfSubmissions;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDevDAO = null;
+		}
 	}
 	
 	

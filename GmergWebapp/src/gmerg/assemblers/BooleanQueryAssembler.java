@@ -50,26 +50,32 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 		try{
 			booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
 			list =  booleanQueryDAO.getAllSubmissions(input, column, ascending, offset, num, filter);
+
+	        DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
+
+			if (null == cache)
+			    cache = new RetrieveDataCache();
+			cache.setData(ret);
+			cache.setColumn(column);
+			cache.setAscending(ascending);
+			cache.setOffset(offset);
+			cache.setNum(num);
+		
+			return ret;
 		}
 		catch(Exception e){
 			System.out.println("BooleanQueryAssembler::retrieveData failed !!!");
 			list = null;
-		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		booleanQueryDAO = null;
-		
-        DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
 
-		if (null == cache)
-		    cache = new RetrieveDataCache();
-		cache.setData(ret);
-		cache.setColumn(column);
-		cache.setAscending(ascending);
-		cache.setOffset(offset);
-		cache.setNum(num);
-	
-		return ret;
+	        DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
+
+			return ret;
+		}
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			booleanQueryDAO = null;
+		}
 	}
 	
 	public int retrieveNumberOfRows() {
@@ -85,16 +91,17 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 		try{
 			booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
 			n =  booleanQueryDAO.getTotalNumberOfSubmissions(input, filter);
+	        return n;
 		}
 		catch(Exception e){
 			System.out.println("BooleanQueryAssembler::retrieveNumberOfRows failed !!!");
-			n = 0;
+	        return 0;
 		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		booleanQueryDAO = null;
-		
-        return n;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			booleanQueryDAO = null;
+		}
 	}
 	
 	public HeaderItem[] createHeader() {
@@ -130,16 +137,18 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 			booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
 			genes = booleanQueryDAO.getGeneSymbols(queryString);
 //			System.out.println("booleanQuery@gene numbers: " + genes.size());
+			return genes;
 		}
 		catch(Exception e){
 			System.out.println("BooleanQueryAssembler::retrieveGenes failed !!!");
 			genes = new ArrayList<String>();
+			return genes;
 		}
-		// release the db resources		
-		DBHelper.closeJDBCConnection(conn);
-		booleanQueryDAO = null;
-
-		return genes;
+		finally{
+			// release the db resources		
+			DBHelper.closeJDBCConnection(conn);
+			booleanQueryDAO = null;
+		}
 	}
 	 
 }

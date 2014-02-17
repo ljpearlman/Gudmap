@@ -72,17 +72,18 @@ public class MasterTableAssembler {
 			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 	        // get data from database
 			expressions = arrayDAO.getExpressionByGivenProbeSetIds(probeSetIds, masterTableId, genelistId);
+	        // return the value object
+			return expressions;
 		}
 		catch(Exception e){
 			System.out.println("MasterTableAssembler::retrieveProbelistExpressions failed !!!");
-			expressions = null;
+			return null;
 		}
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        arrayDAO = null;
-
-        // return the value object
-		return expressions;
+		finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        arrayDAO = null;
+		}
 	}
 
 	//************************************ Retrieve Annotations ****************************************
@@ -109,16 +110,17 @@ public class MasterTableAssembler {
 		try{
 			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
 			annotations = genelistDAO.getAnnotationByProbeSetIds(probeSetIds);
+			return annotations;
 		}
 		catch(Exception e){
 			System.out.println("MasterTableAssembler::retrieveProbelistExpressions failed !!!");
-			annotations = null;
+			return null;
 		}
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        genelistDAO = null;
-
-		return annotations;
+		finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        genelistDAO = null;
+		}
 	}
 
 	//*************************************** Retrieve Titles ******************************************
@@ -136,17 +138,18 @@ public class MasterTableAssembler {
 	
 	        // get data from database
 			expressionTitles = genelistDAO.getMasterTableExpressionTitles(masterTableId);
+	        // return the value object
+	        return expressionTitles;
 		}
 		catch(Exception e){
 			System.out.println("MasterTableAssembler::retrieveExpressionTitles failed !!!");
-			expressionTitles = null;
+			return null;
 		}
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        genelistDAO = null;
-        
-        // return the value object
-        return expressionTitles;
+		finally{
+	        // release db resources
+	        DBHelper.closeJDBCConnection(conn);
+	        genelistDAO = null;
+		}
 	}
 
 	/**

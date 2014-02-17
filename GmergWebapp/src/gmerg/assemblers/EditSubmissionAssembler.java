@@ -37,20 +37,26 @@ public class EditSubmissionAssembler {
 						statusNotes[i].getStatusNote(), userName);
 				counter += addedStatusNoteNumber;
 			}
+			/** return */
+			if (counter == len) {
+				return true;
+			}
+			return false;
 		}
 		catch(Exception e){
 			System.out.println("EditSubmissionAssembler::addStatusNotes failed !!!");
 			counter = 0;
+			/** return */
+			if (counter == len) {
+				return true;
+			}
+			return false;
 		}
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		/** return */
-		if (counter == len) {
-			return true;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
 		}
-		return false;
 	}
 	
 	public boolean deleteAllStatusNotes(String submissionId, String userName) {
@@ -64,20 +70,21 @@ public class EditSubmissionAssembler {
 			
 			/** delete */
 			deletedStatusNoteNumber = ishEditDAO.deleteStatusNotesBySubmissionId(submissionId, userName);
+			/** return */
+			if (deletedStatusNoteNumber != 0) {
+				return true;
+			}
+			return false;
 		}
 		catch(Exception e){
 			System.out.println("EditSubmissionAssembler::deleteAllStatusNotes failed !!!");
-			deletedStatusNoteNumber = 0;
+			return false;
 		}
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		/** return */
-		if (deletedStatusNoteNumber != 0) {
-			return true;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
 		}
-		return false;
 	}
 	
 	public boolean updateStatusNotes(String submissionId,
@@ -136,21 +143,21 @@ public class EditSubmissionAssembler {
 						ishEditDAO.deleteStatusNotesByStatusNoteId(statusNoteId, userName);
 				}
 			}
+			/** return */
+			if (updatedStatusNoteNumber == 0) {
+				return false;
+			}
+			return true;
 		}
 		catch(Exception e){
 			System.out.println("EditSubmissionAssembler::updateStatusNotes failed !!!");
-			updatedStatusNoteNumber = 0;
-		}
-
-		/** release db resources */
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		/** return */
-		if (updatedStatusNoteNumber == 0) {
 			return false;
 		}
-		return true;
+		finally{
+			/** release db resources */
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -176,17 +183,18 @@ public class EditSubmissionAssembler {
 			
 			// delete
 			submissionDeleted = ishEditDAO.deleteSelectedSubmission(selectedSubmissions);
+			// return
+			return submissionDeleted;
 		}
 		catch(Exception e){
 			System.out.println("EditSubmissionAssembler::deleteSelectedSubmissions failed !!!");
-			submissionDeleted = false;
+			return false;
 		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishEditDAO = null;
-		
-		// return
-		return submissionDeleted;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishEditDAO = null;
+		}
 	}
 	
 	/**
@@ -227,20 +235,21 @@ public class EditSubmissionAssembler {
 			updatedRecordNumber = 
 				annotationTestDAO.updateSubmissionDbStatusByLabAndSubDateAndState(Integer.parseInt(labId), 
 						subDateString, status, userName, subStateValue, isPublicValue);
+			// return
+			if (updatedRecordNumber == 0) {
+				return false;
+			}
+			return true;
 		}
 		catch(Exception e){
 			System.out.println("EditSubmissionAssembler::updateSubmissionStatusByLabAndDateAndState failed !!!");
-			updatedRecordNumber = 0;
-		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		annotationTestDAO = null;
-		
-		// return
-		if (updatedRecordNumber == 0) {
 			return false;
 		}
-		return true;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			annotationTestDAO = null;
+		}
 	}
 
 	/**
@@ -284,19 +293,20 @@ public class EditSubmissionAssembler {
 			updatedRecordNumber = 
 				annotationTestDAO.updateSubmissionDbStatusByLabAndSubDateAndState(Integer.parseInt(labId), 
 						subDateString, archiveId, status, userName, subStateValue, isPublicValue);
+			// return
+			if (updatedRecordNumber == 0) {
+				return false;
+			}
+			return true;
 		}
 		catch(Exception e){
 			System.out.println("EditSubmissionAssembler::updateSubmissionStatusByLabAndDateAndState failed !!!");
-			updatedRecordNumber = 0;
-		}
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		annotationTestDAO = null;
-		
-		// return
-		if (updatedRecordNumber == 0) {
 			return false;
 		}
-		return true;
+		finally{
+			// release db resources
+			DBHelper.closeJDBCConnection(conn);
+			annotationTestDAO = null;
+		}
 	}
 }

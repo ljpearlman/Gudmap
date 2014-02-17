@@ -126,17 +126,18 @@ public class DBSummaryAssembler {
 			
 			dbSummary.setTotIhcGenes(Integer.toString(numberOfPublicGenesIHC));
 			dbSummary.setTotTgGenes(Integer.toString(numberOfPublicGenesTG));
+			/** ---return the composite value object---  */
+			return dbSummary;
 		}
 		catch(Exception e){
 			System.out.println("DBSummaryAssembler::getData failed !!!");
-			dbSummary = null;
+			return null;
 		}
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		ishDAO = null;
-		
-		/** ---return the composite value object---  */
-		return dbSummary;
+		finally{
+			// release the db resources
+			DBHelper.closeJDBCConnection(conn);
+			ishDAO = null;
+		}
 	}
 
 }
