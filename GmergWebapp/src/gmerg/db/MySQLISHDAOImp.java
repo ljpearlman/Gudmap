@@ -2165,7 +2165,10 @@ public class MySQLISHDAOImp implements ISHDAO {
     	// query string excluding order by and retrieval row number info
     	String queryString = query + geneInfoString + whereCondition + stageString;
 	//	    System.out.println("queryString in assembleGeneQueryString method: " + queryString);
-	
+    	
+    	String group = " GROUP BY RPR_SYMBOL, SUB_ACCESSION_ID ";
+    	queryString += group;
+    	
     	// append order by string and retrieval row number info
     	String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
     	String result =

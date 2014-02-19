@@ -81,8 +81,7 @@ public final class DBHelper {
 			
 			connMap.put(connectionTime, conn);
 			System.out.println(date.toString() +" key: " + connectionTime + " value: " + connMap.get(connectionTime) + " DB connections open " + count);
-			///////???????????
-;
+
 			if (20 < count){
 			    System.out.println("!!!!!!possible leaking: "+count+" DB connections open");
 			    
@@ -96,8 +95,10 @@ public final class DBHelper {
 			    }
 			    System.out.println("!!!!!!possible leaking: removed connection " + connMap.get(oldestKey));
 			    connMap.remove(oldestKey);
+			    closeJDBCConnection(connMap.get(oldestKey));
 			}
-			////????????????
+
+
 		} catch (Exception se) {
 			se.printStackTrace();
 		} 
