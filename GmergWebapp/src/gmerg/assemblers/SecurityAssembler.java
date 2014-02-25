@@ -21,11 +21,9 @@ public class SecurityAssembler {
         }
         
         Connection conn = DBHelper.getDBConnection();
-        SecurityDAO securityDAO;
-        User user = null;
         try{
-	        securityDAO = MySQLDAOFactory.getSecurityDAO(conn);	        
-	        user = securityDAO.getUserWithUsernameAndPassword(username, password);
+        	SecurityDAO securityDAO = MySQLDAOFactory.getSecurityDAO(conn);	        
+        	User user = securityDAO.getUserWithUsernameAndPassword(username, password);
 	        return user;
         }
 		catch(Exception e){
@@ -33,9 +31,7 @@ public class SecurityAssembler {
 			return null;
 		}
         finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			securityDAO = null;
         }
         
     }

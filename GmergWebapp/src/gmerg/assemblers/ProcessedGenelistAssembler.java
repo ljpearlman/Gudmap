@@ -102,29 +102,18 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 			return null;
 		}
 		
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
 		ArrayList genelistHeaders = null;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			
-			// get data
-			// get component list
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			ArrayList componentNames = arrayDAO.getComponentListByName(componentName);
 			if (componentNames == null || componentNames.size()== 0) {
-				
-				// release db resources
-				DBHelper.closeJDBCConnection(conn);
-				arrayDAO = null;
-				
 				return null;
 			}
 			
 			// get genelists
 			genelistHeaders = arrayDAO.getGenelistHeadersByComponentNames(componentNames);
-			/** ---return the composite value object---  */
 			return genelistHeaders;
 		}
 		catch(Exception e){
@@ -132,9 +121,7 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 	
@@ -149,17 +136,11 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 			return null;
 		}
 		
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
-		ArrayList genelistHeaders = null;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			
-			// get genelists
-			genelistHeaders = arrayDAO.getGenelistHeadersByLabId(labId);
-			/** ---return the composite value object---  */
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			ArrayList genelistHeaders = arrayDAO.getGenelistHeadersByLabId(labId);
 			return genelistHeaders;
 		}
 		catch(Exception e){
@@ -167,9 +148,7 @@ public class ProcessedGenelistAssembler extends InMemoryTableAssembler{
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 	

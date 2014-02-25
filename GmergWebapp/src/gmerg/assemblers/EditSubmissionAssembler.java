@@ -25,11 +25,10 @@ public class EditSubmissionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		int counter = 0;
-		int len = statusNotes.length;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			int len = statusNotes.length;
+			int counter = 0;
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
 			
 			/** add */
 			for (int i=0;i<len;i++) {
@@ -37,7 +36,7 @@ public class EditSubmissionAssembler {
 						statusNotes[i].getStatusNote(), userName);
 				counter += addedStatusNoteNumber;
 			}
-			/** return */
+
 			if (counter == len) {
 				return true;
 			}
@@ -45,17 +44,10 @@ public class EditSubmissionAssembler {
 		}
 		catch(Exception e){
 			System.out.println("EditSubmissionAssembler::addStatusNotes failed !!!");
-			counter = 0;
-			/** return */
-			if (counter == len) {
-				return true;
-			}
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -63,14 +55,9 @@ public class EditSubmissionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		int deletedStatusNoteNumber = 0;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			/** delete */
-			deletedStatusNoteNumber = ishEditDAO.deleteStatusNotesBySubmissionId(submissionId, userName);
-			/** return */
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			int deletedStatusNoteNumber = ishEditDAO.deleteStatusNotesBySubmissionId(submissionId, userName);
 			if (deletedStatusNoteNumber != 0) {
 				return true;
 			}
@@ -81,9 +68,7 @@ public class EditSubmissionAssembler {
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -91,10 +76,9 @@ public class EditSubmissionAssembler {
 			StatusNote[] oldStatusNotes, StatusNote[] newStatusNotes, String userName) {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		int updatedStatusNoteNumber = 0;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			int updatedStatusNoteNumber = 0;
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
 			
 			/** update */
 			// oldStatusNotes and newStatusNotes are both not null
@@ -154,9 +138,7 @@ public class EditSubmissionAssembler {
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -177,13 +159,9 @@ public class EditSubmissionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			// delete
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
 			submissionDeleted = ishEditDAO.deleteSelectedSubmission(selectedSubmissions);
-			// return
 			return submissionDeleted;
 		}
 		catch(Exception e){
@@ -191,9 +169,7 @@ public class EditSubmissionAssembler {
 			return false;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -221,21 +197,18 @@ public class EditSubmissionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO annotationTestDAO;
-		int updatedRecordNumber = 0;
 		try{
-			annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-			
-			// update
+			int updatedRecordNumber = 0;
+			AnnotationTestDAO annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+
 			boolean loggedIn = true;
 			int subStateValue = Utility.getSubmissionStatusByName(subState, loggedIn);
 			String subDateString = Utility.convertToDatabaseDate(subDate);
-	//		System.out.println("EditSubmissionAssembler:subDateString: " + subDateString);
 			int isPublicValue = set2Public?1:0;
 			updatedRecordNumber = 
 				annotationTestDAO.updateSubmissionDbStatusByLabAndSubDateAndState(Integer.parseInt(labId), 
 						subDateString, status, userName, subStateValue, isPublicValue);
-			// return
+
 			if (updatedRecordNumber == 0) {
 				return false;
 			}
@@ -246,9 +219,7 @@ public class EditSubmissionAssembler {
 			return false;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			annotationTestDAO = null;
 		}
 	}
 
@@ -276,20 +247,14 @@ public class EditSubmissionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO annotationTestDAO;
-		int updatedRecordNumber = 0;
 		try{
-			annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-			
-			// update
+			int updatedRecordNumber = 0;
+			AnnotationTestDAO annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+
 			boolean loggedIn = true;
 			int subStateValue = Utility.getSubmissionStatusByName(subState, loggedIn);
 			String subDateString = Utility.convertToDatabaseDate(subDate);
-	//		System.out.println("EditSubmissionAssembler:subDateString: " + subDateString);
 			int isPublicValue = set2Public?1:0;
-	//		int updatedRecordNumber = 
-	//			annotationTestDAO.updateSubmissionDbStatusByLabAndSubDateAndState(Integer.parseInt(labId), 
-	//					subDateString, status, userName, subStateValue, isPublicValue);
 			updatedRecordNumber = 
 				annotationTestDAO.updateSubmissionDbStatusByLabAndSubDateAndState(Integer.parseInt(labId), 
 						subDateString, archiveId, status, userName, subStateValue, isPublicValue);
@@ -304,9 +269,7 @@ public class EditSubmissionAssembler {
 			return false;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			annotationTestDAO = null;
 		}
 	}
 }

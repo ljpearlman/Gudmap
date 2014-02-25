@@ -252,7 +252,6 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			return data;
 		}	
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
 		}
 	}
@@ -332,18 +331,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		if (symbol == null || symbol.equals("")) {
 			return "";
 		}
-		// create a dao
-//		Connection conn = DBHelper.getDBConnection();
-		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		
-        // get data from database
-		String synonyms = geneStripDAO.findSynonymsBySymbol(symbol);
 
-        // release resources
-//        DBHelper.closeJDBCConnection(conn);
+		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
+		String synonyms = geneStripDAO.findSynonymsBySymbol(symbol); 
         geneStripDAO = null;
 
-        // return the value object
         return synonyms;
 	}
 	
@@ -394,18 +386,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		if (symbol == null || symbol.equals("")) {
 			return null;
 		}
-		// create a dao
-//		Connection conn = DBHelper.getDBConnection();
+		
 		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		
-        // get data from database
 		String[] stages = geneStripDAO.getGeneStages(symbol, "insitu");
-		
-        // release resources
-//        DBHelper.closeJDBCConnection(conn);
         geneStripDAO = null;
 
-        // return the value object
 		return stages;
 	}
 	
@@ -418,18 +403,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		if (symbol == null || symbol.equals("")) {
 			return null;
 		}
-		// create a dao
-//		Connection conn = DBHelper.getDBConnection();
+
 		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		
-        // get data from database
 		String[] stages = geneStripDAO.getGeneStages(symbol, "Microarray");
-		
-        // release resources
-//        DBHelper.closeJDBCConnection(conn);
         geneStripDAO = null;
 
-        // return the value object
 		return stages;
 	}
 	
@@ -500,19 +478,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		if (symbol == null || symbol.equals("")) {
 			return null;
 		}
-		// create a dao
-//		Connection conn = DBHelper.getDBConnection();
+
 		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		
-        // get data from database
-        ArrayList relatedInsituSubmission = 
-        	ishDAO.findRelatedSubmissionBySymbolISH(symbol);
-		
-        // release resources
-//        DBHelper.closeJDBCConnection(conn);
+        ArrayList relatedInsituSubmission = ishDAO.findRelatedSubmissionBySymbolISH(symbol);
         ishDAO = null;
-		
-        // return the value object
+
 		return relatedInsituSubmission;
 	}
 	
@@ -697,9 +667,8 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		
 		/** create a dao */
 		Connection conn = DBHelper.getDBConnection();
-		GeneStripDAO geneStripDAO;
 		try{
-			geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
+			GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
 			
 			/** calculate expression profile for all given structures */
 			for (int i=0;i<analen;i++) {
@@ -757,13 +726,10 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		catch(Exception e){
 			System.out.println("GeneStripAssembler::getExpressionProfile !!!");
 			expressionProfiles = new double[0];
-			/** return result */
 			return expressionProfiles;
 		}		
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			geneStripDAO = null;
 		}
 	} // end of getExpressionProfile
 	
@@ -776,18 +742,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		if (symbol == null || symbol.equals("")) {
 			return 0;
 		}
-		/** create a dao */
-//		Connection conn = DBHelper.getDBConnection();
+
 		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		
-        // get data from database
 		int diseaseNumber = geneStripDAO.getGeneDiseaseNumber(symbol);
-		
-        // release resources
-//        DBHelper.closeJDBCConnection(conn);
 		geneStripDAO = null;
-		
-        // return value
+
         return diseaseNumber;
 	}
 
@@ -799,18 +758,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			return null;
 		}
 		ChromeDetail chromeDetail = null;
-		// create a dao
-//		Connection conn = DBHelper.getDBConnection();
-		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		
-        // get data from database
-		chromeDetail = geneStripDAO.getChromeDetailBySymbol(symbol);
 
-        // release resources
-//        DBHelper.closeJDBCConnection(conn);
+		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
+		chromeDetail = geneStripDAO.getChromeDetailBySymbol(symbol);
         geneStripDAO = null;
 
-        // return the value object
         return chromeDetail;
 	}
 	

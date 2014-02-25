@@ -76,14 +76,10 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
-		GenelistDAO genelistDAO;
-		HeatmapData expressions = null;
-		String[][] annotations = null;
-		ArrayList<String> onePageIds = null;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+			ArrayList<String> onePageIds = null;
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
 			
 	        // get data from database
 			onePageIds = new ArrayList<String>();
@@ -102,9 +98,9 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 			
 //			double[][] expressions = arrayDAO.getExpressionByGivenProbeSetIds(ids, columnId, ascending, offset, num);
 //			String[][] annotations = genelistDAO.getAnnotationByProbeSetIds(ids, columnId, ascending, offset, num);
-			expressions = arrayDAO.getExpressionByGivenProbeSetIds(onePageIds, masterTableId, genelistId);
+			HeatmapData expressions = arrayDAO.getExpressionByGivenProbeSetIds(onePageIds, masterTableId, genelistId);
 	
-			annotations = genelistDAO.getAnnotationByProbeSetIds(onePageIds);
+			String[][] annotations = genelistDAO.getAnnotationByProbeSetIds(onePageIds);
 			
 	        if (debug) 
 	        	System.out.println("MasterTableBrowseAssembler.retrieveData  expression = "+expressions+" annotations = "+annotations);
@@ -124,19 +120,10 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 		}
 		catch(Exception e){
 			System.out.println("MasterTableBrowseAssembler::retrieveData failed !!!");
-			onePageIds = null;
-			expressions = null;
-			annotations = null;
-
-			DataItem[][] ret = getTableDataFormatFromMastertableData(onePageIds, expressions ,annotations);
-
-			return ret;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-	        arrayDAO = null;
-	        genelistDAO = null;
 		}
 
 	}

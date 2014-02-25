@@ -56,15 +56,13 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 		}		
 
 		Connection conn = DBHelper.getDBConnection();
-		AdvancedQueryDAO advancedQDAO;
-		ArrayList list = new ArrayList();
 		try{
-			advancedQDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
+			AdvancedQueryDAO advancedQDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 			
 			String type = "All";
 			int[] total = null;
 	   	
-			list = advancedQDAO.getQuickSearch(type, input, column, ascending, String.valueOf(offset), String.valueOf(num), total);
+			ArrayList list = advancedQDAO.getQuickSearch(type, input, column, ascending, String.valueOf(offset), String.valueOf(num), total);
 
 			DataItem[][] ret = getTableDataFormatFromArrayList(list);
 
@@ -80,16 +78,10 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 		}
 		catch(Exception e){
 			System.out.println("QuickSearchAssembler::retrieveData failed !!!");
-			list = new ArrayList();
-
-			DataItem[][] ret = getTableDataFormatFromArrayList(list);
-
-			return ret;
+			return null;
 		}	
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			advancedQDAO = null;
 		}
 	}
 	
@@ -98,10 +90,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	    System.out.println("QuickSearchAssembler.retrieveNumberOfRows");
 
 		Connection conn = DBHelper.getDBConnection();
-		AdvancedQueryDAO ishDAO;
 		int[] n = null;
 		try{
-			ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
+			AdvancedQueryDAO ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 			n = ishDAO.getQuickNumberOfRows(query, input);
 
 			if(null != n)
@@ -113,9 +104,7 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			return 0;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 		
@@ -128,10 +117,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	    System.out.println("QuickSearchAssembler.retrieveNumberOfRowsInGroups");
 
 		Connection conn = DBHelper.getDBConnection();
-		AdvancedQueryDAO ishDAO;
 		int[] n = null;
 		try{
-			ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
+			AdvancedQueryDAO ishDAO = MySQLDAOFactory.getAdvancedQueryDAO(conn);
 			n = ishDAO.getQuickNumberOfRows(query, input);
 
 			if(null != n) {
@@ -144,9 +132,7 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			return new int[]{0,0};
 		}	
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 	

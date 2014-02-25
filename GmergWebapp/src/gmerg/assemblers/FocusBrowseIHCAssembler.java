@@ -54,13 +54,11 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		IHCDAO ihcDAO;
-		ArrayList submissions = null;
 		try{
-			ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
+			IHCDAO ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
 	
 			// get data from database
-			submissions = ihcDAO.getAllSubmissionISH(column, ascending, offset, num, "IHC", organs, archiveIds, batchIds, filter);
+			 ArrayList submissions = ihcDAO.getAllSubmissionISH(column, ascending, offset, num, "IHC", organs, archiveIds, batchIds, filter);
 			/** ---return the value object---  */
 			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
 			if (null == cache)
@@ -75,30 +73,19 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseIHCAssembler::retrieveData !!!");
-			submissions = null;
-			/** ---return the value object---  */
-			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
-
-			return ret;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ihcDAO = null;
 		}
 	}
 	
 	public int retrieveNumberOfRows() {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		IHCDAO ihcDAO;
-		int totalNumberOfSubmissions = 0;
 		try{
-			ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
-	
-			// get data from database
-			totalNumberOfSubmissions = ihcDAO.getTotalNumberOfSubmissions("IHC", organs, archiveIds, batchIds, filter);
-			//* ---return the value---  * /
+			IHCDAO ihcDAO = MySQLDAOFactory.getIHCDAO(conn);
+			int totalNumberOfSubmissions = ihcDAO.getTotalNumberOfSubmissions("IHC", organs, archiveIds, batchIds, filter);
 			return totalNumberOfSubmissions;
 		}
 		catch(Exception e){
@@ -106,9 +93,7 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 			return 0;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ihcDAO = null;
 		}
 	}
 	
@@ -126,10 +111,9 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
 		int[] totalNumbers = null;
 		try{
-			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
 	
 			// get data from database
 			String [] allColTotalsQueries = {
@@ -161,13 +145,10 @@ public class FocusBrowseIHCAssembler extends OffMemoryTableAssembler{
 		catch(Exception e){
 			System.out.println("FocusBrowseIHCAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
-			// return result
 			return totalNumbers;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
 		}
 	}
 	

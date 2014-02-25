@@ -86,20 +86,21 @@ public class BatchAnnotationAssembler {
 	public int addBatch(String pi, User user) {
 		// get dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-		
-		// update database
-		int batchId = testDAO.createNewBatch(Integer.parseInt(pi), user);
-		
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		
-		// return 1 if successful, or return 0
-		if (batchId < 0) {
+		try{
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			int batchId = testDAO.createNewBatch(Integer.parseInt(pi), user);
+			if (batchId < 0) {
+				return 0;
+			} else {
+				return 1;
+			}
+		}
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::addBatch failed !!!");
 			return 0;
-		} else {
-			return 1;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
 		}
 	}
 	
@@ -138,18 +139,21 @@ public class BatchAnnotationAssembler {
 	public int addSubmission(String batchId, User user, String pi) {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+		try{
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			int addedSubmissionNumber = 
+				testDAO.createNewSubmission(Integer.parseInt(batchId), user, Integer.parseInt(pi));
+			
+			return addedSubmissionNumber;
+		}
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::addBatch failed !!!");
+			return 0;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
 		
-		// get data
-		int addedSubmissionNumber = 
-			testDAO.createNewSubmission(Integer.parseInt(batchId), user, Integer.parseInt(pi));
-		
-		// release the db resources
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		
-		// return
-		return addedSubmissionNumber;
 	}
 	
 	/**
@@ -178,29 +182,27 @@ public class BatchAnnotationAssembler {
 		
 		// go through the submission id to delete submission, expression, pattern, locaiton, note
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		String userName = user.getUserName();
-		for (int i=0;i<len;i++) {
-			int submissionDeleted = this.deleteSubmission(submissionIds[i],
-					testDAO, ishEditDAO, ishDAO, userName);
-			if (submissionDeleted == 0) { // failed to delete
-				DBHelper.closeJDBCConnection(conn);
-				testDAO = null;
-				ishEditDAO = null;
-				ishDAO = null;
-//				System.out.println("failed to delete submission!!!!!");
-				return 0;
+		try{
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			String userName = user.getUserName();
+			for (int i=0;i<len;i++) {
+				int submissionDeleted = this.deleteSubmission(submissionIds[i],
+						testDAO, ishEditDAO, ishDAO, userName);
+				if (submissionDeleted == 0) { // failed to delete
+					return 0;
+				}
 			}
+			return 1;
 		}
-		
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		ishEditDAO = null;
-		ishDAO = null;
-		return 1; // successful
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::addBatch failed !!!");
+			return 0;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
 	} // end of deleteTemporarySubmission
 	
 	/**
@@ -274,97 +276,94 @@ public class BatchAnnotationAssembler {
 	public int duplicateSubmission(String submissionId, User user) {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		
-		// get template submission info from database
-		Submission templateSubmission = ishDAO.findSubmissionById(submissionId);
-		
-		// get expression info
-		ArrayList expressionInDB = testDAO.getComponentAndExpression(submissionId);
-
-		////////////////////////////
-		// need to implement later
-		// other info includes: probe/antibody, specimen, image, author,
-		// publication, acknowledgement, linked submission etc
-		///////////////////////////
-		
-		String userName = user.getUserName();
-
-		// insert new submission based on the existing submission
-//		int newSubmissionTempId = testDAO.createNewSubmission(templateSubmission, userName);
-		String newSubmissionTempId = testDAO.createNewSubmission(templateSubmission, userName);
-//		System.out.println("newSubmissionTempId: " + newSubmissionTempId);
-//		if (newSubmissionTempId == 0) {
-		if (newSubmissionTempId.equals("0")) {
-			DBHelper.closeJDBCConnection(conn);
-			testDAO = null;
-			ishEditDAO = null;
-			return 0;
-		}
-		
-		int insertedNewRecordNumber = 0;
-		// insert expression
-		if (expressionInDB != null && expressionInDB.size() != 0) {
-			int len = expressionInDB.size();
-			for (int i=0;i<len;i++) {
-				String componentId = ((String[])expressionInDB.get(i))[0];
-				String expression = ((String[])expressionInDB.get(i))[1];
-				String strength = ((String[])expressionInDB.get(i))[2];
-				String pattern = ((String[])expressionInDB.get(i))[3];
-				String note = ((String[])expressionInDB.get(i))[4];
-				String expressionId = ((String[])expressionInDB.get(i))[5];
-				if (strength == null) { // in case there's no strength
-					strength = "";
-				}
-				insertedNewRecordNumber =
-//					ishEditDAO.insertExpression(Integer.toString(newSubmissionTempId), 
-					ishEditDAO.insertExpression(newSubmissionTempId, 
-							componentId, expression, strength, userName);
-				if (insertedNewRecordNumber == 0) {
-					DBHelper.closeJDBCConnection(conn);
-					testDAO = null;
-					ishEditDAO = null;
-					return 0;
-				}
-				// insert expression note
-				if (note != null && !note.equals("")) {
+		try{
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// get template submission info from database
+			Submission templateSubmission = ishDAO.findSubmissionById(submissionId);
+			
+			// get expression info
+			ArrayList expressionInDB = testDAO.getComponentAndExpression(submissionId);
+	
+			////////////////////////////
+			// need to implement later
+			// other info includes: probe/antibody, specimen, image, author,
+			// publication, acknowledgement, linked submission etc
+			///////////////////////////
+			
+			String userName = user.getUserName();
+	
+			// insert new submission based on the existing submission
+	//		int newSubmissionTempId = testDAO.createNewSubmission(templateSubmission, userName);
+			String newSubmissionTempId = testDAO.createNewSubmission(templateSubmission, userName);
+	//		System.out.println("newSubmissionTempId: " + newSubmissionTempId);
+	//		if (newSubmissionTempId == 0) {
+			if (newSubmissionTempId.equals("0")) {
+				return 0;
+			}
+			
+			int insertedNewRecordNumber = 0;
+			// insert expression
+			if (expressionInDB != null && expressionInDB.size() != 0) {
+				int len = expressionInDB.size();
+				for (int i=0;i<len;i++) {
+					String componentId = ((String[])expressionInDB.get(i))[0];
+					String expression = ((String[])expressionInDB.get(i))[1];
+					String strength = ((String[])expressionInDB.get(i))[2];
+					String pattern = ((String[])expressionInDB.get(i))[3];
+					String note = ((String[])expressionInDB.get(i))[4];
+					String expressionId = ((String[])expressionInDB.get(i))[5];
+					if (strength == null) { // in case there's no strength
+						strength = "";
+					}
 					insertedNewRecordNumber =
-//						ishEditDAO.addExpressionNote(Integer.toString(newSubmissionTempId),
-						ishEditDAO.addExpressionNote(newSubmissionTempId,
-								componentId, note, 1, userName);
+	//					ishEditDAO.insertExpression(Integer.toString(newSubmissionTempId), 
+						ishEditDAO.insertExpression(newSubmissionTempId, 
+								componentId, expression, strength, userName);
 					if (insertedNewRecordNumber == 0) {
-						DBHelper.closeJDBCConnection(conn);
-						testDAO = null;
-						ishEditDAO = null;
 						return 0;
 					}
-				}
-				// insert pattern/location 
-				// xingjun - 26/02/2010 - should include 'uncertain' into the judgement
-				if ((expression.equals("present") || expression.equals("uncertain")) && pattern != null && !pattern.equals("")) {
-					ExpressionPattern[] patterns =
-						ishDAO.findPatternsAndLocations(true, expressionId);
-//					System.out.println("locationString: " + patterns[0].getLocations());
-//					System.out.println("locationAPart:" + patterns[0].getLocationAPart());
-//					System.out.println("locationNPart" + patterns[0].getLocationNPart());
-					if (patterns != null) {
+					// insert expression note
+					if (note != null && !note.equals("")) {
 						insertedNewRecordNumber =
-							EditAssemblerUtil.insertMultiplePatternAndLocation(ishEditDAO, patterns,
-//									Integer.toString(newSubmissionTempId), componentId, userName);
-									newSubmissionTempId, componentId, userName);
+	//						ishEditDAO.addExpressionNote(Integer.toString(newSubmissionTempId),
+							ishEditDAO.addExpressionNote(newSubmissionTempId,
+									componentId, note, 1, userName);
 						if (insertedNewRecordNumber == 0) {
-							DBHelper.closeJDBCConnection(conn);
-							testDAO = null;
-							ishEditDAO = null;
 							return 0;
 						}
 					}
-				} // end of insert pattern/location
-			} // end of for loop
-		} // end of insert expression
-		return 1; // success
+					// insert pattern/location 
+					// xingjun - 26/02/2010 - should include 'uncertain' into the judgement
+					if ((expression.equals("present") || expression.equals("uncertain")) && pattern != null && !pattern.equals("")) {
+						ExpressionPattern[] patterns =
+							ishDAO.findPatternsAndLocations(true, expressionId);
+	//					System.out.println("locationString: " + patterns[0].getLocations());
+	//					System.out.println("locationAPart:" + patterns[0].getLocationAPart());
+	//					System.out.println("locationNPart" + patterns[0].getLocationNPart());
+						if (patterns != null) {
+							insertedNewRecordNumber =
+								EditAssemblerUtil.insertMultiplePatternAndLocation(ishEditDAO, patterns,
+	//									Integer.toString(newSubmissionTempId), componentId, userName);
+										newSubmissionTempId, componentId, userName);
+							if (insertedNewRecordNumber == 0) {
+								return 0;
+							}
+						}
+					} // end of insert pattern/location
+				} // end of for loop
+			} // end of insert expression
+			return 1; // success
+		}
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::addBatch failed !!!");
+			return 0;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
 	} // end of duplicateSubmission()
 	
 	/**
@@ -381,35 +380,38 @@ public class BatchAnnotationAssembler {
 	public int completeBatch(String batchId, User user) {
 		// get dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-		
-		// update database
-		// set the db status to 3 - awaiting spreadsheet
-		// update submission table if there's any submission
-		String[] submissionIds = 
-			testDAO.getSubmissionIdsByBatchId(Integer.parseInt(batchId));
-		int batchUpdated = 0; 
-		if (submissionIds != null && submissionIds.length > 0) {
-			batchUpdated = 
-				testDAO.updateSubmissionDbStatusByBatch(Integer.parseInt(batchId), 3, user.getUserName());
+		try{
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			
+			// update database
+			// set the db status to 3 - awaiting spreadsheet
+			// update submission table if there's any submission
+			String[] submissionIds = 
+				testDAO.getSubmissionIdsByBatchId(Integer.parseInt(batchId));
+			int batchUpdated = 0; 
+			if (submissionIds != null && submissionIds.length > 0) {
+				batchUpdated = 
+					testDAO.updateSubmissionDbStatusByBatch(Integer.parseInt(batchId), 3, user.getUserName());
+				if (batchUpdated == 0) {
+					return 0;
+				}
+			}
+			// update batch user table
+			batchUpdated =
+				testDAO.updateBatchUserStatusByBatch(Integer.parseInt(batchId), 3, user.getUserName()); 
+			
 			if (batchUpdated == 0) {
-				DBHelper.closeJDBCConnection(conn);
-				testDAO = null;
 				return 0;
+			} else {
+				return 1;
 			}
 		}
-		// update batch user table
-		batchUpdated =
-			testDAO.updateBatchUserStatusByBatch(Integer.parseInt(batchId), 3, user.getUserName()); 
-		
-		/** release the db resources */
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		// return
-		if (batchUpdated == 0) {
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::completeBatch failed !!!");
 			return 0;
-		} else {
-			return 1;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
 		}
 	}
 	
@@ -522,45 +524,40 @@ public class BatchAnnotationAssembler {
 			return 0;
 		}
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-		ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-		String userName = user.getUserName();
-		// get submissions
-		String[] submissionIds = 
-			testDAO.getSubmissionIdsByBatchId(Integer.parseInt(batchId));
-		// delete submissions
-		if (submissionIds != null && submissionIds.length > 0) {
-			int submissionIdNum = submissionIds.length;
-			for (int j=0;j<submissionIdNum;j++) {
-				int submissionDeleted = this.deleteSubmission(submissionIds[j],
-						testDAO, ishEditDAO, ishDAO, userName);
-				if (submissionDeleted == 0) { // failed to delete submission
-					DBHelper.closeJDBCConnection(conn);
-					testDAO = null;
-					ishEditDAO = null;
-					ishDAO = null;
-//					System.out.println("failed to delete submission!!!!!");
-					return 0;
+		try{
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			String userName = user.getUserName();
+			// get submissions
+			String[] submissionIds = 
+				testDAO.getSubmissionIdsByBatchId(Integer.parseInt(batchId));
+			// delete submissions
+			if (submissionIds != null && submissionIds.length > 0) {
+				int submissionIdNum = submissionIds.length;
+				for (int j=0;j<submissionIdNum;j++) {
+					int submissionDeleted = this.deleteSubmission(submissionIds[j],
+							testDAO, ishEditDAO, ishDAO, userName);
+					if (submissionDeleted == 0) { // failed to delete submission
+						return 0;
+					}
 				}
 			}
+			// delete batch
+			int batchDeleted = testDAO.deleteBatch(Integer.parseInt(batchId), userName);
+			if (batchDeleted == 0) { // failed to delete batch
+				return 0;
+			}
+			return 1; // successful
 		}
-		// delete batch
-		int batchDeleted = testDAO.deleteBatch(Integer.parseInt(batchId), userName);
-		if (batchDeleted == 0) { // failed to delete batch
-			DBHelper.closeJDBCConnection(conn);
-			testDAO = null;
-			ishEditDAO = null;
-			ishDAO = null;
-//			System.out.println("failed to delete batch!!!!!");
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::addBatch failed !!!");
 			return 0;
 		}
-		// release db resource
-		DBHelper.closeJDBCConnection(conn);
-		testDAO = null;
-		ishEditDAO = null;
-		ishDAO = null;
-		return 1; // successful
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
+
 	} // end of deleteBatch(String batchId, User user)
 	
 	/**

@@ -38,10 +38,8 @@ public class GenelistExpressionAssembler {
 	// *****  this should return a data set
 	public DataSet retrieveExpressionData() {
 		Connection conn = DBHelper.getDBConnection();
-		GenelistDAO genelistDAO;
-		DataSet dataSet = null;
 		try{
-			genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+			GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
 			
 			double[][] data = genelistDAO.getAllAnalysisData(genelistId);
 	
@@ -63,7 +61,7 @@ public class GenelistExpressionAssembler {
 					geneSymbols = geneSymbols.replace("///", ",");
 				geneAnnotations[i][1] = geneSymbols;  
 			}
-			dataSet = new DataSet(data, null, data.length, data[0].length, geneAnnotations, arrayAnnotation);
+			DataSet dataSet = new DataSet(data, null, data.length, data[0].length, geneAnnotations, arrayAnnotation);
 	
 			String[] arrayHeader = {"Sample ID"};
 			String[] geneHeader =  {"ProbeID", "GeneSymbol"};
@@ -79,9 +77,7 @@ public class GenelistExpressionAssembler {
 			return null;
 		}	
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			genelistDAO = null;
 		}
 	}
 	

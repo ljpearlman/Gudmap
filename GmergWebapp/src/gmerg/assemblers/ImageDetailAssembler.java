@@ -38,14 +38,9 @@ public class ImageDetailAssembler {
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		ImageDetail imageDetail = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			
-			/** ---get data--- */
-			imageDetail = ishDAO.findImageDetailBySubmissionId(submissionAccessionId, Integer.parseInt(serialNum)-1);
-			/** ---return the object--- */
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ImageDetail imageDetail = ishDAO.findImageDetailBySubmissionId(submissionAccessionId, Integer.parseInt(serialNum)-1);
 			return imageDetail;
 		}
 		catch(Exception e){
@@ -53,9 +48,7 @@ public class ImageDetailAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 

@@ -30,105 +30,74 @@ public class AnnotationTestAssembler {
 	 */
 	public ArrayList getStagesInPerspective() {
 		
-		ArrayList stageRanges = null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO;
 		try{
-			testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-			// get data
-//			ArrayList stageRanges = testDAO.getTheilerStageRanges();
-			stageRanges = testDAO.getStageRanges();
-			/** ---return the composite value object---  */
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			ArrayList stageRanges = testDAO.getStageRanges();
 			return stageRanges;
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::getStagesInPerspective failed !!!");
-			stageRanges = null;
-			/** ---return the composite value object---  */
-			return stageRanges;
+			return null;
 		}
 		finally{
-			/** release the db resources */
 			DBHelper.closeJDBCConnection(conn);
-			testDAO = null;
 		}
 	}
 	
 	public ArrayList<String> getTreeContent(String stage, String id) {
 		
-		ArrayList <String> treeContent = null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
 		try{
-			testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-			// get data
-			treeContent = testDAO.getTreeContent(stage, id);
-			/** ---return the composite value object---  */
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			ArrayList <String> treeContent = testDAO.getTreeContent(stage, id);
 			return treeContent;
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::getTreeContent failed !!!");
-			treeContent = null;
-			/** ---return the composite value object---  */
-			return treeContent;
+			return null;
 		}
 		finally{
-			/** release the db resources */
 			DBHelper.closeJDBCConnection(conn);
-			testDAO = null;
 		}
 	}
 	
 	public String getStageFromSubmission(String id) {
-		String stage = null;
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO;
+
 		try{
-			testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-			// get data
-			stage = testDAO.getStageFromSubmission(id);
-			/** ---return the composite value object---  */
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			String stage = testDAO.getStageFromSubmission(id);
 			return stage;
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::getStageFromSubmission failed !!!");
-			stage = null;
-			/** ---return the composite value object---  */
-			return stage;
+			return null;
 		}
 		finally{
-			/** release the db resources */
 			DBHelper.closeJDBCConnection(conn);
-			testDAO = null;
 		}
 	}
 	
 	public Submission getSubmissionSummary(String submissionId) {
 		
-		Submission submission = null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO annotationTestDAO;
 		try{
-			annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-			// get data
-			submission = annotationTestDAO.getSubmissionSummary(submissionId);
-			/** ---return the composite value object---  */
+			AnnotationTestDAO annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			Submission submission = annotationTestDAO.getSubmissionSummary(submissionId);
 			return submission;
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::getSubmissionSummary failed !!!");
-			submission = null;
-			/** ---return the composite value object---  */
-			return submission;
+			return null;
 		}
 		finally{
-			/** release the db resources */
 			DBHelper.closeJDBCConnection(conn);
-			annotationTestDAO = null;
 		}
 	}
 	
@@ -143,13 +112,10 @@ public class AnnotationTestAssembler {
 		
 		// create daos
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO;
-		ISHDAO ishDAO;
-		ISHEditDAO editDAO;
 		try{
-			testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			editDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ISHEditDAO editDAO = MySQLDAOFactory.getISHEditDAO(conn);
 		
 			// get stage value in db
 			String stageInDB = ishDAO.findStageBySubmissionId(submissionId);
@@ -208,11 +174,7 @@ public class AnnotationTestAssembler {
 			return 0; // failed
 		}
 		finally{
-			// release resources
 			DBHelper.closeJDBCConnection(conn);
-			testDAO = null;
-			ishDAO = null;
-			editDAO = null;
 		}
 	}
 	
@@ -244,16 +206,12 @@ public class AnnotationTestAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO annotationTestDAO;
-		ISHEditDAO ishEditDAO;
-		String userName = user.getUserName();
-		
-		// declare a counter to count conflict or data updating error
-		int errorCounter = 0;
-
 		try{
-			annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			// declare a counter to count conflict or data updating error
+			int errorCounter = 0;
+			String userName = user.getUserName();
+			AnnotationTestDAO annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
 			// go through all the components, if the expression value is present, update pattern
 			// if the expression value is not present, flag pluses one
 			for (int i=0;i<cLen;i++) {
@@ -281,9 +239,6 @@ public class AnnotationTestAssembler {
 							int updatedPatternNumber = 
 								ishEditDAO.insertPattern(submissionId, compIds[i], pattern, userName);
 							if (updatedPatternNumber == 0) { // updating failed, return 0
-								DBHelper.closeJDBCConnection(conn);
-								annotationTestDAO = null;
-								ishEditDAO = null;
 								return 0;
 							}
 						}
@@ -308,8 +263,6 @@ public class AnnotationTestAssembler {
 		}
 		finally{
 			DBHelper.closeJDBCConnection(conn);
-			annotationTestDAO = null;
-			ishEditDAO = null;
 		}
 	}
 	
@@ -344,11 +297,9 @@ public class AnnotationTestAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO;
-		ISHEditDAO ishEditDAO;
 		try{
-			testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
 
 			/** reorganise expression data on page and in db */
 			String expressionOnPage = null;
@@ -489,9 +440,6 @@ public class AnnotationTestAssembler {
 	//								// delete note
 	////								System.out.println("start to delete expression note@ne/u on page and p in db");
 	//								if (ishEditDAO.deleteExpressionNotes(submissionId, componentId, userName)== 0) {
-	//									DBHelper.closeJDBCConnection(conn);
-	//									testDAO = null;
-	//									ishEditDAO = null;
 	//									return 0;
 	//								}
 	//							}
@@ -559,14 +507,10 @@ public class AnnotationTestAssembler {
 		}
 		catch(Exception e){
 			System.out.println("AnnotationTestAssembler::updateExpression failed !!!");
-			/** fail */
 			return 0;
 		}
 		finally{
-			/** release the db resources */
 			DBHelper.closeJDBCConnection(conn);
-			testDAO = null;
-			ishEditDAO = null;
 		}
 	} // end of updateExpression
 	

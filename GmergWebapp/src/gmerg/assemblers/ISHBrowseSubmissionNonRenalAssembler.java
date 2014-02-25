@@ -34,18 +34,15 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 			
 			return cache.getData();
 	    }
-		/** ---get data from dao---  */
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
-		ArrayList browseSubmissionsNonRenal = null;
 		try{
-			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
 	
-			// get data from database
-			browseSubmissionsNonRenal = ishDevDAO.getAllSubmissionsNonRenal(column, ascending, offset, num);
 
-			/** ---return the value object---  */
+			ArrayList browseSubmissionsNonRenal = ishDevDAO.getAllSubmissionsNonRenal(column, ascending, offset, num);
+
 			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(browseSubmissionsNonRenal);
 
 			if (null == cache)
@@ -60,17 +57,10 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 		}
 		catch(Exception e){
 			System.out.println("ISHBrowseSubmissionNonRenalAssembler::retrieveData !!!");
-			browseSubmissionsNonRenal = null;
-
-			/** ---return the value object---  */
-			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(browseSubmissionsNonRenal);
-
-			return ret;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
 		}
 	}
 	
@@ -85,10 +75,9 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
 		int[] totalNumbers = new int[0];
 		try{
-			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
 	
 			// get data from database
 			String [] allColTotalsQueries = {"TOTAL_NUMBER_OF_SUBMISSION_NON_RENAL",
@@ -123,14 +112,10 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 		catch(Exception e){
 			System.out.println("ISHBrowseSubmissionNonRenalAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
-
-			// return result
 			return totalNumbers;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
 		}
 	}
 	
@@ -139,15 +124,9 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
-		int totalNumberOfSubmissions = 0;
 		try{
-			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-	
-			// get data from database
-			totalNumberOfSubmissions = ishDevDAO.getTotalNumberOfNonRenalSubmissions();
-
-			/** ---return the value---  */
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			int totalNumberOfSubmissions = ishDevDAO.getTotalNumberOfNonRenalSubmissions();
 			return totalNumberOfSubmissions;
 		}
 		catch(Exception e){
@@ -155,9 +134,7 @@ public class ISHBrowseSubmissionNonRenalAssembler extends OffMemoryTableAssemble
 			return 0;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
 		}
 	}
 	

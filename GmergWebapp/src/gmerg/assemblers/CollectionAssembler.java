@@ -49,15 +49,11 @@ public class CollectionAssembler { //Singleton
 	 */
 	public CollectionInfo getCollectionInfo(int collectionId) {
 
-		CollectionInfo collectionInfo = null;
 	    // create a dao
 	    Connection conn = DBHelper.getDBConnection();
-	    CollectionDAO collectionDAO ;
 	    try{
-		    collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-		    // retrieve data from database & get intersection of ids
-		    collectionInfo = collectionDAO.getCollectionInfoById(collectionId);
-		    /** ---return the value object---  */
+	    	CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+	    	CollectionInfo collectionInfo = collectionDAO.getCollectionInfoById(collectionId);
 			return collectionInfo;
 	    }
 		catch(Exception e){
@@ -65,9 +61,7 @@ public class CollectionAssembler { //Singleton
 			return null;
 		}
 	    finally{
-			// release the db resources		
 		    DBHelper.closeJDBCConnection(conn);
-		    collectionDAO = null;
 	    }
 	}
 
@@ -81,12 +75,10 @@ public class CollectionAssembler { //Singleton
 	public ArrayList<String> getUnionOfCollections(String[] selectedCollectionIds, int collectionType, boolean ignoreCase) {
 		Hashtable <String, String> result = new Hashtable<String, String>();
 		
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO;
 		try{
-			collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 			// retrieve data from database & get union of the ids
 			int size = (selectedCollectionIds==null)? 0 : selectedCollectionIds.length;
 			for (int i=0; i<size; i++) {
@@ -97,19 +89,14 @@ public class CollectionAssembler { //Singleton
 					result.put(key, value);
 				}
 			}
-			/** ---return the value object---  */
 			return new ArrayList<String>(result.values());
 		}
 		catch(Exception e){
 			System.out.println("CollectionAssembler::getUnionOfCollections failed !!!");
-			result = new Hashtable<String, String>();
-			/** ---return the value object---  */
-			return new ArrayList<String>(result.values());
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			collectionDAO = null;
 		}
 	}
 	
@@ -121,21 +108,16 @@ public class CollectionAssembler { //Singleton
 	public ArrayList<String> getDifferenceOfCollections(String[] selectedCollectionIds, int collectionType, int attributeCol, int idCol, String opeartion, boolean ignoreCase) {
 		Hashtable <String, String> result = new Hashtable<String, String>();
 		
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO;
 		try{
-			collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 			// retrieve data from database & get union of the ids
 			if (selectedCollectionIds == null)
 				return new ArrayList<String>();
 	
 			ArrayList<String> collectionItemsIds1 = collectionDAO.getCollectionItemsById(Integer.parseInt(selectedCollectionIds[0]));
 			if (selectedCollectionIds.length < 2) {
-				// release db resources
-				DBHelper.closeJDBCConnection(conn);
-				collectionDAO = null;
 				if (opeartion.endsWith("2")) // A-B or B-A
 					return new ArrayList<String>();
 				else
@@ -176,19 +158,15 @@ public class CollectionAssembler { //Singleton
 						result.put(value, value);
 				}
 			}
-			/** ---return the value object---  */
+
 			return new ArrayList<String>(result.values());
 		}
 		catch(Exception e){
 			System.out.println("CollectionAssembler::getDifferenceOfCollections failed !!!");
-			result = new Hashtable<String, String>();
-			/** ---return the value object---  */
-			return new ArrayList<String>(result.values());
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			collectionDAO = null;
 		}
 	}
 	
@@ -205,16 +183,12 @@ public class CollectionAssembler { //Singleton
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO;
 		try{
-			collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 			// retrieve data from database & get union of the ids
 			for (int i=0; i<numSelectedToBeUsed; i++) { 	
 				ArrayList<String> collectionItemsIds = collectionDAO.getCollectionItemsById(Integer.parseInt(selectedCollectionIds[i]));
 				if (numSelectedToBeUsed < 2) {
-					// release db resources
-					DBHelper.closeJDBCConnection(conn);
-					collectionDAO = null;
 					return collectionItemsIds;
 				}
 				
@@ -261,14 +235,10 @@ public class CollectionAssembler { //Singleton
 		}
 		catch(Exception e){
 			System.out.println("CollectionAssembler::getIntersectionOfCollections failed !!!");
-			result = new Hashtable<String, String>();
-			/** ---return the value object---  */
-			return new ArrayList<String>(result.keySet());
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			collectionDAO = null;
 		}
 	}
 
@@ -280,27 +250,19 @@ public class CollectionAssembler { //Singleton
 	 */
 	public ArrayList<String> getCollectionItems(int collectionId) {
 		
-		ArrayList<String> collectionItems = new ArrayList();
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        CollectionDAO collectionDAO;
         try{
-            collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-	        // get data from database
-	        collectionItems = collectionDAO.getCollectionItemsById(collectionId);
-	        /** ---return the value object---  */
+        	CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+        	ArrayList<String>  collectionItems = collectionDAO.getCollectionItemsById(collectionId);
 	        return collectionItems;
         }
 		catch(Exception e){
 			System.out.println("CollectionAssembler::getCollectionItems failed !!!");
-			collectionItems = new ArrayList();
-	        /** ---return the value object---  */
-	        return collectionItems;
+	        return null;
 		}
         finally{
-	        // release db resources
 	        DBHelper.closeJDBCConnection(conn);
-	        collectionDAO = null;
         }
 	}
 		
@@ -311,13 +273,10 @@ public class CollectionAssembler { //Singleton
 		}
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO;
-		String[] collectionNames  = new String[0];
 		try{
-			 collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-			// retrieve data from database
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 			int len = collectionIds.length;
-			collectionNames = new String[len];
+			String[] collectionNames = new String[len];
 			for (int i = 0; i < len; i++) {
 				CollectionInfo collectionInfo = collectionDAO
 						.getCollectionInfoById(Integer.parseInt(collectionIds[i]));
@@ -325,17 +284,15 @@ public class CollectionAssembler { //Singleton
 					collectionNames[i] = collectionInfo.getName();
 				}
 			}
-			/** ---return the value object--- */
+
 			return collectionNames;
 		}
 		catch(Exception e){
 			System.out.println("CollectionAssembler::getCollectionItems failed !!!");
-			collectionNames = new String[0];
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			return null;
 		}
 	}
 
@@ -344,13 +301,12 @@ public class CollectionAssembler { //Singleton
 		if (collectionIds == null || collectionIds.length == 0) {
 			return 0;
 		}
-		int deletedCollectionNumber = 0;
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO;
 		try{
-			collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			int deletedCollectionNumber = 0;
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 			// make change to database
 			for (int i = 0; i < collectionIds.length; i++) {
 				deletedCollectionNumber +=
@@ -361,13 +317,10 @@ public class CollectionAssembler { //Singleton
 		}
 		catch(Exception e){
 			System.out.println("CollectionAssembler::removeCollections failed !!!");
-			// return
-			return deletedCollectionNumber;
+			return 0;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			collectionDAO = null;
 		}
 	}
 	
@@ -380,12 +333,9 @@ public class CollectionAssembler { //Singleton
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO;
-		int ownCollectionNumber = 0;
-		int len = 0;
 		try{
-			collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-			len = collectionIds.length;
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			int len = collectionIds.length;
 			ArrayList<String> candidateIds = new ArrayList<String>();
 			for (int i = 0; i < len; i++) {
 				CollectionInfo collectionInfo = collectionDAO
@@ -394,10 +344,8 @@ public class CollectionAssembler { //Singleton
 					candidateIds.add(Integer.toString(collectionInfo.getId()));
 				}
 			}
-			ownCollectionNumber = candidateIds.size();
+			int ownCollectionNumber = candidateIds.size();
 			if (ownCollectionNumber == 0) {
-				DBHelper.closeJDBCConnection(conn);
-				collectionDAO = null;
 				return "Cannot remove collections belonging to others";
 			}
 			
@@ -418,9 +366,7 @@ public class CollectionAssembler { //Singleton
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			collectionDAO = null;
 		}
 	}
 	
@@ -440,10 +386,9 @@ public class CollectionAssembler { //Singleton
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO;
-		int insertedRecordNumber = 0;
 		try{
-			collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			int insertedRecordNumber = 0;
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 			// find out if the would be inserted collection exists
 			CollectionInfo overwriteCollectionInfo =
 				collectionDAO.getCollectionInfoByName(collectionInfo.getName(), collectionInfo.getOwner());
@@ -456,13 +401,9 @@ public class CollectionAssembler { //Singleton
 						insertedRecordNumber = 
 							collectionDAO.insertCollection(collectionInfo, items);
 						if (insertedRecordNumber == 0) {
-							DBHelper.closeJDBCConnection(conn);
-							collectionDAO = null;
 							return "Failed to insert collection into the database";
 						}
 					} else {
-						DBHelper.closeJDBCConnection(conn);
-						collectionDAO = null;
 						return "Failed to delete duplicated collection(s). Can not overwrite";
 					}
 				} else { // no duplication. insert directly
@@ -470,23 +411,17 @@ public class CollectionAssembler { //Singleton
 					insertedRecordNumber = 
 						collectionDAO.insertCollection(collectionInfo, items);
 					if (insertedRecordNumber == 0) {
-						DBHelper.closeJDBCConnection(conn);
-						collectionDAO = null;
 						return "Failed to insert collection into the database";
 					}
 				}
 			} else {
 				if (overwriteCollectionInfo != null) { // duplication exists, cannot insert
-					DBHelper.closeJDBCConnection(conn);
-					collectionDAO = null;
 					return "Can not insert collection(s) due to the duplication";
 				} else { // no duplication and insert
 					// insert into database
 					insertedRecordNumber = 
 						collectionDAO.insertCollection(collectionInfo, items);
 					if (insertedRecordNumber == 0) {
-						DBHelper.closeJDBCConnection(conn);
-						collectionDAO = null;
 						return "Failed to insert collection into the database";
 					}
 				}
@@ -496,13 +431,10 @@ public class CollectionAssembler { //Singleton
 		}
 		catch(Exception e){
 			System.out.println("CollectionAssembler::insertCollection failed !!!");
-			// return 
-			return (insertedRecordNumber==items.size())? null : "Failed to insert all ids into the database";
+			return "Failed to insert all ids into the database";
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			collectionDAO = null;
 		}
 	}
 	
@@ -546,10 +478,9 @@ public class CollectionAssembler { //Singleton
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO;
-		int updatedRecordNumber = 0;
 		try{
-			collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			int updatedRecordNumber = 0;
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 			// find out if the would be inserted collection exists
 			CollectionInfo overwriteCollectionInfo = collectionDAO.getCollectionInfoByName(collectionInfo.getName(), collectionInfo.getOwner());
 			if (overwrite) {
@@ -557,17 +488,11 @@ public class CollectionAssembler { //Singleton
 					// delete the duplicated one in the database
 					int removedCollectionNumber = collectionDAO.deleteCollectionById(overwriteCollectionInfo.getId());
 					if (removedCollectionNumber == 0) {
-						// release db resources
-						DBHelper.closeJDBCConnection(conn);
-						collectionDAO = null;
 						return -2; // failed to remove duplicate collection in database
 					} else {
 						// update
 						updatedRecordNumber = collectionDAO.updateCollectionSummary(collectionInfo);
 						if (updatedRecordNumber == 0) {
-							// release db resources
-							DBHelper.closeJDBCConnection(conn);
-							collectionDAO = null;
 							return -3; // failed to update collection summary
 						}
 					}
@@ -575,24 +500,15 @@ public class CollectionAssembler { //Singleton
 				else { // no other with simillar name - update
 					updatedRecordNumber = collectionDAO.updateCollectionSummary(collectionInfo);
 					if (updatedRecordNumber == 0) {
-						// release db resources
-						DBHelper.closeJDBCConnection(conn);
-						collectionDAO = null;
 						return -3;
 					}
 				}
 			} else {
 				if (overwriteCollectionInfo!=null && overwriteCollectionInfo.getId()!=collectionInfo.getId()) { // duplication exists, cannot update
-					// release db resources
-					DBHelper.closeJDBCConnection(conn);
-					collectionDAO = null;
 					return -4; // cannot update due to the duplication
 				} else { // no duplication - update
 					updatedRecordNumber = collectionDAO.updateCollectionSummary(collectionInfo);
 					if (updatedRecordNumber == 0) {
-						// release db resources
-						DBHelper.closeJDBCConnection(conn);
-						collectionDAO = null;
 						return -3; // failed to update collection summary
 					}
 				}
@@ -604,9 +520,7 @@ public class CollectionAssembler { //Singleton
 			return 0;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			collectionDAO = null;
 		}
 	} 	
 
@@ -614,13 +528,9 @@ public class CollectionAssembler { //Singleton
 		/** ---get data from dao--- */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO;
-		CollectionInfo collectionInfo = null;
 		try{
-			collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-			// retrieve data from database
-			collectionInfo = collectionDAO.getCollectionInfoByName(collectionName, owner);
-			/** ---return the value object--- */
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			CollectionInfo collectionInfo = collectionDAO.getCollectionInfoByName(collectionName, owner);
 			return collectionInfo;
 		}
 		catch(Exception e){
@@ -628,9 +538,7 @@ public class CollectionAssembler { //Singleton
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			collectionDAO = null;
 		}
 	}
 

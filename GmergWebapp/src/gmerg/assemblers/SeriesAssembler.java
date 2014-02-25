@@ -74,10 +74,9 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 	    
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ArrayDevDAO arrayDevDAO;
-        ArrayList seriesSamples = null;
         try{    
-            arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+            ArrayList seriesSamples = null;
+        	ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
             // get data from database
             if (geoId)
             	seriesSamples = arrayDevDAO.getSamplesForSeries(seriesId, columnIndex, ascending, offset, num);
@@ -100,17 +99,10 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
        }
 		catch(Exception e){
 			System.out.println("SeriesAssembler::retrieveData failed !!!");
-			seriesSamples = null;
-			
-	        // return the value object
-	        DataItem[][] ret = getTableDataFormatFromSampleList(seriesSamples);
-
-		    return ret;
+		    return null;
 		}
         finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDevDAO = null;
         }
     }
     
@@ -138,10 +130,9 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ArrayDevDAO arrayDevDAO;
         int[] totalNumbers = null;
         try{
-	        arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+        	ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
 	
 	        String[] allColTotalsQueries =
 	        { "TOTAL_SAMPLES", "TOTAL_GEO_IDS", "TOTAL_SAMPLE_IDS",
@@ -164,9 +155,7 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 	        return totalNumbers;
 		}	
         finally{
-	        // release db resources
 	        DBHelper.closeJDBCConnection(conn);
-	        arrayDevDAO = null;
         }
     }
 
@@ -196,13 +185,11 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
-		Series series = null;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			
 			// get series details
-			series = arrayDAO.findSeriesBySubmissionId(submissionAccessionId);
+			Series series = arrayDAO.findSeriesBySubmissionId(submissionAccessionId);
 			
 			// get related sample info
 			ArrayList relatedSamples = arrayDAO.findSamplesInCertainSeriesBySubmissionId(submissionAccessionId);
@@ -215,12 +202,10 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 				String[] target = this.addExtraColumnFromStartOfStringArray(source, ("Sample"+ Integer.toString(i+1)));
 				samples.add(target);
 			}
-			
-			/** ---finish the series value object--- */
+
 			if (relatedSamples != null && relatedSamples.size() > 0) {
 				series.setSummaryResults(samples);
 			}
-			/** ---return the composite value object---  */
 			return series;
 		}
 		catch(Exception e){
@@ -228,9 +213,7 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 			return null;
 		}		
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 	
@@ -270,10 +253,9 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
             /** ---get data from dao---  */
             // create a dao
             Connection conn = DBHelper.getDBConnection();
-            ArrayDevDAO arrayDevDAO;
-            Series series = null;
             try{
-	            arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+                Series series = null;
+            	ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
 	            
 	            // get series details
 	            if (geoId)
@@ -281,7 +263,6 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
 	            else
 	            	series = arrayDevDAO.findSeriesByOid(seriesId);
 
-	            /** ---return the composite value object---  */
 	            return series;
             }
     		catch(Exception e){
@@ -289,9 +270,7 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
     			return null;
     		}		
             finally{
-	            // release db resources
 	            DBHelper.closeJDBCConnection(conn);
-	            arrayDevDAO = null;
             }
         }
 

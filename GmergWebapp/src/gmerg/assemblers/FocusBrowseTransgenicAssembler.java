@@ -58,14 +58,11 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		TransgenicDAO transgenicDAO;
-		ArrayList submissions = null;
 		try{
-			transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
-	
-			// get data from database
-			submissions = transgenicDAO.getAllSubmission(column, ascending, offset, num, organs, archiveIds, batchIds, filter);
-			/** ---return the value object---  */
+			TransgenicDAO transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
+
+			ArrayList submissions = transgenicDAO.getAllSubmission(column, ascending, offset, num, organs, archiveIds, batchIds, filter);
+
 			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
 
 			if (null == cache)
@@ -80,16 +77,10 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseTransgenicAssembler::retrieveData !!!");
-			submissions = null;
-			/** ---return the value object---  */
-			DataItem[][] ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
-
-			return ret;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			transgenicDAO = null;
 		}
 	}
 	
@@ -102,14 +93,9 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		TransgenicDAO transgenicDAO;
-		int totalNumberOfSubmissions = 0;
 		try{
-			transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
-	
-			// get data from database
-			totalNumberOfSubmissions = transgenicDAO.getTotalNumberOfSubmissions(organs, archiveIds, batchIds, filter);
-			//* ---return the value---  * /
+			TransgenicDAO transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
+			int totalNumberOfSubmissions = transgenicDAO.getTotalNumberOfSubmissions(organs, archiveIds, batchIds, filter);
 			return totalNumberOfSubmissions;
 		}
 		catch(Exception e){
@@ -117,9 +103,7 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 			return 0;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			transgenicDAO = null;
 		}
 	}
 	
@@ -132,10 +116,9 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		TransgenicDAO transgenicDAO;
 		int[] totalNumbers = null;
 		try{
-			transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
+			TransgenicDAO transgenicDAO = MySQLDAOFactory.getTransgenicDAO(conn);
 			
 			// get data from database
 			String [] allColTotalsQueries = {
@@ -173,13 +156,10 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 		catch(Exception e){
 			System.out.println("FocusBrowseTransgenicAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
-			// return result
 			return totalNumbers;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			transgenicDAO = null;			
 		}
 	}
 

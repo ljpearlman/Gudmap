@@ -45,18 +45,14 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 			
 			return cache.getData();
 	    }
-		/** ---get data from dao---  */
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
-		ArrayList browseSubmissions = null;
 		try{
-			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
 	
 			// get data from database
-			browseSubmissions = ishDevDAO.getAllSubmissionInsitu(column, ascending, offset, num, filter);
-
-//			System.out.println("============ BrowsIsh: Data retrieved")	;
+			ArrayList browseSubmissions = ishDevDAO.getAllSubmissionInsitu(column, ascending, offset, num, filter);
 			DataItem[][] ret = getTableDataFormatFromIshList(browseSubmissions);
 
 			if (null == cache)
@@ -71,16 +67,10 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		}
 		catch(Exception e){
 			System.out.println("ISHBrowseAssembler::retrieveData !!!");
-			browseSubmissions = null;
-
-			DataItem[][] ret = getTableDataFormatFromIshList(browseSubmissions);
-
-			return ret;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
 		}
 		/** ---return the value object---  */
 		
@@ -97,10 +87,9 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
 		int[] totalNumbers = null;
 		try{
-			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
 	
 			// get data from database
 			String [] allColTotalsQueries = {
@@ -132,13 +121,10 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		catch(Exception e){
 			System.out.println("ISHBrowseAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
-			// return result
 			return totalNumbers;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
 		}
 	}
 	
@@ -148,17 +134,11 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 	 */
 	public int retrieveNumberOfRows() {
 
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
-		int totalNumberOfSubmissions = 0;		
 		try{
-		ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-	
-			// get data from database
-			totalNumberOfSubmissions = ishDevDAO.getTotalNumberOfSubmissions(filter);
-			/** ---return the value---  */
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			int totalNumberOfSubmissions = ishDevDAO.getTotalNumberOfSubmissions(filter);
 			return totalNumberOfSubmissions;
 		}
 		catch(Exception e){
@@ -166,9 +146,7 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 			return 0;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
 		}
 	}	
 	
@@ -185,7 +163,6 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 	public boolean deleteSelectedSubmissions(String[] selectedSubmissions) {
 		
 		boolean submissionDeleted = false;
-		
 		// no selected submissions
 		if (selectedSubmissions == null || selectedSubmissions.length == 0) {
 			return submissionDeleted;
@@ -193,14 +170,9 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			// delete
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
 			submissionDeleted = ishEditDAO.deleteSelectedSubmission(selectedSubmissions);
-			// return
 			return submissionDeleted;
 		}
 		catch(Exception e){
@@ -208,9 +180,7 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 			return false;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	

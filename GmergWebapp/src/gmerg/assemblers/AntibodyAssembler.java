@@ -17,18 +17,12 @@ public class AntibodyAssembler {
 			return null;
 		}
 
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		Antibody antibody = null;
-		
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
-			antibody = ishDAO.findAntibodyByAntibodyId(antibodyId);
-		
-			//get related ihc submissions
+			Antibody antibody = ishDAO.findAntibodyByAntibodyId(antibodyId);
 			if (antibody.getGeneSymbol() != null){
 				ArrayList relatedSubmissionISH = ishDAO.findRelatedSubmissionBySymbolISH(antibody.getGeneSymbol());		
 				if (null != relatedSubmissionISH) {
@@ -42,9 +36,7 @@ public class AntibodyAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 	

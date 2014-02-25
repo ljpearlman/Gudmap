@@ -31,11 +31,9 @@ public class DBSummaryAssembler {
         /** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		DBSummary dbSummary = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			/** ---get data--- */
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+
 			// get total number of ish public genes
 			int numberOfPublicGenesISH = ishDAO.findNumberOfPublicGenes("ISH");
 			
@@ -106,7 +104,7 @@ public class DBSummaryAssembler {
 		    // added by xingjun - 26/08/2008 - transgenic data - end
 		    
 			/** ---complement summary object--- */
-			dbSummary = new DBSummary();
+		    DBSummary dbSummary = new DBSummary();
 			dbSummary.setTotIshGenes(Integer.toString(numberOfPublicGenesISH));
 			dbSummary.setTotAvailIshSubs(Integer.toString(numberOfPublicSubmissionsISH));
 			dbSummary.setTotEditIshSubs(Integer.toString(numberOfEditSubmissionsISH));
@@ -126,7 +124,7 @@ public class DBSummaryAssembler {
 			
 			dbSummary.setTotIhcGenes(Integer.toString(numberOfPublicGenesIHC));
 			dbSummary.setTotTgGenes(Integer.toString(numberOfPublicGenesTG));
-			/** ---return the composite value object---  */
+
 			return dbSummary;
 		}
 		catch(Exception e){
@@ -134,9 +132,7 @@ public class DBSummaryAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 

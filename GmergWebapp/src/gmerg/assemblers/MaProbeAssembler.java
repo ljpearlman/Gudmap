@@ -20,24 +20,20 @@ public class MaProbeAssembler {
     
     
 	public Probe getData(String probeId, String maprobeId) {
-		
-	    System.out.println("probeId="+probeId+" maprobeId="+maprobeId);
+		if (debug)
+			System.out.println("probeId="+probeId+" maprobeId="+maprobeId);
 
 		if ((probeId == null || probeId.equals("")) && (maprobeId == null || maprobeId.equals(""))) {
 		    System.out.println("MaProbeAssembler.getData  !!! possible error: null probeId and maprobeId");
 			return null;
 		}
 
-
 		Probe probe = null;
-		if (debug)
-			System.out.println("  probeId="+probeId+"  maprobeId="+maprobeId);
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			probe = ishDAO.findMaProbeByProbeId(probeId, maprobeId);
 	
 			if (probe == null)
@@ -68,9 +64,7 @@ public class MaProbeAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 

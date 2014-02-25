@@ -57,16 +57,14 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ISHDAO ishDAO;
-        ArrayList arraysForGene = new ArrayList();
         try{
-	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+        	ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 	        
 	        // get data from database
 			// - use symbol from gene object instead of geneId params 
 			// - sometimes geneId is actually synonym of the gene and symbol of gene object 
 			//   will always be the real symbol
-	        arraysForGene = ishDAO.findRelatedSubmissionBySymbolArray(gene.getSymbol(), columnIndex, ascending, offset, num);
+        	ArrayList arraysForGene = ishDAO.findRelatedSubmissionBySymbolArray(gene.getSymbol(), columnIndex, ascending, offset, num);
 
 	        // return the value object
 	        DataItem[][] ret =  getTableDataFormatFromSamplesList(arraysForGene);
@@ -83,18 +81,11 @@ public class GeneAssembler extends OffMemoryTableAssembler{
         }
 		catch(Exception e){
 			System.out.println("GeneAssembler::retrieveData !!!");
-			arraysForGene = new ArrayList();
-			
-	        // return the value object
-	        DataItem[][] ret =  getTableDataFormatFromSamplesList(arraysForGene);
-		
-			return ret;
+			return null;
 		}		
         finally{
-	        // release db resources
 	        DBHelper.closeJDBCConnection(conn);
-	        ishDAO = null;
-        }
+       }
 
     }
 
@@ -120,10 +111,9 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ISHDAO ishDAO;
         int[] totalNumbers = new int[0];
         try{
-	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+        	ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 	
 	        String[] allColTotalsQueries =
 	        { "TOTAL_GENE_RELATED_ARRAYS", "TOTAL_GENE_PROBEIDS", "TOTAL_GENE_SIGNAL",
@@ -149,9 +139,7 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 	        return totalNumbers;
 		}		
         finally{
-	        // release db resources
 	        DBHelper.closeJDBCConnection(conn);
-	        ishDAO = null;
         }
     }
     
@@ -191,15 +179,12 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 		String geneSymbol = symbol;
 		String alternateSymbol = null;
 		
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		Gene geneInfo = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			// get gene info
-			geneInfo = ishDAO.findGeneInfoBySymbol(geneSymbol);
+			Gene geneInfo = ishDAO.findGeneInfoBySymbol(geneSymbol);
 			
 			// might not find the gene
 			if (geneInfo == null) {
@@ -255,9 +240,7 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 			return null;
 		}		
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
         

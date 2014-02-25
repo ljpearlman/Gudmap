@@ -65,10 +65,9 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
-		Object[][] genelistItems = null;;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			Object[][] genelistItems = null;;
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			
 			// get data
 			genelistItems = arrayDAO.getGenelistItemsByGenelistId(genelistId, columnId+1, ascending, offset+1, num );
@@ -88,14 +87,10 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 		}
 		catch(Exception e){
 			System.out.println("ProcessedGenelistDataAssembler::retrieveData failed !!!");
-			genelistItems = null;
-			DataItem[][] ret = getTableDataFormatFromGenelistData(genelistItems);
-			return ret;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 
@@ -105,17 +100,12 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 	 * @return
 	 */
 	public int retrieveNumberOfRows () {
-		/** ---get data from dao---  */
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
-		int total;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			
-			// get data
-			total = arrayDAO.getGenelistsEntryNumber(genelistId);
-			/** ---return the composite value object---  */
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			int total = arrayDAO.getGenelistsEntryNumber(genelistId);
 			return total;
 		}
 		catch(Exception e){
@@ -123,9 +113,7 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 			return 0;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 		
@@ -152,13 +140,11 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 	 */
 	private ArrayList retrieveSearchLinks() {
 
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
 		ArrayList externalLinks	 = new ArrayList();	
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			
 			// get data
 			externalLinks = arrayDAO.getGenelistExternalLinks();
@@ -167,14 +153,10 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 		}
 		catch(Exception e){
 			System.out.println("ProcessedGenelistDataAssembler::retrieveSearchLinks failed !!!");
-			externalLinks = new ArrayList();	
-
-			return externalLinks;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 

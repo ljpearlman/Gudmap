@@ -20,13 +20,9 @@ public class TrackingIPAssembler {
 		boolean result = false;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		TrackingIPDAO ipDAO;
 		try{
-			ipDAO = MySQLDAOFactory.getTrackingIPDAO(conn);
-		
-			// get data
+			TrackingIPDAO ipDAO = MySQLDAOFactory.getTrackingIPDAO(conn);
 			result = ipDAO.updateIPLog(ip, viewid, browser, platform);
-			/** ---return the composite value object---  */
 			return result;
 		} 
 		catch(Exception e){
@@ -34,9 +30,7 @@ public class TrackingIPAssembler {
 			return false;
 		}
 		finally{
-			/** release the db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ipDAO = null;
 		}
 	}
 }

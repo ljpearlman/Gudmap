@@ -56,20 +56,16 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDevDAO arrayDevDAO;
-		FocusForAllDAO focusForAllDAO;
 		ArrayList seriesList = null;
 
 		try{
 			if (organ == null) {
-				arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-				// get data from database
+				ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
 				seriesList = arrayDevDAO.getAllSeries(columnIndex, ascending, offset, num, platform);
 				arrayDevDAO = null;
 			}
 			else {
-				focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-				// get data from database
+				FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
 				seriesList = focusForAllDAO.getSeriesList(columnIndex, ascending, offset, num, organ, platform);
 				focusForAllDAO = null;
 			}
@@ -88,35 +84,27 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 		}
 		catch(Exception e){
 			System.out.println("SeriesBrowseAssembler::retrieveData failed !!!");
-			seriesList = null;
-			DataItem[][] ret = getTableDataFormatFromSeriesList(seriesList);
-			return ret;
+			return null;
 		}	
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			focusForAllDAO = null;
-			arrayDevDAO = null;
 		}
 	}
 	
 	public int retrieveNumberOfRows() {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDevDAO arrayDevDAO;
 		int totalNumberOfSeries = 0;
 		
 		try{
 			//System.out.println("ORGAN 0827:"+organ);
 			if (organ == null) {
-				arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-				// get data from database
+				ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
 				totalNumberOfSeries = arrayDevDAO.getTotalNumberOfSeries(platform);
 				arrayDevDAO = null;
 			}
 			else {
 				FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-				// get data from database
 				totalNumberOfSeries = focusForAllDAO.getNumberOfSeries(organ, platform);
 				focusForAllDAO = null;
 			}
@@ -128,7 +116,6 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 			return 0;
 		}	
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
 		}
 	}
@@ -139,10 +126,9 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDevDAO arrayDevDAO;
 		int[] totalNumbers = null;
 		try{
-			arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+			ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
 			
 			// get data from database
 			String [] allColTotalsQueries = {"TOTAL_NUMBER_OF_EXPERIMENT_NAME",
@@ -167,9 +153,7 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 			return totalNumbers;
 		}	
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDevDAO = null;
 		}
 	}
 	

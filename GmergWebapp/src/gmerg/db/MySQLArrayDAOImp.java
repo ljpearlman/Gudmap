@@ -41,51 +41,52 @@ public class MySQLArrayDAOImp implements ArrayDAO {
     
     // constructor with connection initialisation
     public MySQLArrayDAOImp(Connection conn) {
-	this.conn = conn;
+    	this.conn = conn;
     }
     
     /**
      * @return total number of submissions
      */
     public String getTotalNumberOfSubmission() {
-	long enter = 0;
-	if (performance)
-	    enter = System.currentTimeMillis();
-	
-	String totalNumber = new String("");
-	ResultSet resSet = null;
-	ParamQuery parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_ARRAY");
-	PreparedStatement prepStmt = null;
-	
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    parQ.setPrepStat(conn);
-	    prepStmt = parQ.getPrepStat();
-	    
-	    // execute
-	    resSet = prepStmt.executeQuery();
-	    
-	    if (resSet.first()) {
-		totalNumber = Integer.toString(resSet.getInt(1));
-	    }
-	    
-	    // close the db object
-	    DBHelper.closePreparedStatement(prepStmt);
-	    //                  DBUtil.closeJDBCConnection(conn);
-	    
-	} catch (SQLException se) {
-	    se.printStackTrace();
-	}
-	
-	if (performance) {
-	    enter = (System.currentTimeMillis() - enter)/1000;
-	    if (2 < enter)
-		System.out.println("MySQLArrayDAOImp.getTotalNumberOfSubmission takes " + enter+" seconds");
-	}
-	
-	return totalNumber;
+		long enter = 0;
+		if (performance)
+		    enter = System.currentTimeMillis();
+		
+		String totalNumber = new String("");
+		ResultSet resSet = null;
+		ParamQuery parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_ARRAY");
+		PreparedStatement prepStmt = null;
+		
+		try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    parQ.setPrepStat(conn);
+		    prepStmt = parQ.getPrepStat();
+		    
+		    // execute
+		    resSet = prepStmt.executeQuery();
+		    
+		    if (resSet.first()) {
+			totalNumber = Integer.toString(resSet.getInt(1));
+		    }
+		    
+			if (performance) {
+			    enter = (System.currentTimeMillis() - enter)/1000;
+			    if (2 < enter)
+			    	System.out.println("MySQLArrayDAOImp.getTotalNumberOfSubmission takes " + enter+" seconds");
+			}
+			
+			return totalNumber;
+			
+		} catch (SQLException se) {
+		    se.printStackTrace();
+		    return null;
+		}
+		finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+		}
     }
     
     /**

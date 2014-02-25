@@ -464,15 +464,16 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
             if (resSet.first()) {
                 totalNumber = resSet.getInt(1);
             }
-
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-            //			DBUtil.closeJDBCConnection(conn);
+    		return totalNumber;
 
         } catch (SQLException se) {
             se.printStackTrace();
+    		return 0;
         }
-		return totalNumber;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
 	}
 	
 	/**
@@ -589,14 +590,16 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 			// execute
 			resSet = prepStmt.executeQuery();
 			ImageInfo = formatImageResultSet(resSet);
+			return ImageInfo;
 			
-			// close the connection
-			DBHelper.closePreparedStatement(prepStmt);
-//			DBUtil.closeJDBCConnection(conn);
 		} catch (SQLException se) {
 			se.printStackTrace();
+			return null;
 		}
-		return ImageInfo;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**

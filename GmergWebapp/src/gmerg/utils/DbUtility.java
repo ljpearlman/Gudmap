@@ -28,22 +28,26 @@ public class DbUtility {
     public static ArrayList<String> retrieveGeneProbeIds(String geneSymbol, String platformId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-	        // get data from database
-		ArrayList<String> probeIds = arrayDAO.getProbeSetIdBySymbol(geneSymbol, platformId);
-		if (probeIds == null || probeIds.size() == 0) {
-		    GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
-		    String alternateSymbol = geneDAO.findSymbolBySynonym(geneSymbol);
-		    probeIds = arrayDAO.getProbeSetIdBySymbol(alternateSymbol, platformId);
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			
+		        // get data from database
+			ArrayList<String> probeIds = arrayDAO.getProbeSetIdBySymbol(geneSymbol, platformId);
+			if (probeIds == null || probeIds.size() == 0) {
+			    GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
+			    String alternateSymbol = geneDAO.findSymbolBySynonym(geneSymbol);
+			    probeIds = arrayDAO.getProbeSetIdBySymbol(alternateSymbol, platformId);
+			}
+			
+			return probeIds;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGeneProbeIds failed !!!");
+			return null;
 		}
-		
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        arrayDAO = null;
-		
-	        // return the value object
-		return probeIds;
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
     
     /**
@@ -54,17 +58,18 @@ public class DbUtility {
     public static ArrayList<String> retrieveImageIdsByGeneSymbol(String symbol) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-		
-        // get data from database
-		ArrayList<String> imageIds = collectionDAO.getInsituSubmissionImageIdByGene(symbol);
-		
-        // release db resources
-        DBHelper.closeJDBCConnection(conn);
-        collectionDAO = null;
-	
-        // return the value object
-		return imageIds;
+		try{
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			ArrayList<String> imageIds = collectionDAO.getInsituSubmissionImageIdByGene(symbol);
+			return imageIds;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveImageIdsByGeneSymbol failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
     
     /**
@@ -76,41 +81,46 @@ public class DbUtility {
     public static ArrayList<String> retrieveGenelistProbeIds(String genelistId, String platformId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
-		
-		// check if given genelist is linked to the given platform
-		// if it is, return relevant probe ids;
-		// if not, get probe ids on the given platform
-		String geneListPlatformId = genelistDAO.getAnalysisGenelistPlatformId(genelistId);
-		
-		// given genelist is not linked to any platform in GUDMAP database
-		if (geneListPlatformId == null && geneListPlatformId.equals("")) {
-		    return null;
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+			
+			// check if given genelist is linked to the given platform
+			// if it is, return relevant probe ids;
+			// if not, get probe ids on the given platform
+			String geneListPlatformId = genelistDAO.getAnalysisGenelistPlatformId(genelistId);
+			
+			// given genelist is not linked to any platform in GUDMAP database
+			if (geneListPlatformId == null && geneListPlatformId.equals("")) {
+			    return null;
+			}
+			
+			ArrayList<String> probeSetIds = null;
+			if (geneListPlatformId.equalsIgnoreCase(platformId)) {
+			    probeSetIds = 
+				arrayDAO.getProbeSetIdByAnalysisGenelistId(genelistId, true, 0, 20);
+			} else {
+			    // get relevant gene symbols
+			    String[] geneSymbols = 
+				genelistDAO.getGeneSymbolByAnalysisGenelistId(genelistId, geneListPlatformId);
+			    
+			    // get probe ids on the given platform
+			    if (geneSymbols != null && geneSymbols.length > 0) {				
+			    	probeSetIds = arrayDAO.getProbeSetIdBySymbols(geneSymbols, platformId);
+			    }
+			}
+			
+	
+	    	return probeSetIds;
+    	
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGeneProbeIds failed !!!");
+			return null;
 		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
 		
-		ArrayList<String> probeSetIds = null;
-		if (geneListPlatformId.equalsIgnoreCase(platformId)) {
-		    probeSetIds = 
-			arrayDAO.getProbeSetIdByAnalysisGenelistId(genelistId, true, 0, 20);
-		} else {
-		    // get relevant gene symbols
-		    String[] geneSymbols = 
-			genelistDAO.getGeneSymbolByAnalysisGenelistId(genelistId, geneListPlatformId);
-		    
-		    // get probe ids on the given platform
-		    if (geneSymbols != null && geneSymbols.length > 0) {				
-		    	probeSetIds = arrayDAO.getProbeSetIdBySymbols(geneSymbols, platformId);
-		    }
-		}
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		genelistDAO = null;
-		
-		// return value
-    	return probeSetIds;
     }
     
     /**
@@ -121,61 +131,65 @@ public class DbUtility {
     public static String retrieveGenelistTitle(String genelistId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-	        // get data from database
-		String genelistTitle = arrayDAO.getAnalysisGenelistTitle(genelistId);
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		// return value
-		return genelistTitle.replace("_", " ");
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			String genelistTitle = arrayDAO.getAnalysisGenelistTitle(genelistId);
+			return genelistTitle.replace("_", " ");
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGenelistTitle failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
     
 	public static String retrieveGenelist(String genelistId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-
-        // get data from database
-		String genelist = arrayDAO.getAnalysisGenelist(genelistId);
-
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-
-		// return value
-		return genelist;
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			String genelist = arrayDAO.getAnalysisGenelist(genelistId);
+			return genelist;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGenelist failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
 	}
     
     //***************************************************************************************************
 	public static ArrayList<SearchLink> retrieveSearchLinks() {
 	
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			
+			// get data
+			ArrayList<SearchLink> links = arrayDAO.getGenelistExternalLinks();
+			ArrayList<SearchLink> externalLinks = new ArrayList<SearchLink>(); 
+			for(SearchLink link: links) {
+			    if(link.getName().equalsIgnoreCase("GO") || 
+			       link.getName().equalsIgnoreCase("OMIM") || 
+			       link.getName().indexOf("MRC")>=0 || 
+			       link.getName().equalsIgnoreCase("KEGG_OLD"))
+				continue;
+			    externalLinks.add(link);
+			}
+			return externalLinks;
 		
-		// get data
-		ArrayList<SearchLink> links = arrayDAO.getGenelistExternalLinks();
-		ArrayList<SearchLink> externalLinks = new ArrayList<SearchLink>(); 
-		for(SearchLink link: links) {
-		    if(link.getName().equalsIgnoreCase("GO") || 
-		       link.getName().equalsIgnoreCase("OMIM") || 
-		       link.getName().indexOf("MRC")>=0 || 
-		       link.getName().equalsIgnoreCase("KEGG_OLD"))
-			continue;
-		    externalLinks.add(link);
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveSearchLinks failed !!!");
+			return null;
 		}
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		/** ---return the composite value object---  */
-		return externalLinks;
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
     
     public static String[] retrieveSearchLinkTitles() {
@@ -196,17 +210,18 @@ public class DbUtility {
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
-		
-		// get data
-		ArrayList geneSymbols = geneDAO.getSymbolsFromGeneInput(input, wildcard);
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		geneDAO = null;
-		
-		/** ---return the value object---  */
-		return geneSymbols;
+		try{
+			GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
+			ArrayList geneSymbols = geneDAO.getSymbolsFromGeneInput(input, wildcard);
+			return geneSymbols;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGeneSymbolsFromGeneInput failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
     
     /**
@@ -217,17 +232,18 @@ public class DbUtility {
     public static String retrieveGeneSymbolByMGIId(String mgiId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
-		
-		// get data
-		String geneSymbol = geneDAO.getGeneSymbolByMGIId(mgiId);
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		geneDAO = null;
-		
-		/** ---return the value object---  */
-		return geneSymbol;
+		try{
+			GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
+			String geneSymbol = geneDAO.getGeneSymbolByMGIId(mgiId);
+			return geneSymbol;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGeneSymbolByMGIId failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
     
     /**
@@ -237,17 +253,18 @@ public class DbUtility {
     public static MasterTableInfo[] getAllMasterTablesInfo() {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-		// get data
-		MasterTableInfo[] masterTableList = arrayDAO.getMasterTableList(); 
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		// return value object
-		return masterTableList;
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			MasterTableInfo[] masterTableList = arrayDAO.getMasterTableList(); 
+			return masterTableList;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::getAllMasterTablesInfo failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
     
     /**
@@ -258,17 +275,18 @@ public class DbUtility {
     public static String getMasterTablePlatformId(String masterTableId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-		// get data
-		String platformId = arrayDAO.getMasterTablePlatformId(masterTableId);
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-		
-		// return value object
-		return platformId;
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			String platformId = arrayDAO.getMasterTablePlatformId(masterTableId);
+			return platformId;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::getMasterTablePlatformId failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
     
     /**
@@ -279,16 +297,18 @@ public class DbUtility {
     public static String getGenelistPlatformId(String genelistId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
-		
-		// get data
-		String platformId = genelistDAO.getAnalysisGenelistPlatformId(genelistId);
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		
-		// return value object
-		return platformId;
+		try{
+			GenelistDAO genelistDAO = MySQLDAOFactory.getGenelistDAO(conn);
+			String platformId = genelistDAO.getAnalysisGenelistPlatformId(genelistId);
+			return platformId;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::rgetGenelistPlatformId failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
     
     /**
@@ -305,14 +325,19 @@ public class DbUtility {
 	
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-		// get data
-		ArrayList<String> relevantGudmapIds = arrayDevDAO.getRelevantGudmapIds(candidateGudmapIds, Utility.getUserPriviledges());
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		
-		return relevantGudmapIds;
+		try{
+			ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+			ArrayList<String> relevantGudmapIds = arrayDevDAO.getRelevantGudmapIds(candidateGudmapIds, Utility.getUserPriviledges());
+			return relevantGudmapIds;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::checkGudmapIds failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
     }
     
     
@@ -329,14 +354,19 @@ public class DbUtility {
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-		
-		// get data
-		//		ArrayList<String> relevantSymbols = arrayDevDAO.getRelevantSymbols(candidateSymbols);
-		ArrayList<String> relevantSymbols = arrayDevDAO.getRelevantSymbols(candidateSymbols, Utility.getUserPriviledges());
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		return relevantSymbols;
+		try{
+			ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+			ArrayList<String> relevantSymbols = arrayDevDAO.getRelevantSymbols(candidateSymbols, Utility.getUserPriviledges());
+			return relevantSymbols;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::checkGeneSymbols failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
     }
     
     /**
@@ -352,13 +382,18 @@ public class DbUtility {
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-		
-		// get data
-		ArrayList<String> relevantProbeSetIds = arrayDevDAO.getRelevantProbeSetIds(candidateProbeSetIds, platformId);
-		
-		DBHelper.closeJDBCConnection(conn);
-		return relevantProbeSetIds;
+		try{
+			ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+			ArrayList<String> relevantProbeSetIds = arrayDevDAO.getRelevantProbeSetIds(candidateProbeSetIds, platformId);
+			return relevantProbeSetIds;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::checkProbeSetIds failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
     }
 
     /**
@@ -370,13 +405,19 @@ public class DbUtility {
 		}
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-		
-		// get data
-		ArrayList<String> relevantImageIds = arrayDevDAO.getRelevantImageIds(candidateImageIds, Utility.getUserPriviledges());
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		return relevantImageIds;
+		try{
+			ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+			ArrayList<String> relevantImageIds = arrayDevDAO.getRelevantImageIds(candidateImageIds, Utility.getUserPriviledges());
+			return relevantImageIds;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::checkImageIds failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
     }
     
     /** DB query result is returned as a ArrayList of Object for 1 column query or Object[]
@@ -411,53 +452,54 @@ public class DbUtility {
 				    }
 				}
 		    }
+			if (0 == ret.size())
+			    return null;
+			
+			return ret;
 		    
-		    // close the db object
-		    DBHelper.closeJDBCConnection(conn);
 		} catch (SQLException se) {
 		    se.printStackTrace();
-		}
-	
-		if (0 == ret.size())
 		    return null;
-		
-		return ret;
+		}
+        finally{
+		    DBHelper.closeJDBCConnection(conn);        	
+        }
     }
     
 	public static ArrayList<String> getListOfSampleNames(String dataset, String stage, String sample) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-		
-		ArrayList<String> sampleListNames = null;
-		sampleListNames = arrayDAO.findSampleList(dataset, stage, sample);
-			
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-
-
-		// return value
-    	return sampleListNames;
-
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			ArrayList<String> sampleListNames = null;
+			sampleListNames = arrayDAO.findSampleList(dataset, stage, sample);
+	    	return sampleListNames;
+	    	
+		} catch(Exception e){
+			System.out.println("DBUtility::getListOfSampleNames failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
 	}
 
 	public static ArrayList<GenelistTreeInfo> getRefGenelists() {
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			ArrayList<GenelistTreeInfo> result = null;
+			result = arrayDAO.getRefGenelists();
+	    	return result;
+	    	
+		} catch(Exception e){
+			System.out.println("DBUtility::getRefGenelists failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
 
-		ArrayList<GenelistTreeInfo> result = null;
-		result = arrayDAO.getRefGenelists();
-			
-		
-		// release db resources
-		DBHelper.closeJDBCConnection(conn);
-		arrayDAO = null;
-
-
-		// return value
-    	return result;
 	}
     
 }   

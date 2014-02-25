@@ -29,16 +29,11 @@ public class ArrayAnalysisAssembler {
 	 */
 	public String[][] retrieveSampleIds(String seriesGEOId) {
 		
-		String[][] sampleIds = null;
-
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 		try{
-			 arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			// get data
-			sampleIds = arrayDAO.findSampleIdsBySeriesId(seriesGEOId);
-			/** ---return the value object---  */
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			String[][] sampleIds = arrayDAO.findSampleIdsBySeriesId(seriesGEOId);
 			return sampleIds;
 		}
 		catch(Exception e){
@@ -46,9 +41,7 @@ public class ArrayAnalysisAssembler {
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 	
@@ -59,15 +52,11 @@ public class ArrayAnalysisAssembler {
 	 */
 	public DataSet retrieveExpressionData(String[][] samplesInfo) {
 		
-		DataSet analysisDataSet =null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-	        // get data
-			analysisDataSet = arrayDAO.getAnalysisDataSetBySampleIds(samplesInfo);
-			/** ---return the value object---  */
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			DataSet analysisDataSet = arrayDAO.getAnalysisDataSetBySampleIds(samplesInfo);
 			return analysisDataSet;
 		}
 		catch(Exception e){
@@ -75,9 +64,7 @@ public class ArrayAnalysisAssembler {
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 	
@@ -87,27 +74,19 @@ public class ArrayAnalysisAssembler {
 	 */
 	public ArrayList getSeriesGEOIds() {
 		
-		ArrayList seriesGEOIds = null;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			// get data
-			seriesGEOIds = arrayDAO.getAllSeriesGEOIds();
-			/** ---return the value object---  */
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			ArrayList seriesGEOIds = arrayDAO.getAllSeriesGEOIds();
 			return seriesGEOIds;
 		}
 		catch(Exception e){
 			System.out.println("ArrayAnalysisAssembler::getSeriesGEOIds failed !!!");
-			seriesGEOIds = new ArrayList();
-			/** ---return the value object---  */
-			return seriesGEOIds;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 

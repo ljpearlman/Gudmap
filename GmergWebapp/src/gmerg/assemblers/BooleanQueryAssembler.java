@@ -45,11 +45,9 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 	    }
 
 		Connection conn = DBHelper.getDBConnection();
-		BooleanQueryDAO booleanQueryDAO;
-		ArrayList list = new ArrayList();
 		try{
-			booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
-			list =  booleanQueryDAO.getAllSubmissions(input, column, ascending, offset, num, filter);
+			BooleanQueryDAO booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
+			ArrayList list =  booleanQueryDAO.getAllSubmissions(input, column, ascending, offset, num, filter);
 
 	        DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
 
@@ -65,16 +63,10 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 		}
 		catch(Exception e){
 			System.out.println("BooleanQueryAssembler::retrieveData failed !!!");
-			list = null;
-
-	        DataItem[][] ret = QuickSearchAssembler.getTableDataFormatFromArrayList(list);
-
-			return ret;
+			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			booleanQueryDAO = null;
 		}
 	}
 	
@@ -86,11 +78,9 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 		cache = null;
 
 		Connection conn = DBHelper.getDBConnection();
-		BooleanQueryDAO booleanQueryDAO;
-		int n = 0;
 		try{
-			booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
-			n =  booleanQueryDAO.getTotalNumberOfSubmissions(input, filter);
+			BooleanQueryDAO booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
+			int n =  booleanQueryDAO.getTotalNumberOfSubmissions(input, filter);
 	        return n;
 		}
 		catch(Exception e){
@@ -98,9 +88,7 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 	        return 0;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			booleanQueryDAO = null;
 		}
 	}
 	
@@ -127,27 +115,19 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 	 * @author xingjun - 06/03/2009
 	 */
 	public static ArrayList<String> retrieveGenes(String queryString){
-//		System.out.println("booleanQuery@geneType: " + queryString);
 		
 		Connection conn = DBHelper.getDBConnection();
-		BooleanQueryDAO booleanQueryDAO;
-		ArrayList<String> genes = new ArrayList<String>();
 		try{
-//			String[] genes = {"cd24a", "wnt4"}; //fake results
-			booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
-			genes = booleanQueryDAO.getGeneSymbols(queryString);
-//			System.out.println("booleanQuery@gene numbers: " + genes.size());
+			BooleanQueryDAO booleanQueryDAO = MySQLDAOFactory.getBooleanQueryDAO(conn);
+			ArrayList<String> genes = booleanQueryDAO.getGeneSymbols(queryString);
 			return genes;
 		}
 		catch(Exception e){
 			System.out.println("BooleanQueryAssembler::retrieveGenes failed !!!");
-			genes = new ArrayList<String>();
-			return genes;
+			return null;
 		}
 		finally{
-			// release the db resources		
 			DBHelper.closeJDBCConnection(conn);
-			booleanQueryDAO = null;
 		}
 	}
 	 

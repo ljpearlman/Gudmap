@@ -62,10 +62,8 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
-		ArrayList viewableSubmissions = null;
 		try{
-			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
 	
 			String[] subIds = (String[]) ids.toArray(new String[ids.size()]);
 	
@@ -74,9 +72,9 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 //			System.out.println("EntriesCollectionAssembler:retrieveData:askedSubNum: " + askedSubmissionNumber);
 //			System.out.println("EntriesCollectionAssembler:retrieveData:userPrivilege: " + userPrivilege);
 			
-			viewableSubmissions = ishDevDAO.getCollectionSubmissionBySubmissionId(userPrivilege, 0, subIds, columnIndex, ascending, offset, num);
+			ArrayList viewableSubmissions = ishDevDAO.getCollectionSubmissionBySubmissionId(userPrivilege, 0, subIds, columnIndex, ascending, offset, num);
 //			System.out.println("EntriesCollectionBrowseAssembler:retrieveData:entries: " + viewableSubmissions);
-			/** ---return the value object--- */
+
 			DataItem[][] ret = getTableDataFormatFromCollectionList(viewableSubmissions);
 
 			if (null == cache)
@@ -91,16 +89,10 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		}
 		catch(Exception e){
 			System.out.println("EntriesCollectionBrowseAssembler::retrieveData !!!");
-			viewableSubmissions = null;
-			/** ---return the value object--- */
-			DataItem[][] ret = getTableDataFormatFromCollectionList(viewableSubmissions);
-
-			return ret;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
 		}
 	}
 	

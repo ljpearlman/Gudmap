@@ -75,16 +75,13 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			return cache.getData();
 	    }
 
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusForAllDAO focusForAllDAO;
-		ArrayList submissions = null;
 		try{
 			// get data from database
-			focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+			FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
 			
-			submissions =
+			ArrayList submissions =
 				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
 						stage, gene, archiveId, batchId, String.valueOf(offset), String.valueOf(num), filter);
 
@@ -107,21 +104,10 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		}
 		catch(Exception e){
 			System.out.println("FocusBrowseAssembler::retrieveData !!!");
-			submissions = null;
-
-			/** ---return the value object---  */
-			DataItem[][] ret = null;
-			if ("array".equals(getParam("assayType")))
-				ret = getTableDataFormatFromArrayList(submissions);
-			else
-				ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
-
-			return ret;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			focusForAllDAO = null;
 		}
 	}
 	
@@ -133,17 +119,11 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		if (debug)
 		    System.out.println("FocusBrowseAssembler.retrieveNumberOfRows");
 
-        /** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusForAllDAO focusForAllDAO;
-		int n = 0;
 		try{
-			focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-			
-	        // get number of public ish sumbissions
-	//		int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage);
-			n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, filter);
+			FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
+			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, filter);
 			return n;
 		}
 		catch(Exception e){
@@ -151,9 +131,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			return 0;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			focusForAllDAO = null;
 		}
 	}
 	
@@ -166,10 +144,9 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
 		int[] totalNumbers = null;
 		try{
-			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
 	
 			// get data from database
 			String [] allColTotalsQueries = {
@@ -203,13 +180,10 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		catch(Exception e){
 			System.out.println("FocusBrowseAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
-			// return result
 			return totalNumbers;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
 		}
 	}
 	
@@ -254,14 +228,9 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusStageDAO focusStageDAO;
-		ArrayList[][] browseSeries = null;
 		try{
-			focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
-			
-			// get data from database
-			browseSeries = focusStageDAO.getStageList(stage);
-			// return the value object
+			FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			ArrayList[][] browseSeries = focusStageDAO.getStageList(stage);
 			return browseSeries;
 		}
 		catch(Exception e){
@@ -269,9 +238,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			focusStageDAO = null;
 		}
 	}
 	
@@ -285,19 +252,9 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		
 		/** create dao */
 		Connection conn = DBHelper.getDBConnection();
-		FocusStageDAO focusStageDAO;
-		String[][] stageList = null;
 		try{
-			focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
-			
-			/** get data from database */
-			// get insitu stage list
-			stageList = focusStageDAO.getStageList(stage, organ);
-			
-			// get microarray stage list
-			
-			// get age (dpc) stage list
-			/** return the value object */
+			FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			String[][] stageList = focusStageDAO.getStageList(stage, organ);
 			return stageList;
 		}
 		catch(Exception e){
@@ -305,9 +262,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			return null;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			focusStageDAO = null;
 		}
 	}
 	
@@ -327,10 +282,9 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		    System.out.println("FocusBrowseAssembler.getStageList");
 		/** create dao */
 		Connection conn = DBHelper.getDBConnection();
-		FocusStageDAO focusStageDAO;
-		String[][] stageLists = null;
 		try{
-			focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			String[][] stageLists = null;
+			FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
 			
 			/** get data from database */
 			// get insitu stage list
@@ -363,9 +317,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			return null;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			focusStageDAO = null;
 		}
 	}
 

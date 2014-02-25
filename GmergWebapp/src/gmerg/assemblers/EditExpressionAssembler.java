@@ -29,14 +29,11 @@ public class EditExpressionAssembler {
         if (componentId == null || componentId.equals("")) {
         	return null;
         }
-        
-		/** ---get data from dao---  */
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		ExpressionDetail expressionDetail = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
 			
 			// get expressionDetail
@@ -47,11 +44,9 @@ public class EditExpressionAssembler {
 			// else
 			//    get notes
 			//    assemble and return
-			expressionDetail =
+			ExpressionDetail expressionDetail =
 				ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
 			if (expressionDetail != null) {
-	//			System.out.println("strength: " + expressionDetail.getPrimaryStrength());
-				
 				expressionDetail.setAnnotated(true);
 				String expressionNotes = ishDAO.findAnnotationNote(submissionAccessionId, componentId);
 				ExpressionPattern [] patterns = ishDAO.findPatternsAndLocations(String.valueOf(expressionDetail.getExpressionId()));
@@ -90,9 +85,7 @@ public class EditExpressionAssembler {
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	} // getData
 	
@@ -109,17 +102,12 @@ public class EditExpressionAssembler {
         if (componentId == null || componentId.equals("")) {
         	return null;
         }
-        
-		/** ---get data from dao---  */
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		AnnotationTestDAO annotationTestDAO;
-		ExpressionDetail expressionDetail = null;
-		
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			AnnotationTestDAO annotationTestDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
 			
 			// get expressionDetail
 			// if expression is null
@@ -129,7 +117,7 @@ public class EditExpressionAssembler {
 			// else
 			//    get notes
 			//    assemble and return
-			expressionDetail =
+			ExpressionDetail expressionDetail =
 				ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
 			if (expressionDetail != null) {
 	//			System.out.println("##############edit expression detail is not null############");
@@ -166,8 +154,6 @@ public class EditExpressionAssembler {
 					expressionDetail.setPrimaryStrength("");
 					expressionDetail.setAnnotated(false);
 			}
-			/** ---return the value object---  */
-//			System.out.println("editExpressionAssembler:getExpression: " + expressionDetail == null?"not expressed":"expressed");
 			return expressionDetail;
 		}
 		catch(Exception e){
@@ -175,10 +161,7 @@ public class EditExpressionAssembler {
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
-			annotationTestDAO = null;
 		}
 	} // getExpression
 	
@@ -188,29 +171,20 @@ public class EditExpressionAssembler {
 	 * @return
 	 */
 	public ExpressionPattern[] getPatterns(String expressionId) {
-//		System.out.println("getPatterns method in assembler########");
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		ExpressionPattern [] patterns;;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			
-			// retrieve data
-			patterns = ishDAO.findPatternsAndLocations(true, expressionId);
-			/** ---return the value object---  */
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ExpressionPattern[] patterns = ishDAO.findPatternsAndLocations(true, expressionId);
 			return patterns;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getPatterns failed !!!");
-			patterns = new ExpressionPattern[0];
-			/** ---return the value object---  */
-			return patterns;
+			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 	
@@ -222,14 +196,9 @@ public class EditExpressionAssembler {
 	public LockingInfo getLockingInfo(String submissionId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		LockingInfo lockingInfo = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			
-			// retrieve data
-			lockingInfo = ishDAO.getLockingInfo(submissionId);
-			/** ---return the value object---  */
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			LockingInfo lockingInfo = ishDAO.getLockingInfo(submissionId);
 			return lockingInfo;
 		}
 		catch(Exception e){
@@ -237,9 +206,7 @@ public class EditExpressionAssembler {
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 	
@@ -304,9 +271,8 @@ public class EditExpressionAssembler {
 //		System.out.println("componentId: " + componentId);
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
 			int errorCode = 0;
 			
 			/** add & log */
@@ -346,13 +312,10 @@ public class EditExpressionAssembler {
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::addAnnotation failed !!!");
-			/** return */
 			return 0;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	} // end of addAnnotation
 	
@@ -372,10 +335,9 @@ public class EditExpressionAssembler {
 			ExpressionPattern[] patterns, String userName) {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		int deletedExpressionNumber = 0;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			int deletedExpressionNumber = 0;
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
 			
 			/** delete & log */
 			// delete pattern and location
@@ -387,22 +349,20 @@ public class EditExpressionAssembler {
 					return false;
 				}
 			}
-	//		System.out.println("pattern is null#########");
-			
-			// delete expression
+
 			deletedExpressionNumber = ishEditDAO.deleteExpression(submissionId, componentId, userName);
-			/** return */
-			if (deletedExpressionNumber == 0) return false;
-			else return true;
+
+			if (deletedExpressionNumber == 0) 
+				return false;
+			else 
+				return true;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::deleteAnnotation failed !!!");
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	} // end of deleteAnnotation
 	
@@ -447,14 +407,10 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
 			int errorCode = 0;
 			
-	//		if (patternInDB == null)
-	//			System.out.println("patternInDB is null#########");
-	
 			// update
 			int updatedStrengthRowNumber = 0;
 			int updatedPatternNumber = 0;
@@ -462,7 +418,6 @@ public class EditExpressionAssembler {
 				if (newPrimaryStrength.equals(oldPrimaryStrength)) {
 					// update secondary strength if not identical
 					if (newSecondaryStrength != null && !newSecondaryStrength.equals("")) {
-	//					System.out.println("newSecondaryStrength is not null#######");
 						if (oldSecondaryStrength == null 
 								|| !oldSecondaryStrength.equals(newSecondaryStrength)) {
 							updatedStrengthRowNumber = ishEditDAO.updateExpressionStrengh(submissionId, 
@@ -481,7 +436,6 @@ public class EditExpressionAssembler {
 						}
 					}
 					// pattern updation
-	//				if (patternInDB == null) { // pattern info not exists in database
 					if (patternInDBIsNull) {	
 	//					if (patternOnPage != null) {
 						if (!patternOnPageIsNull) {
@@ -494,11 +448,8 @@ public class EditExpressionAssembler {
 							}
 						}
 					} else { // pattern in database is not null
-	//					System.out.println("pattern in database is not null########");
-	//					if (patternOnPage == null) { // pattern on page is null
 						if (patternOnPageIsNull) {
 							// delete pattern and location in database & log it
-	//						System.out.println("pattern in db is not null: deleteAllPatternAndLocation####");
 							updatedPatternNumber = 
 								this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
 							if (updatedPatternNumber == 0){
@@ -509,14 +460,11 @@ public class EditExpressionAssembler {
 							int patternNumberInDB = patternInDB.length;
 							int patternNumberOnPage = patternOnPage.length;
 							if (patternNumberInDB == patternNumberOnPage) { // pattern numbers in db and on page are the same
-	//							System.out.println("patternNumberInDB == patternNumberOnPage");
 								// check if only modified location
 								if (patternValuesAreEqual(patternInDB, patternOnPage, patternNumberInDB)) {
-	//								System.out.print("patternValuesAreEqual");
 									// record by record, update pattern/location value where appropriate & log it
 									for (int i=0;i<patternNumberInDB;i++) {
 										String ld = patternInDB[i].getLocations();
-	//									String lp = patternOnPage[i].getLocations();
 										String la = patternOnPage[i].getLocationAPart();
 										String lpa = (la==null || la.equals("")) ? "" : la;
 										String ln = patternOnPage[i].getLocationNPart();
@@ -525,7 +473,6 @@ public class EditExpressionAssembler {
 										if (ld != null && !ld.equals("")) { // locaiton in database is not null
 											if (lp != null && !lp.equals("")) { // location on page is not null
 												if (!lp.equals(ld)) { // location on page is different from the one in DB
-	//												System.out.println("location on page is different from the one in DB");
 													updatedPatternNumber = 
 														ishEditDAO.updateLocation(patternInDB[i].getPatternId(), patternInDB[i].getLocationId(), lp, userName);
 													if (updatedPatternNumber == 0) {
@@ -534,7 +481,6 @@ public class EditExpressionAssembler {
 												}
 											} else { // location on page is null
 												// delete location
-	//											System.out.println("delete location");
 												updatedPatternNumber =  ishEditDAO.deleteLocation(patternInDB[i].getLocationId(), userName);
 												if (updatedPatternNumber == 0) {
 													return 7; // failed to update database
@@ -552,7 +498,6 @@ public class EditExpressionAssembler {
 									}
 								} else { // pattern values are not the same
 									// delete original pattern and location and insert new values
-	//								System.out.println("pattern values are not the same: deleteAllPatternAndLocation####");
 									updatedPatternNumber = 
 										this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
 									if (updatedPatternNumber == 0) {
@@ -567,9 +512,6 @@ public class EditExpressionAssembler {
 								}
 								
 							} else if (patternNumberInDB > patternNumberOnPage) { // pattern numbers in db and on page are not identical
-	//							System.out.println("patternNumberInDB > patternNumberOnPage");
-	//							System.out.println("patternNumberInDB: " + patternNumberInDB);
-	//							System.out.println("patternNumberOnPage: " + patternNumberOnPage);
 								if (patternValuesAreEqual(patternInDB, patternOnPage, patternNumberOnPage)) {
 									for (int i=0;i<patternNumberOnPage;i++) {
 										// compare locations, update values in database where appropriate & log it
@@ -640,7 +582,6 @@ public class EditExpressionAssembler {
 									}
 								} else { // pattern values in db and on page are not identical
 									// delete all pattern and location values and insert new ones
-	//								System.out.println("pattern values in db and on page are not identical: deleteAllPatternAndLocation####");
 									updatedPatternNumber = 
 										this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
 									if (updatedPatternNumber == 0) {
@@ -798,8 +739,6 @@ public class EditExpressionAssembler {
 						}
 						
 						// delete pattern if there's any in DB
-	//					System.out.println("strength on page are not present: deleteAllPatternAndLocation####");
-	//					if (patternInDB != null) {
 						if (!patternInDBIsNull) {
 							updatedPatternNumber = 
 								this.deleteAllPatternAndLocation(submissionId, componentId, ishEditDAO, patternInDB, userName);
@@ -835,7 +774,6 @@ public class EditExpressionAssembler {
 						}
 							
 						// add pattern info if there are any
-	//					if (patternOnPage != null) {
 						if (!patternOnPageIsNull) {
 							// record by record, insert pattern and/or location value into the database & log it
 							updatedPatternNumber = 
@@ -854,18 +792,14 @@ public class EditExpressionAssembler {
 					}
 				}
 			}
-			/** return */
 			return 0;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::updateAnnotation failed !!!");
-			/** return */
 			return 0;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	} // end of updateAnnotation
 	
@@ -1103,14 +1037,10 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		int addedRowNumber = 0;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			/** add & log */
-			addedRowNumber =  ishEditDAO.addExpressionNote(submissionId, componentId, note, 1, userName);
-			/** return */
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			int addedRowNumber =  ishEditDAO.addExpressionNote(submissionId, componentId, note, 1, userName);
+
 			if (addedRowNumber == 0) {
 				return false;
 			} else {
@@ -1122,9 +1052,7 @@ public class EditExpressionAssembler {
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -1138,14 +1066,10 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		int deletedRowNumber = 0;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			/** delete & log */
-			deletedRowNumber = ishEditDAO.deleteExpressionNotes(submissionId, componentId, userName);
-			/** return */
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			int deletedRowNumber = ishEditDAO.deleteExpressionNotes(submissionId, componentId, userName);
+
 			if (deletedRowNumber == 0) {
 				return false;
 			} else {
@@ -1157,9 +1081,7 @@ public class EditExpressionAssembler {
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -1175,14 +1097,9 @@ public class EditExpressionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		int updatedRowNumber = 0;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			/** update & log */
-			updatedRowNumber = ishEditDAO.updateExpressionNotes(submissionId, componentId, notesOnpage, userName);			
-			/** return */
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			int updatedRowNumber = ishEditDAO.updateExpressionNotes(submissionId, componentId, notesOnpage, userName);			
 			if (updatedRowNumber == 0) {
 				return false;
 			} else {
@@ -1194,9 +1111,7 @@ public class EditExpressionAssembler {
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -1204,13 +1119,9 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		boolean result = false;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			/** update & log */
-			result = ishEditDAO.signOffAnnotation(submissionId, status);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			boolean result = ishEditDAO.signOffAnnotation(submissionId, status);
 			return result;
 		}
 		catch(Exception e){
@@ -1218,9 +1129,7 @@ public class EditExpressionAssembler {
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -1228,13 +1137,9 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		boolean result = false;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			/** update & log */
-			result = ishEditDAO.signOffAnnotation(submissionId, oldStatus, newStatus);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			boolean result = ishEditDAO.signOffAnnotation(submissionId, oldStatus, newStatus);
 			return result;
 		}
 		catch(Exception e){
@@ -1242,9 +1147,7 @@ public class EditExpressionAssembler {
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -1252,13 +1155,9 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		boolean result = false;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			/** update & log */
-			result = ishEditDAO.setPublicSubmission(submissionId, status);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			boolean result = ishEditDAO.setPublicSubmission(submissionId, status);
 			return result;
 		}
 		catch(Exception e){
@@ -1266,9 +1165,7 @@ public class EditExpressionAssembler {
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -1276,13 +1173,9 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		boolean result = false;
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			/** update & log */
-			result = ishEditDAO.signOffAnnotationAndSetPublicSubmission(submissionId, dbstatus, substatus);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			boolean result = ishEditDAO.signOffAnnotationAndSetPublicSubmission(submissionId, dbstatus, substatus);
 			return result;
 		}
 		catch(Exception e){
@@ -1290,9 +1183,7 @@ public class EditExpressionAssembler {
 			return false;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -1305,24 +1196,17 @@ public class EditExpressionAssembler {
 
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO;
-		ArrayList result = new ArrayList();
 		try{
-			ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
-			
-			/** update & log */
-			result = ishEditDAO.getPIBySubID(submissionId);
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			ArrayList result = ishEditDAO.getPIBySubID(submissionId);
 			return result;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getPIBySubID failed !!!");
-			result = new ArrayList();
-			return result;
+			return null;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishEditDAO = null;
 		}
 	}
 	
@@ -1334,26 +1218,17 @@ public class EditExpressionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		ArrayList patternList = new ArrayList();
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			
-			// get data
-			patternList = ishDAO.getPatternList();
-			// return
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ArrayList patternList = ishDAO.getPatternList();
 			return patternList;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getPatternList failed !!!");
-			patternList = new ArrayList();
-			// return
-			return patternList;
+			return null;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 	
@@ -1364,26 +1239,17 @@ public class EditExpressionAssembler {
 	public ArrayList getLocationList() {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		ArrayList locationList = new ArrayList();
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			
-			// get data
-			locationList = ishDAO.getLocationList();
-			// return
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ArrayList locationList = ishDAO.getLocationList();
 			return locationList;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getLocationList failed !!!");
-			locationList = new ArrayList();
-			// return
-			return locationList;
+			return null;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 	
@@ -1396,26 +1262,17 @@ public class EditExpressionAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		ArrayList componentListAtTheStage = new ArrayList();
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			
-			// get data
-			componentListAtTheStage = ishDAO.getComponentListAtGivenStage(stage);
-			// return
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ArrayList componentListAtTheStage = ishDAO.getComponentListAtGivenStage(stage);
 			return componentListAtTheStage;
 		}
 		catch(Exception e){
 			System.out.println("EditExpressionAssembler::getComponentListAtTheStage failed !!!");
-			componentListAtTheStage = new ArrayList();
-			// return
-			return componentListAtTheStage;
+			return null;
 		}
 		finally{
-			/** release db resources */
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 		

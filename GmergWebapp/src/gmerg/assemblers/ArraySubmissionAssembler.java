@@ -38,18 +38,13 @@ public class ArraySubmissionAssembler {
 	 * @return
 	 */
 	public ArraySubmission getData(String accessionId) {
-		
-		ArraySubmission arraySubmission = null;
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
-		ArrayDevDAO arrayDevDAO;
-		ISHDAO ishDAO;
-		
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			ArrayDevDAO arrayDevDAO = MySQLDAOFactory.getArrayDevDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			// get basic submission info and create submission object
 			Submission submission = ishDAO.findSubmissionById(accessionId);
 			if (submission == null)
@@ -79,7 +74,7 @@ public class ArraySubmissionAssembler {
 			ArrayList images = arrayDevDAO.findOriginalImagesById(accessionId);
 			
 			/** ---assemble array submission object---  */
-			arraySubmission = new ArraySubmission();
+			ArraySubmission arraySubmission = new ArraySubmission();
 			arraySubmission.setAccID(submission.getAccID());
 			arraySubmission.setStage(submission.getStage());
 			arraySubmission.setArchiveId(submission.getArchiveId()); // added by xingjun - 03/11/2010
@@ -107,7 +102,7 @@ public class ArraySubmissionAssembler {
 	        // added by Bernie - 23/09/2010
 	        String tissue = arrayDAO.findTissueBySubmissionId(accessionId);
 	        arraySubmission.setTissue(tissue);
-			/** ---return the array submission  */
+
 			return arraySubmission;
 		}
 		catch(Exception e){
@@ -115,10 +110,7 @@ public class ArraySubmissionAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
-			ishDAO = null;
 		}
 	}
 	
@@ -130,29 +122,20 @@ public class ArraySubmissionAssembler {
 	 */
 	public String getTotalGeneListItems(String accessionId) {
 		
-		String totalGeneListItems = new String("");
-		
-		/** ---get the data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			// get the value
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			String totalGeneListItems = new String("");
 			totalGeneListItems += arrayDAO.getTotalNumberOfGeneListItemsBySubmissionId(accessionId);
-			/** ---return the gene list info---  */
 			return totalGeneListItems;
 		}
 		catch(Exception e){
 			System.out.println("ArraySubmissionAssembler::getTotalGeneListItems failed !!!");
-			totalGeneListItems = "0";
-			/** ---return the gene list info---  */
-			return totalGeneListItems;
+			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 	
@@ -163,27 +146,19 @@ public class ArraySubmissionAssembler {
 	 */
 	public int getRowNumberOfFirstOccurrenceOfGene(String accessionId, String geneSymbol){
 		
-		int pageNum = 0;
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayDAO arrayDAO;
 		try{
-			arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			// get page number from DAO
-			pageNum = arrayDAO.getRowNumOf1stOccurrenceOfGeneInArrayGeneList(accessionId, geneSymbol);
-			/** ---return the pageNum---  */
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			int pageNum = arrayDAO.getRowNumOf1stOccurrenceOfGeneInArrayGeneList(accessionId, geneSymbol);
 			return pageNum;
 		}
 		catch(Exception e){
 			System.out.println("ArraySubmissionAssembler::getRowNumberOfFirstOccurrenceOfGene failed !!!");
-			pageNum = 0;
-			/** ---return the pageNum---  */
-			return pageNum;
+			return 0;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			arrayDAO = null;
 		}
 	}
 

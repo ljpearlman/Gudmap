@@ -48,12 +48,9 @@ public class ISHSubmissionAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		AnatomyDAO anatomyDAO;
-		ISHSubmission ishSubmission;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			AnatomyDAO anatomyDAO = MySQLDAOFactory.getAnatomyDAO(conn);
 			
 			// get basic submission info and create submission object
 			Submission submission = ishDAO.findSubmissionById(accessionId);
@@ -76,7 +73,7 @@ public class ISHSubmissionAssembler {
 			// get probe info or antibody -- modified by xingjun 09-July-2007
 			String assayType = submission.getAssayType();
 			/** ---composite a ish submission object---  */
-			ishSubmission = new ISHSubmission();
+			ISHSubmission ishSubmission = new ISHSubmission();
 			ishSubmission.setAccID(submission.getAccID());
 			ishSubmission.setPublicFlag(submission.getPublicFlag());
 			ishSubmission.setDeletedFlag(submission.getDeletedFlag());
@@ -91,10 +88,6 @@ public class ISHSubmissionAssembler {
 			ishSubmission.setResultNotes(submission.getResultNotes());
 			
 			if(onlyRetrieveTree) {
-				// release the db resources
-				DBHelper.closeJDBCConnection(conn);
-				ishDAO = null;
-				anatomyDAO = null;
 				return ishSubmission;
 			}
 		
@@ -166,10 +159,7 @@ public class ISHSubmissionAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
-	        anatomyDAO = null;
 		}
 	}
 	
@@ -436,16 +426,11 @@ public class ISHSubmissionAssembler {
 			return null;
 		}
 		
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		Person pi = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			
-			// get pi info
-			pi = ishDAO.findPersonById(personId);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			Person pi = ishDAO.findPersonById(personId);
 			return pi;
 		}
 		catch(Exception e){
@@ -453,9 +438,7 @@ public class ISHSubmissionAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}	
 
@@ -466,16 +449,11 @@ public class ISHSubmissionAssembler {
 	 */
 	public StatusNote[] getStatusNotes(String accessionId) {
 		
-		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		StatusNote[] statusNotes = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			
-			// get status notes
-			statusNotes = ishDAO.getStatusNotesBySubmissionId(accessionId);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			StatusNote[] statusNotes = ishDAO.getStatusNotesBySubmissionId(accessionId);
 			return statusNotes;
 		}
 		catch(Exception e){
@@ -483,9 +461,7 @@ public class ISHSubmissionAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 	
@@ -502,13 +478,9 @@ public class ISHSubmissionAssembler {
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		Person[] pis = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
-			
-			// get pi info
-			pis = ishDAO.findPIsBySubmissionId(submissionId);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			Person[] pis = ishDAO.findPIsBySubmissionId(submissionId);
 			return pis;
 		}
 		catch(Exception e){
@@ -516,9 +488,7 @@ public class ISHSubmissionAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 }

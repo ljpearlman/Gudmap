@@ -17,14 +17,9 @@ public class FocusGeneIndexAssembler {
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		FocusStageDAO focusStageDAO;
-		Object[][] browseSeries = null;
 		try{
-			focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
-			
-			// get data from database
-			browseSeries = focusStageDAO.getGeneIndex(prefix, organ);
-			// return the value object
+			FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			Object[][] browseSeries = focusStageDAO.getGeneIndex(prefix, organ);
 			return browseSeries;
 		}
 		catch(Exception e){
@@ -32,9 +27,7 @@ public class FocusGeneIndexAssembler {
 			return null;
 		}		
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			focusStageDAO = null;
 		}
 	}
 }

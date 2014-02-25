@@ -36,10 +36,8 @@ public class ExpressionDetailAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		ExpressionDetail expressionDetail = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
 			// get expressionDetail
 			// if expression is null
@@ -53,7 +51,7 @@ public class ExpressionDetailAssembler {
 			// else
 			//    get notes
 			//    assemble and return
-			expressionDetail =
+			ExpressionDetail expressionDetail =
 				ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
 			if (expressionDetail != null) {
 				String expressionNotes = ishDAO.findAnnotationNote(submissionAccessionId, componentId);
@@ -101,7 +99,6 @@ public class ExpressionDetailAssembler {
 					}
 				}
 			}
-			/** ---return the value object---  */
 			return expressionDetail;
 		}
 		catch(Exception e){
@@ -109,9 +106,7 @@ public class ExpressionDetailAssembler {
 			return null;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 	

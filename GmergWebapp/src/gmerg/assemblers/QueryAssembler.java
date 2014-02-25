@@ -193,16 +193,11 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
 			/** ---get data--- */
 			if (type.equals("image")) { // posibly need further implementation
-				// release the db resources
-				DBHelper.closeJDBCConnection(conn);
-				ishDAO = null;
-				
 				return null;
 				
 			} else if (type.equals("anatomy")) {
@@ -210,26 +205,13 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 				ArrayList componentCountInfo = ishDAO.getComponentCountInfoByGeneInfo(inputType, 
 						inputString,
 						stage, criteria, columnIndex, ascending, offset, num);
-				
-				// release the db resources
-				DBHelper.closeJDBCConnection(conn);
-				ishDAO = null;
-				
-				/** ---return the object--- */
 				return componentCountInfo;
 				
 			} else if (type.equals("gene")){
-	
-				// gene query
+
 			    ArrayList submissions = ishDAO.getSubmissionByGeneInfo(inputType, 
 			    		ignoreExpression, inputString,
 			    		stage, criteria, columnIndex, ascending, offset, num);
-	
-				// release the db resources
-				DBHelper.closeJDBCConnection(conn);
-				ishDAO = null;
-				
-				/** ---return the object--- */
 				return submissions;
 			}
 			return null;
@@ -239,9 +221,7 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	} // end of getDataByGene
         
@@ -258,9 +238,8 @@ public class QueryAssembler extends OffMemoryTableAssembler {
         /** ---get data from dao--- */
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ISHDAO ishDAO;
         try{
-	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+        	ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 	        
 	        // get the value
 	        totalComponents +=
@@ -274,9 +253,7 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 	        return "0";
 		}
         finally{
-	        // release db resources
 	        DBHelper.closeJDBCConnection(conn);
-	        ishDAO = null;
         }
     }
         
@@ -288,20 +265,17 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 		}
 		
 		String totalSubmissions = new String("0");
-		
-		/** ---get data from dao--- */
+
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
 			// get the value
 			totalSubmissions +=
 				ishDAO.getTotalNumberOfISHSubmissionsForGeneQuery(inputType,
 						ignoreExpression, inputString, stage, criteria);
 
-			/** return the value  */
 			return totalSubmissions;
 		}
 		catch(Exception e){
@@ -309,9 +283,7 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 			return "0";
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 		
 	}
@@ -354,18 +326,14 @@ public class QueryAssembler extends OffMemoryTableAssembler {
     public String getTotalISHSubmissionsForComponentQuery(String component) {
         String totalSubmissions = new String("");
                 
-        /** ---get data from dao--- */
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ISHDAO ishDAO;
         try{
-	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
+        	ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 	        
-	        // get the value
 	        totalSubmissions += 
 	        	ishDAO.getTotalNumberOfISHSubmissionsForComponentQuery(component);
 
-	        /** return the value  */
 	        return totalSubmissions;
         }
 		catch(Exception e){
@@ -373,9 +341,7 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 	        return "0";
 		}
         finally{
-	        // release db resources
 	        DBHelper.closeJDBCConnection(conn);
-	        ishDAO = null;
         }
     }
     
@@ -387,16 +353,11 @@ public class QueryAssembler extends OffMemoryTableAssembler {
     public String getTotalSubmissionsForComponents(String [] components){
         String totalSubmissions = new String("");
         
-        /** ---get data from dao--- */
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        ISHDAO ishDAO;
         try{
-	        ishDAO = MySQLDAOFactory.getISHDAO(conn);
-	        
-	        // get the value
+        	ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 	        totalSubmissions += ishDAO.getTotalNumberOfSubmissionsForComponentsQuery(components);
-	        /** return the value  */
 	        return totalSubmissions;
         }
 		catch(Exception e){
@@ -404,9 +365,7 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 	        return "0";
 		}
         finally{
-	        // release db resources
 	        DBHelper.closeJDBCConnection(conn);
-	        ishDAO = null;
         }
     }
 
@@ -418,19 +377,16 @@ public class QueryAssembler extends OffMemoryTableAssembler {
     		String startStg,String endStg, String [] expTypes, String criteria) {
         
             String totalSubmissions = new String("");
-            /** ---get data from dao--- */
+
             // create a dao
             Connection conn = DBHelper.getDBConnection();
-            ISHDAO ishDAO;
             try{
-	            ishDAO = MySQLDAOFactory.getISHDAO(conn);
-	            
-	            // get the value
+            	ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
+
 	            totalSubmissions +=
 	            	ishDAO.getTotalNumberOfSubmissionsForComponentsQuery(components, 
 	            			startStg, endStg, expTypes, criteria);
 
-	            /** return the value  */
 	            return totalSubmissions;
             }		
             catch(Exception e){
@@ -438,9 +394,9 @@ public class QueryAssembler extends OffMemoryTableAssembler {
                 return "0";
     		}
             finally{
-	            // release db resources
+
 	            DBHelper.closeJDBCConnection(conn);
-	            ishDAO = null;
+
             }
         }
 
@@ -462,10 +418,9 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 		/** ---get data from dao---  */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDAO ishDAO;
-		SubmissionData submissionData = null;
 		try{
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			SubmissionData submissionData = null;
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			
 			Submission submission = null;
 			ISHSubmission ishSubmission = null;
@@ -484,13 +439,10 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 				} catch(NumberFormatException nfe) {
 					isAnInteger = false;
 				}
+				
 				if (isAnInteger) {
-	//				assayType = ishDAO.findAssayTypeBySubmissionId("GUDMAP:" + accessionId);
-						assayType = ishDAO.findAssayTypeBySubmissionId("GUDMAP:" + accessionId);
-	//				System.out.println("assay type: " + assayType);
-	//				submission = ishDAO.findSubmissionById("GUDMAP:" + accessionId);
-						submission = ishDAO.findSubmissionById("GUDMAP:" + accessionId);
-					
+					assayType = ishDAO.findAssayTypeBySubmissionId("GUDMAP:" + accessionId);
+					submission = ishDAO.findSubmissionById("GUDMAP:" + accessionId);					
 				} else {// id is not valid
 					return null;
 				}
@@ -513,7 +465,6 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 	//		System.out.println("assay type: " + assayType);
 			if (assayType.indexOf("ISH") >=0) {
 				ISHSubmissionAssembler isa = new ISHSubmissionAssembler();
-	//			System.out.println("acc: " + submission.getAccID());
 				ishSubmission = isa.getData(submission.getAccID(), false, false, userBean, false);
 				
 				// assemble submission result
@@ -522,7 +473,6 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 				submissionData.setSubmissionType(0); // ish submission
 				
 			} else if (assayType.equals("Microarray")) {
-	//			System.out.println("mic");
 				
 				ArraySubmissionAssembler asa = new ArraySubmissionAssembler();
 				arraySubmission = asa.getData(submission.getAccID());
@@ -534,7 +484,7 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 				
 			} else if(assayType.equals("IHC")) { // added by xingjun -- 06/08/2007
 				ISHSubmissionAssembler isa = new ISHSubmissionAssembler();
-	//			System.out.println("acc: " + submission.getAccID());
+
 				ishSubmission = isa.getData(submission.getAccID(), false, false, userBean, false);
 				
 				// assemble submission result
@@ -542,7 +492,7 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 				submissionData.setSubmission(ishSubmission);
 				submissionData.setSubmissionType(0); // ish submission
 			}
-			/** ---return the composite value object---  */
+
 			return submissionData;
 		}
         catch(Exception e){
@@ -550,9 +500,7 @@ public class QueryAssembler extends OffMemoryTableAssembler {
 			return null;
 		}
 		finally{
-			// release the db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDAO = null;
 		}
 	}
 }

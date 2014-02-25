@@ -50,37 +50,26 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
     	 
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        CollectionDAO collectionDAO;
-        ArrayList collectionData = new ArrayList();
         try{
-            collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-	        // get data from database
-	        collectionData = collectionDAO.getCollections(userId, collectionType, status, column, ascending, offset, num);
-	        /** ---return the value object---  */
+        	CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+        	ArrayList collectionData = collectionDAO.getCollections(userId, collectionType, status, column, ascending, offset, num);
 	        return getTableDataFormatFromIshList(collectionData);
         }
 		catch(Exception e){
 			System.out.println("CollectionListAssembler::retrieveData failed !!!");
-			collectionData = new ArrayList();
-	        /** ---return the value object---  */
-	        return getTableDataFormatFromIshList(collectionData);
+	        return null;
 		}
         finally{
-	        // release db resources
 	        DBHelper.closeJDBCConnection(conn);
-	        collectionDAO = null;
         }
     }
    
     public int retrieveNumberOfRows() {
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        CollectionDAO collectionDAO;
-        int totalNumber = 0;
         try{
-            collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
-	        // get data from database
-	        totalNumber = collectionDAO.getTotalNumberOfCollections(userId, collectionType, status);
+        	CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+        	int totalNumber = collectionDAO.getTotalNumberOfCollections(userId, collectionType, status);
 	        return totalNumber;
         }
 		catch(Exception e){
@@ -88,9 +77,7 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
 			return 0;
 		}
         finally{
-	        // release db resources
 	        DBHelper.closeJDBCConnection(conn);
-	        collectionDAO = null;
         }
     }
 

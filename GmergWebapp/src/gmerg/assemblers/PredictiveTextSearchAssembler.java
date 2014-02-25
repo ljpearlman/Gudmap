@@ -32,13 +32,9 @@ public class PredictiveTextSearchAssembler {
 	public ArrayList<String> getGenes(String input, int searchPattern, int num) {
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        PredictiveTextSearchDAO ptsDAO;
-        ArrayList<String> genes = null;
         try{
-	        ptsDAO = MySQLDAOFactory.getPredictiveTextSearchDAO(conn);
-			
-			// get data from db
-	        genes = ptsDAO.getGeneSymbolsAndSynonyms(input, searchPattern, num);
+        	PredictiveTextSearchDAO ptsDAO = MySQLDAOFactory.getPredictiveTextSearchDAO(conn);
+        	ArrayList<String> genes = ptsDAO.getGeneSymbolsAndSynonyms(input, searchPattern, num);
 	        return genes;
         }
 		catch(Exception e){
@@ -46,9 +42,7 @@ public class PredictiveTextSearchAssembler {
 			return null;
 		}
         finally{
-	        // release resources
 	        DBHelper.closeJDBCConnection(conn);
-	        ptsDAO = null;
         }
 	}
 	
@@ -63,13 +57,9 @@ public class PredictiveTextSearchAssembler {
 	public ArrayList<String> getAnatomyStructures(String input, int searchPattern, int num) {
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        PredictiveTextSearchDAO ptsDAO;
-        ArrayList<String> anatomyTerms = null;
         try{
-	        ptsDAO = MySQLDAOFactory.getPredictiveTextSearchDAO(conn);
-			
-			// get data from db
-	        anatomyTerms = ptsDAO.getAnnatomyTerms(input, searchPattern, num);
+        	PredictiveTextSearchDAO ptsDAO = MySQLDAOFactory.getPredictiveTextSearchDAO(conn);
+        	ArrayList<String> anatomyTerms = ptsDAO.getAnnatomyTerms(input, searchPattern, num);
 	        return anatomyTerms;
         }
 		catch(Exception e){
@@ -77,9 +67,7 @@ public class PredictiveTextSearchAssembler {
 			return null;
 		}
         finally{
-	        // release resources
 	        DBHelper.closeJDBCConnection(conn);
-	        ptsDAO = null;
         }
 	}
 	
@@ -93,14 +81,9 @@ public class PredictiveTextSearchAssembler {
 	public ArrayList<String> getGeneFunctions(String input, int searchPattern, int num) {
         // create a dao
         Connection conn = DBHelper.getDBConnection();
-        PredictiveTextSearchDAO ptsDAO;
-        ArrayList<String> goTerms = null;
         try{
-	        ptsDAO = MySQLDAOFactory.getPredictiveTextSearchDAO(conn);
-			
-			// get data from db
-	        goTerms = ptsDAO.getGoTerms(input, searchPattern, num);
-	        // return
+        	PredictiveTextSearchDAO ptsDAO = MySQLDAOFactory.getPredictiveTextSearchDAO(conn);
+        	ArrayList<String> goTerms = ptsDAO.getGoTerms(input, searchPattern, num);
 			return goTerms;
         }
 		catch(Exception e){
@@ -108,9 +91,7 @@ public class PredictiveTextSearchAssembler {
 			return null;
 		}
         finally{
-	        // release resources
 	        DBHelper.closeJDBCConnection(conn);
-	        ptsDAO = null;
         }
 	}
 	
