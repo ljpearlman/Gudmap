@@ -50,7 +50,8 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         }
         try {
 		    if (debug)
-			System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
+			 System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
+		    
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, geneString);
         	prepStmt.setString(2, geneString);
@@ -66,13 +67,16 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         			result.add(gene);
         		}
         	}
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closeResultSet(resSet);
+    		return result;
         	
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return null;
         }
-		return result;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closeResultSet(resSet);        	
+        }
 	}
     
     /**
@@ -92,7 +96,8 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         }
         try {
 		    if (debug)
-			System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
+		    	System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
+		    
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, annatomyTermString);
         	prepStmt.setInt(2, num);
@@ -105,13 +110,16 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         			result.add(annatomyTerm);
         		}
         	}
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closeResultSet(resSet);
+    		return result;
         	
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return null;
         }
-		return result;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closeResultSet(resSet);        	
+        }
     }
     
     /**
@@ -131,7 +139,8 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         }
         try {
 		    if (debug)
-			System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
+		    	System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
+		    
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, goTermString);
         	prepStmt.setInt(2, num);
@@ -144,13 +153,16 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         			result.add(goTerm);
         		}
         	}
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closeResultSet(resSet);
+    		return result;
         	
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return null;
         }
-		return result;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closeResultSet(resSet);        	
+        }
     	
     }
     

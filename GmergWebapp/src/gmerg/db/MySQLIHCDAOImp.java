@@ -150,23 +150,27 @@ public class MySQLIHCDAOImp implements IHCDAO {
 			parQ = new ParamQuery("TOTAL_COUNT", query);
 
 			try {
-	        	parQ.setPrepStat(conn);
-	            prepStmt = parQ.getPrepStat();
-	
-	             // execute
-	             resSet = prepStmt.executeQuery();
-	
-	             if (resSet.first()) {
-	                 totalNumber = resSet.getInt(1);
-	             }
-	
-	             // close the db object
-	             DBHelper.closePreparedStatement(prepStmt);
-	
-	         } catch (SQLException se) {
-	             se.printStackTrace();
-	         }
-         }
+				parQ.setPrepStat(conn);
+				prepStmt = parQ.getPrepStat();
+			
+			    // execute
+			    resSet = prepStmt.executeQuery();
+			
+			    if (resSet.first()) {
+			        totalNumber = resSet.getInt(1);
+			    }
+		  		return totalNumber;
+			
+			} catch (SQLException se) {
+				se.printStackTrace();
+				return 0;
+			}
+			finally{
+			    DBHelper.closePreparedStatement(prepStmt);
+			    DBHelper.closeResultSet(resSet);
+			}
+			
+        }
   		return totalNumber;
      }    
     
@@ -403,7 +407,6 @@ public class MySQLIHCDAOImp implements IHCDAO {
         }
 
         // start to execute query
-        //		Connection conn = DBUtil.getDBConnection();
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
         try {

@@ -125,14 +125,17 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         	expressionTitles = 
         		this.formatBrowseTableTitleResultSet(resSet);
         	
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeResultSet(resSet);
+            return expressionTitles;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+            return null;
         }
-		// return value
-        return expressionTitles;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
+
 	}
 
 	/**
@@ -190,14 +193,16 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         	resSet = prepStmt.executeQuery();
         	annotations = this.formatAnnotationResultSet(resSet);
         	
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeResultSet(resSet);
+            return annotations;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+            return null;
         }
-		// return value
-		return annotations;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
 	}
 	
 	/**
@@ -338,14 +343,16 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         	prepStmt = conn.prepareStatement(queryString);
         	resSet = prepStmt.executeQuery();
         	genelists = this.formatAllAnalysisGeneListsResultSet(resSet);
-//        	ArrayList<String[]> genelist = DBHelper.formatResultSetToArrayList(resSet);
-//        	result = (String[][])genelist.toArray(new Object[genelist.size()]);
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closeResultSet(resSet);
+            return genelists;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+            return null;
         }
-		return genelists;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
 	}
 	
 	/**
@@ -415,12 +422,16 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         	if (resSet.first()) {
         		platformId = resSet.getString(1);
         	}
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closeResultSet(resSet);
+            return platformId;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+            return null;
         }
-		return platformId;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
 	}
 	
 	/**
@@ -461,12 +472,16 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         	resSet = prepStmt.executeQuery();
         	geneSymbols = this.formatGeneSymbolByAnalysisGenelistIdResultSet(resSet);
         	
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closeResultSet(resSet);
+            return geneSymbols;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+            return null;
         }
-		return geneSymbols;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
 	}
 	
     /**
@@ -512,12 +527,16 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         	resSet = prepStmt.executeQuery();
         	genelists = this.formatGenelistResultSet(resSet);
         	
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closeResultSet(resSet);
+            return genelists;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+            return null;
         }
-		return genelists;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
 	}
 	
 	/**
@@ -598,12 +617,16 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
         	resSet = prepStmt.executeQuery();
         	genelists = this.formatClusteredGenelistResultSet(resSet);
         	
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closeResultSet(resSet);
+            return genelists;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+            return null;
         }
-		return genelists;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
 	}
 	
 	/**

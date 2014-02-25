@@ -263,29 +263,28 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 	    	}
     	
     	// start to execute query
-    	// Connection conn = DBUtil.getDBConnection();
     	ResultSet resSet = null;
     	PreparedStatement prepStmt = null;
-	int index = 0;
-	String str = null;
+		int index = 0;
+		String str = null;
     	try {
     		for (int i = 0; i < queryNumber; i++) {
 				if (debug)
 				    System.out.println("MySQLTransgenicDAOImp.sql = "+queryString[i]);
 
-			///////!!!!! poor databse table for different type of submissions
+				///////!!!!! poor databse table for different type of submissions
 			    ////////!!!! do not know why replaceAll does not work
 			    index = queryString[i].lastIndexOf("ALE_GENE AS RPR_SYMBOL");
 			    if (-1 != index) {
-				str = queryString[i];
-				queryString[i] = str.substring(0, index) + "ALE_GENE "+str.substring(index + (new String("ALE_GENE AS RPR_SYMBOL")).length());
+					str = queryString[i];
+					queryString[i] = str.substring(0, index) + "ALE_GENE "+str.substring(index + (new String("ALE_GENE AS RPR_SYMBOL")).length());
 			    }
 			    
 			    index = queryString[i].lastIndexOf("RPR_SYMBOL");
 			    while (-1 != index) {
-				str = queryString[i];
-				queryString[i] = str.substring(0, index) + "ALE_GENE "+str.substring(index + (new String("RPR_SYMBOL")).length());
-				index = queryString[i].lastIndexOf("RPR_SYMBOL");
+					str = queryString[i];
+					queryString[i] = str.substring(0, index) + "ALE_GENE "+str.substring(index + (new String("RPR_SYMBOL")).length());
+					index = queryString[i].lastIndexOf("RPR_SYMBOL");
 			    }
 			    ////////!!!!!!
     			prepStmt = conn.prepareStatement(queryString[i]);

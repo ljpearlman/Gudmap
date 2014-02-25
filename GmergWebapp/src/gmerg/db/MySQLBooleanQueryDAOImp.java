@@ -139,21 +139,21 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 			sql = filter.addFilterSql(sql, (String[])null);
 //			System.out.println("\nBOOL QUERY11 (post filter)====== sql= "+sql);
 
-//			prepStmt = conn.prepareStatement(sql);
-//			resSet = prepStmt.executeQuery();
 			stmt = conn.createStatement();
-//			System.out.println("Boolean query sql: " + sql);
 		    if (debug)
-			System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql);
+		    	System.out.println("MySQLBooleanQueryDAOImp.sql = "+sql);
 			resSet = stmt.executeQuery(sql);
 			result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
-//			DBHelper.closePreparedStatement(prepStmt);
-			DBHelper.closeStatement(stmt);
+			return result;
+
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-//		System.out.println("getAllSubmissions######### process time="+(System.currentTimeMillis()-t));
-		return result;
+		finally{
+			DBHelper.closeStatement(stmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -190,15 +190,16 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 			if(resSet.first()) {
 				total = Integer.parseInt(resSet.getString(1));
 			}
-//			DBHelper.closePreparedStatement(prepStmt);
-			DBHelper.closeStatement(stmt);
+			return total;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
-//		System.out.println("getTotalNumberOfRows######### process time="+(System.currentTimeMillis()-t));
-//		System.out.println("boolean query total = "+total);		
-		return total;
+		finally{
+			DBHelper.closeStatement(stmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 
 	public int[] getNumberOfRowsInGroups(String input, GenericTableFilter filter) {
@@ -238,13 +239,15 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
 				    }
 				}
 			}
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		// return
-		return result;
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStmt);			
+		}
 	}
 	
 	/**

@@ -55,12 +55,16 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         		}
         		synonyms = synonyms.substring(0, synonyms.lastIndexOf(","));
         	}
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+    		return synonyms;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return null;
         }
-		return synonyms;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
 	}
 	
 	/**
@@ -95,13 +99,16 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         	resSet = prepStmt.executeQuery();
         	stages = DBHelper.formatResultSetToStringArray(resSet);
         	
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeResultSet(resSet);
+    		return stages;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return null;
         }
-		return stages;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
 	}
 	
 	/**
@@ -175,12 +182,16 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         	expressions = DBHelper.formatResultSetToArrayList(resSet);
 //        	if (expressions == null) System.out.println("no expression info for this structure!");
         	
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+    		return expressions;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return null;
         }
-		return expressions;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
 	}
 	
 	
@@ -232,13 +243,16 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 				    System.out.println("image number: " + images.size());
 			}
 		    
-            // close the db object
+    		return images;
+
+        } catch (SQLException se) {
+        	se.printStackTrace();
+    		return null;
+        }
+        finally{
             DBHelper.closePreparedStatement(prepStmt);
             DBHelper.closeResultSet(resSet);
-        } catch (SQLException se) {
-	    se.printStackTrace();
         }
-        return images;
 	}
 	
 	/**
@@ -312,13 +326,16 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         		diseaseNumber = resSet.getInt(1);
         	}
         	
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeResultSet(resSet);
+    		return diseaseNumber;
+
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return 0;
         }
-		return diseaseNumber;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
 	}
 	
 	/**
@@ -344,12 +361,16 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 			resSet = prepStmt.executeQuery();
 			chromeDetail = formatChromeDetailResultSet(resSet);
 			
-			// close the connection
-			DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-			se.printStackTrace();
-		}
-		return chromeDetail;
+    		return chromeDetail;
+
+        } catch (SQLException se) {
+        	se.printStackTrace();
+    		return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
 	}
 	
     /**

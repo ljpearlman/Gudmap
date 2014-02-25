@@ -50,14 +50,16 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			if (resSet.first()) {
 				batchId = resSet.getInt(1);
 			}
-			// release db resource
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
+			return batchId;
 			
-		} catch (SQLException se) {
-			se.printStackTrace();
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return -1;
 		}
-		return batchId;
+		finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -100,9 +102,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 				maxBatchId = resSet.getInt(1);
 			}
 			if (maxBatchId == -1) { // failed to get the max submission batch id
-				// release db resource before return
-				DBHelper.closeResultSet(resSet);
-				DBHelper.closePreparedStatement(prepStmt);
 				return -1;
 			}
 			
@@ -120,8 +119,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	if (loggedRecordNumber == 0) { // logging failed
         		conn.rollback();
         		conn.setAutoCommit(true);
-    			DBHelper.closeResultSet(resSet);
-    			DBHelper.closePreparedStatement(prepStmt);
     			return -1;
         	}
         	
@@ -131,8 +128,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	if (batchPiCreated == 0) { // failed to insert
         		conn.rollback();
         		conn.setAutoCommit(true);
-				DBHelper.closeResultSet(resSet);
-				DBHelper.closePreparedStatement(prepStmt);
 				return -1;
         	}
 
@@ -146,9 +141,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			if (updatedRecordNumber == 0) { // failed to update db
         		conn.rollback();
         		conn.setAutoCommit(true);
-				// release db resource before return
-				DBHelper.closeResultSet(resSet);
-				DBHelper.closePreparedStatement(prepStmt);
 				return -1;
 			} else { // batch id updated
 				newBatchId = maxBatchId+1;
@@ -156,13 +148,16 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			// release db resource
     		conn.commit();
     		conn.setAutoCommit(true);
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-			se.printStackTrace();
+			return newBatchId;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return -1;
 		}
-		// return
-		return newBatchId;
+		finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -206,11 +201,16 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	prepStmt.setInt(2, pi);
         	prepStmt.setString(3, userName);
         	insertedRecordNumber = prepStmt.executeUpdate();
-        	DBHelper.closePreparedStatement(prepStmt);
-        } catch(SQLException se) {
-        	se.printStackTrace();
-        }
-		return insertedRecordNumber;
+        	
+			return insertedRecordNumber;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return -1;
+		}
+		finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		}
 	}
 	
 	/**
@@ -242,14 +242,17 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			prepStmt.setInt(1, pi);
 			resSetC = prepStmt.executeQuery();
 			batches = formatISHBatchResult(resSetM, resSetC);
-			// release db resource
+			return batches;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return null;
+		}
+		finally{
 			DBHelper.closeResultSet(resSetM);
 			DBHelper.closeResultSet(resSetC);
 			DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-			se.printStackTrace();
 		}
-		return batches;
 	}
 	
 	/**
@@ -363,13 +366,16 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			if (resSet.first()) {
 				submissions = formatISHBatchSubmissions(resSet);
 			}
-			// release db resource
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-			se.printStackTrace();
+			return submissions;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return null;
 		}
-		return submissions;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -401,13 +407,16 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 					i++;
 				}
 			}
-			// release db resource
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-			se.printStackTrace();
+			return submissionIds;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return null;
 		}
-		return submissionIds;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -501,8 +510,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //			System.out.println("maxSubmissionTempId: " + maxSubmissionTempId);
 			if (maxSubmissionTempId == -1) { // failed to get the max submission batch id
 				// release db resource before return
-				DBHelper.closeResultSet(resSet);
-				DBHelper.closePreparedStatement(prepStmt);
 				return updatedRecordNumber;
 			}
 			// '999999' is the prefix of the sub temp id, when increment it, only increase the id part
@@ -527,9 +534,7 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	if (loggedRecordNumber == 0) { // logging failed
         		conn.rollback();
         		conn.setAutoCommit(true);
-    			DBHelper.closeResultSet(resSet);
-    			DBHelper.closePreparedStatement(prepStmt);
-    			return 0;
+     			return 0;
         	}
 
         	//insert temporary submission
@@ -559,8 +564,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			
 			if (updatedRecordNumber == 0) { // failed to insert submission
 				conn.rollback();
-    			DBHelper.closeResultSet(resSet);
-    			DBHelper.closePreparedStatement(prepStmt);
     			return 0;
 			} else {
 				// increment submission temp id
@@ -572,9 +575,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 				updatedRecordNumber = prepStmt.executeUpdate();
 //				System.out.println("updatedSeqNumber: " + updatedRecordNumber);
 				if (updatedRecordNumber == 0) { // failed to increment sub temp id
-					conn.rollback();
-	    			DBHelper.closeResultSet(resSet);
-	    			DBHelper.closePreparedStatement(prepStmt);
 	    			return 0;
 				} else {
 					conn.commit();
@@ -582,13 +582,16 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			}
 			conn.setAutoCommit(true);
 
-			// release db resource
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-			se.printStackTrace();
+			return 1;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return 0;
 		}
-		return 1;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	} // end of createNewSubmission(batch, userName)
 	
 	/**
@@ -640,8 +643,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //			System.out.println("maxSubmissionTempId: " + maxSubmissionTempId);
 			if (maxSubmissionTempId == -1) { // failed to get the max submission batch id
 				// release db resource before return
-				DBHelper.closeResultSet(resSet);
-				DBHelper.closePreparedStatement(prepStmt);
 //				return updatedRecordNumber;
 				return Integer.toString(updatedRecordNumber);
 			}
@@ -667,8 +668,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	if (loggedRecordNumber == 0) { // logging failed
         		conn.rollback();
         		conn.setAutoCommit(true);
-    			DBHelper.closeResultSet(resSet);
-    			DBHelper.closePreparedStatement(prepStmt);
     			return "0";
         	}
 
@@ -705,9 +704,7 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			
 			if (updatedRecordNumber == 0) { // failed to insert submission
 				conn.rollback();
-    			DBHelper.closeResultSet(resSet);
-    			DBHelper.closePreparedStatement(prepStmt);
-    			return "0";
+   			return "0";
 			} else {
 				// increment submission temp id
 		    if (debug)
@@ -719,8 +716,6 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //				System.out.println("updatedSeqNumber: " + updatedRecordNumber);
 				if (updatedRecordNumber == 0) { // failed to increment sub temp id
 					conn.rollback();
-	    			DBHelper.closeResultSet(resSet);
-	    			DBHelper.closePreparedStatement(prepStmt);
 	    			return "0";
 				} else {
 					conn.commit();
@@ -728,13 +723,16 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			}
 			conn.setAutoCommit(true);
 
-			// release db resource
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-			se.printStackTrace();
+			return newSubmissionTempId;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return null;
 		}
-		return newSubmissionTempId;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	} // end of createNewSubmission(submission, userName)
 	
 	/**
@@ -779,17 +777,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	updatedRecordNumber = prepStmt.executeUpdate();
         	
         	conn.commit();
+    		return updatedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-		return updatedRecordNumber;
 	}
 	
 	/**
@@ -844,18 +843,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	updatedRecordNumber = prepStmt.executeUpdate();
         	
         	conn.commit();
+    		return updatedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-//		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:updatedRecordNumber: " + updatedRecordNumber);
-		return updatedRecordNumber;
 	}
 	
 	/**
@@ -906,18 +905,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	updatedRecordNumber = prepStmt.executeUpdate();
         	
         	conn.commit();
+    		return updatedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-//		System.out.println("AnnotationTestDAO:updateSubmissionDbStatusByLabAndSubDateAndState:updatedRecordNumber: " + updatedRecordNumber);
-		return updatedRecordNumber;
 	}
 	
 	/**
@@ -965,17 +964,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	updatedRecordNumber = prepStmt.executeUpdate();
         	
         	conn.commit();
-        } catch(SQLException se) {
+    		return updatedRecordNumber;
+       } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-		return updatedRecordNumber;
 	}
 
 	public String getStageFromSubmission(String submissionId) {
@@ -995,16 +995,15 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
             if(resSet.first()) {
             	stage = resSet.getString(1);
             }
+            return stage;
         } catch (SQLException e){
 			e.printStackTrace();
-			stage = null;
+			return null;
 		}
 		finally {
 			DBHelper.closeResultSet(resSet);
 			DBHelper.closePreparedStatement(prepStmt);
 		}
-//		System.out.println("AnnatationTestDAO:getStageFromSubmission:stage: " + stage);
-		return stage;
 	}
 	
 	/**
@@ -1035,42 +1034,48 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
             	submission.setStage("TS" + resSet.getString(3));// xingjun - 26/02/2010
             	submission.setDbStatusId(resSet.getInt(4));
             }
+            return submission;
+            
         } catch (SQLException e){
 			e.printStackTrace();
-			submission = null;
+			return null;
 		}
 		finally {
 			DBHelper.closeResultSet(resSet);
 			DBHelper.closePreparedStatement(prepStmt);
 		}
-//		System.out.println("AnnotationTestDAO:getSubmissionSummary:submissionStage: " + submission.getStage());
-		return submission;
 	}
 
 	/**
 	 * @author xingjun - 11/07/2008
 	 */
 	public ArrayList<String[]> getComponentAndExpression(String submissionId) {
-		ParamQuery parQ = 
-			AnnotationToolQuery.getParamQuery("COMPONENT_AND_EXPRESSION_INFO");
+		ParamQuery parQ =  AnnotationToolQuery.getParamQuery("COMPONENT_AND_EXPRESSION_INFO");
         PreparedStatement prepStmt = null;
-        ResultSet resSet;
+        ResultSet resSet = null;
         ArrayList<String[]> result = null;
         String queryString = parQ.getQuerySQL();
         
         try {
 		    if (debug)
-			System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
+		    	System.out.println("MySQLAnnotationTestDAOImp.sql = "+queryString.toLowerCase());
+		    
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, submissionId);
         	prepStmt.setString(2, submissionId);
         	prepStmt.setString(3, submissionId);
         	resSet = prepStmt.executeQuery();
         	result = this.formatComponentAndExpressionResultSet(resSet);
+        	
+        	return result;
         } catch(Exception se) {
-        	se.printStackTrace();       
+        	se.printStackTrace();  
+        	return null;
         }	
-        return result;
+		finally {
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -1127,7 +1132,7 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		ParamQuery parQ = 
 			AnnotationToolQuery.getParamQuery("EXPRESSION_AND_PATTERN_INFO");
         PreparedStatement prepStmt = null;
-        ResultSet resSet;
+        ResultSet resSet = null;
         ArrayList<String[]> result = null;
         String queryString = parQ.getQuerySQL();
         
@@ -1148,10 +1153,15 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	prepStmt.setString(2, componentId); // component id
         	resSet = prepStmt.executeQuery();
         	result = DBHelper.formatResultSetToArrayList(resSet);
+            return result;
         } catch(Exception se) {
         	se.printStackTrace();       
+            return null;
         }	
-        return result;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closeResultSet(resSet);
+        }
 	}
 	
 	/**
@@ -1199,18 +1209,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(deletedRecordNumber + " expression location deleted!");
         	
             conn.commit();
+    		return deletedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        
-        // return
-		return deletedRecordNumber;
 	}
 	
 	/**
@@ -1256,17 +1266,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(deletedRecordNumber + " expression pattern deleted!");
         	
         	conn.commit();
+    		return deletedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-		return deletedRecordNumber;
 	}
 	
 	/**
@@ -1313,17 +1324,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
         	updatedRecordNumber = prepStmt.executeUpdate();
         	
         	conn.commit();
+    		return updatedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-		return updatedRecordNumber;
 	}
 	
 	
@@ -1368,17 +1380,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(deletedRecordNumber + " submission deleted!");
         	
         	conn.commit();
+    		return deletedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
-        } finally {
+    		return 0;
+       } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-		return deletedRecordNumber;
 	}// end of deleteSubmission
 	
 	/**
@@ -1425,17 +1438,18 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 //        	System.out.println(deletedRecordNumber + " batch deleted!");
         	
         	conn.commit();
+    		return deletedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-		return deletedRecordNumber;
 	}
 	
 	/**
@@ -1448,7 +1462,7 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 	public int checkConflict(String componentId, ArrayList components, String stage, String expression) {
 		ParamQuery componentPQ = null;
 		PreparedStatement componentPS = null;
-		
+		ResultSet resSet = null;
 		// get list of component ids
 		int len = components.size();
 		if (len == 0) {
@@ -1482,7 +1496,7 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			componentPS = conn.prepareStatement(queryString);
 			componentPS.setString(1, componentId);
 			componentPS.setString(2, stage);
-			ResultSet resSet = componentPS.executeQuery();
+			resSet = componentPS.executeQuery();
 			if (resSet.first()) {
 				if (expression.equals("present")) {
 					errorCode = 1;
@@ -1492,8 +1506,10 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 					errorCode = 3;
 				}
 			}
+			return errorCode;
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return errorCode;
 		} finally {
 			try {
 				if (componentPS != null) {
@@ -1502,9 +1518,9 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			} catch (SQLException se) {
 				se.printStackTrace();
 			}
+        	DBHelper.closePreparedStatement(componentPS);
+        	DBHelper.closeResultSet(resSet);
 		}
-//		System.out.println("error code = " + errorCode);
-		return errorCode;
 	} // end of checkConflict
 	
 	
@@ -1549,13 +1565,13 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
 		}
 		finally {
 			//close the statement and result set
 			DBHelper.closeResultSet(resSet);
 			DBHelper.closePreparedStatement(prepStmt);
 		}
-		return null;
 	}
 	
 	/**
@@ -1614,12 +1630,12 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 		}
 		catch (SQLException e){
 			e.printStackTrace();
+			return null;
 		}
 		finally {
 			DBHelper.closeResultSet(resSet);
 			DBHelper.closePreparedStatement(prepStmt);
 		}
-		return treeContent;
 	}
 	
 	private ArrayList<String> formatTreeContentForJavascript(ResultSet resSet, boolean hasAnnot, String accNo) throws SQLException {
@@ -1761,7 +1777,11 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
               return patterns.toString();
           }
           return "";
-        }
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			return null;
+		}
         finally {
             DBHelper.closeResultSet(resSet);
             DBHelper.closePreparedStatement(prepStat);
@@ -1791,9 +1811,14 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			// release db resource
 			DBHelper.closeResultSet(resSet);
 			DBHelper.closePreparedStatement(prepStmt);
+			return batchStatus;
 		} catch (SQLException se) {
 			se.printStackTrace();
+			return 0;
 		}
-		return batchStatus;
+        finally {
+            DBHelper.closeResultSet(resSet);
+            DBHelper.closePreparedStatement(prepStmt);
+        }
 	}
 }

@@ -45,29 +45,34 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 				for(int i = 0; i < stage.length; i++) {
 					queryString = sql + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
 					//System.out.println("FocusStageArray:"+queryString);
-		    if (debug)
-			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
+				    if (debug)
+				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					
 					resSet = prepStmt.executeQuery();
 					result[i][0] = formatBrowseSeriesResultSet(resSet);
 					
-					DBHelper.closePreparedStatement(prepStmt);	
-					
 					queryString = sql2 + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
 //					System.out.println("FocusStageISH:"+queryString);
 					prepStmt = null;
-		    if (debug)
-			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
+				    if (debug)
+				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = null;
 					resSet = prepStmt.executeQuery();
 					result[i][1] = formatBrowseSeriesResultSet(resSet);
 					
-					DBHelper.closePreparedStatement(prepStmt);
 				}
+				return result;
+				
 			} catch(Exception se) {
 				se.printStackTrace();
+				return null;
+			}
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);	
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
 			}
 		}
 		return result;
@@ -125,14 +130,13 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 						queryString = queryString.replace("LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
 					}
 //					System.out.println("FocusStageInsitu:"+queryString);
-		    if (debug)
-			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
+				    if (debug)
+				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = prepStmt.executeQuery();
 					if (resSet.first()) {
 						result[i][0] = resSet.getString(1);
 					}
-					DBHelper.closePreparedStatement(prepStmt);	
 					
 					queryString = sql2 + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
 
@@ -165,21 +169,27 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 					}
 // 					System.out.println("FocusStageArray:"+queryString);
 					prepStmt = null;
-		    if (debug)
-			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
+				    if (debug)
+				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = null;
 					resSet = prepStmt.executeQuery();
 					if (resSet.first()) {
 						result[i][1] = resSet.getString(1);
 					}
-					DBHelper.closePreparedStatement(prepStmt);
 				}
+				return result;
 			} catch(Exception se) {
 				se.printStackTrace();
+				return null;
+			}
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);	
+				DBHelper.closePreparedStatement(prepStmt);
+				
 			}
 		}
-		return result;
+		return null;
 	}
 	
 
@@ -260,19 +270,23 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 //				System.out.println("FocusStageSummaryQuery:" + assayType + ": " +queryString);
 				// get the data
 				try {
-		    if (debug)
-			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
+				    if (debug)
+				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = prepStmt.executeQuery();
 					if (resSet.first()) {
 						result[i] = resSet.getString(1);
 					}
-					DBHelper.closePreparedStatement(prepStmt);
-					DBHelper.closeResultSet(resSet);
+					return result;
+					
 				} catch(Exception se) {
 					se.printStackTrace();
+					return null;
 				}
-				queryString = "";
+				finally{
+					DBHelper.closePreparedStatement(prepStmt);
+					DBHelper.closeResultSet(resSet);					
+				}
 			}
 		}
 		return result;
@@ -313,21 +327,25 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			String sql = parQ.getQuerySQL();
 // 			System.out.println("gene_index sql: " + sql);
 			try {
-		    if (debug)
-			System.out.println("MySQLFocusStageDAOImp.sql = "+sql.toLowerCase());
+			    if (debug)
+			    	System.out.println("MySQLFocusStageDAOImp.sql = "+sql.toLowerCase());
 				prepStmt = conn.prepareStatement(sql);
 				resSet = prepStmt.executeQuery();
 				list = formatBrowseSeriesResultSet(resSet);
-				DBHelper.closePreparedStatement(prepStmt);
 				if(null != list) {
 					result = new Object[list.size()][];
 					for(int i = 0; i < list.size(); i++) {
 						result[i] = (Object[])list.get(i);						
 					}				
 				} 
+				return result;
 			} catch(Exception se) {
 				se.printStackTrace();
-				DBHelper.closePreparedStatement(prepStmt);
+				return null;
+			}
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);	
+				DBHelper.closeResultSet(resSet);
 			}
 		}
 		return result;
@@ -370,12 +388,14 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			} else {
 				dpcStageValue = "";
 			}
-			DBHelper.closePreparedStatement(prepStmt);
-			DBHelper.closeResultSet(resSet);
+			return dpcStageValue;
 		} catch(Exception se) {
 			se.printStackTrace();
+			return null;
 		}
-		
-		return dpcStageValue;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);		
+		}
 	}
 }

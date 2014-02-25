@@ -71,13 +71,15 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 			resSet = prepStmt.executeQuery();
 			result = formatBrowseSeriesResultSet(resSet);
 			
-			DBHelper.closePreparedStatement(prepStmt);
-//			parQ.setQuerySQL(query);
-			
-		} catch(SQLException se) {
-			se.printStackTrace();
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		return result;
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStmt);			
+		}
 	}
 
 
@@ -117,11 +119,15 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
             resSet = prepStat.executeQuery();
             result = formatBrowseSeriesResultSet(resSet);
 
-            DBHelper.closePreparedStatement(prepStat);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStat);			
+		}
     }
     
     /**
@@ -153,11 +159,15 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
     		resSet = prepStat.executeQuery();
     		result = formatBrowseSeriesResultSet(resSet);
     		
-    		DBHelper.closePreparedStatement(prepStat);
-    	} catch (SQLException e) {
-    		e.printStackTrace();
-    	}
-    	return result;
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStat);			
+		}
     }
 
     /**
@@ -403,13 +413,15 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
             }
-            // release the database resources
-            DBHelper.closePreparedStatement(prepStmt);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return result;
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStmt);			
+		}
     }
     
     /**
@@ -515,12 +527,15 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 			conn.commit();
 			conn.setAutoCommit(true);
 			
-			// release the db objects
-			DBHelper.closePreparedStatement(prepStmtSeries);
-		} catch(SQLException se) {
-			se.printStackTrace();
+			return series;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		return series;
+		finally{
+			DBHelper.closeResultSet(resSetSeries);
+			DBHelper.closePreparedStatement(prepStmtSeries);			
+		}
 	}
 	
 	/**
@@ -565,12 +580,15 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				series.SetDescription(resSetSeries.getString(8));
 				series.setArchiveId(resSetSeries.getInt(9)); 
 			}
-			// release the db objects
-			DBHelper.closePreparedStatement(prepStmtSeries);
-		} catch(SQLException se) {
-			se.printStackTrace();
+			return series;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		return series;
+		finally{
+			DBHelper.closeResultSet(resSetSeries);
+			DBHelper.closePreparedStatement(prepStmtSeries);			
+		}
 	}
 	
 	public ArrayList findOriginalImagesById(String submissionAccessionId) {
@@ -674,13 +692,16 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				}
 			}
 			
-			// release the db objects
+			return relevantGudmapIds;
+			
+		} catch (SQLException se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
 			DBHelper.closePreparedStatement(prepStmt);
 			DBHelper.closeResultSet(resSet);
-		} catch(SQLException se) {
-			se.printStackTrace();
 		}
-		return relevantGudmapIds;
 	}
 	
 	/**
@@ -716,15 +737,16 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				}
 			}
 			
-			// release the db objects
+			return relevantGudmapIds;
+			
+		} catch (SQLException se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
 			DBHelper.closePreparedStatement(prepStmt);
 			DBHelper.closeResultSet(resSet);
-		} catch(SQLException se) {
-			se.printStackTrace();
 		}
-//		for (int i=0;i<relevantGudmapIds.size();i++)
-//			System.out.println("ArrayDevDAO:getRelevantGudmapIds:id(" + i + "): " + relevantGudmapIds.get(i));
-		return relevantGudmapIds;
 	}
 	
 	
@@ -778,14 +800,16 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				}
 			}
 			
-			// release the db objects
+			return relevantSymbols;
+			
+		} catch (SQLException se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
 			DBHelper.closePreparedStatement(prepStmt);
 			DBHelper.closeResultSet(resSet);
-		} catch(SQLException se) {
-			se.printStackTrace();
 		}
-//		System.out.println("ArrayDevDAO:getRelevantSymbols:relevantSymbols number" + relevantSymbols.size());
-		return relevantSymbols;
     }
     
 	/**
@@ -828,14 +852,16 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				}
 			}
 			
-			// release the db objects
+			return relevantSymbols;
+			
+		} catch (SQLException se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
 			DBHelper.closePreparedStatement(prepStmt);
 			DBHelper.closeResultSet(resSet);
-		} catch(SQLException se) {
-			se.printStackTrace();
 		}
-//		System.out.println("ArrayDevDAO:getRelevantSymbols:relevantSymbols number" + relevantSymbols.size());
-		return relevantSymbols;
     }
     
     /**
@@ -869,13 +895,16 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				}
 			}
 			
-			// release the db objects
+			return relevantProbeSetIds;
+			
+		} catch (SQLException se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
 			DBHelper.closePreparedStatement(prepStmt);
 			DBHelper.closeResultSet(resSet);
-		} catch(SQLException se) {
-			se.printStackTrace();
 		}
-		return relevantProbeSetIds;
     }
     
 	/**
@@ -910,15 +939,16 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				}
 			}
 			
-			// release the db objects
+			return relevantImageIds;
+			
+		} catch (SQLException se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
 			DBHelper.closePreparedStatement(prepStmt);
 			DBHelper.closeResultSet(resSet);
-		} catch(SQLException se) {
-			se.printStackTrace();
 		}
-//		for (int i=0;i<relevantImageIds.size();i++)
-//			System.out.println("ArrayDevDAO:getRelevantImageIds:id(" + i + "): " + relevantImageIds.get(i));
-		return relevantImageIds;
 	}
     
 }

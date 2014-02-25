@@ -551,48 +551,49 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	
     	//check whether you want to find ancestor or desendent - sql dependent on this clause
     	if(relationType.equalsIgnoreCase("ancestor")) { 
-	    transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "ANCES_ATN.ATN_PUBLIC_ID", "DESCEND_ATN.ATN_PUBLIC_ID");
+    		transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "ANCES_ATN.ATN_PUBLIC_ID", "DESCEND_ATN.ATN_PUBLIC_ID");
     	}
     	//must be descendent
     	else {
-	    transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "DESCEND_ATN.ATN_PUBLIC_ID","ANCES_ATN.ATN_PUBLIC_ID");
+    		transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "DESCEND_ATN.ATN_PUBLIC_ID","ANCES_ATN.ATN_PUBLIC_ID");
     	}
 	
     	PreparedStatement stmt = null;
     	ResultSet resSet = null;
 	
     	try {
-	    stmt = conn.prepareStatement(transitiveRelationsQ);
-	    for(int i=0;i<input.length;i++){
-		stmt.setString(i+1, input[i]);
-	    }
-	    if (debug)
-		System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
-	    resSet = stmt.executeQuery();
-	    if(resSet.first()){
-		resSet.last();
-		int i = resSet.getRow();
-		resSet.beforeFirst();
-		String [] comps = new String[i];
-		i = 0;
-		//add each result row to array
-		while(resSet.next()) {
-		    comps[i] = resSet.getString(1);
-		    i++;
-		}
-		return comps;
-	    }
-	    
+		    stmt = conn.prepareStatement(transitiveRelationsQ);
+		    for(int i=0;i<input.length;i++){
+		    	stmt.setString(i+1, input[i]);
+		    }
+		    if (debug)
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    
+		    resSet = stmt.executeQuery();
+		    if(resSet.first()){
+				resSet.last();
+				int i = resSet.getRow();
+				resSet.beforeFirst();
+				String [] comps = new String[i];
+				i = 0;
+				//add each result row to array
+				while(resSet.next()) {
+				    comps[i] = resSet.getString(1);
+				    i++;
+				}
+				return comps;
+		    }
+		    
+	    	return null;
     	}
     	catch(SQLException e){
-	    e.printStackTrace();
+    		e.printStackTrace();
+        	return null;
     	}
     	finally {
-	    DBHelper.closeResultSet(resSet);
-	    DBHelper.closePreparedStatement(stmt);
+		    DBHelper.closeResultSet(resSet);
+		    DBHelper.closePreparedStatement(stmt);
     	}
-	
-    	return null;
     }
     
     /**
@@ -603,38 +604,39 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	//string to contain sql
     	String anaComponentsQ = DBQuery.getTimedComponentsFromSynsAndIdsQuery();
     	PreparedStatement stmt = null;
-	ResultSet resSet = null;
-	try{
-	    stmt = conn.prepareStatement(anaComponentsQ);
-	    
-	    //there are 4 unions in the query so the input param will have to be set 4 times
-	    for(int j=0;j<4;j++) {
-		stmt.setString(j+1, input);
-	    }
-	    if (debug)
-		System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
-	    //execute the query for a single element in the input array
-	    resSet = stmt.executeQuery();
-	    if(resSet.first()){
-		resSet.last();
-		String [] componentSet = new String [resSet.getRow()];
-		resSet.beforeFirst();
-		int index = 0;
-		while(resSet.next()){
-		    componentSet[index] = resSet.getString(1);
-		    index++;
+		ResultSet resSet = null;
+		try{
+		    stmt = conn.prepareStatement(anaComponentsQ);
+		    
+		    //there are 4 unions in the query so the input param will have to be set 4 times
+		    for(int j=0;j<4;j++) {
+		    	stmt.setString(j+1, input);
+		    }
+		    if (debug)
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    //execute the query for a single element in the input array
+		    resSet = stmt.executeQuery();
+		    if(resSet.first()){
+				resSet.last();
+				String [] componentSet = new String [resSet.getRow()];
+				resSet.beforeFirst();
+				int index = 0;
+				while(resSet.next()){
+				    componentSet[index] = resSet.getString(1);
+				    index++;
+				}
+				return componentSet;
+		    }		
+	    	return null;
 		}
-		return componentSet;
-	    }		
-	}
-	catch(SQLException e){
-	    e.printStackTrace();
-	}
-	finally {
-	    DBHelper.closeResultSet(resSet);
-	    DBHelper.closePreparedStatement(stmt);
-	}
-    	return null;
+		catch(SQLException e){
+		    e.printStackTrace();
+	    	return null;
+		}
+		finally {
+		    DBHelper.closeResultSet(resSet);
+		    DBHelper.closePreparedStatement(stmt);
+		}
     }
     
     /**
@@ -648,45 +650,46 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	
     	//string to contain sql
     	String anaComponentsQ = DBQuery.getComponentsForSynsAndIdsQuery(input.length);
-	PreparedStatement stmt = null;
-	ResultSet resSet = null;
-	
-	try {
-	    stmt = conn.prepareStatement(anaComponentsQ);
-	    
-	    for(int i=0;i<4;i++){
-		for(int j=0;j<input.length;j++){
-		    stmt.setString((i*input.length)+j+1, input[j].trim());
-		}
+		PreparedStatement stmt = null;
+		ResultSet resSet = null;
 		
-	    }
-	    if (debug)
-		System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
-	    resSet = stmt.executeQuery();
-	    if(resSet.first()){
-		resSet.last();
-		int len = resSet.getRow();
-		resSet.beforeFirst();
-		String [] comps = new String [len];
-		int i=0;
-		//add each result row to array
-		while(resSet.next()){
-		    comps[i] = resSet.getString(1);
+		try {
+		    stmt = conn.prepareStatement(anaComponentsQ);
 		    
-		    i++;
+		    for(int i=0;i<4;i++){
+				for(int j=0;j<input.length;j++){
+				    stmt.setString((i*input.length)+j+1, input[j].trim());
+				}			
+		    }
+		    
+		    if (debug)
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    
+		    resSet = stmt.executeQuery();
+		    if(resSet.first()){
+				resSet.last();
+				int len = resSet.getRow();
+				resSet.beforeFirst();
+				String [] comps = new String [len];
+				int i=0;
+				//add each result row to array
+				while(resSet.next()){
+				    comps[i] = resSet.getString(1);
+				    
+				    i++;
+				}
+				return comps;
+		    }
+	    	return null;
 		}
-		return comps;
-	    }
-	}
-	catch(SQLException e){
-	    e.printStackTrace();
-	}
-	finally {
-	    DBHelper.closeResultSet(resSet);
-	    DBHelper.closePreparedStatement(stmt);
-	}
-	
-    	return null;
+		catch(SQLException e){
+		    e.printStackTrace();
+	    	return null;
+		}
+		finally {
+		    DBHelper.closeResultSet(resSet);
+		    DBHelper.closePreparedStatement(stmt);
+		}
     }
     
     /**
@@ -703,84 +706,85 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	String goIdListQ;
 	
     	PreparedStatement stmt = null;
-	ResultSet resSet = null;
+    	ResultSet resSet = null;
     	try {
 	    
-	    //if user wants to do a wild card search
-	    if (wildcard.equalsIgnoreCase("contains") || wildcard.equalsIgnoreCase("starts with")) {
-		//get components to build query to find GO: ids for a specific function
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGoTerm_GoId");
-		//create the query string from the users input and the components stored in symbolsQParts
-		goIdListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
-	    }
-	    //search for an exact string
-	    else {
-		//get components to build query to find GO: ids for a specific function
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGoTerm_GoId");
-		//create the query string from the users input and the components stored in symbolsQParts
-		goIdListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-	    }
-	    
-	    // need to execute query to get go id list here
-	    String[] goIdList = null;
-	    stmt = conn.prepareStatement(goIdListQ);
-	    //set each user input as a query parameter
-	    for(int i=0;i<input.length;i++){
-		if(wildcard.equalsIgnoreCase("contains")) {
-		    stmt.setString(i+1, "%"+input[i].trim()+"%");
-		}
-		else if(wildcard.equalsIgnoreCase("starts with")){
-		    stmt.setString(i+1, input[i].trim()+"%");
-		}
-		else {
-		    stmt.setString(i+1, input[i].trim());
-		}
-	    }
-	    
-	    if (debug)
-		System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
-	    resSet = stmt.executeQuery();
-	    if (resSet.first()) {
-		resSet.last();
-		int rowCount = resSet.getRow();
-		resSet.beforeFirst();
-		goIdList = new String[rowCount];
-		int i = 0;
-		//ad the lsit of go ids to an array
-		while (resSet.next()) {
-		    goIdList[i] = resSet.getString(1);
-		    i++;
-		}
-		
-		////get components to build query to find gene symbols using GO ids found above
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefMgiGoGene_MrkSymbol");
-		//create the query string from the GO id list and the components stored in symbolsQParts
-		String symbolsFromGoIdListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(goIdList,symbolsQParts[0], symbolsQParts[1], 1);
-		
-		stmt = conn.prepareStatement(symbolsFromGoIdListQ);
-		//set each GO id as a query parameter
-		for(i=0;i< goIdList.length;i++){
-		    stmt.setString(i+1, goIdList[i].trim());
-		}
-		
-		if (debug)
-		    System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
-		resSet = stmt.executeQuery();
-		if(resSet.first()){
-		    resSet.last();
-		    rowCount = resSet.getRow();
-		    resSet.beforeFirst();
-		    String [] geneSymbols = new String [rowCount];
-		    i = 0;
-		    //add list of symbols to an array
-		    while (resSet.next()) {
-			geneSymbols[i] = resSet.getString(1);
-			i++;
+		    //if user wants to do a wild card search
+		    if (wildcard.equalsIgnoreCase("contains") || wildcard.equalsIgnoreCase("starts with")) {
+				//get components to build query to find GO: ids for a specific function
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGoTerm_GoId");
+				//create the query string from the users input and the components stored in symbolsQParts
+				goIdListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
 		    }
-		    return geneSymbols;	
-		}
-		
-	    }
+		    //search for an exact string
+		    else {
+				//get components to build query to find GO: ids for a specific function
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGoTerm_GoId");
+				//create the query string from the users input and the components stored in symbolsQParts
+				goIdListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+		    }
+		    
+		    // need to execute query to get go id list here
+		    String[] goIdList = null;
+		    stmt = conn.prepareStatement(goIdListQ);
+		    //set each user input as a query parameter
+		    for(int i=0;i<input.length;i++){
+				if(wildcard.equalsIgnoreCase("contains")) {
+				    stmt.setString(i+1, "%"+input[i].trim()+"%");
+				}
+				else if(wildcard.equalsIgnoreCase("starts with")){
+				    stmt.setString(i+1, input[i].trim()+"%");
+				}
+				else {
+				    stmt.setString(i+1, input[i].trim());
+				}
+		    }
+		    
+		    if (debug)
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    
+		    resSet = stmt.executeQuery();
+		    if (resSet.first()) {
+				resSet.last();
+				int rowCount = resSet.getRow();
+				resSet.beforeFirst();
+				goIdList = new String[rowCount];
+				int i = 0;
+				//ad the lsit of go ids to an array
+				while (resSet.next()) {
+				    goIdList[i] = resSet.getString(1);
+				    i++;
+				}
+				
+				////get components to build query to find gene symbols using GO ids found above
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefMgiGoGene_MrkSymbol");
+				//create the query string from the GO id list and the components stored in symbolsQParts
+				String symbolsFromGoIdListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(goIdList,symbolsQParts[0], symbolsQParts[1], 1);
+				
+				stmt = conn.prepareStatement(symbolsFromGoIdListQ);
+				//set each GO id as a query parameter
+				for(i=0;i< goIdList.length;i++){
+				    stmt.setString(i+1, goIdList[i].trim());
+				}
+				
+				if (debug)
+				    System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+				
+				resSet = stmt.executeQuery();
+				if(resSet.first()){
+				    resSet.last();
+				    rowCount = resSet.getRow();
+				    resSet.beforeFirst();
+				    String [] geneSymbols = new String [rowCount];
+				    i = 0;
+				    //add list of symbols to an array
+				    while (resSet.next()) {
+						geneSymbols[i] = resSet.getString(1);
+						i++;
+				    }
+				    return geneSymbols;	
+				}			
+		    }
     	}
     	catch(SQLException e){
 	    e.printStackTrace();
@@ -799,205 +803,203 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     private String[] getSymbolsFromGeneInputParams(String[] input, String wildcard) {
 	
     	//array to contain components to build a specific query
-	String[] symbolsQParts;
-	//string to contain sql to find gene symbols from REF_PROBE using gene symbol
-	String symbolsFromRefProbeSymbolQ;
-	//string to contain sql to find gene symbol from REF_PROBE using gene name
-	String symbolsFromRefProbeNameQ;
-	//string to contain sql to find gene symbol from REF_GENE_INFO using gene symbol
-	String symbolsFromrefGeneInfoSymbolQ;
-	//string to contain sql to find gene symbol from REF_GENE_INFO using gene name
-	String symbolsFromrefGeneInfoNameQ;
-	//string to contain sql to find gene symbol from REF_GENE_INFO using gene synonym
-	String symbolsFromrefGeneInfoSynonymQ;
-	//String symbolsFromMtfsQ;
-	
-	// this qury will return a list of syns to be used as input in another genefinding query - symbolsFromSynListQ
-	String synonymListQ;
-	
-	PreparedStatement stmt = null;
-	ResultSet resSet = null;
-	
-	
-	try {			
-	    //if user wants to do a wild card search
-	    if (wildcard.equalsIgnoreCase("contains") || wildcard.equalsIgnoreCase("starts with")) {
-		//get components to build query to find symbols from REF_PROBE using gene symbol as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Symbol");
-		//create sql from components and user input
-		symbolsFromRefProbeSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
-		//get components to build query to find symbols from REF_PROBE using gene name as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Name");
-		//create sql from components and user input
-		symbolsFromRefProbeNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
-		//get components to build query to find symbols from REF_GENE_INFO using gene symbol as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Symbol");
-		//create sql from components and user input
-		symbolsFromrefGeneInfoSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
-		//get components to build query to find symbols from REF_GENE_INFO using gene name as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Name");
-		//create sql from components and user input
-		symbolsFromrefGeneInfoNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
-		//get components to build query to find symbol from REF_GENE_INFO using gene synonym as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_synonym");
-		//create sql from components and user input
-		symbolsFromrefGeneInfoSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
-		//get components to build query to find synonymns from REF_SYNONYM using synonym as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
-		//create sql from components and user input
-		synonymListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+		String[] symbolsQParts;
+		//string to contain sql to find gene symbols from REF_PROBE using gene symbol
+		String symbolsFromRefProbeSymbolQ;
+		//string to contain sql to find gene symbol from REF_PROBE using gene name
+		String symbolsFromRefProbeNameQ;
+		//string to contain sql to find gene symbol from REF_GENE_INFO using gene symbol
+		String symbolsFromrefGeneInfoSymbolQ;
+		//string to contain sql to find gene symbol from REF_GENE_INFO using gene name
+		String symbolsFromrefGeneInfoNameQ;
+		//string to contain sql to find gene symbol from REF_GENE_INFO using gene synonym
+		String symbolsFromrefGeneInfoSynonymQ;
+		//String symbolsFromMtfsQ;
 		
+		// this qury will return a list of syns to be used as input in another genefinding query - symbolsFromSynListQ
+		String synonymListQ;
 		
-		
-	    }
-	    //search for an exact string
-	    else {
-		//get components to build query to find symbols from REF_PROBE using gene symbol as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Symbol");
-		//create sql from components and user input
-		symbolsFromRefProbeSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-		//get components to build query to find symbols from REF_PROBE using gene name as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Name");
-		//create sql from components and user input
-		symbolsFromRefProbeNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-		//get components to build query to find symbols from REF_GENE_INFO using gene symbol as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Symbol");
-		//create sql from components and user input
-		symbolsFromrefGeneInfoSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-		//get components to build query to find symbols from REF_GENE_INFO using gene name as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Name");
-		//create sql from components and user input
-		symbolsFromrefGeneInfoNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-		//get components to build query to find symbol from REF_GENE_INFO using gene synonym as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_synonym");
-		//create sql from components and user input
-		symbolsFromrefGeneInfoSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-		//get components to build query to find synonymns from REF_SYNONYM using synonym as a param to narrow search
-		symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
-		//create sql from components and user input
-		synonymListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-	    }
-	    
-	    // need to execute query to get syn list here
-	    String[] synList = null;
-	    stmt = conn.prepareStatement(synonymListQ);
-	    for(int i=0;i<input.length;i++){
-		if(wildcard.equalsIgnoreCase("contains")) {
-		    stmt.setString(i+1, "%"+input[i].trim()+"%");
-		}
-		else if(wildcard.equalsIgnoreCase("starts with")){
-		    stmt.setString(i+1, input[i].trim()+"%");
-		}
-		else {
-		    stmt.setString(i+1, input[i].trim());
-		}
-	    }
-	    
-	    if (debug)
-		System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
-	    resSet = stmt.executeQuery();
-	    if (resSet.first()) {
-		resSet.last();
-		int rowCount = resSet.getRow();
-		resSet.beforeFirst();
-		synList = new String[rowCount];
-		int i = 0;
-		while (resSet.next()) {
-		    synList[i] = resSet.getString(1);
-		    i++;
-		}
-	    }
-	    
-	    symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefMgiMrk_MGIAcc");
-	    String symbolsFromMGiAccQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-	    
-	    symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefEnsGene_EnsemblId");
-	    String symbolsFromEnsemblIdQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-	    
-	    //symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_MTFJax");
-	    //symbolsFromMtfsQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
-	    
-	    // sligtly different query - had to get list of relevant synonyms
-	    // from db to use as input for this query
-	    symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefMgiMrkRefSyn_Synonym");
-	    String symbolsFromSynListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(synList,symbolsQParts[0], symbolsQParts[1], 1);
-	    
-	    String union = AdvancedSearchDBQuery.getUnion();
-	    //use 'union' to incorporate all queryies into a single query
-	    String allQueriesQ = symbolsFromRefProbeSymbolQ + union
-		+ symbolsFromRefProbeNameQ + union
-		+ symbolsFromrefGeneInfoSymbolQ + union
-		+ symbolsFromrefGeneInfoNameQ + union
-		+ symbolsFromrefGeneInfoSynonymQ + union // 12/10/2009
-		+ symbolsFromMGiAccQ + union 
-		+ symbolsFromEnsemblIdQ;
-	    if(!symbolsFromSynListQ.equals("")){
-		allQueriesQ += union + symbolsFromSynListQ;
-	    }
-	    
-	    
-	    stmt = conn.prepareStatement(allQueriesQ);
-	    
-	    //for the first 4 in 'union' query, set the parameters
-	    for(int i=0;i<5;i++){// xingjun - 12/10/2009 - change from 4 to 5
-		for(int j=0;j<input.length;j++){
-		    if(wildcard.equalsIgnoreCase("contains")) {
-			stmt.setString((i*input.length)+j+1, "%"+input[j].trim()+"%");
+		PreparedStatement stmt = null;
+		ResultSet resSet = null;
+	
+	
+		try {			
+		    //if user wants to do a wild card search
+		    if (wildcard.equalsIgnoreCase("contains") || wildcard.equalsIgnoreCase("starts with")) {
+				//get components to build query to find symbols from REF_PROBE using gene symbol as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Symbol");
+				//create sql from components and user input
+				symbolsFromRefProbeSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+				//get components to build query to find symbols from REF_PROBE using gene name as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Name");
+				//create sql from components and user input
+				symbolsFromRefProbeNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+				//get components to build query to find symbols from REF_GENE_INFO using gene symbol as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Symbol");
+				//create sql from components and user input
+				symbolsFromrefGeneInfoSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+				//get components to build query to find symbols from REF_GENE_INFO using gene name as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Name");
+				//create sql from components and user input
+				symbolsFromrefGeneInfoNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+				//get components to build query to find symbol from REF_GENE_INFO using gene synonym as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_synonym");
+				//create sql from components and user input
+				symbolsFromrefGeneInfoSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+				//get components to build query to find synonymns from REF_SYNONYM using synonym as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
+				//create sql from components and user input
+				synonymListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
 		    }
-		    else if(wildcard.equalsIgnoreCase("starts with")) {
-			stmt.setString((i*input.length)+j+1, input[j].trim()+"%");
-		    }
+		    //search for an exact string
 		    else {
-			stmt.setString((i*input.length)+j+1, input[j].trim());
+				//get components to build query to find symbols from REF_PROBE using gene symbol as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Symbol");
+				//create sql from components and user input
+				symbolsFromRefProbeSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				//get components to build query to find symbols from REF_PROBE using gene name as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Name");
+				//create sql from components and user input
+				symbolsFromRefProbeNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				//get components to build query to find symbols from REF_GENE_INFO using gene symbol as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Symbol");
+				//create sql from components and user input
+				symbolsFromrefGeneInfoSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				//get components to build query to find symbols from REF_GENE_INFO using gene name as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Name");
+				//create sql from components and user input
+				symbolsFromrefGeneInfoNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				//get components to build query to find symbol from REF_GENE_INFO using gene synonym as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_synonym");
+				//create sql from components and user input
+				symbolsFromrefGeneInfoSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				//get components to build query to find synonymns from REF_SYNONYM using synonym as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
+				//create sql from components and user input
+				synonymListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
 		    }
 		    
+		    // need to execute query to get syn list here
+		    String[] synList = null;
+		    stmt = conn.prepareStatement(synonymListQ);
+		    for(int i=0;i<input.length;i++){
+				if(wildcard.equalsIgnoreCase("contains")) {
+				    stmt.setString(i+1, "%"+input[i].trim()+"%");
+				}
+				else if(wildcard.equalsIgnoreCase("starts with")){
+				    stmt.setString(i+1, input[i].trim()+"%");
+				}
+				else {
+				    stmt.setString(i+1, input[i].trim());
+				}
+		    }
+		    
+		    if (debug)
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    
+		    resSet = stmt.executeQuery();
+		    if (resSet.first()) {
+				resSet.last();
+				int rowCount = resSet.getRow();
+				resSet.beforeFirst();
+				synList = new String[rowCount];
+				int i = 0;
+				while (resSet.next()) {
+				    synList[i] = resSet.getString(1);
+				    i++;
+				}
+		    }
+		    
+		    symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefMgiMrk_MGIAcc");
+		    String symbolsFromMGiAccQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+		    
+		    symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefEnsGene_EnsemblId");
+		    String symbolsFromEnsemblIdQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+		    
+		    //symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_MTFJax");
+		    //symbolsFromMtfsQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+		    
+		    // sligtly different query - had to get list of relevant synonyms
+		    // from db to use as input for this query
+		    symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefMgiMrkRefSyn_Synonym");
+		    String symbolsFromSynListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(synList,symbolsQParts[0], symbolsQParts[1], 1);
+		    
+		    String union = AdvancedSearchDBQuery.getUnion();
+		    //use 'union' to incorporate all queryies into a single query
+		    String allQueriesQ = symbolsFromRefProbeSymbolQ + union
+			+ symbolsFromRefProbeNameQ + union
+			+ symbolsFromrefGeneInfoSymbolQ + union
+			+ symbolsFromrefGeneInfoNameQ + union
+			+ symbolsFromrefGeneInfoSynonymQ + union // 12/10/2009
+			+ symbolsFromMGiAccQ + union 
+			+ symbolsFromEnsemblIdQ;
+		    if(!symbolsFromSynListQ.equals("")){
+		    	allQueriesQ += union + symbolsFromSynListQ;
+		    }
+		    
+		    
+		    stmt = conn.prepareStatement(allQueriesQ);
+		    
+		    //for the first 4 in 'union' query, set the parameters
+		    for(int i=0;i<5;i++){// xingjun - 12/10/2009 - change from 4 to 5
+				for(int j=0;j<input.length;j++){
+				    if(wildcard.equalsIgnoreCase("contains")) {
+				    	stmt.setString((i*input.length)+j+1, "%"+input[j].trim()+"%");
+				    }
+				    else if(wildcard.equalsIgnoreCase("starts with")) {
+				    	stmt.setString((i*input.length)+j+1, input[j].trim()+"%");
+				    }
+				    else {
+				    	stmt.setString((i*input.length)+j+1, input[j].trim());
+				    }
+				    
+				}			
+		    }
+		    //start the loop at 4 since we have already set params for the first four queries.
+		    //set the params for the remaining 'union' queries
+		    for(int i=5;i<7;i++){// xingjun - 12/10/2009 - change from 4 to 5 and 6 to 7 respectively
+				for(int j=0;j<input.length;j++){
+				    stmt.setString((i*input.length)+j+1, input[j].trim());
+				}
+		    }
+		    //need to set additional params based on result of synonym search
+		    if(synList != null) {
+				for(int i = 0;i< synList.length;i++){
+				    //as there are 6 previous queries, need to start setting params from 6 onwards.
+				    stmt.setString((7*input.length+1+i), synList[i].trim());// xingjun - 12/10/2009 - change from 6 to 7
+				}
+		    }
+		    
+		    if (debug)
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    
+		    resSet = stmt.executeQuery();
+		    String str = null;
+		    if(resSet.first()){
+				resSet.last();
+				//int rowCount = resSet.getRow();
+				ArrayList<String> tmp = new ArrayList<String>();
+				resSet.beforeFirst();
+				//				int i = 0;
+				//add result list to array
+				while (resSet.next()) {
+				    str = Utility.netTrim(resSet.getString(1));
+				    if (null != str)
+					tmp.add(str);
+				}
+				String [] geneSymbols = new String [tmp.size()];
+				geneSymbols = tmp.toArray(geneSymbols);
+				return geneSymbols;	
+		    }
+			return null;
+		    
+		} catch (SQLException e) {
+		    e.printStackTrace();
+			return null;
+		} finally {
+		    DBHelper.closeResultSet(resSet);
+		    DBHelper.closePreparedStatement(stmt);
 		}
-		
-	    }
-	    //start the loop at 4 since we have already set params for the first four queries.
-	    //set the params for the remaining 'union' queries
-	    for(int i=5;i<7;i++){// xingjun - 12/10/2009 - change from 4 to 5 and 6 to 7 respectively
-		for(int j=0;j<input.length;j++){
-		    stmt.setString((i*input.length)+j+1, input[j].trim());
-		}
-	    }
-	    //need to set additional params based on result of synonym search
-	    if(synList != null) {
-		for(int i = 0;i< synList.length;i++){
-		    //as there are 6 previous queries, need to start setting params from 6 onwards.
-		    stmt.setString((7*input.length+1+i), synList[i].trim());// xingjun - 12/10/2009 - change from 6 to 7
-		}
-	    }
-	    
-	    if (debug)
-		System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
-	    resSet = stmt.executeQuery();
-	    String str = null;
-	    if(resSet.first()){
-		resSet.last();
-		//int rowCount = resSet.getRow();
-		ArrayList<String> tmp = new ArrayList<String>();
-		resSet.beforeFirst();
-		//				int i = 0;
-		//add result list to array
-		while (resSet.next()) {
-		    str = Utility.netTrim(resSet.getString(1));
-		    if (null != str)
-			tmp.add(str);
-		}
-		String [] geneSymbols = new String [tmp.size()];
-		geneSymbols = tmp.toArray(geneSymbols);
-		return geneSymbols;	
-	    }
-	    
-	} catch (SQLException e) {
-	    e.printStackTrace();
-	} finally {
-	    DBHelper.closeResultSet(resSet);
-	    DBHelper.closePreparedStatement(stmt);
-	}
-	
-	return null;
     }
     
     // xingjun - 05/09/2011 - added Tissue related statement to get correct tissue value
@@ -1015,23 +1017,23 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
         String[] all = new String[3];
         String micCountStr = "select count(*) from (";
 	
-	if(null != type && type.equals("All")) {
+        if(null != type && type.equals("All")) {
 	    
 	    String [] comps = this.getComponentsForSynonymsAndPublicIds(input);
 	    
 	    if(comps != null){
-		String [] tmp = new String [comps.length+input.length];
-		for(int i=0;i<comps.length;i++){
-		    tmp[i] = comps[i];
-		}
-		for(int i=0;i<input.length;i++){
-		    tmp[comps.length+i] = input[i];
-		}
-		input = tmp;
+			String [] tmp = new String [comps.length+input.length];
+			for(int i=0;i<comps.length;i++){
+			    tmp[i] = comps[i];
+			}
+			for(int i=0;i<input.length;i++){
+			    tmp[comps.length+i] = input[i];
+			}
+			input = tmp;
 	    }
 	    
 	    for(int i = 0; i < input.length; i++) {
-		inputStr = inputStr + "'"+ input[i] + "'" +",";
+	    	inputStr = inputStr + "'"+ input[i] + "'" +",";
 	    } 
 	    
 	    if(input.length >= 1) {
@@ -1092,28 +1094,30 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     public ArrayList<String[]> getQuickSearch(String type, String[] input, int orderby, boolean asc, String offset, String resPerPage, int[] total){
         String[] query = AssembleQuickSQL(type, input, orderby, asc, offset, resPerPage, total);
 
-	ResultSet resSet = null;
-	if(null != query && null != query[0]) {
-	    PreparedStatement prepStmt = null;
-	    
-	    try {
-		prepStmt = conn.prepareStatement(query[0]);
-
-		if (debug)
-		    System.out.println("MySQLAdvancedQueryDAOImp.sql = "+prepStmt.toString());
-
-		resSet = prepStmt.executeQuery();
+		ResultSet resSet = null;
+		if(null != query && null != query[0]) {
+		    PreparedStatement prepStmt = null;
+		    
+		    try {
+				prepStmt = conn.prepareStatement(query[0]);
 		
-		ArrayList<String[]> list = DBHelper.formatResultSetToArrayList(resSet, ColumnQuickNumbers);
-		DBHelper.closePreparedStatement(prepStmt);
-		return list;
-	    } catch (Exception se) {
-		se.printStackTrace();
-	    }
-	    
-	    
-	}		
-	return null;
+				if (debug)
+				    System.out.println("MySQLAdvancedQueryDAOImp.sql = "+prepStmt.toString());
+		
+				resSet = prepStmt.executeQuery();
+				ArrayList<String[]> list = DBHelper.formatResultSetToArrayList(resSet, ColumnQuickNumbers);
+				return list;
+
+		    } catch (Exception se) {
+		    	se.printStackTrace();
+		    	return null;
+		    }
+		    finally{
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+		    }	    	    
+		}		
+		return null;
     }
     
     public int[] getQuickNumberOfRows(String type, String[] input) {
@@ -1125,45 +1129,49 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	String[] query = AssembleQuickSQL(type, input, 0, true, null, null, null);
 	
     	if(null != query && null != query[0]) {
-	    try {
-		if(null != query[1]) {
-		    prepStmt = conn.prepareStatement(query[1]);	    			
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+prepStmt.toString());
-		    resSet = prepStmt.executeQuery();
-		    if(resSet.first()) {
-			ish = resSet.getString(1);
-			if (debug)
-			    System.out.println("~~~ish total = "+ish);
-
-		    }
-		    DBHelper.closePreparedStatement(prepStmt);
-		}
+		    try {
+				if(null != query[1]) {
+				    prepStmt = conn.prepareStatement(query[1]);	    			
+				    if (debug)
+				    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+prepStmt.toString());
+				    
+				    resSet = prepStmt.executeQuery();
+				    if(resSet.first()) {
+				    	ish = resSet.getString(1);
+				    	
+					if (debug)
+					    System.out.println("~~~ish total = "+ish);
 		
-		if(null != query[2]) {
-		    
-		    prepStmt = conn.prepareStatement(query[2]);	  
-
-		    if (debug)
-			System.out.println("MySQLAdvancedQueryDAOImp.sql = "+prepStmt.toString());
-
-		    resSet = prepStmt.executeQuery();
-		    if(resSet.first()) {
-			mic = resSet.getString(1);
-			if (debug)
-			    System.out.println("~~~mic total = "+mic);
-
-		    }
-		    DBHelper.closePreparedStatement(prepStmt);
-		}
-		int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic)),(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};
+				    }
+				}
+			
+				if(null != query[2]) {
+				    
+				    prepStmt = conn.prepareStatement(query[2]);	  
 		
-		return total;    			
-	    } catch (Exception se) {
+				    if (debug)
+				    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+prepStmt.toString());
+		
+				    resSet = prepStmt.executeQuery();
+				    if(resSet.first()) {
+						mic = resSet.getString(1);
+						if (debug)
+						    System.out.println("~~~mic total = "+mic);
+			
+					    }
+				}
+				int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic)),(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};			
+				return total; 
+				
+		    } catch (Exception se) {
                 se.printStackTrace();
+            	return new int[]{0,0,0};
             }
-    	}
-	
+		    finally{
+			    DBHelper.closePreparedStatement(prepStmt);
+			    DBHelper.closeResultSet(resSet);
+		    }
+    	}	
     	return new int[]{0,0,0};
     }
     /**
@@ -1278,9 +1286,14 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    } 
 		    catch (Exception se) {
 		    	se.printStackTrace();
+				return null;
 	        }
+		    finally{
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+		    }
     	}
-		return result;
+		return null;
     }
     
     /**
@@ -1370,20 +1383,19 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 						mic = resSet.getString(1);
 						if (debug)
 						    System.out.println("MIC number = "+ mic);
-				    }
-				    
+				    }				    
 				}
 				int total = (null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic));
-			
-			
 				return total;
 			
 		    } 
 		    catch (Exception se) {
-	                se.printStackTrace();
+                se.printStackTrace();
+               	return 0;
 	        }
 		    finally {
 		    	DBHelper.closePreparedStatement(prepStmt);
+		    	DBHelper.closeResultSet(resSet);
 		    }
     	}
 		if (debug)
@@ -1473,6 +1485,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    }
 				    if (debug)
 			    		System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRowsInGroups2 - prepStmt= "+prepStmt.toString());
+				    
 				    resSet = prepStmt.executeQuery();
 				    if(resSet.first()) {
 						mic = resSet.getString(1);
@@ -1481,15 +1494,16 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    }
 				    
 				}
-				int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};
-			
+				int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};			
 				return total;    			
 		    } 
 		    catch (Exception se) {
-	             se.printStackTrace();
+	            se.printStackTrace();
+	         	return new int[]{0, 0};
 	        }
 		    finally {
 		    	DBHelper.closePreparedStatement(prepStmt);
+		    	DBHelper.closeResultSet(resSet);
 		    }
     	}
     	return new int[]{0, 0};

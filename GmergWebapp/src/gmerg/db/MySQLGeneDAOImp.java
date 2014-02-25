@@ -60,12 +60,16 @@ public class MySQLGeneDAOImp implements GeneDAO {
             	symbol = resSet.getString(1);
             }
 
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+            return symbol;
+
         } catch (SQLException se) {
-            se.printStackTrace();
+        	se.printStackTrace();
+            return null;
         }
-        return symbol;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
 	}
 	
 	
@@ -280,15 +284,15 @@ public class MySQLGeneDAOImp implements GeneDAO {
 				    }
 				}
 			}
+			return geneSymbols;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		} finally {
 			DBHelper.closeResultSet(resSet);
 			DBHelper.closePreparedStatement(stmt);
 		}
-
-		return geneSymbols;
 	} // end of getSymbolsFromGeneInputParams
     
     /**
@@ -313,12 +317,16 @@ public class MySQLGeneDAOImp implements GeneDAO {
             	symbol = resSet.getString(1);
             }
 
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+            return symbol;
+
         } catch (SQLException se) {
-            se.printStackTrace();
+        	se.printStackTrace();
+            return null;
         }
-        return symbol;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
     }
     
 }

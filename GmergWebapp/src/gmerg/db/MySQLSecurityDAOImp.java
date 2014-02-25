@@ -21,8 +21,8 @@ public class MySQLSecurityDAOImp implements SecurityDAO {
         ParamQuery parQ = DBQuery.getParamQuery("LOGIN_DETAILS");
         ResultSet resSet = null;
         PreparedStatement prepStat = null;
-	String str = null;
-	User user = null;
+		String str = null;
+		User user = null;
         
         try {
             parQ.setPrepStat(conn);
@@ -34,20 +34,20 @@ public class MySQLSecurityDAOImp implements SecurityDAO {
             if(resSet.first()){
                 str = Utility.netTrim(resSet.getString(1));
                 if(null != str && str.equals(username)) {
-		    str = Utility.netTrim(resSet.getString(2));
+                	str = Utility.netTrim(resSet.getString(2));
  		    
-		if (null != str && str.equals(password)){
-                    user = new User();
-                    user.setUserName(resSet.getString(1));
-                    user.setUserType(resSet.getString(3));
-                    user.setUserRole(resSet.getString(3));
-                    user.setUserPrivilege(resSet.getInt(4));
-                    user.setUserId(resSet.getInt(5));
-                    user.setUserPi(resSet.getInt(6));
-                    user.setNickName(resSet.getString(7));
-                    return user;
+					if (null != str && str.equals(password)){
+			                    user = new User();
+			                    user.setUserName(resSet.getString(1));
+			                    user.setUserType(resSet.getString(3));
+			                    user.setUserRole(resSet.getString(3));
+			                    user.setUserPrivilege(resSet.getInt(4));
+			                    user.setUserId(resSet.getInt(5));
+			                    user.setUserPi(resSet.getInt(6));
+			                    user.setNickName(resSet.getString(7));
+			                    return user;
+					}
                 }
-		}
             }
             return null;
             

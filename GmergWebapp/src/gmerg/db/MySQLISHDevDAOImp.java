@@ -455,7 +455,6 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         }
 
         // start to execute query
-        //		Connection conn = DBUtil.getDBConnection();
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
         try {
@@ -539,14 +538,16 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
             if (resSet.first()) {
                 totalNumber = resSet.getInt(1);
             }
-
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+            return totalNumber;
 
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-		return totalNumber;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
 	}
    
    /**
@@ -589,13 +590,16 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
            resSet = prepStmt.executeQuery();
            result = formatBrowseResultSet(resSet);
 
-           // close the db object
-           DBHelper.closePreparedStatement(prepStmt);
+           return result;
 
        } catch (SQLException se) {
            se.printStackTrace();
+           return null;
        }
-       return result;
+       finally{
+           DBHelper.closePreparedStatement(prepStmt);
+           DBHelper.closeResultSet(resSet);
+       }
    }
    
    /**
@@ -689,13 +693,16 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                
            }
 
-           // close the db object
-           DBHelper.closePreparedStatement(prepStmt);
+           return result;
 
        } catch (SQLException se) {
            se.printStackTrace();
+           return null;
        }
-       return result;
+       finally{
+           DBHelper.closePreparedStatement(prepStmt);
+           DBHelper.closeResultSet(resSet);
+       }
    }
 
    /**
@@ -973,13 +980,16 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
            resSet = prepStmt.executeQuery();
            result = formatBrowseResultSet(resSet);
 
-           // release the database object
-           DBHelper.closePreparedStatement(prepStmt);
+           return result;
 
        } catch (SQLException se) {
            se.printStackTrace();
+           return null;
        }
-       return result;
+       finally{
+           DBHelper.closePreparedStatement(prepStmt);
+           DBHelper.closeResultSet(resSet);
+       }
    }
    
    /**
@@ -1005,13 +1015,16 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                result = resSet.getInt(1);
            }
 
-           // close the db object
-           DBHelper.closePreparedStatement(prepStmt);
+           return result;
 
        } catch (SQLException se) {
            se.printStackTrace();
+           return 0;
        }
-		return result;
+       finally{
+           DBHelper.closePreparedStatement(prepStmt);
+           DBHelper.closeResultSet(resSet);
+       }
    }
    
 }

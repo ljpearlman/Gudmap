@@ -68,11 +68,7 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 		try{
 			Object[][] genelistItems = null;;
 			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			
-			// get data
 			genelistItems = arrayDAO.getGenelistItemsByGenelistId(genelistId, columnId+1, ascending, offset+1, num );
-
-			/** ---return the composite value object---  */
 			DataItem[][] ret = getTableDataFormatFromGenelistData(genelistItems);
 
 			if (null == cache)
@@ -142,13 +138,9 @@ public class ProcessedGenelistDataAssembler extends OffMemoryTableAssembler {
 
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ArrayList externalLinks	 = new ArrayList();	
 		try{
 			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			
-			// get data
-			externalLinks = arrayDAO.getGenelistExternalLinks();
-
+			ArrayList externalLinks = arrayDAO.getGenelistExternalLinks();
 			return externalLinks;
 		}
 		catch(Exception e){

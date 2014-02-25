@@ -134,15 +134,12 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		if (ids == null || ids.size() == 0) 
 			return null;
         
-		/** ---get data from dao--- */
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHDevDAO ishDevDAO;
-		ISHDAO ishDAO;
 		int[] totalNumbers = null;
 		try{
-			ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
-			ishDAO = MySQLDAOFactory.getISHDAO(conn);
+			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 	
 			// get data from database
 			String[] allColTotalsQueries = {
@@ -176,8 +173,7 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 					"TOTAL_NUMBER_OF_GENOTYPE", "TOTAL_NUMBER_OF_PROBE_TYPE",
 					"TOTAL_NUMBER_OF_IMAGE" };
 	
-			String[] subIds = (String[]) ids
-					.toArray(new String[ids.size()]);
+			String[] subIds = (String[]) ids.toArray(new String[ids.size()]);
 			String endingClause = "";
 			String[][] columnNumbers;
 			if (Utility.getProject().equals("GUDMAP")) {
@@ -205,14 +201,10 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		catch(Exception e){
 			System.out.println("EntriesCollectionBrowseAssembler::retrieveTotals !!!");
 			totalNumbers = new int[0];
-			// return result
 			return totalNumbers;
 		}
 		finally{
-			// release db resources
 			DBHelper.closeJDBCConnection(conn);
-			ishDevDAO = null;
-			ishDAO = null;
 		}
 	}
 	

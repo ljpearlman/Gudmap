@@ -43,15 +43,17 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(1, status);
         	prepStmt.setString(2, submissionId);
         	deletedSubmissionNumber = prepStmt.executeUpdate();
-//        	System.out.println(deletedSubmissionNumber + " submissions deleted!");
-        	DBHelper.closePreparedStatement(prepStmt);
+        	
+    		return true;
         	
         } catch(SQLException se) {
         	se.printStackTrace();
         	return false;
         }
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);
+        }
 
-		return true;
 	}
 	
 	public boolean signOffAnnotation(String submissionId, String oldStatus, String newStatus) {
@@ -69,15 +71,16 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(2, submissionId);
         	prepStmt.setString(3, oldStatus);
         	deletedSubmissionNumber = prepStmt.executeUpdate();
-//        	System.out.println(deletedSubmissionNumber + " submissions deleted!");
-        	DBHelper.closePreparedStatement(prepStmt);
         	
+    		return true;	
+    		
         } catch(SQLException se) {
         	se.printStackTrace();
         	return false;
         }
-
-		return true;		
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);        	
+        }
 	}
 	
 	public boolean setPublicSubmission(String submissionId, String status) {
@@ -94,25 +97,28 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(1, status);
         	prepStmt.setString(2, submissionId);
         	updatedSubmissionNumber = prepStmt.executeUpdate();
-//        	System.out.println(updatedSubmissionNumber + " submissions set public!");
-        	DBHelper.closePreparedStatement(prepStmt);
-        	
+    		return true;	
+    		
         } catch(SQLException se) {
         	se.printStackTrace();
         	return false;
         }
-
-		return true;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);        	
+        }
 	}
 	
 	public boolean signOffAnnotationAndSetPublicSubmission(String submissionId, String dbstatus, String substatus) {
-        try {        	
+
+        PreparedStatement prepStmt2 = null;
+        PreparedStatement prepStmt = null;
+		
+		try {        	
         	conn = DBHelper.reconnect2DB(conn); // in case lost the connection
         	conn.setAutoCommit(false);
         	
         	//initialising
     		ParamQuery parQ2 = DBUpdateSQL.getParamQuery("SIGN_OFF_ANNOTATION");
-            PreparedStatement prepStmt2 = null;
             int deletedSubmissionNumber2;
             // assemble sql string
             String queryString2 = parQ2.getQuerySQL();
@@ -123,7 +129,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	deletedSubmissionNumber2 = prepStmt2.executeUpdate();
         	
     		ParamQuery parQ = DBUpdateSQL.getParamQuery("SET_PUBLIC_SUBMISSION");
-            PreparedStatement prepStmt = null;
             int deletedSubmissionNumber;
             // assemble sql string
             String queryString = parQ.getQuerySQL();
@@ -132,22 +137,22 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(1, substatus);
         	prepStmt.setString(2, submissionId);
         	deletedSubmissionNumber = prepStmt.executeUpdate();
-        	//System.out.println(deletedSubmissionNumber + " submissions deleted!");
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closePreparedStatement(prepStmt2);
         	    	        	            
             conn.commit();
+    		return true;
+            
         } catch(Exception se) {
         	se.printStackTrace();
+    		return false;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(Exception se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closePreparedStatement(prepStmt2);
         }
-
-		return true;
 	}	
 	
 	/**
@@ -191,17 +196,19 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	conn = DBHelper.reconnect2DB(conn);
         	prepStmt = conn.prepareStatement(queryString);
         	deletedSubmissionNumber = prepStmt.executeUpdate();
-//        	System.out.println(deletedSubmissionNumber + " submissions deleted!");
-        	DBHelper.closePreparedStatement(prepStmt);
+
+            if (deletedSubmissionNumber != submissionNumber) {
+            	return false;
+            }
+    		return true;
         	
         } catch(SQLException se) {
         	se.printStackTrace();
-        }
-        // return
-        if (deletedSubmissionNumber != submissionNumber) {
         	return false;
         }
-		return true;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);      	
+        }
 	} // end of deleteSelectedSubmission
 	
 	/** methods linked to annotation editing **/
@@ -247,8 +254,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	if (resSetExpressionId.first()) {
         		maxExpressionId = resSetExpressionId.getInt(1);
         	}
-        	DBHelper.closePreparedStatement(prepStmtExpressionId);
-        	DBHelper.closeResultSet(resSetExpressionId);
         	
         	// log
         	prepStmtLog = conn.prepareStatement(queryStringLog);
@@ -258,7 +263,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// insert expression
         	// modified by xingjun - 08/07/2008 - able to deal with temp sub id
@@ -273,8 +277,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtExpressionValue.setString(7, componentId);
         	insertedRecordNumber = prepStmtExpressionValue.executeUpdate();
 //        	System.out.println(insertedRecordNumber  + " expression inserted!");
-        	DBHelper.closePreparedStatement(prepStmtExpressionValue);
-        	
+         	
         	if (insertedRecordNumber == 0) {
         		conn.rollback();
         	} else { // update sequence number
@@ -283,21 +286,24 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
             	insertedRecordNumber = prepStmtExpressionSeq.executeUpdate();
 //            	System.out.println(insertedRecordNumber  + " sequence number expression updated!");
         	}
-        	DBHelper.closePreparedStatement(prepStmtExpressionSeq);
             conn.commit();
+    		return insertedRecordNumber ;
 
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0 ;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
-        }
-        
-        // return
-		return insertedRecordNumber ;
+        	DBHelper.closePreparedStatement(prepStmtExpressionId);
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmtExpressionValue);
+        	DBHelper.closePreparedStatement(prepStmtExpressionSeq);
+        	DBHelper.closeResultSet(resSetExpressionId);
+       }
 	}
 	
 	/**
@@ -347,8 +353,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	if (resSetExpressionId.first()) {
         		maxExpressionId = resSetExpressionId.getInt(1);
         	}
-        	DBHelper.closeResultSet(resSetExpressionId);
-        	DBHelper.closePreparedStatement(prepStmtExpressionId);
         	
         	// if the expression is already exist, do not insert
         	// 07/07/2008 - xingjun - enable to deal with temp sub id
@@ -367,8 +371,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	if (expressionNum > 0) {
         		return 0;
         	}
-        	DBHelper.closePreparedStatement(prepStmtExpressionNum);
-        	DBHelper.closeResultSet(resSetExpressionNum);
         	
         	// log
         	prepStmtLog = conn.prepareStatement(queryStringLog);
@@ -378,7 +380,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// insert expression
         	// 07/07/2008 - xingjun
@@ -405,7 +406,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 //        	System.out.println("ISHEditDAO@insertExpression@componentId" + componentId);
         	insertedRecordNumber = prepStmtExpressionValue.executeUpdate();
 //        	System.out.println(insertedRecordNumber  + " expression inserted!");
-        	DBHelper.closePreparedStatement(prepStmtExpressionValue);
         	
         	if (insertedRecordNumber == 0) {
         		conn.rollback();
@@ -414,23 +414,28 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
             	prepStmtExpressionSeq.setInt(1, maxExpressionId+1);
             	insertedRecordNumber = prepStmtExpressionSeq.executeUpdate();
 //            	System.out.println(insertedRecordNumber  + " sequence number for expression updated!");
-        		DBHelper.closePreparedStatement(prepStmtExpressionSeq);
         	}
         	
             conn.commit();
+    		return insertedRecordNumber ;
 
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0 ;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closeResultSet(resSetExpressionId);
+        	DBHelper.closePreparedStatement(prepStmtExpressionId);
+        	DBHelper.closePreparedStatement(prepStmtExpressionNum);
+        	DBHelper.closeResultSet(resSetExpressionNum);
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmtExpressionValue);
+    		DBHelper.closePreparedStatement(prepStmtExpressionSeq);
         }
-        
-        // return
-		return insertedRecordNumber ;
 	}
 	
 	/**
@@ -473,7 +478,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, parMColumn.getParamName());
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// update
         	// 07/07/2008 - xingjun
@@ -487,20 +491,21 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	updatedRecordNumber = prepStmt.executeUpdate();
 //        	String message = (type == 0) ? " expression primary strength updated!" : " expression secondary strength updated!"; 
 //        	System.out.println(updatedRecordNumber + message);
-        	DBHelper.closePreparedStatement(prepStmt);
-        	
+         	
         	conn.commit();
+    		return updatedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-		return updatedRecordNumber;
 	}
 	
 	/**
@@ -534,7 +539,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// delete
         	// 07/07/2008 - xingjun - able to deal with temp sub id
@@ -546,20 +550,21 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(4, componentId);
         	deletedRecordNumber = prepStmt.executeUpdate();
 //        	System.out.println(deletedRecordNumber + " expression deleted!");
-        	DBHelper.closePreparedStatement(prepStmt);
         	
         	conn.commit();
+    		return deletedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
-        }
-        // return
-		return deletedRecordNumber;
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmt);
+       }
 	}
 
 	/**
@@ -592,7 +597,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmt);
         	
         	// delete
         	// xingjun - 09/07/2008 - able to deal with temp sub id
@@ -604,20 +608,21 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(5, pattern);
         	deletedRecordNumber = prepStmt.executeUpdate();
 //        	System.out.println(deletedRecordNumber + " expression pattern deleted!");
-        	DBHelper.closePreparedStatement(prepStmt);
         	
         	conn.commit();
+    		return deletedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
-        } finally {
+    		return 0;
+       } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-		return deletedRecordNumber;
 	}
 	
 	/**
@@ -627,6 +632,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 	public int deleteLocationByPattern(String submissionId, String componentId, String pattern, String userName) {
 //		System.out.println("deleteLocationByPattern########");
 		// initialising
+		ResultSet resSet = null;
         ParamQuery parQLog = DBUpdateSQL.getParamQuery("WRITE_USER_INTO_LOG_TABLE");
 		PreparedStatement prepStmtLog = null;
 		ParamMap parMTable = DBUpdateSQL.getTableMap("PATTERN_LOCATION");
@@ -651,7 +657,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(3, submissionId);
         	prepStmt.setString(4, componentId);
         	prepStmt.setString(5, pattern);
-        	ResultSet resSet = prepStmt.executeQuery();
+        	resSet = prepStmt.executeQuery();
         	ArrayList<Integer>  locationIds = null;
         	if (resSet.first()) {
         		resSet.beforeFirst();
@@ -660,8 +666,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         			locationIds.add(new Integer(resSet.getInt(1)));
         		}
         	}
-        	DBHelper.closePreparedStatement(prepStmt);
-        	DBHelper.closeResultSet(resSet);
         	
         	if (locationIds == null) { // there's no linked locations for specified pattern
         		return 0;
@@ -693,20 +697,22 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 //                	System.out.println(deletedRecordNumber + " expression pattern deleted!");
         		}
         	}
-        	DBHelper.closePreparedStatement(prepStmt);
         	conn.commit();
+    		return deletedRecordNumber;
         	
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closeResultSet(resSet);
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        // return
-		return deletedRecordNumber;
 	}
 	
 	/**
@@ -758,7 +764,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// update
         	// insert pattern
@@ -772,7 +777,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtPatternValue.setString(6, pattern);
         	insertedRecordNumber = prepStmtPatternValue.executeUpdate();
 //        	System.out.println(insertedRecordNumber  + " expression pattern inserted!");
-        	DBHelper.closePreparedStatement(prepStmtPatternValue);
         	
         	if (insertedRecordNumber == 0) {
         		conn.rollback();
@@ -782,23 +786,25 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
             	insertedRecordNumber = prepStmtPatternSeq.executeUpdate();
 //            	System.out.println(insertedRecordNumber  + " sequence number for pattern updated!");
         	}
-        	DBHelper.closePreparedStatement(prepStmtPatternSeq);
         	
             conn.commit();
+    		return insertedRecordNumber ;
 
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0 ;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmtPatternValue);
+        	DBHelper.closePreparedStatement(prepStmtPatternSeq);
+        	DBHelper.closeResultSet(resSetPatternId);
         }
-        
-        // return
-		return insertedRecordNumber ;
-	}
+ 	}
 	
 	/**
 	 * @author xingjun
@@ -835,7 +841,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// insert
         	// xingjun - 09/07/2008 - able to deal with temp sub id
@@ -849,20 +854,20 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	insertedRecordNumber = prepStmt.executeUpdate();
 //        	System.out.println(insertedRecordNumber  + " expression location inserted!");
         	
-        	DBHelper.closePreparedStatement(prepStmt);
             conn.commit();
+    		return insertedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        
-        // return
-		return insertedRecordNumber;
 	}
 	
 	public int insertLocation(int patternId, String location, String userName) {
@@ -901,7 +906,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, parMColumn.getParamName());
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, location);
@@ -910,20 +914,20 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	updatedRecordNumber = prepStmt.executeUpdate();
 //        	System.out.println(updatedRecordNumber  + " expression location updated!");
         	
-        	DBHelper.closePreparedStatement(prepStmt);
-            conn.commit();
+             conn.commit();
+     		return updatedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmtLog);
+           	DBHelper.closePreparedStatement(prepStmt);
         }
-        
-        // return
-		return updatedRecordNumber;
 	}
 	
 	/**
@@ -956,27 +960,26 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, locationId);
         	deletedRecordNumber = prepStmt.executeUpdate();
 //        	System.out.println(deletedRecordNumber + " expression location deleted!");
         	
-        	DBHelper.closePreparedStatement(prepStmt);
             conn.commit();
+    		return deletedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        
-        // return
-		return deletedRecordNumber;
 	}
 	
 	/**
@@ -1009,27 +1012,26 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
 
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setInt(1, patternId);
         	deletedRecordNumber = prepStmt.executeUpdate();
 //        	System.out.println(deletedRecordNumber + " expression pattern deleted!");
         	
-        	DBHelper.closePreparedStatement(prepStmt);
             conn.commit();
+    		return deletedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        
-        // return
-		return deletedRecordNumber;
 	}
 	
 	  /**
@@ -1055,7 +1057,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 //		  System.out.println("componentId: " + componentId);
 //		  System.out.println("stage: " + stage);
 //		  System.out.println("strength: " + strength);
-		  
+		  ResultSet resSet = null;
 		  int errorCode = 0;
 		  if (strength.equals("present")) {
 			  componentPQ = DBQuery.getParamQuery("PARENT_NODES");
@@ -1081,7 +1083,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 			  componentPS.setString(2, stage);
 			  componentPS.setString(3, submissionId);
 			  
-			  ResultSet resSet = componentPS.executeQuery();
+			  resSet = componentPS.executeQuery();
 			  if (resSet.first()) {
 				  if (strength.equals("present")) {
 					  errorCode = 1;
@@ -1091,17 +1093,16 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 					  errorCode = 3;
 				  }
 			  }
-			  DBHelper.closeResultSet(resSet);
+			  return errorCode;
 			  
 		  } catch(SQLException se) {
 			  se.printStackTrace();
+			  return errorCode;
 		  } finally {
 			  DBHelper.closePreparedStatement(componentPS);
+			  DBHelper.closeResultSet(resSet);
 		  }
-		  
-//		  System.out.println("error code = " + errorCode);
-		  return errorCode;
-	  } // end of existConflict()
+	  }
 	
 	/**
 	 * @author xingjun
@@ -1136,7 +1137,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// modified by xingjun - 07/07/2008
         	// enable to deal with temporary subid as well as permanent subid
@@ -1152,20 +1152,20 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	insertedNoteNumber = prepStmt.executeUpdate();
 //        	System.out.println(insertedSubmissionNumber + " expression note record inserted!");
         	
-        	DBHelper.closePreparedStatement(prepStmt);
             conn.commit();
+    		return insertedNoteNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        
-        // return
-		return insertedNoteNumber;
 	}
 	
 	/**
@@ -1201,7 +1201,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, "");
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// delete
         	// modified by xingjun - 07/07/2008
@@ -1214,20 +1213,20 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	deletedNoteNumber = prepStmt.executeUpdate();
 //        	System.out.println(deletedSubmissionNumber + " expression note record inserted!");
         	
-        	DBHelper.closePreparedStatement(prepStmt);
             conn.commit();
+    		return deletedNoteNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        
-        // return
-		return deletedNoteNumber;
 	}
 	
 	/**
@@ -1264,7 +1263,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtLog.setString(4, parMColumn.getParamName());
         	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// modified by xingjun - 07/07/2008
         	// enable to deal with temporary subid as well as permanent subid
@@ -1277,20 +1275,20 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	updatedNoteNumber = prepStmt.executeUpdate();
 //        	System.out.println(updatedSubmissionNumber + " expression note record updated!");
         	
-        	DBHelper.closePreparedStatement(prepStmt);
             conn.commit();
+    		return updatedNoteNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
-        }
-        
-        // return
-		return updatedNoteNumber;
+        	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmt);
+       }
 	}
 	
 	/**
@@ -1334,25 +1332,24 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmtStatusNoteValue.setString(2, statusNote);
         	insertedRecordNumber = prepStmtStatusNoteValue.executeUpdate();
 //        	System.out.println(insertedRecordNumber  + " status notes inserted!");
-        	DBHelper.closePreparedStatement(prepStmtStatusNoteValue);
         	
         	if (insertedRecordNumber == 0) {
         		conn.rollback();
         	}
             conn.commit();
+    		return insertedRecordNumber ;
 
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0 ;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmtStatusNoteValue);
         }
-        
-        // return
-		return insertedRecordNumber ;
 	}
 	
 	public int deleteStatusNotesBySubmissionId(String submissionId, String userName) {
@@ -1390,20 +1387,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	deletedRecordNumber = prepStmt.executeUpdate();
 //        	System.out.println(deletedStatusNoteNumber + " status note record deleted!");
         	
-        	DBHelper.closePreparedStatement(prepStmt);
-//            conn.commit();
-        } catch(SQLException se) {
+    		return deletedRecordNumber;
+         } catch(SQLException se) {
         	se.printStackTrace();
-        } 
-//        finally {
-//        	try {
-//        		conn.setAutoCommit(true);
-//        	} catch(SQLException se) {
-//        		se.printStackTrace();
-//        	}
-//        }
-        
-		return deletedRecordNumber;
+    		return 0;
+         } 
+        finally {
+        	DBHelper.closePreparedStatement(prepStmt);
+       }
 	}
 	
 	public int deleteStatusNotesByStatusNoteId(int statusNoteId, String userName) {
@@ -1440,19 +1431,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 			deletedRecordNumber = prepStmt.executeUpdate();
 //			System.out.println(deletedStatusNoteNumber + " status note record deleted!");
 			
-        	DBHelper.closePreparedStatement(prepStmt);
-//			conn.commit();
+			return deletedRecordNumber;
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return 0;
 		} 
-//      finally {
-//      	try {
-//      		conn.setAutoCommit(true);
-//      	} catch(SQLException se) {
-//      		se.printStackTrace();
-//      	}
-//      }
-		return deletedRecordNumber;
+      finally {
+      	DBHelper.closePreparedStatement(prepStmt);
+       }
 	}
 
 	public int updateStatusNoteById(int statusNoteId, String statusNotes, String userName) {
@@ -1491,20 +1477,19 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	updatedRecordNumber = prepStmt.executeUpdate();
 //        	System.out.println(updatedRecordNumber  + " status notes updated!");
         	
-        	DBHelper.closePreparedStatement(prepStmt);
             conn.commit();
+    		return updatedRecordNumber;
         } catch(SQLException se) {
         	se.printStackTrace();
+    		return 0;
         } finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+        	DBHelper.closePreparedStatement(prepStmt);
         }
-        
-        // return
-		return updatedRecordNumber;
 	}
 	
 	/**
@@ -1526,12 +1511,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(2, submissionId);
         	updatedRecordNumber = prepStmt.executeUpdate();
         	
-        	// release resources
-        	DBHelper.closePreparedStatement(prepStmt);
+    		return updatedRecordNumber;
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return 0;
         }
-		return updatedRecordNumber;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);       	
+        }
 	}
 	
 	public int updateSubmissionLockingInfo(String submissionId, int userId) {
@@ -1547,12 +1534,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(2, submissionId);
         	updatedRecordNumber = prepStmt.executeUpdate();
         	
-        	// release resources
-        	DBHelper.closePreparedStatement(prepStmt);
+    		return updatedRecordNumber;
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return 0;
         }
-		return updatedRecordNumber;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);       	
+        }
 	}
 	
 	/**
@@ -1573,12 +1562,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(2, userName);
         	insertedRecordNumber = prepStmt.executeUpdate();
         	
-        	// release resources
-        	DBHelper.closePreparedStatement(prepStmt);
+    		return insertedRecordNumber;
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return 0;
         }
-		return insertedRecordNumber;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);       	
+        }
 	}
 	
 	public int insertSubmissionLockingInfo(String submissionId, int userId) {
@@ -1593,12 +1584,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setInt(2, userId);
         	insertedRecordNumber = prepStmt.executeUpdate();
         	
-        	// release resources
-        	DBHelper.closePreparedStatement(prepStmt);
+    		return insertedRecordNumber;
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return 0;
         }
-		return insertedRecordNumber;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);       	
+        }
 	}
 	
 	/**
@@ -1618,12 +1611,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(1, submissionId);
         	deletedRecordNumber = prepStmt.executeUpdate();
         	
-        	// release resources
-        	DBHelper.closePreparedStatement(prepStmt);
+    		return deletedRecordNumber;
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return 0;
         }
-		return deletedRecordNumber;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);       	
+        }
 	}
 	
 	/**
@@ -1644,12 +1639,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(1, userName);
         	deletedRecordNumber = prepStmt.executeUpdate();
         	
-        	// release resources
-        	DBHelper.closePreparedStatement(prepStmt);
+    		return deletedRecordNumber;
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return 0;
         }
-		return deletedRecordNumber;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);       	
+        }
 	}
 	
 	public int deleteUserLockingInfo(int userId) {
@@ -1664,12 +1661,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setInt(1, userId);
         	deletedRecordNumber = prepStmt.executeUpdate();
         	
-        	// release resources
-        	DBHelper.closePreparedStatement(prepStmt);
+    		return deletedRecordNumber;
         } catch (SQLException se) {
         	se.printStackTrace();
+    		return 0;
         }
-		return deletedRecordNumber;
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);       	
+        }
 	}
 	
 	/**
@@ -1696,13 +1695,14 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 			if (this.isSubmissionLocked(resSet, userId)) { // if get result, some submissions in this batch have looked
 				batchLocked = true;
 			}
-			// release db resource
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-			se.printStackTrace();
-		}
-		return batchLocked;
+    		return batchLocked;
+        } catch (SQLException se) {
+        	se.printStackTrace();
+    		return false;
+        }
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);       	
+        }
 	}
 	
 	/**
@@ -1747,11 +1747,15 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	prepStmt.setString(1, submissionId);
         	pi = prepStmt.executeQuery();
         	piArray = convertToArray(pi);
-        	DBHelper.closePreparedStatement(prepStmt);
-        } catch(Exception se) {
-        	se.printStackTrace();       
-        }	
-        return piArray;
+    		return piArray;
+    		
+        } catch (SQLException se) {
+        	se.printStackTrace();
+    		return null;
+        }
+        finally{
+        	DBHelper.closePreparedStatement(prepStmt);       	
+        }
 	}
 
 	public ArrayList<String> convertToArray(ResultSet resSetImage) throws SQLException {     

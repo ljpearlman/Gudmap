@@ -103,13 +103,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             if (resSet.first()) {
                 totalNumber = Integer.toString(resSet.getInt(1));
             }
-	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+            return totalNumber;
+
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return totalNumber;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -162,7 +165,6 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
 	
         // start to execute query
-        //		Connection conn = DBUtil.getDBConnection();
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
         try {
@@ -179,17 +181,22 @@ public class MySQLISHDAOImp implements ISHDAO {
                         prepStmt.setString(j + 1, param[i][j]);
                     }
                 }
-		if (debug)
-		    System.out.println("MySQLISHDAOImp:getStringArrayFromBatchQuery["+i+"] = "+prepStmt);
+			if (debug)
+			    System.out.println("MySQLISHDAOImp:getStringArrayFromBatchQuery["+i+"] = "+prepStmt);
+			
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
             }
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
+            return result;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return result;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -250,13 +257,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             ResultSet resSetNote = prepStmt.executeQuery();
 	    
             submissionInfo = formatSubmissionResultSet(resSet, resSetNote);
-	    
-            // release the resource
-            DBHelper.closePreparedStatement(prepStmt);
+            return submissionInfo;
+
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return submissionInfo;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     
@@ -396,21 +406,22 @@ public class MySQLISHDAOImp implements ISHDAO {
             conn.setAutoCommit(true);
 	    
             maProbe = this.formatProbeResultSet(resSetProbe, resSetProbeNote, resSetMaprobeNote, null);
+        	return maProbe;
 	    
     	}
     	catch(SQLException e){
     		System.out.println("MySQLISHDAOImp.findMaProbeByProbeId FAILED");
     		e.printStackTrace();
+        	return null;
     	}
     	finally {
-	    
-            // close the connection
             DBHelper.closePreparedStatement(prepStmtProbe);
             DBHelper.closePreparedStatement(prepStmtProbeNote);
             DBHelper.closePreparedStatement(prepStmtMaprobeNote); 
+            DBHelper.closeResultSet(resSetProbe);
+            DBHelper.closeResultSet(resSetProbeNote);
+            DBHelper.closeResultSet(resSetMaprobeNote);
     	}
-	
-    	return maProbe;
     }
     
     /**
@@ -492,20 +503,24 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             // assemble
             probeInfo = formatProbeResultSet(resSetProbe, resSetProbeNote, resSetMaprobeNote, resSetFullSequence);
+    		if (null == probeInfo)
+    		    System.out.println("MySQLISHDAOImp.findProbeBySubmissionId !!!possible error: submission "+submissionAccessionId+" has no probe");
+            return probeInfo;
 	    
-            // close the connection
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+        finally{
             DBHelper.closePreparedStatement(prepStmtProbe);
             DBHelper.closePreparedStatement(prepStmtProbeNote);
             DBHelper.closePreparedStatement(prepStmtMaprobeNote); // --- 02/05/2007
             DBHelper.closePreparedStatement(prepStmtFullSequence);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-
-		if (null == probeInfo)
-		    System.out.println("MySQLISHDAOImp.findProbeBySubmissionId !!!possible error: submission "+submissionAccessionId+" has no probe");
-		
-        return probeInfo;
+            DBHelper.closeResultSet(resSetProbe);
+            DBHelper.closeResultSet(resSetProbeNote);
+            DBHelper.closeResultSet(resSetMaprobeNote);
+            DBHelper.closeResultSet(resSetFullSequence);
+       }
     }
     
     /**
@@ -696,14 +711,18 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             // assemble
             antibody = formatAntibodyResultSet(resSetAntibody, null, resSetSpeciesSpecificity, resSetAntibodyVariant);
+            return antibody;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmtAntibody);
-            DBHelper.closePreparedStatement(prepStmtAntibodyNote);
         } catch (SQLException se) {
-	    se.printStackTrace();
+        	se.printStackTrace();
+            return null;
         }
-        return antibody;
+        finally{
+            DBHelper.closePreparedStatement(prepStmtAntibody);
+            DBHelper.closePreparedStatement(prepStmtAntibodyNote);  
+            DBHelper.closeResultSet(resSetAntibody);
+            DBHelper.closeResultSet(resSetAntibodyNote);
+       }
     }
     
     /**
@@ -767,14 +786,22 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             // assemble
             antibody = formatAntibodyResultSet(resSetAntibody, resSetAntibodyNote, resSetSpeciesSpecificity, resSetAntibodyVariant);
+            return antibody;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmtAntibody);
-            DBHelper.closePreparedStatement(prepStmtAntibodyNote);
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return antibody;
+        finally{
+            DBHelper.closePreparedStatement(prepStmtAntibody);
+            DBHelper.closePreparedStatement(prepStmtAntibodyNote);
+            DBHelper.closePreparedStatement(prepStmtSpeciesSpecificity);
+            DBHelper.closePreparedStatement(prepStmtAntibodyVariant);
+            DBHelper.closeResultSet(resSetAntibody);
+            DBHelper.closeResultSet(resSetAntibodyNote);
+            DBHelper.closeResultSet(resSetSpeciesSpecificity);
+            DBHelper.closeResultSet(resSetAntibodyVariant);
+         }
     }
     
     /**
@@ -900,14 +927,18 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             conn.commit();
             conn.setAutoCommit(true);
+            return specimenInfo;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmtSpecimen);
-            DBHelper.closePreparedStatement(prepStmtSpecimenNote);
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return specimenInfo;
+        finally{
+            DBHelper.closePreparedStatement(prepStmtSpecimen);
+            DBHelper.closePreparedStatement(prepStmtSpecimenNote);
+            DBHelper.closeResultSet(resSet);
+            DBHelper.closeResultSet(resSetSpecimenNote);
+        }
     }
 
     /**
@@ -915,8 +946,8 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     public Allele[] findAlleleBySubmissionId(String submissionAccessionId) {
         if (submissionAccessionId == null) {
-	    //            throw new NullPointerException("id parameter");
-	    return null;
+		    //            throw new NullPointerException("id parameter");
+		    return null;
         }
 
         ResultSet resSet = null;
@@ -924,28 +955,31 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmt = null;
 	Allele[] ret = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             conn.setAutoCommit(false);
 	    
-	    // get allele if any
+            // get allele if any
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
             resSet = prepStmt.executeQuery();
 	    
-	    ret = formatAlleleResultSet(resSet);
+            ret = formatAlleleResultSet(resSet);
 
             conn.commit();
             conn.setAutoCommit(true);
+            return ret;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return ret;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1072,13 +1106,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             // execute
             resSet = prepStmt.executeQuery();
             ImageInfo = formatImageResultSet(resSet);
+            return ImageInfo;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return ImageInfo;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1139,9 +1176,9 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     public String findAuthorBySubmissionId(String submissionAccessionId) {
         if (submissionAccessionId == null) {
-	    //            throw new NullPointerException("id parameter");
-	    return null;
-        }
+		    //            throw new NullPointerException("id parameter");
+		    return null;
+	        }
         String authorInfo = null;
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_AUTHOR");
@@ -1157,13 +1194,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             // execute
             resSet = prepStmt.executeQuery();
             authorInfo = formatAuthorResultSet(resSet);
+            return authorInfo;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return authorInfo;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1225,15 +1265,15 @@ public class MySQLISHDAOImp implements ISHDAO {
 
     public Person[] findPIsBySubmissionId(String submissionAccessionId) {
     	if (submissionAccessionId == null) {
-	    return null;
+    		return null;
     	}
         Person[] piInfo = null;
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_PIS");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -1243,29 +1283,30 @@ public class MySQLISHDAOImp implements ISHDAO {
             resSet = prepStmt.executeQuery();
             piInfo = formatPeopleResultSet(resSet);
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
-
-	    if (null == piInfo || 0 == piInfo.length) {
-		parQ = DBQuery.getParamQuery("SUBMISSION_PI");
-		parQ.setPrepStat(conn);
-		prepStmt = parQ.getPrepStat();
-		prepStmt.setString(1, submissionAccessionId);
-		
-		// execute
-		resSet = prepStmt.executeQuery();
-		piInfo = new Person[1];
-		piInfo[0] = formatPersonResultSet(resSet);
-		if (null == piInfo[0])
-		    piInfo = null;
-	    
-		// close the connection
-		DBHelper.closePreparedStatement(prepStmt);
-	    }
+		    if (null == piInfo || 0 == piInfo.length) {
+				parQ = DBQuery.getParamQuery("SUBMISSION_PI");
+				parQ.setPrepStat(conn);
+				prepStmt = parQ.getPrepStat();
+				prepStmt.setString(1, submissionAccessionId);
+				
+				// execute
+				resSet = prepStmt.executeQuery();
+				piInfo = new Person[1];
+				piInfo[0] = formatPersonResultSet(resSet);
+				if (null == piInfo[0])
+				    piInfo = null;
+			    
+		    }
+	    	return piInfo;
+	    	
         } catch (SQLException se) {
             se.printStackTrace();
+        	return null;
         }
-    	return piInfo;
+        finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1307,16 +1348,16 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     public Person findPersonById(String personId) {
         if (personId == null) {
-	    //            throw new NullPointerException("id parameter");
-	    return null;
+		    //            throw new NullPointerException("id parameter");
+		    return null;
         }
         Person personInfo = null;
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("PERSON_BY_ID");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -1325,13 +1366,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             // execute
             resSet = prepStmt.executeQuery();
             personInfo = formatPersonResultSet(resSet);
+            return personInfo;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return personInfo;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1375,16 +1419,16 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     public Person findSubmitterBySubmissionId(String submissionAccessionId) {
         if (submissionAccessionId == null) {
-	    //            throw new NullPointerException("id parameter");
-	    return null;
+		    //            throw new NullPointerException("id parameter");
+		    return null;
         }
         Person submitterInfo = null;
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_SUBMITTER");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -1393,13 +1437,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             // execute
             resSet = prepStmt.executeQuery();
             submitterInfo = formatPersonResultSet(resSet);
+            return submitterInfo;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return submitterInfo;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1407,16 +1454,16 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     public ArrayList findPublicationBySubmissionId(String submissionAccessionId) {
         if (submissionAccessionId == null) {
-	    //            throw new NullPointerException("id parameter");
-	    return null;
+		    //            throw new NullPointerException("id parameter");
+		    return null;
         }
         ArrayList publicationInfo = null;
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("LINKED_PUBLICATIONS");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -1425,13 +1472,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             // execute
             resSet = prepStmt.executeQuery();
             publicationInfo = DBHelper.formatResultSetToArrayList(resSet);
-	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
+            return publicationInfo;
+
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return publicationInfo;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1453,13 +1503,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             // execute
             resSet = prepStmt.executeQuery();
             AcknowledgementInfo = DBHelper.formatResultSetToStringArray(resSet);
+            return AcknowledgementInfo;
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return AcknowledgementInfo;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1490,20 +1543,22 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
-	    prepStmt.setString(1, submissionAccessionId);
-	    prepStmt.setString(2, subOid);
+		    prepStmt.setString(1, submissionAccessionId);
+		    prepStmt.setString(2, subOid);
 	    
             // execute
             resSet = prepStmt.executeQuery();
             linkedSubmissionInfo = DBHelper.formatResultSetToArrayList(resSet);
+            return linkedSubmissionInfo;
+
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         } 
         finally {
-            // close the db object
             DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
         }
-        return linkedSubmissionInfo;
     }
     
     /**
@@ -1543,15 +1598,17 @@ public class MySQLISHDAOImp implements ISHDAO {
             // assemble
             geneInfo = formatGeneInfoResultSet(resSet, resSet2);
             return geneInfo;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
         finally {
-            // release db resources
             DBHelper.closePreparedStatement(prepStmt);
             DBHelper.closePreparedStatement(prepStmt2);
+            DBHelper.closeResultSet(resSet);
+            DBHelper.closeResultSet(resSet2);
         }
-        return null;
     }
     
     /**
@@ -1611,31 +1668,33 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @return
      */
     public ArrayList findRelatedSubmissionBySymbolISH(String symbol) {
-	if (symbol == null || symbol.equals("")) {
-	    return null;
-	}
+		if (symbol == null || symbol.equals("")) {
+		    return null;
+		}
         ResultSet resSet = null;
-        ParamQuery parQ =
-            DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_ISH");
+        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_ISH");
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    prepStmt = conn.prepareStatement(queryString);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, symbol);
             resSet = prepStmt.executeQuery();
             ArrayList<String[]> relatedSubmissionISH =
-		DBHelper.formatResultSetToArrayList(resSet);
+            		DBHelper.formatResultSetToArrayList(resSet);
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
             return relatedSubmissionISH;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return null;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1645,9 +1704,9 @@ public class MySQLISHDAOImp implements ISHDAO {
     public ArrayList findRelatedSubmissionBySymbolArray(String symbol, int columnIndex,
 							boolean ascending, int offset,
 							int num) {
+    	
         ResultSet resSet = null;
-        ParamQuery parQ =
-            DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_ARRAY");
+        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_ARRAY");
         PreparedStatement prepStmt = null;
         String query = parQ.getQuerySQL();
         String defaultOrder = DBQuery.ORDER_BY_PROJECT_ID;
@@ -1660,19 +1719,23 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, symbol);
+            
     	    if (debug)
     			System.out.println("MySQLISHDAOImp:findRelatedSubmissionBySymbolArray = "+prepStmt);
+    	    
             resSet = prepStmt.executeQuery();
-            ArrayList relatedSubmissionArray =
-                DBHelper.formatResultSetToArrayList(resSet);
-            // release db resources
-            DBHelper.closePreparedStatement(prepStmt);
+            ArrayList relatedSubmissionArray = DBHelper.formatResultSetToArrayList(resSet);
+
             return relatedSubmissionArray;
 	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return null;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1711,23 +1774,25 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_MAPROBE");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, symbol);
             resSet = prepStmt.executeQuery();
-            ArrayList relatedMAProbe =
-                DBHelper.formatResultSetToArrayList(resSet);
+            ArrayList relatedMAProbe = DBHelper.formatResultSetToArrayList(resSet);
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
             return relatedMAProbe;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return null;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -1753,58 +1818,60 @@ public class MySQLISHDAOImp implements ISHDAO {
             prepStmt.setString(1, gene.getSymbol());
             resSet = prepStmt.executeQuery();
             if(resSet.first()){
-		gene.setMgiAccID(resSet.getString(3)); 
-		gene.setMgiURL(resSet.getString(4));
-		gene.setEnsemblID(resSet.getString(5));
-		gene.setEnsemblURL(resSet.getString(6));
-		gene.setGoURL(resSet.getString(7));
-		gene.setOmimURL(resSet.getString(8));
-		gene.setEntrezURL(resSet.getString(9));
-		gene.setXsomeStart(resSet.getString(10));
-		gene.setXsomeEnd(resSet.getString(11));
-		gene.setXsomeName(resSet.getString(12));
-		gene.setGenomeBuild(resSet.getString(13));
-		gene.setGeneCardURL(resSet.getString(14));
-		gene.setHgncSearchSymbolURL(resSet.getString(15));
-		
-		String syn = resSet.getString(2);
-		parQ = DBQuery.getParamQuery("GENE_SYNONYM_INFO_ARRAY");
-		parQ.setPrepStat(conn);
-		prepStmt = parQ.getPrepStat();
-		prepStmt.setString(1, syn);
-		//               System.out.println("\n\nsyn is: "+syn);
-		resSet = prepStmt.executeQuery();
-		if(resSet.first()){
-		    resSet.beforeFirst();
-		    syn = "";
-		    while(resSet.next()){
-			if(resSet.isLast()){
-			    syn = syn + resSet.getString(1);
-			}
-			else {
-			    syn = syn + resSet.getString(1) + ", ";
-			}
-		    }
-		    //                   System.out.println(syn);
-		    gene.setSynonyms(syn);
-		}
-		parQ = DBQuery.getParamQuery("TOTAL_GENE_RELATED_ARRAYS");
-		parQ.setPrepStat(conn);
-		prepStmt = parQ.getPrepStat();
-		prepStmt.setString(1, gene.getSymbol());
-		resSet = prepStmt.executeQuery();
-		if(resSet.first()) {
-		    geneInfo.setNumMicArrays(resSet.getString(1));
-		}
+				gene.setMgiAccID(resSet.getString(3)); 
+				gene.setMgiURL(resSet.getString(4));
+				gene.setEnsemblID(resSet.getString(5));
+				gene.setEnsemblURL(resSet.getString(6));
+				gene.setGoURL(resSet.getString(7));
+				gene.setOmimURL(resSet.getString(8));
+				gene.setEntrezURL(resSet.getString(9));
+				gene.setXsomeStart(resSet.getString(10));
+				gene.setXsomeEnd(resSet.getString(11));
+				gene.setXsomeName(resSet.getString(12));
+				gene.setGenomeBuild(resSet.getString(13));
+				gene.setGeneCardURL(resSet.getString(14));
+				gene.setHgncSearchSymbolURL(resSet.getString(15));
+				
+				String syn = resSet.getString(2);
+				parQ = DBQuery.getParamQuery("GENE_SYNONYM_INFO_ARRAY");
+				parQ.setPrepStat(conn);
+				prepStmt = parQ.getPrepStat();
+				prepStmt.setString(1, syn);
+				//               System.out.println("\n\nsyn is: "+syn);
+				resSet = prepStmt.executeQuery();
+				if(resSet.first()){
+				    resSet.beforeFirst();
+				    syn = "";
+				    while(resSet.next()){
+						if(resSet.isLast()){
+						    syn = syn + resSet.getString(1);
+						}
+						else {
+						    syn = syn + resSet.getString(1) + ", ";
+						}
+				    }
+				    //                   System.out.println(syn);
+				    gene.setSynonyms(syn);
+				}
+				parQ = DBQuery.getParamQuery("TOTAL_GENE_RELATED_ARRAYS");
+				parQ.setPrepStat(conn);
+				prepStmt = parQ.getPrepStat();
+				prepStmt.setString(1, gene.getSymbol());
+				resSet = prepStmt.executeQuery();
+				if(resSet.first()) {
+				    geneInfo.setNumMicArrays(resSet.getString(1));
+				}
             }
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
             return gene;
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return null;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
  
     /**
@@ -1813,26 +1880,26 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @return gene - object containing more complete info on a gene
      */
     public Gene addGeneInfoIuphar(Gene geneInfo) {
-	if (null == geneInfo)
-	    return null;
-	String str = geneInfo.getMgiAccID();
-	if (null == str || str.trim().equals(""))
-	    str = geneInfo.getSymbol();
-	if (null == str || str.trim().equals(""))
-	    return geneInfo;
+		if (null == geneInfo)
+		    return null;
+		String str = geneInfo.getMgiAccID();
+		if (null == str || str.trim().equals(""))
+		    str = geneInfo.getSymbol();
+		if (null == str || str.trim().equals(""))
+		    return geneInfo;
 	
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("GENE_INFO_IUPHAR");
         PreparedStatement prepStmt = null;
-	int type = -1;
-	Gene gene = geneInfo;
-
-	gene.setIuphar_db_URL(null); 
-	gene.setIuphar_guide_URL(null); 
+		int type = -1;
+		Gene gene = geneInfo;
+	
+		gene.setIuphar_db_URL(null); 
+		gene.setIuphar_guide_URL(null); 
 
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -1840,30 +1907,32 @@ public class MySQLISHDAOImp implements ISHDAO {
             prepStmt.setString(2, str);
             resSet = prepStmt.executeQuery();
             if(resSet.first()){
-		type = resSet.getInt(3);
-		switch (type) {
-		case 2:
-		    gene.setIuphar_db_URL(resSet.getString(1)); 
-		    gene.setIuphar_guide_URL(resSet.getString(2)); 
-		    break;
-		case 1:
-		    gene.setIuphar_guide_URL(resSet.getString(2)); 
-		break;
-		case 0:
-		default:
-		    gene.setIuphar_db_URL(resSet.getString(1)); 
-		    break;
-		}
+				type = resSet.getInt(3);
+				switch (type) {
+				case 2:
+				    gene.setIuphar_db_URL(resSet.getString(1)); 
+				    gene.setIuphar_guide_URL(resSet.getString(2)); 
+				    break;
+				case 1:
+				    gene.setIuphar_guide_URL(resSet.getString(2)); 
+				break;
+				case 0:
+				default:
+				    gene.setIuphar_db_URL(resSet.getString(1)); 
+				    break;
+				}
             }
-	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
+            return gene;
         } catch (SQLException se) {
-		gene.setIuphar_db_URL(null); 
-		gene.setIuphar_guide_URL(null); 
+			gene.setIuphar_db_URL(null); 
+			gene.setIuphar_guide_URL(null); 
             se.printStackTrace();
+            return null;
         }
-        return gene;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
  
     /**
@@ -1926,19 +1995,22 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
     	// execute query
     	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    prepStmt = conn.prepareStatement(queryString);
-	    resSet = prepStmt.executeQuery();
-	    result = DBHelper.formatBrowseResultSetISH(resSet);
-	    
-	    // close database object
-	    DBHelper.closePreparedStatement(prepStmt);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    resSet = prepStmt.executeQuery();
+		    result = DBHelper.formatBrowseResultSetISH(resSet);
+	    	return result;
+		    
     	} catch (SQLException se) {
-	    se.printStackTrace();
+    		se.printStackTrace();
+        	return null;
     	}
-    	return result;
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
     }
     
     /**
@@ -1988,21 +2060,24 @@ public class MySQLISHDAOImp implements ISHDAO {
 	//        System.out.println("getTotalNumberOfISHSubmissionsForGeneQuery:query: " + query);
         String totalNumber = new String("0");
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             prepStmt = conn.prepareStatement(query);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
                 totalNumber = Integer.toString(resSet.getInt(1));
             }
+            return totalNumber;
 	    
-            // close database object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return totalNumber;
+    	} catch (SQLException se) {
+    		se.printStackTrace();
+        	return null;
+    	}
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
     }
     
     /**
@@ -2048,12 +2123,17 @@ public class MySQLISHDAOImp implements ISHDAO {
                 totalNumber = Integer.toString(resSet.getInt(1));
             }
 	    
-            // close database object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return totalNumber;
+            return totalNumber;
+ 
+    	} catch (SQLException se) {
+    		se.printStackTrace();
+        	return null;
+    	}
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
+
     }
     
     /**
@@ -2261,12 +2341,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
             }
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return result;
+            return result;
+            
+    	} catch (SQLException se) {
+    		se.printStackTrace();
+        	return null;
+    	}
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
     }
     
     /**
@@ -2361,14 +2445,17 @@ public class MySQLISHDAOImp implements ISHDAO {
                 resSet = prepStmt.executeQuery();
                 result[i][1] = getStringValueFromIntegerResultSet(resSet);
             }
-	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return result;
-    }
+            return result;
+            	    
+    	} catch (SQLException se) {
+    		se.printStackTrace();
+        	return null;
+    	}
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
+   }
     
     /**
      * @author xingjun
@@ -2432,13 +2519,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("MySQLISHDAOImp:getComponentCountInfoByGeneInfo = "+prepStmt);
 		    resSet = prepStmt.executeQuery();
 		    result = DBHelper.formatResultSetToArrayList(resSet);
+	    	return result;
 		    
-		    // close database object
-		    DBHelper.closePreparedStatement(prepStmt);
     	} catch (SQLException se) {
-	    se.printStackTrace();
+    		se.printStackTrace();
+        	return null;
     	}
-    	return result;
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
     }
     
     /**
@@ -2478,13 +2568,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             if (resSet.first()) {
                 totalNumber = Integer.toString(resSet.getInt(1));
             }
+            return totalNumber;
 	    
-            // close database object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return totalNumber;
+    	} catch (SQLException se) {
+    		se.printStackTrace();
+        	return null;
+    	}
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
     }
     
     /**
@@ -2616,13 +2709,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             // execute
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
+            return result;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return result;
+    	} catch (SQLException se) {
+    		se.printStackTrace();
+        	return null;
+    	}
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
     }
     
     /**
@@ -2691,13 +2787,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    // execute
 		    resSet = prepStmt.executeQuery();
 		    result = DBHelper.formatBrowseResultSetISH(resSet);
+	    	return result;
 		    
-		    // close the connection
-		    DBHelper.closePreparedStatement(prepStmt);
     	} catch (SQLException se) {
-	    se.printStackTrace();
+    		se.printStackTrace();
+        	return null;
     	}
-    	return result;
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
     }
     
     /**
@@ -2765,13 +2864,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("MySQLISHDAOImp:getSubmissionByComponentIds = "+prepStmt);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
-	    
-            // close the database object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return result;
+	    	return result;
+		    
+    	} catch (SQLException se) {
+    		se.printStackTrace();
+        	return null;
+    	}
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
     }
     
     /**
@@ -2840,13 +2942,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("MySQLISHDAOImp:getSubmissionByComponentIds = "+prepStmt);
 		    resSet = prepStmt.executeQuery();
 		    result = DBHelper.formatBrowseResultSetISH(resSet);
+	    	return result;
 		    
-		    // close the database object
-		    DBHelper.closePreparedStatement(prepStmt);
     	} catch (SQLException se) {
-	    se.printStackTrace();
+    		se.printStackTrace();
+        	return null;
     	}
-    	return result;
+    	finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+    	}
     }
     
     /**
@@ -2913,44 +3018,44 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
 	    //need to set appropriate parameters in SQL based on user specs
 	    if(criteria.equals("any")){
-		if((presentSelected || possSelected) && notDetSelected){
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+1, componentList[i]);
-		    }
-		    for(int i =0;i<componentList.length;i++){
-			prepStat.setString(i+1+componentList.length, componentList[i]);
-		    }
-		}
-		//if user has selected 'possible/uncertain' or 'present' expression
-		else {
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+1, componentList[i]);
-		    }
-		}
+			if((presentSelected || possSelected) && notDetSelected){
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+1, componentList[i]);
+			    }
+			    for(int i =0;i<componentList.length;i++){
+				prepStat.setString(i+1+componentList.length, componentList[i]);
+			    }
+			}
+			//if user has selected 'possible/uncertain' or 'present' expression
+			else {
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+1, componentList[i]);
+			    }
+			}
 	    }
 	    else if(criteria.equals("all")){
-		prepStat.setInt(1, componentList.length);
-		if((presentSelected || possSelected) && notDetSelected){
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+2, componentList[i]);
-		    }
-		    prepStat.setString(componentList.length+2, start);
-		    prepStat.setString(componentList.length+3, end);
-		    
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+4+componentList.length, componentList[i]);
-		    }
-		    prepStat.setString(componentList.length*2+4, start);
-		    prepStat.setString(componentList.length*2+5, end);
-		}
-		//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
-		else {
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+2, componentList[i]);
-		    }
-		    prepStat.setString(componentList.length+2, start);
-		    prepStat.setString(componentList.length+3, end);
-		}
+			prepStat.setInt(1, componentList.length);
+			if((presentSelected || possSelected) && notDetSelected){
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+2, componentList[i]);
+			    }
+			    prepStat.setString(componentList.length+2, start);
+			    prepStat.setString(componentList.length+3, end);
+			    
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+4+componentList.length, componentList[i]);
+			    }
+			    prepStat.setString(componentList.length*2+4, start);
+			    prepStat.setString(componentList.length*2+5, end);
+			}
+			//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
+			else {
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+2, componentList[i]);
+			    }
+			    prepStat.setString(componentList.length+2, start);
+			    prepStat.setString(componentList.length+3, end);
+			}
 	    }
 	    if (debug)
 	    	System.out.println("MySQLISHDAOImp:getSubmissionByComponentIds = "+prepStat);
@@ -2958,13 +3063,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    resSet = prepStat.executeQuery();
 	    //System.out.println("query executed");
 	    result = formatBrowseResultSet(resSet);
-	    DBHelper.closeResultSet(resSet);
+    	return result;
+	    
+	} catch (SQLException se) {
+		se.printStackTrace();
+    	return null;
+	}
+	finally{
 	    DBHelper.closePreparedStatement(prepStat);
+	    DBHelper.closeResultSet(resSet);
 	}
-	catch (SQLException se) {
-	    se.printStackTrace();
-	}
-	return result;
     }
     
     /**
@@ -3081,56 +3189,63 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
 	    resSet = prepStat.executeQuery();
 	    result = DBHelper.formatBrowseResultSetISH(resSet);
+    	return result;
 	    
-	    DBHelper.closeResultSet(resSet);
+	} catch (SQLException se) {
+		se.printStackTrace();
+    	return null;
+	}
+	finally{
 	    DBHelper.closePreparedStatement(prepStat);
+	    DBHelper.closeResultSet(resSet);
 	}
-	catch (SQLException se) {
-	    se.printStackTrace();
-	}
-	return result;
     }
     
     private String [] getComponentList (String[] components, 
 					String start, String end, String criteria) {
 	
-	if (criteria != null && criteria.equals("all")) {
-	    return components;
-	} else {
-	    String [] results = null;
-	    String publicIdsQ = DBQuery.getAnatPubIdsFromNodeIdsQuery(components);
-	    ParamQuery paramQ = new ParamQuery("",publicIdsQ);
-	    PreparedStatement prepStat = null;
-	    try {
-             	// if disconnected from db, re-connected
-             	conn = DBHelper.reconnect2DB(conn);
-		
-		paramQ.setPrepStat(conn);
-		prepStat = paramQ.getPrepStat();
-		prepStat.setString(1, start);
-		prepStat.setString(2, end);
-		for (int i = 0; i < components.length; i++) {
-		    prepStat.setString(i + 3, components[i]);
-		}
-		ResultSet resSet = prepStat.executeQuery();
-		if(resSet.first()) {
-		    //                    System.out.println("there is a first value in the result set");
-                    resSet.last();
-                    int totalRows = resSet.getRow();
-                    results = new String[totalRows];
-                    int i = 0;
-                    resSet.beforeFirst();
-                    while (resSet.next()) {
-                        results[i] = resSet.getString(1);
-                        i++;
-                    }
-                }
-                DBHelper.closePreparedStatement(prepStat);
-            }
-            catch(SQLException e) {
-                e.printStackTrace();
-            }
-            return results;
+		if (criteria != null && criteria.equals("all")) {
+		    return components;
+		} else {
+		    String [] results = null;
+		    String publicIdsQ = DBQuery.getAnatPubIdsFromNodeIdsQuery(components);
+		    ParamQuery paramQ = new ParamQuery("",publicIdsQ);
+		    PreparedStatement prepStat = null;
+		    ResultSet resSet = null;
+		    try {
+	             	// if disconnected from db, re-connected
+	             	conn = DBHelper.reconnect2DB(conn);
+			
+					paramQ.setPrepStat(conn);
+					prepStat = paramQ.getPrepStat();
+					prepStat.setString(1, start);
+					prepStat.setString(2, end);
+					for (int i = 0; i < components.length; i++) {
+					    prepStat.setString(i + 3, components[i]);
+					}
+					resSet = prepStat.executeQuery();
+					if(resSet.first()) {
+			    //                    System.out.println("there is a first value in the result set");
+	                    resSet.last();
+	                    int totalRows = resSet.getRow();
+	                    results = new String[totalRows];
+	                    int i = 0;
+	                    resSet.beforeFirst();
+	                    while (resSet.next()) {
+	                        results[i] = resSet.getString(1);
+	                        i++;
+	                    }
+	                }
+	                return results;
+	        }
+	        catch(SQLException e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+		    finally{
+	            DBHelper.closePreparedStatement(prepStat);
+	            DBHelper.closeResultSet(resSet);
+		    }
         }
     }
     
@@ -3162,13 +3277,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             if (resSet.first()) {
                 totalNumber = Integer.toString(resSet.getInt(1));
             }
-	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
+            return totalNumber;
+
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return totalNumber;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -3219,12 +3337,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	totalNumber = Integer.toString(resSet.getInt(1));
 		    }
 		    
-		    // close the database object
-		    DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-		    se.printStackTrace();
-		}
-		return totalNumber;
+            return totalNumber;
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -3384,99 +3506,104 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @return
      */
     public String getTotalNumberOfSubmissionsForComponentsQuery(String [] components, String start, String end, String [] annotationTypes, String criteria) {
-	String totalNumber = new String("");
-	String [] componentList = this.getComponentList(components, start, end, criteria);
-	
-	//annotatedGenesIncomponentsQ contains SQL to find annotated submissions matchin users parameters
-	StringBuffer annotatedGenesInComponentsQ = new StringBuffer(DBQuery.NUMBER_OF_SUBMISSION + DBQuery.ISH_BROWSE_ALL_TABLES);
-	if(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes) == null){
-	    return "0";
-	}
-	annotatedGenesInComponentsQ.append(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes));
-	
-	//determine what types of expression user has selected - this will shape SQL
-	int index = this.getAnnotationTypeIndex(annotationTypes, "present");
-	boolean presentSelected = false;
-	if(index >= 0){
-	    presentSelected = true;
-	}
-	index = this.getAnnotationTypeIndex(annotationTypes, "not detected");
-	boolean notDetSelected = false;
-	if(index >=0) {
-	    notDetSelected = true;
-	}
-	index = this.getAnnotationTypeIndex(annotationTypes, "possibleuncertain");
-	boolean possSelected = false;
-	if(index >=0) {
-	    possSelected = true;
-	}
-	ResultSet resSet = null;
-	ParamQuery parQ = null;
-	PreparedStatement prepStat = null;
-	parQ = new ParamQuery("",annotatedGenesInComponentsQ.toString());
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    parQ.setPrepStat(conn);
-	    prepStat = parQ.getPrepStat();
-	    
-	    //need to set appropriate parameters in SQL based on user specs
-	    if(criteria.equals("any")){
-		if((presentSelected || possSelected) && notDetSelected){
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+1, componentList[i]);
-		    }
-		    for(int i =0;i<componentList.length;i++){
-			prepStat.setString(i+1+componentList.length, componentList[i]);
-		    }
+		String totalNumber = new String("");
+		String [] componentList = this.getComponentList(components, start, end, criteria);
+		
+		//annotatedGenesIncomponentsQ contains SQL to find annotated submissions matchin users parameters
+		StringBuffer annotatedGenesInComponentsQ = new StringBuffer(DBQuery.NUMBER_OF_SUBMISSION + DBQuery.ISH_BROWSE_ALL_TABLES);
+		if(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes) == null){
+		    return "0";
 		}
-		//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
-		else {
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+1, componentList[i]);
-		    }
+		annotatedGenesInComponentsQ.append(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes));
+		
+		//determine what types of expression user has selected - this will shape SQL
+		int index = this.getAnnotationTypeIndex(annotationTypes, "present");
+		boolean presentSelected = false;
+		if(index >= 0){
+		    presentSelected = true;
 		}
-	    }
-	    else if(criteria.equals("all")){
-		prepStat.setInt(1, componentList.length);
-		if((presentSelected || possSelected) && notDetSelected){
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+2, componentList[i]);
-		    }
-		    prepStat.setString(componentList.length+2, start);
-		    prepStat.setString(componentList.length+3, end);
+		index = this.getAnnotationTypeIndex(annotationTypes, "not detected");
+		boolean notDetSelected = false;
+		if(index >=0) {
+		    notDetSelected = true;
+		}
+		index = this.getAnnotationTypeIndex(annotationTypes, "possibleuncertain");
+		boolean possSelected = false;
+		if(index >=0) {
+		    possSelected = true;
+		}
+		ResultSet resSet = null;
+		ParamQuery parQ = null;
+		PreparedStatement prepStat = null;
+		parQ = new ParamQuery("",annotatedGenesInComponentsQ.toString());
+		try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 		    
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+4+componentList.length, componentList[i]);
+		    parQ.setPrepStat(conn);
+		    prepStat = parQ.getPrepStat();
+		    
+		    //need to set appropriate parameters in SQL based on user specs
+		    if(criteria.equals("any")){
+			if((presentSelected || possSelected) && notDetSelected){
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+1, componentList[i]);
+			    }
+			    for(int i =0;i<componentList.length;i++){
+				prepStat.setString(i+1+componentList.length, componentList[i]);
+			    }
+			}
+			//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
+			else {
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+1, componentList[i]);
+			    }
+			}
 		    }
-		    prepStat.setString(componentList.length*2+4, start);
-		    prepStat.setString(componentList.length*2+5, end);
-		}
-		//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
-		else {
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+2, componentList[i]);
+		    else if(criteria.equals("all")){
+			prepStat.setInt(1, componentList.length);
+			if((presentSelected || possSelected) && notDetSelected){
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+2, componentList[i]);
+			    }
+			    prepStat.setString(componentList.length+2, start);
+			    prepStat.setString(componentList.length+3, end);
+			    
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+4+componentList.length, componentList[i]);
+			    }
+			    prepStat.setString(componentList.length*2+4, start);
+			    prepStat.setString(componentList.length*2+5, end);
+			}
+			//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
+			else {
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+2, componentList[i]);
+			    }
+			    prepStat.setString(componentList.length+2, start);
+			    prepStat.setString(componentList.length+3, end);
+			}
 		    }
-		    prepStat.setString(componentList.length+2, start);
-		    prepStat.setString(componentList.length+3, end);
-		}
+		    //             System.out.println("\n\n"+prepStat.toString()+"\n\n");
+		    
+		    resSet = prepStat.executeQuery();
+		    //             System.out.println("query executed");
+		    
+		    if(resSet.first()){
+			totalNumber = resSet.getString(1);
+		    } else {
+			totalNumber = "0";
+		    }
+	        return totalNumber;
+	
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return null;
 	    }
-	    //             System.out.println("\n\n"+prepStat.toString()+"\n\n");
-	    
-	    resSet = prepStat.executeQuery();
-	    //             System.out.println("query executed");
-	    
-	    if(resSet.first()){
-		totalNumber = resSet.getString(1);
-	    } else {
-		totalNumber = "0";
+	    finally{
+	        DBHelper.closePreparedStatement(prepStat);
+	        DBHelper.closeResultSet(resSet);
 	    }
-	    DBHelper.closePreparedStatement(prepStat);
-	} catch (SQLException se) {
-	    se.printStackTrace();
-	}
-	return totalNumber;
     }
     
     /**
@@ -3503,12 +3630,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 assayType = resSet.getString(3);
             }
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return assayType;
+            return assayType;
+	    	
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return null;
+	    }
+	    finally{
+	        DBHelper.closePreparedStatement(prepStmt);
+	        DBHelper.closeResultSet(resSet);
+	    }
     }
     
     /**
@@ -3529,12 +3660,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             resSet = prepStmt.executeQuery();
             pi = formatResultSetToStringArray(resSet);
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return pi;
+            return pi;
+	    	
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return null;
+	    }
+	    finally{
+	        DBHelper.closePreparedStatement(prepStmt);
+	        DBHelper.closeResultSet(resSet);
+	    }
     }
     
     /**
@@ -3544,44 +3679,52 @@ public class MySQLISHDAOImp implements ISHDAO {
         String[][] pi = null;
         ResultSet resSet = null;
         if(privilege == 3 || privilege == 4) {
-	    if(null != PI && !PI.equals("0")) {
-		ParamQuery parQ = AdvancedSearchDBQuery.getParamQuery("PI_FROM_NAME");
-		//		System.out.println("all pis query: " + parQ.getQuerySQL());
-		PreparedStatement prepStmt = null;
-		try {
-		    // if disconnected from db, re-connected
-		    conn = DBHelper.reconnect2DB(conn);
-		    
-		    parQ.setPrepStat(conn);
-		    prepStmt = parQ.getPrepStat();
-		    prepStmt.setString(1, PI);
-		    resSet = prepStmt.executeQuery();
-		    pi = formatResultSetToStringArray(resSet);
-		    
-		    // close the db object
-		    DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-		    se.printStackTrace();
-		}
-	    } 
+		    if(null != PI && !PI.equals("0")) {
+				ParamQuery parQ = AdvancedSearchDBQuery.getParamQuery("PI_FROM_NAME");
+				//		System.out.println("all pis query: " + parQ.getQuerySQL());
+				PreparedStatement prepStmt = null;
+				try {
+				    // if disconnected from db, re-connected
+				    conn = DBHelper.reconnect2DB(conn);
+				    
+				    parQ.setPrepStat(conn);
+				    prepStmt = parQ.getPrepStat();
+				    prepStmt.setString(1, PI);
+				    resSet = prepStmt.executeQuery();
+				    pi = formatResultSetToStringArray(resSet);
+				    return pi;
+				    
+				} catch (SQLException se) {
+				    se.printStackTrace();
+				    return null;
+				}
+				finally{
+				    DBHelper.closePreparedStatement(prepStmt);
+				    DBHelper.closeResultSet(resSet);
+				}
+		    } 
     	} else if(privilege >= 5) {
-	    ParamQuery parQ = DBQuery.getParamQuery("ALL_PIS");
-	    //		System.out.println("all pis query: " + parQ.getQuerySQL());
-	    PreparedStatement prepStmt = null;
-	    try {
-            	// if disconnected from db, re-connected
-            	conn = DBHelper.reconnect2DB(conn);
-		
-		parQ.setPrepStat(conn);
-		prepStmt = parQ.getPrepStat();
-		resSet = prepStmt.executeQuery();
-		pi = formatResultSetToStringArray(resSet);
-		
-		// close the db object
-		DBHelper.closePreparedStatement(prepStmt);
-	    } catch (SQLException se) {
-		se.printStackTrace();
-	    }    	
+		    ParamQuery parQ = DBQuery.getParamQuery("ALL_PIS");
+		    //		System.out.println("all pis query: " + parQ.getQuerySQL());
+		    PreparedStatement prepStmt = null;
+		    try {
+	            	// if disconnected from db, re-connected
+	            	conn = DBHelper.reconnect2DB(conn);
+			
+				parQ.setPrepStat(conn);
+				prepStmt = parQ.getPrepStat();
+				resSet = prepStmt.executeQuery();
+				pi = formatResultSetToStringArray(resSet);
+			    return pi;
+			    
+			} catch (SQLException se) {
+			    se.printStackTrace();
+			    return null;
+			}
+			finally{
+			    DBHelper.closePreparedStatement(prepStmt);
+			    DBHelper.closeResultSet(resSet);
+			}
     	}
         return pi;
     }    
@@ -3632,8 +3775,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("LAB_LATEST_ENTRY");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -3642,25 +3785,29 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             // added check on resSet to avoid crash - Mantis 609
             if (resSet != null){
-		if (resSet.first()) {
-		    java.util.Date lastEntryDate = resSet.getDate(1);
-		    if(null != lastEntryDate) {
-			DateFormat df =
-			    DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
-			result = df.format(lastEntryDate);
-			if (result.equals("01-Jan-1000")) {
-			    result = "";
-			}
-		    }
-		}
+				if (resSet.first()) {
+				    java.util.Date lastEntryDate = resSet.getDate(1);
+				    if(null != lastEntryDate) {
+						DateFormat df =
+						    DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
+						result = df.format(lastEntryDate);
+						if (result.equals("01-Jan-1000")) {
+						    result = "";
+						}
+				    }
+				}
             }
-	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+            return result;
+
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
+       }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
         }
-        return result;
+
     }
     
     /**
@@ -3678,8 +3825,8 @@ public class MySQLISHDAOImp implements ISHDAO {
             parQ = DBQuery.getParamQuery("TOTOAL_SUBMISSION_OF_LAB_FTP");
         }
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -3689,12 +3836,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             resSet = prepStmt.executeQuery();
             submissionSummary = DBHelper.formatResultSetToArrayList(resSet);
 	    
-            // close the database object
-            DBHelper.closePreparedStatement(prepStmt);
+            return submissionSummary;
+
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return submissionSummary;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }    
     
     /**
@@ -3708,37 +3859,42 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmt = null;
         ParamQuery parQ = null;
         if(null != dbStatus) {
-	    submissionSummary = new ArrayList[dbStatus.length];
-	    parQ = DBQuery.getParamQuery("TOTAL_SUBMISSION_OF_LAB_DB_ANNOTATION");
-	    for(int i = 0; i < submissionSummary.length; i++) {
-		submissionSummary[i] = new ArrayList();
-		try {
-		    // if disconnected from db, re-connected
-		    conn = DBHelper.reconnect2DB(conn);
-		    
-		    parQ.setPrepStat(conn);
-		    prepStmt = parQ.getPrepStat();
-		    prepStmt.setInt(1, labId);
-		    prepStmt.setInt(2, dbStatus[i]);
-		    // execute
-		    resSet = prepStmt.executeQuery();
-		    submissionSummary[i] = DBHelper.formatResultSetToArrayList(resSet);
-		    //		        	if (labId == 35) {
-		    //		        		System.out.println("findSubmissionSummaryByLabIdForAnnotation:" + labId + ":i: " + i + " dbStatus: " + dbStatus[i]);
-		    //			            if (submissionSummary[i] != null && submissionSummary[i].get(0) != null) {
-		    //			            	for (int j=0;j<submissionSummary[i].size();j++) {
-		    //			            		for (int m=0;m<((String[])submissionSummary[i].get(j)).length;m++)
-		    //			            		System.out.println("m: " + m + ":" + ((String[])submissionSummary[i].get(j))[m]);
-		    //			            	}
-		    //			            }
-		    //		        	}
-		    
-		    // close the database object
-		    DBHelper.closePreparedStatement(prepStmt);
-		} catch (SQLException se) {
-		    se.printStackTrace();
-		}
-	    }
+		    submissionSummary = new ArrayList[dbStatus.length];
+		    parQ = DBQuery.getParamQuery("TOTAL_SUBMISSION_OF_LAB_DB_ANNOTATION");
+		    for(int i = 0; i < submissionSummary.length; i++) {
+				submissionSummary[i] = new ArrayList();
+				try {
+				    // if disconnected from db, re-connected
+				    conn = DBHelper.reconnect2DB(conn);
+				    
+				    parQ.setPrepStat(conn);
+				    prepStmt = parQ.getPrepStat();
+				    prepStmt.setInt(1, labId);
+				    prepStmt.setInt(2, dbStatus[i]);
+				    // execute
+				    resSet = prepStmt.executeQuery();
+				    submissionSummary[i] = DBHelper.formatResultSetToArrayList(resSet);
+				    //		        	if (labId == 35) {
+				    //		        		System.out.println("findSubmissionSummaryByLabIdForAnnotation:" + labId + ":i: " + i + " dbStatus: " + dbStatus[i]);
+				    //			            if (submissionSummary[i] != null && submissionSummary[i].get(0) != null) {
+				    //			            	for (int j=0;j<submissionSummary[i].size();j++) {
+				    //			            		for (int m=0;m<((String[])submissionSummary[i].get(j)).length;m++)
+				    //			            		System.out.println("m: " + m + ":" + ((String[])submissionSummary[i].get(j))[m]);
+				    //			            	}
+				    //			            }
+				    //		        	}
+				    
+		            return submissionSummary;
+		
+		        } catch (SQLException se) {
+		            se.printStackTrace();
+		            return null;
+		        }
+		        finally{
+		            DBHelper.closePreparedStatement(prepStmt);
+		            DBHelper.closeResultSet(resSet);
+		        }
+		    }
         }
         return submissionSummary;
     }
@@ -3802,13 +3958,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("MySQLISHDAOImp:getSubmissionsByLabId = "+prepStmt);
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
+            return result;
 	    
-            // close the connection
-            DBHelper.closePreparedStatement(prepStmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return result;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -3877,12 +4036,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    //    		result = formatBrowseResultSet2ArrayList(resSet);
 		    result = DBHelper.formatBrowseResultSetISH(resSet);
 		    
-		    // close the connection
-		    DBHelper.closePreparedStatement(prepStmt);
-    	} catch (SQLException se) {
-	    se.printStackTrace();
-    	}
-    	return result;
+            return result;
+    	    
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -3954,44 +4117,48 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
     	// execute query and assemble result
     	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    prepStmt = conn.prepareStatement(queryString);
-	    int paramNum = 1;
-	    
-	    if (labId != null && !labId.trim().equals("")) {
-	    	prepStmt.setInt(1, Integer.parseInt(labId));
-			paramNum ++;
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+		    int paramNum = 1;
+		    
+		    if (labId != null && !labId.trim().equals("")) {
+		    	prepStmt.setInt(1, Integer.parseInt(labId));
+				paramNum ++;
+		    }
+		    
+		    if (submissionDate != null && !submissionDate.equals("")) {
+				prepStmt.setString(paramNum, submissionDate);
+				paramNum ++;
+		    }
+		    
+		    if (archiveId != null && !archiveId.trim().equals("")) {
+		    	prepStmt.setInt(paramNum, Integer.parseInt(archiveId));
+		    	paramNum ++;
+		    }
+	
+		    if (batchId != null && !batchId.trim().equals("")) {
+		    		prepStmt.setInt(paramNum, Integer.parseInt(batchId));
+		    }
+		    
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getSubmissionsByLabId = "+prepStmt);
+		    
+		    resSet = prepStmt.executeQuery();
+		    result = DBHelper.formatBrowseResultSetISH(resSet);
+	//	    result = DBHelper.formatLabISHBrowseResultSet(resSet);
+		    
+	        return result;
+		    
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return null;
 	    }
-	    
-	    if (submissionDate != null && !submissionDate.equals("")) {
-			prepStmt.setString(paramNum, submissionDate);
-			paramNum ++;
+	    finally{
+	        DBHelper.closePreparedStatement(prepStmt);
+	        DBHelper.closeResultSet(resSet);
 	    }
-	    
-	    if (archiveId != null && !archiveId.trim().equals("")) {
-	    	prepStmt.setInt(paramNum, Integer.parseInt(archiveId));
-	    	paramNum ++;
-	    }
-
-	    if (batchId != null && !batchId.trim().equals("")) {
-	    		prepStmt.setInt(paramNum, Integer.parseInt(batchId));
-	    }
-	    
-	    if (debug)
-	    	System.out.println("MySQLISHDAOImp:getSubmissionsByLabId = "+prepStmt);
-	    
-	    resSet = prepStmt.executeQuery();
-	    result = DBHelper.formatBrowseResultSetISH(resSet);
-//	    result = DBHelper.formatLabISHBrowseResultSet(resSet);
-	    
-	    // close the connection
-	    DBHelper.closePreparedStatement(prepStmt);
-    	} catch (SQLException se) {
-	    se.printStackTrace();
-    	}
-    	return result;
     }
     
     public ArrayList getSubmissionsForAnnotationByLabId(String labId, String assayType,
@@ -4045,12 +4212,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    //    		result = formatBrowseResultSet2ArrayList(resSet);
 		    result = DBHelper.formatBrowseResultSetISHForAnnotation(resSet);
 		    
-		    // close the connection
-		    DBHelper.closePreparedStatement(prepStmt);
-    	} catch (SQLException se) {
-	    se.printStackTrace();
-    	}
-    	return result;
+	        return result;
+		    
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return null;
+	    }
+	    finally{
+	        DBHelper.closePreparedStatement(prepStmt);
+	        DBHelper.closeResultSet(resSet);
+	    }
     }
     
     /**
@@ -4110,12 +4281,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    resSet = prepStmt.executeQuery();
 		    result = DBHelper.formatBrowseResultSetISHForAnnotation(resSet);
 		    
-		    // close the connection
-		    DBHelper.closePreparedStatement(prepStmt);
-    	} catch (SQLException se) {
-	    se.printStackTrace();
-    	}
-    	return result;
+	        return result;
+		    
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return null;
+	    }
+	    finally{
+	        DBHelper.closePreparedStatement(prepStmt);
+	        DBHelper.closeResultSet(resSet);
+	    }
     }
     
     /**
@@ -4161,12 +4336,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 totalNumber = Integer.toString(resSet.getInt(1));
             }
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return totalNumber;
+	        return totalNumber;
+		    
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return null;
+	    }
+	    finally{
+	        DBHelper.closePreparedStatement(prepStmt);
+	        DBHelper.closeResultSet(resSet);
+	    }
     }
     
     /**
@@ -4210,12 +4389,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 totalNumber = Integer.toString(resSet.getInt(1));
             }
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return totalNumber;
+	        return totalNumber;
+		    
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return null;
+	    }
+	    finally{
+	        DBHelper.closePreparedStatement(prepStmt);
+	        DBHelper.closeResultSet(resSet);
+	    }
     }
     
     /**
@@ -4238,12 +4421,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 result = resSet.getString(1);
             }
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return result;
+	        return result;
+		    
+	    } catch (SQLException se) {
+	        se.printStackTrace();
+	        return null;
+	    }
+	    finally{
+	        DBHelper.closePreparedStatement(prepStmt);
+	        DBHelper.closeResultSet(resSet);
+	    }
     }
     
     /**
@@ -4252,30 +4439,27 @@ public class MySQLISHDAOImp implements ISHDAO {
     public int findTotalNumberOfSubmissionISH() {
         int result = 0;
         ResultSet resSet = null;
-        ParamQuery parQ =
-            DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_ISH");
-	//        PreparedStatement prepStmt = null;
+        ParamQuery parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_ISH");
         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
             }
+            return result;
 	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);  
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4286,28 +4470,27 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         ParamQuery parQ =
             DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_ISH");
-	//        PreparedStatement prepStmt = null;
         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+        	conn = DBHelper.reconnect2DB(conn);
 	    
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
             }
 	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);    
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4316,30 +4499,28 @@ public class MySQLISHDAOImp implements ISHDAO {
     public int findTotalNumberOfSubmissionIHC() {
         int result = 0;
         ResultSet resSet = null;
-        ParamQuery parQ =
-            DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_IHC");
-	//        PreparedStatement prepStmt = null;
+        ParamQuery parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_IHC");
         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
             }
 	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4348,30 +4529,24 @@ public class MySQLISHDAOImp implements ISHDAO {
     public int findNumberOfPublicSubmissionIHC() {
         int result = 0;
         ResultSet resSet = null;
-        ParamQuery parQ =
-            DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_IHC");
-	//        PreparedStatement prepStmt = null;
-        Statement stmt = null;
+        ParamQuery parQ = DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_IHC");
+         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
-            stmt = conn.createStatement();
+             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
             }
-	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4380,30 +4555,29 @@ public class MySQLISHDAOImp implements ISHDAO {
     public int findTotalNumberOfSubmissionArray() {
         int result = 0;
         ResultSet resSet = null;
-        ParamQuery parQ =
-            DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_ARRAY");
-	//        PreparedStatement prepStmt = null;
+        ParamQuery parQ = DBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSIONS_ARRAY");
         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
             }
 	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4412,30 +4586,28 @@ public class MySQLISHDAOImp implements ISHDAO {
     public int findNumberOfPublicSubmissionArray() {
         int result = 0;
         ResultSet resSet = null;
-        ParamQuery parQ =
-            DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_ARRAY");
-	//        PreparedStatement prepStmt = null;
+        ParamQuery parQ = DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_ARRAY");
         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
             }
 	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4445,29 +4617,27 @@ public class MySQLISHDAOImp implements ISHDAO {
     public int findNumberOfPublicSubmissionTG() {
         int result = 0;
         ResultSet resSet = null;
-        ParamQuery parQ =
-            DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_TG");
-	//        PreparedStatement prepStmt = null;
+        ParamQuery parQ = DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_TG");
         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
                 result = resSet.getInt(1);
             }
 	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4502,14 +4672,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 result = resSet.getInt(1);
             }
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-	    //            DBHelper.closeStatement(stmt);
-            DBHelper.closeResultSet(resSet);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return 0;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(prepStmt);        	
+            DBHelper.closeResultSet(resSet);   	
+        }
     }
     
     /**
@@ -4519,15 +4691,10 @@ public class MySQLISHDAOImp implements ISHDAO {
         String result = "Not Available";
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("LAST_ENTRY_DATE_EDITORIAL");
-	//        PreparedStatement prepStmt = null;
         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
@@ -4537,13 +4704,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 result = df.format(lastEditorialUpdate);
             }
 	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4553,15 +4723,10 @@ public class MySQLISHDAOImp implements ISHDAO {
         String result = "Not Available";
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("LAST_SOFTWARE_UPDATE_DATE");
-	//        PreparedStatement prepStmt = null;
         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
@@ -4571,13 +4736,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 result = df.format(lastEditorialUpdate);
             }
 	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4587,15 +4755,10 @@ public class MySQLISHDAOImp implements ISHDAO {
         String result = "Not Available";
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("LAST_ENTRY_DATE_DB");
-	//        PreparedStatement prepStmt = null;
         Statement stmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    //            parQ.setPrepStat(conn);
-	    //            prepStmt = parQ.getPrepStat();
-	    //            resSet = prepStmt.executeQuery();
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
             stmt = conn.createStatement();
             resSet = stmt.executeQuery(parQ.getQuerySQL());
             if (resSet.first()) {
@@ -4605,13 +4768,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 result = df.format(lastEditorialUpdate);
             }
 	    
-            // close the db object
-	    //            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeStatement(stmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return result;
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
     }
 
     /**
@@ -4650,12 +4816,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 				result.setClickFilePath(resSet.getString(9));
             }
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return result;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4728,12 +4898,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             conn.commit();
             conn.setAutoCommit(true);
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return result;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4836,12 +5010,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
+            return result;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return result;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4871,13 +5049,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 expression = formatExpressionDetailResultSet(resSet);
             }
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
             return expression;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return null;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -4962,13 +5143,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 expressionNote = DBHelper.formatResultSetToString(resSet);
             }
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
             return expressionNote;
+    	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return null;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     //created by chris - may need to be changed by Xingjun.
@@ -4980,6 +5164,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         ExpressionPattern[] pattern = null;
         ResultSet resSetPattern = null;
         ResultSet resSetLocations = null;
+        ResultSet compNmeSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("EXPRESSION_PATTERNS");
         //System.out.println(parQPatterns.getQuerySQL());
 	
@@ -5030,7 +5215,6 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    String atnPubIdVal = null;
 		    ResourceBundle  bundle = ResourceBundle.getBundle("configuration");
 		    String anatIdPrefix = bundle.getString("anatomy_id_prefix");
-		    ResultSet compNmeSet = null;
                                 
                     if (resSetLocations.first()) {
 			//                        System.out.println("resSetLocations has results");
@@ -5073,16 +5257,21 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             conn.commit();
             conn.setAutoCommit(true);
+            return pattern;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
         finally {
             //close the statements
             DBHelper.closePreparedStatement(prepStmtPatterns);
             DBHelper.closePreparedStatement(prepStmtLocations);
             DBHelper.closePreparedStatement(compNmeStmt);
-        }
-        return pattern;
+            DBHelper.closeResultSet(resSetPattern);
+            DBHelper.closeResultSet(resSetLocations);
+            DBHelper.closeResultSet(compNmeSet);
+       }
     }
     
     /**
@@ -5098,6 +5287,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         ArrayList<ExpressionPattern> patternList = null;
         ResultSet resSetPattern = null;
         ResultSet resSetLocations = null;
+	    ResultSet compNmeSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("EXPRESSION_PATTERNS");
         PreparedStatement prepStmtPatterns = null;
         PreparedStatement prepStmtLocations = null;
@@ -5141,7 +5331,6 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    String atnPubIdVal = null;
 		    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 		    String  anatIdPrefix = bundle.getString("anatomy_id_prefix");
-		    ResultSet compNmeSet = null;
 		    
                     if (resSetLocations.first()) {
 			//                        System.out.println("resSetLocations has results");
@@ -5255,22 +5444,26 @@ public class MySQLISHDAOImp implements ISHDAO {
             }
             conn.commit();
             conn.setAutoCommit(true);
+            
+            if (patternList != null && patternList.size() > 0) {
+                patterns = patternList.toArray(new ExpressionPattern[0]);
+            }
+            return patterns;
 	    
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
         finally {
             //close the statements
             DBHelper.closePreparedStatement(prepStmtPatterns);
             DBHelper.closePreparedStatement(prepStmtLocations);
             DBHelper.closePreparedStatement(compNmeStmt);
+            DBHelper.closeResultSet(resSetPattern);
+            DBHelper.closeResultSet(resSetLocations);
+            DBHelper.closeResultSet(compNmeSet);
         }
-	//        System.out.println("pattern number: " + patternList.size());
-        if (patternList != null && patternList.size() > 0) {
-            patterns = patternList.toArray(new ExpressionPattern[0]);
-        }
-        return patterns;
-    }
+     }
     
     /**
      * @param componentId
@@ -5305,13 +5498,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 		                componentDetail.add(componentList);
 				}
             }
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
             return componentDetail;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return null;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -5339,13 +5535,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 stage = "TS" + resSet.getString(2);
                 //				  System.out.println("stage: " + stage);
             }
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
             return stage;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return null;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -5375,10 +5574,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 DBHelper.closePreparedStatement(prepStmt);
                 return true;
             }
+            return false;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return false;
         }
-        return false;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -5408,10 +5613,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                 DBHelper.closePreparedStatement(prepStmt);
                 return true;
             }
+            return false;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return false;
         }
-        return false;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -5448,13 +5659,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 				statusNotes = sns.toArray(new StatusNote[0]);
 		    }
 	    
-            // close the db object
-		    DBHelper.closeResultSet(resSet);
-            DBHelper.closePreparedStatement(prepStmt);
+            return statusNotes;
+            
         } catch (SQLException se) {
-	    se.printStackTrace();
+            se.printStackTrace();
+            return null;
         }
-    	return statusNotes;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -5485,15 +5699,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 				    	patternList.add(str);
 				}
 		    }
-	    
-            // close the db object
-		    DBHelper.closeResultSet(resSet);
-            DBHelper.closePreparedStatement(prepStmt);
-	    
+            return patternList;
+            
         } catch (SQLException se) {
-	    se.printStackTrace();
+            se.printStackTrace();
+            return null;
         }
-    	return patternList;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -5525,13 +5740,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 				}
 		    }
 	    
-            // close the db object
-		    DBHelper.closeResultSet(resSet);
-            DBHelper.closePreparedStatement(prepStmt);
+            return locationList;
+            
         } catch (SQLException se) {
-	    se.printStackTrace();
+            se.printStackTrace();
+            return null;
         }
-    	return locationList;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -5571,14 +5789,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 					componentList.add(component);
 				}
 		    }
-            // close the db object
-	    	DBHelper.closeResultSet(resSet);
-            DBHelper.closePreparedStatement(prepStmt);
+            return componentList;
+            
         } catch (SQLException se) {
-	    se.printStackTrace();
+            se.printStackTrace();
+            return null;
         }
-	//        System.out.println("component list size: " + componentList.size());
-    	return componentList;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -5608,14 +5828,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 				lockingInfo.setLockedBy(resSet.getString(2));
 				lockingInfo.setLockTime(resSet.getInt(3));
 		    }
-		    // release db resources
-		    DBHelper.closeResultSet(resSet);
-		    DBHelper.closePreparedStatement(prepStmt);
-		} catch(SQLException se) {
-		    se.printStackTrace();
-		}
-		// return
-		return lockingInfo;
+            return lockingInfo;
+            
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
     }
     
     /**
@@ -5642,14 +5864,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             	result = resSet.getString(1);
             }
 	    
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-
+            return result;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-	//        System.out.println("application version: " + result);
-        return result;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
 	
     }
     
@@ -5679,13 +5903,16 @@ public class MySQLISHDAOImp implements ISHDAO {
 	        if (debug) 	    
             	System.out.println("tissue: " + tissue);
 
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
             return tissue;
+            
         } catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
-        return null;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resultSet);
+        }
     }
     
 }

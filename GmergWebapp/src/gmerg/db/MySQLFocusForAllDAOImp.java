@@ -392,14 +392,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				// execute
 				resSet = prepStmt.executeQuery();
 				result = formatResultSet(resSet, MAX_COLUMNS);
-				
-				// close the connection
-				DBHelper.closePreparedStatement(prepStmt);
-				
-				
+				return result;
 			} catch(SQLException se) {
 				se.printStackTrace();
-			}			
+				return null;
+			}	
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+			}
 		} else if(query.equals("ish")) {
 			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_ISH");
 			// assemble the query string
@@ -463,11 +464,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				// execute
 				resSet = prepStmt.executeQuery();
 				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
-				// close the connection
-				DBHelper.closePreparedStatement(prepStmt);
+				return result;
 			} catch(SQLException se) {
 				se.printStackTrace();
-			}			
+				return null;
+			}	
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+			}
 		} else if(query.equals("insitu")) {
 			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_INSITU");
 			// assemble the query string
@@ -535,11 +540,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				// execute
 				resSet = prepStmt.executeQuery();
 				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
-				// close the connection
-				DBHelper.closePreparedStatement(prepStmt);
+				return result;
 			} catch(SQLException se) {
 				se.printStackTrace();
-			}			
+				return null;
+			}	
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+			}
 		} else if(query.equals("insitu_all")) {
 
 			if(debug)
@@ -615,11 +624,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				// execute
 				resSet = prepStmt.executeQuery();
 				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
-				// close the connection
-				DBHelper.closePreparedStatement(prepStmt);
+				return result;
 			} catch(SQLException se) {
 				se.printStackTrace();
-			}			
+				return null;
+			}	
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+			}
 
 		}
 		return result;
@@ -719,11 +732,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			resSet = prepStmt.executeQuery();
 			result = formatBrowseSeriesResultSet(resSet);
 			
-			DBHelper.closePreparedStatement(prepStmt);		
+			return result;
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
 		}
-		return result;		
 	}
 
 	public int getNumberOfSeries(String organ, String platform) {
@@ -867,11 +884,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			resSet = prepStmt.executeQuery();
 			result = formatBrowseSeriesResultSet(resSet);
 			
-			DBHelper.closePreparedStatement(prepStmt);		
+			return result;
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
 		}
-		return result;		
 	}
 
 	public int getNumberOfPlatform(String organ) {
@@ -997,13 +1018,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             	totalNumber = resSet.getInt(1);
             }
 
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return totalNumber;
+			return totalNumber;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return 0;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -1099,13 +1122,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             	totalNumber = resSet.getInt(1);
             }
 
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return totalNumber;
+			return totalNumber;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return 0;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	
@@ -1145,13 +1170,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             	totalNumber = resSet.getInt(1);
             }
 
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return totalNumber;
+			return totalNumber;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return 0;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -1205,12 +1232,14 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             	totalNumber = resSet.getInt(1);
             }
 
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-        return totalNumber;
+			return totalNumber;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return 0;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 }

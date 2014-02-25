@@ -42,8 +42,9 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	 * 
 	 */
 	public ArrayList getTheilerStageRanges() {
-	if (debug)
-	    System.out.println("MysqlAnatomyDAOImp.getTheilerStageRanges");
+		
+		if (debug)
+		    System.out.println("MysqlAnatomyDAOImp.getTheilerStageRanges");
 		
 	    //retrieve the query to find all stages in db
 	    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
@@ -59,7 +60,6 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	    else {
 			parQ = DBQuery.getParamQuery("STAGES_IN_PERSPECTIVE");
 	    }
-//		System.out.println("get ts query: " + parQ.getQuerySQL());
 		
 		try {
         	// if disconnected from db, re-connected
@@ -70,21 +70,23 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 			resSet = prepStmt.executeQuery();
 			ArrayList stageRanges = DBHelper.formatResultSetToArrayList(resSet);
 			
-			// close the connection
-			DBHelper.closePreparedStatement(prepStmt);
-			
 			return stageRanges;
 			
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
 		}
-		return null;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	
 	public String getAnatomyTermFromPublicId(String id){
-	if (debug)
-	    System.out.println("MysqlAnatomyDAOImp.getAnatomyTermFromPublicId");
+		
+		if (debug)
+		    System.out.println("MysqlAnatomyDAOImp.getAnatomyTermFromPublicId");
 		
 		if(id == null || id.equals("")){
 			return "";
@@ -112,13 +114,12 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
     	}
     	catch(SQLException e){
     		e.printStackTrace();
+    		return null;
     	}
     	finally {
     		DBHelper.closeResultSet(resSet);
     		DBHelper.closePreparedStatement(prepStmt);
     	}
-    	
-    	return "";
     }
 	
 	public String getOnlogyTerms() {
@@ -166,8 +167,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	 * @return
 	 */
 	public int findSequencebyStageName(String stageName) {
-	if (debug)
-	    System.out.println("MysqlAnatomyDAOImp.findSequencebyStageName");
+		if (debug)
+		    System.out.println("MysqlAnatomyDAOImp.findSequencebyStageName");
 		
 	    int sequence = -1;
 		ResultSet resSet = null;
@@ -186,15 +187,17 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 			if (resSet.first()) {
 				sequence = resSet.getInt(1);
 			}
-			// close the connection
-			DBHelper.closePreparedStatement(prepStmt);
 			
 			return sequence;
 			
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return -1;
 		}
-		return sequence;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -430,16 +433,17 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                             this.buildTreeStructure(resSet, hasAnnot, submissionAccessionId,
                                                isEditor);
 
-                DBHelper.closeResultSet(resSet);
-                DBHelper.closePreparedStatement(prepStmt);
-
-                return annotationTree;
-            }
+             }
+            return annotationTree;
 
         } catch (Exception se) {
             se.printStackTrace();
+            return null;
         }
-        return annotationTree;
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);       	
+        }
     }
     
     /**
@@ -606,33 +610,36 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
         ResultSet resSet = null;
         
         try {
-        	// if disconnected from db, re-connected
-        	conn = DBHelper.reconnect2DB(conn);
+			// if disconnected from db, re-connected
+			conn = DBHelper.reconnect2DB(conn);
 
-          parQ.setPrepStat(conn);
-          prepStat = parQ.getPrepStat();
-          prepStat.setString(1, expressionOID);
-        
-          resSet = prepStat.executeQuery();
-        
-          if(resSet.first()){
-              resSet.beforeFirst();
-            
-              StringBuffer patterns = new StringBuffer("");
-            
-              while(resSet.next()){
-                if(resSet.isLast()) {
-                    patterns.append(resSet.getString(2));
-                }
-                else {
-                    patterns.append(resSet.getString(2)+",");
-                }
-                
-              }
-              return patterns.toString();
-          }
-          return "";
-        }
+	          parQ.setPrepStat(conn);
+	          prepStat = parQ.getPrepStat();
+	          prepStat.setString(1, expressionOID);
+	        
+	          resSet = prepStat.executeQuery();
+	        
+	          if(resSet.first()){
+	              resSet.beforeFirst();
+	            
+	              StringBuffer patterns = new StringBuffer("");
+	            
+	              while(resSet.next()){
+						if(resSet.isLast()) {
+						    patterns.append(resSet.getString(2));
+						}
+						else {
+						    patterns.append(resSet.getString(2)+",");
+						}
+	                
+	              }
+	              return patterns.toString();
+	          }
+	          return "";
+	    } catch (Exception se) {
+	        se.printStackTrace();
+	        return null;
+	    }
         finally {
             DBHelper.closeResultSet(resSet);
             DBHelper.closePreparedStatement(prepStat);
@@ -865,6 +872,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
         }
         catch (SQLException se) {
             se.printStackTrace();
+            return null;
         }
         finally {
             DBHelper.closeResultSet(resSet);
@@ -876,6 +884,5 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
             DBHelper.closeResultSet(compNmeSet);
             DBHelper.closePreparedStatement(compNmeStmt);
         }
-        return null;
     }
 }

@@ -87,17 +87,15 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
             resSet = prepStmt.executeQuery();
             result = formatCollectionQueryResultSet(userId, resSet);
 
-            // release database resources
-            DBHelper.closeResultSet(resSet);
-            DBHelper.closePreparedStatement(prepStmt);
-
-            // reset the static query string to its original value
-            parQ.setQuerySQL(query);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-		return result;
+			return result;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return null;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -246,14 +244,15 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
             	result = resSet.getRow();
             }
 
-            // release database resources
-            DBHelper.closeResultSet(resSet);
-            DBHelper.closePreparedStatement(prepStmt);
-
-        } catch (SQLException se) {
-            se.printStackTrace();
-        }
-		return result;
+			return result;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return 0;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -264,6 +263,7 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 	public CollectionInfo getCollectionInfoById(int collectionId) {
 		
 //		System.out.println("collection id: " + collectionId);
+		PreparedStatement 	prepStmt = null;
 		ResultSet resSet = null;
 		ParamQuery parQ = DBQuery.getParamQuery("COLLECTION_DETAIL_BY_ID");
 		String query = parQ.getQuerySQL();
@@ -273,7 +273,7 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		try {
 		    if (debug)
 			System.out.println("MySQLCollectionDAOImp.sql = "+query.toLowerCase());
-			PreparedStatement prepStmt = conn.prepareStatement(query);
+			prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, collectionId);
 			resSet = prepStmt.executeQuery();
 			
@@ -298,14 +298,15 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
                 }
 				collectionInfo.setEntries(resSet.getInt(10));
 			}
-			// release database resources
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-			
-		} catch (SQLException se) {
+			return collectionInfo;
+		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
 		}
-		return collectionInfo;
 	}
 	
 	/**
@@ -318,6 +319,7 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 
 //		System.out.println("collection id: " + collectionName);
 //		System.out.println("owner id: " + owner);
+		PreparedStatement prepStmt = null;
 		ResultSet resSet = null;
 		ParamQuery parQ = DBQuery.getParamQuery("COLLECTION_DETAIL_BY_NAME");
 		String query = parQ.getQuerySQL();
@@ -327,7 +329,7 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		try {
 		    if (debug)
 			System.out.println("MySQLCollectionDAOImp.sql = "+query.toLowerCase());
-			PreparedStatement prepStmt = conn.prepareStatement(query);
+			prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, owner);
 			prepStmt.setString(2, collectionName);
 			resSet = prepStmt.executeQuery();
@@ -353,14 +355,15 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
                 }
 				collectionInfo.setEntries(resSet.getInt(10));
 			}
-			// release database resources
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-			
-		} catch (SQLException se) {
+			return collectionInfo;
+		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
 		}
-		return collectionInfo;
 	}
 	
 	/**
@@ -380,6 +383,7 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 	public ArrayList<String> getCollectionItemsById(int collectionId) {
 		
 //		System.out.println("collection id: " + collectionId);
+		PreparedStatement prepStmt = null;
 		ResultSet resSet = null;
 		ParamQuery parQ = DBQuery.getParamQuery("COLLECTION_ITEM_LIST");
 		String queryCollectionItem = parQ.getQuerySQL();
@@ -394,7 +398,7 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 			// obtain removed submission
 		    if (debug)
 			System.out.println("MySQLCollectionDAOImp.sql = "+queryRemovedSubmission.toLowerCase());
-			PreparedStatement prepStmt = conn.prepareStatement(queryRemovedSubmission);
+			prepStmt = conn.prepareStatement(queryRemovedSubmission);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
 				removedSubmissionItems = new ArrayList<String>();
@@ -430,14 +434,15 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 					}
 				}
 			}
-			// release database resources
-			DBHelper.closeResultSet(resSet);
-			DBHelper.closePreparedStatement(prepStmt);
-			
-		} catch (SQLException se) {
+			return collectionItems;
+		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
 		}
-		return collectionItems;
 	}
 	
 	/**
@@ -461,12 +466,14 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
         	deletedRecordNumber = prepStmt.executeUpdate();
 //        	System.out.println(deletedRecordNumber + " collection deleted!");
         	
-        } catch (SQLException se) {
-        	se.printStackTrace();
-        }
-        // release db resources
-        DBHelper.closePreparedStatement(prepStmt);
-		return deletedRecordNumber;
+			return deletedRecordNumber;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return 0;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+		}
 	}
 	
 	/**
@@ -581,23 +588,20 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 				insertedRecordNumber = counter;
 				conn.setAutoCommit(true);
 			}
-			
-			// release database resources
-			DBHelper.closePreparedStatement(prepStmt);
-			DBHelper.closeResultSet(resSet);
+			return insertedRecordNumber;
 			
 		} catch (SQLException se) {
 			se.printStackTrace();
+			return 0;
 		} finally {
         	try {
         		conn.setAutoCommit(true);
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
 		}
-
-		// insertion success
-		return insertedRecordNumber;
 	} /** end of insertCollection */
 	
 	/**
@@ -635,13 +639,15 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 			updatedRecordNumber = prepStmt.executeUpdate();
 //			System.out.println(updatedRecordNumber  + " collection items updated!");
 			
-			// release database resources
+			return updatedRecordNumber;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return 0;
+		}	
+		finally{
 			DBHelper.closePreparedStatement(prepStmt);
 			DBHelper.closeResultSet(resSet);
-		} catch (SQLException se) {
-			se.printStackTrace();
 		}
-		return updatedRecordNumber;
 	} /** end of updateCollectionSummary */
 	
 	/**
@@ -681,12 +687,14 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
         	}
 //        	System.out.println("CollectionDAO:getInsituSubmissionImageIdByGene:image number: " + images.size());
         	
-            // close the db object
-            DBHelper.closePreparedStatement(prepStmt);
-            DBHelper.closeResultSet(resSet);
-        } catch (SQLException se) {
-        	se.printStackTrace();
-        }
-		return imageIds;
+			return imageIds;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return null;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 }
