@@ -1323,7 +1323,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 //        	prepStmtLog.setString(4, "");
 //        	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-//        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// update
         	// insert status notes
@@ -1379,7 +1378,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 //        	prepStmtLog.setString(4, "");
 //        	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-//        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	// delete
         	prepStmt = conn.prepareStatement(queryString);
@@ -1423,7 +1421,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 //      	prepStmtLog.setString(4, "");
 //      	loggedRecordNumber = prepStmtLog.executeUpdate();
 //      	System.out.println(loggedRecordNumber + " records logged!");
-//        	DBHelper.closePreparedStatement(prepStmtLog);
 
 			// delete
 			prepStmt = conn.prepareStatement(queryString);
@@ -1469,7 +1466,6 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 //        	prepStmtLog.setString(4, parMColumn.getParamName());
 //        	loggedRecordNumber = prepStmtLog.executeUpdate();
 //        	System.out.println(loggedRecordNumber + " records logged!");
-//        	DBHelper.closePreparedStatement(prepStmtLog);
         	
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, statusNotes);

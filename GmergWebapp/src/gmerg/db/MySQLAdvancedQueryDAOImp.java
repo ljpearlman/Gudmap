@@ -1280,8 +1280,6 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    System.out.println("MySQLAdvancedQueryDAOImp:getFocusQuery-prepStmt= "+prepStmt.toString());
 				
 				result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
-				DBHelper.closePreparedStatement(prepStmt);
-			
 				return result;
 		    } 
 		    catch (Exception se) {

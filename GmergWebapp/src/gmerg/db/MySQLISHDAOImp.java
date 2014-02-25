@@ -5570,8 +5570,6 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("MySQLISHDAOImp:hasParentNode = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
-                // close the db object
-                DBHelper.closePreparedStatement(prepStmt);
                 return true;
             }
             return false;
@@ -5609,8 +5607,6 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("MySQLISHDAOImp:hasChildenNode = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
-                // close the db object
-                DBHelper.closePreparedStatement(prepStmt);
                 return true;
             }
             return false;
