@@ -462,6 +462,8 @@ public class DbUtility {
 		    return null;
 		}
         finally{
+		    DBHelper.closeStatement(stmt);       	
+		    DBHelper.closeResultSet(rs);       	
 		    DBHelper.closeJDBCConnection(conn);        	
         }
     }

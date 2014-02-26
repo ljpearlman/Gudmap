@@ -1325,24 +1325,24 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    parQ.setPrepStat(conn);
 		    prepStmt = parQ.getPrepStat();
 		    for(int col=0; col<sampleNo; col++) {
-			if (debug)
-			    System.out.println("MySQLArrayDAOImp 1 arg = "+samplesInfo[col][0]);
-			prepStmt.setString(1, samplesInfo[col][0]);
-			resSet = prepStmt.executeQuery();
-			resSet.last();
-			geneNo = resSet.getRow();
-			resSet.beforeFirst();
-			if (col==0){
-			    data = new double[geneNo][sampleNo];
-			    mask = new char[geneNo][sampleNo];
-			}
-			while(resSet.next()) {
-			    row = resSet.getInt(1) - 1;
-			    data[row][col] = resSet.getFloat(2);
-			    str = Utility.netTrim(resSet.getString(3));
-			    if (null != str)
-				mask[row][col] = str .charAt(0);
-			}
+				if (debug)
+				    System.out.println("MySQLArrayDAOImp 1 arg = "+samplesInfo[col][0]);
+				prepStmt.setString(1, samplesInfo[col][0]);
+				resSet = prepStmt.executeQuery();
+				resSet.last();
+				geneNo = resSet.getRow();
+				resSet.beforeFirst();
+				if (col==0){
+				    data = new double[geneNo][sampleNo];
+				    mask = new char[geneNo][sampleNo];
+				}
+				while(resSet.next()) {
+				    row = resSet.getInt(1) - 1;
+				    data[row][col] = resSet.getFloat(2);
+				    str = Utility.netTrim(resSet.getString(3));
+				    if (null != str)
+				    	mask[row][col] = str .charAt(0);
+				}
 		    }
 		    
 		    // retrieve probe names and gene symbols
@@ -1358,22 +1358,22 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    String prevProbeName = null;
 		    String geneSymbol = null;
 		    while (resSet.next()){
-			row = resSet.getInt("GLI_SERIAL_NO")-1;
-			geneId[row][0] = resSet.getString("GLI_PROBE_SET_NAME");  //Get probe name
-			String gs = resSet.getString("GNF_SYMBOL");
-			geneSymbol = (gs != null) ? gs : "";
-			//				System.out.print("row: " + row + "####");
-			//				if (geneSymbol == null) System.out.print("NULL###");
-			//				System.out.println("geneSymbol: " + geneSymbol);
-			
-			// Set gene Symbol in a comma separated list
-			if (geneId[row][0].equals(prevProbeName)) {
-			    geneId[row][1] += ", " + geneSymbol;
-			} else {
-			    geneId[row][1] = geneSymbol;
-			}
-			
-			prevProbeName = geneId[row][0];
+				row = resSet.getInt("GLI_SERIAL_NO")-1;
+				geneId[row][0] = resSet.getString("GLI_PROBE_SET_NAME");  //Get probe name
+				String gs = resSet.getString("GNF_SYMBOL");
+				geneSymbol = (gs != null) ? gs : "";
+				//				System.out.print("row: " + row + "####");
+				//				if (geneSymbol == null) System.out.print("NULL###");
+				//				System.out.println("geneSymbol: " + geneSymbol);
+				
+				// Set gene Symbol in a comma separated list
+				if (geneId[row][0].equals(prevProbeName)) {
+				    geneId[row][1] += ", " + geneSymbol;
+				} else {
+				    geneId[row][1] = geneSymbol;
+				}
+				
+				prevProbeName = geneId[row][0];
 		    }
 		    
 			String[][] sampleNames = new String[sampleNo][1];
@@ -1428,14 +1428,14 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    resSet = prepStmt.executeQuery();
 		    
 		    if (resSet.first()) {
-			seriesGEOIds = new ArrayList<String>();
-			resSet.beforeFirst();
-			while(resSet.next()) {
-			    String seriesGEOId = resSet.getString(1);
-			    if (seriesGEOId != null && !seriesGEOId.equals("")) {
-				seriesGEOIds.add(seriesGEOId);
-			    }
-			}
+				seriesGEOIds = new ArrayList<String>();
+				resSet.beforeFirst();
+				while(resSet.next()) {
+				    String seriesGEOId = resSet.getString(1);
+				    if (seriesGEOId != null && !seriesGEOId.equals("")) {
+					seriesGEOIds.add(seriesGEOId);
+				    }
+				}
 		    }
 			return seriesGEOIds;
 		    
@@ -1488,13 +1488,13 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    resSet = prepStmt.executeQuery();
 		    
 		    if (resSet.first()) {
-			resSet.beforeFirst();
-			while(resSet.next()) {
-			    String component = resSet.getString(1);
-			    if (component != null && !component.equals("")) {
-				componentNames.add(component);
-			    }
-			}
+				resSet.beforeFirst();
+				while(resSet.next()) {
+				    String component = resSet.getString(1);
+				    if (component != null && !component.equals("")) {
+					componentNames.add(component);
+				    }
+				}
 		    }
 			return componentNames;
 			
@@ -1538,7 +1538,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		} else {
 		    whereClause += " WHERE (IGL_COMPONENT LIKE '%" + (String)componentNames.get(0) + "%' ";
 		    for (int i=1;i<componentNumber;i++) {
-			whereClause += " OR IGL_COMPONENT LIKE '%" + (String)componentNames.get(i) + "%' ";
+	    		whereClause += " OR IGL_COMPONENT LIKE '%" + (String)componentNames.get(i) + "%' ";
 		    }
 		    whereClause += ")";
 		}
@@ -1992,16 +1992,16 @@ public class MySQLArrayDAOImp implements ArrayDAO {
      * @return a list of probe set ids
      */
     public ArrayList<String> getProbeSetIdBySymbol(String symbol, String platformId) {
-	long enter = 0;
+    	long enter = 0;
 		if (performance)
 		    enter = System.currentTimeMillis();
 		
 		ArrayList<String> probeSetIds = null;
-	        ResultSet resSet = null;
-	        ParamQuery parQ =
-	            DBQuery.getParamQuery("ARRAY_PROBE_SET_IDS_FOR_GIVEN_SYMBOL");
-	        String queryString = parQ.getQuerySQL();
-	        PreparedStatement prepStmt = null;
+        ResultSet resSet = null;
+        ParamQuery parQ =
+            DBQuery.getParamQuery("ARRAY_PROBE_SET_IDS_FOR_GIVEN_SYMBOL");
+        String queryString = parQ.getQuerySQL();
+        PreparedStatement prepStmt = null;
 		try {
 		    // if disconnected from db, re-connected
 		    conn = DBHelper.reconnect2DB(conn);
@@ -2013,11 +2013,11 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    prepStmt.setString(2, platformId);
 		    resSet = prepStmt.executeQuery();
 		    if (resSet.first()) {
-			resSet.beforeFirst();
-			probeSetIds = new ArrayList<String>();
-			while (resSet.next()) {
-			    probeSetIds.add(resSet.getString(1));
-			}
+				resSet.beforeFirst();
+				probeSetIds = new ArrayList<String>();
+				while (resSet.next()) {
+				    probeSetIds.add(resSet.getString(1));
+				}
 		    }
 		    //			probeSetIds = DBHelper.formatResultSetToArrayList(resSet);
 		    
@@ -2079,11 +2079,11 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    conn = DBHelper.reconnect2DB(conn);
 		    
 		    if (debug) 
-			System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase() +" 1 arg = "+glstId);
+		    	System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase() +" 1 arg = "+glstId);
 	
 		    prepStmt = conn.prepareStatement(queryString);
 		    if (clstId == null) {
-			prepStmt.setInt(1, Integer.parseInt(glstId));
+		    	prepStmt.setInt(1, Integer.parseInt(glstId));
 		    } else {
 			if (debug)
 			    System.out.println("MySQLArrayDAOImp.sql 2 arg = "+clstId);
@@ -2094,11 +2094,11 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    
 		    resSet = prepStmt.executeQuery();
 		    if (resSet.first()) {
-			resSet.beforeFirst();
-			probeSetIds = new ArrayList<String>();
-			while (resSet.next()) {
-			    probeSetIds.add(resSet.getString(1));
-			}
+				resSet.beforeFirst();
+				probeSetIds = new ArrayList<String>();
+				while (resSet.next()) {
+				    probeSetIds.add(resSet.getString(1));
+				}
 		    }
 			return probeSetIds;
 			
@@ -2200,57 +2200,57 @@ public class MySQLArrayDAOImp implements ArrayDAO {
     }
 
     public String getAnalysisGenelist(String genelistId) {
-	long enter = 0;
-	if (performance)
-	    enter = System.currentTimeMillis();
-	
-	if (genelistId == null || genelistId.equals("")) {
-	    return null;
-	}
-	String glstId = AllComponentsGenelistAssembler.getGenelistIdFromClusterId(genelistId);
-	String clstId = AllComponentsGenelistAssembler.getIdFromClusterId(genelistId);
-	
-	String genelist = "";
-    ResultSet resSet = null;
-    ParamQuery parQ = null;
-    if (clstId == null) { // only genelist id passed in
-    	parQ = ArrayDBQuery.getParamQuery("GET_ANALYSIS_GENELIST");
-    } 
-	
-    String queryString = parQ.getQuerySQL();
-    PreparedStatement prepStmt = null;
-	try {
-	    if (debug)
-	    	System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
-	    prepStmt = conn.prepareStatement(queryString);
-	    if (clstId == null) {
-		if (debug)
-		    System.out.println("MySQLArrayDAOImp.sql 1 arg = "+glstId);
-		prepStmt.setInt(1, Integer.parseInt(glstId));
-	    } else {
-			if (debug)
-			    System.out.println("MySQLArrayDAOImp.sql 1 arg = "+clstId);
-		prepStmt.setInt(1, Integer.parseInt(clstId));
-	    }
-	    resSet = prepStmt.executeQuery();
-	    
-		while (resSet.next()) { // it's possible it's expressed in more than one component 
-			genelist += resSet.getString(1) + ",";
+		long enter = 0;
+		if (performance)
+		    enter = System.currentTimeMillis();
+		
+		if (genelistId == null || genelistId.equals("")) {
+		    return null;
 		}
-		genelist = genelist.substring(0, genelist.length()-1);
-		if (debug)
-			System.out.println("genelist = "+genelist);
+		String glstId = AllComponentsGenelistAssembler.getGenelistIdFromClusterId(genelistId);
+		String clstId = AllComponentsGenelistAssembler.getIdFromClusterId(genelistId);
 		
-		return genelist;
+		String genelist = "";
+	    ResultSet resSet = null;
+	    ParamQuery parQ = null;
+	    if (clstId == null) { // only genelist id passed in
+	    	parQ = ArrayDBQuery.getParamQuery("GET_ANALYSIS_GENELIST");
+	    } 
 		
-	} catch(SQLException se) {
-	    se.printStackTrace();
-		return null;
-	}
-	finally{
-	    DBHelper.closePreparedStatement(prepStmt);
-	    DBHelper.closeResultSet(resSet);
-	}
+	    String queryString = parQ.getQuerySQL();
+	    PreparedStatement prepStmt = null;
+		try {
+		    if (debug)
+		    	System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+		    prepStmt = conn.prepareStatement(queryString);
+		    if (clstId == null) {
+			if (debug)
+			    System.out.println("MySQLArrayDAOImp.sql 1 arg = "+glstId);
+			prepStmt.setInt(1, Integer.parseInt(glstId));
+		    } else {
+				if (debug)
+				    System.out.println("MySQLArrayDAOImp.sql 1 arg = "+clstId);
+			prepStmt.setInt(1, Integer.parseInt(clstId));
+		    }
+		    resSet = prepStmt.executeQuery();
+		    
+			while (resSet.next()) { // it's possible it's expressed in more than one component 
+				genelist += resSet.getString(1) + ",";
+			}
+			genelist = genelist.substring(0, genelist.length()-1);
+			if (debug)
+				System.out.println("genelist = "+genelist);
+			
+			return genelist;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return null;
+		}
+		finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+		}
     }
     
     /**
@@ -2295,15 +2295,15 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 			parQ =
 			    DBQuery.getParamQuery("ARRAY_EXPRESSION_OF_GIVEN_PROBE_SET_IDS");
 		    } else {
-			genelistIdProvided = true;
-			glstId = AllComponentsGenelistAssembler.getGenelistIdFromClusterId(genelistId);
-			clstId = AllComponentsGenelistAssembler.getIdFromClusterId(genelistId);
-			if (clstId == null) { // only genelist id passed in
-			    parQ = ArrayDBQuery.getParamQuery("GET_EXPRESSION_OF_GIVEN_PROBE_SET_IDS");
-			} else { // cluster id passed in as well
-			    parQ = ArrayDBQuery.getParamQuery("GET_EXPRESSION_OF_GIVEN_PROBE_SET_IDS_CLUSTER");
-			}
-			
+				genelistIdProvided = true;
+				glstId = AllComponentsGenelistAssembler.getGenelistIdFromClusterId(genelistId);
+				clstId = AllComponentsGenelistAssembler.getIdFromClusterId(genelistId);
+				if (clstId == null) { // only genelist id passed in
+				    parQ = ArrayDBQuery.getParamQuery("GET_EXPRESSION_OF_GIVEN_PROBE_SET_IDS");
+				} else { // cluster id passed in as well
+				    parQ = ArrayDBQuery.getParamQuery("GET_EXPRESSION_OF_GIVEN_PROBE_SET_IDS_CLUSTER");
+				}
+				
 		    }
 		    String querySQL = parQ.getQuerySQL();
 		    

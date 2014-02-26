@@ -720,8 +720,12 @@ public class MySQLISHDAOImp implements ISHDAO {
         finally{
             DBHelper.closePreparedStatement(prepStmtAntibody);
             DBHelper.closePreparedStatement(prepStmtAntibodyNote);  
+            DBHelper.closePreparedStatement(prepStmtSpeciesSpecificity);  
+            DBHelper.closePreparedStatement(prepStmtAntibodyVariant);  
             DBHelper.closeResultSet(resSetAntibody);
             DBHelper.closeResultSet(resSetAntibodyNote);
+            DBHelper.closeResultSet(resSetSpeciesSpecificity);
+            DBHelper.closeResultSet(resSetAntibodyVariant);
        }
     }
     
@@ -4906,8 +4910,13 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
         finally{
             DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closePreparedStatement(prepStmtTG);
+            DBHelper.closePreparedStatement(prepStmtAllImageNotesInSameSubmission);
+            DBHelper.closePreparedStatement(prepStmtPublicImgs);
             DBHelper.closeResultSet(resSet);
-        }
+            DBHelper.closeResultSet(resSetAllImageNotesInSameSubmission);
+            DBHelper.closeResultSet(resSetPublicImgs);
+       }
     }
     
     /**

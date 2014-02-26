@@ -620,7 +620,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
-        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closePreparedStatement(prepStmtLog);
         	DBHelper.closePreparedStatement(prepStmt);
         }
 	}
@@ -709,7 +709,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         	} catch(SQLException se) {
         		se.printStackTrace();
         	}
-        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closePreparedStatement(prepStmtLog);
         	DBHelper.closeResultSet(resSet);
         	DBHelper.closePreparedStatement(prepStmt);
         }
@@ -800,6 +800,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         		se.printStackTrace();
         	}
         	DBHelper.closePreparedStatement(prepStmtLog);
+        	DBHelper.closePreparedStatement(prepStmtPatternId);
         	DBHelper.closePreparedStatement(prepStmtPatternValue);
         	DBHelper.closePreparedStatement(prepStmtPatternSeq);
         	DBHelper.closeResultSet(resSetPatternId);
@@ -1698,6 +1699,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
         }
         finally{
         	DBHelper.closePreparedStatement(prepStmt);       	
+        	DBHelper.closeResultSet(resSet);     	
         }
 	}
 	
@@ -1732,7 +1734,7 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
 	public ArrayList getPIBySubID(String submissionId) {
 		ParamQuery parQ = DBUpdateSQL.getParamQuery("GET_PI_FROM_SUB_ID");
         PreparedStatement prepStmt = null;
-        ResultSet pi;
+        ResultSet pi = null;
         ArrayList piArray = null;
         // assemble sql string
         String queryString = parQ.getQuerySQL();
@@ -1750,7 +1752,8 @@ public class MySQLISHEditDAOImp implements ISHEditDAO {
     		return null;
         }
         finally{
-        	DBHelper.closePreparedStatement(prepStmt);       	
+        	DBHelper.closePreparedStatement(prepStmt);
+        	DBHelper.closeResultSet(pi);
         }
 	}
 

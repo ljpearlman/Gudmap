@@ -234,9 +234,12 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 			
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
 		}
-		
-		return null;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -288,8 +291,12 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 			
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
 		}
-		return null;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
 	
 	/**
@@ -361,8 +368,12 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 			
 		} catch(SQLException se) {
 			se.printStackTrace();
+			return null;
 		}
-		return null;
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
 	}
         
     /**
@@ -420,8 +431,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 resSet.first();
                 String stageName = resSet.getString(1);
                 
-                ParamQuery annotationQ =
-                        DBQuery.getParamQuery("ANNOT_TREE_CONTENT");
+                ParamQuery annotationQ = DBQuery.getParamQuery("ANNOT_TREE_CONTENT");
                 annotationQ.setPrepStat(conn);
                 prepStmt = annotationQ.getPrepStat();
                 prepStmt.setString(1, stageName);
@@ -479,7 +489,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 	                results.add("OPENATVISCERAL = 1");
 	                results.add("HIGHLIGHT = 1");
 	                results.add("SUBMISSION_ID = \"" + accno + "\"");
-			javascriptFunc = "javascript:showExprInfo";
+	                javascriptFunc = "javascript:showExprInfo";
             	} else {
             		results.add("ANNOTATEDTREE = 0");
                     results.add("OPENATVISCERAL = 1");
@@ -707,7 +717,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 //go back to start of result set so you can obtain relevant info for each row
                 resSet.beforeFirst();
                 int index = 0;
-		String str = null;
+                String str = null;
         
                 while(resSet.next()){
                 

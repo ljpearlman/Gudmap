@@ -785,13 +785,17 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    return geneSymbols;	
 				}			
 		    }
+		   	return null;
     	}
-    	catch(SQLException e){
-	    e.printStackTrace();
-    	}
-	
-    	return null;
-    }
+		catch(SQLException e){
+		    e.printStackTrace();
+	    	return null;
+		}
+		finally {
+		    DBHelper.closeResultSet(resSet);
+		    DBHelper.closePreparedStatement(stmt);
+		}
+   }
     
     /**
      * method to retrieve list of gene symbols from user input.
