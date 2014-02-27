@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MySQLFocusStageDAOImp implements FocusStageDAO{
-    private boolean debug = false;
+    private boolean debug = true;
 
     private Connection conn;
 

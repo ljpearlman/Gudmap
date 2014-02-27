@@ -28,12 +28,13 @@
 	<classpathentry kind="lib" path="lib/TreeView.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_git/GmergWebapp/lib/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/mysql-connector-java-5.1.22-bin.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/nanoxml-2.2.2.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/richfaces-api-3.3.2.SR1.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/richfaces-impl-3.3.2.SR1.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/richfaces-ui-3.3.2.SR1.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_yiya/Gudmap/GmergWebapp/lib/json-simple.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_jan14/Gudmap/GmergWebapp/lib/analysis.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_feb14/Gudmap/GmergWebapp/lib/analysis.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_feb14/Gudmap/GmergWebapp/lib/json-simple.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_feb14/Gudmap/GmergWebapp/lib/mysql-connector-java-5.1.22-bin.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_feb14/Gudmap/GmergWebapp/lib/nanoxml-2.2.2.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_feb14/Gudmap/GmergWebapp/lib/richfaces-api-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_feb14/Gudmap/GmergWebapp/lib/richfaces-impl-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_feb14/Gudmap/GmergWebapp/lib/richfaces-ui-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_feb14/Gudmap/GmergWebapp/lib/activation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
