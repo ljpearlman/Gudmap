@@ -221,7 +221,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	      	conn = DBHelper.reconnect2DB(conn);
 	        stmt = conn.createStatement(); 
 		    if (debug)
-		    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicGenes sql = "+queryString.toLowerCase());
+		    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicGenes sql = "+queryString);
 
 		    resSet = stmt.executeQuery(queryString);
 	          

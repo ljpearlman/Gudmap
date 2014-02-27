@@ -46,7 +46,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 					queryString = sql + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
 					//System.out.println("FocusStageArray:"+queryString);
 				    if (debug)
-				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
+				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString);
 					prepStmt = conn.prepareStatement(queryString);
 					
 					resSet = prepStmt.executeQuery();
@@ -56,7 +56,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 //					System.out.println("FocusStageISH:"+queryString);
 					prepStmt = null;
 				    if (debug)
-				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
+				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString);
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = null;
 					resSet = prepStmt.executeQuery();
@@ -131,7 +131,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 					}
 //					System.out.println("FocusStageInsitu:"+queryString);
 				    if (debug)
-				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
+				    	System.out.println("MySQLFocusStageDAOImp.sql1 = "+queryString);
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = prepStmt.executeQuery();
 					if (resSet.first()) {
@@ -170,7 +170,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 // 					System.out.println("FocusStageArray:"+queryString);
 					prepStmt = null;
 				    if (debug)
-				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
+				    	System.out.println("MySQLFocusStageDAOImp.sql2 = "+queryString);
 					prepStmt = conn.prepareStatement(queryString);
 					resSet = null;
 					resSet = prepStmt.executeQuery();
@@ -235,58 +235,57 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			String querySQL = parQ.getQuerySQL();;
 			String queryString = "";
 			
-			for(int i = 0; i < stage.length; i++) {
-                // append stage criteria
-				queryString = querySQL + stageString + stage[i] + "' ";
-				
-				// append gene criteria
-				queryString += geneString;
-				
-				// append component criteria
-				if(organ != null && !organ.equals("")) {
-					String[] emapids = 
-						(String[])AdvancedSearchDBQuery.getEMAPID().get(organ);
-					String ids = "";
-					  for(int j = 0; j < emapids.length; j++) {
-						  ids += "'"+emapids[j] + "',";
-					  }
-					  if(emapids.length >= 1) {
-						  ids = ids.substring(0, ids.length()-1);
-					  }
-					  queryString += componentString + 
-						  " (SELECT DISTINCT DESCEND_ATN.ATN_PUBLIC_ID " +
-						  " FROM ANA_TIMED_NODE ANCES_ATN, " +
-						  " ANAD_RELATIONSHIP_TRANSITIVE, " +
-						  " ANA_TIMED_NODE DESCEND_ATN, " +
-						  " ANA_NODE, " +
-						  " ANAD_PART_OF " +
-						  " WHERE ANCES_ATN.ATN_PUBLIC_ID IN (" + ids + ") " +
-						  " AND ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
-						  " AND RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
-						  " AND ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK " +
-						  " AND ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
-						  " AND APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = TRUE) ";
-				}
-//				System.out.println("FocusStageSummaryQuery:" + assayType + ": " +queryString);
-				// get the data
-				try {
-				    if (debug)
-				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
-					prepStmt = conn.prepareStatement(queryString);
-					resSet = prepStmt.executeQuery();
-					if (resSet.first()) {
-						result[i] = resSet.getString(1);
-					}
-					return result;
+			try {
+				for(int i = 0; i < stage.length; i++) {
+	                // append stage criteria
+					queryString = querySQL + stageString + stage[i] + "' ";
 					
-				} catch(Exception se) {
-					se.printStackTrace();
-					return null;
+					// append gene criteria
+					queryString += geneString;
+					
+					// append component criteria
+					if(organ != null && !organ.equals("")) {
+						String[] emapids = 
+							(String[])AdvancedSearchDBQuery.getEMAPID().get(organ);
+						String ids = "";
+						  for(int j = 0; j < emapids.length; j++) {
+							  ids += "'"+emapids[j] + "',";
+						  }
+						  if(emapids.length >= 1) {
+							  ids = ids.substring(0, ids.length()-1);
+						  }
+						  queryString += componentString + 
+							  " (SELECT DISTINCT DESCEND_ATN.ATN_PUBLIC_ID " +
+							  " FROM ANA_TIMED_NODE ANCES_ATN, " +
+							  " ANAD_RELATIONSHIP_TRANSITIVE, " +
+							  " ANA_TIMED_NODE DESCEND_ATN, " +
+							  " ANA_NODE, " +
+							  " ANAD_PART_OF " +
+							  " WHERE ANCES_ATN.ATN_PUBLIC_ID IN (" + ids + ") " +
+							  " AND ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
+							  " AND RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
+							  " AND ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK " +
+							  " AND ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
+							  " AND APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = TRUE) ";
+					}
+	//				System.out.println("FocusStageSummaryQuery:" + assayType + ": " +queryString);
+					// get the data
+					    if (debug)
+					    	System.out.println("MySQLFocusStageDAOImp.sql3 = "+queryString);
+						prepStmt = conn.prepareStatement(queryString);
+						resSet = prepStmt.executeQuery();
+						if (resSet.first()) {
+							result[i] = resSet.getString(1);
+						}
 				}
-				finally{
-					DBHelper.closePreparedStatement(prepStmt);
-					DBHelper.closeResultSet(resSet);					
-				}
+				return result;
+			} catch(Exception se) {
+				se.printStackTrace();
+				return null;
+			}
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);					
 			}
 		}
 		return result;
@@ -328,7 +327,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 // 			System.out.println("gene_index sql: " + sql);
 			try {
 			    if (debug)
-			    	System.out.println("MySQLFocusStageDAOImp.sql = "+sql.toLowerCase());
+			    	System.out.println("MySQLFocusStageDAOImp.sql4 = "+sql);
 				prepStmt = conn.prepareStatement(sql);
 				resSet = prepStmt.executeQuery();
 				list = formatBrowseSeriesResultSet(resSet);
@@ -378,10 +377,10 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 		String queryString = parQ.getQuerySQL();;
 //		System.out.println("getDpcValueQuery: " + queryString);
 		try {
-		    if (debug)
-			System.out.println("MySQLFocusStageDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setString(1, theilerStage);
+		    if (debug)
+		    	System.out.println("MySQLFocusStageDAOImp.sql5 = "+prepStmt);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
 				dpcStageValue = resSet.getString(1) + " " + resSet.getString(2);
