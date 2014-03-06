@@ -18,7 +18,7 @@ import gmerg.utils.Utility;
  *
  */
 public class MySQLGenelistDAOImp implements GenelistDAO {
-    private boolean debug = false;
+    private boolean debug = true;
 
 	private Connection conn;
 	
@@ -178,17 +178,14 @@ public class MySQLGenelistDAOImp implements GenelistDAO {
 	public String[][] getAnnotationByProbeSetIds(ArrayList probeSetIds) {
 		String[][] annotations = null;
         ResultSet resSet = null;
-        ParamQuery parQ = 
-        	ArrayDBQuery.getParamQuery("MIC_ANALYSIS_ANNOTATION");
+        ParamQuery parQ = ArrayDBQuery.getParamQuery("MIC_ANALYSIS_ANNOTATION");
         String querySQL = parQ.getQuerySQL();
-//        System.out.println("MTAnnotation query before add criteria: " + querySQL);
 
         String queryString = this.assembleAnnotationQueryString(probeSetIds, querySQL);
-        // System.out.println("MTAnnotation query string (full): " + queryString);
-        PreparedStatement prepStmt = null;
+         PreparedStatement prepStmt = null;
         try {
 		    if (debug)
-			System.out.println("MySQLGenelistDAOImp.sql = "+queryString.toLowerCase());
+		    	System.out.println("MySQLGenelistDAOImp::getAnnotationByProbeSetIds .sql = "+queryString);
         	prepStmt = conn.prepareStatement(queryString);
         	resSet = prepStmt.executeQuery();
         	annotations = this.formatAnnotationResultSet(resSet);

@@ -31,7 +31,7 @@ import gmerg.utils.table.OffMemoryCollectionAssembler;
  *
  */
 public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
     // due to JSP life cycle, fail to stop retrive data twice
     // so use cache to avoid DB access twice
@@ -181,7 +181,7 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 	
 	public DataItem[][] getTableDataFormatFromMastertableData(ArrayList<String> onePageIds, HeatmapData data, String[][] annotations) {
 	    if (debug)
-		System.out.println("MasterTableBrowseAssembler - getTableDataFormatFromMastertableData");
+	    	System.out.println("MasterTableBrowseAssembler - getTableDataFormatFromMastertableData");
 		
 		double[][] expressions = (data!=null)? data.getExpression() : null;
 		if (data==null || expressions == null || annotations == null){
@@ -204,7 +204,11 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 		String probeID = null;
 
 		for(int row=0; row<rowNum; row++) {
-			col=0;		
+		    if (debug)
+		    	System.out.println("MasterTableBrowseAssembler - getTableDataFormatFromMastertableData row = "+row);
+if (row == 74)
+	System.out.println(" row = "+row);
+		    col=0;		
 			probeID = onePageIds.get(row);
 			tableData[row][col++] = new DataItem(probeID); //Probe ID
 		
@@ -238,8 +242,10 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 				tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(geneSymbol), 4);  //Pass gene symbol
 			}
 			// last link uses probe not gene
-				link = (SearchLink)genelistSearchLinks.get(i);
-				tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(probeID), 4);  //Pass gene symbol
+			link = (SearchLink)genelistSearchLinks.get(i);
+			tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(probeID), 4);  //Pass gene symbol
+		    if (debug)
+		    	System.out.println("MasterTableBrowseAssembler - getTableDataFormatFromMastertableData  exit row = "+row);
 		}
 		
 		if (debug) {

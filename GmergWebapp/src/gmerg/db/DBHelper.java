@@ -94,7 +94,6 @@ public final class DBHelper {
 			    		oldestKey = key;
 			    }
 			    System.out.println("!!!!!!possible leaking: removed connection " + connMap.get(oldestKey));
-			    connMap.remove(oldestKey);
 			    closeJDBCConnection(connMap.get(oldestKey));
 			}
 

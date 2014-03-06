@@ -30,7 +30,7 @@ import analysis.DataSet;
  *
  */
 public class MySQLArrayDAOImp implements ArrayDAO {
-    protected boolean debug = false;
+    protected boolean debug = true;
     protected boolean performance = true;
     Connection conn;
     
@@ -2292,8 +2292,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    String glstId = "";
 		    String clstId = "";
 		    if (genelistId == null || genelistId.equals("")) {
-			parQ =
-			    DBQuery.getParamQuery("ARRAY_EXPRESSION_OF_GIVEN_PROBE_SET_IDS");
+			parQ = DBQuery.getParamQuery("ARRAY_EXPRESSION_OF_GIVEN_PROBE_SET_IDS");
 		    } else {
 				genelistIdProvided = true;
 				glstId = AllComponentsGenelistAssembler.getGenelistIdFromClusterId(genelistId);
@@ -2344,10 +2343,12 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 				    prepStmt.setInt(1, Integer.parseInt(masterTableAndSectionId[0]));
 				    prepStmt.setInt(2, Integer.parseInt(masterTableAndSectionId[1]));
 				}
+				if (debug)
+				    System.out.println("MySQLArrayDAOImp.sql = "+prepStmt);
+				
 				resSet = prepStmt.executeQuery();
 				int probeSetNumber = probeSetIds.size();
-				expressions = 
-				    this.formatExpressionByProbeSetIdsResultSet(resSet, probeSetNumber);
+				expressions = this.formatExpressionByProbeSetIdsResultSet(resSet, probeSetNumber);
 				
 				return expressions;
 			
@@ -2379,87 +2380,92 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 							       int probeSetNumber) throws SQLException {
 	if (debug)
 	    System.out.println("MySQLArrayDAOImp.formatExpressionByProbeSetIdsResultSet probeSetNumber: " + probeSetNumber);
-	double[][] expressions = null;
-	double[] medianValues = null;
-	double[] stdValues = null;
-	HeatmapData heatmapData = null;
-	if (resSet.first()) {
-	    // obtain the row number of the expression result
-	    // and calculate column number for each row
-	    resSet.last();
-	    int recordCount = resSet.getRow();
-	    int columnNumber = recordCount/probeSetNumber;
-	    
-	    if (debug)
-		System.out.println("recordCount: " + recordCount+" columnNumber: " + columnNumber);
-	    
-	    // reset resultSet cursor and initilise object array 
-	    // to format expression result
-	    expressions = new double[probeSetNumber][columnNumber];
-	    medianValues = new double[probeSetNumber];
-	    stdValues = new double[probeSetNumber];
-	    int rowCounter = 0;
-	    int rowCounterM = 0;
-	    int columnCounter = 0;
-	    resSet.beforeFirst();
-	    // the sequence of putting data into the double array
-	    // (in the case of 2 probe set ids and 15 expression groups):
-	    // expressions[0][0] -> expressions[1][0] ->
-	    // expressions[0][1] -> expressions[1][1] ->
-	    // ... ...
-	    // expressions[0][14] -> expressions[1][14]
-	    while (resSet.next()) {
-		// put expression value into the array (start from the 2nd pos)
-		double expression = resSet.getDouble(3);
-		expressions[rowCounter][columnCounter] = expression;
-		if (rowCounter == rowCounterM) {
-		    double medianVal = resSet.getDouble(4);
-		    double stdVal = resSet.getDouble(5);
-		    medianValues[rowCounterM] = medianVal;
-		    stdValues[rowCounterM] = stdVal;
-		    rowCounterM++;
+		double[][] expressions = null;
+		double[] medianValues = null;
+		double[] stdValues = null;
+		HeatmapData heatmapData = null;
+		if (resSet.first()) {
+		    // obtain the row number of the expression result
+		    // and calculate column number for each row
+		    resSet.last();
+		    int recordCount = resSet.getRow();
+		    int columnNumber = recordCount/probeSetNumber;
+		    
+		    if (debug)
+		    	System.out.println("recordCount: " + recordCount+" columnNumber: " + columnNumber);
+		    
+		    // reset resultSet cursor and initilise object array 
+		    // to format expression result
+		    expressions = new double[probeSetNumber][columnNumber];
+		    medianValues = new double[probeSetNumber];
+		    stdValues = new double[probeSetNumber];
+		    int rowCounter = 0;
+		    int rowCounterM = 0;
+		    int columnCounter = 0;
+		    resSet.beforeFirst();
+		    // the sequence of putting data into the double array
+		    // (in the case of 2 probe set ids and 15 expression groups):
+		    // expressions[0][0] -> expressions[1][0] ->
+		    // expressions[0][1] -> expressions[1][1] ->
+		    // ... ...
+		    // expressions[0][14] -> expressions[1][14]
+//		    while (resSet.next()) {
+		    boolean valid = true;
+		    while (valid) {
+				// put expression value into the array (start from the 2nd pos)
+		    	resSet.next();
+				double expression = resSet.getDouble(3);
+				expressions[rowCounter][columnCounter] = expression;
+				if (rowCounter == rowCounterM) {
+				    double medianVal = resSet.getDouble(4);
+				    double stdVal = resSet.getDouble(5);
+				    medianValues[rowCounterM] = medianVal;
+				    stdValues[rowCounterM] = stdVal;
+				    rowCounterM++;
+				}
+				if (debug) {
+				    System.out.println("rowCounter: " + rowCounter);
+				    System.out.println("columnCounter: " + columnCounter);
+				    System.out.println("expression value: " + expression);
+				}
+				rowCounter++;
+				if (rowCounter == probeSetNumber) {
+				    columnCounter++;
+				    rowCounter = 0;
+				    System.out.println("reset rowCounter: " + rowCounter + " columnCounter: " + columnCounter);
+				    if (columnCounter < columnNumber)
+				    	valid = true;
+				    else
+				    	valid = false;
+				}
+		    }
+		    // put the median value into the expression array
+		    //			for (int i=0;i<probeSetNumber;i++) {
+		    //				expressions[i][0] = medianValues[i];
+		    //			}
+		    // put the expression, median, and std value into the HeatmapData object
+		    heatmapData = new HeatmapData(expressions, medianValues, stdValues);
+		    
+		    if (debug) 
+		    	System.out.println("MySQLArrayDAOImp.formatExpressionByProbeSetIdsResultSet expressions size = "+expressions.length+" medianValues size = "+medianValues.length+" stdValues size = "+stdValues.length);
+		    
+		    //			System.out.println("===== expression =====");
+		    //			for (int i=0;i<expressions.length;i++) {
+		    //				for (int j=0;j<expressions[0].length;j++) {
+		    //					System.out.println(i+":"+j+": "+expressions[i][j]);
+		    //				}
+		    //			}
+		    //			System.out.println("===== median =====");
+		    //			for (int i=0;i<medianValues.length;i++) {
+		    //				System.out.println(i+":"+medianValues[i]);
+		    //			}
+		    //			System.out.println("===== std =====");
+		    //			for (int i=0;i<stdValues.length;i++) {
+		    //				System.out.println(i+":"+stdValues[i]);
+		    //			}
 		}
-		/*
-		if (debug) {
-		    System.out.println("rowCounter: " + rowCounter);
-		    System.out.println("columnCounter: " + columnCounter);
-		    System.out.println("expression value: " + expression);
-		}
-		*/
-		rowCounter++;
-		if (rowCounter == probeSetNumber) {
-		    columnCounter++;
-		    rowCounter = 0;
-		}
-	    }
-	    // put the median value into the expression array
-	    //			for (int i=0;i<probeSetNumber;i++) {
-	    //				expressions[i][0] = medianValues[i];
-	    //			}
-	    // put the expression, median, and std value into the HeatmapData object
-	    heatmapData = 
-		new HeatmapData(expressions, medianValues, stdValues);
-	    
-	    if (debug) 
-		System.out.println("MySQLArrayDAOImp.formatExpressionByProbeSetIdsResultSet expressions size = "+expressions.length+" medianValues size = "+medianValues.length+" stdValues size = "+stdValues.length);
-	    
-	    //			System.out.println("===== expression =====");
-	    //			for (int i=0;i<expressions.length;i++) {
-	    //				for (int j=0;j<expressions[0].length;j++) {
-	    //					System.out.println(i+":"+j+": "+expressions[i][j]);
-	    //				}
-	    //			}
-	    //			System.out.println("===== median =====");
-	    //			for (int i=0;i<medianValues.length;i++) {
-	    //				System.out.println(i+":"+medianValues[i]);
-	    //			}
-	    //			System.out.println("===== std =====");
-	    //			for (int i=0;i<stdValues.length;i++) {
-	    //				System.out.println(i+":"+stdValues[i]);
-	    //			}
-	}
-	
-	return heatmapData;
+		
+		return heatmapData;
     }
     
     /**
@@ -2591,8 +2597,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 				prepStmt = conn.prepareStatement(queryString);
 				resSet = prepStmt.executeQuery();
 				int probeSetNumber = probeSetIds.size();
-				expressions = 
-				    this.formatExpressionByProbeSetIdsResultSet(resSet, probeSetNumber);
+				expressions = this.formatExpressionByProbeSetIdsResultSet(resSet, probeSetNumber);
 				
 				return expressions;
 			
