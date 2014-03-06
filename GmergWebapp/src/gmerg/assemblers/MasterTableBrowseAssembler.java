@@ -243,7 +243,10 @@ if (row == 74)
 			}
 			// last link uses probe not gene
 			link = (SearchLink)genelistSearchLinks.get(i);
-			tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(probeID), 4);  //Pass gene symbol
+//			tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(probeID), 4);  //Pass gene symbol
+			tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(geneSymbol), 4);  //Pass gene symbol
+//			String xx = "http://www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g="+geneSymbol;
+//			tableData[row][col++] = new DataItem(link.getName(), link.getName() , xx, 4);  //Pass gene symbol
 		    if (debug)
 		    	System.out.println("MasterTableBrowseAssembler - getTableDataFormatFromMastertableData  exit row = "+row);
 		}

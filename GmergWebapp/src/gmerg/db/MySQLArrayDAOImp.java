@@ -1680,6 +1680,9 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    
 		    parQ.setPrepStat(conn);
 		    prepStmt = parQ.getPrepStat();
+		    if (debug)
+			System.out.println("MySQLArrayDAOImp:getGenelistExternalLinks sql = "+prepStmt);
+
 		    resSet = prepStmt.executeQuery();
 		    externalLinks = formatGenelistExternalLinkResultSet(resSet);
 		    
@@ -2384,6 +2387,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		double[] medianValues = null;
 		double[] stdValues = null;
 		HeatmapData heatmapData = null;
+		
 		if (resSet.first()) {
 		    // obtain the row number of the expression result
 		    // and calculate column number for each row
