@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  */
 public class MySQLTransgenicDAOImp implements TransgenicDAO {
-    private boolean debug = false;
+    private boolean debug = true;
 
     private Connection conn;
 
@@ -458,6 +458,8 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         try {
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
+            if (debug)
+            	System.out.println("TransgenicDAO:getTotalNumberOfSubmissions:prepStmt: " + prepStmt);	
             resSet = prepStmt.executeQuery();
 
             if (resSet.first()) {
