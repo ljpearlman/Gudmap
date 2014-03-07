@@ -31,7 +31,7 @@ import gmerg.utils.table.OffMemoryCollectionAssembler;
  *
  */
 public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
-    protected boolean debug = true;
+    protected boolean debug = false;
 
     // due to JSP life cycle, fail to stop retrive data twice
     // so use cache to avoid DB access twice
@@ -236,10 +236,10 @@ if (row == 74)
 			//------- search links ----------
 			// Bernie 12/4/2011 - Mantis 540 - changed geneSymbol="+geneDescription to geneSymbol="+geneSymbol
 //			tableData[row][col++] = new DataItem("GUDMAP", "Click to view GUDMAP ISH", "ish_gene_submissions.jsf?queryType=geneQueryISH&ignoreExpression=true&output=gene&inputType=symbol&criteria=equals&geneSymbol="+geneSymbol, 4); //url for Gudmap ISH
-			tableData[row][col++] = new DataItem(projectString, "Click to view "+projectString+" ISH", "ish_gene_submissions.jsf?queryType=geneQueryISH&ignoreExpression=true&output=gene&inputType=symbol&criteria=equals&geneSymbol="+geneSymbol, 4); //url for Gudmap ISH
+			tableData[row][col++] = new DataItem(projectString, "Click to view "+projectString+" ISH", "ish_gene_submissions.jsf?queryType=geneQueryISH&ignoreExpression=true&output=gene&inputType=symbol&criteria=equals&geneSymbol="+geneSymbol, 2); //url for Gudmap ISH
 			for(i=0; i<colNum2 - 1; i++) {   //search links -- not including GO & OMIM  & MRC2
 				link = (SearchLink)genelistSearchLinks.get(i);
-				tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(geneSymbol), 4);  //Pass gene symbol
+				tableData[row][col++] = new DataItem(link.getName(), link.getName() , link.getUrl(geneSymbol), 2);  //Pass gene symbol
 			}
 			// last link uses probe not gene
 			link = (SearchLink)genelistSearchLinks.get(i);

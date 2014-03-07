@@ -335,9 +335,10 @@
 									</c:if>
 									
 									<c:if test="${(headerParam=='databaseHomepage') && (focusedOrgan==null || focusedOrgan=='')}" >
-<!--  									Expression Database -->
-										Expression Database &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 										Expression Database
+<!-- 										Expression Database &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<input type="button" value="Try GUDMAP BETA search" onclick="var w=window.open('gudmap_beta.jsf','wholemountPopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=500');w.focus();return false;"/>
+-->										
 									</c:if>
 									<c:if test="${pageName=='/pages/edit_entry_page_per_lab.jsp' || pageName=='/pages/lab_ish_edit.jsp'}" >
 										&nbsp;>&nbsp;Annotate

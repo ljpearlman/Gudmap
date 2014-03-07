@@ -30,7 +30,7 @@ import analysis.DataSet;
  *
  */
 public class MySQLArrayDAOImp implements ArrayDAO {
-    protected boolean debug = true;
+    protected boolean debug = false;
     protected boolean performance = true;
     Connection conn;
     

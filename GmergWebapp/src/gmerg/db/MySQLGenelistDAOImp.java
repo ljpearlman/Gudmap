@@ -18,7 +18,7 @@ import gmerg.utils.Utility;
  *
  */
 public class MySQLGenelistDAOImp implements GenelistDAO {
-    private boolean debug = true;
+    private boolean debug = false;
 
 	private Connection conn;
 	

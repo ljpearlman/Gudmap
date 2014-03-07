@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  */
 public class MySQLTransgenicDAOImp implements TransgenicDAO {
-    private boolean debug = true;
+    private boolean debug = false;
 
     private Connection conn;
 
