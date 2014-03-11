@@ -151,8 +151,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
     	
     	//try to execute the query
     	try {
-	    if (debug)
-		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
+		    if (debug)
+		    	System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
     		prepStat = conn.prepareStatement(queryString);
     		prepStat.setInt(1, Integer.parseInt(oid));
     		
@@ -336,8 +336,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 	 * @param query - query name
 	 * @param organ 
 	 */
-	public String[][] getSeriesBrowseTotals(String[][] param,
-			String[] query, String organ) {
+	public String[][] getSeriesBrowseTotals(String[][] param, String[] query, String organ) {
 		String joinClause = "JOIN MIC_SERIES_SAMPLE ON SRM_SERIES_FK = SER_OID " +
 	  		"JOIN MIC_SAMPLE ON SRM_SAMPLE_FK= SMP_OID " +
 	  		"JOIN ISH_SUBMISSION ON SMP_SUBMISSION_FK = SUB_OID " +
@@ -380,8 +379,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 	 * @param endingClause - a string to append at the end of all queries
 	 * @return query names and query results stored in a 2-dim array
 	 */
-    public String[][] getStringArrayFromBatchQuery(String[][] param,
-                                                   String[] query, String endingClause) {
+    public String[][] getStringArrayFromBatchQuery(String[][] param, String[] query, String endingClause) {
 
         int queryNumber = query.length;
         String[][] result = new String[queryNumber][2];
@@ -400,8 +398,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
         PreparedStatement prepStmt = null;
         try {
             for (int i = 0; i < queryNumber; i++) {
-	    if (debug)
-		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString[i].toLowerCase());
+			    if (debug)
+			    	System.out.println("MySQLArrayDevDAOImp.sql = "+queryString[i].toLowerCase());
                 prepStmt = conn.prepareStatement(queryString[i]);
                 if (param != null &&
                     param[i] != null) { // set query criteria if it's not null
@@ -464,8 +462,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
             
             query = "SELECT COUNT(*) FROM (" + query + ") AS S_TABLE";
 //    		System.out.println("ArrayDevDAO:getTotalNumberOfSeries:sql: " + query);
-	    if (debug)
-		System.out.println("MySQLArrayDevDAOImp.sql = "+query.toLowerCase());
+		    if (debug)
+		    	System.out.println("MySQLArrayDevDAOImp.sql = "+query.toLowerCase());
             prepStmt = conn.prepareStatement(query);
             if(null != platform && !platform.equals("")) {
 				prepStmt.setString(1, platform);
@@ -876,8 +874,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 		ResultSet resSet = null;
 		ParamQuery parQ = ArrayDBQuery.getParamQuery("GET_RELEVANT_PROBE_SET_IDS");
 		String queryString = parQ.getQuerySQL();
-		String ProbeSetIdString = 
-			DBHelper.convertItemsFromArrayListToString(candidateProbeSetIds);
+		String ProbeSetIdString = DBHelper.convertItemsFromArrayListToString(candidateProbeSetIds);
 		queryString = queryString.replace("PRS_PROBE_SET_ID IN", "PRS_PROBE_SET_ID IN (" +ProbeSetIdString + ")");
 //		System.out.println("ArrayDevDAO:getRelevantProbeSetIds:SQL: " + queryString);
 		

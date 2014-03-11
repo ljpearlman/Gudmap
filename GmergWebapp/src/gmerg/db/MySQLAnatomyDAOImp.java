@@ -439,9 +439,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 //System.out.println(prepStmt.toString());
                 resSet = prepStmt.executeQuery();
                 
-                annotationTree =
-                            this.buildTreeStructure(resSet, hasAnnot, submissionAccessionId,
-                                               isEditor);
+                annotationTree = this.buildTreeStructure(resSet, hasAnnot, submissionAccessionId, isEditor);
 
              }
             return annotationTree;

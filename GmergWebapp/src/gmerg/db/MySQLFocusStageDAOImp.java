@@ -185,8 +185,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			}
 			finally{
 				DBHelper.closePreparedStatement(prepStmt);	
-				DBHelper.closePreparedStatement(prepStmt);
-				
+				DBHelper.closeResultSet(resSet);				
 			}
 		}
 		return null;

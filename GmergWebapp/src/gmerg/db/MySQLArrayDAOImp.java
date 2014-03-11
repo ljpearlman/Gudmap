@@ -703,11 +703,13 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		}
 		finally{
 		    DBHelper.closePreparedStatement(prepStmtSeries);
-		    DBHelper.closePreparedStatement(prepStmtSampleNumber);			
+		    DBHelper.closePreparedStatement(prepStmtSampleNumber);	
+		    DBHelper.closeResultSet(resSetSeries);
+		    DBHelper.closeResultSet(resSetSampleNumber);
 		}
     }
     
-    /**
+    /**DBHelper
      * modified by xingjun - 06/07/2009 - added oid into result series
      * 
      * @param resSetSeries
@@ -1947,9 +1949,9 @@ public class MySQLArrayDAOImp implements ArrayDAO {
      * @return
      */
     public int getGenelistsEntryNumber(int genelistId) {
-	long enter = 0;
-	if (performance)
-	    enter = System.currentTimeMillis();
+		long enter = 0;
+		if (performance)
+		    enter = System.currentTimeMillis();
 	
         int result = 0;
         ResultSet resSet = null;
@@ -2554,7 +2556,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
     // backup
     public HeatmapData getExpressionByGivenProbeSetIds(ArrayList probeSetIds, 
 						       int columnId, boolean ascending, int offset, int num) {
-	long enter = 0;
+    	long enter = 0;
 		if (performance)
 		    enter = System.currentTimeMillis();
 		
@@ -2631,9 +2633,9 @@ public class MySQLArrayDAOImp implements ArrayDAO {
      */
     private String assembleExpressionByGivenProbeSetIdsQueryString(ArrayList probeSetIds, String querySQL,
 								   int columnId, boolean ascending, int offset, int num) {
-	String queryString = null;
-	
-	// add probe set id criteria
+		String queryString = null;
+		
+		// add probe set id criteria
         if (probeSetIds != null && probeSetIds.size() != 0) {
 	    String probeSetIdString = "WHERE PRS_PROBE_SET_ID IN (";
 	    String probeSetIdList = "";
@@ -2709,13 +2711,13 @@ public class MySQLArrayDAOImp implements ArrayDAO {
      * @author xingjun - 18/03/2009
      */
     public Gene findGeneInfoBySymbol(ArrayList genes) {
-	long enter = 0;
-	if (performance)
-	    enter = System.currentTimeMillis();
-	
-	if (genes == null || genes.size() == 0) {
-	    return null;
-	}
+		long enter = 0;
+		if (performance)
+		    enter = System.currentTimeMillis();
+		
+		if (genes == null || genes.size() == 0) {
+		    return null;
+		}
         ResultSet resSet = null;
         ParamQuery parQ = ArrayDBQuery.getParamQuery("GET_GENE_BY_SYMBOL");
         String queryString = parQ.getQuerySQL();
@@ -2723,17 +2725,17 @@ public class MySQLArrayDAOImp implements ArrayDAO {
         String symbolCriteria = "";
         String appendString = " OR GNF_SYMBOL = ";
         for (int i=0;i<len;i++) {
-	    symbolCriteria += "'" + genes.get(i) + "'" +  appendString;
+		    symbolCriteria += "'" + genes.get(i) + "'" +  appendString;
         }
         symbolCriteria = symbolCriteria.substring(0, (symbolCriteria.length()-appendString.length()));
         queryString += symbolCriteria;
 	//        System.out.println("array:findGeneInfoBySymbol query: " + queryString);
 	
         PreparedStatement prepStmt = null;
-       Gene gene = null;
+        Gene gene = null;
         try {
-	    if (debug)
-		System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
+		    if (debug)
+		    	System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase());
             prepStmt = conn.prepareStatement(queryString);
             resSet = prepStmt.executeQuery();
 	    
@@ -2935,20 +2937,20 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    enter = System.currentTimeMillis();
 		
 		ArrayList<String> probeSetIds = null;
-	        PreparedStatement prepStmt = null;
-	        ResultSet resSet = null;
-	        ParamQuery parQ =
-	            DBQuery.getParamQuery("ARRAY_PROBE_SET_IDS_FOR_GIVEN_SYMBOL");
-	        String queryString = parQ.getQuerySQL();
-		
-	        // put symbol criteria into the query string
-	        String symbolString = "('";
-	        for (int i=0;i<symbols.length;i++) {
-		    symbolString += symbols[i] + "', '";
-	        }
-	        symbolString = symbolString.substring(0, symbolString.length()-3) + ")";
+        PreparedStatement prepStmt = null;
+        ResultSet resSet = null;
+        ParamQuery parQ =
+            DBQuery.getParamQuery("ARRAY_PROBE_SET_IDS_FOR_GIVEN_SYMBOL");
+        String queryString = parQ.getQuerySQL();
+	
+        // put symbol criteria into the query string
+        String symbolString = "('";
+        for (int i=0;i<symbols.length;i++) {
+        	symbolString += symbols[i] + "', '";
+        }
+        symbolString = symbolString.substring(0, symbolString.length()-3) + ")";
 		//        System.out.println("getProbeSetIdBySymbols:symbolString: " + symbolString);
-	        queryString = queryString.replaceAll("WHERE GNF_SYMBOL = \\?", "WHERE GNF_SYMBOL IN"+symbolString );
+        queryString = queryString.replaceAll("WHERE GNF_SYMBOL = \\?", "WHERE GNF_SYMBOL IN"+symbolString );
 		//        System.out.println("getProbeSetIdBySymbols:queryString: " + queryString);
 		
 		try {
@@ -2956,17 +2958,17 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    conn = DBHelper.reconnect2DB(conn);
 		    
 		    if (debug)
-			System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase()+" 1 arg = "+platformId);
+		    	System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase()+" 1 arg = "+platformId);
 	
 		    prepStmt = conn.prepareStatement(queryString);
 		    prepStmt.setString(1, platformId);
 		    resSet = prepStmt.executeQuery();
 		    if (resSet.first()) {
-			resSet.beforeFirst();
-			probeSetIds = new ArrayList<String>();
-			while (resSet.next()) {
-			    probeSetIds.add(resSet.getString(1));
-			}
+				resSet.beforeFirst();
+				probeSetIds = new ArrayList<String>();
+				while (resSet.next()) {
+				    probeSetIds.add(resSet.getString(1));
+				}
 		    }
 		    
 			return probeSetIds;
@@ -2987,9 +2989,8 @@ public class MySQLArrayDAOImp implements ArrayDAO {
     }
 
     // added by Bernie - 23/09/2010
-    public String findTissueBySubmissionId(String submissionId)
-    {
-			//		System.out.println("MySQLArrayDAOImp-findTissueBySubmissionId for " + submissionId);
+    public String findTissueBySubmissionId(String submissionId){
+//		System.out.println("MySQLArrayDAOImp-findTissueBySubmissionId for " + submissionId);
 		String tissue = null;
         ResultSet resultSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("GET_SUBMISSION_TISSUE");

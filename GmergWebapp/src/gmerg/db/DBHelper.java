@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -70,7 +69,8 @@ public final class DBHelper {
 	    return ret;
 
 	}
-	    public static Connection getDBConnection(String url, String userName, String passWord) {
+	
+    public static Connection getDBConnection(String url, String userName, String passWord) {
 		
 		Connection conn = null;
 		try {

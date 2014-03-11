@@ -121,8 +121,9 @@ public class MySQLISHDAOImp implements ISHDAO {
     public String getCollectionTotalsSubmissionISHQuerySection(String [] submissionIds) {
         if(submissionIds == null)
 	    return "";
+        
        	String  submissionIdsClause = " ";
-	int submissionNumber = submissionIds.length;
+       	int submissionNumber = submissionIds.length;
     	if (submissionNumber == 1) {
 	    submissionIdsClause += "AND SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
     	} else {
@@ -379,28 +380,28 @@ public class MySQLISHDAOImp implements ISHDAO {
             parQProbe.setPrepStat(conn);
 		    prepStmtProbe = parQProbe.getPrepStat();
 		    prepStmtProbe.setString(1, probeId);
-		    if (maprobeId != null)
+		    if (maprobeId != null){
 		    	prepStmtProbe.setString(2, maprobeId);
+	    
+	            // probe note -- Mantis 558 Task5
+	            parQProbeNote.setPrepStat(conn);
+	            prepStmtProbeNote = parQProbeNote.getPrepStat();
+	            prepStmtProbeNote.setString(1, maprobeId.replace("maprobe:", ""));
+			    if (debug)
+			    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtProbeNote = "+ prepStmtProbeNote);
+	            resSetProbeNote = prepStmtProbeNote.executeQuery();
+		    
+	            // curator note -- Mantis 558 Task5
+	            parQMaprobeNote.setPrepStat(conn);
+	            prepStmtMaprobeNote = parQMaprobeNote.getPrepStat();
+	            prepStmtMaprobeNote.setString(1, maprobeId.replace("maprobe:", ""));
+			    if (debug)
+			    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtMaprobeNote = "+ prepStmtMaprobeNote);
+	            resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
+		    }
 		    if (debug)
 		    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtProbe = "+ prepStmtProbe);
 		    resSetProbe = prepStmtProbe.executeQuery();
-	    
-            // probe note -- Mantis 558 Task5
-            parQProbeNote.setPrepStat(conn);
-            prepStmtProbeNote = parQProbeNote.getPrepStat();
-            prepStmtProbeNote.setString(1, maprobeId.replace("maprobe:", ""));
-		    if (debug)
-		    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtProbeNote = "+ prepStmtProbeNote);
-            resSetProbeNote = prepStmtProbeNote.executeQuery();
-	    
-            // curator note -- Mantis 558 Task5
-            parQMaprobeNote.setPrepStat(conn);
-            prepStmtMaprobeNote = parQMaprobeNote.getPrepStat();
-            prepStmtMaprobeNote.setString(1, maprobeId.replace("maprobe:", ""));
-		    if (debug)
-		    	System.out.println("MySQLISHDAOImp.findMaProbeByProbeId prepStmtMaprobeNote = "+ prepStmtMaprobeNote);
-            resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
-	    
 	    
             conn.commit();
             conn.setAutoCommit(true);
@@ -448,14 +449,14 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQMaprobeNote = DBQuery.getParamQuery("SUBMISSION_MAPROBE_NOTE");
         PreparedStatement prepStmtMaprobeNote = null;
 	
-	//added by ying probe full sequence
+        //added by ying probe full sequence
         ResultSet resSetFullSequence = null;
         ParamQuery parQFullSequence = DBQuery.getParamQuery("SUBMISSION_FULL_SEQUENCE");
         PreparedStatement prepStmtFullSequence = null;
 	
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             conn.setAutoCommit(false);
             // probe
@@ -489,7 +490,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             
             resSetMaprobeNote = prepStmtMaprobeNote.executeQuery();
 	    
-	    // maprobe full sequence
+            // maprobe full sequence
             parQFullSequence.setPrepStat(conn);
             prepStmtFullSequence = parQFullSequence.getPrepStat();
             prepStmtFullSequence.setString(1, submissionAccessionId);
@@ -748,8 +749,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmtSpeciesSpecificity = null;
         PreparedStatement prepStmtAntibodyVariant = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             conn.setAutoCommit(false);
 	    
@@ -819,77 +820,75 @@ public class MySQLISHDAOImp implements ISHDAO {
 					     ResultSet resSetAntibodyNote, ResultSet resSetSpeciesSpecificity, ResultSet resSetAntibodyVariant) throws SQLException {
     	Antibody antibody = null;
     	if (resSetAntibody.first()) {
-	    antibody = new Antibody();
-	    // set properties
-	    antibody.setMaProbeId(resSetAntibody.getString(1));
-	    antibody.setName(resSetAntibody.getString(2));
-	    antibody.setAccessionId(resSetAntibody.getString(3));
-	    antibody.setGeneSymbol(resSetAntibody.getString(4));
-	    antibody.setGeneName(resSetAntibody.getString(5));
-	    antibody.setLocusTag(resSetAntibody.getString(6));
-	    antibody.setUniprotId(resSetAntibody.getString(7));
-	    antibody.setseqStartLocation(resSetAntibody.getInt(8));
-	    antibody.setSeqEndLocation(resSetAntibody.getInt(9));
-	    
-	    String antibodyType = resSetAntibody.getString(10);
-	    antibody.setSubtype(antibodyType);
-	    // obtain host based on antibody type
-	    if (antibodyType.trim().equalsIgnoreCase("monoclonal")) {
-		String productionMethod = resSetAntibody.getString(11);
-		String cloneId = resSetAntibody.getString(12);
-		if (cloneId == null)
-		    antibody.setHost(productionMethod);
-		else
-		    antibody.setHost(productionMethod + " " +cloneId);
-	    } else { // antibody type = polyclonal
-		antibody.setHost(resSetAntibody.getString(13));
-	    }
-	    
-	    antibody.setPurificationMethod(resSetAntibody.getString(14));
-	    antibody.setImmunoglobulinIsotype(resSetAntibody.getString(15));
-	    antibody.setChainType(resSetAntibody.getString(16));
-	    antibody.setDirectLabel(resSetAntibody.getString(17));
-	    antibody.setDetectionNotes(resSetAntibody.getString(18));
-	    antibody.setDilution(resSetAntibody.getString(19));
-	    antibody.setLabProbeId(resSetAntibody.getString(20));
-	    
-	    // supplier
-	    antibody.setSupplier(resSetAntibody.getString(21));
-	    antibody.setCatalogueNumber(resSetAntibody.getString(22));
-	    antibody.setLotNumber(resSetAntibody.getString(23));
-	    
-	    antibody.setSecondaryAntibody(resSetAntibody.getString(24));
-	    antibody.setSignalDetectionMethod(resSetAntibody.getString(25));
-	    
-	    // note
-	    if (resSetAntibodyNote != null && resSetAntibodyNote.first()) 
-		antibody.setNotes(resSetAntibodyNote.getString(1));
-	    
-	    String antibodyVariants = null;
-	    if (resSetAntibodyVariant.first()) {
-		resSetAntibodyVariant.beforeFirst();
-		antibodyVariants = new String("");
-		while (resSetAntibodyVariant.next()) {
-		    antibodyVariants += resSetAntibodyVariant.getString(2) + ", ";
-		}
-		// remove trailing ',' character
-		antibodyVariants = antibodyVariants.substring(0, antibodyVariants.length()-2);
-	    }
-	    antibody.setDetectedVariantValue(antibodyVariants);
-	    
-	    String speciesSpecificities = null;
-	    if (resSetSpeciesSpecificity.first()) {
-		resSetSpeciesSpecificity.beforeFirst();
-		speciesSpecificities = new String("");
-		while (resSetSpeciesSpecificity.next()) {
-		    speciesSpecificities += resSetSpeciesSpecificity.getString(2) + ", ";
-		}
-		// remove trailing ',' character
-		speciesSpecificities = speciesSpecificities.substring(0, speciesSpecificities.length()-2);
-	    }
-	    antibody.setSpeciesSpecificity(speciesSpecificities);
-	    
-	    
+		    antibody = new Antibody();
+		    // set properties
+		    antibody.setMaProbeId(resSetAntibody.getString(1));
+		    antibody.setName(resSetAntibody.getString(2));
+		    antibody.setAccessionId(resSetAntibody.getString(3));
+		    antibody.setGeneSymbol(resSetAntibody.getString(4));
+		    antibody.setGeneName(resSetAntibody.getString(5));
+		    antibody.setLocusTag(resSetAntibody.getString(6));
+		    antibody.setUniprotId(resSetAntibody.getString(7));
+		    antibody.setseqStartLocation(resSetAntibody.getInt(8));
+		    antibody.setSeqEndLocation(resSetAntibody.getInt(9));
+		    
+		    String antibodyType = resSetAntibody.getString(10);
+		    antibody.setSubtype(antibodyType);
+		    // obtain host based on antibody type
+		    if (antibodyType.trim().equalsIgnoreCase("monoclonal")) {
+				String productionMethod = resSetAntibody.getString(11);
+				String cloneId = resSetAntibody.getString(12);
+				if (cloneId == null)
+				    antibody.setHost(productionMethod);
+				else
+				    antibody.setHost(productionMethod + " " +cloneId);
+		    } else { // antibody type = polyclonal
+		    	antibody.setHost(resSetAntibody.getString(13));
+		    }
+		    
+		    antibody.setPurificationMethod(resSetAntibody.getString(14));
+		    antibody.setImmunoglobulinIsotype(resSetAntibody.getString(15));
+		    antibody.setChainType(resSetAntibody.getString(16));
+		    antibody.setDirectLabel(resSetAntibody.getString(17));
+		    antibody.setDetectionNotes(resSetAntibody.getString(18));
+		    antibody.setDilution(resSetAntibody.getString(19));
+		    antibody.setLabProbeId(resSetAntibody.getString(20));
+		    
+		    // supplier
+		    antibody.setSupplier(resSetAntibody.getString(21));
+		    antibody.setCatalogueNumber(resSetAntibody.getString(22));
+		    antibody.setLotNumber(resSetAntibody.getString(23));
+		    
+		    antibody.setSecondaryAntibody(resSetAntibody.getString(24));
+		    antibody.setSignalDetectionMethod(resSetAntibody.getString(25));
+		    
+		    // note
+		    if (resSetAntibodyNote != null && resSetAntibodyNote.first()) 
+		    	antibody.setNotes(resSetAntibodyNote.getString(1));
+		    
+		    String antibodyVariants = null;
+		    if (resSetAntibodyVariant.first()) {
+				resSetAntibodyVariant.beforeFirst();
+				antibodyVariants = new String("");
+				while (resSetAntibodyVariant.next()) {
+				    antibodyVariants += resSetAntibodyVariant.getString(2) + ", ";
+				}
+				// remove trailing ',' character
+				antibodyVariants = antibodyVariants.substring(0, antibodyVariants.length()-2);
+			    }
+		    antibody.setDetectedVariantValue(antibodyVariants);
+		    
+		    String speciesSpecificities = null;
+		    if (resSetSpeciesSpecificity.first()) {
+				resSetSpeciesSpecificity.beforeFirst();
+				speciesSpecificities = new String("");
+				while (resSetSpeciesSpecificity.next()) {
+				    speciesSpecificities += resSetSpeciesSpecificity.getString(2) + ", ";
+				}
+				// remove trailing ',' character
+				speciesSpecificities = speciesSpecificities.substring(0, speciesSpecificities.length()-2);
+		    }
+		    antibody.setSpeciesSpecificity(speciesSpecificities);
     	}
 	
     	return antibody;
@@ -900,8 +899,8 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     public Specimen findSpecimenBySubmissionId(String submissionAccessionId) {
         if (submissionAccessionId == null) {
-	    //            throw new NullPointerException("id parameter");
-	    return null;
+		    //            throw new NullPointerException("id parameter");
+		    return null;
         }
         Specimen specimenInfo = null;
         ResultSet resSet = null;
@@ -911,8 +910,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmtSpecimen = null;
         PreparedStatement prepStmtSpecimenNote = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             conn.setAutoCommit(false);
 	    
@@ -957,11 +956,10 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("ALLELE_INFO_BY_SUBMISSION_ID");
         PreparedStatement prepStmt = null;
-	Allele[] ret = null;
+        Allele[] ret = null;
         try {
 		    // if disconnected from db, re-connected
-		    conn = DBHelper.reconnect2DB(conn);
-	    
+		    conn = DBHelper.reconnect2DB(conn);	    
             conn.setAutoCommit(false);
 	    
             // get allele if any
@@ -1013,74 +1011,73 @@ public class MySQLISHDAOImp implements ISHDAO {
                 resSetSpecimenNote.beforeFirst();
                 while (resSetSpecimenNote.next()) {
                     str = Utility.netTrim(resSetSpecimenNote.getString(1));
-		    if (null != str)
-			notes.add(str);
+				    if (null != str)
+					notes.add(str);
                 }
 		
-		if (0 == notes.size())
-		    specimen.setNotes(null);
-		else
-		    specimen.setNotes((String[])notes.toArray(new String[0]));
+				if (0 == notes.size())
+				    specimen.setNotes(null);
+				else
+				    specimen.setNotes((String[])notes.toArray(new String[0]));
             }
         }
         return specimen;
     }
     
-    private Allele[] formatAlleleResultSet(ResultSet resSet)
-    throws SQLException {
-	if (debug)
-	    System.out.println("MySQLISHDAOImp.formatAlleleResultSet");
- 	ArrayList<Allele> alleleList = new ArrayList<Allele>();
- 	String str = null;
-	Allele allele = null;
-
- 	if (resSet.first()) {
+    private Allele[] formatAlleleResultSet(ResultSet resSet) throws SQLException {
 		if (debug)
-		    System.out.println("MySQLISHDAOImp.formatAlleleResultSet has allele");
- 	    resSet.beforeFirst();
- 	    while (resSet.next()) {
-	 		allele = new Allele();
-	 		str = Utility.netTrim(resSet.getString(1));
-			allele.setGeneSymbol(str);
-	
-	 		str = Utility.netTrim(resSet.getString(2));
-			allele.setGeneId(str);
-	
-	 		str = Utility.netTrim(resSet.getString(3));
-			allele.setAlleleId(str);
-			
-			// name first, then lab name
-	 		str = Utility.netTrim(resSet.getString(5));
-			if (null == str)
-			    str = Utility.netTrim(resSet.getString(4));
-			allele.setAlleleName(str);
-	
-	 		str = Utility.netTrim(resSet.getString(7));
-			allele.setType(str);
-	
-	 		str = Utility.netTrim(resSet.getString(8));
-			allele.setAlleleFirstChrom(str);
-	
-	 		str = Utility.netTrim(resSet.getString(9));
-			allele.setAlleleSecondChrom(str);
-	
-	 		str = Utility.netTrim(resSet.getString(10));
-			allele.setReporter(str);
-	
-	 		str = Utility.netTrim(resSet.getString(11));
-			allele.setVisMethod(str);
-	
-			str = Utility.netTrim(resSet.getString(12));
-			allele.setNotes(str);
-	
-	 		alleleList.add(allele);
- 	    }
-	}
-	if (debug)
-	    System.out.println("number of allele = "+alleleList.size());
+		    System.out.println("MySQLISHDAOImp.formatAlleleResultSet");
+	 	ArrayList<Allele> alleleList = new ArrayList<Allele>();
+	 	String str = null;
+		Allele allele = null;
 
-	if (0 == alleleList.size())
-	    return null;
+	 	if (resSet.first()) {
+			if (debug)
+			    System.out.println("MySQLISHDAOImp.formatAlleleResultSet has allele");
+	 	    resSet.beforeFirst();
+	 	    while (resSet.next()) {
+		 		allele = new Allele();
+		 		str = Utility.netTrim(resSet.getString(1));
+				allele.setGeneSymbol(str);
+		
+		 		str = Utility.netTrim(resSet.getString(2));
+				allele.setGeneId(str);
+		
+		 		str = Utility.netTrim(resSet.getString(3));
+				allele.setAlleleId(str);
+				
+				// name first, then lab name
+		 		str = Utility.netTrim(resSet.getString(5));
+				if (null == str)
+				    str = Utility.netTrim(resSet.getString(4));
+				allele.setAlleleName(str);
+		
+		 		str = Utility.netTrim(resSet.getString(7));
+				allele.setType(str);
+		
+		 		str = Utility.netTrim(resSet.getString(8));
+				allele.setAlleleFirstChrom(str);
+		
+		 		str = Utility.netTrim(resSet.getString(9));
+				allele.setAlleleSecondChrom(str);
+		
+		 		str = Utility.netTrim(resSet.getString(10));
+				allele.setReporter(str);
+		
+		 		str = Utility.netTrim(resSet.getString(11));
+				allele.setVisMethod(str);
+		
+				str = Utility.netTrim(resSet.getString(12));
+				allele.setNotes(str);
+		
+		 		alleleList.add(allele);
+	 	    }
+		}
+		if (debug)
+		    System.out.println("number of allele = "+alleleList.size());
+	
+		if (0 == alleleList.size())
+		    return null;
 
      	return (Allele[])alleleList.toArray(new Allele[0]);
      } // end of formatAlleleResultSet
@@ -1182,14 +1179,14 @@ public class MySQLISHDAOImp implements ISHDAO {
         if (submissionAccessionId == null) {
 		    //            throw new NullPointerException("id parameter");
 		    return null;
-	        }
+	    }
         String authorInfo = null;
         ResultSet resSet = null;
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_AUTHOR");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -1322,23 +1319,23 @@ public class MySQLISHDAOImp implements ISHDAO {
     private Person[] formatPeopleResultSet(ResultSet resSet) throws SQLException {
     	ArrayList<Person> people = null;
         if (resSet.first()) {
-	    resSet.beforeFirst();
-	    people = new ArrayList<Person>();
-	    while (resSet.next()) {
-                Person person = new Person();
-                person.setName(resSet.getString(1));
-                person.setLab(resSet.getString(2));
-                person.setAddress(resSet.getString(3));
-                person.setAddress2(resSet.getString(4));
-                person.setEmail(resSet.getString(5));
-                person.setCity(resSet.getString(6));
-                person.setPostcode(resSet.getString(7));
-                person.setCountry(resSet.getString(8));
-                person.setPhone(resSet.getString(9));
-                person.setFax(resSet.getString(10));
-                person.setId(resSet.getString(11));
-                people.add(person);
-	    }
+		    resSet.beforeFirst();
+		    people = new ArrayList<Person>();
+		    while (resSet.next()) {
+	                Person person = new Person();
+	                person.setName(resSet.getString(1));
+	                person.setLab(resSet.getString(2));
+	                person.setAddress(resSet.getString(3));
+	                person.setAddress2(resSet.getString(4));
+	                person.setEmail(resSet.getString(5));
+	                person.setCity(resSet.getString(6));
+	                person.setPostcode(resSet.getString(7));
+	                person.setCountry(resSet.getString(8));
+	                person.setPhone(resSet.getString(9));
+	                person.setFax(resSet.getString(10));
+	                person.setId(resSet.getString(11));
+	                people.add(person);
+		    }
         }
         if (people != null) {
             Person[] result = people.toArray(new Person[0]);
@@ -1497,8 +1494,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("SUB_ACKNOWLEDGEMENTS");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -1530,8 +1527,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("SUBMISSION_OID");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             String subOid = "";
             parQ.setPrepStat(conn);
@@ -1573,8 +1570,8 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     public Gene findGeneInfoBySymbol(String symbol) {
         if (symbol == null) {
-	    //            throw new NullPointerException("gene symbol needed");
-	    return null;
+		    //            throw new NullPointerException("gene symbol needed");
+		    return null;
         }
         Gene geneInfo = null;
         ResultSet resSet = null;
@@ -1584,8 +1581,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmt2 = null; 
 	//        System.out.println("gene query:" + parQ.getQuerySQL());
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             // gene info
             parQ.setPrepStat(conn);
@@ -1634,13 +1631,13 @@ public class MySQLISHDAOImp implements ISHDAO {
             	String synonyms = new String("");
             	int len = snm.length;
             	for (int i = 0; i < len; i++) {
-		    //                	System.out.println(snm[i]);
-		    if(i+1 == len) {
-			synonyms += snm[i];
-		    } else {
-			synonyms += snm[i] + ", ";
-		    }
-		    //                System.out.println(synonyms);
+				    //                	System.out.println(snm[i]);
+				    if(i+1 == len) {
+					synonyms += snm[i];
+				    } else {
+					synonyms += snm[i] + ", ";
+				    }
+				    //                System.out.println(synonyms);
                 }
             	geneInfo.setSynonyms(synonyms);
             } else {
@@ -1686,8 +1683,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, symbol);
             resSet = prepStmt.executeQuery();
-            ArrayList<String[]> relatedSubmissionISH =
-            		DBHelper.formatResultSetToArrayList(resSet);
+            ArrayList<String[]> relatedSubmissionISH = DBHelper.formatResultSetToArrayList(resSet);
 	    
             return relatedSubmissionISH;
             
@@ -1714,9 +1710,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmt = null;
         String query = parQ.getQuerySQL();
         String defaultOrder = DBQuery.ORDER_BY_PROJECT_ID;
-        String queryString =
-            assembleSeriesQStringForGene(query, defaultOrder, columnIndex,
-                                         ascending, offset, num);
+        String queryString = assembleSeriesQStringForGene(query, defaultOrder, columnIndex, ascending, offset, num);
         try {
 		    // if disconnected from db, re-connected
 		    conn = DBHelper.reconnect2DB(conn);
@@ -1729,7 +1723,6 @@ public class MySQLISHDAOImp implements ISHDAO {
     	    
             resSet = prepStmt.executeQuery();
             ArrayList relatedSubmissionArray = DBHelper.formatResultSetToArrayList(resSet);
-
             return relatedSubmissionArray;
 	    
         } catch (SQLException se) {
@@ -1814,8 +1807,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = DBQuery.getParamQuery("GENE_INFO_FOR_ARRAY");
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
@@ -1974,9 +1967,9 @@ public class MySQLISHDAOImp implements ISHDAO {
     	// get stage condition
     	String stageString = null;
     	if (stage != null && !stage.equals("")) {
-	    stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
+    		stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
     	} else {
-	    stageString = "";
+    		stageString = "";
     	}
 	
     	// get where condition
@@ -1985,16 +1978,15 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
     	// get select clause
     	if (ignoreExpression == null || ignoreExpression.equals("true")) { // dont care expression
-	    parQ = DBQuery.getParamQuery("SUBMISSION_GENE_QUERY_IGNORE_EXPRESSION");
+    		parQ = DBQuery.getParamQuery("SUBMISSION_GENE_QUERY_IGNORE_EXPRESSION");
     	} else {
-	    parQ = DBQuery.getParamQuery("SUBMISSION_GENE_QUERY_CONCERN_EXPRESSION");
+    		parQ = DBQuery.getParamQuery("SUBMISSION_GENE_QUERY_CONCERN_EXPRESSION");
     	}
     	query = parQ.getQuerySQL();
 	
     	// assemble query string
     	String queryString =
-	    assembleGeneQueryString(query, geneInfoString, stageString, whereCondition,
-				    columnIndex, ascending, offset, rowNum);
+	    assembleGeneQueryString(query, geneInfoString, stageString, whereCondition, columnIndex, ascending, offset, rowNum);
 	//    	System.out.println("gene query: " + queryString);
 	
     	// execute query
@@ -2335,8 +2327,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             for (int i = 0; i < queryNumber; i++) {
                 prepStmt = conn.prepareStatement(queryString[i]);
@@ -2439,8 +2431,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         ResultSet resSet = null;
         PreparedStatement prepStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             for (int i = 0; i < queryNumber; i++) {
                 prepStmt = conn.prepareStatement(queryString[i]);
@@ -2491,9 +2483,9 @@ public class MySQLISHDAOImp implements ISHDAO {
     	// get stage condition
     	String stageString = null;
     	if (stage != null && !stage.equals("")) {
-	    stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
+    		stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
     	} else {
-	    stageString = "";
+    		stageString = "";
     	}
 	
     	// get where condition
@@ -2671,11 +2663,9 @@ public class MySQLISHDAOImp implements ISHDAO {
         String end = "";
         String query = null;
         if (stage == null || stage.equals("")) {
-            parQStart =
-		DBQuery.getParamQuery("COMPONENT_QUERY_WITHOUT_STAGE_START");
+            parQStart = DBQuery.getParamQuery("COMPONENT_QUERY_WITHOUT_STAGE_START");
             start = parQStart.getQuerySQL();
-            parQEnd =
-		DBQuery.getParamQuery("COMPONENT_QUERY_WITHOUT_STAGE_END");
+            parQEnd = DBQuery.getParamQuery("COMPONENT_QUERY_WITHOUT_STAGE_END");
             end = parQEnd.getQuerySQL();
             query = start + " ? " + end;
         } else {
@@ -2696,8 +2686,8 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
         // execute query and assemble result
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             prepStmt = conn.prepareStatement(queryString);
 	    
@@ -2745,25 +2735,25 @@ public class MySQLISHDAOImp implements ISHDAO {
     	PreparedStatement prepStmt = null;
     	String componentId = null;
     	if (component.indexOf(":") == -1) {
-	    componentId = "EMAP:" + component;
+    		componentId = "EMAP:" + component;
     	} else {
-	    componentId = component;
+    		componentId = component;
     	}
     	String stageValue = null;
     	String start = "";
     	String end = "";
     	String query = null;
     	if (stage == null || stage.equals("")) {
-	    parQStart = DBQuery.getParamQuery("COMPONENT_QUERY_WITHOUT_STAGE_START");
-	    start = parQStart.getQuerySQL();
-	    parQEnd = DBQuery.getParamQuery("COMPONENT_QUERY_WITHOUT_STAGE_END");
-	    end = parQEnd.getQuerySQL();
-	    query = start + " ? " + end;
+		    parQStart = DBQuery.getParamQuery("COMPONENT_QUERY_WITHOUT_STAGE_START");
+		    start = parQStart.getQuerySQL();
+		    parQEnd = DBQuery.getParamQuery("COMPONENT_QUERY_WITHOUT_STAGE_END");
+		    end = parQEnd.getQuerySQL();
+		    query = start + " ? " + end;
     	} else {
-	    parQStart = DBQuery.getParamQuery("COMPONENT_QUERY_WITH_STAGE");
-	    start = parQStart.getQuerySQL();
-	    stageValue = "TS" + stage;
-	    query = start;
+		    parQStart = DBQuery.getParamQuery("COMPONENT_QUERY_WITH_STAGE");
+		    start = parQStart.getQuerySQL();
+		    stageValue = "TS" + stage;
+		    query = start;
     	}
 	
     	// assemble the query string
@@ -2848,14 +2838,9 @@ public class MySQLISHDAOImp implements ISHDAO {
         parQEnd = DBQuery.getParamQuery("COMPONENT_QUERY_WITHOUT_STAGE_END");
 	
         // assemble the query string
-        String query =
-            parQStart.getQuerySQL() + componentIds + parQEnd.getQuerySQL();
+        String query = parQStart.getQuerySQL() + componentIds + parQEnd.getQuerySQL();
         String defaultOrder = DBQuery.ORDER_BY_ISH_PROBE_SYMBOL;
-        String queryString =
-            DBHelper.assembleBrowseSubmissionQueryStringISH(2, query,
-                                                            defaultOrder,
-                                                            order, offset,
-                                                            num);
+        String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(2, query, defaultOrder, order, offset, num);
         //              System.out.println("components queryString: " + queryString);
 	
         // execute query and assemble result
@@ -2931,9 +2916,7 @@ public class MySQLISHDAOImp implements ISHDAO {
     	// assemble the query string
     	String query = parQStart.getQuerySQL() + componentIds + parQEnd.getQuerySQL();
     	String defaultOrder = DBQuery.ORDER_BY_ISH_PROBE_SYMBOL;
-    	String queryString =
-	    DBHelper.assembleBrowseSubmissionQueryStringISH(2, query,
-							    defaultOrder, columnIndex, ascending, offset, num);
+    	String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(2, query, defaultOrder, columnIndex, ascending, offset, num);
 	//    	System.out.println("components queryString: " + queryString);
 	
     	// execute query and assemble result
@@ -2975,108 +2958,108 @@ public class MySQLISHDAOImp implements ISHDAO {
 							     String[] order,
 							     String offset,
 							     String num) {
-	String [] componentList = this.getComponentList(components, start, end, criteria);
-	StringBuffer annotatedGenesInComponentsQ = new StringBuffer(DBQuery.getISH_BROWSE_ALL_COLUMNS() + DBQuery.ISH_BROWSE_ALL_TABLES);
-	if(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes) == null){
-	    return null;
-	}
-	annotatedGenesInComponentsQ.append(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes));
-	String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
-	String queryString =
-	    DBHelper.assembleBrowseSubmissionQueryStringISH(1, annotatedGenesInComponentsQ.toString(),
-							    defaultOrder,
-							    order, offset,
-							    num);
-	
-	//determine what types of expression user has selected - this will shape SQL
-	int index = this.getAnnotationTypeIndex(annotationTypes, "present");
-	boolean presentSelected = false;
-	if(index >= 0){
-	    presentSelected = true;
-	}
-	index = this.getAnnotationTypeIndex(annotationTypes, "not detected");
-	boolean notDetSelected = false;
-	if(index >=0) {
-	    notDetSelected = true;
-	}
-	index = this.getAnnotationTypeIndex(annotationTypes, "possibleuncertain");
-	boolean possSelected = false;
-	if(index >=0) {
-	    possSelected = true;
-	}
-	//         System.out.println("\n\n");
-	//         System.out.println(queryString);
-	//         System.out.println("\n\n");
-	ResultSet resSet = null;
-	ParamQuery parQ = null;
-	PreparedStatement prepStat = null;
-	
-	parQ = new ParamQuery("",queryString);
-	ISHBrowseSubmission[] result = null;        
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    parQ.setPrepStat(conn);
-	    prepStat = parQ.getPrepStat();
-	    
-	    //need to set appropriate parameters in SQL based on user specs
-	    if(criteria.equals("any")){
-			if((presentSelected || possSelected) && notDetSelected){
-			    for(int i=0;i<componentList.length;i++){
-				prepStat.setString(i+1, componentList[i]);
-			    }
-			    for(int i =0;i<componentList.length;i++){
-				prepStat.setString(i+1+componentList.length, componentList[i]);
-			    }
-			}
-			//if user has selected 'possible/uncertain' or 'present' expression
-			else {
-			    for(int i=0;i<componentList.length;i++){
-				prepStat.setString(i+1, componentList[i]);
-			    }
-			}
-	    }
-	    else if(criteria.equals("all")){
-			prepStat.setInt(1, componentList.length);
-			if((presentSelected || possSelected) && notDetSelected){
-			    for(int i=0;i<componentList.length;i++){
-				prepStat.setString(i+2, componentList[i]);
-			    }
-			    prepStat.setString(componentList.length+2, start);
-			    prepStat.setString(componentList.length+3, end);
-			    
-			    for(int i=0;i<componentList.length;i++){
-				prepStat.setString(i+4+componentList.length, componentList[i]);
-			    }
-			    prepStat.setString(componentList.length*2+4, start);
-			    prepStat.setString(componentList.length*2+5, end);
-			}
-			//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
-			else {
-			    for(int i=0;i<componentList.length;i++){
-				prepStat.setString(i+2, componentList[i]);
-			    }
-			    prepStat.setString(componentList.length+2, start);
-			    prepStat.setString(componentList.length+3, end);
-			}
-	    }
-	    if (debug)
-	    	System.out.println("MySQLISHDAOImp:getSubmissionByComponentIds = "+prepStat);
-	    
-	    resSet = prepStat.executeQuery();
-	    //System.out.println("query executed");
-	    result = formatBrowseResultSet(resSet);
-    	return result;
-	    
-	} catch (SQLException se) {
-		se.printStackTrace();
-    	return null;
-	}
-	finally{
-	    DBHelper.closePreparedStatement(prepStat);
-	    DBHelper.closeResultSet(resSet);
-	}
+		String [] componentList = this.getComponentList(components, start, end, criteria);
+		StringBuffer annotatedGenesInComponentsQ = new StringBuffer(DBQuery.getISH_BROWSE_ALL_COLUMNS() + DBQuery.ISH_BROWSE_ALL_TABLES);
+		if(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes) == null){
+		    return null;
+		}
+		annotatedGenesInComponentsQ.append(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes));
+		String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
+		String queryString =
+		    DBHelper.assembleBrowseSubmissionQueryStringISH(1, annotatedGenesInComponentsQ.toString(),
+								    defaultOrder,
+								    order, offset,
+								    num);
+		
+		//determine what types of expression user has selected - this will shape SQL
+		int index = this.getAnnotationTypeIndex(annotationTypes, "present");
+		boolean presentSelected = false;
+		if(index >= 0){
+		    presentSelected = true;
+		}
+		index = this.getAnnotationTypeIndex(annotationTypes, "not detected");
+		boolean notDetSelected = false;
+		if(index >=0) {
+		    notDetSelected = true;
+		}
+		index = this.getAnnotationTypeIndex(annotationTypes, "possibleuncertain");
+		boolean possSelected = false;
+		if(index >=0) {
+		    possSelected = true;
+		}
+		//         System.out.println("\n\n");
+		//         System.out.println(queryString);
+		//         System.out.println("\n\n");
+		ResultSet resSet = null;
+		ParamQuery parQ = null;
+		PreparedStatement prepStat = null;
+		
+		parQ = new ParamQuery("",queryString);
+		ISHBrowseSubmission[] result = null;        
+		try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    parQ.setPrepStat(conn);
+		    prepStat = parQ.getPrepStat();
+		    
+		    //need to set appropriate parameters in SQL based on user specs
+		    if(criteria.equals("any")){
+				if((presentSelected || possSelected) && notDetSelected){
+				    for(int i=0;i<componentList.length;i++){
+					prepStat.setString(i+1, componentList[i]);
+				    }
+				    for(int i =0;i<componentList.length;i++){
+					prepStat.setString(i+1+componentList.length, componentList[i]);
+				    }
+				}
+				//if user has selected 'possible/uncertain' or 'present' expression
+				else {
+				    for(int i=0;i<componentList.length;i++){
+					prepStat.setString(i+1, componentList[i]);
+				    }
+				}
+		    }
+		    else if(criteria.equals("all")){
+				prepStat.setInt(1, componentList.length);
+				if((presentSelected || possSelected) && notDetSelected){
+				    for(int i=0;i<componentList.length;i++){
+					prepStat.setString(i+2, componentList[i]);
+				    }
+				    prepStat.setString(componentList.length+2, start);
+				    prepStat.setString(componentList.length+3, end);
+				    
+				    for(int i=0;i<componentList.length;i++){
+					prepStat.setString(i+4+componentList.length, componentList[i]);
+				    }
+				    prepStat.setString(componentList.length*2+4, start);
+				    prepStat.setString(componentList.length*2+5, end);
+				}
+				//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
+				else {
+				    for(int i=0;i<componentList.length;i++){
+					prepStat.setString(i+2, componentList[i]);
+				    }
+				    prepStat.setString(componentList.length+2, start);
+				    prepStat.setString(componentList.length+3, end);
+				}
+		    }
+		    if (debug)
+		    	System.out.println("MySQLISHDAOImp:getSubmissionByComponentIds = "+prepStat);
+		    
+		    resSet = prepStat.executeQuery();
+		    //System.out.println("query executed");
+		    result = formatBrowseResultSet(resSet);
+	    	return result;
+		    
+		} catch (SQLException se) {
+			se.printStackTrace();
+	    	return null;
+		}
+		finally{
+		    DBHelper.closePreparedStatement(prepStat);
+		    DBHelper.closeResultSet(resSet);
+		}
     }
     
     /**
@@ -3099,110 +3082,110 @@ public class MySQLISHDAOImp implements ISHDAO {
 						 boolean ascending,
 						 int offset,
 						 int num) {
-	String [] componentList = this.getComponentList(components, startStage, endStage, criteria);
-	//         System.out.println("componentList len: "  + componentList.length);
-	//         for (int i=0;i<componentList.length;i++)
-	//        	 System.out.println("component value:" + i + ":" + componentList[i]);
-	StringBuffer annotatedGenesInComponentsQ = new StringBuffer(DBQuery.getISH_BROWSE_ALL_COLUMNS() + DBQuery.ISH_BROWSE_ALL_TABLES);
-	//         System.out.println("annotatedGenesInComponentsQ: before appendSubsWithExprInCompsQ: " + annotatedGenesInComponentsQ);
-	
-	if(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes) == null){
-	    return null;
-	}
-	annotatedGenesInComponentsQ.append(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes));
-	//         System.out.println("annotatedGenesInComponentsQ: after appendSubsWithExprInCompsQ: " + annotatedGenesInComponentsQ);
-	
-	String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
-	String queryString =
-	    DBHelper.assembleBrowseSubmissionQueryStringISH(1, annotatedGenesInComponentsQ.toString(),
-							    defaultOrder, columnIndex, ascending, offset, num);
-	//         System.out.println("getSubmissionByComponentIds sql: " + queryString);
-	
-	//determine what types of expression user has selected - this will shape SQL
-	int index = this.getAnnotationTypeIndex(annotationTypes, "present");
-	boolean presentSelected = false;
-	if(index >= 0){
-	    presentSelected = true;
-	}
-	index = this.getAnnotationTypeIndex(annotationTypes, "not detected");
-	boolean notDetSelected = false;
-	if(index >=0) {
-	    notDetSelected = true;
-	}
-	index = this.getAnnotationTypeIndex(annotationTypes, "possibleuncertain");
-	boolean possSelected = false;
-	if(index >=0) {
-	    possSelected = true;
-	}
-	ResultSet resSet = null;
-	ParamQuery parQ = null;
-	PreparedStatement prepStat = null;
-	parQ = new ParamQuery("",queryString);
-	ArrayList result = null;        
-	//         System.out.println("getSubmissionByComponentIds sql: " + parQ.getQuerySQL());
-	
-	try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
-	    
-	    parQ.setPrepStat(conn);
-	    prepStat = parQ.getPrepStat();
-	    
-	    //need to set appropriate parameters in SQL based on user specs
-	    if(criteria.equals("any")){
-		if((presentSelected || possSelected) && notDetSelected){
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+1, componentList[i]);
-		    }
-		    for(int i =0;i<componentList.length;i++){
-			prepStat.setString(i+1+componentList.length, componentList[i]);
-		    }
+		String [] componentList = this.getComponentList(components, startStage, endStage, criteria);
+		//         System.out.println("componentList len: "  + componentList.length);
+		//         for (int i=0;i<componentList.length;i++)
+		//        	 System.out.println("component value:" + i + ":" + componentList[i]);
+		StringBuffer annotatedGenesInComponentsQ = new StringBuffer(DBQuery.getISH_BROWSE_ALL_COLUMNS() + DBQuery.ISH_BROWSE_ALL_TABLES);
+		//         System.out.println("annotatedGenesInComponentsQ: before appendSubsWithExprInCompsQ: " + annotatedGenesInComponentsQ);
+		
+		if(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes) == null){
+		    return null;
 		}
-		//if user has selected 'possible/uncertain' or 'present' expression
-		else {
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+1, componentList[i]);
-		    }
+		annotatedGenesInComponentsQ.append(this.appendSubsWithExprInCompsQ(criteria, componentList, annotationTypes));
+		//         System.out.println("annotatedGenesInComponentsQ: after appendSubsWithExprInCompsQ: " + annotatedGenesInComponentsQ);
+		
+		String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
+		String queryString =
+		    DBHelper.assembleBrowseSubmissionQueryStringISH(1, annotatedGenesInComponentsQ.toString(),
+								    defaultOrder, columnIndex, ascending, offset, num);
+		//         System.out.println("getSubmissionByComponentIds sql: " + queryString);
+		
+		//determine what types of expression user has selected - this will shape SQL
+		int index = this.getAnnotationTypeIndex(annotationTypes, "present");
+		boolean presentSelected = false;
+		if(index >= 0){
+		    presentSelected = true;
 		}
-	    }
-	    else if(criteria.equals("all")){
-		prepStat.setInt(1, componentList.length);
-		if((presentSelected || possSelected) && notDetSelected){
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+2, componentList[i]);
-		    }
-		    prepStat.setString(componentList.length+2, startStage);
-		    prepStat.setString(componentList.length+3, endStage);
+		index = this.getAnnotationTypeIndex(annotationTypes, "not detected");
+		boolean notDetSelected = false;
+		if(index >=0) {
+		    notDetSelected = true;
+		}
+		index = this.getAnnotationTypeIndex(annotationTypes, "possibleuncertain");
+		boolean possSelected = false;
+		if(index >=0) {
+		    possSelected = true;
+		}
+		ResultSet resSet = null;
+		ParamQuery parQ = null;
+		PreparedStatement prepStat = null;
+		parQ = new ParamQuery("",queryString);
+		ArrayList result = null;        
+		//         System.out.println("getSubmissionByComponentIds sql: " + parQ.getQuerySQL());
+		
+		try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 		    
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+4+componentList.length, componentList[i]);
+		    parQ.setPrepStat(conn);
+		    prepStat = parQ.getPrepStat();
+		    
+		    //need to set appropriate parameters in SQL based on user specs
+		    if(criteria.equals("any")){
+			if((presentSelected || possSelected) && notDetSelected){
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+1, componentList[i]);
+			    }
+			    for(int i =0;i<componentList.length;i++){
+				prepStat.setString(i+1+componentList.length, componentList[i]);
+			    }
+			}
+			//if user has selected 'possible/uncertain' or 'present' expression
+			else {
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+1, componentList[i]);
+			    }
+			}
 		    }
-		    prepStat.setString(componentList.length*2+4, startStage);
-		    prepStat.setString(componentList.length*2+5, endStage);
-		}
-		//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
-		else {
-		    for(int i=0;i<componentList.length;i++){
-			prepStat.setString(i+2, componentList[i]);
+		    else if(criteria.equals("all")){
+			prepStat.setInt(1, componentList.length);
+			if((presentSelected || possSelected) && notDetSelected){
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+2, componentList[i]);
+			    }
+			    prepStat.setString(componentList.length+2, startStage);
+			    prepStat.setString(componentList.length+3, endStage);
+			    
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+4+componentList.length, componentList[i]);
+			    }
+			    prepStat.setString(componentList.length*2+4, startStage);
+			    prepStat.setString(componentList.length*2+5, endStage);
+			}
+			//if user has selected 'possible/uncertain' or 'present' or 'not detected' expression
+			else {
+			    for(int i=0;i<componentList.length;i++){
+				prepStat.setString(i+2, componentList[i]);
+			    }
+			    prepStat.setString(componentList.length+2, startStage);
+			    prepStat.setString(componentList.length+3, endStage);
+			}
 		    }
-		    prepStat.setString(componentList.length+2, startStage);
-		    prepStat.setString(componentList.length+3, endStage);
+		    //             System.out.println("\n\n"+prepStat.toString()+"\n\n");
+		    
+		    resSet = prepStat.executeQuery();
+		    result = DBHelper.formatBrowseResultSetISH(resSet);
+	    	return result;
+		    
+		} catch (SQLException se) {
+			se.printStackTrace();
+	    	return null;
 		}
-	    }
-	    //             System.out.println("\n\n"+prepStat.toString()+"\n\n");
-	    
-	    resSet = prepStat.executeQuery();
-	    result = DBHelper.formatBrowseResultSetISH(resSet);
-    	return result;
-	    
-	} catch (SQLException se) {
-		se.printStackTrace();
-    	return null;
-	}
-	finally{
-	    DBHelper.closePreparedStatement(prepStat);
-	    DBHelper.closeResultSet(resSet);
-	}
+		finally{
+		    DBHelper.closePreparedStatement(prepStat);
+		    DBHelper.closeResultSet(resSet);
+		}
     }
     
     private String [] getComponentList (String[] components, 
@@ -3792,8 +3775,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 				if (resSet.first()) {
 				    java.util.Date lastEntryDate = resSet.getDate(1);
 				    if(null != lastEntryDate) {
-						DateFormat df =
-						    DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
+						DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
 						result = df.format(lastEntryDate);
 						if (result.equals("01-Jan-1000")) {
 						    result = "";
@@ -3995,28 +3977,27 @@ public class MySQLISHDAOImp implements ISHDAO {
     	// modified by xingjun - 28/08/2008
     	String query = parQ.getQuerySQL();
     	if (submissionDate == null || submissionDate.equals("")) {
-	    query += " AND SUB_PI_FK = ? ";
+    		query += " AND SUB_PI_FK = ? ";
     	} else {
-	    query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? ";
+    		query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? ";
     	}
 	
     	// added by xingjun - 28/08/2008
     	if (assayType.equals("insitu")) {
-	    query += "AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC') ";
+    		query += "AND (SUB_ASSAY_TYPE = 'ISH' OR SUB_ASSAY_TYPE = 'IHC') ";
     	} else {
-	    query += "AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
+    		query += "AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
     	}
 	
     	String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
-    	String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(1, query,
-									     defaultOrder, columnIndex, ascending, offset, num);
+    	String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(1, query, defaultOrder, columnIndex, ascending, offset, num);
 	//		System.out.println("getSubmissionsByLabId:queryString: " + queryString);
 	
     	int lab = -1;
     	try {
-	    lab = Integer.parseInt(labId);
+    		lab = Integer.parseInt(labId);
     	} catch (NumberFormatException nfe) {
-	    lab = 0;
+    		lab = 0;
     	}
 	//    	System.out.println("lab id: " + lab);
 	//    	System.out.println("submissionDate: " + submissionDate);
@@ -4247,9 +4228,9 @@ public class MySQLISHDAOImp implements ISHDAO {
     	// assemble the query string
     	String query = parQ.getQuerySQL();
     	if (submissionDate == null || submissionDate.equals("")) {
-	    query += " AND SUB_PI_FK = ? AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
+    		query += " AND SUB_PI_FK = ? AND SUB_ASSAY_TYPE = '" +  assayType + "' ";
     	} else {
-	    query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? AND SUB_ASSAY_TYPE = '" + assayType + "' ";
+    		query += " AND SUB_PI_FK = ? AND SUB_SUB_DATE = ? AND SUB_ASSAY_TYPE = '" + assayType + "' ";
     	}
 	
 		if (archiveId != null && !archiveId.trim().equals("")) {
@@ -4257,8 +4238,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		}
 		
 		String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
-    	String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(1, query,
-									     defaultOrder, columnIndex, ascending, offset, num);
+    	String queryString = DBHelper.assembleBrowseSubmissionQueryStringISH(1, query, defaultOrder, columnIndex, ascending, offset, num);
 
 	
     	// execute query and assemble result
@@ -5078,22 +5058,22 @@ public class MySQLISHDAOImp implements ISHDAO {
      */
     private ExpressionDetail formatExpressionDetailResultSet(ResultSet resSet) throws SQLException {
         ExpressionDetail expression = null;
-	String str = null;
-	String [] components = null;
-	ArrayList componentList = null;
+		String str = null;
+		String [] components = null;
+		ArrayList componentList = null;
         if (resSet.first()) {
             expression = new ExpressionDetail();
             expression.setComponentId(resSet.getString(1));
             expression.setComponentName(resSet.getString(2));
-	    str = Utility.netTrim(resSet.getString(3));
-	    if (null == str) {
-		expression.setComponentDescription(null);
-	    } else {
-		
-		components = str.split("\\.");
-		componentList = reformatComponentFullPath(components);
-		expression.setComponentDescription(componentList);
-	    }
+		    str = Utility.netTrim(resSet.getString(3));
+		    if (null == str) {
+		    	expression.setComponentDescription(null);
+		    } else {
+			
+				components = str.split("\\.");
+				componentList = reformatComponentFullPath(components);
+				expression.setComponentDescription(componentList);
+		    }
             expression.setPrimaryStrength(resSet.getString(4));
             expression.setSecondaryStrength(resSet.getString(5));
             expression.setExpressionId(resSet.getInt(6));
@@ -5167,8 +5147,8 @@ public class MySQLISHDAOImp implements ISHDAO {
     //created by chris - may need to be changed by Xingjun.
     public ExpressionPattern[] findPatternsAndLocations(String expressionId) {
     	if (expressionId == null) {
-	    //            throw new NullPointerException("id parameter or componentId parameter");
-	    return null;
+		    //            throw new NullPointerException("id parameter or componentId parameter");
+		    return null;
         }
         ExpressionPattern[] pattern = null;
         ResultSet resSetPattern = null;
@@ -5181,8 +5161,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmtLocations = null;
         PreparedStatement compNmeStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             conn.setAutoCommit(false);
 	    
@@ -5220,16 +5200,16 @@ public class MySQLISHDAOImp implements ISHDAO {
                     prepStmtLocations.setString(1, resSetPattern.getString(1));
                     resSetLocations = prepStmtLocations.executeQuery();
                     StringBuffer locations = null;
-		    String str = null;
-		    String atnPubIdVal = null;
-		    ResourceBundle  bundle = ResourceBundle.getBundle("configuration");
-		    String anatIdPrefix = bundle.getString("anatomy_id_prefix");
+				    String str = null;
+				    String atnPubIdVal = null;
+				    ResourceBundle  bundle = ResourceBundle.getBundle("configuration");
+				    String anatIdPrefix = bundle.getString("anatomy_id_prefix");
                                 
                     if (resSetLocations.first()) {
 			//                        System.out.println("resSetLocations has results");
                         locations = new StringBuffer("");
                         resSetLocations.beforeFirst();
-			String adjacentTxt = "adjacent to ";
+						String adjacentTxt = "adjacent to ";
                         while (resSetLocations.next()) {
                             //if the location string begins with 'adjacent to ', further query is required
                             str = Utility.netTrim(resSetLocations.getString(1));
@@ -5302,8 +5282,8 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmtLocations = null;
         PreparedStatement compNmeStmt = null;
         try {
-	    // if disconnected from db, re-connected
-	    conn = DBHelper.reconnect2DB(conn);
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
 	    
             conn.setAutoCommit(false);
 	    
@@ -5318,8 +5298,8 @@ public class MySQLISHDAOImp implements ISHDAO {
 		
                 //need to fill each item in array with correct data
                 while (resSetPattern.next()) {
-		    ExpressionPattern pattern = new ExpressionPattern();
-		    int expId = Integer.parseInt(expressionId);
+				    ExpressionPattern pattern = new ExpressionPattern();
+				    int expId = Integer.parseInt(expressionId);
                     pattern.setExpressionId(expId);
                     int patternId = resSetPattern.getInt(1);
                     pattern.setPatternId(patternId);
@@ -5335,11 +5315,11 @@ public class MySQLISHDAOImp implements ISHDAO {
                     prepStmtLocations.setInt(1, resSetPattern.getInt(1));
                     resSetLocations = prepStmtLocations.executeQuery();
                     StringBuffer locations = null;
-		    String str = null;
-		    String adjacentTxt = "adjacent to ";
-		    String atnPubIdVal = null;
-		    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-		    String  anatIdPrefix = bundle.getString("anatomy_id_prefix");
+				    String str = null;
+				    String adjacentTxt = "adjacent to ";
+				    String atnPubIdVal = null;
+				    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
+				    String  anatIdPrefix = bundle.getString("anatomy_id_prefix");
 		    
                     if (resSetLocations.first()) {
 			//                        System.out.println("resSetLocations has results");
@@ -5390,7 +5370,7 @@ public class MySQLISHDAOImp implements ISHDAO {
                             	locationInfo[1] = resSetLocations.getString(3);
 				//                            	System.out.println("location value: " + loc);
                             	if (locationInfo[0] != null && locationInfo[0].length() > 0) {
-				    locationList.add(locationInfo);
+                            		locationList.add(locationInfo);
                             	}
                             }
                             int len = locationList.size();
