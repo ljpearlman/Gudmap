@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 
 import java.sql.DriverManager;
 import java.util.ResourceBundle;
@@ -30,7 +31,8 @@ public final class DBHelper {
     ///??????????
 	private static int count = 0;
 	private static HashMap<Long, Connection> connMap = new HashMap<Long, Connection>();
-    ///???????????
+	private static Properties prop = null;
+	///???????????
 	private static String browseColumnsISH[][] = {
 		{"0", ""}, {"1", ""},{"2", ""}
 	};
@@ -58,10 +60,12 @@ public final class DBHelper {
 	    try {
 			ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 			Class.forName(bundle.getString("db_driver"));
+			prop = new Properties();
+			prop.setProperty("useCompression","false");
 			String url = bundle.getString("host") + bundle.getString("database");
 			String userName = bundle.getString("user");
 			String passWord = bundle.getString("password");
-			ret = getDBConnection(url, userName, passWord);
+			ret = getDBConnection(url, userName, passWord, prop);
 	    } catch (Exception se) {
 			se.printStackTrace();
 	    }
@@ -70,13 +74,14 @@ public final class DBHelper {
 
 	}
 	
-    public static Connection getDBConnection(String url, String userName, String passWord) {
+    public static Connection getDBConnection(String url, String userName, String passWord, Properties prop) {
 		
 		Connection conn = null;
 		try {
 			Date date = new Date();
 			Long connectionTime = System.currentTimeMillis();
-			conn = DriverManager.getConnection(url, userName, passWord);
+			url = url+"?user="+userName+"&password="+passWord+"";
+			conn = DriverManager.getConnection(url, prop);
 			count++;
 			
 			connMap.put(connectionTime, conn);
