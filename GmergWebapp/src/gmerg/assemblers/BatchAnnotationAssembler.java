@@ -32,24 +32,33 @@ public class BatchAnnotationAssembler {
 		
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-		
-		// get data
-		// find incomplete batch - if exist
-		int batchId =
-			testDAO.getIncompletedSubmissionBatchId(Integer.parseInt(pi), user);
-		if (batchId == -1) { // there's no incompleted batch, need create a new one
-			batchId = testDAO.createNewBatch(Integer.parseInt(pi), user);
+		try{
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			
+			// get data
+			// find incomplete batch - if exist
+			int batchId =
+				testDAO.getIncompletedSubmissionBatchId(Integer.parseInt(pi), user);
+			if (batchId == -1) { // there's no incompleted batch, need create a new one
+				batchId = testDAO.createNewBatch(Integer.parseInt(pi), user);
+			}
+			// release resources
+			testDAO = null;
+			conn = null;
+	
+			// return
+			if (batchId == -1) {
+				return null;
+			} else {
+				return Integer.toString(batchId);
+			}
 		}
-		// release resources
-		testDAO = null;
-		conn = null;
-
-		// return
-		if (batchId == -1) {
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::getLatestBatchByPI failed !!!");
 			return null;
-		} else {
-			return Integer.toString(batchId);
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
 		}
 	}
 	
@@ -62,19 +71,20 @@ public class BatchAnnotationAssembler {
 	public ISHBatch[] getBatchListByPI(String pi, User user) {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO =
-			MySQLDAOFactory.getAnnotationTestDAO(conn);
-		
-		// get data
-		ISHBatch[] batches = 
-			testDAO.getBatchListByPi(Integer.parseInt(pi));
-		
-		// release resources
-		testDAO = null;
-		conn = null;
-
-		// return
-		return batches;
+		try{
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			
+			// get data
+			ISHBatch[] batches = testDAO.getBatchListByPi(Integer.parseInt(pi));
+			return batches;
+		}
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::getBatchListByPI failed !!!");
+			return null;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
 	}
 
 	/**
@@ -115,18 +125,22 @@ public class BatchAnnotationAssembler {
 	public ISHBatchSubmission[] getSubmissionByBatchId(String batchId) {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-		
-		// get data
-		ISHBatchSubmission[] submissions =
-			testDAO.getSubmissionByBatchId(Integer.parseInt(batchId));
-
-		// release resources
-		testDAO = null;
-		conn = null;
-		
-		// return
-		return submissions;
+		try{
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			
+			// get data
+			ISHBatchSubmission[] submissions = testDAO.getSubmissionByBatchId(Integer.parseInt(batchId));
+			
+			// return
+			return submissions;
+		}
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::getSubmissionByBatchId failed !!!");
+			return null;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
 	}
 	
 	/**
@@ -455,25 +469,33 @@ public class BatchAnnotationAssembler {
 	public String[] getUnlockedBatchList(String[] batchIds, User user) {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		ISHEditDAO ishEditDAO =
-			MySQLDAOFactory.getISHEditDAO(conn);
-		
-		// get data
-		int len = batchIds.length;
-		ArrayList<String> unlockedBatches = new ArrayList<String>();
-		for (int i=0;i<len;i++) {
-			if (!ishEditDAO.isBatchLocked(Integer.parseInt(batchIds[i]), user.getUserId())) {
-				unlockedBatches.add(batchIds[i]);
+		try{
+			ISHEditDAO ishEditDAO = MySQLDAOFactory.getISHEditDAO(conn);
+			
+			// get data
+			int len = batchIds.length;
+			ArrayList<String> unlockedBatches = new ArrayList<String>();
+			for (int i=0;i<len;i++) {
+				if (!ishEditDAO.isBatchLocked(Integer.parseInt(batchIds[i]), user.getUserId())) {
+					unlockedBatches.add(batchIds[i]);
+				}
+			}
+			// release resources
+			ishEditDAO = null;
+			conn = null;
+			// return
+			if (unlockedBatches.size() > 0) { // at least one batch unlocked
+				return (String[])unlockedBatches.toArray(new String[unlockedBatches.size()]);
+			} else {
+				return null;
 			}
 		}
-		// release resources
-		ishEditDAO = null;
-		conn = null;
-		// return
-		if (unlockedBatches.size() > 0) { // at least one batch unlocked
-			return (String[])unlockedBatches.toArray(new String[unlockedBatches.size()]);
-		} else {
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::getUnlockedBatchList failed !!!");
 			return null;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
 		}
 	}
 	
@@ -551,7 +573,7 @@ public class BatchAnnotationAssembler {
 			return 1; // successful
 		}
 		catch(Exception e){
-			System.out.println("BatchAnnotationAssembler::addBatch failed !!!");
+			System.out.println("BatchAnnotationAssembler::deleteBatch failed !!!");
 			return 0;
 		}
 		finally{
@@ -568,17 +590,22 @@ public class BatchAnnotationAssembler {
 	public int getBatchStatus(String batchId) {
 		// create dao
 		Connection conn = DBHelper.getDBConnection();
-		AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
-		
-		// get data
-		int batchStatus = testDAO.getBatchStatus(batchId);
-
-		// release resources
-		testDAO = null;
-		conn = null;
-		
-		// return
-		return batchStatus;
+		try{
+			AnnotationTestDAO testDAO = MySQLDAOFactory.getAnnotationTestDAO(conn);
+			
+			// get data
+			int batchStatus = testDAO.getBatchStatus(batchId);
+	
+			// return
+			return batchStatus;
+		}
+		catch(Exception e){
+			System.out.println("BatchAnnotationAssembler::getBatchStatus failed !!!");
+			return 0;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
 	}
 	
 

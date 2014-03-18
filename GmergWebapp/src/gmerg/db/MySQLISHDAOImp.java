@@ -30,7 +30,7 @@ import java.text.DateFormat;
  *
  */
 public class MySQLISHDAOImp implements ISHDAO {
-    private boolean debug = false;
+    private boolean debug = true;
     private Connection conn;
     
     // default constructor
@@ -380,7 +380,9 @@ public class MySQLISHDAOImp implements ISHDAO {
             parQProbe.setPrepStat(conn);
 		    prepStmtProbe = parQProbe.getPrepStat();
 		    prepStmtProbe.setString(1, probeId);
-		    if (maprobeId != null){
+		    if (maprobeId == null || maprobeId == ""){
+		    }
+		    else{
 		    	prepStmtProbe.setString(2, maprobeId);
 	    
 	            // probe note -- Mantis 558 Task5

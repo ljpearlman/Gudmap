@@ -29,8 +29,8 @@ public class AnatomyStructureAssembler {
 	 * @return
 	 */
 	public ArrayList getStageRanges() {
-	if (debug)
-	    System.out.println("AnatomyStructureAssembler.getStageRanges");
+		if (debug)
+		    System.out.println("AnatomyStructureAssembler.getStageRanges");
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
@@ -49,8 +49,8 @@ public class AnatomyStructureAssembler {
 	}
 	
 	public String getComponentNameFromId(String id){
-	if (debug)
-	    System.out.println("AnatomyStructureAssembler.getComponentNameFromId");
+		if (debug)
+		    System.out.println("AnatomyStructureAssembler.getComponentNameFromId");
 		
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
@@ -95,8 +95,8 @@ public class AnatomyStructureAssembler {
 	 * @return
 	 */
 	public boolean stageRangesAreValid(String startStage, String endStage) {
-	if (debug)
-	    System.out.println("AnatomyStructureAssembler.stageRangesAreValid");
+		if (debug)
+		    System.out.println("AnatomyStructureAssembler.stageRangesAreValid");
 
         if (startStage == null || startStage.equals("") || endStage == null || endStage.equals("")) {
         	return false;
@@ -132,8 +132,8 @@ public class AnatomyStructureAssembler {
 	 * @return
 	 */
 	public ArrayList buildTree(String startStage, String endStage, boolean isForBooleanQ) {
-	if (debug)
-	    System.out.println("AnatomyStructureAssembler.buildTree");
+		if (debug)
+		    System.out.println("AnatomyStructureAssembler.buildTree");
 
         if (startStage == null || startStage.equals("") || endStage == null || endStage.equals("")) {
         	return null;
@@ -169,8 +169,8 @@ public class AnatomyStructureAssembler {
 	public ISHBrowseSubmission[] getISHBrowseSubmission(String[] components,
 			String startStage, String endStage, String expressionState, 
 			String[] order, String offset, String num) {
-	if (debug)
-	    System.out.println("AnatomyStructureAssembler.getISHBrowseSubmission");
+		if (debug)
+		    System.out.println("AnatomyStructureAssembler.getISHBrowseSubmission");
 
         if (components == null || components.length == 0) {
 //        	System.out.println("bad components!!!!!!!");
