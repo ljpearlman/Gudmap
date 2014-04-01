@@ -122,7 +122,7 @@
 						</h:outputLink>
 						<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.displayAddress}" /><br/>
 			                                </t:dataList>
-					<h:outputText value="Authors:" />
+					<h:outputText value="Contributors:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.authors}" />
 					<h:outputText value="Submitted By:" />
 					<h:panelGroup>
@@ -131,7 +131,7 @@
 					       </h:outputLink>
 					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.displayAddress}" />
 					</h:panelGroup>
-					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" value="Archive ID:" />
+					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" value="Archive/Batch ID:" />
 					<h:outputLink rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" styleClass="datatext" value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" >
 						<h:outputText value="#{ISHSingleSubmissionBean.submission.archiveId}" />
 					</h:outputLink>
