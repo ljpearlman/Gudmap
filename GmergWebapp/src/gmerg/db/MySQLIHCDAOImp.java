@@ -60,7 +60,8 @@ public class MySQLIHCDAOImp implements IHCDAO {
 	        try {
 	            parQ.setPrepStat(conn);
 	            prepStmt = parQ.getPrepStat();
-	
+	            if (debug)
+	            	System.out.println("MySQLIHCDAOImp:getAllSubmissionISH prepStmt " + prepStmt);	
 	            // execute
 	            resSet = prepStmt.executeQuery();
 	            result = formatBrowseResultSet(resSet);
