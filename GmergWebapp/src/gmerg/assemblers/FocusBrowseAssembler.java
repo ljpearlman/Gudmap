@@ -33,7 +33,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 
     protected RetrieveDataCache cache = null;
 
-    private boolean debug = false;
+    private boolean debug = true;
 
 	public FocusBrowseAssembler () {
 	      	if (debug)

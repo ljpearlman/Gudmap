@@ -313,8 +313,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}   				
 			}
 		return orderStr;
-    }	
-
+    }
+	
+	
 	/**
 	 * overloaded version - xingjun - 15/01/2009
 	 * added an extra param - gene
@@ -324,6 +325,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			String query, String stage, String gene, String archiveId, String batchId, String offset, String resPerPage, GenericTableFilter filter) {
 //		System.out.println("FocusForAll:getFocusBrowseList:column: " + column);
 //		System.out.println("query type: " + query);
+
+		final long startTime = System.currentTimeMillis();
+		
 		ResultSet resSet = null;
 		ArrayList result = null;
 		ParamQuery parQ = null;
@@ -392,6 +396,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				// execute
 				resSet = prepStmt.executeQuery();
 				result = formatResultSet(resSet, MAX_COLUMNS);
+				
+				
 				return result;
 			} catch(SQLException se) {
 				se.printStackTrace();
@@ -400,6 +406,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			finally{
 				DBHelper.closePreparedStatement(prepStmt);
 				DBHelper.closeResultSet(resSet);
+				final long endTime = System.currentTimeMillis();
+				System.out.println("getFocusBrowseList array Total execution time: " + (endTime - startTime) );
 			}
 		} else if(query.equals("ish")) {
 			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_ISH");
@@ -429,7 +437,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
 			      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) " ;
 			} else { // remove redundant join to speed up query - 03/09/2009
-				sql = sql.replace("LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
+//				sql = sql.replace("LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
+				sql = sql.replace("JOIN ISH_EXPRESSION ON EXP_SUBMISSION_FK = SUB_OID", "");
 			}
 			// gene --------- to be implemented
 			// archiveId & batchId
@@ -462,8 +471,15 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				if (debug)
 					System.out.println("MySQLFocusForAllDAO:getFocusBrowseList - prepStmt" + prepStmt);
 				// execute
+				final long startTime2 = System.currentTimeMillis();
 				resSet = prepStmt.executeQuery();
+				final long endTime2 = System.currentTimeMillis();
+				System.out.println("getFocusBrowseList ish Total query time: " + (endTime2 - startTime2) );
+				
+				final long startTime3 = System.currentTimeMillis();				
 				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
+				final long endTime3 = System.currentTimeMillis();
+				System.out.println("getFocusBrowseList ish Total format time: " + (endTime3 - startTime3) );
 				return result;
 			} catch(SQLException se) {
 				se.printStackTrace();
@@ -472,6 +488,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			finally{
 				DBHelper.closePreparedStatement(prepStmt);
 				DBHelper.closeResultSet(resSet);
+				final long endTime = System.currentTimeMillis();
+				System.out.println("getFocusBrowseList ish Total execution time: " + (endTime - startTime) );
 			}
 		} else if(query.equals("insitu")) {
 			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_INSITU");
@@ -548,6 +566,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			finally{
 				DBHelper.closePreparedStatement(prepStmt);
 				DBHelper.closeResultSet(resSet);
+
+				final long endTime = System.currentTimeMillis();
+				System.out.println("getFocusBrowseList insitu Total execution time: " + (endTime - startTime) );
 			}
 		} else if(query.equals("insitu_all")) {
 
@@ -632,6 +653,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			finally{
 				DBHelper.closePreparedStatement(prepStmt);
 				DBHelper.closeResultSet(resSet);
+				final long endTime = System.currentTimeMillis();
+				System.out.println("getFocusBrowseList insitu all Total execution time: " + (endTime - startTime) );
 			}
 
 		}
@@ -669,6 +692,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
     	} else {
     		return list.size();
     	}
+//   	return getTotalNumberOfSubmissions(inputs, 1, true, query, stage, symbol, archiveId, batchId, null, null,filter); 	    	
     }
     
 	/**

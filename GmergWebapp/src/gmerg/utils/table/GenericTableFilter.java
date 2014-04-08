@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GenericTableFilter {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
 	boolean active;
 	TreeMap<Integer, FilterItem> filters;
@@ -107,6 +107,15 @@ public class GenericTableFilter {
 				String filterSql = "";
 				if(!colName.equalsIgnoreCase("#"))
 					filterSql = filter.getSql(colName);
+
+				// Bernie - a bit of a hack to fix filter until we sort the query - see derek
+				if (filterSql.contains("(SELECT GROUP_CONCAT(DISTINCT EXP_STRENGTH) FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID)")){
+					filterSql = filterSql.replace("(SELECT GROUP_CONCAT(DISTINCT EXP_STRENGTH) FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID)", "");
+				}
+//				if (filterSql.contains("GROUP_CONCAT(DISTINCT EXP_STRENGTH)")){
+//					filterSql = filterSql.replace("GROUP_CONCAT(DISTINCT EXP_STRENGTH)", "EXP_STRENGTH");
+//				}
+				
 				if (debug)
 				    System.out.println("colName = "+colName+" filterSql = "+filterSql+" current sql = "+currentSql);
 
