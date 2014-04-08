@@ -12,7 +12,7 @@ import java.util.TreeMap;
 
 public class MySQLIHCDAOImp implements IHCDAO {
 
-    private boolean debug = true;
+    private boolean debug = false;
     private Connection conn;
 
     // default constructor

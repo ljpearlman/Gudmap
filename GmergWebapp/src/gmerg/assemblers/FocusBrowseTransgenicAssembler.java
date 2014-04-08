@@ -24,7 +24,7 @@ public class FocusBrowseTransgenicAssembler extends OffMemoryTableAssembler {
 	String[] organs;
 	String[] archiveIds;
 	String[] batchIds;
-    protected boolean debug = true;
+    protected boolean debug = false;
 	protected RetrieveDataCache cache = null;
 
 	public FocusBrowseTransgenicAssembler () {

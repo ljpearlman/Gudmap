@@ -30,7 +30,7 @@ import java.text.DateFormat;
  *
  */
 public class MySQLISHDAOImp implements ISHDAO {
-    private boolean debug = true;
+    private boolean debug = false;
     private Connection conn;
     
     // default constructor

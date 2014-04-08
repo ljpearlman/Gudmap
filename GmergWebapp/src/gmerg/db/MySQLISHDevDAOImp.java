@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  */
 public class MySQLISHDevDAOImp implements ISHDevDAO {
-    private boolean debug = true;
+    private boolean debug = false;
 
     private Connection conn;
 
