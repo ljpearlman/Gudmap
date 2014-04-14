@@ -88,6 +88,24 @@ public final class MySQLDAOFactory {
 		// MySQLArrayDevDAOImp implements ArrayDevDAO
 		return new MySQLArrayDevDAOImp(conn);
 	}
+	
+	/**
+	 * @author xingjun
+	 * @return
+	 */
+	public static NGDDAO getNGDDAO(Connection conn) {
+		// MySQLArrayDAOImp implements ArrayDAO
+		return new MySQLNGDDAOImp(conn);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static NGDDevDAO getNGDDevDAO(Connection conn) {
+		// MySQLArrayDevDAOImp implements ArrayDevDAO
+		return new MySQLNGDDevDAOImp(conn);
+	}
 
 	/**
 	 * 

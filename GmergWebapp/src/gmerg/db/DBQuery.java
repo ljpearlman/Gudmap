@@ -1654,7 +1654,76 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
 	
 	final static String name238 = "MAPROBE_NOTE";
 	final static String query238 = "SELECT RPN_NOTES FROM REF_PRB_NOTES, REF_PROBE WHERE RPR_OID = ? AND RPN_PROBE_FK = RPR_OID AND RPN_ISDELETED = 0 ORDER BY RPN_OID DESC";
+	
+	final static String NGD_SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
+	    		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') ";
+	final static String NGD_SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION " + 
+	                                             "WHERE SER_GEO_ID = ? " + 
+	                                             "AND SER_OID = SRM_SERIES_FK " + 
+	                                             "AND SRM_SAMPLE_FK = SMP_OID " + 
+	                                             "AND SMP_SUBMISSION_FK = SUB_OID";
+	                                             
+	final static String NGD_SAMPLE_SERIES_TABS_WITH_GROUP_BY_CLAUSE = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
+	    		"WHERE SER_GEO_ID = ? " +
+	    		"AND SER_OID = SRM_SERIES_FK " +
+	    		"AND SRM_SAMPLE_FK = SMP_OID " +
+	    		"AND SMP_SUBMISSION_FK = SUB_OID " +
+	    		"AND EXP_SUBMISSION_FK=SUB_OID " +
+	    		"AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+	    		"AND ATN_NODE_FK = ANO_OID " +
+				"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4" + // added by xingjun - 10/10/2011 - only retrieve public entries
+	    		"GROUP BY SMP_OID ";
 
+	final static String name247 = "NGD_SERIES_SAMPLES";
+	final static String query247 = NGD_SAMPLE_SERIES_COLS + NGD_SAMPLE_SERIES_TABS_WITH_GROUP_BY_CLAUSE;
+	
+	final static String name248 = "NGD_SERIES_DATA";
+	final static String query248 = "SELECT SER_GEO_ID, COUNT(distinct SRM_SAMPLE_FK), SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', '), SUB_ARCHIVE_ID " + 
+	                                   "FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
+	                                   "WHERE SER_GEO_ID = ? " + 
+	                                   "AND SRM_SERIES_FK = SER_OID " +
+	                                   "AND SRM_SAMPLE_FK = SMP_OID " +
+	                                   "AND SMP_SUBMISSION_FK = SUB_OID " +
+	                                   "AND EXP_SUBMISSION_FK=SUB_OID " +
+	                                   "AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+	                                   "AND ATN_NODE_FK = ANO_OID " +
+	                                   "GROUP BY SER_GEO_ID, SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN ";
+	
+	final static String name249 = "NGD_SUBMISSION_SERIES";
+	final static String query249 = "SELECT SER_GEO_ID, SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN, SER_OID " +
+	                                "FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION " +
+	                                "WHERE SUB_ACCESSION_ID = ? " +
+	                                "AND SUB_OID=SMP_SUBMISSION_FK " +
+	                                "AND SRM_SAMPLE_FK=SMP_OID " +
+	                                "AND SRM_SERIES_FK = SER_OID";
+	
+	final static String name250 = "NGD_SAMPLE_NUMBER_OF_SERIES";
+	final static String query250 = "SELECT COUNT(SMP_GEO_ID) " +
+	                                "FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE " +
+	                                "WHERE SRM_SAMPLE_FK=SMP_OID " +
+	                                "AND SRM_SERIES_FK = SER_OID " +
+	                                "AND SER_OID IN" +
+	                                " (SELECT SER_OID " +
+	                                "  FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION " +
+	                                "  WHERE SUB_ACCESSION_ID = ? " +
+	                                "  AND SUB_OID=SMP_SUBMISSION_FK " +
+	                                "  AND SRM_SAMPLE_FK=SMP_OID " +
+	                                "  AND SRM_SERIES_FK = SER_OID)";
+	
+	final static String name251 = "NGD_SERIES_SAMPLE";
+	final static String query251 = "select SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION " +
+	                                 "from MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE , ISH_SUBMISSION " +
+	                                 "where SRM_SAMPLE_FK = SMP_OID " +
+	                                 "and SRM_SERIES_FK = SER_OID " +
+	                                 "and SMP_SUBMISSION_FK = SUB_OID " +
+	                                 "and SER_OID in" +
+	                                 " (select SER_OID " +
+	                                 "  from MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION " +
+	                                 "  where SUB_ACCESSION_ID = ? " +
+	                                 "  and SUB_OID=SMP_SUBMISSION_FK " +
+	                                 "  and SRM_SAMPLE_FK=SMP_OID " +
+	                                 "  and SRM_SERIES_FK = SER_OID) ";
+	
   final static String name = "";
   final static String query = "";
     
@@ -1877,7 +1946,12 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name243,query243),
       new ParamQuery(name244,query244),
       new ParamQuery(name245,query245),
-      new ParamQuery(name246,query246)      
+      new ParamQuery(name246,query246), 
+      new ParamQuery(name247,query247),
+      new ParamQuery(name248,query248),
+      new ParamQuery(name249,query249),
+      new ParamQuery(name250,query250),
+      new ParamQuery(name251,query251)
   };
 
   // finds ParamQuery object by name and returns
