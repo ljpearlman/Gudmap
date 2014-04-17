@@ -356,6 +356,22 @@
   <managed-bean-class>gmerg.entities.focus.components.model.MicTutorialBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
+ 
+  <managed-bean>
+  <managed-bean-name>NGDSeriesBean</managed-bean-name>
+  <managed-bean-class>gmerg.beans.NGDSeriesBean</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+ </managed-bean>
+ 
+  <managed-bean>
+  <managed-bean-name>NGDSingleSubmissionBean</managed-bean-name>
+  <managed-bean-class>gmerg.beans.NGDSingleSubmissionBean</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+  <managed-property>
+   <property-name>geneListPageNum</property-name>
+   <value>#{param.pgeNum}</value>
+  </managed-property>
+ </managed-bean>
 
  <managed-bean>
   <managed-bean-name>PersonBean</managed-bean-name>

@@ -255,6 +255,34 @@ public class ArrayDBQuery {
 			"GNL_STAGE,GNL_GENELIST_TYPE,GNL_SEX,GNL_SUBSET_1,GNL_SUBSET_2,GNL_SUBSET_3,GNL_AMG_OID_FK,LPU_REF " +
 			"FROM REF_GENELISTS LEFT JOIN ISH_LINKED_PUBLICATION ON LPU_OID = GNL_REFERENCE";
 	
+	final static String NGD_SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
+    		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ')  ";
+    final static String NGD_SAMPLE_SERIES_TABS_BY_OID = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
+                                             "WHERE SER_OID = ? " + 
+                                             "AND SER_OID = SRM_SERIES_FK " + 
+                                             "AND SRM_SAMPLE_FK = SMP_OID " + 
+                                             "AND SMP_SUBMISSION_FK = SUB_OID " +
+                                             "AND EXP_SUBMISSION_FK=SUB_OID " +
+                                             "AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+                                             "AND ATN_NODE_FK = ANO_OID " +
+                                             "GROUP BY SMP_OID ";
+                                             
+    final static String name33 = "NGD_SERIES_SAMPLES_BY_OID";
+    final static String query33 = NGD_SAMPLE_SERIES_COLS + NGD_SAMPLE_SERIES_TABS_BY_OID;
+    
+    final static String name34 = "NGD_SERIES_DATA_BY_OID";
+    final static String query34 = "SELECT SER_GEO_ID, COUNT(distinct SRM_SAMPLE_FK), " +
+    		"SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN, SER_OID, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', '), SUB_ARCHIVE_ID " +
+    		"FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " +
+    		"WHERE SER_OID = ? " +
+    		"AND SRM_SERIES_FK = SER_OID " +
+            "AND SRM_SAMPLE_FK = SMP_OID " +
+            "AND SMP_SUBMISSION_FK = SUB_OID " +
+            "AND EXP_SUBMISSION_FK=SUB_OID " +
+            "AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+            "AND ATN_NODE_FK = ANO_OID " +
+    		"GROUP BY SER_GEO_ID, SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN ";
+	
 	final static String name = "";
 	final static String query = "";
 	  
@@ -288,7 +316,9 @@ public class ArrayDBQuery {
 		new ParamQuery(name29, query29),
 		new ParamQuery(name30, query30),
 		new ParamQuery(name31, query31),
-		new ParamQuery(name32, query32)
+		new ParamQuery(name32, query32),
+		new ParamQuery(name33, query33),
+		new ParamQuery(name34, query34)
 	};
 	
 	// finds ParamQuery object by name and returns
