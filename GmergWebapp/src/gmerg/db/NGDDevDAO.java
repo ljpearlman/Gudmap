@@ -3,7 +3,7 @@
  */
 package gmerg.db;
 
-import gmerg.entities.submission.array.NGDSeries;
+import gmerg.entities.submission.nextgen.NGDSeries;
 
 import java.util.ArrayList;
 
@@ -14,9 +14,9 @@ import java.util.ArrayList;
 public interface NGDDevDAO {
 	
 	// browse all page
-	public ArrayList getAllSeries(int columnIndex, boolean ascending, int offset, int num, String platform);
+	public ArrayList getAllSeries(int columnIndex, boolean ascending, int offset, int num);
 	public String[][] getStringArrayFromBatchQuery(String[][] param, String[] query);
-	public int getTotalNumberOfSeries(String platform);
+	public int getTotalNumberOfSeries();
         
     //series page
     public NGDSeries findSeriesById(String id);
@@ -28,11 +28,5 @@ public interface NGDDevDAO {
     public String[][] getSeriesBrowseTotals(String[][] param, String[] query, String organ);
     public ArrayList findOriginalImagesById(String submissionAccessionId);
     
-    // checking method
-    public ArrayList<String> getRelevantGudmapIds(ArrayList candidateGudmapIds);
-    public ArrayList<String> getRelevantGudmapIds(ArrayList candidateGudmapIds, int userPrivilege); // 13/10/2009
-    public ArrayList<String> getRelevantSymbols(ArrayList candidateSymbols);
-    public ArrayList<String> getRelevantSymbols(ArrayList candidateSymbols, int userPrivilege); // 29/10/2009
-    public ArrayList<String> getRelevantProbeSetIds(ArrayList candidateProbeSetIds, String platformId);
-    public ArrayList<String> getRelevantImageIds(ArrayList candidateImageIds, int userPrivilege);
+
 }

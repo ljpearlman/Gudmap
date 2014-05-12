@@ -307,7 +307,7 @@ public class ISHSubmissionAssembler {
 	 *         the second element is an array list of link types.
 	 *         
 	 */
-	private ArrayList formatLinkedSubmissionData(ArrayList linkedSubmissionsRaw) {
+	public ArrayList formatLinkedSubmissionData(ArrayList linkedSubmissionsRaw) {
     	
 		if (linkedSubmissionsRaw == null || linkedSubmissionsRaw.isEmpty()) {
 			return null;

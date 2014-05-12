@@ -32,6 +32,10 @@ public interface FocusForAllDAO {
 
 	public int getNumberOfSeries(String organ, String platform);
 	
+	public ArrayList getNGDSeriesList(int columnIndex, boolean ascending, int offset, int num, String organ, String protocol);
+
+	public int getNumberOfNGDSeries(String organ, String protocol);
+	
 	public ArrayList getPlatformList(int columnIndex, boolean ascending, int offset, int num, String organ);
 
 	public int getNumberOfPlatform(String organ);

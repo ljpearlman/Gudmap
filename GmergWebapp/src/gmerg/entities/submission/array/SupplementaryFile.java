@@ -16,6 +16,9 @@ public class SupplementaryFile {
     private String expFile;
     private String txtFile;
     
+    private String[] rawFiles;
+    private String [] processedFiles;
+    
     public SupplementaryFile() {
     	
     }
@@ -66,5 +69,21 @@ public class SupplementaryFile {
 
     public String getTxtFile() {
         return txtFile;
+    }
+    
+    public void setRawFile(String[] file) {
+        rawFiles = file;
+    }
+
+    public String[] getRawFile() {
+        return rawFiles;
+    }
+
+    public void setProcessedFile(String []file) {
+       processedFiles = file;
+    }
+
+    public String[] getProcessedFile() {
+        return processedFiles;
     }
 }

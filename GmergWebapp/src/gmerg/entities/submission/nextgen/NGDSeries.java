@@ -1,15 +1,16 @@
-package gmerg.entities.submission.array;
+package gmerg.entities.submission.nextgen;
 
 import java.util.ArrayList;
+import gmerg.entities.submission.array.Series;
 
 /**
  * added oid for series object
  * @author xingjun
  *
  */
-public class NGDSeries {
+public class NGDSeries extends Series {
 
-    private String geoID;
+   /* private String geoID;
     private String numSamples;
     private String title;
     private String summary;
@@ -100,6 +101,6 @@ public class NGDSeries {
     	return archiveId;
     }
     
-    
+    */
 
 }

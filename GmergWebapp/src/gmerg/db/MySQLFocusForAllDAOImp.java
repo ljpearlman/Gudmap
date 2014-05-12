@@ -16,6 +16,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
     private Connection conn;
     private int MAX_COLUMNS = 12; // added extra column ALE_GENE
     private int MAX_ISH_COLUMNS = 13;
+    private int MAX_NGD_COLUMNS = 13;
 
     // default constructor
     public MySQLFocusForAllDAOImp() {  	
@@ -280,6 +281,35 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				} else if(11 == orderby){
 					orderStr = " order by GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', ') " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				} 
+			} else if(query.equals("ngd")) {
+				if(orderby < 0) {
+					orderStr = " order by " + AdvancedSearchDBQuery.getMICDefaultSort(); 
+				} else if(0 == orderby) {
+					orderStr = " order by " + AdvancedSearchDBQuery.getMICDefaultSort() + " " + order; 
+				} else if(1 == orderby){
+					orderStr = " order by natural_sort(NGS_GEO_ID) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(2 == orderby){
+					orderStr = " order by natural_sort(NGR_GEO_ID) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();	
+				}  else if(3 == orderby){
+					orderStr = " order by SUB_SOURCE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(4 == orderby){
+					orderStr = " order by NGP_LIBRARY_STRATEGY " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(5 == orderby){
+					orderStr = " order by NGS_THEILER_STAGE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();	
+				}  else if(6 == orderby){
+					orderStr = " order by TRIM(CASE NGS_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(NGS_DEV_STAGE,' ',NGS_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',NGS_DEV_STAGE) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(7 == orderby){
+					orderStr = " order by SUB_SUB_DATE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();	
+				}  else if(8 == orderby){
+					orderStr = " order by NGS_SEX " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();		
+				}  else if(9 == orderby){
+					orderStr = " order by NGS_DESCRIPTION " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();	
+				} else if(10 == orderby){
+					orderStr = " order by NGS_SAMPLE_NAME " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				} else if(11 == orderby){
+					orderStr = " order by natural_sort(ALE_GENE) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+					//orderStr = " order by GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', ') " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				} 
 			} else if(query.equals("ish") || query.equals("insitu") || query.equals("insitu_all")) {
 				if(orderby < 0) {
 					orderStr = " order by " + AdvancedSearchDBQuery.getISHDefaultSort(); 
@@ -409,7 +439,86 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				final long endTime = System.currentTimeMillis();
 				System.out.println("getFocusBrowseList array Total execution time: " + (endTime - startTime) );
 			}
-		} else if(query.equals("ish")) {
+		}
+		else if(query.equals("ngd")) {
+			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_NGD_FOCUS");
+			// assemble the query string
+			String sql = parQ.getQuerySQL();	
+			// focus group
+			if(null != organ) {
+				String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ[0]);
+				String ids = "";
+				  for(int i = 0; i < emapids.length; i++) {
+					  ids += "'"+emapids[i] + "',";
+				  }
+				  if(emapids.length >= 1) {
+					  ids = ids.substring(0, ids.length()-1);
+				  }
+				
+				sql+=" AND IST_COMPONENT in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
+			    " from ANA_TIMED_NODE ANCES_ATN, "+
+			         " ANAD_RELATIONSHIP_TRANSITIVE, "+
+			         " ANA_TIMED_NODE DESCEND_ATN, "+
+			         " ANA_NODE, "+
+			         " ANAD_PART_OF "+
+			    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
+			      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
+			      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
+			      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
+			      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
+			      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) " ;
+			}
+			////////////////// gene -------- to be implemented
+			
+			// archiveId & batchId
+	        if (null != archiveId && !archiveId.equals("")){
+	        	sql += " and (SUB_ARCHIVE_ID = " + archiveId + " ) ";
+	        }
+	        
+	        if (null != batchId && !batchId.equals("")){
+	        	sql += " and (SUB_BATCH = " + batchId + " ) ";
+	        }			
+			
+			// stage group by and order by - xingjun - 25/09/2009 - added group by clause
+			if(null == stage || stage.equals("") || stage.equals("null")) {
+				sql += AdvancedSearchDBQuery.groupBySubmissionNGD + orderResult(column, ascending, query);
+			} else {
+				sql += " and SUB_EMBRYO_STG='"+stage+"' " + AdvancedSearchDBQuery.groupBySubmissionNGD + orderResult(column, ascending, query);
+			}
+			
+			// offset and limit
+			sql+= new String(null == resPerPage?
+    	    	    " ":" limit "+offset+","+resPerPage+"  ");
+			
+			parQ = null;
+			parQ = new ParamQuery("FOCUS_NGD_BROWSE",sql);
+
+			if (debug)
+			    System.out.println("FocusForAllDAO:getFocusBrowseList:Arraybrowseall:"+parQ.getQuerySQL());
+			try {
+				parQ.setPrepStat(conn);
+				prepStmt = parQ.getPrepStat();
+				if (debug)
+					System.out.println("MySQLFocusForAllDAO:getFocusBrowseList - prepStmt" + prepStmt);
+				
+				// execute
+				resSet = prepStmt.executeQuery();
+				result = formatResultSet(resSet, MAX_NGD_COLUMNS);
+				
+				
+				return result;
+			} catch(SQLException se) {
+				se.printStackTrace();
+				return null;
+			}	
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+				final long endTime = System.currentTimeMillis();
+				System.out.println("getFocusBrowseList array Total execution time: " + (endTime - startTime) );
+			}
+		}
+		else if(query.equals("ish")) {
 			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_ISH");
 			// assemble the query string
 			String sql = parQ.getQuerySQL();
@@ -776,6 +885,85 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
     	}
 	}
 	
+	public ArrayList getNGDSeriesList(int columnIndex, boolean ascending, int offset, int num, String organ, String protocol) {
+		// TODO Auto-generated method stub
+		ArrayList result = null;
+		ResultSet resSet = null;
+		ParamQuery parQ = AdvancedSearchDBQuery.getParamQuery("ALL_NGD_SERIES");
+		PreparedStatement prepStmt = null;
+		
+		String query = parQ.getQuerySQL();
+		String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ);
+		if(null != emapids) {
+			String ids = "";
+			for(int i = 0; i < emapids.length; i++) {
+				ids += "'"+emapids[i] + "',";
+			}
+			if(emapids.length >= 1) {
+				ids = ids.substring(0, ids.length()-1);
+			}
+			String componentString = "AND IST_COMPONENT IN (select distinct DESCEND_ATN.ATN_PUBLIC_ID " +
+			" from ANA_TIMED_NODE ANCES_ATN, " +
+			" ANAD_RELATIONSHIP_TRANSITIVE, " +
+			" ANA_TIMED_NODE DESCEND_ATN, " +
+			" ANA_NODE, " +
+			" ANAD_PART_OF " +
+			" where ANCES_ATN.ATN_PUBLIC_ID in ("+ids+") " +
+			" and ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
+			//     " and RTR_ANCESTOR_FK        <> RTR_DESCENDENT_FK "+ // by xingjun 14/11/2007: should include descendent
+			" and RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
+			" and ANCES_ATN.ATN_STAGE_FK = DESCEND_ATN.ATN_STAGE_FK " +
+			" and ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
+			" and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) ";
+			query = query.replaceAll("AND IST_COMPONENT IN", componentString); 
+		}
+		/*
+		if (null != protocol && !protocol.equals("")) {
+			String protocolString = " and NGS_PROTOCOL_FK=NGP_OID and PLT_GEO_ID=? ";
+			query = query.replaceAll("AND NGS_PROTOCOL_FK", protocolString);
+		} else {
+			query.replaceAll("AND NGS_PROTOCOL_FK", "");
+		}
+		*/
+		// xingjun - 14/12/2009 - changed the default order as editors requested
+//		String defaultOrder = AdvancedSearchDBQuery.ORDER_BY_EXPERIMENT_NAME;
+		String defaultOrder = DBQuery.ORDER_BY_LAB_AND_EXPERIMENT;
+		String queryString = assembleBrowseNGDSeriesQueryString(query, defaultOrder, columnIndex, ascending, offset, num);
+//	    System.out.println("FocusForAllDAO:getSeriesList:sql: "+queryString);
+		// execute the query
+		try {
+		    if (debug)
+		    	System.out.println("MySQLFocusFowAllDAOImp:getNGDSeriesList sql = "+queryString.toLowerCase());
+			prepStmt = conn.prepareStatement(queryString);
+			/*if(null != protocol && !protocol.equals("")) {
+				prepStmt.setString(1, protocol);
+			}
+			*/
+			if (debug)
+				System.out.println("MySQLFocusForAllDAO:getNGDSeriesList - prepStmt" + prepStmt);
+			resSet = prepStmt.executeQuery();
+			result = formatBrowseSeriesResultSet(resSet);
+			
+			return result;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return null;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
+	}
+
+	public int getNumberOfNGDSeries(String organ, String protocol) {
+		ArrayList list = getNGDSeriesList(1, true, 0, 0, organ, protocol);
+    	if(null == list) {
+    		return 0;
+    	} else {
+    		return list.size();
+    	}
+	}
+	
 	private String assembleBrowseSerieseQueryString(String query, String defaultOrder, 
 			int columnIndex, boolean ascending, int offset, int num) {
 
@@ -792,6 +980,31 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			
 		} else { // if don't specify order by column, order by experiment name and geo id by default
 			queryString = query + defaultOrder+ ", NATURAL_SORT(TRIM(SER_GEO_ID))";
+		}
+		
+		// offset and retrieval number
+		queryString += (offset==0 && num==0)?"":" LIMIT " + offset + ", " + num;
+		
+		// return assembled query string
+		return queryString;
+	}
+	
+	private String assembleBrowseNGDSeriesQueryString(String query, String defaultOrder, 
+			int columnIndex, boolean ascending, int offset, int num) {
+
+		String queryString = null;
+		
+		// order by
+		if (columnIndex != -1) {
+			queryString = query + " ORDER BY ";
+			
+			// translate parameters into database column names
+			String column = getBrowseNGDSeriesOrderByColumn(columnIndex, ascending);
+			
+			queryString += column;
+			
+		} else { // if don't specify order by column, order by experiment name and geo id by default
+			queryString = query + defaultOrder+ ", NATURAL_SORT(TRIM(NGR_GEO_ID))";
 		}
 		
 		// offset and retrieval number
@@ -827,6 +1040,30 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			orderByString = "SUB_SOURCE " + order + ", " + defaultOrder;
 		} else if (columnIndex == 4) {
 			orderByString = "PLT_GEO_ID " + order + ", " + defaultOrder;
+		}
+		return orderByString;
+	}
+	
+private String getBrowseNGDSeriesOrderByColumn(int columnIndex, boolean ascending) {
+		
+		String orderByString = new String("");
+		String defaultOrder = " NATURAL_SORT(TRIM(NGR_TITLE)) ";
+		String order = (ascending == true ? "ASC": "DESC");
+		String[] browseSeriesColumnList = {
+				"NATURAL_SORT(TRIM(NGR_TITLE))", "NATURAL_SORT(TRIM(NGR_GEO_ID))", "SUB_SOURCE", "SAMPLE_NUMBER",  
+				 "NGP_LIBRARY_STRATEGY"};
+		
+		// start to translate
+		if (columnIndex == 0) {
+			orderByString = defaultOrder + order;
+		} else if (columnIndex == 1) {
+			orderByString = "NATURAL_SORT(TRIM(NGR_GEO_ID)) " + order + ", " + defaultOrder;
+		} else if (columnIndex == 2) {
+			orderByString = "SUB_SOURCE " + order + ", " + defaultOrder;
+		} else if (columnIndex == 3) {
+			orderByString = "SAMPLE_NUMBER " + order + ", " + defaultOrder;
+		} else if (columnIndex == 4) {
+			orderByString = "NGP_LIBRARY_STRATEGY " + order + ", " + defaultOrder;
 		}
 		return orderByString;
 	}

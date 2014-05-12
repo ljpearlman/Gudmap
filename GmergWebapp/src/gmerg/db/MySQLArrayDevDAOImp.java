@@ -181,7 +181,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
      * @param num
      * @return queryString - the String used to query the db 
      */
-    private String assembleSeriesSamplesQString(String query,
+    protected String assembleSeriesSamplesQString(String query,
                                                 String defaultOrder,
                                                 int columnIndex,
                                                 boolean ascending, int offset,
@@ -298,7 +298,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	private ArrayList formatBrowseSeriesResultSet(ResultSet resSet) throws SQLException {
+	protected ArrayList formatBrowseSeriesResultSet(ResultSet resSet) throws SQLException {
 		
    		ArrayList<String[]> results = null;
 		ResultSetMetaData resSetMetaData = resSet.getMetaData();
