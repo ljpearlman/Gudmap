@@ -16,6 +16,8 @@ import gmerg.entities.submission.StatusNote;
 import gmerg.entities.submission.LockingInfo;
 import gmerg.utils.Utility;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.ResourceBundle;
 import java.util.List;
 import java.util.ArrayList;
@@ -1221,7 +1223,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             String authors = new String("");
             while (resSet.next()) {
                 authors += resSet.getString(1) + " ";
-            }
+            }            
             return authors.trim();
         }
         return null;

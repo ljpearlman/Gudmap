@@ -75,7 +75,13 @@
 					<h:outputLink value="#{ISHSingleSubmissionBean.submission.wlzImage.clickFilePath}">
 						<h:graphicImage value="../images/opt_logo.png" height="30" width="30"/>
 					</h:outputLink>
+<%--				
+					<h:outputLink value="">
+						<h:graphicImage value="../images/opt_logo.png" height="30" width="30"/>
+					</h:outputLink>
 
+					<h:outputText  style="color:red" value=" The 3D OPT image viewer is temporarily unavailable, this should restored by 11:00 on Monday 14th April"></h:outputText>
+--%>			
 			</h:panelGroup>
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}" />
 			<h:outputLink value="#{ISHSingleSubmissionBean.submission.wlzImage.filePath}" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}">
