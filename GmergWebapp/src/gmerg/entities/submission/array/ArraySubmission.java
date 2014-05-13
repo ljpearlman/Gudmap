@@ -1,5 +1,7 @@
 package gmerg.entities.submission.array;
 
+import java.util.ArrayList;
+
 import gmerg.entities.submission.Submission;
 
 public class ArraySubmission extends Submission {
@@ -14,6 +16,9 @@ public class ArraySubmission extends Submission {
     protected String expFile;
     protected String txtFile;
     protected String tissue; 
+    protected ArrayList linkedSubmissions;
+    protected ArrayList linkedPublications;
+    protected String[] acknowledgements;
 
     public void setSeries(Series ser) {
         series = ser;
@@ -93,5 +98,29 @@ public class ArraySubmission extends Submission {
 
     public void setTissue(String tissue) {
     	this.tissue = tissue;
+    }
+    
+    public void setLinkedSubmissions(ArrayList linkedSubmissions){
+    	this.linkedSubmissions = linkedSubmissions;
+    }
+    
+    public ArrayList getLinkedSubmissions(){
+    	return linkedSubmissions;
+    }
+    
+    public void setLinkedPublications(ArrayList linkedPublications){
+    	this.linkedPublications = linkedPublications;
+    }
+    
+    public ArrayList getLinkedPublications(){
+    	return linkedPublications;
+    }
+    
+    public void setAcknowledgements (String[] acknowledgements){
+    	this.acknowledgements=acknowledgements;
+    }
+    
+    public String[] getAcknowledgements(){
+    	return acknowledgements;
     }
 }

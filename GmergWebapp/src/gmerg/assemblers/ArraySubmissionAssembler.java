@@ -59,6 +59,9 @@ public class ArraySubmissionAssembler {
 			// get submitter info
 			Person submitter = ishDAO.findSubmitterBySubmissionId(accessionId);
 			
+			// get author info
+			String authors  = ishDAO.findAuthorBySubmissionId(accessionId);
+			
 			// get sample info
 			Sample sample = arrayDAO.findSampleBySubmissionId(accessionId);
 			
@@ -73,11 +76,17 @@ public class ArraySubmissionAssembler {
 			
 			ArrayList images = arrayDevDAO.findOriginalImagesById(accessionId);
 			
+			ArrayList linkedPublications = ishDAO.findPublicationBySubmissionId(accessionId);
+			String[] acknowledgements = ishDAO.findAcknowledgementBySubmissionId(accessionId);
+			ArrayList linkedSubmissionsRaw = ishDAO.findLinkedSubmissionBySubmissionId(accessionId);
+			ArrayList linkedSubmissions = new ISHSubmissionAssembler().formatLinkedSubmissionData(linkedSubmissionsRaw);
+			
 			/** ---assemble array submission object---  */
 			ArraySubmission arraySubmission = new ArraySubmission();
 			arraySubmission.setAccID(submission.getAccID());
 			arraySubmission.setStage(submission.getStage());
 			arraySubmission.setArchiveId(submission.getArchiveId()); // added by xingjun - 03/11/2010
+			arraySubmission.setResultNotes(submission.getResultNotes());
 			arraySubmission.setOriginalImages(images);
 	
 			if (null != supplementaryFiles) {
@@ -90,10 +99,15 @@ public class ArraySubmissionAssembler {
 			}
 			arraySubmission.setPrincipalInvestigators(pis);
 			arraySubmission.setSubmitter(submitter);
+			arraySubmission.setAuthors(authors);
 			arraySubmission.setSample(sample);
 			arraySubmission.setSeries(series);
 			arraySubmission.setPlatform(platform);
 			arraySubmission.setAllele(allele);
+			
+			arraySubmission.setLinkedSubmissions(linkedSubmissions);
+			arraySubmission.setLinkedPublications(linkedPublications);
+			arraySubmission.setAcknowledgements(acknowledgements);
 			
 			arraySubmission.setPublicFlag(submission.getPublicFlag());
 			arraySubmission.setDeletedFlag(submission.getDeletedFlag());

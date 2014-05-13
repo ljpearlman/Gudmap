@@ -7,7 +7,6 @@ public class NGDSample extends Sample {
    
 	private String stageFormat;
     private String genotype;
-    //private String strain;
     private String sampleNotes;
     private String libraryPoolSize;
     private String libraryReads;
@@ -32,13 +31,6 @@ public class NGDSample extends Sample {
         return genotype;
     }
     
-   /* public void setStrain(String strain) {
-        this.strain = strain;
-    }
-
-    public String getStrain() {
-        return strain;
-    }*/
     public void setSampleNotes(String sampleNotes) {
         this.sampleNotes = sampleNotes;
     }

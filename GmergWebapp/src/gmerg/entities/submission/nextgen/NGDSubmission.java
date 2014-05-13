@@ -14,8 +14,6 @@ public class NGDSubmission extends Submission {
     protected String filesLocation;
     protected String [] rawFile;
     protected String [] processedFile;
-   //rotected String tissue; 
-    //otected String strain;
     protected ArrayList linkedSubmissions;
     protected ArrayList linkedPublications;
     protected String[] acknowledgements;
@@ -75,23 +73,6 @@ public class NGDSubmission extends Submission {
     public String[] getProcessedFile() {
         return processedFile;
     }
-
-
-/*    public String getTissue() {
-    	return tissue;
-    }
-
-    public void setTissue(String tissue) {
-    	this.tissue = tissue;
-    }
-    
-    public void setStrain(String strain) {
-    	this.strain = strain;
-    }
-    
-    public String getStrain(){
-    	return strain;
-    }*/
     
     public void setLinkedSubmissions(ArrayList linkedSubmissions){
     	this.linkedSubmissions = linkedSubmissions;

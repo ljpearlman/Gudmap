@@ -86,6 +86,7 @@ public class SeriesBean implements Serializable{
         tableView.setCollectionBottons(1);
         tableView.setDisplayTotals(false);
         tableView.setColAlignment(4, 0);
+        tableView.setColAlignment(5, 0);
         
         return  tableView;
     }

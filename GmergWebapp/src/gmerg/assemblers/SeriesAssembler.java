@@ -162,10 +162,10 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
     public HeaderItem [] createHeader() {
         
         //set the titles of each of the columns in the table
-        String headerTitles[] = {Utility.getProject()+" ID", "GEO Sample ID", "Sample ID", "Sample Description", "Component(s) Sampled" };
+        String headerTitles[] = {Utility.getProject()+" ID", "GEO Sample ID", "Sample ID", "Genotype", "Sample Description", "Component(s) Sampled" };
         //specify which columns are sortable
 //        boolean headerSortable [] = {false, false, false, false};
-        boolean headerSortable [] = {true, true, true, true, false};
+        boolean headerSortable [] = {true, true, true, true, false, false};
         
         int colNum = headerTitles.length;
         HeaderItem[] tableHeader = new HeaderItem[colNum];
@@ -298,8 +298,9 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
             tableData[i][0] = new DataItem(row[0], "View Sample", "mic_submission.html?id="+row[0], 10);   // Project Id
             tableData[i][1] = new DataItem(row[1], "View Sample in GEO", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 9);   // Sample GEO Id
             tableData[i][2] = new DataItem(row[2]);   // Sample Id
-            tableData[i][3] = new DataItem(row[3]);   // Sample Description
-            tableData[i][4] = new DataItem(row[4]);   // Series description (list of components)
+            tableData[i][3] = new DataItem(row[3]);   // Genotype
+            tableData[i][4] = new DataItem(row[4]);   // Sample Description
+            tableData[i][5] = new DataItem(row[5]);   // List of components
         }
                 
         return tableData;
