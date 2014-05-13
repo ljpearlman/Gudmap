@@ -274,10 +274,10 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	 * @return
 	 */
 	public static HeaderItem[] createHeaderForArrayBrowseTable() {
-		 String[] headerTitles = { Utility.getProject()+" Entry Details", "GEO Sample ID", 
+		 String[] headerTitles = { Utility.getProject()+" Entry Details", "GEO Sample ID",  "GEO Series ID", "Source",
 				 				   Utility.getStageSeriesMed()+" Stage", "Age", 
-				 				   "Source", "Date", "Sex",
-				 				   "Sample Description", "Title", "Genotype", "GEO Series ID", "Component(s) sampled" };
+				 				    "Date", "Sex",
+				 				   "Sample Description", "Title", "Genotype", "Component(s) sampled" };
 		 
 		int colNum = headerTitles.length;
 		HeaderItem[] tableHeader = new HeaderItem[colNum];
@@ -416,28 +416,23 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		for(int i=0; i<rowNum; i++) {
 			String[] row = (String[])list.get(i); 
 			tableData[i][0] = new DataItem(row[0], "Click to view Samples page","mic_submission.html?id="+row[0], 10 );	
-			tableData[i][1] = new DataItem(row[1], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 2);
+			tableData[i][1] = new DataItem(row[1], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 2); //SAMPLE GEO ID
+			tableData[i][2] = new DataItem(row[9], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[9], 2); //SERIES GEO ID
+			tableData[i][3] = new DataItem(row[4], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);		//source
 			if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
-//				tableData[i][2] = new DataItem(row[2], "", "http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts"+row[2]+"/", 10);
-				tableData[i][2] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);
+				tableData[i][4] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);
 			}
 			else {
-				tableData[i][2] = new DataItem(row[2]);
+				tableData[i][4] = new DataItem(row[2]); //THEILER STAGE
 			}
-			tableData[i][3] = new DataItem(row[3]);
+			tableData[i][5] = new DataItem(row[3]);	//AGE		
 
-			tableData[i][4] = new DataItem(row[4], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);		//source
-			
-
-			tableData[i][5] = new DataItem(row[5]);
-			tableData[i][6] = new DataItem(row[6]);
-			tableData[i][7] = new DataItem(row[7]);
-			tableData[i][8] = new DataItem(row[8]);
-//			tableData[i][9] = new DataItem(row[9], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[9], 2);
-//			tableData[i][10] = new DataItem(row[10]);
-			tableData[i][9] = new DataItem(row[11]); // Gene Reported
-			tableData[i][10] = new DataItem(row[9], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[9], 2);
-			tableData[i][11] = new DataItem(row[10]);
+			tableData[i][6] = new DataItem(row[5]); //DATE
+			tableData[i][7] = new DataItem(row[6]); //SEX
+			tableData[i][8] = new DataItem(row[7]); //SAMPLE DESCRIPTION
+			tableData[i][9] = new DataItem(row[8]); //TITLE
+			tableData[i][10] = new DataItem(row[11]); // GENOTYPE
+			tableData[i][11] = new DataItem(row[10]); //COMPONENTS SAMPLED
 		}					   
 		return tableData;
 	}	

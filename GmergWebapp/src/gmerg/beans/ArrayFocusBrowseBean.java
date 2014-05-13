@@ -56,9 +56,10 @@ public class ArrayFocusBrowseBean {
 		tableView.setRowsSelectable();
 		tableView.addCollection(0, 0);
 		tableView.setCollectionBottons(1);
-		tableView.setColVisible(new boolean[]{true, true, true, true, true, false, false, true, false, false, true, true});
-		tableView.setColMaxWidth(8, 30);  // Trim value if it is more than 30 characters (adds ... at the end)
-		tableView.setColAlignment(7, 0);	// description column left aligned
+		tableView.setColVisible(new boolean[]{true, true, true, true, true, false, false, false, true, false, true, true});
+		tableView.setColMaxWidth(9, 30);  // TITLE Trim value if it is more than 30 characters (adds ... at the end)
+		tableView.setColAlignment(8, 0);	// DESCRIPTION column left aligned
+		tableView.setColAlignment(11, 0);	// COMPONENTS column left aligned
 		return  tableView;
 	}	
 	
