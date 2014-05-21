@@ -30,6 +30,7 @@ public class FocusBrowseNGDAssembler extends OffMemoryTableAssembler{
 	private String gene;
     private String archiveId;
     private String batchId;
+    private String specimenType;
 
     protected RetrieveDataCache cache = null;
 
@@ -59,6 +60,7 @@ public class FocusBrowseNGDAssembler extends OffMemoryTableAssembler{
 		gene = getParam("gene");
 		archiveId = getParam("archiveId");
 		batchId = getParam("batchId");
+		specimenType = getParam("specimenType");
 	}
 	
 	/**
@@ -83,7 +85,7 @@ public class FocusBrowseNGDAssembler extends OffMemoryTableAssembler{
 			
 			ArrayList submissions =
 				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
-						stage, gene, archiveId, batchId, String.valueOf(offset), String.valueOf(num), filter);
+						stage, gene, archiveId, batchId, null, String.valueOf(offset), String.valueOf(num), filter);
 
 			/** ---return the value object---  */
 			DataItem[][] ret = null;
@@ -123,7 +125,7 @@ public class FocusBrowseNGDAssembler extends OffMemoryTableAssembler{
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, filter);
+			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, specimenType, filter);
 			return n;
 		}
 		catch(Exception e){

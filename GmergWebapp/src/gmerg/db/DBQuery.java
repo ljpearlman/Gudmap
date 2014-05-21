@@ -64,7 +64,7 @@ public class DBQuery {
                                                   "JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " +
                                                   "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
                                                   "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-                                                  "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
+                                                  "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_ORDER = (SELECT MIN(I.IMG_ORDER) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
                                                   "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK ";
 
   final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
@@ -622,8 +622,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                         " JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK" +
                         " JOIN REF_URL U ON U.URL_OID = 1 LEFT " +
                         " JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-                        " AND IMG_OID = " +
-                        " (SELECT MIN(I.IMG_OID) " +
+                        " AND IMG_ORDER = " +
+                        " (SELECT MIN(I.IMG_ORDER) " +
                         " FROM ISH_ORIGINAL_IMAGE I " +
                         " WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
                         " JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK ";
@@ -647,7 +647,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
   
   final static String NUMBER_OF_SPECIMEN_TYPE = "SELECT COUNT(DISTINCT SPN_ASSAY_TYPE) ";
   
-  final static String NUMBER_OF_IMAGE = "SELECT COUNT(DISTINCT CONCAT(IMG_FILEPATH, IMG_SML_FILENAME)) ";
+  //final static String NUMBER_OF_IMAGE = "SELECT COUNT(DISTINCT CONCAT(IMG_FILEPATH, IMG_SML_FILENAME)) ";
+  final static String NUMBER_OF_IMAGE = "SELECT COUNT(IMG_OID) ";
 
   final static String name38 = "TOTAL_NUMBER_OF_SUBMISSION";
   final static String query38 = NUMBER_OF_SUBMISSION + endsBrowseSubmissionISH;
@@ -674,7 +675,10 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
   final static String query45 = NUMBER_OF_SPECIMEN_TYPE + endsBrowseSubmissionISH;
   
   final static String name46 = "TOTAL_NUMBER_OF_IMAGE";
-  final static String query46 = NUMBER_OF_IMAGE + endsBrowseSubmissionISH;
+  //final static String query46 = NUMBER_OF_IMAGE + endsBrowseSubmissionISH;
+  final static String query46 = "SELECT COUNT(IMG_OID) FROM ISH_ORIGINAL_IMAGE, ISH_SUBMISSION, ISH_SPECIMEN "+
+		  						"WHERE IMG_SUBMISSION_FK=SUB_OID AND SPN_SUBMISSION_FK=SUB_OID " +
+		  						"AND SUB_IS_DELETED=0 AND SUB_DB_STATUS_FK=4 AND SUB_IS_PUBLIC=1";
   
   final static String NUMBER_OF_SEX = "SELECT COUNT(DISTINCT SPN_SEX) ";
   
@@ -1026,8 +1030,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
   		                                                      "  ANO_OID AND APO_IS_PRIMARY = true " +
   		                                                      "JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
   		                                                      "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-  		                                                      "  AND IMG_OID = " +
-  		                                                      "    (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I " +
+  		                                                      "  AND IMG_ORDER = " +
+  		                                                      "    (SELECT MIN(I.IMG_ORDER) FROM ISH_ORIGINAL_IMAGE I " +
   		                                                      "     WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
   		                                                      "JOIN REF_PROBE WHERE ";
   
@@ -1188,16 +1192,16 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
 
   final static String name91 = "GENE_EXPRESSED_IN_COMPONENT_END";
   final static String query91 = "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-  		                                                "  AND IMG_OID = " +
-  		                                                "   (SELECT MIN(I.IMG_OID) " +
+  		                                                "  AND IMG_ORDER = " +
+  		                                                "   (SELECT MIN(I.IMG_ORDER) " +
   		                                                "    FROM ISH_ORIGINAL_IMAGE I " +
   		                                                "    WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
   		                                                "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 14 " + PUBLIC_ENTRIES_Q;
   
   final static String name92 = "GENE_NOT_DETECTED_IN_COMPONENT_END";
   final static String query92 = "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-  		                                                  "  AND IMG_OID = " +
-  		                                                  "    (SELECT MIN(I.IMG_OID) " +
+  		                                                  "  AND IMG_ORDER = " +
+  		                                                  "    (SELECT MIN(I.IMG_ORDER) " +
   		                                                  "     FROM ISH_ORIGINAL_IMAGE I " +
   		                                                  "     WHERE I.IMG_SUBMISSION_FK = SUB_OID) " + PUBLIC_ENTRIES_Q;
   

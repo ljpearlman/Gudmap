@@ -6,7 +6,6 @@ import gmerg.db.FocusForAllDAO;
 import gmerg.db.ISHDevDAO;
 import gmerg.db.MySQLDAOFactory;
 import gmerg.db.FocusStageDAO;
-
 import gmerg.utils.RetrieveDataCache;
 import gmerg.utils.Utility;
 import gmerg.utils.table.DataItem;
@@ -30,6 +29,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	private String gene;
     private String archiveId;
     private String batchId;
+    private String specimenType;
 
     protected RetrieveDataCache cache = null;
 
@@ -59,6 +59,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		gene = getParam("gene");
 		archiveId = getParam("archiveId");
 		batchId = getParam("batchId");
+		this.specimenType = getParam("specimenType");
 	}
 	
 	/**
@@ -83,7 +84,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			
 			ArrayList submissions =
 				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
-						stage, gene, archiveId, batchId, String.valueOf(offset), String.valueOf(num), filter);
+						stage, gene, archiveId, batchId, specimenType, String.valueOf(offset), String.valueOf(num), filter);
 
 			/** ---return the value object---  */
 			DataItem[][] ret = null;
@@ -125,7 +126,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, filter);
+			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, specimenType, filter);
 			return n;
 		}
 		catch(Exception e){
@@ -223,7 +224,16 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
 	                "TOTAL_NUMBER_OF_IMAGE",
 	                };
-			String endingClause = " AND (SUB_ASSAY_TYPE = 'ISH') "; // Bernie 17/11/2010 - added endingClause to get correct totals
+			String endingClause = " AND SUB_ASSAY_TYPE = 'ISH' "; // Bernie 17/11/2010 - added endingClause to get correct totals (only ish tables show totals at present, when others do, modify the queries above)
+			//request param if called from statistics
+			if(specimenType!=null){
+				if(specimenType.equals("WISH"))
+					endingClause+=" AND SPN_ASSAY_TYPE='wholemount' ";
+				else if(specimenType.equals("SISH"))
+					endingClause+=" AND SPN_ASSAY_TYPE='section' ";
+				else if(specimenType.equals("OPT"))
+					endingClause+=" AND SPN_ASSAY_TYPE='opt-wholemount' ";
+			}
 			String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
 			//String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, filter);
 			

@@ -352,12 +352,11 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	 * @return
 	 */
 	public ArrayList getFocusBrowseList(String[] organ, int column, boolean ascending, 
-			String query, String stage, String gene, String archiveId, String batchId, String offset, String resPerPage, GenericTableFilter filter) {
+			String query, String stage, String gene, String archiveId, String batchId, String specimenType, String offset, String resPerPage, GenericTableFilter filter) {
 //		System.out.println("FocusForAll:getFocusBrowseList:column: " + column);
 //		System.out.println("query type: " + query);
 
 		final long startTime = System.currentTimeMillis();
-		
 		ResultSet resSet = null;
 		ArrayList result = null;
 		ParamQuery parQ = null;
@@ -522,6 +521,14 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			parQ = AdvancedSearchDBQuery.getParamQuery("ALL_ENTRIES_ISH");
 			// assemble the query string
 			String sql = parQ.getQuerySQL();
+			if(specimenType!=null){
+			if(specimenType.equals("WISH"))
+				sql+=" AND SPN_ASSAY_TYPE='wholemount' ";
+			else if(specimenType.equals("SISH"))
+				sql+=" AND SPN_ASSAY_TYPE='section' ";
+			else if(specimenType.equals("OPT"))
+				sql+=" AND SPN_ASSAY_TYPE='opt-wholemount' ";
+			}
 			// focus group
 			if(null != organ) {
 				String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ[0]);
@@ -794,8 +801,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
      * overload version 
      * @return
      */
-    public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, String archiveId, String batchId, GenericTableFilter filter) {
-    	ArrayList list = getFocusBrowseList(inputs, 1, true, query, stage, symbol, archiveId, batchId, null, null,filter);
+    public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, String archiveId, String batchId, String specimenType, GenericTableFilter filter) {
+    	ArrayList list = getFocusBrowseList(inputs, 1, true, query, stage, symbol, archiveId, batchId, specimenType, null, null,filter);
     	if(null == list) {
     		return 0;
     	} else {

@@ -335,8 +335,13 @@ public class Globals {
 	    return new FilterItem(FilterType.RADIO, new String[]{"male", "female", "unknown"}, null);
 	case ASSAY: 
 	    return new FilterItem(FilterType.CHECKBOX, new String[]{"ISH", "IHC", "Array", "TG"}, null);
-	case SPECIMEN: 
-	    return new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount", "opt-wholemount"}, null);
+	case SPECIMEN:
+	{
+		return new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount", "opt-wholemount"}, null);
+		/*FilterItem specimenFilter=new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount", "opt-wholemount"}, new String[]{"section"});
+	    specimenFilter.setActive(true); 
+	    return specimenFilter;*/
+	}
 	case GENOTYPE: 
 	    return new FilterItem(FilterType.LIST, new String[]{"wholemount", "section"}, null);
 	case DATE:
