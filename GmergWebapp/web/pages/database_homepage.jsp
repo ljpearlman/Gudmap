@@ -307,15 +307,79 @@
 		
 		<%-------------------  Buttom tree menu ----------------------%>	
 		<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" VALIGN="top" >
+			<%-- <TR>
+				<TD/>
+				<TD/>
+				<TD>&nbsp;</TD>
+	 			<TD>&nbsp;</TD>
+				<TD class="top_left_border">&nbsp;</TD>
+				<TD class="top_border">&nbsp;</TD>
+				<TD class="top_border">&nbsp;</TD>
+				<TD align="left" valign="top">
+					</f:verbatim>
+					<h:outputLink value="ngd_series_browse.html#{DatabaseHomepageBean.organParam}" >
+						<h:graphicImage width="130" height="24" url="../images/focus/n_nextGenSeries.png" alt="Next Gen Series" styleClass="icon" />
+					</h:outputLink>
+					<f:verbatim>
+				</TD>
+				<TD valign="top">
+					<a href="#Link141495Context" name="Link141495Context" id="Link141495Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141495', 'Browse Next Gen Series', 'Next Gen Series returns a list of all the Next Gen series in GUDMAP. From there you can link to individual series and thence to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#nextgen\&quot;&gt;More....&lt;/a&gt;', 'Link141495Context')">
+						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
+					</a>
+				</TD>
+			</TR>
+			<TR>
+				<TD STYLE="height:10px">&nbsp;</TD>
+				<TD/>
+				<TD>&nbsp;</TD>
+				<TD/>
+				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD>&nbsp;</TD>
+			</TR>
+			<TR>
+				<TD/>
+				<TD/>
+				<TD>&nbsp;</TD>
+	 			<TD>&nbsp;</TD>
+				<TD class="top_left_border">&nbsp;</TD>
+				<TD class="top_border">&nbsp;</TD>
+				<TD class="top_border">&nbsp;</TD>
+				<TD align="left" valign="top">
+					</f:verbatim>
+					<h:outputLink value="focus_ngd_browse.html#{DatabaseHomepageBean.organParam}" >
+						<h:graphicImage width="130" height="24" url="../images/focus/n_nextGenSample.png" alt="Next Gen Sample" styleClass="icon" />
+					</h:outputLink>
+					<f:verbatim>
+				</TD>
+				<TD valign="top">
+					<a href="#Link141535Context" name="Link141535Context" id="Link141535Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141535', 'Browse Next Gen Samples', 'Next Gen Sample returns a list of all Next Gen samples. From there, click GUDMAP Entry ID to view data for each sample.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#nextgen\&quot;&gt;More....&lt;/a&gt;', 'Link141535Context')">
+						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
+					</a>
+				</TD>
+			</TR>
+			<TR>
+				<TD STYLE="height:10px">&nbsp;</TD>
+				<TD/>
+				<TD>&nbsp;</TD>
+				<TD/>
+				<TD class="left_border">&nbsp;</TD>
+				<TD>&nbsp;</TD>
+				<TD>&nbsp;</TD>
+			</TR> --%>
+			
 			<TR>
 				<TD />
-				<TD width="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-				<TD width="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				<TD width="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> <!-- Replace these two cells with commented ones below -->
 				<TD />
+				<!-- <TD class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_nextGen.png" ALT="Next Gen" WIDTH="124" HEIGHT="24" BORDER="0" NAME="ngd_pix" /></TD> -->
 				<TD />
 				<TD width="50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-				<TD width="30" class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-			    <TD valign="top">
+				<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> <!-- Replace this cell with commented ones below -->
+				<!-- <TD width="30" class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> -->
+			    <TD valign="bottom">
 					</f:verbatim>
 					<h:outputLink value="series_browse.html#{DatabaseHomepageBean.organParam}">
 						<h:graphicImage url="../images/focus/n_series.png" alt="Go" styleClass="icon" />
@@ -323,15 +387,29 @@
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link494046Context" name="Link494046Context" id="Link494046Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID494046', 'Browse Series', ' Series returns a list of all the microarray experiments (series) in GUDMAP.  From there you can go to individual experiments and thence to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#gene\&quot;&gt;More....&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;download.&lt;/a&gt;  To see Analyses of Microarray results click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/analysis.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link494046Context')">
+					<a href="#Link494046Context" name="Link494046Context" id="Link494046Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID494046', 'Browse Series', ' Series returns a list of all the microarray experiments (series) in GUDMAP.  From there you can go to individual experiments and thence to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#gene\&quot;&gt;More....&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;Submission Archive.&lt;/a&gt;  To see Analyses of Microarray Gene Lists click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/genelist_tree.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link494046Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
 			</TR>
-			<TR>
-				<TD colspan="6" />
-				<TD class="left_border">&nbsp;</TD>
+			<TR> <!-- Replace this row with the one commented out below -->
+				<TD STYLE="height:10px">&nbsp;</TD>
+				<TD/>
+				<TD>&nbsp;</TD>
+				<TD/>
+				<TD/>
+				<TD/>
+				<TD class="top_left_border">&nbsp;</TD>
 			</TR>
+			<!-- <TR>
+				<TD STYLE="height:10px">&nbsp;</TD>
+				<TD/>
+				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD/>
+				<TD/>
+				<TD class="left_border">&nbsp;</TD>
+			</TR> -->
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
 				<TD />
@@ -348,7 +426,7 @@
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link782434Context" name="Link782434Context" id="Link782434Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID782434', 'Browse Sample', ' Sample returns a list of all micro-array samples. From there, click GUDMAP Entry ID to view data for each sample.  &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#anatomy\&quot;&gt;More...&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;download.&lt;/a&gt;  To see Analyses of Microarray results click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/analysis.html\&quot;&gt;here.&lt;/a&gt;', 'Link782434Context')">
+					<a href="#Link782434Context" name="Link782434Context" id="Link782434Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID782434', 'Browse Sample', ' Sample returns a list of all micro-array samples. From there, click GUDMAP Entry ID to view data for each sample.  &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#anatomy\&quot;&gt;More...&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;Submission Archive.&lt;/a&gt;  To see Analyses of Microarray Gene Lists click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/genelist_tree.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link782434Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
@@ -374,7 +452,7 @@
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link209534Context" name="Link209534Context" id="Link209534Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID209534', 'Browse Theiler Stage', 'Theiler Stage returns a list of GUDMAP database entries organized by developmental (Theiler) stage. Theiler Stages are described &lt;a href=\&quot;http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/stagecriteria.html\&quot;&gt;here&lt;/a&gt;; see also &lt;a href=\&quot;http://www.gudmap.org/About/Tutorial/index.html\&quot;&gt;Tutorial on genitourinary development.&lt;/a&gt;&lt;br&gt;', 'Link209534Context')">
+					<a href="#Link209534Context" name="Link209534Context" id="Link209534Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID209534', 'Browse Theiler Stage', 'Theiler Stage returns a list of GUDMAP database entries organized by developmental (Theiler) stage. Theiler Stages are described &lt;a href=\&quot;http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/stagedefinition.html\&quot;&gt;here&lt;/a&gt;; see also &lt;a href=\&quot;http://www.gudmap.org/About/Tutorial/index.html\&quot;&gt;Tutorial on genitourinary development.&lt;/a&gt;&lt;br&gt;', 'Link209534Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
@@ -509,11 +587,11 @@
 	</h:panelGroup> <%------------ left hand side ------------%>
 	
 	<%-------------------------------- right-hand side ------------------------------------%>	
-	<h:panelGrid cellspacing="0" cellpadding="5px" border="1" style="margin-left:2em"> 
+	<h:panelGrid cellspacing="0" cellpadding="5px" border="1" style="margin-left:2em;margin-top:-64px;"> 
 		<h:panelGrid columns="3" cellspacing="0" cellpadding="2px" width="100%" styleClass="plaintextlight" >
-			<h:outputText value="Assay" styleClass="plaintextboldlight" />
-			<h:outputText value="Genes" styleClass="plaintextboldlight" />
-			<h:outputText value="Entries" styleClass="plaintextboldlight" />
+			<h:outputText value="Assay" styleClass="plaintextbold" />
+			<h:outputText value="Genes" styleClass="plaintextbold" />
+			<h:outputText value="Entries" styleClass="plaintextbold" />
 			
 			<h:outputText value="ISH" />
 			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totIshGenes}"/>
