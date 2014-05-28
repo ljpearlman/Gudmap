@@ -13,10 +13,10 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
-    protected boolean debug = false;
+    protected boolean debug = true;
     
     private Connection conn;
-    private int ColumnNumbers = 15;// 14 //Bernie - 01/03/2012 - (Mantis 619) added 'sex column so increase from 14 to 15'
+    private int ColumnNumbers = 17; //15;// 14 //Bernie - 01/03/2012 - (Mantis 619) added 'sex column so increase from 14 to 15'
     private int ColumnQuickNumbers = 15; //14;
     private int MAXROWS = 20;
     
@@ -1196,50 +1196,50 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
      */
     
     public ArrayList<String[]> getFocusQuery(String type, 
-					     String[] input, int orderby, boolean asc, 
-					     String offset, String resperpage, String organ,
-					     String sub, String exp, String[] queryCriteria, String transitiveRelations, 
-					     String archiveId, String batchId, GenericTableFilter filter) {
-    	
+		     String[] input, int orderby, boolean asc, 
+		     String offset, String resperpage, String organ,
+		     String sub, String exp, String[] queryCriteria, String transitiveRelations, 
+		     String archiveId, String batchId, GenericTableFilter filter) {
+
 		if (debug) {
-		    System.out.println("=============getFocusQuery===============");
-		    System.out.println("sub1:" + sub);
-		    System.out.println("wildcard:" + queryCriteria[0]);
+			System.out.println("=============getFocusQuery===============");
+			System.out.println("sub1:" + sub);
+			System.out.println("wildcard:" + queryCriteria[0]);
 		}
-	
-	
+		
+		
 		String assayValue = filter.getActiveAssay();
 		if (assayValue != null){
-		    if(assayValue.equalsIgnoreCase("Array"))
-		    	sub = "mic";
-		    if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
-		    	sub = "ish";
-		    if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
-		    	sub = null;
+		if(assayValue.equalsIgnoreCase("Array"))
+			sub = "mic";
+		if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+			sub = "ish";
+		if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
+			sub = null;
 		}
-	
+		
 		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, 
-							 null, organ, sub, exp, queryCriteria, transitiveRelations, archiveId, batchId);
+						 null, organ, sub, exp, queryCriteria, transitiveRelations, archiveId, batchId);
 		
 		if(list == null){
-		    return null;
+			return null;
 		}
-	
+		
 		String[] sql = (String [])list.get(0);
 		if (debug) {
-		    for (int i=0;i<input.length;i++)
-		    	System.out.println("input:" + input[i]);
+			for (int i=0;i<input.length;i++)
+				System.out.println("input:" + input[i]);
 		}
 		
 		ArrayList<String[]> result = null;
 		ResultSet resSet = null;
-    	PreparedStatement prepStmt = null;
-	
-    	if(null != sql && null != sql[0]) {
-		    try {
+		PreparedStatement prepStmt = null;
+		
+		if(null != sql && null != sql[0]) {
+			try {
 				if (debug)
 				    System.out.println("before adding filter"+sql[0]);
-		
+			
 				sql[0] = filter.addFilterSql(sql[0], null);
 				if (debug)
 				    System.out.println("after adding filter sql[0] = "+sql[0] );
@@ -1253,10 +1253,16 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    sql[0] = sql[0].replaceAll("QSC_ISH_CACHE", "QSC_ISH_CACHE "+AdvancedSearchDBQuery.fromISHTissue());
 				}
 			
-	        	String orderpart = DBHelper.orderResult(orderby, asc) + 
+				String orderpart = DBHelper.orderResult(orderby, asc) + 
 			    new String((null == offset || offset.trim().equals(""))&& (resperpage==null || resperpage.trim().equals(""))? " ":" limit "+ offset + "," + resperpage + " ");
 			
-				sql[0] = "SELECT DISTINCT x.col1, GROUP_CONCAT(DISTINCT x.col2), x.col3, x.col4, x.col5, x.col6, x.col7, x.col8, x.col9, x.col10, x.col11, x.col12, x.col13, x.col14, x.col15 FROM ("+sql[0]+") AS x GROUP BY x.col10 " + orderpart.replaceAll("col", "x.col");
+				if (debug)
+				    System.out.println("orderpart = "+orderpart );
+	        	
+				sql[0] = "SELECT DISTINCT x.col1, GROUP_CONCAT(DISTINCT x.col2), x.col3, x.col4, x.col5, x.col6, x.col7, x.col8, x.col9, x.col10, x.col11, x.col12, x.col13, x.col14, x.col15, col16, col17 FROM ("+sql[0]+") AS x GROUP BY x.col10 " + orderpart.replaceAll("col", "x.col");
+
+				if (debug)
+				    System.out.println("sql[0] = "+sql[0] );
 				
 				prepStmt = conn.prepareStatement(sql[0]);
 				int ishIterations = 0;
@@ -1279,9 +1285,9 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    }
 				}
 				
-				resSet = prepStmt.executeQuery();
 				if (debug)
-				    System.out.println("MySQLAdvancedQueryDAOImp:getFocusQuery-prepStmt= "+prepStmt.toString());
+				    System.out.println("before executing sql = "+prepStmt.toString());
+				resSet = prepStmt.executeQuery();
 				
 				result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
 				return result;
@@ -1294,9 +1300,9 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				DBHelper.closePreparedStatement(prepStmt);
 				DBHelper.closeResultSet(resSet);
 		    }
-    	}
+		}
 		return null;
-    }
+	}
     
     /**
      * 

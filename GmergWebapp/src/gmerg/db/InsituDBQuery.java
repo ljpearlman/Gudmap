@@ -148,6 +148,9 @@ public class InsituDBQuery {
 	"JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
 	"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
 	"JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " +
+    "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
+	"LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+	"LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +                                                  
 	"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
 	"AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
 	"JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK " +
@@ -164,6 +167,7 @@ public class InsituDBQuery {
 		"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) AGE",
 		"SPN_SEX",
 		"SPN_WILDTYPE",
+		"ANO_COMPONENT_NAME",
 		"(SELECT GROUP_CONCAT(DISTINCT EXP_STRENGTH) FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID) EXP_STRENGTH",
 //		"SUB_INSITU_EXP",
 //		"GROUP_CONCAT(DISTINCT EXP_STRENGTH)",
@@ -217,6 +221,8 @@ public class InsituDBQuery {
 	final static String NUMBER_OF_IMAGE = "SELECT COUNT(DISTINCT CONCAT(IMG_FILEPATH,IMG_SML_FILENAME)) ";
 
 	final static String NUMBER_OF_ISH_EXPRESSION = "SELECT COUNT(DISTINCT EXP_STRENGTH) "; 
+	
+	final static String NUMBER_OF_TISSUES = "SELECT COUNT(DISTINCT ANO_COMPONENT_NAME) "; 	
 	
 	static String getAssayType(String[] type) {
 		String assayType = " AND (SUB_ASSAY_TYPE = '";
@@ -278,6 +284,9 @@ public class InsituDBQuery {
 	
 	final static String name114 = "TOTAL_NUMBER_OF_ISH_EXPRESSION_TG";
 	final static String query114 = NUMBER_OF_ISH_EXPRESSION + BROWSE_ALL_TABLES_TG + PUBLIC_ENTRIES_Q + getAssayType("TG");
+
+	final static String name115 = "TOTAL_NUMBER_OF_TISSUES_TG";
+	final static String query115 = NUMBER_OF_TISSUES + BROWSE_ALL_TABLES_TG + PUBLIC_ENTRIES_Q + getAssayType("TG");
 	
 	public static String stageFormatConcat = bundle.getString("project").equals("GUDMAP") ?
 			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) " +
@@ -332,6 +341,7 @@ public class InsituDBQuery {
 		new ParamQuery(name112, query112),
 		new ParamQuery(name113, query113),
 		new ParamQuery(name114, query114),
+		new ParamQuery(name115, query115),
 		new ParamQuery(name16, query16)
 	};
 	

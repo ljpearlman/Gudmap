@@ -11,11 +11,11 @@ import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
     private Connection conn;
     private int MAX_COLUMNS = 12; // added extra column ALE_GENE
-    private int MAX_ISH_COLUMNS = 13;
+    private int MAX_ISH_COLUMNS = 14;
 
     // default constructor
     public MySQLFocusForAllDAOImp() {  	
@@ -305,10 +305,12 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}  else if(9 == orderby){
 					orderStr = " order by SPN_WILDTYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(10 == orderby){
-					orderStr = " order by EXP_STRENGTH " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+					orderStr = " order by ANO_COMPONENT_NAME " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(11 == orderby){
+					orderStr = " order by EXP_STRENGTH " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+				}  else if(12 == orderby){
 					orderStr = " order by SPN_ASSAY_TYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
-				}   else if(12 == orderby){
+				}   else if(13 == orderby){
 					orderStr = " order by CONCAT(IMG_URL.URL_URL, I.IMG_FILEPATH, IMG_URL.URL_SUFFIX, I.IMG_SML_FILENAME) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}   				
 			}
@@ -471,15 +473,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				if (debug)
 					System.out.println("MySQLFocusForAllDAO:getFocusBrowseList - prepStmt" + prepStmt);
 				// execute
-				final long startTime2 = System.currentTimeMillis();
 				resSet = prepStmt.executeQuery();
-				final long endTime2 = System.currentTimeMillis();
-				System.out.println("getFocusBrowseList ish Total query time: " + (endTime2 - startTime2) );
 				
-				final long startTime3 = System.currentTimeMillis();				
 				result = formatResultSet(resSet, MAX_ISH_COLUMNS);
-				final long endTime3 = System.currentTimeMillis();
-				System.out.println("getFocusBrowseList ish Total format time: " + (endTime3 - startTime3) );
 				return result;
 			} catch(SQLException se) {
 				se.printStackTrace();

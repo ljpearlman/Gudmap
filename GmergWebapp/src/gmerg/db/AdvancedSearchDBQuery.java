@@ -15,7 +15,7 @@ import gmerg.utils.Utility;
  *
  */
 public class AdvancedSearchDBQuery {
-    protected static boolean debug = false;
+    protected static boolean debug = true;
 
 	  static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 	  
@@ -23,7 +23,7 @@ public class AdvancedSearchDBQuery {
 	  final static public String[] getISHDefaultTitle(){
 	      return new String[]{"Gene", Utility.getProject()+" Entry Details", "Source", "Submission Date", 
 	    		  	 "Assay Type", "Probe Name", Utility.getStageSeriesMed()+" Stage", 
-					 "Age", "Sex", "Genotype", "In Situ Expression", "Specimen Type", "Images"};			  
+					 "Age", "Sex", "Genotype", "Tissue", "In Situ Expression", "Specimen Type", "Images"};			  
 	  }
 	  
 	  final static public String[] getISHEditDefaultTitle(){
@@ -37,10 +37,11 @@ public class AdvancedSearchDBQuery {
 	  }
 	  
 	  final static public String[] getBothDefaultTitle(){
-		  return new String[]{ "Gene", Utility.getProject()+" Entry Details", "Assay Type", 
+		  return new String[]{ "Gene", Utility.getProject()+" Entry Details", 
+				"Source", "Submission Date", 
+				"Assay Type", "Probe Name", "Theiler Stage", "Age", "Sex", "Genotype","Tissue", 
 				"In situ Expression", "Microarray Expression", 
-				"Tissue", "Theiler Stage", "Age","Sex",
-		      "Source", "Submission Date", "Specimen Type", "Images"};		  
+		        "Specimen Type", "Images"};		  
 	  }
 	  
 	  final static public String getMICDefaultSort(){
@@ -412,7 +413,8 @@ public class AdvancedSearchDBQuery {
 		"QIC_SUB_THUMBNAIL col9,"+
 		"QIC_SUB_ACCESSION_ID col10,"+
 		"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, " +
-		" QIC_SPN_SEX col15 ";
+		" QIC_SPN_SEX col15,"+
+		"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 ";
 	  }
 	  
 	  final static public String fromISHTissue(){		  
@@ -422,21 +424,23 @@ public class AdvancedSearchDBQuery {
 	  }
 
     final static public String getISHSelectForAnatomy(){
-	return "(select distinct QIC_RPR_SYMBOL col1, "+
-	    "'' col2,"+
-	    "QIC_EXP_STRENGTH col3,"+
-	    "QIC_SUB_SOURCE col4,"+
-	    "QIC_SUB_SUB_DATE col5,"+
-	    "QIC_SUB_EMBRYO_STG col6,"+
-	    "QIC_SPN_ASSAY_TYPE col7,"+
-	    "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
-               "QIC_SUB_THUMBNAIL col9,"+
-	    "QIC_SUB_ACCESSION_ID col10,"+
-	    "'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15  ";
-    }
+    	return "(select distinct QIC_RPR_SYMBOL col1, "+
+    	    "'' col2,"+
+    	    "QIC_EXP_STRENGTH col3,"+
+    	    "QIC_SUB_SOURCE col4,"+
+    	    "QIC_SUB_SUB_DATE col5,"+
+    	    "QIC_SUB_EMBRYO_STG col6,"+
+    	    "QIC_SPN_ASSAY_TYPE col7,"+
+    	    "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
+                   "QIC_SUB_THUMBNAIL col9,"+
+    	    "QIC_SUB_ACCESSION_ID col10,"+
+    	    "'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15,"+
+    		"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 ";
+	    }
+ 
     
-    public static String getISHSelectForAnatomy(String anatomyTerm) {
-		  return "(select distinct QIC_RPR_SYMBOL col1, "+
+	    public static String getISHSelectForAnatomy(String anatomyTerm) {
+			  return "(select distinct QIC_RPR_SYMBOL col1, "+
 			"QIC_ANO_COMPONENT_NAME col2, "+
 	        "QIC_EXP_STRENGTH col3,"+
 			"QIC_SUB_SOURCE col4,"+
@@ -446,24 +450,25 @@ public class AdvancedSearchDBQuery {
 			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
 			"QIC_SUB_THUMBNAIL col9,"+
 			"QIC_SUB_ACCESSION_ID col10,"+
-			"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15  ";
+			"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15," +
+			"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 ";
 	  }
 	  
-	  final static public String getMICSelect(){
-		  return "(select distinct "+
-		"'' col1,"+
-		"QMC_ANO_COMPONENT_NAME col2,"+
-                "'' col3,"+
-		"QMC_SUB_SOURCE col4,"+
-		"QMC_SUB_SUB_DATE col5,"+
-		"QMC_SUB_EMBRYO_STG col6,"+
-		"QMC_SPN_ASSAY_TYPE col7,"+
-		"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) col8,"+
-		"'' col9,"+
-		"QMC_SUB_ACCESSION_ID col10,"+
-		"'' col11,"+
-		"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15  ";
-	  }
+		  final static public String getMICSelect(){
+			  return "(select distinct "+
+			"'' col1,"+
+			"QMC_ANO_COMPONENT_NAME col2,"+
+	                "'' col3,"+
+			"QMC_SUB_SOURCE col4,"+
+			"QMC_SUB_SUB_DATE col5,"+
+			"QMC_SUB_EMBRYO_STG col6,"+
+			"QMC_SPN_ASSAY_TYPE col7,"+
+			"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) col8,"+
+			"'' col9,"+
+			"QMC_SUB_ACCESSION_ID col10,"+
+			"'' col11,"+
+			"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17  ";
+		  }
 	  
 	  
 	  /**
@@ -485,7 +490,7 @@ public class AdvancedSearchDBQuery {
 		"'' col9,"+
 		"MBC_SUB_ACCESSION_ID col10,"+
 		"'' col11,"+
-		"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15 ";
+		"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17 ";
 	  }
 
 	  final static public String getMICSelectForAnatomy(){
@@ -501,7 +506,7 @@ public class AdvancedSearchDBQuery {
 			"'' col9,"+
 			"QMC_SUB_ACCESSION_ID col10,"+
 			"'' col11,"+
-			"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15 ";
+			"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17 ";
 	  }	 
 	  
 	  final static public String getMICSelectForGEOID(){
@@ -517,7 +522,7 @@ public class AdvancedSearchDBQuery {
 		"'' col9,"+
 		"QMC_SUB_ACCESSION_ID col10,"+
 		"'' col11,"+
-		"'' col12, '' col13, 'Microarray' col14 , QMC_SPN_SEX col15 ";
+		"'' col12, '' col13, 'Microarray' col14 , QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17 ";
 	  }		  
 	  
 	  final static public String getISHCount(){
@@ -827,6 +832,7 @@ public class AdvancedSearchDBQuery {
 															stageFormatConcat,
 															"SPN_SEX",
 															"SPN_WILDTYPE",
+															"ANO_COMPONENT_NAME",
 															"(SELECT GROUP_CONCAT(DISTINCT EXP_STRENGTH) FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID) EXP_STRENGTH",
 //															"SUB_INSITU_EXP",
 //															"GROUP_CONCAT(DISTINCT EXP_STRENGTH)",
@@ -853,7 +859,10 @@ public class AdvancedSearchDBQuery {
               "JOIN ISH_PROBE ON SUB_OID = PRB_SUBMISSION_FK " +
               "JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
               "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
-              "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
+          "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
+          "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+          "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
+          	  "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
               "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
               "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
               "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK"; 
@@ -1134,7 +1143,7 @@ public class AdvancedSearchDBQuery {
 		      ret = pqList[i];
 		      
 		      if (debug)
-			  System.out.println("sql = "+  ret.getQuerySQL().toLowerCase());
+			  System.out.println("AdvancedSearchDBQuery getParamQuery = "+  ret + "sql = " + ret.getQuerySQL());
 		      
 		      break;
 		  }

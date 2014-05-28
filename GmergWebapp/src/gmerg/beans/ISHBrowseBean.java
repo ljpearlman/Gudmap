@@ -102,7 +102,7 @@ public class ISHBrowseBean extends MultipleInstanceBean {
 		tableView.addCollection(1, 1);
 		tableView.setDisplayTotals(true);
 //		tableView.setDisplayTotals(false);
-		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, false, true, true, false, true, false, false, false, true});
+		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, false, true, true, false, false, true, false, false, false, true});
 		
 		return tableView;
 	}
@@ -117,8 +117,8 @@ public class ISHBrowseBean extends MultipleInstanceBean {
 		filter.addFilter(new FilterItem(5));
 		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.STAGE));
 		filter.addFilter(8, Globals.getPredefinedFilter(PredefinedFilters.SEX));
-		filter.addFilter(10, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
-		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
+//		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
+		filter.addFilter(12, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
 		return filter;
 	}
 }

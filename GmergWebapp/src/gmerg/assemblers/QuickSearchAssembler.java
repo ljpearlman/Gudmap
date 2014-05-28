@@ -18,7 +18,7 @@ import java.util.Hashtable;
 import java.util.Arrays;
 
 public class QuickSearchAssembler extends OffMemoryTableAssembler {
-    protected boolean debug = false;
+    protected boolean debug = true;
     protected RetrieveDataCache cache = null;
 
 	String[] input;
@@ -145,7 +145,8 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 //	    System.out.println("QuickSearchAssembler.createHeaderForSearchResultTable");
 
 		 String headerTitles[] = AdvancedSearchDBQuery.getBothDefaultTitle();
-		 boolean headerSortable[] = {true, true, true, true, true, true, true, true, true, true, true, true, false};
+		 boolean headerSortable[] = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, false};
+//		 boolean headerSortable[] = {true, true, true, true, true, true, true, true, true, true, true, true, false};
 		 int colNum = headerTitles.length;
 		 HeaderItem[] tableHeader = new HeaderItem[colNum];
 		 for(int i=0; i<colNum; i++)
@@ -156,8 +157,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 	//Bernie 10/5/2011 - Mantis 328 - added method
 	//Bernie 01/03/2012 - Mantis 620 - added SEX to filter choice
 	public static int[] getTableviewToSqlColMap() {
-		int[] map = {0, 9, 13, 2, 11, 1, 5, 7, 14, 3, 4, 6, 8};
+//		int[] map = {0, 9, 13, 2, 11, 1, 5, 7, 14, 3, 4, 6, 8};
 //		int[] map = {0, 9, 3, 4, 13, 5, 7, 14, 1, 2, 11, 6, 8};
+		int[] map = {0, 9, 3, 4, 13, 16, 5, 7, 14, 15, 1, 2, 11, 6, 8};
 		return map;
 	}
 
@@ -192,15 +194,46 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 		for(int i=0; i<rowNum; i++) {	
 			row = (String[])list.get(i); 
 		
+			// gene
 			tableData[i][0] = new DataItem(row[0], "Click to view gene page","gene.html?gene="+row[0], 10);	//gene		  	
+			
+			// gudmap id
 			if(null != row[13] && row[13].equals("Microarray")) {
 				tableData[i][1] = new DataItem(row[9], "Click to view Samples page","mic_submission.html?id="+row[9], 10);			//sub id
 			} else if(null != row[13] && (row[13].equals("ISH")||row[13].equals("IHC") || row[13].equals("OPT") || row[13].equalsIgnoreCase("TG"))) {
 				tableData[i][1] = new DataItem(row[9], "Click to view submission page","ish_submission.html?id="+row[9], 10);		//sub id
 			}
-			tableData[i][2] = new DataItem(row[13]);	//assay type
-			tableData[i][3] = new DataItem(row[2]);		//ish exp
-			tableData[i][4] = new DataItem(geneExpressions.get(row[11]));	//mic exp
+			
+			// source
+			tableData[i][2] = new DataItem(row[3], "Source details", "lab_detail.html?id="+row[9], 6, 251, 500);		//source
+
+			// submission date
+			tableData[i][3] = new DataItem(row[4]);
+			
+			// assay type
+			tableData[i][4] = new DataItem(row[13]);
+			
+			// probe name
+			tableData[i][5] = new DataItem(row[15]);
+			
+			// theiler stage
+            if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
+              tableData[i][6] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[5]+"definition.html", 10);         //stage
+            }
+            else {
+              tableData[i][6] = new DataItem(row[5]);        
+            }
+            
+            // age
+			tableData[i][7] = new DataItem(row[7]);		//age
+			
+			// sex
+			tableData[i][8] = new DataItem(row[14]);
+			
+			// genotype
+			tableData[i][9] = new DataItem(row[16]);
+
+			// tissue
 			// to allow description popup window, and mouse over text
 			if (null != row[1]) {
 			    strArr = row[1].split(";");
@@ -213,32 +246,26 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			    } else 
 				str = row[1];
 			}
-			tableData[i][5] = new DataItem(str,row[1],30);		//tissue	
-            if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
-//                tableData[i][6] = new DataItem(row[5], "", "http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts"+row[5]+"/", 10);         //stage
-                tableData[i][6] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[5]+"definition.html", 10);         //stage
-            }
-            else {
-                tableData[i][6] = new DataItem(row[5]);         //stage
-            }
+			tableData[i][10] = new DataItem(str,row[1],30);		
 			
-			tableData[i][7] = new DataItem(row[7]);		//age
-			//Bernie - 01/03/2012 - (Mantis 619) added new column for sex
-			tableData[i][8] = new DataItem(row[14]);	//sex	
-
-			tableData[i][9] = new DataItem(row[3], "Source details", "lab_detail.html?id="+row[9], 6, 251, 500);		//source
-
-			tableData[i][10] = new DataItem(row[4]);		//date
-			tableData[i][11] = new DataItem(row[6]);	//spe type
-			//			ycheng bug reported 20070723
+			// insitu expression
+			tableData[i][11] = new DataItem(row[2]);	
+			
+			// microarray expression
+			tableData[i][12] = new DataItem(geneExpressions.get(row[11]));	
+			
+			//specimen type
+			tableData[i][13] = new DataItem(row[6]);	
+			
+			// thumbnails
 			if(null != row[13] && row[13].equals("Microarray")) {
-				tableData[i][12] = new DataItem("");
+				tableData[i][14] = new DataItem("");
 			} else if(null != row[13] && (row[13].equalsIgnoreCase("ISH")||row[13].equalsIgnoreCase("IHC") || row[13].equalsIgnoreCase("OPT") || row[13].equalsIgnoreCase("TG"))) {
 				if(row[13].equals("OPT")) {
-					tableData[i][12] = new DataItem(row[8].substring(0,row[8].lastIndexOf("."))+".jpg", "Click to see submission details for "+ row[9], "ish_submission.html?id="+row[9], 13); // thumbnail (only for OPT)
+					tableData[i][14] = new DataItem(row[8].substring(0,row[8].lastIndexOf("."))+".jpg", "Click to see submission details for "+ row[9], "ish_submission.html?id="+row[9], 13); // thumbnail (only for OPT)
 				}
 				else {
-					tableData[i][12] = new DataItem(row[8], "Click to see submission details for "+ row[9], "ish_submission.html?id="+row[9], 13); // thumbnail (only for ISH)
+					tableData[i][14] = new DataItem(row[8], "Click to see submission details for "+ row[9], "ish_submission.html?id="+row[9], 13); // thumbnail (only for ISH)
 				}
 				
 			}
