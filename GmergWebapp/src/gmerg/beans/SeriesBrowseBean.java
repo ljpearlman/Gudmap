@@ -62,9 +62,9 @@ public class SeriesBrowseBean  {
 		
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
 			if (organ==null || "".equals(organ))
-				return "Gudmap microarray Series submissions";
+				return "GUDMAP microarray Series submissions";
 		
-			return "Gudmap microarray Series submissions in <em>" + DatabaseHomepageBean.getOrganName(organ) + "</em>";
+			return "GUDMAP microarray Series submissions in <em>" + DatabaseHomepageBean.getOrganName(organ) + "</em>";
 		}
 		return "";
 	}

@@ -6,7 +6,6 @@ import gmerg.db.FocusForAllDAO;
 import gmerg.db.ISHDevDAO;
 import gmerg.db.MySQLDAOFactory;
 import gmerg.db.FocusStageDAO;
-
 import gmerg.utils.RetrieveDataCache;
 import gmerg.utils.Utility;
 import gmerg.utils.table.DataItem;
@@ -30,6 +29,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	private String gene;
     private String archiveId;
     private String batchId;
+    private String specimenType;
 
     protected RetrieveDataCache cache = null;
 
@@ -59,6 +59,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		gene = getParam("gene");
 		archiveId = getParam("archiveId");
 		batchId = getParam("batchId");
+		this.specimenType = getParam("specimenType");
 	}
 	
 	/**
@@ -83,12 +84,14 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			
 			ArrayList submissions =
 				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
-						stage, gene, archiveId, batchId, String.valueOf(offset), String.valueOf(num), filter);
+						stage, gene, archiveId, batchId, specimenType, String.valueOf(offset), String.valueOf(num), filter);
 
 			/** ---return the value object---  */
 			DataItem[][] ret = null;
 			if ("array".equals(getParam("assayType")))
 				ret = getTableDataFormatFromArrayList(submissions);
+			else if ("ngd".equals(getParam("assayType")))
+				ret = getTableDataFormatFromNGDList(submissions);
 			else
 				ret = ISHBrowseAssembler.getTableDataFormatFromIshList(submissions);
 
@@ -123,7 +126,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, filter);
+			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, specimenType, filter);
 			return n;
 		}
 		catch(Exception e){
@@ -145,8 +148,65 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		int[] totalNumbers = null;
+		//String [] allColTotalsQueries = new String[13];
+		//String endingClause = "";
 		try{
 			ISHDevDAO ishDevDAO = MySQLDAOFactory.getISHDevDAO(conn);
+		/* TODO: SET UP THE ARRAY AND NEXT GEN TOTAL QUERIES	
+			if ("array".equalsIgnoreCase(assayType)) {
+				allColTotalsQueries[0] = "TOTAL_NUMBER_OF_SUBMISSION";
+				allColTotalsQueries[1] = "TOTAL_NUMBER_OF_MIC_SAMPLE";
+				allColTotalsQueries[2] = "TOTAL_NUMBER_OF_MIC_THEILER_STAGE";
+				allColTotalsQueries[3] = "TOTAL_NUMBER_OF_MIC_GIVEN_STAGE";
+				allColTotalsQueries[4] = "TOTAL_NUMBER_OF_LAB";
+				allColTotalsQueries[5] = "TOTAL_NUMBER_OF_SUBMISSION_DATE";
+				allColTotalsQueries[6] = "TOTAL_NUMBER_OF_SEX";
+				allColTotalsQueries[7] = "TOTAL_NUMBER_OF_MIC_SAMPLE_DESCRIPTION";
+				allColTotalsQueries[8] = "TOTAL_NUMBER_OF_MIC_SAMPLE_TITLE";
+				allColTotalsQueries[9] = "TOTAL_NUMBER_OF_GENOTYPE";
+				allColTotalsQueries[10] = "TOTAL_NUMBER_OF_MIC_SERIES";
+				allColTotalsQueries[11] = "TOTAL_NUMBER_OF_ISH_EXPRESSION";
+				allColTotalsQueries[12] = "TOTAL_NUMBER_OF_IMAGE";	
+				
+				endingClause = " AND (SUB_ASSAY_TYPE = 'Microarray') ";
+			}
+			
+			if ("ngd".equalsIgnoreCase(assayType)) {
+				allColTotalsQueries[0] = "TOTAL_NUMBER_OF_SUBMISSION";
+				allColTotalsQueries[1] = "TOTAL_NUMBER_OF_NGD_SAMPLE";
+				allColTotalsQueries[2] = "TOTAL_NUMBER_OF_NGD_SERIES";
+				allColTotalsQueries[3] = "TOTAL_NUMBER_OF_LAB";
+				allColTotalsQueries[4] = "TOTAL_NUMBER_OF_LIBRARY_STRATEGY";
+				allColTotalsQueries[5] = "TOTAL_NUMBER_OF_NGD_THEILER_STAGE";
+				allColTotalsQueries[6] = "TOTAL_NUMBER_OF_NGD_GIVEN_STAGE";
+				allColTotalsQueries[7] = "TOTAL_NUMBER_OF_SUBMISSION_DATE";
+				allColTotalsQueries[8] = "TOTAL_NUMBER_OF_SEX";
+				allColTotalsQueries[9] = "TOTAL_NUMBER_OF_NGD_SAMPLE_DESCRIPTION";
+				allColTotalsQueries[10] = "TOTAL_NUMBER_OF_NGD_SAMPLE_TITLE";
+				allColTotalsQueries[11] = "TOTAL_NUMBER_OF_GENOTYPE";
+				allColTotalsQueries[12] = "TOTAL_NUMBER_OF_COMPONENTS_SAMPLED";
+				
+				endingClause = " AND (SUB_ASSAY_TYPE = 'NextGen') ";
+			}
+			
+			if ("ish".equalsIgnoreCase(assayType) || "insitu".equalsIgnoreCase(assayType) || "insitu_all".equalsIgnoreCase(assayType)) {
+				allColTotalsQueries[0] = "TOTAL_NUMBER_OF_GENE_SYMBOL";
+				allColTotalsQueries[1] = "TOTAL_NUMBER_OF_SUBMISSION";
+				allColTotalsQueries[2] = "TOTAL_NUMBER_OF_LAB";
+				allColTotalsQueries[3] = "TOTAL_NUMBER_OF_SUBMISSION_DATE";
+				allColTotalsQueries[4] = "TOTAL_NUMBER_OF_ASSAY_TYPE";
+				allColTotalsQueries[5] = "TOTAL_NUMBER_OF_PROBE_NAME";
+				allColTotalsQueries[6] = "TOTAL_NUMBER_OF_THEILER_STAGE";
+				allColTotalsQueries[7] = "TOTAL_NUMBER_OF_GIVEN_STAGE";
+				allColTotalsQueries[8] = "TOTAL_NUMBER_OF_SEX";
+				allColTotalsQueries[9] = "TOTAL_NUMBER_OF_GENOTYPE";
+				allColTotalsQueries[10] = "TOTAL_NUMBER_OF_ISH_EXPRESSION";
+				allColTotalsQueries[11] = "TOTAL_NUMBER_OF_SPECIMEN_TYPE";
+				allColTotalsQueries[12] = "TOTAL_NUMBER_OF_IMAGE";	
+				
+				endingClause = " AND (SUB_ASSAY_TYPE = 'ISH') ";
+			}
+			*/
 	
 			// get data from database
 			String [] allColTotalsQueries = {
@@ -165,7 +225,16 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
 	                "TOTAL_NUMBER_OF_IMAGE",
 	                };
-			String endingClause = " AND (SUB_ASSAY_TYPE = 'ISH') "; // Bernie 17/11/2010 - added endingClause to get correct totals
+			String endingClause = " AND SUB_ASSAY_TYPE = 'ISH' "; // Bernie 17/11/2010 - added endingClause to get correct totals (only ish tables show totals at present, when others do, modify the queries above)
+			//request param if called from statistics
+			if(specimenType!=null){
+				if(specimenType.equals("WISH"))
+					endingClause+=" AND SPN_ASSAY_TYPE='wholemount' ";
+				else if(specimenType.equals("SISH"))
+					endingClause+=" AND SPN_ASSAY_TYPE='section' ";
+				else if(specimenType.equals("OPT"))
+					endingClause+=" AND SPN_ASSAY_TYPE='opt-wholemount' ";
+			}
 			String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, endingClause, filter);
 			//String[][] columnNumbers = ishDevDAO.getStringArrayFromBatchQuery(null, allColTotalsQueries, filter);
 			
@@ -203,6 +272,11 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			if (stage!=null)
 				header[2].setSortable(false);
 		}
+		if ("ngd".equalsIgnoreCase(assayType)) {
+			header = createHeaderForNGDBrowseTable();
+			if (stage!=null)
+				header[5].setSortable(false);
+		}
 		return header;
 	}	
 
@@ -211,10 +285,23 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	 * @return
 	 */
 	public static HeaderItem[] createHeaderForArrayBrowseTable() {
-		 String[] headerTitles = { Utility.getProject()+" Entry Details", "Sample", 
+		 String[] headerTitles = { Utility.getProject()+" Entry Details", "GEO Sample ID",  "GEO Series ID", "Source",
 				 				   Utility.getStageSeriesMed()+" Stage", "Age", 
-				 				   "Source", "Date", "Sex",
-				 				   "Sample Description", "Title", "Gene Reported", "Series", "Component(s) sampled" };
+				 				    "Date", "Sex",
+				 				   "Sample Description", "Title", "Genotype", "Component(s) sampled" };
+		 
+		int colNum = headerTitles.length;
+		HeaderItem[] tableHeader = new HeaderItem[colNum];
+		for(int i=0; i<colNum; i++)
+			tableHeader[i] = new HeaderItem(headerTitles[i], true);
+		return tableHeader;
+	}
+	
+	public  HeaderItem[] createHeaderForNGDBrowseTable() {
+		 String[] headerTitles = { Utility.getProject()+" Entry Details", "GEO Sample ID", "GEO Series ID", "Source",
+				 				   "Library Strategy", Utility.getStageSeriesMed()+" Stage", "Age", 
+				 				    "Date", "Sex",
+				 				   "Sample Description", "Title", "Genotype",  "Component(s) sampled" };
 		 
 		int colNum = headerTitles.length;
 		HeaderItem[] tableHeader = new HeaderItem[colNum];
@@ -340,29 +427,58 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		for(int i=0; i<rowNum; i++) {
 			String[] row = (String[])list.get(i); 
 			tableData[i][0] = new DataItem(row[0], "Click to view Samples page","mic_submission.html?id="+row[0], 10 );	
-			tableData[i][1] = new DataItem(row[1], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 2);
+			tableData[i][1] = new DataItem(row[1], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 2); //SAMPLE GEO ID
+			tableData[i][2] = new DataItem(row[9], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[9], 2); //SERIES GEO ID
+			tableData[i][3] = new DataItem(row[4], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);		//source
 			if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
-//				tableData[i][2] = new DataItem(row[2], "", "http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts"+row[2]+"/", 10);
-				tableData[i][2] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);
+				tableData[i][4] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);
 			}
 			else {
-				tableData[i][2] = new DataItem(row[2]);
+				tableData[i][4] = new DataItem(row[2]); //THEILER STAGE
 			}
-			tableData[i][3] = new DataItem(row[3]);
+			tableData[i][5] = new DataItem(row[3]);	//AGE		
 
-			tableData[i][4] = new DataItem(row[4], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);		//source
-			
-
-			tableData[i][5] = new DataItem(row[5]);
-			tableData[i][6] = new DataItem(row[6]);
-			tableData[i][7] = new DataItem(row[7]);
-			tableData[i][8] = new DataItem(row[8]);
-//			tableData[i][9] = new DataItem(row[9], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[9], 2);
-//			tableData[i][10] = new DataItem(row[10]);
-			tableData[i][9] = new DataItem(row[11]); // Gene Reported
-			tableData[i][10] = new DataItem(row[9], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[9], 2);
-			tableData[i][11] = new DataItem(row[10]);
+			tableData[i][6] = new DataItem(row[5]); //DATE
+			tableData[i][7] = new DataItem(row[6]); //SEX
+			tableData[i][8] = new DataItem(row[7]); //SAMPLE DESCRIPTION
+			tableData[i][9] = new DataItem(row[8]); //TITLE
+			tableData[i][10] = new DataItem(row[11]); // GENOTYPE
+			tableData[i][11] = new DataItem(row[10]); //COMPONENTS SAMPLED
 		}					   
 		return tableData;
 	}	
+	
+	public static DataItem[][] getTableDataFormatFromNGDList(ArrayList list) {
+		if (list == null){
+			System.out.println("No data is retrieved");
+			return null;
+		}
+	
+		int colNum = ((String[])list.get(0)).length;
+		int rowNum = list.size();
+		
+		DataItem[][] tableData = new DataItem[rowNum][colNum];
+		for(int i=0; i<rowNum; i++) {
+			String[] row = (String[])list.get(i); 
+			tableData[i][0] = new DataItem(row[0], "Click to view Samples page","ngd_submission.html?id="+row[0], 10 );	
+			tableData[i][1] = new DataItem(row[1], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 2);
+			tableData[i][2] = new DataItem(row[2], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[2], 2);
+			tableData[i][3] = new DataItem(row[3], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);//SUB_SOURCE
+			tableData[i][4] = new DataItem(row[4]);	//NGP_LIBRARY_STRATEGY			
+			if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
+				tableData[i][5] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[5]+"definition.html", 10);
+			}
+			else {
+				tableData[i][5] = new DataItem(row[5]);
+			}
+			tableData[i][6] = new DataItem(row[6]); //AGE
+			tableData[i][7] = new DataItem(row[7]); //DATE
+			tableData[i][8] = new DataItem(row[8]); //SEX
+			tableData[i][9] = new DataItem(row[9]); // NGS_DESCRIPTION
+			tableData[i][10] = new DataItem(row[10]); //NGS_SAMPLE_NAME
+			tableData[i][11] = new DataItem(row[11]); //GENOTYPE
+			tableData[i][12] = new DataItem(row[12]); //COMPONENTS
+		}					   
+		return tableData;
+	}
 }

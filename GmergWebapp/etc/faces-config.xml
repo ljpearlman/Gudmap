@@ -364,6 +364,18 @@
  </managed-bean>
  
   <managed-bean>
+  <managed-bean-name>NGDSeriesBrowseBean</managed-bean-name>
+  <managed-bean-class>gmerg.beans.NGDSeriesBrowseBean</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+ </managed-bean>
+ 
+  <managed-bean>
+  <managed-bean-name>NGDFocusBrowseBean</managed-bean-name>
+  <managed-bean-class>gmerg.beans.NGDFocusBrowseBean</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+ </managed-bean>
+ 
+  <managed-bean>
   <managed-bean-name>NGDSingleSubmissionBean</managed-bean-name>
   <managed-bean-class>gmerg.beans.NGDSingleSubmissionBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>

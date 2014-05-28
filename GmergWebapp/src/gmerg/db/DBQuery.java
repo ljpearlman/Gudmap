@@ -68,7 +68,7 @@ public class DBQuery {
                                               "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +                                                  "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
 //                                            "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
                                                   "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-                                                  "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_OID = (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
+                                                  "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_ORDER = (SELECT MIN(I.IMG_ORDER) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
                                                   "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK ";
 
   
@@ -92,6 +92,8 @@ public class DBQuery {
   final static String ORDER_BY_REF_PROBE_SYMBOL = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
   
 final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURAL_SORT(TRIM(SER_TITLE))";
+
+final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURAL_SORT(TRIM(NGR_TITLE))";
 
   final static String ORDER_BY_ISH_PROBE_SYMBOL = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
   
@@ -208,8 +210,10 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String query5 = "SELECT MNT_VALUE FROM ISH_SPECIMEN_NOTE, ISH_SUBMISSION WHERE SUB_OID = MNT_SUBMISSION_FK AND SUB_ACCESSION_ID = ? ORDER BY MNT_SEQ";
 
   //query6 (find original images of a particular submission)
+  //ORDER BY NEW IMG_ORDER COLUMN
   final static String name6 = "SUBMISSION_IMAGES";
-  final static String query6 = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_SML_FILENAME), INT_VALUE, SPN_ASSAY_TYPE, CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID  JOIN ISH_SPECIMEN ON SPN_SUBMISSION_FK= SUB_OID JOIN REF_URL I ON I.URL_OID = IMG_URL_FK JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' ORDER BY IMG_OID ";
+  final static String query6 = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_SML_FILENAME), INT_VALUE, SPN_ASSAY_TYPE, CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID  JOIN ISH_SPECIMEN ON SPN_SUBMISSION_FK= SUB_OID JOIN REF_URL I ON I.URL_OID = IMG_URL_FK JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' ORDER BY IMG_ORDER ";
+  //final static String query6 = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_SML_FILENAME), INT_VALUE, SPN_ASSAY_TYPE, CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID  JOIN ISH_SPECIMEN ON SPN_SUBMISSION_FK= SUB_OID JOIN REF_URL I ON I.URL_OID = IMG_URL_FK JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK LEFT JOIN ISH_IMAGE_NOTE ON INT_IMAGE_FK = IMG_OID WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' ORDER BY IMG_OID ";
 
   final static String name7 = "SUBMISSION_IMAGE_DETAIL";
   final static String query7 = "SELECT SUB_ACCESSION_ID, RPR_SYMBOL, RPR_NAME, " +
@@ -221,7 +225,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   				"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
   				"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
   				"JOIN REF_URL ON URL_OID = IMG_URL_FK " + 
-  				"WHERE IMG_TYPE NOT LIKE '%wlz%' AND SUB_ACCESSION_ID = ?";
+  				"WHERE IMG_TYPE NOT LIKE '%wlz%' AND SUB_ACCESSION_ID = ? " +
+  				"ORDER BY IMG_ORDER ";
 
   final static String name245 = "SUBMISSION_WLZ_DETAIL";
   final static String query245 = "SELECT SUB_ACCESSION_ID, RPR_SYMBOL, RPR_NAME, " +
@@ -235,10 +240,13 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   				"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
   				"JOIN REF_URL I ON I.URL_OID = IMG_URL_FK " + 
   				"JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK " + 
-  				" WHERE IMG_TYPE='opt_wlz_merged'  AND SUB_ACCESSION_ID = ?";
+  				" WHERE IMG_TYPE='opt_wlz_merged'  AND SUB_ACCESSION_ID = ? " +
+  				"ORDER BY IMG_ORDER ";
   
   final static String name32 = "SUBMISSION_AUTHOR";
+
   final static String query32 = "SELECT GROUP_CONCAT(AUT_NAME ORDER BY LSA_ORDER SEPARATOR ', ') AS AUTHOR FROM ISH_AUTHORS, LNK_SUB_AUTHORS, ISH_SUBMISSION WHERE AUT_OID=LSA_AUT_FK AND LSA_SUB_FK=SUB_OID AND SUB_ACCESSION_ID = ?";
+
 
   //query3 (find PI of a submission)
   final static String name8 = "SUBMISSION_PI";
@@ -620,8 +628,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                         " JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK" +
                         " JOIN REF_URL U ON U.URL_OID = 1 LEFT " +
                         " JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-                        " AND IMG_OID = " +
-                        " (SELECT MIN(I.IMG_OID) " +
+                        " AND IMG_ORDER = " +
+                        " (SELECT MIN(I.IMG_ORDER) " +
                         " FROM ISH_ORIGINAL_IMAGE I " +
                         " WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
                         " JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK ";
@@ -645,7 +653,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   
   final static String NUMBER_OF_SPECIMEN_TYPE = "SELECT COUNT(DISTINCT SPN_ASSAY_TYPE) ";
   
-  final static String NUMBER_OF_IMAGE = "SELECT COUNT(DISTINCT CONCAT(IMG_FILEPATH, IMG_SML_FILENAME)) ";
+  //final static String NUMBER_OF_IMAGE = "SELECT COUNT(DISTINCT CONCAT(IMG_FILEPATH, IMG_SML_FILENAME)) ";
+  final static String NUMBER_OF_IMAGE = "SELECT COUNT(IMG_OID) ";
 
   final static String name38 = "TOTAL_NUMBER_OF_SUBMISSION";
   final static String query38 = NUMBER_OF_SUBMISSION + endsBrowseSubmissionISH;
@@ -672,7 +681,10 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String query45 = NUMBER_OF_SPECIMEN_TYPE + endsBrowseSubmissionISH;
   
   final static String name46 = "TOTAL_NUMBER_OF_IMAGE";
-  final static String query46 = NUMBER_OF_IMAGE + endsBrowseSubmissionISH;
+  //final static String query46 = NUMBER_OF_IMAGE + endsBrowseSubmissionISH;
+  final static String query46 = "SELECT COUNT(IMG_OID) FROM ISH_ORIGINAL_IMAGE, ISH_SUBMISSION, ISH_SPECIMEN "+
+		  						"WHERE IMG_SUBMISSION_FK=SUB_OID AND SPN_SUBMISSION_FK=SUB_OID " +
+		  						"AND SUB_IS_DELETED=0 AND SUB_DB_STATUS_FK=4 AND SUB_IS_PUBLIC=1";
   
   final static String NUMBER_OF_SEX = "SELECT COUNT(DISTINCT SPN_SEX) ";
   
@@ -714,8 +726,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String name135 = "TOTAL_NUMBER_OF_PROBE_TYPE";
   final static String query135 = NUMBER_OF_PROBE_TYPE + endsBrowseSubmissionISH;
   
-  final static String name252 = "TOTAL_NUMBER_OF_TISSUES";
-  final static String query252 = NUMBER_OF_TISSUES + endsBrowseSubmissionISH;
+  final static String name268 = "TOTAL_NUMBER_OF_TISSUES";
+  final static String query268 = NUMBER_OF_TISSUES + endsBrowseSubmissionISH;
 
   final static String name246 = "TOTAL_NUMBER_OF_ISH_EXPRESSION";
   final static String query246 = NUMBER_OF_ISH_EXPRESSION + endsBrowseSubmissionISH;
@@ -835,20 +847,41 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
                                    "GROUP BY SER_GEO_ID, SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN ";
                                    
   // xingjun - 03/03/2010 - added extra column: list of components
-    final static String SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
-    		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') ";
+   /* final static String SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
+    		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') ";*/
+    
+    final static String SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, " +
+    		"CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'Wild Type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, " +
+    		"LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) IS NOT NULL THEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) " +
+    		"FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) " +
+    		"ELSE (SELECT DISTINCT GROUP_CONCAT(ALE_LAB_NAME_ALLELE) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND " +
+    		"SAL_SUBMISSION_FK=SUB_OID) END  END AS GENOTYPE,  SRM_SAMPLE_DESCRIPTION, " +
+    		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ')  ";
+    
     final static String SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION " + 
                                              "WHERE SER_GEO_ID = ? " + 
                                              "AND SER_OID = SRM_SERIES_FK " + 
                                              "AND SRM_SAMPLE_FK = SMP_OID " + 
                                              "AND SMP_SUBMISSION_FK = SUB_OID";
                                              
-    final static String SAMPLE_SERIES_TABS_WITH_GROUP_BY_CLAUSE = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
+   /* final static String SAMPLE_SERIES_TABS_WITH_GROUP_BY_CLAUSE = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
     		"WHERE SER_GEO_ID = ? " +
     		"AND SER_OID = SRM_SERIES_FK " +
     		"AND SRM_SAMPLE_FK = SMP_OID " +
     		"AND SMP_SUBMISSION_FK = SUB_OID " +
     		"AND EXP_SUBMISSION_FK=SUB_OID " +
+    		"AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+    		"AND ATN_NODE_FK = ANO_OID " +
+			"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4" + // added by xingjun - 10/10/2011 - only retrieve public entries
+    		"GROUP BY SMP_OID ";*/
+    
+    final static String SAMPLE_SERIES_TABS_WITH_GROUP_BY_CLAUSE = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ISH_SPECIMEN, ANA_NODE, ANA_TIMED_NODE " + 
+    		"WHERE SER_GEO_ID = ? " +
+    		"AND SER_OID = SRM_SERIES_FK " +
+    		"AND SRM_SAMPLE_FK = SMP_OID " +
+    		"AND SMP_SUBMISSION_FK = SUB_OID " +
+    		"AND EXP_SUBMISSION_FK=SUB_OID " +
+    		"AND SPN_SUBMISSION_FK=SUB_OID " +
     		"AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
     		"AND ATN_NODE_FK = ANO_OID " +
 			"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4" + // added by xingjun - 10/10/2011 - only retrieve public entries
@@ -1008,8 +1041,8 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		                                                      "  ANO_OID AND APO_IS_PRIMARY = true " +
   		                                                      "JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
   		                                                      "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-  		                                                      "  AND IMG_OID = " +
-  		                                                      "    (SELECT MIN(I.IMG_OID) FROM ISH_ORIGINAL_IMAGE I " +
+  		                                                      "  AND IMG_ORDER = " +
+  		                                                      "    (SELECT MIN(I.IMG_ORDER) FROM ISH_ORIGINAL_IMAGE I " +
   		                                                      "     WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
   		                                                      "JOIN REF_PROBE WHERE ";
   
@@ -1170,16 +1203,16 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
 
   final static String name91 = "GENE_EXPRESSED_IN_COMPONENT_END";
   final static String query91 = "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-  		                                                "  AND IMG_OID = " +
-  		                                                "   (SELECT MIN(I.IMG_OID) " +
+  		                                                "  AND IMG_ORDER = " +
+  		                                                "   (SELECT MIN(I.IMG_ORDER) " +
   		                                                "    FROM ISH_ORIGINAL_IMAGE I " +
   		                                                "    WHERE I.IMG_SUBMISSION_FK = SUB_OID AND I.IMG_TYPE NOT LIKE '%wlz%') " +
   		                                                "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = 14 " + PUBLIC_ENTRIES_Q;
   
   final static String name92 = "GENE_NOT_DETECTED_IN_COMPONENT_END";
   final static String query92 = "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
-  		                                                  "  AND IMG_OID = " +
-  		                                                  "    (SELECT MIN(I.IMG_OID) " +
+  		                                                  "  AND IMG_ORDER = " +
+  		                                                  "    (SELECT MIN(I.IMG_ORDER) " +
   		                                                  "     FROM ISH_ORIGINAL_IMAGE I " +
   		                                                  "     WHERE I.IMG_SUBMISSION_FK = SUB_OID) " + PUBLIC_ENTRIES_Q;
   
@@ -1432,10 +1465,11 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   		"FROM ISH_SUBMISSION " +
   		"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
   		"LEFT JOIN ISH_IMAGE_NOTE ON IMG_OID = INT_IMAGE_FK " +
-  		"WHERE IMG_TYPE NOT LIKE '%wlz%' AND SUB_ACCESSION_ID = ? ";
+  		"WHERE IMG_TYPE NOT LIKE '%wlz%' AND SUB_ACCESSION_ID = ? " +
+  		"ORDER BY IMG_ORDER ";
   
   final static String name214 = "ISH_SUBMISSION_PUBLIC_IMGS";
-  final static String query214 = "SELECT DISTINCT IMG_FILENAME FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND IMG_SUBMISSION_FK = SUB_OID WHERE IMG_TYPE NOT LIKE '%wlz%' AND SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1";
+  final static String query214 = "SELECT DISTINCT IMG_FILENAME FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND IMG_SUBMISSION_FK = SUB_OID WHERE IMG_TYPE NOT LIKE '%wlz%' AND SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 ORDER BY IMG_ORDER";
 
   
   final static String name178 = "COLLECTION_SUBMISSION_IN_SITU_PUBLIC";
@@ -1534,7 +1568,7 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
   final static String query226 = query199;
   
   final static String name200 = "MIC_IMAGES";
-  final static String query200 = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_FILENAME), CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID  JOIN REF_URL I ON I.URL_OID = IMG_URL_FK JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' ORDER BY IMG_OID AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE='Microarray' ";
+  final static String query200 = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_FILENAME), CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID  JOIN REF_URL I ON I.URL_OID = IMG_URL_FK JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE='Microarray' ORDER BY IMG_ORDER ";
   
   /** retrieve collection info */
   // only retrieve own collection entries
@@ -1666,74 +1700,174 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
 	final static String name238 = "MAPROBE_NOTE";
 	final static String query238 = "SELECT RPN_NOTES FROM REF_PRB_NOTES, REF_PROBE WHERE RPR_OID = ? AND RPN_PROBE_FK = RPR_OID AND RPN_ISDELETED = 0 ORDER BY RPN_OID DESC";
 	
-	final static String NGD_SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
-	    		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') ";
-	final static String NGD_SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION " + 
-	                                             "WHERE SER_GEO_ID = ? " + 
-	                                             "AND SER_OID = SRM_SERIES_FK " + 
-	                                             "AND SRM_SAMPLE_FK = SMP_OID " + 
-	                                             "AND SMP_SUBMISSION_FK = SUB_OID";
+	//final static String NGD_SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, NGS_GEO_ID, NGS_SAMPLE_NAME, NGP_LIBRARY_STRATEGY, " +
+	//"NGS_GENOTYPE, NGS_DESCRIPTION, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ') ";
+	
+	//final static String NGD_SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, NGS_GEO_ID, NGS_SAMPLE_NAME, NGP_LIBRARY_STRATEGY, "+
+	//"CASE NGS_GENOTYPE WHEN 'true' THEN 'Wild Type' ELSE (SELECT GROUP_CONCAT(DISTINCT ALE_ALLELE_NAME SEPARATOR ', ') FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID)  END AS GENOTYPE, NGS_DESCRIPTION, " +
+	//"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ')  ";
+	
+	final static String NGD_SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, NGS_GEO_ID, NGS_SAMPLE_NAME, NGP_LIBRARY_STRATEGY, "+
+			"CASE NGS_GENOTYPE WHEN 'true' THEN 'Wild Type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) IS NOT NULL THEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) ELSE (SELECT DISTINCT GROUP_CONCAT(ALE_LAB_NAME_ALLELE) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) END  END AS GENOTYPE, NGS_DESCRIPTION, " +
+			"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ')  ";
+	
+	final static String NGD_SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE = "FROM NGD_SAMPLE, NGD_SAMPLE_SERIES, NGD_SERIES, NGD_PROTOCOL, ISH_SUBMISSION " + 
+	                                             "WHERE NGR_GEO_ID = ? " + 
+	                                             "AND NGL_SERIES_FK = NGR_OID " + 
+	                                             "AND NGL_SAMPLE_FK = NGS_OID " + 
+	                                             "NGS_PROTOCOL_FK=NGP_OID " +
+	                                             "AND NGS_SUBMISSION_FK = SUB_OID";
 	                                             
-	final static String NGD_SAMPLE_SERIES_TABS_WITH_GROUP_BY_CLAUSE = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
-	    		"WHERE SER_GEO_ID = ? " +
-	    		"AND SER_OID = SRM_SERIES_FK " +
-	    		"AND SRM_SAMPLE_FK = SMP_OID " +
-	    		"AND SMP_SUBMISSION_FK = SUB_OID " +
-	    		"AND EXP_SUBMISSION_FK=SUB_OID " +
-	    		"AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+	final static String NGD_SAMPLE_SERIES_TABS_WITH_GROUP_BY_CLAUSE = "FROM NGD_SAMPLE, NGD_SAMPLE_SERIES, NGD_SERIES, NGD_PROTOCOL, ISH_SUBMISSION, ISH_SP_TISSUE, ANA_NODE, ANA_TIMED_NODE " + 
+	    		"WHERE NGR_GEO_ID = ? " +
+	    		"AND NGL_SERIES_FK = NGR_OID " +
+	    		"AND NGL_SAMPLE_FK = NGS_OID " +
+	    		"AND NGS_SUBMISSION_FK = SUB_OID " +
+	    		"NGS_PROTOCOL_FK=NGP_OID " +
+	    		"AND IST_SUBMISSION_FK=SUB_OID " +
+	    		"AND ATN_PUBLIC_ID = IST_COMPONENT " +
 	    		"AND ATN_NODE_FK = ANO_OID " +
 				"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4" + // added by xingjun - 10/10/2011 - only retrieve public entries
-	    		"GROUP BY SMP_OID ";
+	    		"GROUP BY NGS_OID ";
 
 	final static String name247 = "NGD_SERIES_SAMPLES";
 	final static String query247 = NGD_SAMPLE_SERIES_COLS + NGD_SAMPLE_SERIES_TABS_WITH_GROUP_BY_CLAUSE;
 	
 	final static String name248 = "NGD_SERIES_DATA";
-	final static String query248 = "SELECT SER_GEO_ID, COUNT(distinct SRM_SAMPLE_FK), SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', '), SUB_ARCHIVE_ID " + 
-	                                   "FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
-	                                   "WHERE SER_GEO_ID = ? " + 
-	                                   "AND SRM_SERIES_FK = SER_OID " +
-	                                   "AND SRM_SAMPLE_FK = SMP_OID " +
-	                                   "AND SMP_SUBMISSION_FK = SUB_OID " +
+	final static String query248 = "SELECT NGR_GEO_ID, SUB_ARCHIVE_ID, COUNT(distinct NGL_SAMPLE_FK), NGR_TITLE, NGR_SUMMARY, NGR_OVERALL_DESIGN " + 
+            "FROM NGD_SERIES, NGD_SAMPLE_SERIES, NGD_SAMPLE, ISH_SUBMISSION " + 
+            "WHERE NGR_GEO_ID = ? " + 
+            "AND NGL_SERIES_FK = NGR_OID " +
+            "AND NGL_SAMPLE_FK = NGS_OID " +
+            "AND NGS_SUBMISSION_FK = SUB_OID "+
+            "GROUP BY NGR_GEO_ID, NGR_TITLE, NGR_SUMMARY,NGR_OVERALL_DESIGN ";
+	/*final static String query248 = "SELECT NGR_GEO_ID, COUNT(distinct NGL_SAMPLE_FK), NGR_TITLE, NGR_SUMMARY, NGR_TYPE, NGR_OVERALL_DESIGN, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', '), SUB_ARCHIVE_ID " + 
+	                                   "FROM NGD_SERIES, NGD_SAMPLE_SERIES, NGD_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
+	                                   "WHERE NGR_GEO_ID = ? " + 
+	                                   "AND NGL_SERIES_FK = NGR_OID " +
+	                                   "AND NGL_SAMPLE_FK = NGS_OID " +
+	                                   "AND NGS_SUBMISSION_FK = SUB_OID " +
 	                                   "AND EXP_SUBMISSION_FK=SUB_OID " +
 	                                   "AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
 	                                   "AND ATN_NODE_FK = ANO_OID " +
-	                                   "GROUP BY SER_GEO_ID, SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN ";
+	                                   "GROUP BY NGR_GEO_ID, NGR_TITLE, NGR_SUMMARY, NGR_TYPE, NGR_OVERALL_DESIGN ";*/
 	
 	final static String name249 = "NGD_SUBMISSION_SERIES";
-	final static String query249 = "SELECT SER_GEO_ID, SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN, SER_OID " +
-	                                "FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION " +
+	final static String query249 = "SELECT NGR_GEO_ID, NGR_TITLE, NGR_SUMMARY, NGR_CREATED_BY, NGR_OVERALL_DESIGN, NGR_OID " +
+	                                "FROM NGD_SERIES, NGD_SAMPLE_SERIES, NGD_SAMPLE, ISH_SUBMISSION " +
 	                                "WHERE SUB_ACCESSION_ID = ? " +
-	                                "AND SUB_OID=SMP_SUBMISSION_FK " +
-	                                "AND SRM_SAMPLE_FK=SMP_OID " +
-	                                "AND SRM_SERIES_FK = SER_OID";
+	                                "AND SUB_OID=NGS_SUBMISSION_FK " +
+	                                "AND NGL_SAMPLE_FK=NGS_OID " +
+	                                "AND NGL_SERIES_FK = NGR_OID";
 	
 	final static String name250 = "NGD_SAMPLE_NUMBER_OF_SERIES";
-	final static String query250 = "SELECT COUNT(SMP_GEO_ID) " +
-	                                "FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE " +
-	                                "WHERE SRM_SAMPLE_FK=SMP_OID " +
-	                                "AND SRM_SERIES_FK = SER_OID " +
-	                                "AND SER_OID IN" +
-	                                " (SELECT SER_OID " +
-	                                "  FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION " +
+	final static String query250 = "SELECT COUNT(NGL_SAMPLE_FK) " +
+	                                "FROM NGD_SERIES, NGD_SAMPLE_SERIES, NGD_SAMPLE " +
+	                                "WHERE NGL_SAMPLE_FK=NGS_OID " +
+	                                "AND NGL_SERIES_FK = NGR_OID " +
+	                                "AND NGR_OID IN" +
+	                                " (SELECT NGR_OID " +
+	                                "  FROM NGD_SERIES, NGD_SAMPLE_SERIES, NGD_SAMPLE, ISH_SUBMISSION " +
 	                                "  WHERE SUB_ACCESSION_ID = ? " +
-	                                "  AND SUB_OID=SMP_SUBMISSION_FK " +
-	                                "  AND SRM_SAMPLE_FK=SMP_OID " +
-	                                "  AND SRM_SERIES_FK = SER_OID)";
+	                                "  AND SUB_OID=NGS_SUBMISSION_FK " +
+	                                "  AND NGL_SAMPLE_FK=NGS_OID " +
+	                                "  AND NGL_SERIES_FK = NGR_OID)";
 	
 	final static String name251 = "NGD_SERIES_SAMPLE";
-	final static String query251 = "select SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION " +
-	                                 "from MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE , ISH_SUBMISSION " +
-	                                 "where SRM_SAMPLE_FK = SMP_OID " +
-	                                 "and SRM_SERIES_FK = SER_OID " +
-	                                 "and SMP_SUBMISSION_FK = SUB_OID " +
-	                                 "and SER_OID in" +
-	                                 " (select SER_OID " +
-	                                 "  from MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION " +
+	final static String query251 = "select SUB_ACCESSION_ID, NGS_GEO_ID, NGS_SAMPLE_NAME, NGS_DESCRIPTION " +
+	                                 "from NGD_SERIES, NGD_SAMPLE_SERIES, NGD_SAMPLE , ISH_SUBMISSION " +
+	                                 "where NGL_SAMPLE_FK = NGS_OID " +
+	                                 "and NGL_SERIES_FK = NGR_OID " +
+	                                 "and NGS_SUBMISSION_FK = SUB_OID " +
+	                                 "and NGR_OID in" +
+	                                 " (select NGR_OID " +
+	                                 "  from NGD_SERIES, NGD_SAMPLE_SERIES, NGD_SAMPLE, ISH_SUBMISSION " +
 	                                 "  where SUB_ACCESSION_ID = ? " +
-	                                 "  and SUB_OID=SMP_SUBMISSION_FK " +
-	                                 "  and SRM_SAMPLE_FK=SMP_OID " +
-	                                 "  and SRM_SERIES_FK = SER_OID) ";
+	                                 "  and SUB_OID=NGS_SUBMISSION_FK " +
+	                                 "  and NGL_SAMPLE_FK=NGS_OID " +
+	                                 "  and NGL_SERIES_FK = NGR_OID) ";
+	
+	final static String name252 = "TOTAL_NUMBER_OF_NGD_EXPERIMENT_NAME";
+	final static String query252 = "SELECT COUNT(DISTINCT NGR_TITLE) FROM NGD_SERIES ";
+
+	final static String name253 = "TOTAL_NUMBER_OF_NGD_SAMPLE_NUMBERS";
+	final static String query253 = "SELECT COUNT(DISTINCT (SELECT COUNT(*) FROM NGD_SAMPLE_SERIES WHERE NGL_SERIES_FK = NGR_OID)) FROM NGD_SERIES ";
+	  
+	final static String name254 = "TOTAL_NUMBER_OF_NGD_SERIES_GEO_ID";
+	final static String query254 = "SELECT COUNT(DISTINCT NGR_GEO_ID) FROM NGD_SERIES ";
+
+	  // find the number of series available in database
+	final static String name255 = "TOTAL_NUMBER_OF_NGD_SERIES";
+	final static String query255 = "SELECT COUNT(DISTINCT NGR_OID) FROM NGD_SERIES ";
+	  
+	final static String name256 = "TOTAL_NUMBER_OF_NGD_SERIES_LAB";
+	final static String query256 = "SELECT COUNT(DISTINCT PER_SURNAME) FROM NGD_SERIES ";
+	
+	final static String name257 = "TOTAL_NGD_SAMPLES";
+    final static String query257 = "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) " + NGD_SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE;
+    
+    final static String name258 = "TOTAL_NGD_GEO_IDS";
+    final static String query258 = "SELECT COUNT(DISTINCT NGS_GEO_ID) " + NGD_SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE;
+    
+    final static String name259 = "TOTAL_NGD_SAMPLE_IDS";
+    final static String query259 = "SELECT COUNT(DISTINCT NGS_SAMPLE_NAME) " + NGD_SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE;
+    
+    final static String name260 = "TOTAL_NGD_SAMPLE_DESCRIPTIONS";
+    final static String query260 = "SELECT COUNT(DISTINCT NGS_DESCRIPTION) " + NGD_SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE;
+    
+    // xingjun - 03/03/2010 - for time being use the same sql as TOTAL_SAMPLE_DESCRIPTIONS
+    final static String name261 = "TOTAL_NGD_COMPONENT";
+    final static String query261 = "SELECT COUNT (DISTINCT IST_COMPONENT) FROM NGD_SAMPLE, NGD_SAMPLE_SERIES, " +
+    		"NGD_SERIES, ISH_SUBMISSION, ISH_SP_TISSUE, ANA_NODE, ANA_TIMED_NODE "  +            
+             "WHERE NGL_SERIES_FK = NGR_OID "+      
+                        "AND NGL_SAMPLE_FK = NGS_OID "+  
+                        "AND NGS_SUBMISSION_FK = SUB_OID "+
+                        "AND IST_SUBMISSION_FK=SUB_OID "+  
+                        "AND ATN_PUBLIC_ID = IST_COMPONENT "+  
+                        "AND ATN_NODE_FK = ANO_OID "+  
+                        "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4";
+    
+    final static String name262 = "TOTAL_NGD_LIBRARY_STRATEGY";
+    final static String query262 = "SELECT COUNT(DISTINCT NGP_LIBRARY_STRATEGY) " + NGD_SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE;
+    
+    final static String name263 = "SUBMISSION_SUPPLEMENTARY_FILES_NGD";
+    final static String query263 = "SELECT DISTINCT NGF_FILEPATH,NGF_FILENAME, NGF_RAW " +
+                                  "FROM NGD_FILES " +
+                                  "JOIN NGD_SAMPLE ON NGF_SAMPLE_FK=NGS_OID " +
+                                  "JOIN ISH_SUBMISSION ON NGS_SUBMISSION_FK = SUB_OID AND SUB_ACCESSION_ID = ? ";
+    
+    final static String name264 = "SUBMISSION_SAMPLE_NGD";
+    final static String query264 = "SELECT NGS_GEO_ID, NGS_DESCRIPTION, NGS_SAMPLE_NAME, NGS_SPECIES, NGS_STRAIN, NGS_GENOTYPE, " +
+    		"NGS_SEX, CASE WHEN NGS_STAGE_FORMAT='dpc' THEN CONCAT(NGS_DEV_STAGE,NGS_STAGE_FORMAT) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END age, " +
+    		"SUB_EMBRYO_STG, NGS_POOLED_SAMPLE, NGS_POOL_SIZE, NGS_EXPERIMENTAL_METHOD, NGS_SAMPLE_NOTES, " +
+    		"NGS_LIBRARY_POOL_SIZE, NGS_LIBRARY_READS, NGS_READ_LENGTH, NGS_MEAN_INSERT_SIZE " +
+    		"FROM NGD_SAMPLE " +
+    		"JOIN ISH_SUBMISSION ON NGS_SUBMISSION_FK = SUB_OID " +
+    		"WHERE SUB_ACCESSION_ID = ? ";
+    
+    
+    final static String name265 = "PROTOCOL_SAMPLE_NGD";
+    final static String query265 = "SELECT NGP_NAME, NGP_LIBRARY_CON_PROT, NGP_LIBRARY_STRATEGY, NGP_EXTRACTED_MOLECULE, NGP_RNA_ISOLATION_METHOD, NGP_SEQUENCING_METHOD, " +
+    		"NGP_LABEL_METHOD,NGP_INSTRUMENT_MODEL, " +
+    		"NGP_PAIRED_END, NGP_PROT_ADDITIONAL_NOTES, NGP_DNA_EXTRACT_METHOD, NGP_ANTIBODY, CONCAT(USR_FORENAME,' ',USR_SURNAME) CREATED_BY " +
+    		"FROM NGD_PROTOCOL " +
+    		"JOIN NGD_SAMPLE ON NGS_PROTOCOL_FK = NGP_OID " +
+    		"JOIN ISH_SUBMISSION ON NGS_SUBMISSION_FK = SUB_OID " +
+    		"JOIN REF_USER ON USR_OID=NGP_CREATED_BY " +
+    		"WHERE SUB_ACCESSION_ID = ? ";
+        
+    final static String name266 = "DATA_PROCESSING_SAMPLE_NGD";
+    final static String query266 = "SELECT NGC_PRO_STEP, NGC_BUILD, NGC_ALIGNED_GENOME, NGC_UNALIGNED_GENOME, NGC_RNA_READS, NGC_5_3_RATIO, " +
+    		"NGC_FORMAT_CONTENT,NGF_NUMBER_OF_READS, NGF_BEFORE_CLEAN_UP_READS, NGF_PAIRED_END " +
+    		"FROM ISH_SUBMISSION " +
+    		"JOIN NGD_SAMPLE ON NGS_SUBMISSION_FK = SUB_OID " +
+    		"JOIN NGD_FILES ON NGF_SAMPLE_FK = NGS_OID " +
+    		"JOIN NGD_DATA_PROCESSING ON NGC_FILE_FK=NGF_OID " +
+    		"WHERE SUB_ACCESSION_ID = ? ";
+    
+    final static String name267 = "NGD_IMAGES";
+    final static String query267 = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_FILENAME), CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID  JOIN REF_URL I ON I.URL_OID = IMG_URL_FK JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE='NextGen' ORDER BY IMG_ORDER ";
+   
 	
   final static String name = "";
   final static String query = "";
@@ -1963,7 +2097,23 @@ final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURA
       new ParamQuery(name249,query249),
       new ParamQuery(name250,query250),
       new ParamQuery(name251,query251),
-      new ParamQuery(name252,query252)
+      new ParamQuery(name252,query252), 
+      new ParamQuery(name253,query253),
+      new ParamQuery(name254,query254),
+      new ParamQuery(name255,query255),
+      new ParamQuery(name256,query256),
+      new ParamQuery(name257,query257),
+      new ParamQuery(name258,query258), 
+      new ParamQuery(name259,query259),
+      new ParamQuery(name260,query260),
+      new ParamQuery(name261,query261),
+      new ParamQuery(name262,query262),
+      new ParamQuery(name263,query263),
+      new ParamQuery(name264,query264),
+      new ParamQuery(name265,query265),
+      new ParamQuery(name266,query266),
+      new ParamQuery(name267,query267),
+      new ParamQuery(name268,query268)
   };
 
   // finds ParamQuery object by name and returns

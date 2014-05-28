@@ -334,6 +334,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	submissionInfo.setResultNotes(null);
 		    else 
 		    	submissionInfo.setResultNotes((String[])list.toArray(new String[0]));
+		        //submissionInfo.setResultNotes((String[])list.toArray(new String[list.size()]));
 		}
 
         return submissionInfo;

@@ -95,7 +95,25 @@ public class ArrayDBQuery {
             "AND ATN_NODE_FK = ANO_OID " +
     		"GROUP BY SER_GEO_ID, SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN ";
                                    
-    final static String SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
+    final static String SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, " +
+    		"CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'Wild Type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, " +
+    		"LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) IS NOT NULL THEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) " +
+    		"FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) " +
+    		"ELSE (SELECT DISTINCT GROUP_CONCAT(ALE_LAB_NAME_ALLELE) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND " +
+    		"SAL_SUBMISSION_FK=SUB_OID) END  END AS GENOTYPE,  SRM_SAMPLE_DESCRIPTION, " +
+    		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ')  ";
+    final static String SAMPLE_SERIES_TABS_BY_OID = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ISH_SPECIMEN, ANA_NODE, ANA_TIMED_NODE " + 
+                                             "WHERE SER_OID = ? " + 
+                                             "AND SER_OID = SRM_SERIES_FK " + 
+                                             "AND SRM_SAMPLE_FK = SMP_OID " + 
+                                             "AND SMP_SUBMISSION_FK = SUB_OID " +
+                                             "AND EXP_SUBMISSION_FK=SUB_OID " +
+                                             "AND SPN_SUBMISSION_FK=SUB_OID " +
+                                             "AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+                                             "AND ATN_NODE_FK = ANO_OID " +
+                                             "GROUP BY SMP_OID ";
+    
+   /* final static String SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
     		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ')  ";
     final static String SAMPLE_SERIES_TABS_BY_OID = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
                                              "WHERE SER_OID = ? " + 
@@ -105,8 +123,8 @@ public class ArrayDBQuery {
                                              "AND EXP_SUBMISSION_FK=SUB_OID " +
                                              "AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
                                              "AND ATN_NODE_FK = ANO_OID " +
-                                             "GROUP BY SMP_OID ";
-                                             
+                                             "GROUP BY SMP_OID ";*/
+    
     final static String name11 = "SERIES_SAMPLES_BY_OID";
     final static String query11 = SAMPLE_SERIES_COLS + SAMPLE_SERIES_TABS_BY_OID;
 
@@ -255,33 +273,47 @@ public class ArrayDBQuery {
 			"GNL_STAGE,GNL_GENELIST_TYPE,GNL_SEX,GNL_SUBSET_1,GNL_SUBSET_2,GNL_SUBSET_3,GNL_AMG_OID_FK,LPU_REF " +
 			"FROM REF_GENELISTS LEFT JOIN ISH_LINKED_PUBLICATION ON LPU_OID = GNL_REFERENCE";
 	
-	final static String NGD_SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, SMP_GEO_ID, SRM_SAMPLE_ID, SRM_SAMPLE_DESCRIPTION, " +
+	final static String NGD_SAMPLE_SERIES_COLS = "SELECT DISTINCT SUB_ACCESSION_ID, NGS_GEO_ID, NGS_SAMPLE_NAME, NGP_LIBRARY_STRATEGY, "+
+			"CASE NGS_GENOTYPE WHEN 'true' THEN 'Wild Type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) IS NOT NULL THEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) ELSE (SELECT DISTINCT GROUP_CONCAT(ALE_LAB_NAME_ALLELE) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) END  END AS GENOTYPE, NGS_DESCRIPTION, " +
     		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', ')  ";
-    final static String NGD_SAMPLE_SERIES_TABS_BY_OID = "FROM MIC_SAMPLE, MIC_SERIES_SAMPLE, MIC_SERIES, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " + 
-                                             "WHERE SER_OID = ? " + 
-                                             "AND SER_OID = SRM_SERIES_FK " + 
-                                             "AND SRM_SAMPLE_FK = SMP_OID " + 
-                                             "AND SMP_SUBMISSION_FK = SUB_OID " +
-                                             "AND EXP_SUBMISSION_FK=SUB_OID " +
-                                             "AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
+    final static String NGD_SAMPLE_SERIES_TABS_BY_OID = "FROM NGD_SAMPLE, NGD_SAMPLE_SERIES, NGD_SERIES, NGD_PROTOCOL, ISH_SUBMISSION, ISH_SP_TISSUE, ANA_NODE, ANA_TIMED_NODE " + 
+                                             "WHERE NGR_OID = ? " + 
+                                             "AND NGL_SERIES_FK = NGR_OID " + 
+                                             "AND NGL_SAMPLE_FK = NGS_OID " + 
+                                             "AND NGS_PROTOCOL_FK=NGP_OID " +
+                                             "AND NGS_SUBMISSION_FK = SUB_OID " +
+                                             "AND IST_SUBMISSION_FK=SUB_OID " +
+                                             "AND ATN_PUBLIC_ID = IST_COMPONENT " +
                                              "AND ATN_NODE_FK = ANO_OID " +
-                                             "GROUP BY SMP_OID ";
+                                             "GROUP BY NGS_OID ";
                                              
     final static String name33 = "NGD_SERIES_SAMPLES_BY_OID";
     final static String query33 = NGD_SAMPLE_SERIES_COLS + NGD_SAMPLE_SERIES_TABS_BY_OID;
     
     final static String name34 = "NGD_SERIES_DATA_BY_OID";
-    final static String query34 = "SELECT SER_GEO_ID, COUNT(distinct SRM_SAMPLE_FK), " +
-    		"SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN, SER_OID, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', '), SUB_ARCHIVE_ID " +
-    		"FROM MIC_SERIES, MIC_SERIES_SAMPLE, MIC_SAMPLE, ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANA_TIMED_NODE " +
-    		"WHERE SER_OID = ? " +
-    		"AND SRM_SERIES_FK = SER_OID " +
-            "AND SRM_SAMPLE_FK = SMP_OID " +
-            "AND SMP_SUBMISSION_FK = SUB_OID " +
-            "AND EXP_SUBMISSION_FK=SUB_OID " +
-            "AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
-            "AND ATN_NODE_FK = ANO_OID " +
-    		"GROUP BY SER_GEO_ID, SER_TITLE, SER_SUMMARY, SER_TYPE, SER_OVERALL_DESIGN ";
+    final static String query34 = "SELECT NGR_GEO_ID, SUB_ARCHIVE_ID, COUNT(distinct NGL_SAMPLE_FK), NGR_TITLE, NGR_SUMMARY, NGR_OVERALL_DESIGN " + 
+            "FROM NGD_SERIES, NGD_SAMPLE_SERIES, NGD_SAMPLE, ISH_SUBMISSION " + 
+            "WHERE NGR_OID = ? " + 
+            "AND NGL_SERIES_FK = NGR_OID " +
+            "AND NGL_SAMPLE_FK = NGS_OID " +
+            "AND NGS_SUBMISSION_FK = SUB_OID " +
+            "GROUP BY NGR_GEO_ID, NGR_TITLE, NGR_SUMMARY,NGR_OVERALL_DESIGN ";
+    
+    final static String name35 = "ALL_NGD_SERIES";
+	final static String query35 = "SELECT DISTINCT NGR_TITLE, NGR_GEO_ID, SUB_SOURCE, (SELECT COUNT(distinct NGL_SAMPLE_FK) FROM NGD_SAMPLE_SERIES WHERE NGL_SERIES_FK = NGR_OID) SAMPLE_NUMBER, " +
+			"NGP_LIBRARY_STRATEGY, " +
+			"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR ', '), NGR_OID " +
+			"FROM NGD_SERIES, NGD_SAMPLE_SERIES, NGD_PROTOCOL, NGD_SAMPLE, ISH_SUBMISSION, ISH_SP_TISSUE, ISH_PERSON, ANA_NODE, ANA_TIMED_NODE " +
+			"WHERE NGL_SERIES_FK = NGR_OID " +
+			"AND NGL_SAMPLE_FK = NGS_OID " +
+			"AND NGS_SUBMISSION_FK = SUB_OID " +
+			"AND NGS_PROTOCOL_FK=NGP_OID " +
+			"AND IST_SUBMISSION_FK=SUB_OID " +
+			"AND SUB_PI_FK = PER_OID " +
+			"AND ATN_PUBLIC_ID = IST_COMPONENT " +
+			"AND ATN_NODE_FK = ANO_OID " +
+			"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
+			"GROUP BY NGR_OID ";
 	
 	final static String name = "";
 	final static String query = "";
@@ -318,7 +350,8 @@ public class ArrayDBQuery {
 		new ParamQuery(name31, query31),
 		new ParamQuery(name32, query32),
 		new ParamQuery(name33, query33),
-		new ParamQuery(name34, query34)
+		new ParamQuery(name34, query34),
+		new ParamQuery(name35, query35)
 	};
 	
 	// finds ParamQuery object by name and returns

@@ -158,7 +158,7 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 	}
 	
 	public HeaderItem[] createHeader() {
-		 String headerTitles[] = { "Title", "GEO ID", "Number of Samples", "Source", "Platform", "Component(s) Sampled" };
+		 String headerTitles[] = { "Title", "GEO Series ID", "Source", "Number of Samples", "Platform", "Component(s) Sampled" };
 		 boolean headerSortable[] = {false, true, true, true, true, false};
 		 int colNum = headerTitles.length;
 		 HeaderItem[] tableHeader = new HeaderItem[colNum];
@@ -191,8 +191,8 @@ public class SeriesBrowseAssembler extends OffMemoryTableAssembler{
 //			System.out.println("series oid: " + row[5]);
 			tableData[i][0] = new DataItem(row[0], "Click to view Series Details", "series.html?seriesId="+row[5], 10);   									// Descriptive name (experiment name)
 			tableData[i][1] = new DataItem(row[1], "Click to view Series in GEO", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 9 );// Geo ID
-			tableData[i][2] = new DataItem(row[2], "Click to view Samples page", "series.html?seriesId="+row[5], 10);										// Sample No
-			tableData[i][3] = new DataItem(row[3]);   																										// Source
+			tableData[i][2] = new DataItem(row[3]); //source										
+			tableData[i][3] = new DataItem(row[2], "Click to view Samples page", "series.html?seriesId="+row[5], 10);// Sample No
 			tableData[i][4] = new DataItem(row[4], "Click to view Platform in GEO", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[4], 2);// Platform
 			tableData[i][5] = new DataItem(row[6]);   																										// Description (list of components)
 		}

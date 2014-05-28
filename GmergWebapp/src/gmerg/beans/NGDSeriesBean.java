@@ -1,7 +1,7 @@
 package gmerg.beans;
 
 import gmerg.assemblers.NGDSeriesAssembler;
-import gmerg.entities.submission.array.NGDSeries;
+import gmerg.entities.submission.nextgen.NGDSeries;
 import gmerg.utils.table.*;
 import gmerg.utils.FacesUtil;
 import gmerg.utils.Utility;
@@ -89,7 +89,9 @@ public class NGDSeriesBean implements Serializable{
 		tableView.addCollection(0, 0);
         tableView.setCollectionBottons(1);
         tableView.setDisplayTotals(false);
-        tableView.setColAlignment(4, 0);
+        //tableView.setColAlignment(2, 0);
+        tableView.setColAlignment(5, 0);
+        tableView.setColAlignment(6, 0);
         
         return  tableView;
     }

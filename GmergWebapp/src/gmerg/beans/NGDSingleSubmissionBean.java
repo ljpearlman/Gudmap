@@ -1,8 +1,8 @@
 package gmerg.beans;
 
-import gmerg.assemblers.ArraySubmissionAssembler;
-import gmerg.entities.submission.array.ArraySubmission;
+import gmerg.assemblers.NGDSubmissionAssembler;
 import gmerg.entities.submission.array.GeneListBrowseSubmission;
+import gmerg.entities.submission.nextgen.NGDSubmission;
 import gmerg.utils.FacesUtil;
 
 import java.util.Map;
@@ -17,8 +17,8 @@ public class NGDSingleSubmissionBean {
     private boolean debug = false;
 
     private String submissionId;  //user-defined submission id
-    private ArraySubmissionAssembler assembler; //used to interrogate db and return correct array data
-    private ArraySubmission submission;  //contains all data concerned with a particular microarray submission
+    private NGDSubmissionAssembler assembler; //used to interrogate db and return correct array data
+    private NGDSubmission submission;  //contains all data concerned with a particular next gen submission
     private GeneListBrowseSubmission [] glItem;  //array of objects containing gene list data
     private static final int RES_PER_PAGE = 500;
     
@@ -31,28 +31,27 @@ public class NGDSingleSubmissionBean {
 
     public NGDSingleSubmissionBean() {
         	if (debug)
-	    System.out.println("MicroarraySingleSubmissionBean.constructor");
+	    System.out.println("NGDSingleSubmissionBean.constructor");
 
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> requestParams =
             context.getExternalContext().getRequestParameterMap();
 
         submissionId = (String)requestParams.get("id");
-        submission = new ArraySubmission();
-        assembler = new ArraySubmissionAssembler();
-        //ArraySubmission sub = new ArraySubmission();
+        submission = new NGDSubmission();
+        assembler = new NGDSubmissionAssembler();
         
         if(submissionId != null && !submissionId.equals("")){
-        	FacesUtil.setSessionValue("arraySubId", submissionId);
+        	FacesUtil.setSessionValue("NGDSubId", submissionId);
         }
         else {
             String id = (String) FacesUtil.getSessionValue("submissionID");
             if (id != null && !id.equals("")){
-            	FacesUtil.setSessionValue("arraySubId", (String) FacesUtil.getSessionValue("submissionID"));
+            	FacesUtil.setSessionValue("NGDSubId", (String) FacesUtil.getSessionValue("submissionID"));
             }
         }
         
-        String subId = (String) FacesUtil.getSessionValue("arraySubId");
+        String subId = (String) FacesUtil.getSessionValue("NGDSubId");
         
         if(subId != null && !subId.equals("")) {
             submission = assembler.getData(subId);
@@ -63,7 +62,7 @@ public class NGDSingleSubmissionBean {
         }
     }
     
-    public String getId() {
+   public String getId() {
         return submissionId;
     }
 
@@ -71,21 +70,21 @@ public class NGDSingleSubmissionBean {
         this.submissionId = submissionId;
     }
 
-    public void setSubmission(ArraySubmission sub) {
+    public void setSubmission(NGDSubmission sub) {
         submission = sub;
     }
 
-    public ArraySubmission getSubmission() {
+    public NGDSubmission getSubmission() {
         return submission;
     }
-    
+       
     public void setNumGeneListPages(String value){
         numGeneListPages = value;
     }
     
     public String getNumGeneListPages() {
         
-        String subId = (String)FacesUtil.getSessionValue("arraySubId");
+        String subId = (String)FacesUtil.getSessionValue("NGDSubId");
         
         String numEntries = assembler.getTotalGeneListItems(subId);
         
@@ -138,7 +137,7 @@ public class NGDSingleSubmissionBean {
     	
     	//make sure the user has entered a value for gene symbol
     	if(geneSymbol != null && !geneSymbol.trim().equals("")) {
-    		int rowNumOfGeneSymbol = assembler.getRowNumberOfFirstOccurrenceOfGene((String)FacesUtil.getSessionValue("arraySubId"), geneSymbol);
+    		int rowNumOfGeneSymbol = assembler.getRowNumberOfFirstOccurrenceOfGene((String)FacesUtil.getSessionValue("NGDSubId"), geneSymbol);
     		
     		if(rowNumOfGeneSymbol > 0){
     			int pnum = rowNumOfGeneSymbol / RES_PER_PAGE;

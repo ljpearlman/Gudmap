@@ -5,7 +5,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 	
-	<h:outputText value="ISH submissions #{ISHFocusBrowseBean.organTitle} #{ISHFocusBrowseBean.stageTitle}" escape="false" />
+	<h:outputText value="#{ISHFocusBrowseBean.title} #{ISHFocusBrowseBean.organTitle} #{ISHFocusBrowseBean.stageTitle}" escape="false" />
 	<f:subview id="iSHFocusBrowseTable">
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview>

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import gmerg.assemblers.FocusBrowseAssembler;
 import gmerg.utils.table.*;
+import gmerg.utils.FacesUtil;
 import gmerg.utils.Visit;
 
 public class ISHFocusBrowseBean {
@@ -13,6 +14,8 @@ public class ISHFocusBrowseBean {
 	private String stage;
     private String archiveId;
     private String batchId;
+    private String specimenType;
+    private String title;
 
 	public ISHFocusBrowseBean() {
 	if (debug)
@@ -22,6 +25,12 @@ public class ISHFocusBrowseBean {
 		stage = Visit.getRequestParam("stage");
 		archiveId = Visit.getRequestParam("archiveId");
 		batchId = Visit.getRequestParam("batchId");
+		specimenType = Visit.getRequestParam("specimenType");
+		
+		if(specimenType==null || "".equals(specimenType))
+			title="ISH submissions";
+		else
+			title=specimenType+" submissions";
 
 		String viewName = "focusBrowseISH";
 		if (TableUtil.isTableViewInSession())
@@ -43,14 +52,19 @@ public class ISHFocusBrowseBean {
 		queryParams.put("stage", stage);
 		queryParams.put("archiveId", archiveId);
 		queryParams.put("batchId", batchId);
+		queryParams.put("specimenType", specimenType);
 		
 		FocusBrowseAssembler assembler = new FocusBrowseAssembler(queryParams);
 	    GenericTable table = assembler.createTable();
 		table.getAssembler().setFilter(ISHBrowseBean.getDefaultIshFilter());
-		GenericTableView tableView = ISHBrowseBean.getDefaultIshBrowseTableView(viewName, table);
+	    GenericTableView tableView = ISHBrowseBean.getDefaultIshBrowseTableView(viewName, table);
 		tableView.setDisplayTotals(true); // Bernie 05/11/2010 switch to display totals
 		return  tableView;
-	}	
+	}
+	
+	public String getTitle() {
+		return title;  
+	}
 
 	public String getOrganTitle() {
 		if (organ==null || "".equals(organ))
