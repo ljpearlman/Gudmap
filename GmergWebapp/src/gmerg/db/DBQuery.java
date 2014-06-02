@@ -10,7 +10,7 @@ import gmerg.utils.Utility;
 
 public class DBQuery {
 
-    static protected boolean debug = false;
+    static protected boolean debug = true;
 
   static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
   
@@ -33,6 +33,7 @@ public class DBQuery {
 		  stageFormatConcat,
 		  "SPN_SEX",
 		  "SPN_WILDTYPE",
+		  "ANO_COMPONENT_NAME",
 		  "(SELECT GROUP_CONCAT(DISTINCT EXP_STRENGTH) FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID) EXP_STRENGTH",
 //		  "SUB_INSITU_EXP",
 //		  "GROUP_CONCAT(DISTINCT EXP_STRENGTH)",
@@ -62,11 +63,16 @@ public class DBQuery {
                                                   "JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
                                                   "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
                                                   "JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " +
-                                                  "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
+                                              "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
+                                              "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+                                              "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +                                                  "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
+//                                            "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
                                                   "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
                                                   "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_ORDER = (SELECT MIN(I.IMG_ORDER) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
                                                   "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK ";
 
+  
+  
   final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
   final static String FOR_ANNOTATION_ENTRIES_Q = " WHERE STA_OID = ? AND SUB_IS_DELETED = 0 ";
                                                   
@@ -696,6 +702,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
 
   final static String NUMBER_OF_ISH_EXPRESSION = "SELECT COUNT(DISTINCT EXP_STRENGTH) "; 
 
+  final static String NUMBER_OF_TISSUES = "SELECT COUNT(DISTINCT ANO_COMPONENT_NAME) "; 
+
   
   final static String name129 = "TOTAL_NUMBER_OF_SEX";
   final static String query129 = NUMBER_OF_SEX + endsBrowseSubmissionISH;
@@ -718,6 +726,9 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
   final static String name135 = "TOTAL_NUMBER_OF_PROBE_TYPE";
   final static String query135 = NUMBER_OF_PROBE_TYPE + endsBrowseSubmissionISH;
   
+  final static String name268 = "TOTAL_NUMBER_OF_TISSUES";
+  final static String query268 = NUMBER_OF_TISSUES + endsBrowseSubmissionISH;
+
   final static String name246 = "TOTAL_NUMBER_OF_ISH_EXPRESSION";
   final static String query246 = NUMBER_OF_ISH_EXPRESSION + endsBrowseSubmissionISH;
 
@@ -2101,7 +2112,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
       new ParamQuery(name264,query264),
       new ParamQuery(name265,query265),
       new ParamQuery(name266,query266),
-      new ParamQuery(name267,query267)
+      new ParamQuery(name267,query267),
+      new ParamQuery(name268,query268)
   };
 
   // finds ParamQuery object by name and returns
@@ -2113,7 +2125,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
 			  ret = pqList[i];
 
 			  if (debug)
-			      System.out.println("sql = "+  ret.getQuerySQL().toLowerCase());
+			      System.out.println("sql = "+  ret.getQuerySQL());
 
 			  break;
 		  }

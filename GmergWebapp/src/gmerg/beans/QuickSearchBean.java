@@ -57,7 +57,7 @@ import gmerg.utils.Visit;
 		tableView.addCollection(1, 0);
 		tableView.setColVisible(new boolean[]{true, true, true, true, true, true, true, false, true, false, false, true});
 		// Bernie 09/03/2012 - (Mantis 328) - mod to make sex column visible by default
-		tableView.setDynamicColumnsLimits(5, 10);
+//		tableView.setDynamicColumnsLimits(5, 10);
 		int[] groupedNumRows = table.getNumRowsInGroups();
 		if (groupedNumRows != null) {
 			String ishNo = String.valueOf(groupedNumRows[0]);
@@ -67,8 +67,16 @@ import gmerg.utils.Visit;
 		if((tableView == null || tableView.getTable() == null || tableView.getTable().getNumRows() == 0) && Utility.getProject().equalsIgnoreCase("GUDMAP")) {
         	tableView.setNoDataMessage(Utility.getNoDataMessageForQueryPage("", ""));
         }
-    	tableView.setColHidden(3, true);	// InsitiueExpression
-		tableView.setColHidden(4, true);	// MicroarrayExpression
+//    	tableView.setColHidden(2, true);	// source
+//		tableView.setColHidden(3, true);	// submission date
+//		tableView.setColHidden(6, true);	// age
+    	tableView.setColVisible(2, false);	// source
+		tableView.setColVisible(3, false);	// submission date
+		tableView.setColVisible(5, false);	// probe name		
+		tableView.setColVisible(7, false);	// age
+		tableView.setColVisible(9, false);	// genotype
+//		tableView.setColHidden(5, true);	// probe name
+		tableView.setColHidden(12, true);	// microarray expression
 
 		return  tableView;
 	}	

@@ -33,7 +33,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 
     protected RetrieveDataCache cache = null;
 
-    private boolean debug = false;
+    private boolean debug = true;
 
 	public FocusBrowseAssembler () {
 	      	if (debug)
@@ -220,6 +220,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	                "TOTAL_NUMBER_OF_GIVEN_STAGE",
 	                "TOTAL_NUMBER_OF_SEX",
 	                "TOTAL_NUMBER_OF_GENOTYPE",
+	                "TOTAL_NUMBER_OF_TISSUES",
 	                "TOTAL_NUMBER_OF_ISH_EXPRESSION",
 	                "TOTAL_NUMBER_OF_SPECIMEN_TYPE",
 	                "TOTAL_NUMBER_OF_IMAGE",

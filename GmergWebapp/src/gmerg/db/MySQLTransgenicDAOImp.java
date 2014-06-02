@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  */
 public class MySQLTransgenicDAOImp implements TransgenicDAO {
-    private boolean debug = false;
+    private boolean debug = true;
 
     private Connection conn;
 
@@ -58,6 +58,10 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         
 		if (debug)
 		    System.out.println("TransgenicDAOImp:getAllSubmission:sql (post filter): " + queryString);
+		
+		// offset and retrieval number
+		queryString = queryString + " LIMIT " + offset + " ," + num;
+
         
         try {
 	 ///////!!!!! poor databse table for different type of submissions
@@ -151,9 +155,6 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 		} else { // if don't specify order by column, order by gene symbol ascend by default
 			queryString = query + organsql + defaultOrder+ ", SUB_EMBRYO_STG";
 		}
-		
-		// offset and retrieval number
-		queryString = queryString + " LIMIT " + offset + " ," + num;
 
 		// return assembled query string
 		return queryString;
@@ -182,6 +183,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     			"SPN_ASSAY_TYPE", 
     			"SPN_SEX", 
     			"SPN_WILDTYPE", 
+    			"ANO_COMPONENT_NAME",
     			"EXP_STRENGTH", 
     			"SPN_ASSAY_TYPE"
     	};
@@ -222,8 +224,10 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         	}else if (columnIndex == 9) {
         		orderByString = "SPN_WILDTYPE" + " " + order + ", " + geneSymbolCol;
         	}else if (columnIndex == 10) {
-        		orderByString = "EXP_STRENGTH" + " " + order +", " + geneSymbolCol;
+        		orderByString = "ANO_COMPONENT_NAME" + " " + order +", " + geneSymbolCol;
         	}else if (columnIndex == 11) {
+        		orderByString = "EXP_STRENGTH" + " " + order +", " + geneSymbolCol;
+        	}else if (columnIndex == 12) {
         		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
         	} else {
        			orderByString = geneSymbolCol + ", SUB_EMBRYO_STG ";
@@ -346,7 +350,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
             //create array to store each row of results in
             ArrayList<String[]> results = new ArrayList<String[]>();
             while (resSet.next()) {
-                String[] ishBrowseSubmission = new String[13];
+                String[] ishBrowseSubmission = new String[14];
                 ishBrowseSubmission[0] = resSet.getString(1); // symbol
                 ishBrowseSubmission[1] = resSet.getString(2); // id
                 ishBrowseSubmission[2] = resSet.getString(3); // source
@@ -358,17 +362,18 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
                 ishBrowseSubmission[7] = resSet.getString(8); // age
                 ishBrowseSubmission[8] = resSet.getString(9); // sex
                 ishBrowseSubmission[9] = resSet.getString(10); // genotype
-        		String expression = resSet.getString(11); // insitu strength
+                ishBrowseSubmission[10] = resSet.getString(11); // tissues
+        		String expression = resSet.getString(12); // insitu strength
         		if (expression.contains("present"))
-        			ishBrowseSubmission[10] = "present";
+        			ishBrowseSubmission[11] = "present";
         		else if (expression.contains("uncertain"))
-        			ishBrowseSubmission[10] = "uncertain";
+        			ishBrowseSubmission[11] = "uncertain";
         		else if (expression.contains("not detected"))
-        			ishBrowseSubmission[10] = "not detected";
+        			ishBrowseSubmission[11] = "not detected";
         		else
-        			ishBrowseSubmission[10] = "";
-                ishBrowseSubmission[11] = resSet.getString(12); // specimen
-                ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
+        			ishBrowseSubmission[11] = "";
+                ishBrowseSubmission[12] = resSet.getString(13); // specimen
+                ishBrowseSubmission[13] = resSet.getString(14); // thumbnail
                 results.add(ishBrowseSubmission);
             }
             return results;

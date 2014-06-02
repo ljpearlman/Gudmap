@@ -166,23 +166,41 @@ System.out.println("widecard2="+ wildcards[2]);
 	
 	//Bernie 10/5/2011 - Mantis 328 - added method
 	//Bernie 01/03/2010 - Mantis 620 - added SEX to the filter options
+//	private GenericTableFilter getFilter(int[] colMap) { 
+//	    if (debug)
+//		System.out.println("FocusGeneBrowseBean:getFilter(in)");
+//		GenericTableFilter filter = new GenericTableFilter();
+//		filter.setTableToSqlColMap(colMap);
+//		filter.addFilter(new FilterItem(0));
+//		filter.addFilter(2, Globals.getPredefinedFilter(PredefinedFilters.ASSAY));
+////		filter.addFilter(new FilterItem(5));// bernie temp remove tissue option
+//		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.STAGE));
+//		filter.addFilter(8, Globals.getPredefinedFilter(PredefinedFilters.SEX));
+//		if(Utility.getProject().equalsIgnoreCase("gudmap")) 
+//			filter.addFilter(9, Globals.getPredefinedFilter(PredefinedFilters.LAB));
+//		filter.addFilter(10, Globals.getPredefinedFilter(PredefinedFilters.DATE));
+//		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
+//		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
+//	    if (debug)
+//		System.out.println("FocusGeneBrowseBean:getFilter(out)");
+//		return filter;
+//	}
 	private GenericTableFilter getFilter(int[] colMap) { 
 	    if (debug)
-		System.out.println("FocusGeneBrowseBean:getFilter(in)");
+	    	System.out.println("FocusGeneBrowseBean:getFilter(in)");
 		GenericTableFilter filter = new GenericTableFilter();
 		filter.setTableToSqlColMap(colMap);
 		filter.addFilter(new FilterItem(0));
-		filter.addFilter(2, Globals.getPredefinedFilter(PredefinedFilters.ASSAY));
-//		filter.addFilter(new FilterItem(5));// bernie temp remove tissue option
+		if(Utility.getProject().equalsIgnoreCase("gudmap")) 
+			filter.addFilter(2, Globals.getPredefinedFilter(PredefinedFilters.LAB));
+		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.DATE));		
+		filter.addFilter(4, Globals.getPredefinedFilter(PredefinedFilters.ASSAY));
 		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.STAGE));
 		filter.addFilter(8, Globals.getPredefinedFilter(PredefinedFilters.SEX));
-		if(Utility.getProject().equalsIgnoreCase("gudmap")) 
-			filter.addFilter(9, Globals.getPredefinedFilter(PredefinedFilters.LAB));
-		filter.addFilter(10, Globals.getPredefinedFilter(PredefinedFilters.DATE));
-		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
-		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
+		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
+		filter.addFilter(13, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
 	    if (debug)
-		System.out.println("FocusGeneBrowseBean:getFilter(out)");
+	    	System.out.println("FocusGeneBrowseBean:getFilter(out)");
 		return filter;
 	}
 	

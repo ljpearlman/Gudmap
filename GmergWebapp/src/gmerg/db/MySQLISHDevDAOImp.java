@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  */
 public class MySQLISHDevDAOImp implements ISHDevDAO {
-    private boolean debug = false;
+    private boolean debug = true;
 
     private Connection conn;
 
@@ -61,7 +61,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
             prepStmt = parQ.getPrepStat();
             
             if(debug)
-            	System.out.println("MySQLISHDevDAOImp:prepStmt: " + prepStmt);
+            	System.out.println("MySQLISHDevDAOImp:getAllSubmissionInsitu prepStmt: " + prepStmt);
             // execute
             resSet = prepStmt.executeQuery();
             result = formatBrowseResultSet(resSet);
@@ -116,6 +116,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		
 		// offset and retrieval number
 		queryString = queryString + " LIMIT " + offset + " ," + num;
+        if(debug)
+        	System.out.println("MySQLISHDevDAOImp:assembleBrowseSubmissionQueryStringISH queryString: " + queryString);
 
 		// return assembled query string
 		return queryString;
@@ -142,6 +144,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
     			"SUB_EMBRYO_STG", 
     			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", 
     			"SPN_SEX", 
+    			"ANO_COMPONENT_NAME",
     			"SPN_WILDTYPE", 
     			"EXP_STRENGTH",
     			"SPN_ASSAY_TYPE" 
@@ -213,7 +216,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		String str = null;
 
             while (resSet.next()) {
-                ishBrowseSubmission = new String[13];
+                ishBrowseSubmission = new String[14];
                 ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
                 ishBrowseSubmission[ 1] = resSet.getString(2); // id
                 ishBrowseSubmission[ 2] = resSet.getString(3); // source
@@ -224,26 +227,27 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                 ishBrowseSubmission[ 7] = resSet.getString(8); // age
                 ishBrowseSubmission[ 8] = resSet.getString(9); // sex
                 ishBrowseSubmission[ 9] = resSet.getString(10); // genotype
-        		String expression = resSet.getString(11); // insitu strength
+                ishBrowseSubmission[10] = resSet.getString(11); // tissue
+        		String expression = resSet.getString(12); // insitu strength
         		if (expression.contains("present"))
-        			ishBrowseSubmission[10] = "present";
+        			ishBrowseSubmission[11] = "present";
         		else if (expression.contains("uncertain"))
-        			ishBrowseSubmission[10] = "uncertain";
+        			ishBrowseSubmission[11] = "uncertain";
         		else if (expression.contains("not detected"))
-        			ishBrowseSubmission[10] = "not detected";
+        			ishBrowseSubmission[11] = "not detected";
         		else
-        			ishBrowseSubmission[10] = "";
-                ishBrowseSubmission[11] = resSet.getString(12); // specimen
+        			ishBrowseSubmission[11] = "";
+                ishBrowseSubmission[12] = resSet.getString(13); // specimen
                 str = Utility.netTrim(resSet.getString(5));
                 if(null != str && str.trim().equalsIgnoreCase("OPT")){
-                	str = Utility.netTrim(resSet.getString(13));
+                	str = Utility.netTrim(resSet.getString(14));
 				    if (null == str)
-		                	ishBrowseSubmission[12] = null;
+		                	ishBrowseSubmission[13] = null;
 				    else
-		                	ishBrowseSubmission[12] = str.substring(0, str.lastIndexOf(".")) + ".jpg"; //thumbnail for OPT data
+		                	ishBrowseSubmission[13] = str.substring(0, str.lastIndexOf(".")) + ".jpg"; //thumbnail for OPT data
                 }
                 else {
-                	ishBrowseSubmission[12] = resSet.getString(13); // thumbnail
+                	ishBrowseSubmission[13] = resSet.getString(14); // thumbnail
                 }
                 results.add(ishBrowseSubmission);
             }
@@ -460,7 +464,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         try {
             for (int i = 0; i < queryNumber; i++) {
 				if (debug)
-					System.out.println("MySQLISHDevDAOImp.sql "+i+" th= "+queryString[i].toLowerCase());
+					System.out.println("MySQLISHDevDAOImp.sql "+i+" th= "+queryString[i]);
 				
                 prepStmt = conn.prepareStatement(queryString[i]);
                 if (param != null &&
@@ -584,9 +588,9 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
        // execute query and assemble result
        try {
-		    if (debug)
-			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
+		   if (debug)
+			   System.out.println("MySQLISHDevDAOImp.sql = "+ prepStmt);
            resSet = prepStmt.executeQuery();
            result = formatBrowseResultSet(resSet);
 
@@ -678,9 +682,9 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
        // execute query and assemble result
        try {
-		    if (debug)
-			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp:getCollectionSubmissionBySubmissionId prepStmt = "+prepStmt);
            resSet = prepStmt.executeQuery();
            
            if(type == 0) { //mixed
@@ -972,9 +976,9 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
        // execute query and assemble result
        try {
-		    if (debug)
-			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
+		    if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+prepStmt);
 
            // execute
            resSet = prepStmt.executeQuery();
@@ -1004,9 +1008,9 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
        PreparedStatement prepStmt = null;
 
        try {
-		    if (debug)
-			System.out.println("MySQLISHDevDAOImp.sql = "+queryString.toLowerCase());
            prepStmt = conn.prepareStatement(queryString);
+		   if (debug)
+			System.out.println("MySQLISHDevDAOImp.sql = "+prepStmt);
 
            // execute
            resSet = prepStmt.executeQuery();
