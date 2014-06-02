@@ -542,4 +542,13 @@ public class DatabaseHomepageBean {
     public void setUploadGenes(String uploadedGenes) {
     	this.uploadedGenes = uploadedGenes;
     }
+    
+    public void setQuery(String query){
+    	this.query = query;
+    }
+    
+    public String getQuery(){
+    	return query;
+    }
+    
 }

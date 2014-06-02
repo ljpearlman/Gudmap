@@ -19,6 +19,22 @@
 <h:panelGrid columns="2" cellspacing="0px">
 	<h:panelGroup style="margin-right:20px"> <%-- left hand side --%>
 		<f:verbatim>
+		<script type="text/javascript">
+						function handleInput (inField, e) {
+							//alert(e.keyCode);
+							if (e.keyCode === 13) {
+								if(inField.id=='mainForm:geneInput')
+				                	document.getElementById('mainForm:go1').click();
+								else if(inField.id=='mainForm:anatomy')
+				                	document.getElementById('mainForm:go2').click();
+								else if(inField.id=='mainForm:accession')
+				                	document.getElementById('mainForm:go3').click();
+								else if(inField.id=='mainForm:geneFn')
+				                	document.getElementById('mainForm:go5').click();
+				            }
+				            return false;//so that mainForm is not called
+				        }
+		</script>
 		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" BGCOLOR="#FFFFFF" >
 			<TR>
 				<TD>&nbsp;</TD>
@@ -32,7 +48,7 @@
 				</TD>
 				<TD>
 					</f:verbatim>	      
-			                                <h:inputText id="geneInput" value="#{DatabaseHomepageBean.geneInput}" size="18" />
+			                                <h:inputText id="geneInput" value="#{DatabaseHomepageBean.geneInput}" size="18"  onkeypress="handleInput(this,event)"/>
                                                                                      <a4j:region renderRegionOnly="true">
                                                                                          <rich:suggestionbox for="geneInput" var="geneResult" suggestionAction="#{DatabaseHomepageBean.autocomplete}" >
                                                                                            <h:column>
@@ -73,7 +89,7 @@
 										onchange="setGeneStageHidden()" >
 										<f:selectItems value="#{DatabaseHomepageBean.stageItems}" />
 									</h:selectOneMenu>
-									<%-- xingjun - 27/05/2010 - use geneStageHidden to set geneStage value - dont know why selectOneMenu not working --%>
+									xingjun - 27/05/2010 - use geneStageHidden to set geneStage value - dont know why selectOneMenu not working
 									<h:inputHidden id="geneStageHidden" value="#{DatabaseHomepageBean.geneStage}" />
 								</h:panelGroup>
 								<h:panelGroup rendered="#{1 == 0}">
@@ -102,6 +118,7 @@
 				<TD colspan="7" class="left_border" >&nbsp;</TD>
 			</TR>
 			<TR>
+				
 				<TD>&nbsp;</TD>
 				<TD>&nbsp;</TD>
 				<TD class="top_left_border">&nbsp;</TD>
@@ -114,8 +131,8 @@
 					</a>
 				</TD>
 				<TD>
-					</f:verbatim>
-					<h:inputText id="anatomy" value="#{DatabaseHomepageBean.anatomyInput}" size="18" />
+				</f:verbatim>
+					<h:inputText id="anatomy" value="#{DatabaseHomepageBean.anatomyInput}" size="18" onkeypress="handleInput(this,event)"/>
                                                                                      <a4j:region renderRegionOnly="true">
                                                                                          <rich:suggestionbox for="anatomy" var="anatomyResult" suggestionAction="#{DatabaseHomepageBean.autocomplete}" >
                                                                                            <h:column>
@@ -123,19 +140,27 @@
                                                                                            </h:column>
                                                                                          </rich:suggestionbox>
                                                                                      </a4j:region>
+					<%-- <h:commandButton action="#{DatabaseHomepageBean.search}" style="display:none;width:2px;" value="submit">
+						<f:setPropertyActionListener value="Anatomy" target="#{DatabaseHomepageBean.query}"/>
+					</h:commandButton> --%>
 					<f:verbatim>
+					
 				</TD>
 				<TD>&nbsp;</TD>
 				<TD>&nbsp;</TD>
 				<TD>
 					</f:verbatim>
+					
 					<h:commandLink id="go2" action="#{DatabaseHomepageBean.search}">
 						<h:graphicImage url="../images/focus/n_go_2.png" alt="Go" styleClass="icon" />
 						<f:param name="query" value="Anatomy" />
 					</h:commandLink>
 					<f:verbatim>
+					
+					
 				</TD>
 			</TR>
+			
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
 			    <TD>&nbsp;</TD>
@@ -157,13 +182,16 @@
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
+				
 			</TR>
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
 			    <TD>&nbsp;</TD>
 				<TD colspan="7" class="left_border" >&nbsp;</TD>
 			</TR>
+			
 			<TR>
+				
 				<TD>&nbsp;</TD>
 				<TD>&nbsp;</TD>
 				<TD class="top_left_border">&nbsp;</TD>
@@ -174,8 +202,9 @@
 					</a>
 				</TD>	
 				<TD>
+					
 					</f:verbatim>
-					<h:inputText id="accession" value="#{DatabaseHomepageBean.accessionInput}" size="18" />
+					<h:inputText id="accession" value="#{DatabaseHomepageBean.accessionInput}" size="18"  onkeypress="handleInput(this,event)"/>
                                                                                      <a4j:region renderRegionOnly="true">
                                                                                          <rich:suggestionbox for="accession" var="accessionResult" suggestionAction="#{DatabaseHomepageBean.autocomplete}" >
                                                                                            <h:column>
@@ -183,7 +212,12 @@
                                                                                            </h:column>
                                                                                          </rich:suggestionbox>
                                                                                      </a4j:region>
+					
+					<%-- <h:commandButton action="#{DatabaseHomepageBean.search}" style="display:none;width:2px;" value="submit">
+						<f:setPropertyActionListener value="Accession ID" target="#{DatabaseHomepageBean.query}"/>
+					</h:commandButton> --%>
 					<f:verbatim>
+					
 				</TD>
 				<TD>&nbsp;</TD>
 				<TD>&nbsp;</TD>
@@ -195,7 +229,9 @@
 					</h:commandLink>
 					<f:verbatim>
 				</TD>
+				
 			</TR>
+			
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
 			    <TD>&nbsp;</TD>
@@ -215,7 +251,7 @@
 				</TD>
 				<TD>
 					</f:verbatim>
-					<h:inputText id="geneFn" value="#{DatabaseHomepageBean.geneFunctionInput}" size="18" />
+					<h:inputText id="geneFn" value="#{DatabaseHomepageBean.geneFunctionInput}" size="18"  onkeypress="handleInput(this,event)"/>
                                                                                      <a4j:region renderRegionOnly="true">
                                                                                          <rich:suggestionbox for="geneFn" var="geneFnResult" suggestionAction="#{DatabaseHomepageBean.autocomplete}" >
                                                                                            <h:column>
@@ -366,20 +402,20 @@
 				<TD class="left_border">&nbsp;</TD>
 				<TD>&nbsp;</TD>
 				<TD>&nbsp;</TD>
-			</TR> --%>
+			</TR>
 			
 			<TR>
 				<TD />
 				<TD width="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-				<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> <!-- Replace these two cells with commented ones below -->
-				<TD />
-				<!-- <TD class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_nextGen.png" ALT="Next Gen" WIDTH="124" HEIGHT="24" BORDER="0" NAME="ngd_pix" /></TD> -->
+				<!-- <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> 
+				<TD /> -->
+				<TD class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_nextGen_2.png" ALT="Next Gen" WIDTH="124" HEIGHT="24" BORDER="0" NAME="ngd_pix" /></TD>
 				<TD />
 				<TD width="50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-				<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> <!-- Replace this cell with commented ones below -->
-				<!-- <TD width="30" class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> -->
-			    <TD valign="bottom">
+				<!-- <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>  -->
+				<TD width="30" class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+			    <TD valign="top">
 					</f:verbatim>
 					<h:outputLink value="series_browse.html#{DatabaseHomepageBean.organParam}">
 						<h:graphicImage url="../images/focus/n_series.png" alt="Go" styleClass="icon" />
@@ -391,30 +427,55 @@
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
+			</TR> 
+			<TR>
+				<TD STYLE="height:10px">&nbsp;</TD>
+				<TD/>
+				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD/>
+				<TD/>
+				<TD class="left_border">&nbsp;</TD>
 			</TR>
-			<TR> <!-- Replace this row with the one commented out below -->
+			--%>
+			<!-- REPLACE THE NEXT 2 ROWS WITH THE ONES COMMENTED OUT ABOVE FOR NEXT GEN -->
+			<TR>
+				<TD />
+				<TD width="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> 
+				<TD />
+				<TD />
+				<TD width="50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				<!-- <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>  -->
+				<TD width="30" class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+			    <TD valign="top">
+					</f:verbatim>
+					<h:outputLink value="series_browse.html#{DatabaseHomepageBean.organParam}">
+						<h:graphicImage url="../images/focus/n_series.png" alt="Go" styleClass="icon" />
+					</h:outputLink>
+					<f:verbatim>
+				</TD>
+				<TD valign="top">
+					<a href="#Link494046Context" name="Link494046Context" id="Link494046Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID494046', 'Browse Series', ' Series returns a list of all the microarray experiments (series) in GUDMAP.  From there you can go to individual experiments and thence to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#gene\&quot;&gt;More....&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;Submission Archive.&lt;/a&gt;  To see Analyses of Microarray Gene Lists click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/genelist_tree.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link494046Context')">
+						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
+					</a>
+				</TD>
+			</TR> 
+			<TR> 
 				<TD STYLE="height:10px">&nbsp;</TD>
 				<TD/>
 				<TD>&nbsp;</TD>
 				<TD/>
 				<TD/>
 				<TD/>
-				<TD class="top_left_border">&nbsp;</TD>
+				<TD class="left_border">&nbsp;</TD>
 			</TR>
-			<!-- <TR>
-				<TD STYLE="height:10px">&nbsp;</TD>
-				<TD/>
-				<TD class="left_border">&nbsp;</TD>
-				<TD/>
-				<TD/>
-				<TD/>
-				<TD class="left_border">&nbsp;</TD>
-			</TR> -->
+			
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
 				<TD />
 				<TD class="top_left_border">&nbsp;</TD>
-				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_array.png" ALT="array" WIDTH="124" HEIGHT="24" BORDER="0" NAME="geo_accession_pix" /></TD>
+				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_array_2.png" ALT="array" WIDTH="124" HEIGHT="24" BORDER="0" NAME="geo_accession_pix" /></TD>
 				<TD class="top_border">&nbsp;</TD>
 				<TD class="top_border">&nbsp;</TD>
 				<TD class="top_left_border">&nbsp;</TD>
@@ -520,7 +581,7 @@
 				<TD/>
 				<TD/>
 				<TD class="top_left_border">&nbsp;</TD>
-				<TD class="top_border" valign="top"><img src="../images/focus/n_inSitu.png" alt="" width="124" height="24" border="0" name="insitupix" /></TD>
+				<TD class="top_border" valign="top"><img src="../images/focus/n_inSitu_2.png" alt="" width="124" height="24" border="0" name="insitupix" /></TD>
 				<TD class="top_border">&nbsp;</TD>
 				<TD class="top_border">&nbsp;</TD>
 				<td class="top_left_border">&nbsp;</TD>

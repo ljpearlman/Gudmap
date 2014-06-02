@@ -71,6 +71,7 @@
 	<script src="${pageContext.request.contextPath}/scripts/navbar.js" type="text/javascript"></script>
 	<script src="${pageContext.request.contextPath}/scripts/ua.js" type="text/javascript"></script>
 	
+	
 	<%-- moved here from database_homepage.jsp - xingjun - 22/07/2010 - start --%>
 	<%-- avoid using another <header> in page database_homepage.jsp --%>
 	<script language="JavaScript">
@@ -157,6 +158,8 @@
 							<td>
 	</f:verbatim>
 							<h:form id="quickSearchForm" >
+							<!-- dummy button to allow search on hitting RETURN -->
+							<h:commandButton action="#{HeaderQuickSearchBean.quickSearch}" style="display:none;width:2px;" value="submit"/>
 							<h:panelGrid columns="5" cellpadding="2" cellspacing="0" border="0" columnClasses="width:115px;width:130px;width:20px;width:210px;width:75px" style="margin-left:auto; margin-right:0px; border-color:#FFFFFF;width:550px">
 								<h:outputText value="Quick search: " styleClass="search_text"/>
 								<h:selectOneMenu id="quickSearchType" styleClass="selectBanner" immediate="true" value="#{HeaderQuickSearchBean.quickSearchType}" 
