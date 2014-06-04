@@ -318,6 +318,13 @@ public class DatabaseHomepageBean {
 		
 		return "?focusedOrgan=" + focusedOrgan;
 	}
+	
+	public String getOrganParamForIshTypes() {
+		if (focusedOrgan==null || "".equals(focusedOrgan))
+			return "";
+		
+		return "&focusedOrgan=" + focusedOrgan;
+	}
 
 	public String getQuickSearchInput() {
 		return quickSearchInput;

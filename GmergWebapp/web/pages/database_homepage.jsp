@@ -359,7 +359,7 @@
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link141495Context" name="Link141495Context" id="Link141495Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141495', 'Browse Next Gen Series', 'Next Gen Series returns a list of all the Next Gen series in GUDMAP. From there you can link to individual series and thence to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#nextgen\&quot;&gt;More....&lt;/a&gt;', 'Link141495Context')">
+					<a href="#Link141495Context" name="Link141495Context" id="Link141495Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141495', 'Browse Next Gen Series', 'Next Gen Series returns a list of all the Next Gen series in GUDMAP. From there you can link to individual series and then to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#nextgen\&quot;&gt;More....&lt;/a&gt;', 'Link141495Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
@@ -423,7 +423,7 @@
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link494046Context" name="Link494046Context" id="Link494046Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID494046', 'Browse Series', ' Series returns a list of all the microarray experiments (series) in GUDMAP.  From there you can go to individual experiments and thence to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#gene\&quot;&gt;More....&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;Submission Archive.&lt;/a&gt;  To see Analyses of Microarray Gene Lists click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/genelist_tree.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link494046Context')">
+					<a href="#Link494046Context" name="Link494046Context" id="Link494046Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID494046', 'Browse Series', ' Series returns a list of all the microarray experiments (series) in GUDMAP.  From there you can go to individual experiments and then to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#gene\&quot;&gt;More....&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;Submission Archive.&lt;/a&gt;  To see Analyses of Microarray Gene Lists click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/genelist_tree.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link494046Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
@@ -436,8 +436,8 @@
 				<TD/>
 				<TD/>
 				<TD class="left_border">&nbsp;</TD>
-			</TR>
-			--%>
+			</TR> --%>
+			
 			<!-- REPLACE THE NEXT 2 ROWS WITH THE ONES COMMENTED OUT ABOVE FOR NEXT GEN -->
 			<TR>
 				<TD />
@@ -456,7 +456,7 @@
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link494046Context" name="Link494046Context" id="Link494046Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID494046', 'Browse Series', ' Series returns a list of all the microarray experiments (series) in GUDMAP.  From there you can go to individual experiments and thence to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#gene\&quot;&gt;More....&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;Submission Archive.&lt;/a&gt;  To see Analyses of Microarray Gene Lists click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/genelist_tree.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link494046Context')">
+					<a href="#Link494046Context" name="Link494046Context" id="Link494046Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID494046', 'Browse Series', ' Series returns a list of all the microarray experiments (series) in GUDMAP.  From there you can go to individual experiments and then to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#gene\&quot;&gt;More....&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;Submission Archive.&lt;/a&gt;  To see Analyses of Microarray Gene Lists click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/genelist_tree.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link494046Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
@@ -648,7 +648,8 @@
 	</h:panelGroup> <%------------ left hand side ------------%>
 	
 	<%-------------------------------- right-hand side ------------------------------------%>	
-	<h:panelGrid cellspacing="0" cellpadding="5px" border="1" style="margin-left:2em;margin-top:-64px;"> 
+	<%-- <h:panelGrid cellspacing="0" cellpadding="5px" border="1" style="margin-left:2em;margin-top:-64px;">  --%>
+	<h:panelGrid cellspacing="0" cellpadding="5px" border="1" style="margin-left:2em;margin-top:-2px;"> 
 		<h:panelGrid columns="3" cellspacing="0" cellpadding="2px" width="100%" styleClass="plaintextlight" >
 			<h:outputText value="Assay" styleClass="plaintextbold" />
 			<h:outputText value="Genes" styleClass="plaintextbold" />
@@ -661,12 +662,26 @@
 			</h:outputLink>
 			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totAvailIshSubs}" rendered="#{DatabaseHomepageBean.dbSummary.totAvailIshSubs=='0'}"/>
 			
-			<h:outputText value="Microarray" />
-			<h:outputText value=""/>
-			<h:outputLink value="focus_mic_browse.html#{DatabaseHomepageBean.organParam}" rendered="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs != '0'}">
-				<h:outputText value="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs}" />
+			<h:outputText value="WISH" />
+			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totWishGenes}"/>
+			<h:outputLink value="focus_ish_browse.html?specimenType=WISH#{DatabaseHomepageBean.organParamForIshTypes}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsWISH !='0'}">
+				<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsWISH}" />
 			</h:outputLink>
-			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs}" rendered="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs == '0'}"/>
+			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsWISH}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsWISH=='0'}"/>
+			
+			<h:outputText value="SISH" />
+			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totSishGenes}"/>
+			<h:outputLink value="focus_ish_browse.html?specimenType=SISH#{DatabaseHomepageBean.organParamForIshTypes}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsSISH !='0'}">
+				<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsSISH}" />
+			</h:outputLink>
+			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsSISH}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsSISH=='0'}"/>
+			
+			<h:outputText value="OPT" />
+			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totOptGenes}"/>
+			<h:outputLink value="focus_ish_browse.html?specimenType=OPT#{DatabaseHomepageBean.organParamForIshTypes}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsOPT !='0'}">
+				<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsOPT}" />
+			</h:outputLink>
+			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsOPT}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsOPT=='0'}"/>
 			
 			<h:outputText value="IHC" />
 			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totIhcGenes}"/>
@@ -681,6 +696,15 @@
 				<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsTG}" />
 			</h:outputLink>
 			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsTG}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsTG == '0'}"/>
+			
+			<h:outputText value="Microarray" />
+			<h:outputText value=""/>
+			<h:outputLink value="focus_mic_browse.html#{DatabaseHomepageBean.organParam}" rendered="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs != '0'}">
+				<h:outputText value="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs}" />
+			</h:outputLink>
+			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs}" rendered="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs == '0'}"/>
+			
+			
 		</h:panelGrid>
 
 		<h:panelGrid cellspacing="0" cellpadding="2px" width="100%" >

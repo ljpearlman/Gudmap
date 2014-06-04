@@ -150,6 +150,9 @@ public ArrayList getComponentCountInfoByGeneInfo(String inputType, String inputS
 	public int findNumberOfPublicSubmissionArray(); // numPubArraySubmissionsQuery
 	public int findNumberOfPublicSubmissionIHC();
 	public int findNumberOfPublicSubmissionTG();
+	public int findNumberOfPublicSubmissionWISH();
+	public int findNumberOfPublicSubmissionSISH();
+	public int findNumberOfPublicSubmissionOPT();
 	
 	// find the number of public gene entries related to given assay type
 	public int findNumberOfPublicGenes(String assayType); // numPubGenesQuery

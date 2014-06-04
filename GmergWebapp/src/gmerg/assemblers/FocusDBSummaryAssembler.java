@@ -38,6 +38,10 @@ public class FocusDBSummaryAssembler {
 		    // added by xingjun - 28/08/2008 - transgenic data - start
 		    int numberOfPublicSubmissionsTG = focusForAllDAO.findNumberOfPublicSubmissionTG(emapids);
 		    // added by xingjun - 28/08/2008 - transgenic data - end
+		    
+		    int numberOfPublicSubmissionsWISH = focusForAllDAO.findNumberOfPublicSubmissionISHTypes(emapids,"wholemount");
+		    int numberOfPublicSubmissionsSISH= focusForAllDAO.findNumberOfPublicSubmissionISHTypes(emapids,"section");
+		    int numberOfPublicSubmissionsOPT = focusForAllDAO.findNumberOfPublicSubmissionISHTypes(emapids,"opt-wholemount");
 	
 		    ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 	
@@ -65,6 +69,10 @@ public class FocusDBSummaryAssembler {
 		    
 		    // get total number of tg genes
 		    int numberOfPublicGenesTG = focusForAllDAO.findNumberOfPublicGenes("TG", emapids);
+		    
+		    int numberOfPublicGenesWISH = focusForAllDAO.findNumberOfPublicGenes("wholemount", emapids);
+		    int numberOfPublicGenesSISH = focusForAllDAO.findNumberOfPublicGenes("section", emapids);
+		    int numberOfPublicGenesOPT = focusForAllDAO.findNumberOfPublicGenes("opt-wholemount", emapids);
 			
 			
 			/** ---complement summary object--- */
@@ -73,12 +81,18 @@ public class FocusDBSummaryAssembler {
 			dbSummary.setTotIshGenes(Integer.toString(numberOfPublicGenesISH));
 			dbSummary.setTotIhcGenes(Integer.toString(numberOfPublicGenesIHC));
 			dbSummary.setTotTgGenes(Integer.toString(numberOfPublicGenesTG));
+			dbSummary.setTotWishGenes(Integer.toString(numberOfPublicGenesWISH));
+			dbSummary.setTotSishGenes(Integer.toString(numberOfPublicGenesSISH));
+			dbSummary.setTotOptGenes(Integer.toString(numberOfPublicGenesOPT));
 			
 			dbSummary.setTotAvailIshSubs(Integer.toString(numberOfPublicSubmissionsISH));
 			dbSummary.setTotAvailArraySubs(Integer.toString(numberOfPublicSubmissionsArray));
 			dbSummary.setTotalAvailableSubmissionsIHC(Integer.toString(numberOfPublicSubmissionsIHC));
 			// added by xingjun - 28/08/2008
 			dbSummary.setTotalAvailableSubmissionsTG(Integer.toString(numberOfPublicSubmissionsTG));
+			dbSummary.setTotalAvailableSubmissionsWISH(Integer.toString(numberOfPublicSubmissionsWISH));
+			dbSummary.setTotalAvailableSubmissionsSISH(Integer.toString(numberOfPublicSubmissionsSISH));
+			dbSummary.setTotalAvailableSubmissionsOPT(Integer.toString(numberOfPublicSubmissionsOPT));
 	
 			dbSummary.setDatabaseServer(databaseHost);
 			dbSummary.setProject(project);

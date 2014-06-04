@@ -1223,8 +1223,13 @@ public class MySQLISHDAOImp implements ISHDAO {
             String authors = new String("");
             while (resSet.next()) {
                 authors += resSet.getString(1) + " ";
-            }            
-            return authors.trim();
+            }
+            //GROUP_CONCAT RETURNS NULL STRING IF NO NON NULL VALUES FOUND.
+            //IF USE GROUP BY IN SQL THEN WILL LOSE THE SEPARATOR OF THE CONCAT SO...
+            if(authors.equalsIgnoreCase("null "))
+            	return null;
+            else
+            	return authors.trim();
         }
         return null;
     }
@@ -4539,6 +4544,84 @@ public class MySQLISHDAOImp implements ISHDAO {
     }
     
     /**
+     * 
+     */
+    public int findNumberOfPublicSubmissionWISH() {
+        int result = 0;
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_WISH");
+         Statement stmt = null;
+        try {
+             stmt = conn.createStatement();
+            resSet = stmt.executeQuery(parQ.getQuerySQL());
+            if (resSet.first()) {
+                result = resSet.getInt(1);
+            }
+            return result;
+    	    
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return 0;
+        }
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
+    }
+    
+    /**
+     * 
+     */
+    public int findNumberOfPublicSubmissionSISH() {
+        int result = 0;
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_SISH");
+         Statement stmt = null;
+        try {
+             stmt = conn.createStatement();
+            resSet = stmt.executeQuery(parQ.getQuerySQL());
+            if (resSet.first()) {
+                result = resSet.getInt(1);
+            }
+            return result;
+    	    
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return 0;
+        }
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
+    }
+    
+    /**
+     * 
+     */
+    public int findNumberOfPublicSubmissionOPT() {
+        int result = 0;
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("NUMBER_OF_PUBLIC_SUBMISSIONS_OPT");
+         Statement stmt = null;
+        try {
+             stmt = conn.createStatement();
+            resSet = stmt.executeQuery(parQ.getQuerySQL());
+            if (resSet.first()) {
+                result = resSet.getInt(1);
+            }
+            return result;
+    	    
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return 0;
+        }
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
+    }
+    
+    /**
      * find the number of total Microarray submissions users sent to GUDMAP DB
      */
     public int findTotalNumberOfSubmissionArray() {
@@ -4642,10 +4725,17 @@ public class MySQLISHDAOImp implements ISHDAO {
         ParamQuery parQ = null;
         if (assayType.equalsIgnoreCase("TG")) {
             parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE_TG");
-        } else { // ISH or IHC 
+        } 
+     // ISH or IHC 
+        else if (assayType.equalsIgnoreCase("ISH") || assayType.equalsIgnoreCase("IHC"))
+        { 
             parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE");
-	    
-        }
+	    }
+        //section, wholemount, opt-wholemount
+        else
+        	parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE_ISH_TYPES");
+        
+        
         PreparedStatement prepStmt = null;
 	
         String queryString = parQ.getQuerySQL().replace("?", "'"+assayType+"'");

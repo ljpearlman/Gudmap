@@ -7,6 +7,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.utils.table.GenericTableFilter;
 
@@ -36,7 +37,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         return result;
 	}
 	
-    // get number of public ish sumbissions
+    // get number of public ish submissions
 	public int findNumberOfPublicSubmissionISH(String[] emapids)
 	{
         int result = 0;
@@ -66,6 +67,39 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	        DBHelper.closeResultSet(resSet);        	
         }
 	}
+	
+	// get number of public WISH/SISH/OPT submissions
+		public int findNumberOfPublicSubmissionISHTypes(String[] emapids, String type)
+		{
+	        int result = 0;
+	        ResultSet resSet = null;
+	        ParamQuery parQ =
+	        	new ParamQuery("NUM_ISH_TYPE",AdvancedSearchDBQuery.getPublicISHTypesNumber(emapids,type));
+	        Statement stmt = null;
+	        try {
+	        	// if disconnected from db, re-connected
+	        	conn = DBHelper.reconnect2DB(conn);
+	            stmt = conn.createStatement();
+	            
+			    if (debug)
+			    	System.out.println("MySQLFocusFowAllDAOImp:findNumberOfPublicSubmissionISHTypes = "+parQ.getQuerySQL());
+	                        
+	            resSet = stmt.executeQuery(parQ.getQuerySQL());
+	            if (resSet.first()) {
+	                result = resSet.getInt(1);
+	            }
+	            return result;
+	        } catch (SQLException se) {
+	            se.printStackTrace();
+	        	return 0;
+	        }
+	        finally{
+		        DBHelper.closeStatement(stmt);
+		        DBHelper.closeResultSet(resSet);        	
+	        }
+		}
+		
+	
 //	 get total number of ihc submissions
 	public int findTotalNumberOfSubmissionArray(String[] emapids)
 	{
@@ -195,10 +229,16 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
         ResultSet resSet = null;
         ParamQuery parQ = null;
         if (assayType.equalsIgnoreCase("TG")) {
-        	parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE_TG");
-        } else {
-        	parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE");
-        }
+            parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE_TG");
+        } 
+     // ISH or IHC 
+        else if (assayType.equalsIgnoreCase("ISH") || assayType.equalsIgnoreCase("IHC"))
+        { 
+            parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE");
+	    }
+        //section, wholemount, opt-wholemount
+        else
+        	parQ = InsituDBQuery.getParamQuery("NUMBER_OF_INVOLVED_GENE_ISH_TYPES");
 
         Statement stmt = null;
         String componentString = "AND EXP_COMPONENT_ID IN " + DBHelper.assembleComponentString(emapIds);

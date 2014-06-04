@@ -45,6 +45,13 @@ public class InsituDBQuery {
 			"AND SUB_ASSAY_TYPE = ? " +
 			"AND SAL_ORDER = 1 ";
 	
+	// find number of gene involved in the submission
+		// WISH/SISH/OPT
+	final static String name17 = "NUMBER_OF_INVOLVED_GENE_ISH_TYPES";
+	final static String query17 = "SELECT COUNT(DISTINCT RPR_SYMBOL) TOTAL FROM REF_PROBE JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID " +
+								  "JOIN ISH_SUBMISSION ON PRB_SUBMISSION_FK = SUB_OID JOIN ISH_SPECIMEN ON SPN_SUBMISSION_FK = SUB_OID WHERE " +
+								  "SUB_IS_DELETED = '0' AND SUB_IS_PUBLIC = '1' AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE = 'ISH' AND SPN_ASSAY_TYPE = ? ";
+	
 	final static String name3 = "INSITU_SUBMISSION_IMAGES_BY_IMAGE_ID";
 	final static String query3 = "SELECT SUB_ACCESSION_ID, SUB_EMBRYO_STG, SPN_ASSAY_TYPE, CONCAT(I.URL_URL, IMG_FILEPATH, 'medium/',IMG_FILENAME), CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) " +
 			"FROM ISH_SUBMISSION " +
@@ -327,6 +334,8 @@ public class InsituDBQuery {
 		new ParamQuery(name13, query13),
 		new ParamQuery(name14, query14),
 		new ParamQuery(name15, query15),
+		new ParamQuery(name16, query16),
+		new ParamQuery(name17, query17),
 		new ParamQuery(name101, query101),
 		new ParamQuery(name102, query102),
 		new ParamQuery(name103, query103),
@@ -341,8 +350,8 @@ public class InsituDBQuery {
 		new ParamQuery(name112, query112),
 		new ParamQuery(name113, query113),
 		new ParamQuery(name114, query114),
-		new ParamQuery(name115, query115),
-		new ParamQuery(name16, query16)
+		new ParamQuery(name115, query115)
+		
 	};
 	
 	// finds ParamQuery object by name and returns

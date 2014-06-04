@@ -42,12 +42,30 @@ public class DBSummaryAssembler {
 		    
 		    // get total number of tg public genes
 		    int numberOfPublicGenesTG = ishDAO.findNumberOfPublicGenes("TG");
+		    
+		 // get total number of wish public genes
+		 	int numberOfPublicGenesWISH = ishDAO.findNumberOfPublicGenes("wholemount");
+		 			
+		 	// get total number of sish public genes
+		 	int numberOfPublicGenesSISH = ishDAO.findNumberOfPublicGenes("section");
+		 		    
+		 	// get total number of opt public genes
+		 	int numberOfPublicGenesOPT = ishDAO.findNumberOfPublicGenes("opt-wholemount");
 			
 			// get total number of ish submissions
 			int totalNumberOfSubmissionsISH = ishDAO.findTotalNumberOfSubmissionISH();
 			
 	        // get number of public ish sumbissions
 			int numberOfPublicSubmissionsISH = ishDAO.findNumberOfPublicSubmissionISH();
+			
+			 // get number of public Wish sumbissions
+			int numberOfPublicSubmissionsWISH = ishDAO.findNumberOfPublicSubmissionWISH();
+			
+			 // get number of public Sish sumbissions
+			int numberOfPublicSubmissionsSISH = ishDAO.findNumberOfPublicSubmissionSISH();
+			
+			 // get number of public Opt sumbissions
+			int numberOfPublicSubmissionsOPT = ishDAO.findNumberOfPublicSubmissionOPT();
 			
 			// get number of 'editing-in-progress' submissions of ish type
 			int numberOfEditSubmissionsISH = totalNumberOfSubmissionsISH - numberOfPublicSubmissionsISH;
@@ -70,6 +88,9 @@ public class DBSummaryAssembler {
 			// get number of 'editing-in-progress' submissions of array type
 			int numberOfEditSubmissionsArray = totalNumberOfSubmissionsArray - numberOfPublicSubmissionsArray;
 			
+			// get number of public transgenic sumbissions
+			int numberOfPublicSubmissionsTG = ishDAO.findNumberOfPublicSubmissionTG();
+			
 			// get last editorial update date
 			String lastEdtorialUpdateDate = ishDAO.findLastEditorialUpdateDate();
 			
@@ -87,21 +108,9 @@ public class DBSummaryAssembler {
 		    // get database host name
 		    String host = bundle.getString("host");
 		    String databaseHost = host.substring(host.lastIndexOf("//")+2,host.length()-1);
-		    /*String host = "";
-		    String databaseHost = "";
-		    try {
-		    	host = conn.getMetaData().getURL();
-		    	databaseHost = host.substring(host.lastIndexOf("//")+2,host.lastIndexOf(":"));
-		    } catch(Exception e) {
-		    	e.printStackTrace();
-		    }*/
-	
+		   
 			// get project name
 		    String project = bundle.getString("project");
-		    
-		    // added by xingjun - 26/08/2008 - transgenic data - start
-		    int numberOfPublicSubmissionsTG = ishDAO.findNumberOfPublicSubmissionTG();
-		    // added by xingjun - 26/08/2008 - transgenic data - end
 		    
 			/** ---complement summary object--- */
 		    DBSummary dbSummary = new DBSummary();
@@ -110,20 +119,26 @@ public class DBSummaryAssembler {
 			dbSummary.setTotEditIshSubs(Integer.toString(numberOfEditSubmissionsISH));
 			dbSummary.setTotAvailArraySubs(Integer.toString(numberOfPublicSubmissionsArray));
 			dbSummary.setTotEditArraySubs(Integer.toString(numberOfEditSubmissionsArray));
+			
+			dbSummary.setTotalAvailableSubmissionsIHC(Integer.toString(numberOfPublicSubmissionsIHC));
+			dbSummary.setTotalEditSubmissionsIHC(Integer.toString(numberOfEditSubmissionsIHC));
+			dbSummary.setTotIhcGenes(Integer.toString(numberOfPublicGenesIHC));
+			dbSummary.setTotalAvailableSubmissionsTG(Integer.toString(numberOfPublicSubmissionsTG));
+			dbSummary.setTotTgGenes(Integer.toString(numberOfPublicGenesTG));
+			
+			dbSummary.setTotWishGenes(Integer.toString(numberOfPublicGenesWISH));
+			dbSummary.setTotalAvailableSubmissionsWISH(Integer.toString(numberOfPublicSubmissionsWISH));
+			dbSummary.setTotSishGenes(Integer.toString(numberOfPublicGenesSISH));
+			dbSummary.setTotalAvailableSubmissionsSISH(Integer.toString(numberOfPublicSubmissionsSISH));
+			dbSummary.setTotOptGenes(Integer.toString(numberOfPublicGenesOPT));
+			dbSummary.setTotalAvailableSubmissionsOPT(Integer.toString(numberOfPublicSubmissionsOPT));
+			
 			dbSummary.setLastEditorUpdate(lastEdtorialUpdateDate);
 			dbSummary.setLastSoftwrUpdate(lastSoftwareUpdateDate);
 			dbSummary.setLastEntryDate(lastDatabaseEntryDate);
 			dbSummary.setApplicationVersion(applicationVersion); // added by xingjun - 28/07/2009
 			dbSummary.setDatabaseServer(databaseHost);
 			dbSummary.setProject(project);
-			dbSummary.setTotalAvailableSubmissionsIHC(Integer.toString(numberOfPublicSubmissionsIHC));
-			dbSummary.setTotalEditSubmissionsIHC(Integer.toString(numberOfEditSubmissionsIHC));
-			// added by xingjun - 26/08/2008 - transgenic data - start
-			dbSummary.setTotalAvailableSubmissionsTG(Integer.toString(numberOfPublicSubmissionsTG));
-			// added by xingjun - 26/08/2008 - transgenic data - start
-			
-			dbSummary.setTotIhcGenes(Integer.toString(numberOfPublicGenesIHC));
-			dbSummary.setTotTgGenes(Integer.toString(numberOfPublicGenesTG));
 
 			return dbSummary;
 		}

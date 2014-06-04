@@ -7,21 +7,28 @@ public class DBSummary {
     private String totEditIshSubs;
     private String totAvailArraySubs;
     private String totEditArraySubs;
+    
+    private String totIhcGenes;
+    private String totalAvailableSubmissionsIHC;
+    private String totalEditSubmissionsIHC;
+    private String totTgGenes;
+    private String totalAvailableSubmissionsTG;
+    
+    private String totWishGenes;
+    private String totalAvailableSubmissionsWISH;
+    private String totSishGenes;
+    private String totalAvailableSubmissionsSISH;
+    private String totOptGenes;
+    private String totalAvailableSubmissionsOPT;
+    
+    private String applicationVersion;
     private String lastEditorUpdate;
     private String lastSoftwrUpdate;
     private String lastEntryDate;
     private String databaseServer;
     private String project;
-
-    private String totalAvailableSubmissionsIHC;
-    private String totalEditSubmissionsIHC;
     
-    private String totIhcGenes;
-    private String totTgGenes;
     
-    private String applicationVersion;
-    
-    private String totalAvailableSubmissionsTG;
     
     public void setTotIshGenes(String genes) {
         totIshGenes = genes;
@@ -150,6 +157,54 @@ public class DBSummary {
     
     public void setApplicationVersion(String applicationVersion) {
     	this.applicationVersion = applicationVersion;
+    }
+    
+    public void setTotWishGenes(String genes){
+    	totWishGenes=genes;
+    }
+    
+    public String getTotWishGenes() {
+    	return totWishGenes;
+    }
+    
+    public void setTotalAvailableSubmissionsWISH(String totalAvailableSubmissionsWISH) {
+    	this.totalAvailableSubmissionsWISH= totalAvailableSubmissionsWISH;
+    }
+    
+    public String getTotalAvailableSubmissionsWISH() {
+    	return totalAvailableSubmissionsWISH;
+    }
+    
+    public void setTotSishGenes(String genes){
+    	totSishGenes=genes;
+    }
+    
+    public String getTotSishGenes() {
+    	return totSishGenes;
+    }
+    
+    public void setTotalAvailableSubmissionsSISH(String totalAvailableSubmissionsSISH) {
+    	this.totalAvailableSubmissionsSISH= totalAvailableSubmissionsSISH;
+    }
+    
+    public String getTotalAvailableSubmissionsSISH() {
+    	return totalAvailableSubmissionsSISH;
+    }
+    
+    public void setTotOptGenes(String genes){
+    	totOptGenes=genes;
+    }
+    
+    public String getTotOptGenes() {
+    	return totOptGenes;
+    }
+    
+    public void setTotalAvailableSubmissionsOPT(String totalAvailableSubmissionsOPT) {
+    	this.totalAvailableSubmissionsOPT= totalAvailableSubmissionsOPT;
+    }
+    
+    public String getTotalAvailableSubmissionsOPT() {
+    	return totalAvailableSubmissionsOPT;
     }
     
 }

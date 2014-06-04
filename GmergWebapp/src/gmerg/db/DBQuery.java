@@ -245,7 +245,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
   
   final static String name32 = "SUBMISSION_AUTHOR";
 
-  final static String query32 = "SELECT GROUP_CONCAT(AUT_NAME ORDER BY LSA_ORDER SEPARATOR ', ') AS AUTHOR FROM ISH_AUTHORS, LNK_SUB_AUTHORS, ISH_SUBMISSION WHERE AUT_OID=LSA_AUT_FK AND LSA_SUB_FK=SUB_OID AND SUB_ACCESSION_ID = ?";
+  final static String query32 = "SELECT GROUP_CONCAT(AUT_NAME ORDER BY LSA_ORDER SEPARATOR ', ') AS AUTHOR FROM ISH_AUTHORS, LNK_SUB_AUTHORS, "+
+		  						"ISH_SUBMISSION WHERE AUT_OID=LSA_AUT_FK AND LSA_SUB_FK=SUB_OID AND SUB_ACCESSION_ID = ?";
 
 
   //query3 (find PI of a submission)
@@ -1244,6 +1245,24 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
   final static String name222 = "NUMBER_OF_PUBLIC_SUBMISSIONS_TG";
   final static String query222 = "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) FROM ISH_SUBMISSION WHERE SUB_ASSAY_TYPE LIKE '%TG%' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4";
     
+//query to find the number of public WISH submissions in db
+  final static String name269 = "NUMBER_OF_PUBLIC_SUBMISSIONS_WISH";
+  final static String query269 = "SELECT COUNT(DISTINCT SUB_OID) TOTAL FROM REF_PROBE, ISH_PROBE, ISH_SUBMISSION, ISH_SPECIMEN WHERE " +
+		  						 "PRB_MAPROBE = RPR_OID AND PRB_SUBMISSION_FK = SUB_OID AND SPN_SUBMISSION_FK = SUB_OID AND SUB_IS_DELETED = '0' AND " +
+		  						 "SUB_IS_PUBLIC = 1 AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE = 'ISH' AND SPN_ASSAY_TYPE = 'wholemount'";
+
+  //query to find the number of public SISH submissions in db
+  final static String name270 = "NUMBER_OF_PUBLIC_SUBMISSIONS_SISH";
+  final static String query270 = "SELECT COUNT(DISTINCT SUB_OID) TOTAL FROM REF_PROBE, ISH_PROBE, ISH_SUBMISSION, ISH_SPECIMEN WHERE " +
+		  						 "PRB_MAPROBE = RPR_OID AND PRB_SUBMISSION_FK = SUB_OID AND SPN_SUBMISSION_FK = SUB_OID AND SUB_IS_DELETED = '0' AND " +
+		  						 "SUB_IS_PUBLIC = 1 AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE = 'ISH' AND SPN_ASSAY_TYPE = 'section'";
+  
+//query to find the number of public OPT submissions in db
+  final static String name271 = "NUMBER_OF_PUBLIC_SUBMISSIONS_OPT";
+  final static String query271 = "SELECT COUNT(DISTINCT SUB_OID) TOTAL FROM REF_PROBE, ISH_PROBE, ISH_SUBMISSION, ISH_SPECIMEN WHERE " +
+		  						 "PRB_MAPROBE = RPR_OID AND PRB_SUBMISSION_FK = SUB_OID AND SPN_SUBMISSION_FK = SUB_OID AND SUB_IS_DELETED = '0' AND " +
+		  						 "SUB_IS_PUBLIC = 1 AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE = 'ISH' AND SPN_ASSAY_TYPE = 'opt-wholemount'";
+  
   //query to find date of last modification by editor
   final static String name99 = "LAST_ENTRY_DATE_EDITORIAL";
   final static String query99 = "select max(SUB_MODIFIED_DATE) from ISH_SUBMISSION";
@@ -2113,7 +2132,10 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
       new ParamQuery(name265,query265),
       new ParamQuery(name266,query266),
       new ParamQuery(name267,query267),
-      new ParamQuery(name268,query268)
+      new ParamQuery(name268,query268),
+      new ParamQuery(name269,query269),
+      new ParamQuery(name270,query270),
+      new ParamQuery(name271,query271)
   };
 
   // finds ParamQuery object by name and returns

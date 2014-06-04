@@ -715,6 +715,31 @@ public class AdvancedSearchDBQuery {
 		      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true)" ;
 	  }
 	  
+	  final static public String getPublicISHTypesNumber(String[] emapids, String type) {
+		  String ids = "";
+		  for(int i = 0; i < emapids.length; i++) {
+			  ids += "'"+emapids[i] + "',";
+		  }
+		  if(emapids.length >= 1) {
+			  ids = ids.substring(0, ids.length()-1);
+		  }
+		  return "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) FROM ISH_SUBMISSION, ISH_SPECIMEN, ISH_EXPRESSION WHERE SUB_ASSAY_TYPE = 'ISH' " +
+		  		 "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND SPN_SUBMISSION_FK = SUB_OID AND " +
+		  		 "EXP_SUBMISSION_FK=SUB_OID AND SPN_ASSAY_TYPE='"+type+"' AND "+
+		  " EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
+		    " from ANA_TIMED_NODE ANCES_ATN, "+
+		         " ANAD_RELATIONSHIP_TRANSITIVE, "+
+		         " ANA_TIMED_NODE DESCEND_ATN, "+
+		         " ANA_NODE, "+
+		         " ANAD_PART_OF "+
+		    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
+		      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
+		      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
+		      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
+		      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
+		      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true)" ;
+	  }
+	  
 	  // for every fomat except DPC, which is what GUDMAP uses, the format goes first.
 	  public static String stageFormatConcat = bundle.getString("project").equals("GUDMAP") ? 
 			  "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) " +

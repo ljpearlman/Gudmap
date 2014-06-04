@@ -162,7 +162,7 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
     public HeaderItem [] createHeader() {
         
         //set the titles of each of the columns in the table
-        String headerTitles[] = {Utility.getProject()+" ID", "GEO Sample ID", "Sample ID", "Genotype", "Sample Description", "Component(s) Sampled" };
+        String headerTitles[] = {Utility.getProject()+" ID", "GEO Sample ID", "Sample Name", "Genotype", "Sample Description", "Component(s) Sampled" };
         //specify which columns are sortable
 //        boolean headerSortable [] = {false, false, false, false};
         boolean headerSortable [] = {true, true, true, true, false, false};

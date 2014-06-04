@@ -8,18 +8,21 @@ public interface FocusForAllDAO {
 	// get total number of ish submissions
 	public int findTotalNumberOfSubmissionISH(String[] emapids);
 	
-    // get number of public ish sumbissions
+    // get number of public ish submissions
 	public int findNumberOfPublicSubmissionISH(String[] emapids);
 //	 get total number of ihc submissions
 	public int findTotalNumberOfSubmissionArray(String[] emapids);
 	
 	public int findNumberOfPublicSubmissionArray(String[] emapids);
 	
-	// get number of public ihc sumbissions
+	// get number of public ihc submissions
 	public int findNumberOfPublicSubmissionIHC(String[] emapids);
 	
-	// get number of public transgenic sumbissions
+	// get number of public transgenic submissions
 	public int findNumberOfPublicSubmissionTG(String[] emapids);
+	
+	// get number of public WISH/SISH/OPT submissions
+	public int findNumberOfPublicSubmissionISHTypes(String[] emapids, String type);
 	
 	// find the number of public gene entries related to given assay type
 	public int findNumberOfPublicGenes(String assayType, String[] emapids);
