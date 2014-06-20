@@ -58,7 +58,7 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
 			System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			resSet = prepStmt.executeQuery();
-			result= formatBrowseSeriesResultSet(resSet);
+			result= Utility.formatResultSet(resSet);
 			
 			return result;
 		} catch (Exception e) {
@@ -106,7 +106,7 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
             prepStat.setString(1, id);
 
             resSet = prepStat.executeQuery();
-            result = formatBrowseSeriesResultSet(resSet);
+            result = Utility.formatResultSet(resSet);
 
 			return result;
 		} catch (Exception e) {
@@ -125,6 +125,7 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
     public ArrayList getSamplesBySeriesOid(String oid, int columnIndex,
             boolean ascending, int offset, int num) {
     	ArrayList result = null;
+    	ArrayList result2 = null;
     	ResultSet resSet = null;
     	
     	//find relevant query string from db query
@@ -146,7 +147,41 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
     		prepStat.setInt(1, Integer.parseInt(oid));
     		
     		resSet = prepStat.executeQuery();
-    		result = formatBrowseSeriesResultSet(resSet);
+    		/*result = formatBrowseSeriesResultSet(resSet);
+    		return result;*/
+    		result = Utility.formatResultSet(resSet);
+    		result2 = Utility.formatGenotypeResultSet(result,getGenotypeBySeriesOid(oid,"GENOTYPE_LIST_NGD"),4);
+    		return result2;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStat);			
+		}
+    }
+    
+    public ArrayList getGenotypeBySeriesOid(String oid, String dbquery) {
+    	ArrayList result = null;
+    	ResultSet resSet = null;
+    	
+    	//find relevant query string from db query
+    	ParamQuery parQ = ArrayDBQuery.getParamQuery(dbquery);
+    	PreparedStatement prepStat = null;
+    	
+    	String query = parQ.getQuerySQL();
+    	
+    	//try to execute the query
+    	try {
+		    if (debug)
+		    	System.out.println("MySQLArrayDevDAOImp.sql = "+query.toLowerCase());
+    		prepStat = conn.prepareStatement(query);
+    		prepStat.setInt(1, Integer.parseInt(oid));
+    		prepStat.setInt(2, Integer.parseInt(oid));
+    		
+    		resSet = prepStat.executeQuery();
+    		result = Utility.formatResultSet(resSet);
     		
 			return result;
 		} catch (Exception e) {
@@ -358,10 +393,11 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
 				series.setNumSamples(resSetSeries.getString(2));
 				series.setTitle(resSetSeries.getString(3));
 				series.setSummary(resSetSeries.getString(4));
-				series.setType(resSetSeries.getString(5));
-				series.SetDesign(resSetSeries.getString(6));
-				series.SetDescription(resSetSeries.getString(7));
-				series.setArchiveId(resSetSeries.getInt(8)); // xingjun - 12/08/2010
+				//series.setType(resSetSeries.getString(5));
+				series.SetDesign(resSetSeries.getString(5));
+				//series.SetDescription(resSetSeries.getString(7));
+				series.setArchiveId(resSetSeries.getInt(6));
+				series.setBatchId(resSetSeries.getInt(7));
 			}
 			
 			conn.commit();
@@ -411,11 +447,12 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
 			if(resSetSeries.first()){
 				series = new NGDSeries();
 				series.setGeoID(resSetSeries.getString(1));
-				series.setArchiveId(resSetSeries.getInt(2));
-				series.setNumSamples(resSetSeries.getString(3));
-				series.setTitle(resSetSeries.getString(4));
-				series.setSummary(resSetSeries.getString(5));
-				series.SetDesign(resSetSeries.getString(6));
+				series.setNumSamples(resSetSeries.getString(2));
+				series.setTitle(resSetSeries.getString(3));
+				series.setSummary(resSetSeries.getString(4));
+				series.SetDesign(resSetSeries.getString(5));
+				series.setArchiveId(resSetSeries.getInt(6));
+				series.setBatchId(resSetSeries.getInt(7));
 				 
 			}
 			return series;

@@ -567,7 +567,7 @@
 				<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.strain}" />
 
 				<h:outputText value="Genotype:" />
-				<h:outputText value="Wild type" rendered="#{null == ISHSingleSubmissionBean.submission.allele}"/>
+				<h:outputText value="wild type" rendered="#{null == ISHSingleSubmissionBean.submission.allele}"/>
 			                <t:dataTable id="alleleContentTable" 
         	                                                                   value="#{ISHSingleSubmissionBean.submission.allele}" var="allele"  style="margin-left:-5px; "  rendered="#{null != ISHSingleSubmissionBean.submission.allele}">
 				           <t:column>

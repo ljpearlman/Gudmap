@@ -16,7 +16,6 @@ import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
 import gmerg.utils.table.OffMemoryTableAssembler;
 import gmerg.utils.RetrieveDataCache;
-
 import gmerg.db.ArrayDevDAO;
 
 /**
@@ -298,12 +297,24 @@ public class SeriesAssembler extends OffMemoryTableAssembler {
             tableData[i][0] = new DataItem(row[0], "View Sample", "mic_submission.html?id="+row[0], 10);   // Project Id
             tableData[i][1] = new DataItem(row[1], "View Sample in GEO", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 9);   // Sample GEO Id
             tableData[i][2] = new DataItem(row[2]);   // Sample Id
-            tableData[i][3] = new DataItem(row[3]);   // Genotype
+            tableData[i][3] = new DataItem(Utility.superscriptAllele(row[3]),50); //GENOTYPE
             tableData[i][4] = new DataItem(row[4]);   // Sample Description
             tableData[i][5] = new DataItem(row[5]);   // List of components
         }
                 
         return tableData;
     }
-    
+	
+	/*static String superscriptAllele(String input) {
+    	String alleleName = input;
+		if (null != alleleName &&
+		    -1 != alleleName.indexOf("<")) {
+			alleleName = alleleName.replace("<", "##1");
+			alleleName = alleleName.replace(">", "##2");
+			alleleName = alleleName.replace("##1", "<sup>");
+			alleleName = alleleName.replace("##2", "</sup>");
+			
+		}
+		return alleleName;
+	}*/ 
 }

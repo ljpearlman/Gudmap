@@ -6,7 +6,8 @@
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<head>
+<!-- WHY IS THIS HEADER INFORMATION HERE? IS IT SOMETHING TO DO WITH THE SSL CERT? ANYWAY IT BREAKS THE PAGE DISPLAY -->
+<%-- <head>
    	<link href="${pageContext.request.contextPath}/css/gudmap_css.css" type="text/css" rel="stylesheet">
    	<script src="${pageContext.request.contextPath}/scripts/header.js" type="text/javascript"></script>
 <style>
@@ -17,7 +18,7 @@
 	padding-left: 5px;
 }
     </style>
-</head>
+</head> --%>
 
 <f:view >
 	<jsp:include page="/includes/header.jsp">
@@ -78,14 +79,14 @@
 
     </div><br>
     
-    <div class="login_div_border">
+    <!-- <div class="login_div_border">
     <p><strong>Annotation Tool:</strong></p>
     <p>The Annotation Tool allows the submission of new gene expression annotations.<br>
 This online interface requires a login and is available to registered laboratories.<br>
 Please contact <a href="mailto:GUDMAP-EDITORS@gudmap.org">GUDMAP-EDITORS@gudmap.org</a> to express your interest</p>
 
     <p><strong><a href="http://www.gudmap.org/Help/Annotation_Tool_Help.html">Annotation Tool Help Pages</a></strong></p>
-    </div>
+    </div> -->
 	<jsp:include page="/includes/footer.jsp" />
 </f:view>
 	

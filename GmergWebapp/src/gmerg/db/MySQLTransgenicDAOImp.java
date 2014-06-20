@@ -65,8 +65,9 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         
         try {
 	 ///////!!!!! poor databse table for different type of submissions
-	    ////////!!!! do not know why replaceAll does not work
-	    int index = queryString.lastIndexOf("ALE_GENE AS RPR_SYMBOL");
+	    ////////!!!! do not know why replaceAll does not work 
+        	///I HAVE NO IDEA WHY YOU WOULD NEED THIS. D
+	    /*int index = queryString.lastIndexOf("ALE_GENE AS RPR_SYMBOL");
 	    String str = null;
 	    if (-1 != index) {
 		str = queryString;
@@ -78,17 +79,19 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 		str = queryString;
 		queryString = str.substring(0, index) + "ALE_GENE "+str.substring(index + (new String("RPR_SYMBOL")).length());
 		index = queryString.lastIndexOf("RPR_SYMBOL");
-	    }
+	    }*/
 	    ////////!!!!!!
 
 	    if (debug)
-		System.out.println("MySQLTransgenicDAOImp.sql = "+queryString);
-        	prepStmt = conn.prepareStatement(queryString);
-            resSet = prepStmt.executeQuery();
-            result = formatBrowseResultSet(resSet);
-            return result;
+	    	System.out.println("MySQLTransgenicDAOImp.sql = "+queryString);
+	    
+        prepStmt = conn.prepareStatement(queryString);
+        resSet = prepStmt.executeQuery();
+        result = formatBrowseResultSet(resSet);
+        return result;
 
-        } catch (SQLException se) {
+        } 
+        catch (SQLException se) {
             se.printStackTrace();
             return result;
         }

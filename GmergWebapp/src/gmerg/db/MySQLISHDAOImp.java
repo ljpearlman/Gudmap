@@ -308,6 +308,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setLocalDbName(resSet.getString(25));
             submissionInfo.setLabId(resSet.getString(26));
             submissionInfo.setEuregeneId(resSet.getString(27));
+            submissionInfo.setOid(resSet.getString(28));
 	    
         }
         if (null != noteSet && null != submissionInfo) {

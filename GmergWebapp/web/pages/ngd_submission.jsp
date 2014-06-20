@@ -35,9 +35,9 @@
 	    	    <h:outputLink styleClass="datatext" value="http://www.gudmap.org/Internal/Consortium/Work_In_Progress/nextgen.html">
 	    			<h:outputText value="IGV" />
 	    	    </h:outputLink>
-	    	    <h:outputLink styleClass="datatext" value="http://www.gudmap.org/">
+	    	    <%-- <h:outputLink styleClass="datatext" value="http://www.gudmap.org/">
 	    			<h:outputText value="UCSC" />
-	    	    </h:outputLink>
+	    	    </h:outputLink> --%>
     	    </h:panelGrid>
         </h:panelGrid>
 <%--         <h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" rendered="#{not empty NGDSingleSubmissionBean.submission.resultNotes}">
@@ -72,7 +72,7 @@
 				<h:outputText value="Raw file:" />
 				<h:dataTable  columnClasses="text-normal,text-top"  value="#{NGDSingleSubmissionBean.submission.rawFile}" var="rfile">
 					<h:column>
-						<h:outputLink styleClass="datatext" value="http://www.gudmap.org/pathtofile/#{rfile}">
+						<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/raw/#{rfile}">
 							<h:outputText value="#{rfile}"/>
 						</h:outputLink>
 					</h:column>
@@ -80,7 +80,7 @@
 				<h:outputText value="Processed file:" />
 				<h:dataTable  columnClasses="text-normal,text-top"  value="#{NGDSingleSubmissionBean.submission.processedFile}" var="pfile">
 					<h:column>
-						<h:outputLink styleClass="datatext" value="http://www.gudmap.org/pathtofile/#{pfile}">
+						<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/processed/#{pfile}">
 							<h:outputText value="#{pfile}"/>
 						</h:outputLink>
 					</h:column>
@@ -89,10 +89,25 @@
         </h:panelGrid>
  		
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty NGDSingleSubmissionBean.submission.archiveId}">
-			<h:outputText value="Archive/Batch ID"/>
-			<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{NGDSingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{NGDSingleSubmissionBean.submission.archiveId != null}">
+			<h:outputText value="Archive / Batch ID"/>
+			<%-- <h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{NGDSingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{NGDSingleSubmissionBean.submission.archiveId != null}">
 				<h:outputText value="#{NGDSingleSubmissionBean.submission.archiveId}" />
-			</h:outputLink>
+			</h:outputLink> --%>
+			<h:panelGrid columns="3">
+				<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{NGDSingleSubmissionBean.submission.archiveId}" styleClass="plaintext"  rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}">
+					<h:outputText value="#{NGDSingleSubmissionBean.submission.archiveId}"   rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}"/>
+				</h:outputLink>
+				
+				<h:outputText value="- "   rendered="#{NGDSingleSubmissionBean.submission.archiveId == 0}"/>
+				
+				
+				<h:outputText value="/"/>
+				<h:outputLink value="/gudmap/pages/focus_ngd_browse.html?batchId=#{NGDSingleSubmissionBean.submission.batchId}" styleClass="plaintext"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}">
+					<h:outputText value="#{NGDSingleSubmissionBean.submission.batchId}"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}"/>
+				</h:outputLink>
+				
+				<h:outputText value=" -"  rendered="#{NGDSingleSubmissionBean.submission.batchId == 0}"/>
+			</h:panelGrid>
         </h:panelGrid>
 		
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
@@ -127,9 +142,9 @@
 		<h:panelGrid columns="2" columnClasses="data-titleCol,data-textCol, data-textCol">
 		
 			<h:outputText value="Sample GEO ID:" rendered="#{not empty NGDSingleSubmissionBean.submission.sample.geoID}"/>
-			<h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external"  rendered="#{NGDSingleSubmissionBean.submission.sample.geoID != null}">
+			<h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external"  rendered="#{not empty NGDSingleSubmissionBean.submission.sample.geoID}">
 				<f:param value="#{NGDSingleSubmissionBean.submission.sample.geoID}" name="acc" />
-				<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.geoID}" rendered="#{NGDSingleSubmissionBean.submission.sample.geoID != null}"/>
+				<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.geoID}" rendered="#{not empty NGDSingleSubmissionBean.submission.sample.geoID}"/>
 			</h:outputLink>
 			
 			<h:outputText value="Sample Description:" />
@@ -149,7 +164,7 @@
 
 
 				<h:outputText value="Genotype:" />
-				<h:outputText value="Wild type" rendered="#{null == ISHSingleSubmissionBean.submission.allele}"/>
+				<h:outputText value="wild type" rendered="#{null == ISHSingleSubmissionBean.submission.allele}"/>
 			    <t:dataTable id="alleleContentTable" value="#{ISHSingleSubmissionBean.submission.allele}" var="allele"  style="margin-left:-5px; " rendered="#{null != ISHSingleSubmissionBean.submission.allele}">
 				    <t:column>
 				    <h:panelGrid columns="3">
@@ -307,9 +322,9 @@
         	   </h:panelGroup> --%>
         	   
         	   <h:outputText value="Series GEO ID:" rendered="#{not empty NGDSingleSubmissionBean.submission.series.geoID}"/>
-        	   	<h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external"   rendered="#{NGDSingleSubmissionBean.submission.series.geoID != null}">
+        	   	<h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi" target="gmerg_external"   rendered="#{not empty NGDSingleSubmissionBean.submission.series.geoID}">
         			 <f:param value="#{NGDSingleSubmissionBean.submission.series.geoID}" name="acc" />
-        			 <h:outputText value="#{NGDSingleSubmissionBean.submission.series.geoID}"   rendered="#{NGDSingleSubmissionBean.submission.series.geoID != null}"/>
+        			 <h:outputText value="#{NGDSingleSubmissionBean.submission.series.geoID}"   rendered="#{not empty NGDSingleSubmissionBean.submission.series.geoID}"/>
         		</h:outputLink>
         	   
         	
@@ -327,8 +342,8 @@
 			<h:outputText value="Summary:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.series.summary}" />
 			
-			<h:outputText value="Type:" />
-			<h:outputText value="#{NGDSingleSubmissionBean.submission.series.type}" />
+			<%-- <h:outputText value="Type:" />
+			<h:outputText value="#{NGDSingleSubmissionBean.submission.series.type}" /> --%>
 			
 			<h:outputText value="Overall Design:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.series.design}" />

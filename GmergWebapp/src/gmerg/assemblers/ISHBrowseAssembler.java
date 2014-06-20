@@ -236,7 +236,8 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		formatedRow[ 8] = new DataItem(row[8]);
 		
 		// Genotype
-		formatedRow[ 9] = new DataItem(row[9]);
+		/*formatedRow[ 9] = new DataItem(row[9]);*/
+		formatedRow[ 9] = new DataItem(Utility.superscriptAllele(row[9]),50);
 
 		// Tissue
 		formatedRow[ 10] = new DataItem(row[10]);

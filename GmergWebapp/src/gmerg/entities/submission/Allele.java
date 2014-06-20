@@ -111,6 +111,8 @@ public class Allele {
 		alleleName = alleleName.replace(">", "##2");
 		alleleName = alleleName.replace("##1", "<sup>");
 		alleleName = alleleName.replace("##2", "</sup>");
+		/*alleleName = alleleName.replace("<", "&lt;sup&gt;");
+		alleleName = alleleName.replace(">", "&lt;/sup&gt;");*/
 	}
 
     }
@@ -184,7 +186,7 @@ public class Allele {
 		alleleSecondChrom = alleleSecondChrom.replace("<", "##1");
 		alleleSecondChrom = alleleSecondChrom.replace(">", "##2");
 		alleleSecondChrom = alleleSecondChrom.replace("##1", "<sup>");
-		alleleSecondChrom = alleleSecondChrom.replace("##1", "</sup>");
+		alleleSecondChrom = alleleSecondChrom.replace("##2", "</sup>");
 	}
     }
 }

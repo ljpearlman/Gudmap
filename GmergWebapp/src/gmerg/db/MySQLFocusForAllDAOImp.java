@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import gmerg.db.AdvancedSearchDBQuery;
+import gmerg.utils.Utility;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
@@ -302,26 +303,26 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				} else if(1 == orderby){
 					orderStr = " order by natural_sort(SMP_GEO_ID) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(2 == orderby){
-					orderStr = " order by SMP_THEILER_STAGE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				}  else if(3 == orderby){
-					orderStr = " order by TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				}  else if(4 == orderby){
-					orderStr = " order by SUB_SOURCE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				}  else if(5 == orderby){
-					orderStr = " order by SUB_SUB_DATE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				}  else if(6 == orderby){// modified by xingjun - 31/08/2009 - change to sex column
-					orderStr = " order by SMP_SEX " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				}  else if(7 == orderby){
-					orderStr = " order by SRM_SAMPLE_DESCRIPTION " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				}  else if(8 == orderby){
-					orderStr = " order by SMP_TITLE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				}  else if(9 == orderby){
-					orderStr = " order by natural_sort(ALE_GENE) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				} else if(10 == orderby){
 					orderStr = " order by natural_sort(SER_GEO_ID) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(3 == orderby){
+					orderStr = " order by SUB_SOURCE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(4 == orderby){
+					orderStr = " order by SMP_THEILER_STAGE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(5 == orderby){
+					orderStr = " order by TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(6 == orderby){
+					orderStr = " order by SUB_SUB_DATE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(7 == orderby){
+					orderStr = " order by SMP_SEX " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(8 == orderby){
+					orderStr = " order by SRM_SAMPLE_DESCRIPTION " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(9 == orderby){
+					orderStr = " order by SMP_TITLE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}  else if(10 == orderby){
+					orderStr = " order by natural_sort(GENOTYPE) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				} else if(11 == orderby){
 					orderStr = " order by GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', ') " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				} 
+				}  
 			} else if(query.equals("ngd")) {
 				if(orderby < 0) {
 					orderStr = " order by " + AdvancedSearchDBQuery.getMICDefaultSort(); 
@@ -348,10 +349,12 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				} else if(10 == orderby){
 					orderStr = " order by NGS_SAMPLE_NAME " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				} else if(11 == orderby){
-					orderStr = " order by natural_sort(ALE_GENE) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-					//orderStr = " order by GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', ') " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
-				} 
-			} else if(query.equals("ish") || query.equals("insitu") || query.equals("insitu_all")) {
+					orderStr = " order by natural_sort(GENOTYPE) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				} else if(12 == orderby){
+					orderStr = " order by GROUP_CONCAT(DISTINCT CONCAT(ANO_COMPONENT_NAME, ' (' , ATN_PUBLIC_ID, ')') SEPARATOR ', ') " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
+				}
+			}
+			else if(query.equals("ish") || query.equals("insitu") || query.equals("insitu_all")) {
 				if(orderby < 0) {
 					orderStr = " order by " + AdvancedSearchDBQuery.getISHDefaultSort(); 
 				} else if(0 == orderby){
@@ -374,7 +377,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}  else if(8 == orderby){
 					orderStr = " order by SPN_SEX " + order + "," + "NATURAL_SORT(RPR_SYMBOL), SUB_EMBRYO_STG, SPN_SEX";
 				}  else if(9 == orderby){
-					orderStr = " order by SPN_WILDTYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+					//orderStr = " order by SPN_WILDTYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
+					orderStr = " order by natural_sort(GENOTYPE) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(10 == orderby){
 					orderStr = " order by ANO_COMPONENT_NAME " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(11 == orderby){
@@ -387,6 +391,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			}
 		return orderStr;
     }
+	
+
 	
 	
 	/**
@@ -402,6 +408,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 		final long startTime = System.currentTimeMillis();
 		ResultSet resSet = null;
 		ArrayList result = null;
+		ArrayList result2 = null;
 		ParamQuery parQ = null;
 		PreparedStatement prepStmt = null;
 		if(query.equals("array")) {
@@ -468,9 +475,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				// execute
 				resSet = prepStmt.executeQuery();
 				result = formatResultSet(resSet, MAX_COLUMNS);
-				
-				
 				return result;
+				/*result = Utility.formatResultSet(resSet);
+	    		result2 = Utility.formatGenotypeResultSet(result,getArrayGenotypeBySeriesOid(oid),3);*/
 			} catch(SQLException se) {
 				se.printStackTrace();
 				return null;
@@ -831,7 +838,9 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
             return results;
         }
         return null;
-    } 	
+    }
+    
+
     
     /**
      * @author xingjun
@@ -1550,4 +1559,37 @@ private String getBrowseNGDSeriesOrderByColumn(int columnIndex, boolean ascendin
 			DBHelper.closeResultSet(resSet);
 		}
 	}
+	
+    public ArrayList getArrayGenotypeBySeriesOid(String oid, int columnIndex,
+            boolean ascending, int offset, int num) {
+    	ArrayList result = null;
+    	ResultSet resSet = null;
+    	
+    	//find relevant query string from db query
+    	ParamQuery parQ = ArrayDBQuery.getParamQuery("GENOTYPE_LIST_ARRAY");
+    	PreparedStatement prepStat = null;
+    	
+    	String query = parQ.getQuerySQL();
+    	
+    	//try to execute the query
+    	try {
+		    if (debug)
+		    	System.out.println("MySQLArrayDevDAOImp.sql = "+query.toLowerCase());
+    		prepStat = conn.prepareStatement(query);
+    		prepStat.setInt(1, Integer.parseInt(oid));
+    		prepStat.setInt(2, Integer.parseInt(oid));
+    		
+    		resSet = prepStat.executeQuery();
+    		result = Utility.formatResultSet(resSet);
+    		
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStat);			
+		}
+    }
 }

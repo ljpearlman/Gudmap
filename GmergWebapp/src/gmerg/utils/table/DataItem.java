@@ -197,11 +197,13 @@ public class DataItem implements Serializable {
 	System.out.println("DataItem: link = "+link);
 	if (null == params)
 	    System.out.println("DataItem: params null");
-else
-    System.out.println("DataItem:  params length = "+params.length);
+	else
+		System.out.println("DataItem:  params length = "+params.length);
 	if (null == spareValue)
 	    System.out.println("DataItem: spareValue null");
-else
+	else
 	    System.out.println("DataItem:  spareValue class = "+value.getClass().getName()+" spareValue = "+spareValue);
     }
+    
+   
 }

@@ -299,7 +299,8 @@ public class NGDSeriesAssembler extends OffMemoryTableAssembler {
             tableData[i][1] = new DataItem(row[1], "View Sample in GEO", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 9);   // Sample GEO Id
             tableData[i][2] = new DataItem(row[2]);   // NGS_SAMPLE_NAME
             tableData[i][3] = new DataItem(row[3]);   // NGP_LIBRARY_STRATEGY
-            tableData[i][4] = new DataItem(row[4]);   // GENOTYPE
+            /*tableData[i][4] = new DataItem(row[4]);*/   // GENOTYPE
+            tableData[i][4] = new DataItem(Utility.superscriptAllele(row[4]),50);   // GENOTYPE
             tableData[i][5] = new DataItem(row[5]);   // NGS_DESCRIPTION
             tableData[i][6] = new DataItem(row[6]);   // IST_COMPONENT
         }

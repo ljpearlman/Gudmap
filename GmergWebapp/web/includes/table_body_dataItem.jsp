@@ -176,5 +176,6 @@
 		<%------------------------------------ Simple item (no link) ----------------------------------------%>
 		<h:outputText rendered="#{TableBean.dataItemtype==0}" 
 					  value="#{TableBean.dataItemValue}" styleClass="plaintext" />
+					  
 
 	</h:panelGroup>

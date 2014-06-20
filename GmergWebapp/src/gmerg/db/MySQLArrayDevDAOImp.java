@@ -69,7 +69,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				prepStmt.setString(1, platform);
 			}
 			resSet = prepStmt.executeQuery();
-			result = formatBrowseSeriesResultSet(resSet);
+			/*result = formatBrowseSeriesResultSet(resSet);*/
+			result = Utility.formatResultSet(resSet);
 			
 			return result;
 		} catch (Exception e) {
@@ -117,7 +118,8 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
             prepStat.setString(1, id);
 
             resSet = prepStat.executeQuery();
-            result = formatBrowseSeriesResultSet(resSet);
+            /*result = formatBrowseSeriesResultSet(resSet);*/
+            result = Utility.formatResultSet(resSet);
 
 			return result;
 		} catch (Exception e) {
@@ -136,6 +138,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
     public ArrayList getSamplesBySeriesOid(String oid, int columnIndex,
             boolean ascending, int offset, int num) {
     	ArrayList result = null;
+    	ArrayList result2 = null;
     	ResultSet resSet = null;
     	
     	//find relevant query string from db query
@@ -146,6 +149,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
     	String defaultOrder = " CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,':')+1) AS UNSIGNED) ";
     	String queryString = assembleSeriesSamplesQString(query, defaultOrder, 
     			columnIndex, ascending, offset, num);
+    	
 //    	System.out.println("ArrayDevDAO:getSamplesBySeriesOid:sql: " + queryString);
 //    	System.out.println("ArrayDevDAO:getSamplesBySeriesOid:seriesOid: " + oid);
     	
@@ -157,7 +161,42 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
     		prepStat.setInt(1, Integer.parseInt(oid));
     		
     		resSet = prepStat.executeQuery();
-    		result = formatBrowseSeriesResultSet(resSet);
+    		/*result = formatBrowseSeriesResultSet(resSet);*/
+    		// modified to display multiple values in genotype column 
+    		//return result;
+    		result = Utility.formatResultSet(resSet);
+    		result2 = Utility.formatGenotypeResultSet(result,getGenotypeBySeriesOid(oid,"GENOTYPE_LIST_ARRAY"),3);
+    		return result2;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStat);			
+		}
+    }
+    
+    public ArrayList getGenotypeBySeriesOid(String oid, String dbquery) {
+    	ArrayList result = null;
+    	ResultSet resSet = null;
+    	
+    	//find relevant query string from db query
+    	ParamQuery parQ = ArrayDBQuery.getParamQuery(dbquery);
+    	PreparedStatement prepStat = null;
+    	
+    	String query = parQ.getQuerySQL();
+    	
+    	//try to execute the query
+    	try {
+		    if (debug)
+		    	System.out.println("MySQLArrayDevDAOImp.sql = "+query.toLowerCase());
+    		prepStat = conn.prepareStatement(query);
+    		prepStat.setInt(1, Integer.parseInt(oid));
+    		prepStat.setInt(2, Integer.parseInt(oid));
+    		
+    		resSet = prepStat.executeQuery();
+    		result = Utility.formatResultSet(resSet);
     		
 			return result;
 		} catch (Exception e) {
@@ -297,8 +336,9 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 	 * @param resSet
 	 * @return
 	 * @throws SQLException
+	 * MOVE TO UTILITY
 	 */
-	protected ArrayList formatBrowseSeriesResultSet(ResultSet resSet) throws SQLException {
+/*	protected ArrayList formatBrowseSeriesResultSet(ResultSet resSet) throws SQLException {
 		
    		ArrayList<String[]> results = null;
 		ResultSetMetaData resSetMetaData = resSet.getMetaData();
@@ -318,7 +358,42 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 			}
 		}
 		return results;
-	}
+	}*/
+/*//QUERYROW=THE POSITION OF THE GENOTYPE COLUMN IN THE RESULT SET	
+protected ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype, int queryRow) throws SQLException {
+		
+   		ArrayList<String[]> results = series;
+   		int seriesColNum = ((String[])series.get(0)).length;
+		int seriesRowNum = series.size();
+		int genotypeColNum = ((String[])genotype.get(0)).length;
+		int genotypeRowNum = genotype.size();
+		
+
+		for(int i=0; i<seriesRowNum; i++) {
+			String[] row = (String[])series.get(i); 
+			
+			if(!row[queryRow].equalsIgnoreCase("wild type"))
+			{
+				row[queryRow]="";
+				for(int j=0; j<genotypeRowNum; j++) {
+					String[] row2 = (String[])genotype.get(j);
+					//if SUB_ACCESSION_ID's match
+					if(row2[0].equals(row[0]))
+					{
+						if(!row[queryRow].contains(row2[1])) {
+							if(!row[queryRow].equals(""))
+								row[queryRow]+=", "+row2[1];
+							else
+								row[queryRow]+=row2[1];
+						}
+					}
+				}
+			}
+		
+		}
+		return results;
+	}*/
+	
 
 	/* (non-Javadoc)
 	 * @see gmerg.db.ArrayDevDAO#getStringArrayFromBatchQuery(java.lang.String[][], java.lang.String[])
@@ -518,8 +593,9 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				series.setSummary(resSetSeries.getString(4));
 				series.setType(resSetSeries.getString(5));
 				series.SetDesign(resSetSeries.getString(6));
-				series.SetDescription(resSetSeries.getString(7));
-				series.setArchiveId(resSetSeries.getInt(8)); // xingjun - 12/08/2010
+				series.SetDescription(resSetSeries.getString(8));
+				series.setArchiveId(resSetSeries.getInt(9)); 
+				series.setBatchId(resSetSeries.getInt(10));
 			}
 			
 			conn.commit();
@@ -577,6 +653,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 				series.SetDesign(resSetSeries.getString(6));
 				series.SetDescription(resSetSeries.getString(8));
 				series.setArchiveId(resSetSeries.getInt(9)); 
+				series.setBatchId(resSetSeries.getInt(10));
 			}
 			return series;
 		} catch (Exception e) {

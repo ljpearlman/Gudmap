@@ -19,6 +19,7 @@ public class Series {
     private int oid;
     private String description;// list of components
     private int archiveId;
+    private int batchId;
     
     public void setGeoID(String id) {
         geoID = id;
@@ -98,6 +99,14 @@ public class Series {
     
     public void setArchiveId(int archiveId) {
     	this.archiveId = archiveId;
+    }
+    
+    public int getBatchId() {
+    	return batchId;
+    }
+    
+    public void setBatchId(int batchId) {
+    	this.batchId = batchId;
     }
 
 }

@@ -85,7 +85,8 @@ public class ArraySubmissionAssembler {
 			ArraySubmission arraySubmission = new ArraySubmission();
 			arraySubmission.setAccID(submission.getAccID());
 			arraySubmission.setStage(submission.getStage());
-			arraySubmission.setArchiveId(submission.getArchiveId()); // added by xingjun - 03/11/2010
+			arraySubmission.setArchiveId(submission.getArchiveId());
+			arraySubmission.setBatchId(submission.getBatchId());
 			arraySubmission.setResultNotes(submission.getResultNotes());
 			arraySubmission.setOriginalImages(images);
 	

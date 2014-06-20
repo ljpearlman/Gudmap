@@ -8,6 +8,9 @@ import gmerg.entities.Globals;
 import gmerg.entities.User;
 
 import java.awt.Color;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -634,6 +637,78 @@ public class Utility {
 	
 	return ret;
     }
+    
+    public static String superscriptAllele(String input) {
+    	String alleleName = input;
+		if (null != alleleName &&
+		    -1 != alleleName.indexOf("<")) {
+			alleleName = alleleName.replace("<", "##1");
+			alleleName = alleleName.replace(">", "##2");
+			alleleName = alleleName.replace("##1", "<sup>");
+			alleleName = alleleName.replace("##2", "</sup>");
+			
+		}
+		return alleleName;
+	} 
+    
+    public static ArrayList formatResultSet(ResultSet resSet) throws SQLException {
+		
+   		ArrayList<String[]> results = null;
+		ResultSetMetaData resSetMetaData = resSet.getMetaData();
+   		int columnCount = resSetMetaData.getColumnCount();
+
+		if (resSet.first()) {
+			//need to reset cursor as 'if' move it on a place
+			resSet.beforeFirst();
+			results = new ArrayList<String[]>();
+			
+			while(resSet.next()) {
+				String[] columns = new String[columnCount];
+				for (int i = 0; i < columnCount; i++) {
+					columns[i] = resSet.getString(i + 1);
+		        }
+		        results.add(columns);
+			}
+		}
+		return results;
+	}
+    
+  //QUERYROW=THE POSITION OF THE GENOTYPE COLUMN IN THE RESULT SET	
+    public static ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype, int queryRow) throws SQLException {
+    		
+       		ArrayList<String[]> results = series;
+       		if(genotype==null)
+       			return results;
+       		int seriesColNum = ((String[])series.get(0)).length;
+    		int seriesRowNum = series.size();
+    		int genotypeColNum = ((String[])genotype.get(0)).length;
+    		int genotypeRowNum = genotype.size();
+    		
+    		
+    		for(int i=0; i<seriesRowNum; i++) {
+    			String[] row = (String[])series.get(i); 
+    			
+    			if(!row[queryRow].equalsIgnoreCase("wild type"))
+    			{
+    				row[queryRow]="";
+    				for(int j=0; j<genotypeRowNum; j++) {
+    					String[] row2 = (String[])genotype.get(j);
+    					//if SUB_ACCESSION_ID's match
+    					if(row2[0].equals(row[0]))
+    					{
+    						if(!row[queryRow].contains(row2[1])) {
+    							if(!row[queryRow].equals(""))
+    								row[queryRow]+=", "+row2[1];
+    							else
+    								row[queryRow]+=row2[1];
+    						}
+    					}
+    				}
+    			}
+    		
+    		}
+    		return results;
+    	}
 	
 }
 

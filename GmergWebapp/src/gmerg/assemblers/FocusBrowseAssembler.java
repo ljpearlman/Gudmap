@@ -288,7 +288,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		 String[] headerTitles = { Utility.getProject()+" Entry Details", "GEO Sample ID",  "GEO Series ID", "Source",
 				 				   Utility.getStageSeriesMed()+" Stage", "Age", 
 				 				    "Date", "Sex",
-				 				   "Sample Description", "Title", "Genotype", "Component(s) sampled" };
+				 				   "Sample Description", "Sample Name", "Genotype", "Component(s) sampled" };
 		 
 		int colNum = headerTitles.length;
 		HeaderItem[] tableHeader = new HeaderItem[colNum];
@@ -301,7 +301,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		 String[] headerTitles = { Utility.getProject()+" Entry Details", "GEO Sample ID", "GEO Series ID", "Source",
 				 				   "Library Strategy", Utility.getStageSeriesMed()+" Stage", "Age", 
 				 				    "Date", "Sex",
-				 				   "Sample Description", "Title", "Genotype",  "Component(s) sampled" };
+				 				   "Sample Description", "Sample Name", "Genotype",  "Component(s) sampled" };
 		 
 		int colNum = headerTitles.length;
 		HeaderItem[] tableHeader = new HeaderItem[colNum];
@@ -442,7 +442,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			tableData[i][7] = new DataItem(row[6]); //SEX
 			tableData[i][8] = new DataItem(row[7]); //SAMPLE DESCRIPTION
 			tableData[i][9] = new DataItem(row[8]); //TITLE
-			tableData[i][10] = new DataItem(row[11]); // GENOTYPE
+			/*tableData[i][10] = new DataItem(row[11]);*/ // GENOTYPE
+			tableData[i][10] = new DataItem(Utility.superscriptAllele(row[11]),50); // GENOTYPE
 			tableData[i][11] = new DataItem(row[10]); //COMPONENTS SAMPLED
 		}					   
 		return tableData;
@@ -476,7 +477,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			tableData[i][8] = new DataItem(row[8]); //SEX
 			tableData[i][9] = new DataItem(row[9]); // NGS_DESCRIPTION
 			tableData[i][10] = new DataItem(row[10]); //NGS_SAMPLE_NAME
-			tableData[i][11] = new DataItem(row[11]); //GENOTYPE
+			/*tableData[i][11] = new DataItem(row[11]);*/ //GENOTYPE
+			tableData[i][11] = new DataItem(Utility.superscriptAllele(row[11]),50); //GENOTYPE
 			tableData[i][12] = new DataItem(row[12]); //COMPONENTS
 		}					   
 		return tableData;

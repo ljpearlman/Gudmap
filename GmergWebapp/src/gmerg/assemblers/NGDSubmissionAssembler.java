@@ -86,9 +86,11 @@ public class NGDSubmissionAssembler {
 			
 			/** ---assemble array submission object---  */
 			NGDSubmission ngdSubmission = new NGDSubmission();
+			ngdSubmission.setOid(submission.getOid());
 			ngdSubmission.setAccID(submission.getAccID());
 			ngdSubmission.setStage(submission.getStage());
-			ngdSubmission.setArchiveId(submission.getArchiveId()); // added by xingjun - 03/11/2010
+			ngdSubmission.setArchiveId(submission.getArchiveId());
+			ngdSubmission.setBatchId(submission.getBatchId());
 			ngdSubmission.setOriginalImages(images);
 	
 			if (null != supplementaryFiles) {

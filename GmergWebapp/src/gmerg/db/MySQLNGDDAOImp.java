@@ -106,11 +106,11 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
 	    {
 	    	if(resSet.getString(3).equalsIgnoreCase("raw"))
 	    	{
-	    		 rFiles.add(resSet.getString(2));//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW
+	    		 rFiles.add(resSet.getString(2).trim());//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW
 	    	}
 	    	else if (resSet.getString(3).equalsIgnoreCase("processed"))
 	    	{
-	    		pFiles.add(resSet.getString(2));//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW
+	    		pFiles.add(resSet.getString(2).trim());//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW
 	    	}
 		    
 	    }

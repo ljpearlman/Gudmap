@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Submission {
 
-    protected String accID;
+    protected String oid;
+	protected String accID;
     protected Specimen specimen;
     protected Person submitter;
     protected String stage;
@@ -104,7 +105,14 @@ public class Submission {
 	return false;
     }
 
+    public void setOid(String oid) {
+        this.oid = oid;
+    }
 
+    public String getOid() {
+        return oid;
+    }
+    
     public void setAccID(String id) {
         accID = id;
     }

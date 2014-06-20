@@ -343,79 +343,15 @@
 		
 		<%-------------------  Buttom tree menu ----------------------%>	
 		<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" VALIGN="top" >
-			<%-- <TR>
-				<TD/>
-				<TD/>
-				<TD>&nbsp;</TD>
-	 			<TD>&nbsp;</TD>
-				<TD class="top_left_border">&nbsp;</TD>
-				<TD class="top_border">&nbsp;</TD>
-				<TD class="top_border">&nbsp;</TD>
-				<TD align="left" valign="top">
-					</f:verbatim>
-					<h:outputLink value="ngd_series_browse.html#{DatabaseHomepageBean.organParam}" >
-						<h:graphicImage width="130" height="24" url="../images/focus/n_nextGenSeries.png" alt="Next Gen Series" styleClass="icon" />
-					</h:outputLink>
-					<f:verbatim>
-				</TD>
-				<TD valign="top">
-					<a href="#Link141495Context" name="Link141495Context" id="Link141495Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141495', 'Browse Next Gen Series', 'Next Gen Series returns a list of all the Next Gen series in GUDMAP. From there you can link to individual series and then to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#nextgen\&quot;&gt;More....&lt;/a&gt;', 'Link141495Context')">
-						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
-					</a>
-				</TD>
-			</TR>
-			<TR>
-				<TD STYLE="height:10px">&nbsp;</TD>
-				<TD/>
-				<TD>&nbsp;</TD>
-				<TD/>
-				<TD class="left_border">&nbsp;</TD>
-				<TD/>
-				<TD>&nbsp;</TD>
-			</TR>
 			<TR>
 				<TD/>
 				<TD/>
 				<TD>&nbsp;</TD>
 	 			<TD>&nbsp;</TD>
+				<TD>&nbsp;</TD>
+				<TD>&nbsp;</TD>
 				<TD class="top_left_border">&nbsp;</TD>
-				<TD class="top_border">&nbsp;</TD>
-				<TD class="top_border">&nbsp;</TD>
-				<TD align="left" valign="top">
-					</f:verbatim>
-					<h:outputLink value="focus_ngd_browse.html#{DatabaseHomepageBean.organParam}" >
-						<h:graphicImage width="130" height="24" url="../images/focus/n_nextGenSample.png" alt="Next Gen Sample" styleClass="icon" />
-					</h:outputLink>
-					<f:verbatim>
-				</TD>
 				<TD valign="top">
-					<a href="#Link141535Context" name="Link141535Context" id="Link141535Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141535', 'Browse Next Gen Samples', 'Next Gen Sample returns a list of all Next Gen samples. From there, click GUDMAP Entry ID to view data for each sample.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#nextgen\&quot;&gt;More....&lt;/a&gt;', 'Link141535Context')">
-						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
-					</a>
-				</TD>
-			</TR>
-			<TR>
-				<TD STYLE="height:10px">&nbsp;</TD>
-				<TD/>
-				<TD>&nbsp;</TD>
-				<TD/>
-				<TD class="left_border">&nbsp;</TD>
-				<TD>&nbsp;</TD>
-				<TD>&nbsp;</TD>
-			</TR>
-			
-			<TR>
-				<TD />
-				<TD width="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-				<!-- <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> 
-				<TD /> -->
-				<TD class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_nextGen_2.png" ALT="Next Gen" WIDTH="124" HEIGHT="24" BORDER="0" NAME="ngd_pix" /></TD>
-				<TD />
-				<TD width="50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-				<!-- <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>  -->
-				<TD width="30" class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-			    <TD valign="top">
 					</f:verbatim>
 					<h:outputLink value="series_browse.html#{DatabaseHomepageBean.organParam}">
 						<h:graphicImage url="../images/focus/n_series.png" alt="Go" styleClass="icon" />
@@ -427,6 +363,73 @@
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
+				
+			</TR>
+			<TR>
+				<TD STYLE="height:10px">&nbsp;</TD>
+				<TD/>
+				<TD>&nbsp;</TD>
+				<TD/>
+				<TD>&nbsp;</TD>
+				<TD/>
+				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD/>
+			</TR>
+			<TR>
+				<TD/>
+				<TD/>
+				<TD>&nbsp;</TD>
+	 			<TD>&nbsp;</TD>
+				<TD>&nbsp;</TD>
+				<TD>&nbsp;</TD>
+				<TD class="top_left_border">&nbsp;</TD>
+				<TD align="left" valign="top">
+					</f:verbatim>
+					<h:outputLink value="focus_mic_browse.html#{DatabaseHomepageBean.organParam}">
+						<h:graphicImage url="../images/focus/n_sample.png" alt="Go" styleClass="icon" />
+					</h:outputLink>
+					<f:verbatim>
+				</TD>
+				<TD valign="top">
+					<a href="#Link782434Context" name="Link782434Context" id="Link782434Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID782434', 'Browse Sample', ' Sample returns a list of all micro-array samples. From there, click GUDMAP Entry ID to view data for each sample.  &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#anatomy\&quot;&gt;More...&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;Submission Archive.&lt;/a&gt;  To see Analyses of Microarray Gene Lists click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/genelist_tree.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link782434Context')">
+						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
+					</a>
+				</TD>
+			</TR>
+			<TR>
+				<TD STYLE="height:10px">&nbsp;</TD>
+				<TD/>
+				<TD>&nbsp;</TD>
+				<TD/>
+				<TD>&nbsp;</TD>
+				<TD>&nbsp;</TD>
+				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD/>
+			</TR>
+			
+			<TR>
+				<TD />
+				<TD width="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				<TD class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_array_2.png" ALT="Next Gen" WIDTH="124" HEIGHT="24" BORDER="0" NAME="array_pix" /></TD>
+				<TD class="top_border"></TD>
+				<TD  class="top_border" width="50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				<TD width="30" class="top_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				
+			    <TD align="left" valign="top">
+					</f:verbatim>
+					<h:outputLink value="focus_platform_browse.html#{DatabaseHomepageBean.organParam}" >
+						<h:graphicImage width="130" height="24" url="../images/focus/n_platform.png" alt="Go" styleClass="icon" />
+					</h:outputLink>
+					<f:verbatim>
+				</TD>
+				<TD valign="top">
+					<a href="#Link141211Context" name="Link141211Context" id="Link141211Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141211', 'Browse Platform', 'Platform lists all microarray platforms (chips) used in GUDMAP&lt;br&gt;', 'Link141211Context')">
+						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
+					</a>
+				</TD>
 			</TR> 
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
@@ -435,11 +438,13 @@
 				<TD/>
 				<TD/>
 				<TD/>
-				<TD class="left_border">&nbsp;</TD>
-			</TR> --%>
+				<TD>&nbsp;</TD>
+				<TD/>
+				<TD/>
+			</TR>
 			
 			<!-- REPLACE THE NEXT 2 ROWS WITH THE ONES COMMENTED OUT ABOVE FOR NEXT GEN -->
-			<TR>
+			<%-- <TR>
 				<TD />
 				<TD width="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 				<TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD> 
@@ -469,28 +474,30 @@
 				<TD/>
 				<TD/>
 				<TD class="left_border">&nbsp;</TD>
-			</TR>
+			</TR> --%>
 			
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
 				<TD />
 				<TD class="top_left_border">&nbsp;</TD>
-				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_array_2.png" ALT="array" WIDTH="124" HEIGHT="24" BORDER="0" NAME="geo_accession_pix" /></TD>
+				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_nextGen_2.png" ALT="array" WIDTH="124" HEIGHT="24" BORDER="0" NAME="geo_accession_pix" /></TD>
 				<TD class="top_border">&nbsp;</TD>
 				<TD class="top_border">&nbsp;</TD>
 				<TD class="top_left_border">&nbsp;</TD>
 				<TD align="left" valign="top">
 					</f:verbatim>
-					<h:outputLink value="focus_mic_browse.html#{DatabaseHomepageBean.organParam}">
-						<h:graphicImage url="../images/focus/n_sample.png" alt="Go" styleClass="icon" />
+					<h:outputLink value="ngd_series_browse.html#{DatabaseHomepageBean.organParam}" >
+						<h:graphicImage width="130" height="24" url="../images/focus/n_nextGenSeries.png" alt="Next Gen Series" styleClass="icon" />
 					</h:outputLink>
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link782434Context" name="Link782434Context" id="Link782434Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID782434', 'Browse Sample', ' Sample returns a list of all micro-array samples. From there, click GUDMAP Entry ID to view data for each sample.  &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#anatomy\&quot;&gt;More...&lt;/a&gt;&lt;br&gt;&lt;br&gt;The Series and Sample buttons access raw expression data which is available for download either from the individual sample pages or from the &lt;a href=\&quot;http://www.gudmap.org/Submission_Archive/index.html\&quot;&gt;Submission Archive.&lt;/a&gt;  To see Analyses of Microarray Gene Lists click &lt;a href=\&quot;http://www.gudmap.org/gudmap/pages/genelist_tree.html\&quot;&gt;here.&lt;/a&gt;&lt;br&gt;', 'Link782434Context')">
+					<a href="#Link141495Context" name="Link141495Context" id="Link141495Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141495', 'Browse Next Gen Series', 'Next Gen Series returns a list of all the Next Gen series in GUDMAP. From there you can link to individual series and then to individual samples.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#nextgen\&quot;&gt;More....&lt;/a&gt;', 'Link141495Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
+				
+				
 			</TR>
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
@@ -500,6 +507,8 @@
 				<TD/>
 				<TD/>
 				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD/>
 			</TR>
 			<TR>
 				<TD/>
@@ -521,21 +530,28 @@
 				<TD class="top_border">&nbsp;</TD>
 				<TD align="left" valign="top">
 					</f:verbatim>
-					<h:outputLink value="focus_platform_browse.html#{DatabaseHomepageBean.organParam}" >
-						<h:graphicImage width="130" height="24" url="../images/focus/n_platform.png" alt="Go" styleClass="icon" />
+					<h:outputLink value="focus_ngd_browse.html#{DatabaseHomepageBean.organParam}" >
+						<h:graphicImage width="130" height="24" url="../images/focus/n_nextGenSample.png" alt="Next Gen Sample" styleClass="icon" />
 					</h:outputLink>
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link141211Context" name="Link141211Context" id="Link141211Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141211', 'Browse Platform', 'Platform lists all microarray platforms (chips) used in GUDMAP&lt;br&gt;', 'Link141211Context')">
+					<a href="#Link141535Context" name="Link141535Context" id="Link141535Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID141535', 'Browse Next Gen Samples', 'Next Gen Sample returns a list of all Next Gen samples. From there, click GUDMAP Entry ID to view data for each sample.     &lt;a href=\&quot;http://www.gudmap.org/Help/Browse_Help.html#nextgen\&quot;&gt;More....&lt;/a&gt;', 'Link141535Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
+				
 			</TR>
 			<TR>
 				<TD STYLE="height:10px">&nbsp;</TD>
 				<TD/>
 				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD/>
+				<TD/>
+				<TD/>
+				<TD/>
+				<TD/>
 			</TR>
 			<TR>
 				<TD align="right" valign="top"><img src="../images/focus/n_browse.png" width="69" height="24" /></TD>
@@ -557,13 +573,13 @@
 				<TD class="top_left_border">&nbsp;</TD>
 				<TD valign="top">
 					</f:verbatim>
-					<h:outputLink value="focus_ish_browse.html#{DatabaseHomepageBean.organParam}">
-						<h:graphicImage url="../images/focus/n_rna.png" alt="Go" styleClass="icon" />
+					<h:outputLink value="focus_ish_browse.html?specimenType=WISH#{DatabaseHomepageBean.organParamForIshTypes}">
+						<h:graphicImage url="../images/focus/n_wish.png" alt="Go" styleClass="icon" />
 					</h:outputLink>
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link571020Context" name="Link571020Context" id="Link571020Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID571020', 'Browse RNA', 'RNA returns a list of in situ hybridization data &lt;br&gt;', 'Link571020Context')">
+					<a href="#Link571020Context" name="Link571020Context" id="Link571020Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID571020', 'Browse WISH', 'WISH returns a list of Wholemount In situ Hybridisation data &lt;br&gt;', 'Link571020Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
@@ -576,24 +592,42 @@
 				<TD/>
 				<TD/>
 				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD/>
 			</TR>
 			<TR>
 				<TD/>
 				<TD/>
 				<TD class="top_left_border">&nbsp;</TD>
-				<TD class="top_border" valign="top"><img src="../images/focus/n_inSitu_2.png" alt="" width="124" height="24" border="0" name="insitupix" /></TD>
+				<TD valign="top"/>
+					</f:verbatim>
+					<h:outputLink rendered='#{!(DatabaseHomepageBean.focusedOrgan==null || DatabaseHomepageBean.focusedOrgan=="")}'
+									value="focus_insitu_browse.html#{DatabaseHomepageBean.organParam}" >
+						<h:graphicImage url="../images/focus/n_inSitu.png" alt="Go" styleClass="icon" />
+					</h:outputLink>
+					<h:outputLink rendered='#{DatabaseHomepageBean.focusedOrgan==null || DatabaseHomepageBean.focusedOrgan==""}'
+									value="ish_browse.html">
+						<h:graphicImage url="../images/focus/n_inSitu.png" alt="Go" styleClass="icon" />
+						<f:param name="browseId" value="browseAll" />
+					</h:outputLink>
+					<f:verbatim>
+				</TD>
+				<TD class="top_border">
+					<a href="#Link368081Context" name="Link368081Context" id="Link368081Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID368081', 'Browse In situ', 'In situ returns a list of total In situ Hybridization data. This includes Wholemount ISH (WISH), Section ISH (SISH), OPT and Immunohistochemistry (IHC) data &lt;br&gt;', 'Link368081Context')">
+						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
+					</a>
+				</TD>
 				<TD class="top_border">&nbsp;</TD>
-				<TD class="top_border">&nbsp;</TD>
-				<td class="top_left_border">&nbsp;</TD>
+				<TD class="top_left_border">&nbsp;</TD>
 				<TD align="left" valign="top">
 					</f:verbatim>
-					<h:outputLink value="focus_ihc_browse.html#{DatabaseHomepageBean.organParam}">
-						<h:graphicImage url="../images/focus/n_protein.png" alt="Go" styleClass="icon" />
+					<h:outputLink value="focus_ish_browse.html?specimenType=SISH#{DatabaseHomepageBean.organParamForIshTypes}">
+						<h:graphicImage url="../images/focus/n_sish.png" alt="Go" styleClass="icon" />
 					</h:outputLink>
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link767387Context" name="Link767387Context" id="Link767387Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID767387', 'Browse Protein', 'Protein returns a list of immunohistochemistry data &lt;br&gt;', 'Link767387Context')">
+					<a href="#Link767387Context" name="Link767387Context" id="Link767387Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID767387', 'Browse SISH', 'SISH returns a list of Section In situ Hybridisation data &lt;br&gt;', 'Link767387Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>
@@ -606,6 +640,8 @@
 				<TD/>
 				<TD/>
 				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD/>
 			</TR>
 			<TR>
 				<TD/>
@@ -624,22 +660,48 @@
 					</a>
 				</TD>
 				<TD/>
-				<TD class="top_border">&nbsp;</TD>
+				<TD class="top_left_border">&nbsp;</TD>
 				<TD valign="top">
 					</f:verbatim>
-					<h:outputLink rendered='#{!(DatabaseHomepageBean.focusedOrgan==null || DatabaseHomepageBean.focusedOrgan=="")}'
-									value="focus_insitu_browse.html#{DatabaseHomepageBean.organParam}" >
-						<h:graphicImage url="../images/focus/n_rnaAndProtein.png" alt="Go" styleClass="icon" />
-					</h:outputLink>
-					<h:outputLink rendered='#{DatabaseHomepageBean.focusedOrgan==null || DatabaseHomepageBean.focusedOrgan==""}'
-									value="ish_browse.html">
-						<h:graphicImage url="../images/focus/n_rnaAndProtein.png" alt="Go" styleClass="icon" />
-						<f:param name="browseId" value="browseAll" />
+					<h:outputLink value="focus_ish_browse.html?specimenType=OPT#{DatabaseHomepageBean.organParamForIshTypes}">
+						<h:graphicImage url="../images/focus/n_opt.png" alt="Go" styleClass="icon" />
 					</h:outputLink>
 					<f:verbatim>
 				</TD>
 				<TD valign="top">
-					<a href="#Link848332Context" name="Link848332Context" id="Link848332Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID848332', 'Browse RNA and Protein', 'RNA and Protein returns a list of in situ hybridization and immunohistochemistry data &lt;br&gt;', 'Link848332Context')">
+					<a href="#Link848332Context" name="Link848332Context" id="Link848332Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID848332', 'Browse OPT', 'OPT returns a list of Optical Projection Tomography data &lt;br&gt;', 'Link848332Context')">
+						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
+					</a>
+				</TD>
+			</TR>
+			<TR>
+				<TD STYLE="height:10px">&nbsp;</TD>
+				<TD/>
+				<TD>&nbsp;</TD>
+				<TD/>
+				<TD/>
+				<TD/>
+				<TD class="left_border">&nbsp;</TD>
+				<TD/>
+				<TD/>
+			</TR>
+			<TR>
+				<TD/>
+				<TD/>
+				<TD>&nbsp;</TD>
+				<TD/>
+				<TD/>
+				<TD/>
+				<TD class="top_border">&nbsp;</TD>
+				<TD valign="top">
+					</f:verbatim>
+					<h:outputLink value="focus_ihc_browse.html#{DatabaseHomepageBean.organParam}">
+						<h:graphicImage url="../images/focus/n_ihc.png" alt="Go" styleClass="icon" />
+					</h:outputLink>
+					<f:verbatim>
+				</TD>
+				<TD valign="top">
+					<a href="#Link848332Context" name="Link848332Context" id="Link848332Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID848332', 'Browse IHC', 'IHC returns a list of immunohistochemistry data &lt;br&gt;', 'Link848332Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>

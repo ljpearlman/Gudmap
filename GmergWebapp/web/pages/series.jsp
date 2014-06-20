@@ -12,10 +12,19 @@
 			<h:outputText value="#{SeriesBean.series.geoID}" />
 		</h:outputLink>
 
-		<h:outputText value="Archive ID:" styleClass="plaintext" />
-		<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{SeriesBean.series.archiveId}" styleClass="plaintext">
+		<h:outputText value="Archive/Batch ID:" styleClass="plaintext" />
+		<%-- <h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{SeriesBean.series.archiveId}" styleClass="plaintext">
 			<h:outputText value="#{SeriesBean.series.archiveId}" />
-		</h:outputLink>
+		</h:outputLink> --%>
+		<h:panelGrid columns="3">
+				<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{SeriesBean.series.archiveId}" styleClass="plaintext" rendered="#{SeriesBean.series.archiveId > 0}">
+					<h:outputText value="#{SeriesBean.series.archiveId}"  rendered="#{SeriesBean.series.archiveId > 0}"/>
+				</h:outputLink>
+				<h:outputText value="/"/>
+				<h:outputLink value="/gudmap/pages/focus_mic_browse.html?batchId=#{SeriesBean.series.batchId}" styleClass="plaintext" rendered="#{SeriesBean.series.batchId > 0}">
+					<h:outputText value="#{SeriesBean.series.batchId}"  rendered="#{SeriesBean.series.batchId > 0}"/>
+				</h:outputLink>
+			</h:panelGrid>
 
 		<h:outputText styleClass="plaintext" value="Number of Samples:" />
 		<h:outputText styleClass="datatext" value="#{SeriesBean.series.numSamples} samples" />
