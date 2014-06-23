@@ -10,7 +10,8 @@ public class NGDSubmission extends Submission {
     protected NGDSeries series;
     protected Protocol protocol;
     protected NGDSample sample;
-    protected DataProcessing dataProcessing;
+    /*protected DataProcessing dataProcessing;*/
+    protected DataProcessing[] dataProcessing;
     protected String filesLocation;
     protected String [] rawFile;
     protected String [] processedFile;
@@ -42,11 +43,19 @@ public class NGDSubmission extends Submission {
         return sample;
     }
     
-    public void setDataProcessing(DataProcessing dataProcessing) {
+    /*public void setDataProcessing(DataProcessing dataProcessing) {
     	this.dataProcessing = dataProcessing;
     }
 
     public DataProcessing getDataProcessing() {
+        return dataProcessing;
+    }*/
+    
+    public void setDataProcessing(DataProcessing[] dataProcessing) {
+    	this.dataProcessing = dataProcessing;
+    }
+
+    public DataProcessing[] getDataProcessing() {
         return dataProcessing;
     }
 

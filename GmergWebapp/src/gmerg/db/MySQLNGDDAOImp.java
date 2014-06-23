@@ -3,12 +3,12 @@
  */
 package gmerg.db;
 
+import gmerg.entities.submission.Allele;
 import gmerg.entities.submission.array.SupplementaryFile;
 import gmerg.entities.submission.nextgen.NGDSample;
 import gmerg.entities.submission.nextgen.NGDSeries;
 import gmerg.entities.submission.nextgen.Protocol;
 import gmerg.entities.submission.nextgen.DataProcessing;
-
 import gmerg.db.MySQLArrayDAOImp;
 
 import java.sql.PreparedStatement;
@@ -493,7 +493,7 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
 			return null;
 	}
 	 
-	 public DataProcessing findDataProcessingBySubmissionId(String submissionAccessionId) {
+/*	 public DataProcessing findDataProcessingBySubmissionId(String submissionAccessionId) {
 			long enter = 0;
 			if (performance)
 			    enter = System.currentTimeMillis();
@@ -540,9 +540,90 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
 					System.out.println("MySQLNGDDAOImp.findSampleBySubmissionId takes " + enter+" seconds");
 				}
 			}
+	    }*/
+	 
+	 public DataProcessing[] findDataProcessingBySubmissionId(String submissionAccessionId) {
+			long enter = 0;
+			if (performance)
+			    enter = System.currentTimeMillis();
+			
+			
+			if (submissionAccessionId == null) {
+			    //			throw new NullPointerException("id parameter");
+			    return null;
+			}
+			DataProcessing dataProcessing []= null;
+			ResultSet resSet = null;
+			ParamQuery parQ = DBQuery.getParamQuery("DATA_PROCESSING_SAMPLE_NGD");
+			String queryString = parQ.getQuerySQL();
+			//		System.out.println("ArrayDAO:findSampleBySubmissionId:sql: " + queryString);
+			PreparedStatement prepStmt = null;
+			
+			try {
+			    // if disconnected from db, re-connected
+			    conn = DBHelper.reconnect2DB(conn);
+			    
+			    if (debug)
+				System.out.println("MySQLNGDDAOImp.sql = "+queryString.toLowerCase() + " 1 arg = "+submissionAccessionId);
+		
+			    prepStmt = conn.prepareStatement(queryString);
+			    prepStmt.setString(1, submissionAccessionId);
+			    
+			    // execute
+			    resSet = prepStmt.executeQuery();
+			    dataProcessing = formatDataProcessingResultSet(resSet); 
+			   
+			    
+				return dataProcessing;
+				
+			} catch (SQLException se) {
+				se.printStackTrace();
+				return null;
+			}
+			finally{
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+				if (performance) {
+				    enter = (System.currentTimeMillis() - enter)/1000;
+				    if (2 < enter)
+					System.out.println("MySQLNGDDAOImp.findSampleBySubmissionId takes " + enter+" seconds");
+				}
+			}
 	    }
 	 
-	 private DataProcessing formatDataProcessingResultSet(ResultSet resSet) throws SQLException {
+	 private DataProcessing[] formatDataProcessingResultSet(ResultSet resSet) throws SQLException {
+		 	ArrayList<DataProcessing> dataProcessingList = new ArrayList<DataProcessing>();
+		 	String str = null;
+		 	DataProcessing dataProcessing = null;
+			if (resSet.first()) {
+				resSet.beforeFirst();
+		 	    while (resSet.next()) {
+					dataProcessing = new DataProcessing();
+					dataProcessing.setProStep(resSet.getString(1));
+					dataProcessing.setBuild(resSet.getString(2));
+					dataProcessing.setAlignedGenome(resSet.getString(3));
+					dataProcessing.setUnalignedGenome(resSet.getString(4));
+					dataProcessing.setRnaReads(resSet.getString(5));
+					dataProcessing.setFiveThreeRatio(resSet.getString(6));
+					dataProcessing.setFormatContent(resSet.getString(7));				
+					dataProcessing.setNumberOfReads(resSet.getString(8));
+					dataProcessing.setBeforeCleanUpReads(resSet.getString(9));
+					dataProcessing.setPairedEnd(resSet.getString(10));
+					dataProcessing.setFilename(resSet.getString(11));
+					dataProcessing.setFiletype(resSet.getString(12));
+					dataProcessing.setRawOrProcessed(resSet.getString(13));
+					
+					dataProcessingList.add(dataProcessing);
+		 	    }
+			}
+			if (0 == dataProcessingList.size())
+			    return null;
+
+	     	return (DataProcessing[])dataProcessingList.toArray(new DataProcessing[0]);
+			//return dataProcessing;
+	}
+	 
+	/* private DataProcessing formatDataProcessingResultSet(ResultSet resSet) throws SQLException {
 			if (resSet.first()) {
 				DataProcessing dataProcessing = new DataProcessing();
 				dataProcessing.setProStep(resSet.getString(1));
@@ -559,6 +640,6 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
 			    return dataProcessing;
 			}
 			return null;
-	}
+	}*/
     
 }

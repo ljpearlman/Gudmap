@@ -29,7 +29,9 @@ public interface NGDDAO {
 	
 	public Protocol findProtocolBySubmissionId(String submissionAccessionId);
 	
-	public DataProcessing findDataProcessingBySubmissionId(String submissionAccessionId);
+	/*public DataProcessing findDataProcessingBySubmissionId(String submissionAccessionId);*/
+	
+	public DataProcessing[] findDataProcessingBySubmissionId(String submissionAccessionId);
 	
 	public String getTotalNumberOfGeneListItemsBySubmissionId(String submissionAccessionId);
 	

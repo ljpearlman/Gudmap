@@ -69,7 +69,8 @@ public class NGDSubmissionAssembler {
 			
 			Protocol protocol = ngdDAO.findProtocolBySubmissionId(accessionId);
 			
-			DataProcessing dataProcessing = ngdDAO.findDataProcessingBySubmissionId(accessionId);
+			//DataProcessing dataProcessing = ngdDAO.findDataProcessingBySubmissionId(accessionId);
+			DataProcessing[] dataProcessing = ngdDAO.findDataProcessingBySubmissionId(accessionId);
 			
 			// get series info
 			NGDSeries series = ngdDAO.findSeriesBySubmissionId(accessionId);

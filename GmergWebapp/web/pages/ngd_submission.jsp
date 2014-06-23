@@ -280,6 +280,59 @@
        
        <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 		<h:outputText value="Data Processing and Transcript Profile" />
+		
+		<h:dataTable value="#{NGDSingleSubmissionBean.submission.dataProcessing}" var="dp">
+		<h:column>
+		<h:panelGrid columns="2" columnClasses="data-titleCol,data-textCol, data-textCol">
+		
+			<h:outputText value="Filename:"/>
+			<h:outputText value="#{dp.filename}"/>
+			
+			<h:outputText value="Filetype:"/>
+			<h:outputText value="#{dp.filetype}"/>
+			
+			<h:outputText value="Raw / Processed:"/>
+			<h:outputText value="#{dp.rawOrProcessed}"/>
+			
+			<h:outputText value="Total No of Reads (RAW Only):"  rendered="#{not empty dp.numberOfReads}"/>
+			<h:outputText value="#{dp.numberOfReads}"  rendered="#{not empty dp.numberOfReads}"/>
+			
+			<h:outputText value="Reads Before Cleanup (RAW Only):"  rendered="#{not empty dp.beforeCleanUpReads}"/>
+			<h:outputText value="#{dp.beforeCleanUpReads}" rendered="#{not empty dp.beforeCleanUpReads}" />
+			
+			<h:outputText value="Single or Paired End:"  rendered="#{not empty dp.pairedEnd}"/>
+			<h:outputText value="#{dp.pairedEnd}" rendered="#{not empty dp.pairedEnd}" />
+			
+			<h:outputText value="Processing Step:" rendered="#{not empty dp.proStep}" />
+			<h:outputText value="#{dp.proStep}"  rendered="#{not empty dp.proStep}"/>
+			
+			<h:outputText value="Genome Build or Alignment Reference Sequence:"  rendered="#{not empty dp.build}"/>
+			<h:outputText value="#{dp.build}" escape="false"  rendered="#{not empty dp.build}"/>
+			
+			<h:outputText value="% Aligned to Genome:"  rendered="#{not empty dp.alignedGenome}"/>
+			<h:outputText value="#{dp.alignedGenome}"  rendered="#{not empty dp.alignedGenome}"/>
+			
+			<h:outputText value="% UnAligned to Genome:"  rendered="#{not empty dp.unalignedGenome}"/>
+			<h:outputText value="#{dp.unalignedGenome}"  rendered="#{not empty dp.unalignedGenome}"/>
+			
+			<h:outputText value="% RNA Reads:"  rendered="#{not empty dp.rnaReads}"/>
+			<h:outputText value="#{dp.rnaReads}"  rendered="#{not empty dp.rnaReads}"/>
+			
+			<h:outputText value="Format and Content:" rendered="#{not empty dp.formatContent}" />
+			<h:outputText value="#{dp.formatContent}" escape="false"  rendered="#{not empty dp.formatContent}"/>
+		</h:panelGrid>
+		
+		</h:column>
+		</h:dataTable>
+		
+       </h:panelGrid>
+       
+       
+       <%--  <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
+		<h:outputText value="Data Processing and Transcript Profile" />
+		
+		<h:dataTable value="#{NGDSingleSubmissionBean.submission.dataProcessing}" var="dp">
+		<h:column>
 		<h:panelGrid columns="2" columnClasses="data-titleCol,data-textCol, data-textCol">
 			<h:outputText value="Total No of Reads (RAW Only):"  rendered="#{not empty NGDSingleSubmissionBean.submission.dataProcessing.numberOfReads}"/>
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.dataProcessing.numberOfReads}"  rendered="#{not empty NGDSingleSubmissionBean.submission.dataProcessing.numberOfReads}"/>
@@ -308,7 +361,11 @@
 			<h:outputText value="Format and Content:" rendered="#{not empty NGDSingleSubmissionBean.submission.dataProcessing.formatContent}" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.dataProcessing.formatContent}" escape="false"  rendered="#{not empty NGDSingleSubmissionBean.submission.dataProcessing.formatContent}"/>
 		</h:panelGrid>
-       </h:panelGrid>
+		
+		</h:column>
+		</h:dataTable>
+		
+       </h:panelGrid> --%>
 			
        <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
        		<h:outputText value="Series Details" />

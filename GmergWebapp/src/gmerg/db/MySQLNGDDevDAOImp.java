@@ -86,6 +86,7 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
                                          boolean ascending, int offset,
                                          int num) {
         ArrayList result = null;
+        ArrayList result2 = null;
         ResultSet resSet = null;
         //find relevant query string from db query
         ParamQuery parQ = DBQuery.getParamQuery("NGD_SERIES_SAMPLES");
@@ -107,8 +108,12 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
 
             resSet = prepStat.executeQuery();
             result = Utility.formatResultSet(resSet);
-
-			return result;
+            return result;
+            
+           /* result = Utility.formatResultSet(resSet);
+    		result2 = Utility.formatGenotypeResultSet(result,getGenotypeBySeriesOid(id,"GENOTYPE_LIST_NGD_GEO"),4);
+    		return result2;*/
+    		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -193,6 +198,28 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
 			DBHelper.closePreparedStatement(prepStat);			
 		}
     }
+    
+    protected String assembleSeriesSamplesQString(String query,
+        String defaultOrder,
+        int columnIndex,
+        boolean ascending, int offset,
+        int num) {
+		StringBuffer queryString = new StringBuffer("");
+		
+		//orderBy
+		if (columnIndex != -1) {
+		//add code here to make table columns sortable
+		queryString.append(query + " ORDER BY ");
+		String column = this.getSeriesSampleOrderByColumn(columnIndex, ascending, defaultOrder);
+		queryString.append(column);
+		} else {
+		queryString.append(query + " ORDER BY " + defaultOrder);
+		}
+		
+		queryString.append(" LIMIT " + offset + ", " + num);
+		
+		return queryString.toString();
+	}
 
     
     /**
@@ -205,19 +232,18 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
 	private String getSeriesSampleOrderByColumn(int columnIndex, boolean ascending, String defaultOrder) {
     	
 		String orderByString = new String("");
-		String order = (ascending == true ? "ASC": "DESC");
-//		String[] seriesSampleColumnList = {"SUB_ACCESSION_ID", "SMP_GEO_ID", "SRM_SAMPLE_ID", "SRM_SAMPLE_DESCRIPTION"};
-		
+		String order = (ascending == true ? "ASC": "DESC");		
 		// start to translate
 		if (columnIndex == 1) {
 			orderByString = "NGS_GEO_ID " + order + ", " + defaultOrder;
 		} else if (columnIndex == 2) {
-//			orderByString = "SRM_SAMPLE_ID " + order + ", " + defaultOrder;
 			orderByString = "natural_sort(NGS_SAMPLE_NAME) " + order + ", " + defaultOrder;
+		} else if (columnIndex == 3) {
+			orderByString = "natural_sort(NGP_LIBRARY_STRATEGY) " + order + ", " + defaultOrder;
 		} else if (columnIndex == 4) {
-//			orderByString = "SRM_SAMPLE_DESCRIPTION " + order + ", " + defaultOrder;
-			orderByString = "natural_sort(NGS_DESCRIPTION) " + order + ", " + defaultOrder;
-		} else {
+			orderByString = "natural_sort(GENOTYPE) " + order + ", " + defaultOrder;
+		} 
+		else {
 			orderByString = defaultOrder + order;
 		}
 		return orderByString;

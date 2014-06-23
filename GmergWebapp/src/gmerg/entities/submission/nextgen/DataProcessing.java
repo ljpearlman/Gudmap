@@ -2,6 +2,9 @@ package gmerg.entities.submission.nextgen;
 
 public class DataProcessing {
 
+	private String filetype;
+	private String filename;
+	private String rawOrProcessed;
 	private String proStep;
 	private String build;
 	private String alignedGenome;
@@ -13,6 +16,31 @@ public class DataProcessing {
     private String beforeCleanUpReads;
     private String pairedEnd;
 
+    public void setFiletype(String filetype) {
+    	this.filetype = filetype;
+    }
+
+    public String getFiletype() {
+        return filetype;
+    }
+    
+    public void setFilename(String filename) {
+    	this.filename = filename;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+    
+    public void setRawOrProcessed(String rawOrProcessed) {
+    	this.rawOrProcessed = rawOrProcessed;
+    }
+
+    public String getRawOrProcessed() {
+        return rawOrProcessed;
+    }
+    
+    
     public void setProStep(String proStep) {
     	this.proStep = proStep;
     }

@@ -1212,10 +1212,14 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		if (assayValue != null){
 		if(assayValue.equalsIgnoreCase("Array"))
 			sub = "mic";
+		/*if(assayValue.equalsIgnoreCase("Sequence"))
+			sub = "ngd";*/
 		if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
 			sub = "ish";
 		if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
 			sub = null;
+		/*if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && (assayValue.contains("Array") || assayValue.contains("Sequence")))
+			sub = null;*/
 		}
 		
 		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, 

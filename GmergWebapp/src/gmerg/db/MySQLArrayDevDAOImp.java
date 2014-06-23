@@ -98,6 +98,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
                                          boolean ascending, int offset,
                                          int num) {
         ArrayList result = null;
+        ArrayList result2 = null;
         ResultSet resSet = null;
         //find relevant query string from db query
         ParamQuery parQ = DBQuery.getParamQuery("SERIES_SAMPLES");
@@ -120,8 +121,7 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
             resSet = prepStat.executeQuery();
             /*result = formatBrowseSeriesResultSet(resSet);*/
             result = Utility.formatResultSet(resSet);
-
-			return result;
+            return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

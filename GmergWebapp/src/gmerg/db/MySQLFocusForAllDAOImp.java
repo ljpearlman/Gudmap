@@ -337,7 +337,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}  else if(4 == orderby){
 					orderStr = " order by NGP_LIBRARY_STRATEGY " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(5 == orderby){
-					orderStr = " order by NGS_THEILER_STAGE " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();	
+					orderStr = " order by SUB_EMBRYO_STG " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();	
 				}  else if(6 == orderby){
 					orderStr = " order by TRIM(CASE NGS_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(NGS_DEV_STAGE,' ',NGS_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',NGS_DEV_STAGE) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(7 == orderby){
