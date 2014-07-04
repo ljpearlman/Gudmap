@@ -243,16 +243,21 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		formatedRow[ 10] = new DataItem(row[10]);
 		
 		// In Situ Expression
-		String expression = row[11];
-		if (expression.contains("present"))
-			formatedRow[11] = new DataItem("present");
-		else if (expression.contains("uncertain"))
-			formatedRow[11] = new DataItem("uncertain");
-		else if (expression.contains("not detected"))
-			formatedRow[11] = new DataItem("not detected");
-		else
+		if(row[11]==null){
 			formatedRow[11] = new DataItem("");
-
+		}
+		else
+		{
+			String expression = row[11];
+			if (expression.contains("present"))
+				formatedRow[11] = new DataItem("present");
+			else if (expression.contains("uncertain"))
+				formatedRow[11] = new DataItem("uncertain");
+			else if (expression.contains("not detected"))
+				formatedRow[11] = new DataItem("not detected");
+			else
+				formatedRow[11] = new DataItem("");
+		}
 		// Specimen Type
 		formatedRow[ 12] = new DataItem(row[12]);
 		

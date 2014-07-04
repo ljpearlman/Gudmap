@@ -3,8 +3,11 @@ package gmerg.beans;
 import java.util.HashMap;
 
 import gmerg.assemblers.FocusBrowseAssembler;
+import gmerg.entities.Globals;
+import gmerg.entities.Globals.PredefinedFilters;
 import gmerg.utils.table.*;
 import gmerg.utils.FacesUtil;
+import gmerg.utils.Utility;
 import gmerg.utils.Visit;
 
 public class ISHFocusBrowseBean {
@@ -79,5 +82,7 @@ public class ISHFocusBrowseBean {
 		
 		return " at Theiler stage <em>" + stage + "</em>";  
 	}
+	
+
 	
 }
