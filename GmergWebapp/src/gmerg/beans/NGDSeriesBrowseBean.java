@@ -13,7 +13,7 @@ import gmerg.utils.Utility;
 */
 
 public class NGDSeriesBrowseBean  {
-    private boolean debug = true;
+	private boolean debug = false;
 
 	private String organ;
 	private String protocol;

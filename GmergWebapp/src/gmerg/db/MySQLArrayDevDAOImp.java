@@ -120,8 +120,11 @@ public class MySQLArrayDevDAOImp implements ArrayDevDAO {
 
             resSet = prepStat.executeQuery();
             /*result = formatBrowseSeriesResultSet(resSet);*/
+            /*result = Utility.formatResultSet(resSet);
+            return result;*/
             result = Utility.formatResultSet(resSet);
-            return result;
+    		result2 = Utility.formatGenotypeResultSet(result,getGenotypeBySeriesOid(id,"GENOTYPE_LIST_ARRAY_GEO"),3);
+    		return result2;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

@@ -62,7 +62,12 @@ import gmerg.utils.Visit;
 		if (groupedNumRows != null) {
 			String ishNo = String.valueOf(groupedNumRows[0]);
 			String arrayNo = String.valueOf(groupedNumRows[1]);
-			tableView.setNavigationPanelMessage("Totals: In Situ(<b>" + ishNo + "</b>) &nbsp&nbsp&nbsp Microarray(<b>" + arrayNo + "</b>)");
+			if(groupedNumRows.length<2)
+				tableView.setNavigationPanelMessage("Totals: In Situ(<b>" + ishNo + "</b>) &nbsp&nbsp&nbsp Microarray(<b>" + arrayNo + "</b>)");
+			else {// include the Sequence (ngd) data
+			String ngdNo = String.valueOf(groupedNumRows[2]);
+			tableView.setNavigationPanelMessage("Totals: In Situ(<b>" + ishNo + "</b>) &nbsp&nbsp&nbsp Microarray(<b>" + arrayNo + "</b>)  &nbsp&nbsp&nbsp Sequence(<b>" + ngdNo + "</b>)");
+			}
 		}
 		if((tableView == null || tableView.getTable() == null || tableView.getTable().getNumRows() == 0) && Utility.getProject().equalsIgnoreCase("GUDMAP")) {
         	tableView.setNoDataMessage(Utility.getNoDataMessageForQueryPage("", ""));

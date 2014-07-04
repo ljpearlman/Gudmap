@@ -18,7 +18,7 @@ import java.util.Hashtable;
 import java.util.Arrays;
 
 public class QuickSearchAssembler extends OffMemoryTableAssembler {
-    protected boolean debug = true;
+    protected boolean debug = false;
     protected RetrieveDataCache cache = null;
 
 	String[] input;
@@ -200,7 +200,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			// gudmap id
 			if(null != row[13] && row[13].equals("Microarray")) {
 				tableData[i][1] = new DataItem(row[9], "Click to view Samples page","mic_submission.html?id="+row[9], 10);			//sub id
-			} else if(null != row[13] && (row[13].equals("ISH")||row[13].equals("IHC") || row[13].equals("OPT") || row[13].equalsIgnoreCase("TG"))) {
+			}else if(null != row[13] && row[13].equals("Sequence")) {
+				tableData[i][1] = new DataItem(row[9], "Click to view Samples page","ngd_submission.html?id="+row[9], 10);			//sub id
+			}else if(null != row[13] && (row[13].equals("ISH")||row[13].equals("IHC") || row[13].equals("OPT") || row[13].equalsIgnoreCase("TG"))) {
 				tableData[i][1] = new DataItem(row[9], "Click to view submission page","ish_submission.html?id="+row[9], 10);		//sub id
 			}
 			
@@ -231,8 +233,9 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			tableData[i][8] = new DataItem(row[14]);
 			
 			// genotype
-			tableData[i][9] = new DataItem(row[16]);
-
+			/*tableData[i][9] = new DataItem(row[16]);*/
+			tableData[i][9] = new DataItem(Utility.superscriptAllele(row[16]),50);
+			
 			// tissue
 			// to allow description popup window, and mouse over text
 			if (null != row[1]) {
@@ -258,7 +261,7 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			tableData[i][13] = new DataItem(row[6]);	
 			
 			// thumbnails
-			if(null != row[13] && row[13].equals("Microarray")) {
+			if(null != row[13] && (row[13].equals("Microarray") || row[13].equals("Sequence"))) {
 				tableData[i][14] = new DataItem("");
 			} else if(null != row[13] && (row[13].equalsIgnoreCase("ISH")||row[13].equalsIgnoreCase("IHC") || row[13].equalsIgnoreCase("OPT") || row[13].equalsIgnoreCase("TG"))) {
 				if(row[13].equals("OPT")) {

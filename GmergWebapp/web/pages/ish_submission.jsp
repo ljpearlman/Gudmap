@@ -655,13 +655,22 @@
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:dataTable  value="#{ISHSingleSubmissionBean.submission.linkedPublications}" var="pub">
 					<h:column>
-						<h:outputText styleClass="plaintext" value="#{pub[0]} " />
+						<%-- <h:outputText styleClass="plaintext" value="#{pub[0]} " />
 						<h:outputText styleClass="plaintext" value="(#{pub[1]}) " />
 						<h:outputText styleClass="plaintextbold" value="#{pub[2]} " />
-                                                                                                 <h:outputText styleClass="plaintext" style="font-style:italic" value="#{pub[3]}, " rendered="#{not empty pub[3]}" />
-                                                                                                 <h:outputText styleClass="plaintextbold" value="#{pub[4]}" rendered="#{not empty pub[4]}"/>
-                                                                                                 <h:outputText styleClass="plaintext" value=", " rendered="#{not empty pub[4]}" />
-                                                                                                 <h:outputText styleClass="plaintext" value="#{pub[6]}" />
+                        <h:outputText styleClass="plaintext" style="font-style:italic" value="#{pub[3]}, " rendered="#{not empty pub[3]}" />
+                        <h:outputText styleClass="plaintextbold" value="#{pub[4]}" rendered="#{not empty pub[4]}"/>
+                        <h:outputText styleClass="plaintext" value=", " rendered="#{not empty pub[4]}" />
+                        <h:outputText styleClass="plaintext" value="#{pub[6]}" /> --%>
+                        <h:outputText styleClass="plaintext" value="#{pub[0]}" /> <verbatim><br></verbatim> 
+                        <h:outputText styleClass="plaintextbold" value="#{pub[2]}" /><verbatim><br></verbatim> 
+                        <h:outputText styleClass="plaintext" style="font-style:italic" value="#{pub[3]}, " rendered="#{not empty pub[3]}" />
+						<h:outputText styleClass="plaintext" value="#{pub[1]}, " />
+						<h:outputText styleClass="plaintextbold" value="#{pub[4]}" rendered="#{not empty pub[4]}"/>
+						<h:outputText styleClass="plaintextbold" value="(#{pub[5]})" rendered="#{not empty pub[5]}"/>
+						<h:outputText styleClass="plaintextbold" value=":#{pub[6]}" rendered="#{not empty pub[6]}"/><verbatim><br></verbatim> 
+                        <h:outputText styleClass="plaintext" style="font-style:italic" value="#{pub[7]}: " rendered="#{not empty pub[7]}" />
+                        <h:outputText styleClass="plaintextbold" value="#{pub[8]}" rendered="#{not empty pub[8]}"/>
 					</h:column>
 				</h:dataTable>
 			</h:panelGrid>

@@ -107,12 +107,12 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
             prepStat.setString(1, id);
 
             resSet = prepStat.executeQuery();
-            result = Utility.formatResultSet(resSet);
-            return result;
+            /*result = Utility.formatResultSet(resSet);
+            return result;*/
             
-           /* result = Utility.formatResultSet(resSet);
+            result = Utility.formatResultSet(resSet);
     		result2 = Utility.formatGenotypeResultSet(result,getGenotypeBySeriesOid(id,"GENOTYPE_LIST_NGD_GEO"),4);
-    		return result2;*/
+    		return result2;
     		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -134,8 +134,8 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
     	ResultSet resSet = null;
     	
     	//find relevant query string from db query
-    	ParamQuery parQ = ArrayDBQuery.getParamQuery("NGD_SERIES_SAMPLES_BY_OID");
     	PreparedStatement prepStat = null;
+    	ParamQuery parQ = ArrayDBQuery.getParamQuery("NGD_SERIES_SAMPLES_BY_OID");
     	
     	String query = parQ.getQuerySQL();
     	String defaultOrder = " CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,':')+1) AS UNSIGNED) ";

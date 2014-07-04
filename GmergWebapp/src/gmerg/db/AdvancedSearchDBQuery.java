@@ -15,7 +15,7 @@ import gmerg.utils.Utility;
  *
  */
 public class AdvancedSearchDBQuery {
-    protected static boolean debug = true;
+    protected static boolean debug = false;
 
 	  static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 	  
@@ -150,6 +150,24 @@ public class AdvancedSearchDBQuery {
 		  lookup.put("Gene Function", new String[]{"MBC_GNF_SYMBOL"});
 		  lookup.put("Anatomy", new String[]{"QMC_ATN_PUBLIC_ID"});
 		  lookup.put("Accession ID", new String[]{"MBC_SUB_ACCESSION_ID"});
+		  
+
+		  return lookup;
+	  }
+	  //TODO for Sequence Data
+	  final static public Hashtable getNGDQuickSearchColumns(){
+		  Hashtable<String, String[]> lookup = new Hashtable<String,String[]>();
+		  lookup.put("All", new String[]{"ANO_COMPONENT_NAME",
+				  "ATN_PUBLIC_ID",
+				  "SUB_ACCESSION_ID",
+				  "NGS_GEO_ID",
+				  "NGR_GEO_ID"});
+		  /*lookup.put("Gene", new String[]{"MBC_GNF_SYMBOL" 
+				  });
+		  lookup.put("GeneSymbol", new String[]{"MBC_GNF_SYMBOL"});
+		  lookup.put("Gene Function", new String[]{"MBC_GNF_SYMBOL"});*/
+		  lookup.put("Anatomy", new String[]{"ATN_PUBLIC_ID"});
+		  lookup.put("Accession ID", new String[]{"SUB_ACCESSION_ID"});
 		  
 
 		  return lookup;
@@ -523,7 +541,16 @@ public class AdvancedSearchDBQuery {
 		"QMC_SUB_ACCESSION_ID col10,"+
 		"'' col11,"+
 		"'' col12, '' col13, 'Microarray' col14 , QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17 ";
-	  }		  
+	  }	
+	  
+	  final static public String getNGDSelect(){
+		  return "(SELECT DISTINCT '' col1, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') col2, '' col3, SUB_SOURCE col4, " +
+				  "SUB_SUB_DATE col5, SUB_EMBRYO_STG col6, SUB_ASSAY_TYPE col7, TRIM(CASE NGS_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(NGS_DEV_STAGE,' ',NGS_STAGE_FORMAT) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END) col8, " +
+				  "'' col9, SUB_ACCESSION_ID col10, '' col11, '' col12, '' col13, 'Sequence' col14, NGS_SEX col15, '' col16, CASE NGS_GENOTYPE WHEN 'true' THEN 'wild type' ELSE " +
+				  "CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) IS NOT NULL THEN " +
+				  "(SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) " +
+				  "ELSE (SELECT DISTINCT GROUP_CONCAT(ALE_LAB_NAME_ALLELE) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) END  END col17 ";
+	  }
 	  
 	  final static public String getISHCount(){
 	      return "select count(distinct QIC_SUB_ACCESSION_ID) ";
@@ -570,6 +597,15 @@ public class AdvancedSearchDBQuery {
 	  
 	  final static public String getMICFromForAnatomy() {
 		  return " FROM QSC_MIC_CACHE as Gene ";
+	  }
+	  
+	  final static public String getNGDFrom(){
+		  return 
+		" FROM ISH_SUBMISSION JOIN NGD_SAMPLE ON NGS_SUBMISSION_FK = SUB_OID JOIN NGD_SAMPLE_SERIES ON NGL_SAMPLE_FK = NGS_OID " +
+		"JOIN NGD_SERIES ON NGL_SERIES_FK = NGR_OID JOIN NGD_PROTOCOL ON NGS_PROTOCOL_FK=NGP_OID JOIN ISH_PERSON ON PER_OID = SUB_PI_FK " +
+		"JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK=SUB_OID JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID=IST_COMPONENT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
+		"LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID WHERE SUB_ASSAY_TYPE = 'NextGen' " +
+		"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 	  }
 	  
 	  final static public String getUnion(){

@@ -47,13 +47,13 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				ArrayList micargs, String[] order, String offset, 
 				String resPerPage, int[] total, String sub) {
 	if (debug) {
-	    System.out.println("entered assembleSQL!!!!!!!!!!!!!");
+	    System.out.println("MySQLAdvancedQueryDAOImp ntered assembleSQL!!!!!!!!!!!!!");
 	    if (option != null && option.size() > 0) {
-        	System.out.println("option size: " + option.size());
+        	System.out.println("MySQLAdvancedQueryDAOImp option size: " + option.size());
 	    }
 	    if (ishargs != null && ishargs.size()>0) {
     		for (int i=0;i<ishargs.size();i++) {
-		    System.out.println("ishargs size:" + ishargs.get(i));
+		    System.out.println("MySQLAdvancedQueryDAOImp ishargs size:" + ishargs.get(i));
     		}
 	    }
 	}
@@ -77,7 +77,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		onerow = (Object[])option.get(i);
 		label = (String)onerow[0];
 		if (debug)
-		    System.out.println("label value: " + label);
+		    System.out.println("MySQLAdvancedQueryDAOImp label value: " + label);
 		
 		lookup = (String)AdvancedSearchDBQuery.getLookupInDB().get(label);
 		lookup2 = (String)AdvancedSearchDBQuery.getLookupTable().get(lookup);
@@ -102,16 +102,16 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		       || label.indexOf("Clone Name") > -1
 		       || label.indexOf("Affymetrix ID") > -1) {
 			if (debug) {
-			    System.out.println("label is one of them&&&&&&&&&&&&&&&&");
-			    System.out.println("item value: " + ((Object[])item)[0]);
+			    System.out.println("MySQLAdvancedQueryDAOImp label is one of them&&&&&&&&&&&&&&&&");
+			    System.out.println("MySQLAdvancedQueryDAOImp item value: " + ((Object[])item)[0]);
 			}
 			if(null != ((Object[])item)[0] && !((Object[])item)[0].equals("")) {
 			    if (debug)
-				System.out.println("split length: " + split.length);
+				System.out.println("MySQLAdvancedQueryDAOImp split length: " + split.length);
 			    if(null != split) {
 				if(split.length == 1) {
 				    if (debug)
-					System.out.println("lookup2: " + lookup2);
+					System.out.println("MySQLAdvancedQueryDAOImp lookup2: " + lookup2);
 				    if(lookup2.indexOf("QSC_ISH_CACHE") > -1) {
 					ishwhere.add(new String(lookup+"='"+((Object[])item)[0])+"'");
 				    } else if(lookup2.indexOf("QSC_MIC_CACHE") > -1) {
@@ -157,17 +157,17 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			      || label.indexOf("Sample Age") > -1
 			      || label.indexOf("Sample Stage") > -1) {
 			if (debug) {
-			    System.out.println("AGE:"+new String(lookup3+":"+label)+":"+split.length+":"+((Object[])item)[1]+":"+lookup);
-			    System.out.println("label is one of them#########");
-			    System.out.println("item value: " + ((Object[])item)[1]);
+			    System.out.println("MySQLAdvancedQueryDAOImp AGE:"+new String(lookup3+":"+label)+":"+split.length+":"+((Object[])item)[1]+":"+lookup);
+			    System.out.println("MySQLAdvancedQueryDAOImp label is one of them#########");
+			    System.out.println("MySQLAdvancedQueryDAOImp item value: " + ((Object[])item)[1]);
 			}
 			if(null != ((Object[])item)[1] && !((Object[])item)[1].equals("")) {  
 			    if(null != split) {
 				if (debug)
-				    System.out.println("split length: " + split.length);
+				    System.out.println("MySQLAdvancedQueryDAOImp split length: " + split.length);
 				if(split.length == 1) {
 				    if (debug)
-					System.out.println("item value: " + ((Object[])item)[1]);
+					System.out.println("MySQLAdvancedQueryDAOImp item value: " + ((Object[])item)[1]);
 				    if(lookup2.indexOf("QSC_ISH_CACHE") > -1) {
 					ishwhere.add(new String(lookup+"='"+((Object[])item)[1])+"'");
 				    } else if(lookup2.indexOf("QSC_MIC_CACHE") > -1) {
@@ -224,7 +224,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			
 		    } else if(label.indexOf("Location") > -1){
 			if (debug)
-			    System.out.println("LSLSLSLSLSLS:"+((Object[])item)[0]+":"+((Object[])item)[1]);	
+			    System.out.println("MySQLAdvancedQueryDAOImp LSLSLSLSLSLS:"+((Object[])item)[0]+":"+((Object[])item)[1]);	
 			if(null != ((Object[])item)[1]) { 
 			    if(((Object[])item)[1].equals("adjacent to ")) {
 				if(null != ((Object[])item)[0] && !((Object[])item)[0].equals("")) {
@@ -243,16 +243,16 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			}
 		    } else if(label.indexOf("Gene Symbol") > -1){
 			if (debug)
-			    System.out.println("lable value is gene symbol!!!!!!!!!!");
+			    System.out.println("MySQLAdvancedQueryDAOImp lable value is gene symbol!!!!!!!!!!");
 			if(null != ((Object[])item)[6] && !((Object[])item)[6].equals("")) {   						
 			    if(null != split) {
 				String[] split2 = lookup.split(",");
 				
 				String[] symbols = getGeneSymbolArray((String)((Object[])item)[6], "equals");
 				if (debug) {
-				    System.out.println("symbols size:"+ symbols.length);
+				    System.out.println("MySQLAdvancedQueryDAOImp symbols size:"+ symbols.length);
 				    if (symbols != null && symbols.length > 0)
-					System.out.println("symbols value:"+ symbols[0]);
+					System.out.println("MySQLAdvancedQueryDAOImp symbols value:"+ symbols[0]);
 				}
 				if(null != symbols) {
 				    for(int k = 0; k < symbols.length; k++) {
@@ -270,7 +270,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			}
 		    }            				
 		    if (debug)
-			System.out.println("item:"+((Object[])item)[0]+":"+((Object[])item)[1]+":"+((Object[])item)[6]);
+			System.out.println("MySQLAdvancedQueryDAOImp item:"+((Object[])item)[0]+":"+((Object[])item)[1]+":"+((Object[])item)[6]);
 		    
 		}
 	    }
@@ -384,16 +384,16 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    
 	    if (debug && null != all) {
 		if (1 < all.length) 
-		    System.out.println("COUNTISH:"+all[1]);
+		    System.out.println("MySQLAdvancedQueryDAOImp COUNTISH:"+all[1]);
 		if (2 < all.length) 
-		    System.out.println("COUNTMIC:"+all[2]);
+		    System.out.println("MySQLAdvancedQueryDAOImp COUNTMIC:"+all[2]);
 		if (0 < all.length) 
-		    System.out.println("SUBSUB:"+sub+":"+all[0]);
+		    System.out.println("MySQLAdvancedQueryDAOImp SUBSUB:"+sub+":"+all[0]);
 	    }
 	    return all;
     	}
 	if (debug)
-	    System.out.println("!!! return null");
+	    System.out.println("MySQLAdvancedQueryDAOImp !!! return null");
 	
     	return null;
     }
@@ -1144,7 +1144,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    	ish = resSet.getString(1);
 				    	
 					if (debug)
-					    System.out.println("~~~ish total = "+ish);
+					    System.out.println("MySQLAdvancedQueryDAOImp ~~~ish total = "+ish);
 		
 				    }
 				}
@@ -1160,7 +1160,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    if(resSet.first()) {
 						mic = resSet.getString(1);
 						if (debug)
-						    System.out.println("~~~mic total = "+mic);
+						    System.out.println("MySQLAdvancedQueryDAOImp ~~~mic total = "+mic);
 			
 					    }
 				}
@@ -1202,25 +1202,35 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		     String archiveId, String batchId, GenericTableFilter filter) {
 
 		if (debug) {
-			System.out.println("=============getFocusQuery===============");
-			System.out.println("sub1:" + sub);
-			System.out.println("wildcard:" + queryCriteria[0]);
+			System.out.println("MySQLAdvancedQueryDAOImp =============getFocusQuery===============");
+			System.out.println("MySQLAdvancedQueryDAOImp sub1:" + sub);
+			System.out.println("MySQLAdvancedQueryDAOImp wildcard:" + queryCriteria[0]);
 		}
 		
 		
 		String assayValue = filter.getActiveAssay();
+		//ORIGINAL
+		/*if (assayValue != null){
+			if(assayValue.equalsIgnoreCase("Array"))
+				sub = "mic";
+			if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+				sub = "ish";
+			if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
+				sub = null;
+		}*/
+		
+		//WITH SEQUENCE ADDED TO FILTER
 		if (assayValue != null){
-		if(assayValue.equalsIgnoreCase("Array"))
-			sub = "mic";
-		/*if(assayValue.equalsIgnoreCase("Sequence"))
-			sub = "ngd";*/
-		if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
-			sub = "ish";
-		if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
-			sub = null;
-		/*if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && (assayValue.contains("Array") || assayValue.contains("Sequence")))
-			sub = null;*/
+			if(assayValue.equalsIgnoreCase("Array"))
+				sub = "mic";
+			if(assayValue.equalsIgnoreCase("Sequence"))
+				sub = "ngd";
+			if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+				sub = "ish";
+			if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && (assayValue.contains("Array") || assayValue.contains("Sequence")))
+				sub = null;
 		}
+		
 		
 		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, 
 						 null, organ, sub, exp, queryCriteria, transitiveRelations, archiveId, batchId);
@@ -1232,7 +1242,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		String[] sql = (String [])list.get(0);
 		if (debug) {
 			for (int i=0;i<input.length;i++)
-				System.out.println("input:" + input[i]);
+				System.out.println("MySQLAdvancedQueryDAOImp input:" + input[i]);
 		}
 		
 		ArrayList<String[]> result = null;
@@ -1242,11 +1252,11 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		if(null != sql && null != sql[0]) {
 			try {
 				if (debug)
-				    System.out.println("before adding filter"+sql[0]);
+				    System.out.println("MySQLAdvancedQueryDAOImp before adding filter"+sql[0]);
 			
 				sql[0] = filter.addFilterSql(sql[0], null);
 				if (debug)
-				    System.out.println("after adding filter sql[0] = "+sql[0] );
+				    System.out.println("MySQLAdvancedQueryDAOImp after adding filter sql[0] = "+sql[0] );
 				
 				// they do not want low level QIC_ANO_COMPONENT_NAME
 				// they want high level in ISH_SP_TISSUE 
@@ -1261,12 +1271,12 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			    new String((null == offset || offset.trim().equals(""))&& (resperpage==null || resperpage.trim().equals(""))? " ":" limit "+ offset + "," + resperpage + " ");
 			
 				if (debug)
-				    System.out.println("orderpart = "+orderpart );
+				    System.out.println("MySQLAdvancedQueryDAOImp orderpart = "+orderpart );
 	        	
 				sql[0] = "SELECT DISTINCT x.col1, GROUP_CONCAT(DISTINCT x.col2), x.col3, x.col4, x.col5, x.col6, x.col7, x.col8, x.col9, x.col10, x.col11, x.col12, x.col13, x.col14, x.col15, col16, col17 FROM ("+sql[0]+") AS x GROUP BY x.col10 " + orderpart.replaceAll("col", "x.col");
 
 				if (debug)
-				    System.out.println("sql[0] = "+sql[0] );
+				    System.out.println("MySQLAdvancedQueryDAOImp sql[0] = "+sql[0] );
 				
 				prepStmt = conn.prepareStatement(sql[0]);
 				int ishIterations = 0;
@@ -1275,6 +1285,10 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				input = (String [])list.get(1);
 				for(int i=0;i< ishIterations;i++){
 				    for(int j=0;j<input.length;j++){
+				    	if(debug){
+				    		System.out.println("ishiterations: "+ ((i*input.length)+j+1) +", "+ (input[j]));
+	
+				    	}
 				    	prepStmt.setString((i*input.length)+j+1, input[j]);
 				    }
 				}
@@ -1285,12 +1299,30 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			
 				for(int i=ishIterations*input.length;i< ishIterations*input.length+micIterations;i++){
 				    for(int j=0;j<micinput.length;j++){
+				    	if(debug){
+				    		System.out.println("micIterations: "+ (i+j+1) +", "+ (micinput[j]));
+	
+				    	}
 				    	prepStmt.setString(i+j+1, micinput[j]);
 				    }
 				}
 				
+				int ngdIterations = 0;
+				ngdIterations = Integer.parseInt(sql[5]);
+				String []ngdinput = (String [])list.get(3);
+			
+				for(int i=(ishIterations*input.length)+(micIterations*micinput.length);i< (ishIterations*input.length)+(micIterations*micinput.length)+ngdIterations;i++){
+				    for(int j=0;j<ngdinput.length;j++){
+				    	if(debug){
+				    		System.out.println("ngdIterations: "+ (i+j+1) +", "+ (ngdinput[j]));
+	
+				    	}
+				    	prepStmt.setString(i+j+1, ngdinput[j]);
+				    }
+				}
+				
 				if (debug)
-				    System.out.println("before executing sql = "+prepStmt.toString());
+				    System.out.println("MySQLAdvancedQueryDAOImp before executing sql = "+prepStmt.toString());
 				resSet = prepStmt.executeQuery();
 				
 				result = DBHelper.formatResultSetToArrayList(resSet, ColumnNumbers);
@@ -1324,20 +1356,35 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 			       String archiveId, String batchId, GenericTableFilter filter) {
     	
 		if (debug) {
-		    System.out.println("enter getNumberOfRows method!!!!!!!");
+		    System.out.println("MySQLAdvancedQueryDAOImp enter getNumberOfRows method!!!!!!!");
 		    for (int i=0;i<input.length;i++)
-			 System.out.println("input for getNumberOfRows:" + input[i]);
+			 System.out.println("MySQLAdvancedQueryDAOImp input for getNumberOfRows:" + input[i]);
 		}
 		
 		String assayValue = filter.getActiveAssay();
+		//ORIGINAL
+		/*if (assayValue != null){
+			if(assayValue.equalsIgnoreCase("Array"))
+				sub = "mic";
+			if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+				sub = "ish";
+			if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
+				sub = null;
+		}*/
+		
+		//WITH SEQUENCE ADDED TO FILTER
 		if (assayValue != null){
-		    if(assayValue.equalsIgnoreCase("Array"))
-		    	sub = "mic";
-		    if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
-		    	sub = "ish";
-		    if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
-		    	sub = null;
+			if(assayValue.equalsIgnoreCase("Array"))
+				sub = "mic";
+			if(assayValue.equalsIgnoreCase("Sequence"))
+				sub = "ngd";
+			if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+				sub = "ish";
+			if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && (assayValue.contains("Array") || assayValue.contains("Sequence")))
+				sub = null;
 		}
+		
+		
 		
 		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, null, organ, sub, exp, queryCriteria, transitiveRelations, archiveId, batchId);
 		if(list == null){
@@ -1349,6 +1396,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	PreparedStatement prepStmt = null;
     	String ish = null;
     	String mic = null;
+    	String ngd = null;
 	
     	if(null != sql) {
 		    try {
@@ -1371,10 +1419,12 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    if(resSet.first()) {
 				    	ish = resSet.getString(1);
 						if (debug)
-						    System.out.println("ISH number = "+ ish);
+						    System.out.println("MySQLAdvancedQueryDAOImp ISH number = "+ ish);
 				    }
 				}
-			
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+				
 				if(null != sql[2]) {
 				    sql[2] = filter.addFilterCountSql(sql[2]);
 				    prepStmt = conn.prepareStatement(sql[2]);
@@ -1394,10 +1444,39 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    if(resSet.first()) {
 						mic = resSet.getString(1);
 						if (debug)
-						    System.out.println("MIC number = "+ mic);
+						    System.out.println("MySQLAdvancedQueryDAOImp MIC number = "+ mic);
 				    }				    
 				}
-				int total = (null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic));
+				DBHelper.closePreparedStatement(prepStmt);
+				DBHelper.closeResultSet(resSet);
+				
+				if(null != sql[6]) {
+				    sql[6] = filter.addFilterCountSql(sql[6]);
+		
+				    prepStmt = conn.prepareStatement(sql[6]);	    					    
+				    int iterations = 0;
+				    iterations = Integer.parseInt(sql[5]);
+				    
+				    input = (String [])list.get(3);
+				    for(int i=0;i < iterations;i++){
+						for(int j=0;j<input.length;j++){
+						    prepStmt.setString((i*input.length)+j+1, input[j]);
+						}
+				    }
+				    if (debug)
+			    		System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRows3 - prepStmt= "+prepStmt.toString());
+				    
+				    resSet = prepStmt.executeQuery();
+				    if(resSet.first()) {
+						ngd = resSet.getString(1);
+						if (debug)
+						    System.out.println("MySQLAdvancedQueryDAOImp NGD number = "+ngd);
+				    }
+				    
+				}
+				int total = (null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic)) + (null == ngd?0:Integer.parseInt(ngd));			
+				
+				/*int total = (null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic));*/
 				return total;
 			
 		    } 
@@ -1411,7 +1490,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    }
     	}
 		if (debug)
-		    System.out.println("getNumberOfRows@total number: " + 0);
+		    System.out.println("MySQLAdvancedQueryDAOImp getNumberOfRows@total number: " + 0);
     	return 0;
     }
     
@@ -1433,16 +1512,29 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 					 String archiveId, String batchId, GenericTableFilter filter) {
     	
 		if (debug)
-		    System.out.println("enter getNumberOfRowsInGroups method!!!!!!!");
+		    System.out.println("MySQLAdvancedQueryDAOImp enter getNumberOfRowsInGroups method!!!!!!!");
 		
 		String assayValue = filter.getActiveAssay();
+		//ORIGINAL
+		/*if (assayValue != null){
+			if(assayValue.equalsIgnoreCase("Array"))
+				sub = "mic";
+			if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+				sub = "ish";
+			if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
+				sub = null;
+		}*/
+		
+		//WITH SEQUENCE ADDED TO FILTER
 		if (assayValue != null){
-		    if(assayValue.equalsIgnoreCase("Array"))
-		    	sub = "mic";
-		    if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
-		    	sub = "ish";
-		    if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && assayValue.contains("Array"))
-		    	sub = null;
+			if(assayValue.equalsIgnoreCase("Array"))
+				sub = "mic";
+			if(assayValue.equalsIgnoreCase("Sequence"))
+				sub = "ngd";
+			if(assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG"))
+				sub = "ish";
+			if((assayValue.contains("ISH") || assayValue.contains("IHC") || assayValue.contains("TG")) && (assayValue.contains("Array") || assayValue.contains("Sequence")))
+				sub = null;
 		}
 	
 		ArrayList <String []> list = assembleSQL(type, input, 0, true, null, null, organ, sub, exp, queryCriteria, transitiveRelations, archiveId, batchId); 
@@ -1456,6 +1548,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	PreparedStatement prepStmt = null;
     	String ish = null;
     	String mic = null;
+    	String ngd = null;
 	
     	if(null != sql) {
 		    try {
@@ -1478,7 +1571,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    if(resSet.first()) {
 						ish = resSet.getString(1);
 						if (debug)
-						    System.out.println("~~~ish total = "+ish);
+						    System.out.println("MySQLAdvancedQueryDAOImp ~~~ish total = "+ish);
 				    }
 				}
 			
@@ -1502,11 +1595,37 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    if(resSet.first()) {
 						mic = resSet.getString(1);
 						if (debug)
-						    System.out.println("~~~mic total = "+mic);
+						    System.out.println("MySQLAdvancedQueryDAOImp ~~~mic total = "+mic);
 				    }
 				    
 				}
-				int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic))};			
+				
+				if(null != sql[6]) {
+				    sql[6] = filter.addFilterCountSql(sql[6]);
+		
+				    prepStmt = conn.prepareStatement(sql[6]);	    					    
+				    int iterations = 0;
+				    iterations = Integer.parseInt(sql[5]);
+				    
+				    input = (String [])list.get(3);
+				    for(int i=0;i < iterations;i++){
+						for(int j=0;j<input.length;j++){
+						    prepStmt.setString((i*input.length)+j+1, input[j]);
+						}
+				    }
+				    if (debug)
+			    		System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRowsInGroups3 - prepStmt= "+prepStmt.toString());
+				    
+				    resSet = prepStmt.executeQuery();
+				    if(resSet.first()) {
+						ngd = resSet.getString(1);
+						if (debug)
+						    System.out.println("MySQLAdvancedQueryDAOImp ~~~ngd total = "+ngd);
+				    }
+				    
+				}
+				
+				int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic)), (null == ngd?0:Integer.parseInt(ngd))};			
 				return total;    			
 		    } 
 		    catch (Exception se) {
@@ -1552,17 +1671,17 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	
     	
     	if (debug) {
-		    System.out.println("assembleSQL############");
-		    System.out.println("AssembleSQLForFocusQuery:queryType: " + queryType);
-		    System.out.println("AssembleSQLForFocusQuery:subType: " + subType);
-		    System.out.println("AssembleSQLForFocusQuery:transitiveRelations: " + transitiveRelations);
-		    System.out.println("AssembleSQLForFocusQuery:organ: " + organ);
-		    System.out.println("AssembleSQLForFocusQuery:archiveId: " + archiveId);
-		    System.out.println("AssembleSQLForFocusQuery:batchId: " + batchId);
+		    System.out.println("MySQLAdvancedQueryDAOImp assembleSQL############");
+		    System.out.println("MySQLAdvancedQueryDAOImp AssembleSQLForFocusQuery:queryType: " + queryType);
+		    System.out.println("MySQLAdvancedQueryDAOImp AssembleSQLForFocusQuery:subType: " + subType);
+		    System.out.println("MySQLAdvancedQueryDAOImp AssembleSQLForFocusQuery:transitiveRelations: " + transitiveRelations);
+		    System.out.println("MySQLAdvancedQueryDAOImp AssembleSQLForFocusQuery:organ: " + organ);
+		    System.out.println("MySQLAdvancedQueryDAOImp AssembleSQLForFocusQuery:archiveId: " + archiveId);
+		    System.out.println("MySQLAdvancedQueryDAOImp AssembleSQLForFocusQuery:batchId: " + batchId);
 		    for (int i=0;i<input.length;i++) 
-		    	System.out.println("AdvancedQueryDAO:assembleSQL:input( " + i + "): " + input[i]); 
+		    	System.out.println("MySQLAdvancedQueryDAOImp :assembleSQL:input( " + i + "): " + input[i]); 
 		    for (int i=0;i<queryCriteria.length;i++) 
-		    	System.out.println("AdvancedQueryDAO:assembleSQL:queryCriteria( " + i + "): " + queryCriteria[i]);
+		    	System.out.println("MySQLAdvancedQueryDAOImp :assembleSQL:queryCriteria( " + i + "): " + queryCriteria[i]);
 		}
 	
     	ArrayList<String[]> sqlAndParams = new ArrayList <String[]>();
@@ -1587,22 +1706,29 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     	String inputStr = "";  //contains list of input parameters or '?' for each input parameter
         String ishStr = "";
         String micStr = "";
+        String ngdStr = "";
         String[] all = null;
         String[] ish = (String[])((Hashtable)AdvancedSearchDBQuery.getISHQuickSearchColumns()).get(queryType);
     	String[] mic = (String[])((Hashtable)AdvancedSearchDBQuery.getMICQuickSearchColumns()).get(queryType);
+    	String[] ngd = (String[])((Hashtable)AdvancedSearchDBQuery.getNGDQuickSearchColumns()).get(queryType);
+    	//count the accession IDs
     	String countStr = "select count(distinct col13) from ";
     	String countMicStr = "select count(distinct col10) from ";
+    	String countNGDStr = "select count(distinct col10) from ";
     	String organISHStr = "";
     	String organMicStr = "";
+    	String organNGDStr = "";
     	String ishStageString = "";
     	String micStageString = "";
+    	String ngdStageString = "";
     	String ishAnnotationString = "";
     	String micAnnotationString = "";
+    	String ngdAnnotationString = "";
 	
     	//specific focus organ has been selected so sql will have to be modified accordingly
     	if(null != organ && !organ.equals("") && !organ.equals("null")) {
 		    if (debug)
-	    		System.out.println("OUTPUT ORGAN:"+organ+":"+organ);
+	    		System.out.println("MySQLAdvancedQueryDAOImp OUTPUT ORGAN:"+organ+":"+organ);
 		    String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ);
 		    String ids = "";
 		    if(null != emapids) {
@@ -1702,6 +1828,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    else {
 				    	ishStr = ishStr + ish[i] + inputStr + " OR ";
 				    }
+				    
 				}
 		
 				for(int i = 0; i < mic.length; i++) {
@@ -1767,6 +1894,17 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
 				    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
 				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				} else if(subType.equals("ngd")) {
+		    
+				    //if user is looking for mtfs but has specified array assay types
+				    if(findMTFs > -1)
+					return null;
+		    
+				    all[0] = micpart + orderpart;
+				    all[1] = null;
+				    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
+				    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
 				}
 		    } else {
 		
@@ -1784,6 +1922,13 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql for array
 				}
 				else {
+					if(debug)
+					{
+						System.out.println("MySQLAdvancedQueryDAOImp ######### GENE SEARCH");
+						System.out.println("MySQLAdvancedQueryDAOImp ######### ishpart: " + ishpart);
+						System.out.println("MySQLAdvancedQueryDAOImp  ######### micpart: " + micpart);
+						System.out.println("MySQLAdvancedQueryDAOImp ######### orderpart: " + orderpart);
+					}
 				    all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart + orderpart;
 				    all[1] = AdvancedSearchDBQuery.getISHCount()+ AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
 		            		//added for organ
@@ -1885,6 +2030,13 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    all[3] = String.valueOf(ish.length);  //how many times you have to cycle through the list of inputs to set the params in the sql
 				    all[4] = "0";  //how many times you have to cycle through the list of inputs to set the params in the sql
 				} else if(subType.equals("mic")) {
+				    
+				    all[0] = micpart + orderpart;
+				    all[1] = null;
+				    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
+				    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				} else if(subType.equals("ngd")) {
 				    
 				    all[0] = micpart + orderpart;
 				    all[1] = null;
@@ -2010,15 +2162,12 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				else {
 				    inputStr = inputStr + " ?,";
 				}
+				if(debug)
+				{
+					System.out.println("MySQLAdvancedQueryDAOImp ########### AccessionID");
+					System.out.println("MySQLAdvancedQueryDAOImp ######### inputStr: " + inputStr);
+				}
 		    }
-	    
-		    /*for(int i = 0; i < input.length; i++) {
-		      inputStr = inputStr + "'"+ input[i] + "'" +",";
-		      } 
-		      
-		      if(input.length >= 1) {
-		      inputStr = inputStr.substring(0,inputStr.length()-1);
-		      }*/
 	    
 		    if(input.length >= 1) {
 				inputStr = " in (" + inputStr + ") ";
@@ -2031,6 +2180,11 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    else {
 				    	ishStr = ishStr + ish[i] + inputStr + " OR ";
 				    }
+				    if(debug)
+				    {
+					    System.out.println("MySQLAdvancedQueryDAOImp ######### AccessionID");
+					    System.out.println("MySQLAdvancedQueryDAOImp ishStr: "+ ishStr);
+				    }
 				}
 				ishStr += " ) ";
 		
@@ -2042,14 +2196,27 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    if(i < mic.length-1){
 				    	micStr += AdvancedSearchDBQuery.getUnion();
 				    }
-				    
+				    System.out.println("MySQLAdvancedQueryDAOImp ######### AccessionID");
+				    System.out.println("MySQLAdvancedQueryDAOImp micStr: "+ micStr);
+				}
+				
+				for(int i = 0; i < ngd.length; i++) {
+				    ngdStr = ngdStr + AdvancedSearchDBQuery.getNGDSelect()+
+					AdvancedSearchDBQuery.getNGDFrom() +
+					//added for organ
+					organNGDStr + " AND ( " + ngd[i] + inputStr + ")";
+				    if(i < ngd.length-1){
+				    	ngdStr += AdvancedSearchDBQuery.getUnion();
+				    }
+				    System.out.println("MySQLAdvancedQueryDAOImp ######### AccessionID");
+				    System.out.println("MySQLAdvancedQueryDAOImp ngdStr: "+ ngdStr);
 				}
 		    }
 		    //Bernie 27/10/2010 - added groupart to return tissue values
-		    String grouppart = "GROUP BY col10";
+		    String grouppart = " GROUP BY col10 ";///added spaces around grouping
 		    
 		    String orderStr = DBHelper.orderResult(orderby, asc);
-		    all = new String[5];        	
+		    all = new String[7];        	
 		    
 		    String ishpart = AdvancedSearchDBQuery.getISHSelect()+
 	    		AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() +
@@ -2057,6 +2224,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    		//added for organ
 	    		organISHStr + grouppart + " ) ";
 		    String micpart = micStr +")";
+		    String ngdpart = ngdStr + grouppart +")";
 		    String orderpart = orderStr + 
 	        	new String((null == offset || offset.equals(""))&& (recordNumber==null || recordNumber.equals(""))? " ":" limit "+ offset + "," + recordNumber + " ");
 	    
@@ -2070,16 +2238,36 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    all[2] = null;
 				    all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
 				    all[4] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				    all[5] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ngd
+				    all[6]=null;
 				} else if(subType.equals("mic")) {
 				    all[0] = micpart + orderpart;
 				    all[1] = null;
 				    all[2] = countMicStr + micStr + ") as tablea";
 				    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
 				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				    all[5] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ngd
+				    all[6]=null;
+				} else if(subType.equals("ngd")) {
+				    all[0] = ngdpart + orderpart;
+				    all[1] = null;
+				    all[2] = null;
+				    all[3] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+				    all[4] = "0"; //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				    all[5] = String.valueOf(ngd.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ngd
+				    all[6]= countNGDStr + ngdStr + ") as tablea";
 				}
 		    } else {
+		    	if(debug)
+			    {
+				    System.out.println("########## TEST PROBLEM MySQLAdvancedQueryDAOImp ######### AccessionID");
+				    System.out.println("MySQLAdvancedQueryDAOImp ishpart: "+ ishpart);
+				    System.out.println("MySQLAdvancedQueryDAOImp micpart: "+ micpart);
+				    System.out.println("MySQLAdvancedQueryDAOImp ngdpart: "+ ngdpart);
+				    System.out.println("MySQLAdvancedQueryDAOImp orderpart: "+ orderpart);
+			    }
 				all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart +
-				    //micStr+
+						AdvancedSearchDBQuery.getUnion() + ngdpart +
 				    orderpart;
 				
 				all[1] = AdvancedSearchDBQuery.getISHCount()+
@@ -2087,16 +2275,17 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    //added for organ
 				    organISHStr;
 				
-				all[2] = countMicStr + micStr + ") as tablea";
+				all[2] = countMicStr + micStr + grouppart +") as tablea";///added grouping
 				all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
 				all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
-			
+				all[5] = String.valueOf(ngd.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				all[6] = countNGDStr + ngdStr + grouppart +") as tablea";///added grouping
 		    }
 
 		    sqlAndParams.add(all);
 		    sqlAndParams.add(input);
 		    sqlAndParams.add(input);
-		    
+		    sqlAndParams.add(input);
 		}
 		//else if the user is looking for data on an anatomy component
 		else if(queryType.equals("Anatomy")) {
@@ -2422,6 +2611,13 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 					all[4] = "0";
 			    }
 			    else if(subType.equals("mic")) {
+					all[0] = micQuery.toString() + orderpart;
+					all[1] = null;
+					all[2] = countMicStr + "("+micQuery.toString() + ") as tablea";
+					all[3] = "0";
+					all[4] = "1";					
+			    }
+			    else if(subType.equals("ngd")) {
 					all[0] = micQuery.toString() + orderpart;
 					all[1] = null;
 					all[2] = countMicStr + "("+micQuery.toString() + ") as tablea";

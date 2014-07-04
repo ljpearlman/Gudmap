@@ -413,7 +413,7 @@
 				<TD />
 				<TD width="30">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 				<TD class="top_left_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_array_2.png" ALT="Next Gen" WIDTH="124" HEIGHT="24" BORDER="0" NAME="array_pix" /></TD>
+				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_array_2.png" ALT="Array" WIDTH="124" HEIGHT="24" BORDER="0" NAME="array_pix" /></TD>
 				<TD class="top_border"></TD>
 				<TD  class="top_border" width="50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 				<TD width="30" class="top_border">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -480,14 +480,14 @@
 				<TD STYLE="height:10px">&nbsp;</TD>
 				<TD />
 				<TD class="top_left_border">&nbsp;</TD>
-				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_nextGen_2.png" ALT="array" WIDTH="124" HEIGHT="24" BORDER="0" NAME="geo_accession_pix" /></TD>
+				<TD class="top_border"  valign="top"><IMG SRC="../images/focus/n_seq.png" ALT="array" WIDTH="124" HEIGHT="24" BORDER="0" NAME="geo_accession_pix" /></TD>
 				<TD class="top_border">&nbsp;</TD>
 				<TD class="top_border">&nbsp;</TD>
 				<TD class="top_left_border">&nbsp;</TD>
 				<TD align="left" valign="top">
 					</f:verbatim>
 					<h:outputLink value="ngd_series_browse.html#{DatabaseHomepageBean.organParam}" >
-						<h:graphicImage width="130" height="24" url="../images/focus/n_nextGenSeries.png" alt="Next Gen Series" styleClass="icon" />
+						<h:graphicImage width="130" height="24" url="../images/focus/n_series.png" alt="Next Gen Series" styleClass="icon" />
 					</h:outputLink>
 					<f:verbatim>
 				</TD>
@@ -531,7 +531,7 @@
 				<TD align="left" valign="top">
 					</f:verbatim>
 					<h:outputLink value="focus_ngd_browse.html#{DatabaseHomepageBean.organParam}" >
-						<h:graphicImage width="130" height="24" url="../images/focus/n_nextGenSample.png" alt="Next Gen Sample" styleClass="icon" />
+						<h:graphicImage width="130" height="24" url="../images/focus/n_sample.png" alt="Next Gen Sample" styleClass="icon" />
 					</h:outputLink>
 					<f:verbatim>
 				</TD>
@@ -613,7 +613,7 @@
 					<f:verbatim>
 				</TD>
 				<TD class="top_border">
-					<a href="#Link368081Context" name="Link368081Context" id="Link368081Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID368081', 'Browse In situ', 'In situ returns a list of total In situ Hybridization data. This includes Wholemount ISH (WISH), Section ISH (SISH), OPT and Immunohistochemistry (IHC) data &lt;br&gt;', 'Link368081Context')">
+					<a href="#Link368081Context" name="Link368081Context" id="Link368081Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID368081', 'Browse In situ', 'In situ returns a list of total in situ data. This includes wholemount ISH (WISH), section ISH (SISH), OPT and immunohistochemistry (IHC) data &lt;br&gt;', 'Link368081Context')">
 						<img src="../images/focus/n_information.png" width="22" height="24" border="0" />
 					</a>
 				</TD>

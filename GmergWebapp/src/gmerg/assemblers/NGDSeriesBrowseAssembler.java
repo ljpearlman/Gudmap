@@ -21,7 +21,7 @@ import java.util.HashMap;
  *
  */
 public class NGDSeriesBrowseAssembler extends OffMemoryTableAssembler{
-    protected boolean debug = true;
+    protected boolean debug = false;
     protected RetrieveDataCache cache = null;
 
 	String organ;

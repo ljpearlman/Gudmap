@@ -257,7 +257,7 @@ public class GenericTableView
 		// Bernie 2/5/2011 - Mantis 328 added to display updated totals
 		if (table.numRowsInGroups != null){
 			setNavigationPanelMessage("Totals: In Situ(<b>" + table.numRowsInGroups[0] + "</b>) &nbsp&nbsp&nbsp Microarray(<b>" + table.numRowsInGroups[1] + "</b>)");
-//			System.out.println("Totals: In Situ(" + table.numRowsInGroups[0] + ") Microarray(" + table.numRowsInGroups[1]+")");
+			//System.out.println("Totals: In Situ(" + table.numRowsInGroups[0] + ") Microarray(" + table.numRowsInGroups[1]+")");
 		}
 	}
 
