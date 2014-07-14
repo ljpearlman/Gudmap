@@ -683,10 +683,10 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
   final static String query45 = NUMBER_OF_SPECIMEN_TYPE + endsBrowseSubmissionISH;
   
   final static String name46 = "TOTAL_NUMBER_OF_IMAGE";
-  //final static String query46 = NUMBER_OF_IMAGE + endsBrowseSubmissionISH;
-  final static String query46 = "SELECT COUNT(IMG_OID) FROM ISH_ORIGINAL_IMAGE, ISH_SUBMISSION, ISH_SPECIMEN "+
-		  						"WHERE IMG_SUBMISSION_FK=SUB_OID AND SPN_SUBMISSION_FK=SUB_OID " +
-		  						"AND SUB_IS_DELETED=0 AND SUB_DB_STATUS_FK=4 AND SUB_IS_PUBLIC=1";
+  final static String query46 = NUMBER_OF_IMAGE + endsBrowseSubmissionISH;
+//  final static String query46 = "SELECT COUNT(IMG_OID) FROM ISH_ORIGINAL_IMAGE, ISH_SUBMISSION, ISH_SPECIMEN "+
+//		  						"WHERE IMG_SUBMISSION_FK=SUB_OID AND SPN_SUBMISSION_FK=SUB_OID " +
+//		  						"AND SUB_IS_DELETED=0 AND SUB_DB_STATUS_FK=4 AND SUB_IS_PUBLIC=1";
   
   final static String NUMBER_OF_SEX = "SELECT COUNT(DISTINCT SPN_SEX) ";
   

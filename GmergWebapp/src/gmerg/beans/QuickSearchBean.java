@@ -62,7 +62,8 @@ import gmerg.utils.Visit;
 		if (groupedNumRows != null) {
 			String ishNo = String.valueOf(groupedNumRows[0]);
 			String arrayNo = String.valueOf(groupedNumRows[1]);
-			if(groupedNumRows.length<2)
+			//sequence data not included
+			if(groupedNumRows.length<3)
 				tableView.setNavigationPanelMessage("Totals: In Situ(<b>" + ishNo + "</b>) &nbsp&nbsp&nbsp Microarray(<b>" + arrayNo + "</b>)");
 			else {// include the Sequence (ngd) data
 			String ngdNo = String.valueOf(groupedNumRows[2]);

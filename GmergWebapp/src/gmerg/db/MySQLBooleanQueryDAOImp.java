@@ -16,7 +16,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
     private boolean debug = false;
 
 	private Connection conn; 
-	private int ColumnNumbers = 15;
+	private int ColumnNumbers = 17;
 	
 	String outputString;
 
@@ -37,7 +37,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
     private String SUB_UNION_STR="UNION ( ";
     private String INTERSECT_STR_ENTRY="AND QIC_SUB_ACCESSION_ID IN ( ";
     private String ACCESSION_STR="QIC_SUB_ACCESSION_ID ";
-    private String COLUMN_STR="QIC_RPR_SYMBOL col1,"+
+    /*private String COLUMN_STR="QIC_RPR_SYMBOL col1,"+
                               "(SELECT GROUP_CONCAT(DISTINCT a.ANO_COMPONENT_NAME SEPARATOR '; ')  FROM ISH_SP_TISSUE, ANA_TIMED_NODE t, ANA_NODE a WHERE IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) AND t.ATN_PUBLIC_ID = IST_COMPONENT AND t.ATN_NODE_FK = a.ANO_OID) as col2, "+
                               "'' col3,"+
                               "QIC_SUB_SOURCE col4,"+
@@ -50,7 +50,22 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
                               "'' col11,"+
                               "'' col12,"+
                               "REPLACE(QIC_SUB_ACCESSION_ID, ':', 'no') col13,"+
-                              "QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15 ";
+                              "QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15 ";*/
+    
+    private String COLUMN_STR="QIC_RPR_SYMBOL col1,"+
+            "(SELECT GROUP_CONCAT(DISTINCT a.ANO_COMPONENT_NAME SEPARATOR '; ')  FROM ISH_SP_TISSUE, ANA_TIMED_NODE t, ANA_NODE a WHERE IST_SUBMISSION_FK = CAST(SUBSTR(QIC_SUB_ACCESSION_ID FROM 8) AS UNSIGNED) AND t.ATN_PUBLIC_ID = IST_COMPONENT AND t.ATN_NODE_FK = a.ANO_OID) as col2, "+
+            "'' col3,"+
+            "QIC_SUB_SOURCE col4,"+
+            "QIC_SUB_SUB_DATE col5,"+
+            "QIC_SUB_EMBRYO_STG col6,"+
+            "QIC_SPN_ASSAY_TYPE col7,"+
+            "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
+            "QIC_SUB_THUMBNAIL col9,"+
+            "QIC_SUB_ACCESSION_ID col10,"+
+            "'' col11,"+
+            "(SELECT GROUP_CONCAT(DISTINCT B.QIC_EXP_STRENGTH) FROM QSC_ISH_CACHE B WHERE B.QIC_SUB_ACCESSION_ID=QIC_SUB_ACCESSION_ID) col12,"+
+            "REPLACE(QIC_SUB_ACCESSION_ID, ':', 'no') col13,"+
+            "QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15, QIC_PRB_PROBE_NAME col16, QIC_SPN_WILDTYPE col17 ";
 
     // clause to find all parent of specified anatomy term(s)
     private String INHERITANCE_CRITERIA_STR_ANSCESTOR = " AND QIC_ATN_PUBLIC_ID IN ( " +

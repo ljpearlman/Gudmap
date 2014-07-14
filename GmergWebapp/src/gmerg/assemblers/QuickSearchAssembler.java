@@ -4,7 +4,6 @@ import gmerg.db.AdvancedQueryDAO;
 import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.db.DBHelper;
 import gmerg.db.MySQLDAOFactory;
-
 import gmerg.utils.Utility;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
@@ -251,11 +250,29 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			}
 			tableData[i][10] = new DataItem(str,row[1],30);		
 			
-			// insitu expression
-			tableData[i][11] = new DataItem(row[2]);	
+			// ish expression
+			/*tableData[i][11] = new DataItem(row[2]);*/
+			
+			if(row[11]==null){
+			tableData[i][11] = new DataItem("");
+			}
+			else
+			{
+				String expression = row[11];
+				if (expression.contains("present"))
+					tableData[i][11] = new DataItem("present");
+				else if (expression.contains("uncertain"))
+					tableData[i][11] = new DataItem("uncertain");
+				else if (expression.contains("not detected"))
+					tableData[i][11] = new DataItem("not detected");
+				else
+					tableData[i][11] = new DataItem("");
+			}
 			
 			// microarray expression
-			tableData[i][12] = new DataItem(geneExpressions.get(row[11]));	
+			tableData[i][12] = new DataItem(geneExpressions.get(row[11]));
+			
+			
 			
 			//specimen type
 			tableData[i][13] = new DataItem(row[6]);	

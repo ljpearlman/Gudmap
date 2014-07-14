@@ -102,6 +102,10 @@ public class GenericTableFilter {
 					if (currentSql.contains("QMC_SPN_ASSAY_TYPE")){
 						colName = microarrayMapQuery[col];
 					}
+					//Derek modify filter to accept sequence data from accession id search. below will only work if its ish
+					/*if (currentSql.contains("QIC_SUB_ACCESSION_ID")){
+						colName = insituMap[col];
+					}*/
 					
 				}
 						

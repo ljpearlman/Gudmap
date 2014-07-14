@@ -130,5 +130,7 @@ public class BooleanQueryAssembler extends OffMemoryTableAssembler  {
 			DBHelper.closeJDBCConnection(conn);
 		}
 	}
+	
+
 	 
 }

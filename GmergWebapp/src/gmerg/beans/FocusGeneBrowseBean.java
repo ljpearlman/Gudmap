@@ -149,6 +149,7 @@ System.out.println("widecard2="+ wildcards[2]);
 		//Bernie 10/5/2011 - Mantis 328 - added call to set filter
 		assembler.setFilter(getFilter(assembler.getTableviewToSqlColMap()));
 		
+		
 	    GenericTable table = assembler.createTable();
         GenericTableView tableView = QuickSearchBean.getDefaultSearchResultBrowseTableView(viewName, table);
 
@@ -203,5 +204,6 @@ System.out.println("widecard2="+ wildcards[2]);
 	    	System.out.println("FocusGeneBrowseBean:getFilter(out)");
 		return filter;
 	}
+	
 	
 }

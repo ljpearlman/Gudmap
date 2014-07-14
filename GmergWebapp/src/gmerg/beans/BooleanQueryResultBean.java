@@ -1,6 +1,7 @@
 package gmerg.beans;
 
 import gmerg.assemblers.BooleanQueryAssembler;
+import gmerg.assemblers.QuickSearchAssembler;
 import gmerg.entities.Globals;
 import gmerg.entities.Globals.PredefinedFilters;
 import gmerg.utils.FacesUtil;
@@ -56,10 +57,12 @@ public class BooleanQueryResultBean {
 	    else{ 
 	    	// TF type should also be checked
 	    	assembler = new BooleanQueryAssembler(queryParams);
+	    	//Derek. 110714 filter not working. revert to generic.
+	    	assembler.setFilter(getNewFilter(QuickSearchAssembler.getTableviewToSqlColMap()));
 
 			//Bernie 01/02/2012 - Mantis 328 - added method 
-		    int[] map = {0, 9, 13, 2, 11, 1, 5, 7, 14, 3, 4, 6, 8};
-		    assembler.setFilter(getFilter(map));
+		    /*int[] map = {0, 9, 13, 2, 11, 1, 5, 7, 14, 3, 4, 6, 8};
+		    assembler.setFilter(getFilter(map));*/
 	    }
 	    
 	    GenericTable table = assembler.createTable();
@@ -93,6 +96,25 @@ public class BooleanQueryResultBean {
 		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
 		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
 //		System.out.println("FocusGeneBrowseBean:getFilter(out)");
+		return filter;
+	}
+	
+	private GenericTableFilter getNewFilter(int[] colMap) { 
+	    if (debug)
+	    	System.out.println("FocusGeneBrowseBean:getFilter(in)");
+		GenericTableFilter filter = new GenericTableFilter();
+		filter.setTableToSqlColMap(colMap);
+		filter.addFilter(new FilterItem(0));
+		if(Utility.getProject().equalsIgnoreCase("gudmap")) 
+			filter.addFilter(2, Globals.getPredefinedFilter(PredefinedFilters.LAB));
+		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.DATE));		
+		filter.addFilter(4, Globals.getPredefinedFilter(PredefinedFilters.ASSAY));
+		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.STAGE));
+		filter.addFilter(8, Globals.getPredefinedFilter(PredefinedFilters.SEX));
+		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
+		filter.addFilter(13, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
+	    if (debug)
+	    	System.out.println("FocusGeneBrowseBean:getNewFilter(out)");
 		return filter;
 	}
 

@@ -1306,21 +1306,22 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    	prepStmt.setString(i+j+1, micinput[j]);
 				    }
 				}
+				// sequence data - only for accession search for now
+				if(sql.length>6) {
+					int ngdIterations = 0;
+					ngdIterations = Integer.parseInt(sql[5]);
+					String []ngdinput = (String [])list.get(3);
 				
-				int ngdIterations = 0;
-				ngdIterations = Integer.parseInt(sql[5]);
-				String []ngdinput = (String [])list.get(3);
-			
-				for(int i=(ishIterations*input.length)+(micIterations*micinput.length);i< (ishIterations*input.length)+(micIterations*micinput.length)+ngdIterations;i++){
-				    for(int j=0;j<ngdinput.length;j++){
-				    	if(debug){
-				    		System.out.println("ngdIterations: "+ (i+j+1) +", "+ (ngdinput[j]));
-	
-				    	}
-				    	prepStmt.setString(i+j+1, ngdinput[j]);
-				    }
+					for(int i=(ishIterations*input.length)+(micIterations*micinput.length);i< (ishIterations*input.length)+(micIterations*micinput.length)+ngdIterations;i++){
+					    for(int j=0;j<ngdinput.length;j++){
+					    	if(debug){
+					    		System.out.println("ngdIterations: "+ (i+j+1) +", "+ (ngdinput[j]));
+		
+					    	}
+					    	prepStmt.setString(i+j+1, ngdinput[j]);
+					    }
+					}
 				}
-				
 				if (debug)
 				    System.out.println("MySQLAdvancedQueryDAOImp before executing sql = "+prepStmt.toString());
 				resSet = prepStmt.executeQuery();
@@ -1449,30 +1450,32 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				}
 				DBHelper.closePreparedStatement(prepStmt);
 				DBHelper.closeResultSet(resSet);
-				
-				if(null != sql[6]) {
-				    sql[6] = filter.addFilterCountSql(sql[6]);
-		
-				    prepStmt = conn.prepareStatement(sql[6]);	    					    
-				    int iterations = 0;
-				    iterations = Integer.parseInt(sql[5]);
-				    
-				    input = (String [])list.get(3);
-				    for(int i=0;i < iterations;i++){
-						for(int j=0;j<input.length;j++){
-						    prepStmt.setString((i*input.length)+j+1, input[j]);
-						}
-				    }
-				    if (debug)
-			    		System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRows3 - prepStmt= "+prepStmt.toString());
-				    
-				    resSet = prepStmt.executeQuery();
-				    if(resSet.first()) {
-						ngd = resSet.getString(1);
-						if (debug)
-						    System.out.println("MySQLAdvancedQueryDAOImp NGD number = "+ngd);
-				    }
-				    
+				// sequence data - only for accession search for now
+				if(sql.length>6) {
+					if(null != sql[6]) {
+					    sql[6] = filter.addFilterCountSql(sql[6]);
+			
+					    prepStmt = conn.prepareStatement(sql[6]);	    					    
+					    int iterations = 0;
+					    iterations = Integer.parseInt(sql[5]);
+					    
+					    input = (String [])list.get(3);
+					    for(int i=0;i < iterations;i++){
+							for(int j=0;j<input.length;j++){
+							    prepStmt.setString((i*input.length)+j+1, input[j]);
+							}
+					    }
+					    if (debug)
+				    		System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRows3 - prepStmt= "+prepStmt.toString());
+					    
+					    resSet = prepStmt.executeQuery();
+					    if(resSet.first()) {
+							ngd = resSet.getString(1);
+							if (debug)
+							    System.out.println("MySQLAdvancedQueryDAOImp NGD number = "+ngd);
+					    }
+					    
+					}
 				}
 				int total = (null == ish?0:Integer.parseInt(ish)) + (null == mic?0:Integer.parseInt(mic)) + (null == ngd?0:Integer.parseInt(ngd));			
 				
@@ -1599,30 +1602,32 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				    }
 				    
 				}
-				
-				if(null != sql[6]) {
-				    sql[6] = filter.addFilterCountSql(sql[6]);
-		
-				    prepStmt = conn.prepareStatement(sql[6]);	    					    
-				    int iterations = 0;
-				    iterations = Integer.parseInt(sql[5]);
-				    
-				    input = (String [])list.get(3);
-				    for(int i=0;i < iterations;i++){
-						for(int j=0;j<input.length;j++){
-						    prepStmt.setString((i*input.length)+j+1, input[j]);
-						}
-				    }
-				    if (debug)
-			    		System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRowsInGroups3 - prepStmt= "+prepStmt.toString());
-				    
-				    resSet = prepStmt.executeQuery();
-				    if(resSet.first()) {
-						ngd = resSet.getString(1);
-						if (debug)
-						    System.out.println("MySQLAdvancedQueryDAOImp ~~~ngd total = "+ngd);
-				    }
-				    
+				// sequence data - only for accession search for now
+				if(sql.length>6) {
+					if(null != sql[6]) {
+					    sql[6] = filter.addFilterCountSql(sql[6]);
+			
+					    prepStmt = conn.prepareStatement(sql[6]);	    					    
+					    int iterations = 0;
+					    iterations = Integer.parseInt(sql[5]);
+					    
+					    input = (String [])list.get(3);
+					    for(int i=0;i < iterations;i++){
+							for(int j=0;j<input.length;j++){
+							    prepStmt.setString((i*input.length)+j+1, input[j]);
+							}
+					    }
+					    if (debug)
+				    		System.out.println("MySQLAdvancedQueryDAOImp:getNumberOfRowsInGroups3 - prepStmt= "+prepStmt.toString());
+					    
+					    resSet = prepStmt.executeQuery();
+					    if(resSet.first()) {
+							ngd = resSet.getString(1);
+							if (debug)
+							    System.out.println("MySQLAdvancedQueryDAOImp ~~~ngd total = "+ngd);
+					    }
+					    
+					}
 				}
 				
 				int[] total = new int[]{(null == ish?0:Integer.parseInt(ish)), (null == mic?0:Integer.parseInt(mic)), (null == ngd?0:Integer.parseInt(ngd))};			
