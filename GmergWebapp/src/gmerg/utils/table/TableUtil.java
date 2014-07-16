@@ -20,7 +20,7 @@ import gmerg.utils.Visit;
  */
 
 public class TableUtil {
-    static boolean debug = false;
+    static boolean debug = true;
 
 	static final protected String distinguishingParam = "tableViewName";
 	
@@ -204,7 +204,7 @@ public class TableUtil {
 	private static String[] getSelectedIds(int id, boolean isCollectionId) {  // id can be either a column Id (number) or a collection category id. This is specified by the second parameter isCollectionId
 		String selectionsString = FacesUtil.getAnyRequestParamValue("selectionsString");
 		if (debug) 
-		    System.out.println("TableUtil.getSelectedIds:   SelectionString==========="+selectionsString + "  id="+id+" isCollectionId = "+isCollectionId);
+		    System.out.println("TableUtil::getSelectedIds:   SelectionString==========="+selectionsString + "  id="+id+" isCollectionId = "+isCollectionId);
 
 		if (selectionsString == null) 
 			return null;
@@ -242,7 +242,7 @@ public class TableUtil {
 
 	public static String[] getSelectedIdsFromTableView(GenericTableView tableView, String selectionString, int columnId, int offset) {
 	    if (debug)
-		System.out.println("TableUtil. getSelectedIdsFromTableView selectionString = "+selectionString+" columnId="+columnId);
+		System.out.println("TableUtil::getSelectedIdsFromTableView | selectionString= "+selectionString+" | columnId="+columnId);
 		
 		DataItem[][] tableData = tableView.getData();
 
@@ -280,7 +280,7 @@ public class TableUtil {
 		selectedIds.toArray(selections);
 		if (debug)
 		    for(int i=0; i<selections.length; i++)	
-			System.out.println("TableUtil. getSelectedIdsFromTableView Selection["+i+"]====="+selections[i]);
+		    	System.out.println("TableUtil::getSelectedIdsFromTableView | Selection["+i+"]="+selections[i]);
 
 		return selections;
 		

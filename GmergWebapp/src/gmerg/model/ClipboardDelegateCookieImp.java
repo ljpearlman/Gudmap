@@ -16,7 +16,7 @@ import gmerg.utils.table.CollectionBrowseHelper;
 */
 
 public class ClipboardDelegateCookieImp {
-    protected static boolean debug = false;
+    protected static boolean debug = true;
 
 	public ClipboardDelegateCookieImp() {
 	}	
@@ -50,6 +50,10 @@ public class ClipboardDelegateCookieImp {
 		// so check if the passed-in Ids is null first
 //		return getValidIds(CookieOperations.setValuesInCookie(cookieName, ids, ignoreCase), collectionCategory).size();
 		ArrayList validIds = getValidIds(CookieOperations.setValuesInCookie(cookieName, ids, ignoreCase), collectionCategory);
+		if(debug)
+				System.out.println("ClipboardDelegateCookieImp::addToClicpboard | cookiename="+cookieName+" | ignoreCase="+ignoreCase+
+						" | collectionCategory="+collectionCategory);
+		//return 4;
 		return (validIds == null)? 0: validIds.size();
 	}
 	
@@ -114,10 +118,14 @@ public class ClipboardDelegateCookieImp {
 	
 	private static String getCookieName(int collectionCategory) {
 		String clipboardName = Globals.getCollectionCategoryName(collectionCategory);
+		if(debug)
+				System.out.println("ClipboardDelegateCookieImp::getCookieName | clipboardName= "+clipboardName);
 		return clipboardName + "CollectionGudmap";
 	}
 	
 	private static ArrayList<String> getValidIds(ArrayList<String> ids, int collectionCategory) {
+		if(debug)
+			System.out.println("ClipboardDelegateCookieImp::getValidIds | id.length="+ids.size()+" | collectionCategory="+collectionCategory);
 		CollectionBrowseHelper helper = Globals.getCollectionBrowseHelper(ids, collectionCategory);
 		if (ids!=null && ids.size()>0  && helper != null)
 			return helper.getValidIds();

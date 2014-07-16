@@ -98,8 +98,10 @@ public class ISHBrowseBean extends MultipleInstanceBean {
 //		GenericTableView tableView = new GenericTableView (viewName, 20, table);
 		tableView.setRowsSelectable();
 		tableView.setCollectionBottons(1);
-		tableView.addCollection(0, 0);
-		tableView.addCollection(1, 1);
+		/*tableView.addCollection(0, 0);
+		tableView.addCollection(1, 1);*/
+		tableView.addCollection(0, 1);//'selected' id from choice menu, col no to take value from - Entries
+		tableView.addCollection(1, 0);//genes
 		tableView.setDisplayTotals(true);
 //		tableView.setDisplayTotals(false);
 		tableView.setDefaultColVisible(new boolean[]{true, true, true, false, false, true, true, false, false, true, false, false, false, true});

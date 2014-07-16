@@ -47,98 +47,100 @@ public class Globals {
 	}
     
     public static class CollectionCategory {
-	private String category;
-	TreeMap<Integer, CollectionAttribute> attributes;
-	boolean caseSensitiveIds;
+		private String category;
+		TreeMap<Integer, CollectionAttribute> attributes;
+		boolean caseSensitiveIds;
+		
+		public CollectionCategory(String category) {
+		    this(category, false);
+		}
+		public CollectionCategory(String category, boolean caseSensitiveIds) {
+		    this(category, null, caseSensitiveIds);
+		}
+		
+		public CollectionCategory(String category, CollectionAttribute[] attributes) {
+		    this(category, attributes, false);
+		}
+		
+		public CollectionCategory(String category, CollectionAttribute[] attributesArray, boolean caseSensitiveIds) {
+		    this.category = category;
+		    attributes = new TreeMap<Integer, CollectionAttribute>();
+		    if (attributesArray!=null) {
+			for (int i=0; i<attributesArray.length; i++)
+			    attributes.put(attributesArray[i].getColId(), attributesArray[i]);
+		    }
+		    this.caseSensitiveIds = caseSensitiveIds;
+		}
+		
+		public int[] getAttributeColNums() {
+		    if (null == attributes || null == attributes.keySet())
+			return null;
 	
-	public CollectionCategory(String category) {
-	    this(category, false);
-	}
-	public CollectionCategory(String category, boolean caseSensitiveIds) {
-	    this(category, null, caseSensitiveIds);
-	}
+		    Set<Integer> a = attributes.keySet();
+		    int colNums[] = new int[a.size()];
+		    for (Integer i : a)
+			colNums[i] = i;
+		    return colNums;
+		}
+		
+		public String[] getAttributeNames() {
+		    if (null == attributes|| null == attributes.values())
+			return null;
 	
-	public CollectionCategory(String category, CollectionAttribute[] attributes) {
-	    this(category, attributes, false);
-	}
+		    String[] a = new String[attributes.values().size()];
+		    return attributes.values().toArray(a);
+		}
+		
+		public String getCategory() {
+		    return category;
+		}
+		
+		public void setCategory(String category) {
+		    this.category = category;
+		}
+		
+		public SelectItem[] getAttributesSelectItems() {
+		    if (null ==attributes || null == attributes.keySet())
+			return null;
 	
-	public CollectionCategory(String category, CollectionAttribute[] attributesArray, boolean caseSensitiveIds) {
-	    this.category = category;
-	    attributes = new TreeMap<Integer, CollectionAttribute>();
-	    if (attributesArray!=null) {
-		for (int i=0; i<attributesArray.length; i++)
-		    attributes.put(attributesArray[i].getColId(), attributesArray[i]);
-	    }
-	    this.caseSensitiveIds = caseSensitiveIds;
-	}
+		    Set<Integer> colNums = attributes.keySet();
+		    if (colNums.size()==0)
+			return null;
+		    SelectItem[] attributeItems = new SelectItem[colNums.size()];
+		    int i=0;
+		    for (Integer col : colNums) {
+			attributeItems[i++] = new SelectItem(col, attributes.get(col).getName());
+		    }
+		    return attributeItems;
+		    
+		}
+		
+		public TreeMap<Integer, CollectionAttribute> getAttributes() {
+		    return attributes;
+		}
+		
+		public CollectionAttribute getAttribute(int colId) {
+		    if (null == attributes)
+			return null;
 	
-	public int[] getAttributeColNums() {
-	    if (null == attributes || null == attributes.keySet())
-		return null;
-
-	    Set<Integer> a = attributes.keySet();
-	    int colNums[] = new int[a.size()];
-	    for (Integer i : a)
-		colNums[i] = i;
-	    return colNums;
-	}
+		    return attributes.get(colId);
+		}
+		
+		public boolean isCaseSensitiveIds() {
+		    return caseSensitiveIds;
+		}
+		
+		public void setCaseSensitiveIds(boolean caseSensitiveIds) {
+		    this.caseSensitiveIds = caseSensitiveIds;
+		}
 	
-	public String[] getAttributeNames() {
-	    if (null == attributes|| null == attributes.values())
-		return null;
-
-	    String[] a = new String[attributes.values().size()];
-	    return attributes.values().toArray(a);
-	}
-	
-	public String getCategory() {
-	    return category;
-	}
-	
-	public void setCategory(String category) {
-	    this.category = category;
-	}
-	
-	public SelectItem[] getAttributesSelectItems() {
-	    if (null ==attributes || null == attributes.keySet())
-		return null;
-
-	    Set<Integer> colNums = attributes.keySet();
-	    if (colNums.size()==0)
-		return null;
-	    SelectItem[] attributeItems = new SelectItem[colNums.size()];
-	    int i=0;
-	    for (Integer col : colNums) {
-		attributeItems[i++] = new SelectItem(col, attributes.get(col).getName());
-	    }
-	    return attributeItems;
-	    
-	}
-	
-	public TreeMap<Integer, CollectionAttribute> getAttributes() {
-	    return attributes;
-	}
-	
-	public CollectionAttribute getAttribute(int colId) {
-	    if (null == attributes)
-		return null;
-
-	    return attributes.get(colId);
-	}
-	
-	public boolean isCaseSensitiveIds() {
-	    return caseSensitiveIds;
-	}
-	
-	public void setCaseSensitiveIds(boolean caseSensitiveIds) {
-	    this.caseSensitiveIds = caseSensitiveIds;
-	}
-	
-    }
+    }//end class CollectionCategory
     
     private static final CollectionAttribute[] entriesCollectionAttributes = {
 	new CollectionAttribute(0, "Ids", false), 
 	new CollectionAttribute(1, "Genes", false)};
+    /*new CollectionAttribute(1, "Ids", false), 
+	new CollectionAttribute(0, "Genes", false)};*/
     
     private static final CollectionCategory[] collectionCategories = {
 	new CollectionCategory("Entries", entriesCollectionAttributes), 
@@ -146,6 +148,13 @@ public class Globals {
 	new CollectionCategory("Images", true),
 	new CollectionCategory("MOE430_Probes"),
 	new CollectionCategory("ST1_Probes") };
+    
+    /*private static final CollectionCategory[] collectionCategories = {
+    	new CollectionCategory("Genes"),
+    	new CollectionCategory("Entries", entriesCollectionAttributes),
+    	new CollectionCategory("Images", true),
+    	new CollectionCategory("MOE430_Probes"),
+    	new CollectionCategory("ST1_Probes") };*/
     
     public static CollectionCategory[] getCollectionCategories() {
 	return collectionCategories;
@@ -209,15 +218,26 @@ public class Globals {
 	return getCollectionBrowseHelper(collectionItemsIds, collectionType, "3_2");
     }
     
+    /*public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType, String masterTableId) {
+		switch (collectionType) {
+		case 0:	return new EntriesCollectionBrowseHelper(collectionItemsIds, 0, "collectionIds", 1);
+		case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneSymbols", 0);
+		case 2:	return new ImagesCollectionBrowseHelper(collectionItemsIds, 2, "imageIds", 0);
+		case 3:	return new ProbesCollectionBrowseHelper("GPL1261", masterTableId, collectionItemsIds, 3, "probeIds", 0); 
+		case 4:	return new ProbesCollectionBrowseHelper("GPL6246", masterTableId, collectionItemsIds, 4, "probeIds", 0);
+		}	
+		return null;
+    }*/
+    
     public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType, String masterTableId) {
-	switch (collectionType) {
-	case 0:	return new EntriesCollectionBrowseHelper(collectionItemsIds, 0, "collectionIds", 0);
-	case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneSymbols", 0);
-	case 2:	return new ImagesCollectionBrowseHelper(collectionItemsIds, 2, "imageIds", 0);
-	case 3:	return new ProbesCollectionBrowseHelper("GPL1261", masterTableId, collectionItemsIds, 3, "probeIds", 0); 
-	case 4:	return new ProbesCollectionBrowseHelper("GPL6246", masterTableId, collectionItemsIds, 4, "probeIds", 0);
-	}	
-	return null;
+		switch (collectionType) {
+		case 0:	return new EntriesCollectionBrowseHelper(collectionItemsIds, 0, "collectionIds", 0);
+		case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneSymbols", 0);
+		case 2:	return new ImagesCollectionBrowseHelper(collectionItemsIds, 2, "imageIds", 0);
+		case 3:	return new ProbesCollectionBrowseHelper("GPL1261", masterTableId, collectionItemsIds, 3, "probeIds", 0); 
+		case 4:	return new ProbesCollectionBrowseHelper("GPL6246", masterTableId, collectionItemsIds, 4, "probeIds", 0);
+		}	
+		return null;
     }
     
     //************************************************************************

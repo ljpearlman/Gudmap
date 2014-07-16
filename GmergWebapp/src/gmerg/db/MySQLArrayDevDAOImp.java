@@ -803,8 +803,8 @@ protected ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype
 		
 		PreparedStatement prepStmt = null;
 		try {
-	    if (debug)
-		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
+			if (debug)
+				System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setInt(1, subStatus);
 			resSet = prepStmt.executeQuery();

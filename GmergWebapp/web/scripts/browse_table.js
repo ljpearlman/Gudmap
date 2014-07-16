@@ -115,7 +115,8 @@ function toggleSelectAll(e, item, checkBoxId) {	//checkBoxId is optional
 function saveSelections(e) {
 	var formId = getTableFormId(e);
 	var selections = getSelections(formId, 'genericTable', getById(formId+':cellSelection').value);
-	getById(formId+':selections').value = selections;
+	/*alert("formID: " + formId + ". Selections: "+ selections);*/
+	getById(formId+':selections').value = selections;	
 	if((selections.indexOf('1')>=0) == false) {
 		alert("Please make a selection from the list of entries");
 		return false;
@@ -144,7 +145,7 @@ function getSelections(formId, id, numCols, idSuffix) {
 			totalSelectionsNum++;
 			if(form.elements[i].checked) {
 				var index = form.elements[i].name.match(pattern);
-//alert("name="+form.elements[i].name+"\npattern="+pattern+"\nindex="+index+"\nnumCols="+numCols);
+/*alert("name="+form.elements[i].name+"\npattern="+pattern+"\nindex="+index+"\nnumCols="+numCols);*/
 				var selectionIndex =  ((numCols == 0)? index[1] : (parseInt(index[1])*numCols+parseInt(index[2])));
 				selectionArray[selectionsNum++] = selectionIndex;
 			}
@@ -164,7 +165,7 @@ function getSelections(formId, id, numCols, idSuffix) {
 		}
 		else
 			selections += '0';
-//	alert(selections);
+	/*alert("selections="+selections);*/
 	return selections;
 }
 

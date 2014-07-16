@@ -22,7 +22,8 @@ public class EntriesCollectionBrowseHelper extends CollectionBrowseHelper {
 	    	tableView.setColVisible(new boolean[]{ true, true, true, false, false, false, true, false, true, false, false, false, true, true,  false, true, true });
 	    else 
 	    	tableView.setColVisible(new boolean[]{ true, true, true, false, true, false, false, true, false, true, true, true, true });
-		tableView.addCollection(0, 0); //CollectionType:0
+		//tableView.addCollection(0, 0); //CollectionType:0
+	    tableView.addCollection(0, 1); //CollectionType, colnum - Entries only
 		tableView.setRowsSelectable();
 		tableView.setHeightUnlimittedFlexible();
 		tableView.setDisplayTotals(false);

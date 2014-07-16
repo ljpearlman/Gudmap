@@ -16,7 +16,7 @@ import gmerg.utils.table.GenericTableView;
 import gmerg.utils.table.TableUtil;
 
 public class FocusGeneBrowseBean {
-    private boolean debug = true;
+    private boolean debug = false;
     private String query;
     private String input;
     private String focusedOrgan;

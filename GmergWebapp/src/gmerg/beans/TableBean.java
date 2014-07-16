@@ -22,6 +22,8 @@ import gmerg.utils.Utility;
 */
 
 public class TableBean extends MultipleInstanceBean {
+	
+	private boolean debug = true;
 
 	protected DataModel data = null;
 
@@ -72,18 +74,24 @@ public class TableBean extends MultipleInstanceBean {
 	// Constructors & Initializers
 	// ********************************************************************************
 	public TableBean() {
-//		System.out.println("TableBean constructor");
+		if(debug)
+			System.out.println("#######TableBean constructor");
 		selectionWorkAround = -1;
 		selectionsString = "";
 		String type = FacesUtil.getAnyRequestParamValue("collectionType");
 		selectedCollection = Integer.parseInt(Utility.getValue(type, "-1"));
-//System.out.println("type======"+type+ "  selectedCollection="+selectedCollection);		
+				
 		if (selectedCollection==-1) {
 			clipboardItemsNum = -1;
 			selectedCollection = 0;
+			/*selectedCollection = 1;*/
 		}
 		else 
 			clipboardItemsNum = ClipboardDelegateCookieImp.getClicpboardSize(selectedCollection);
+		
+		if(debug)
+			System.out.println("TableBean::TableBean | Collection Type= " +type+ " | selectedCollection="+selectedCollection+
+			" | clipboardItemsNum= "+clipboardItemsNum);
 	}
 
 	public void initInstance(String tableViewName){
@@ -114,10 +122,13 @@ public class TableBean extends MultipleInstanceBean {
 	}
 
 	private String[] getSelectedSubmissions() {
-//		System.out.println("   in get selected submisssions:	SelectionString==========="+selectionsString );
+		if(debug)
+			System.out.println("TableBean::getSelectedSubmisssions | SelectionString="+selectionsString );
 		int idCol = tableView.getIdCol(selectedCollection);
-//		System.out.println(selectedCollection+" idcol========"+idCol);
+		if(debug)
+			System.out.println("TableBean::getSelectedSubmisssions | selectedCollection="+selectedCollection+" | idCol="+idCol);
 		
+		//return TableUtil.getSelectedIdsFromTableView(tableView, selectionsString, 1, 0);
 		return TableUtil.getSelectedIdsFromTableView(tableView, selectionsString, idCol, 0);//offset);
 	}
 
@@ -187,7 +198,6 @@ public class TableBean extends MultipleInstanceBean {
  		int dataOffset = tableView.getFirstRowIndex(); //it is 0 for Offmemory tables and some offset for InMemory tables
 		int rowNum = tableView.getDisplayRowsPerPage();
 		int colNum = table.getNumCols();
-		
 		if (tableData == null && rowNum>0)
 			log("Error in table data:  data is null but row number is " + rowNum, 0);
 		else {
@@ -268,11 +278,16 @@ public class TableBean extends MultipleInstanceBean {
 //						row.add(new DataItem("no data")); // add a dummy item instead of null to avoid exceptions
 					if (tableData == null || tableData[i+dataOffset][j]==null) {
 						if (tableData == null) {
-							log("~~~******************tableData is null *******************");
+							if(debug)
+								System.out.println("TableBean::loadData | tableData is null");
 						} else {
-							log("~~~"+i+"   "+j+"  ======  "+tableData[i][j]+"************************* PROBLEM *******************");
+							if(debug)
+								System.out.println("TableBean::loadData | i="+i+" | j="+j+" | tableData[i][j]="+tableData[i][j]+" !!!!PROBLEM");
+			
 						}
 						row.add(new DataItem("no data")); // add a dummy item instead of null to avoid exceptions
+						if(debug)
+							System.out.println("TableBean::loadData | added no-data dummy item");
 					}
 					else {
 						log("~~~"+i+"   "+dataOffset+"   "+j+"  ======  "+tableData[i+dataOffset][j].getValue());
@@ -458,8 +473,8 @@ public class TableBean extends MultipleInstanceBean {
 	public String addToClipboard() {
 //		System.out.println("In addToCollection ##SelectedCollection=========="+selectedCollection);
 		String[] selectedSubs = getSelectedSubmissions();
-
-//		System.out.println("selections="+Utility.toArrayList(selectedSubs).toString());
+		if(debug)
+			System.out.println("TableBean::addToClipboard | selections="+Utility.toArrayList(selectedSubs).toString());
 		setClipboardItemsNum(ClipboardDelegateCookieImp.addToClicpboard(selectedSubs, selectedCollection));
 		return null;
 	}
@@ -1004,6 +1019,8 @@ return "background-color:" + htmlColor(150,150, 150);
 	
 	private void setClipboardItemsNum(int value) {
 		clipboardItemsNum = value;
+		if(debug)
+			System.out.println("############TableBean::setClipboardItemsNum | value="+value);
 		FacesUtil.setFacesRequestParamValue("Clipboard"+selectedCollection, value);
 	}
 		
@@ -1026,6 +1043,8 @@ return "background-color:" + htmlColor(150,150, 150);
 		int i=0;
 		while (iterator.hasNext()) {
 			int collectionId = Integer.parseInt(iterator.next());
+			if(debug)
+				System.out.println("TableBean::getCollectionsSelectItems | collectionId="+collectionId+" | category="+collectionCategories[collectionId]);
 			categories[i++] = new SelectItem(collectionId, collectionCategories[collectionId]);
 		}
 		return categories;
