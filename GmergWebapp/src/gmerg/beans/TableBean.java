@@ -1051,8 +1051,16 @@ return "background-color:" + htmlColor(150,150, 150);
 	}
 
 	public int getCollectionBottons() {
+		if(debug)
+			System.out.println("TableBean::getCollectionBottons | tableView.getCollectionBottons="+tableView.getCollectionBottons());
 		if (tableView.getCollections().size()==0)   //I am not sure about keeping this line
-			return 0;								
+		{
+			if(debug)	
+				System.out.println("TableBean::getCollectionBottons | tableView.getCollections().size()=0");
+			return 0;
+		}
+		if(debug)
+			System.out.println("TableBean::getCollectionBottons | tableView.getCollectionBottons="+tableView.getCollectionBottons());
 		return tableView.getCollectionBottons();
 	}
 

@@ -50,10 +50,10 @@ public class CollectionOperationBrowseBean extends CollectionOperationBrowsePare
 
 		if (debug) {
 		    System.out.println("CollectionOperationBrowseBean.getCollectionIds");
-		System.out.println("idCol="+idCol+"     resultId=="+resultId);
+		    System.out.println("idCol="+idCol+"     resultId=="+resultId);
 		if (null != selectedIds)
 		    for(int i=0; i<selectedIds.length; i++) 
-			System.out.println("selectedCollections["+i+"]="+selectedIds[i]);
+		    	System.out.println("selectedCollections["+i+"]="+selectedIds[i]);
 		}
 		
 		if (selectedIds == null)

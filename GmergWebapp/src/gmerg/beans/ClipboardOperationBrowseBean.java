@@ -10,7 +10,7 @@ import gmerg.assemblers.CollectionAssembler;
 
 public class ClipboardOperationBrowseBean extends CollectionOperationBrowseParentBean {
     
-    protected boolean debug = false;
+    protected boolean debug = true;
 
 	// ********************************************************************************
 	// Constructors & Initializers
@@ -30,7 +30,7 @@ public class ClipboardOperationBrowseBean extends CollectionOperationBrowseParen
 	// ********************************************************************************
 	protected ArrayList<String> getCollectionIds(int idCol, String resultId) {
 	    if (debug)
-		System.out.println("ClipboradOperationBrowseBean.getCollectionIds idCol = "+idCol+" resultId = "+resultId+" collectionType = "+collectionType);
+	    	System.out.println("ClipboradOperationBrowseBean::getCollectionIds | idCol= "+idCol+" | resultId= "+resultId+" | collectionType= "+collectionType);
 
 		String[] selectedIds = TableUtil.getSelectedIdsForCollection(collectionType);   
 
