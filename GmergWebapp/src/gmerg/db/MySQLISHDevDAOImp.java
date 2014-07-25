@@ -4,6 +4,7 @@
 package gmerg.db;
 
 import gmerg.utils.Utility;
+import gmerg.utils.Visit;
 import gmerg.entities.submission.Probe;
 import gmerg.utils.table.GenericTableFilter;
 
@@ -624,6 +625,10 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
        String query = null;
        String defaultOrder = null;
        String queryString = null;
+       String collectionAttributeRequest = Visit.getRequestParam("collectionAttribute"); 
+       int collectionAttribute=0;
+       if(collectionAttributeRequest!=null)
+    	   collectionAttribute = Integer.parseInt(Visit.getRequestParam("collectionAttribute")); //DEREK. Genes over IDs queries. default is 0
        
        if (type == 0) { // all types of submissions
            parQIS = DBQuery.getParamQuery("ALL_COLLECTION_ENTRIES_ISH");
@@ -636,10 +641,42 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
            // append submission id condition
            int submissionNumber = submissionIds.length;
            String groupByClause = "GROUP BY QMC_SUB_ACCESSION_ID, QMC_SUB_EMBRYO_STG, QSC_AGE, QMC_SUB_SOURCE, QMC_SUB_SUB_DATE, QMC_SPN_SEX, QSC_SPN_WILDTYPE, SMP_TITLE, QMC_SER_GEO_ID ";
+           //DEREK added in attribute param, so can do ids over genes query for intersections, unions and differences
+           /*if (submissionNumber == 1) {
+        	   
+        	   if(collectionAttribute==1) { //Genes
+        		   queryIS += "AND RPR_SYMBOL = '" + submissionIds[0] + "'";
+        	   }
+        	   else { //IDs
+	               queryIS += "AND SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
+	               queryArray += "AND QMC_SUB_ACCESSION_ID = '" + submissionIds[0] + "' " + groupByClause;
+        	   }
+           } 
+           else {
+        	   if(collectionAttribute==1) {
+        		   queryIS += "AND RPR_SYMBOL IN ('" + submissionIds[0] + "'";
+        		   for (int i = 1; i < submissionNumber; i++) {
+	                   queryIS += ", '" + submissionIds[i] + "'";
+	               }
+        		   queryIS += ") ";
+        	   }
+        	   else {
+        		   queryIS += "AND SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
+	               queryArray += "AND QMC_SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
+	               for (int i = 1; i < submissionNumber; i++) {
+	                   queryIS += ", '" + submissionIds[i] + "'";
+	                   queryArray += ", '" + submissionIds[i] + "'";
+	               }
+	               queryIS += ") ";
+	               queryArray += ") " + groupByClause;
+        	   }
+        	   
+           }*/
            if (submissionNumber == 1) {
-               queryIS += "AND SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
-               queryArray += "AND QMC_SUB_ACCESSION_ID = '" + submissionIds[0] + "' " + groupByClause;
-           } else {
+        	   queryIS += "AND SUB_ACCESSION_ID = '" + submissionIds[0] + "'";
+	           queryArray += "AND QMC_SUB_ACCESSION_ID = '" + submissionIds[0] + "' " + groupByClause;	   
+           }
+           else {
                queryIS += "AND SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
                queryArray += "AND QMC_SUB_ACCESSION_ID IN ('" + submissionIds[0] + "'";
                for (int i = 1; i < submissionNumber; i++) {
@@ -750,19 +787,39 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 	   
 	   String orderByString = new String("");
 	   String order = (ascending == true ? "ASC": "DESC");
-	   String[] browseAllColumnList =
-		   {"QSC_SUB_ACCESSION_ID", // 0
-		   		"QSC_RPR_SYMBOL", // 1
-		   		"QSC_SUB_EMBRYO_STG", // 2
-		   		"QSC_AGE", // 3
-		   		"QSC_SUB_SOURCE", // 4
+	   /*String[] browseAllColumnList =
+		   {"QSC_SUB_ACCESSION_ID", // 1
+		   		"QSC_RPR_SYMBOL", // 0
+		   		"QSC_SUB_EMBRYO_STG", // 6
+		   		"QSC_AGE", // 7
+		   		"QSC_SUB_SOURCE", // 2
 		   		"QSC_SPN_ASSAY_TYPE", // 7
-		   		"QSC_ASSAY_TYPE", // 6
-		   		"QSC_SUB_SUB_DATE", // 5
+		   		"QSC_ASSAY_TYPE", // 4
+		   		"QSC_SUB_SUB_DATE", // 3
 		   		"QSC_SPN_SEX", // 8
-		   		"QSC_PRB_PROBE_NAME", // 9
-		   		"QSC_SPN_WILDTYPE", // 10
-		   		"QSC_PROBE_TYPE", // 11
+		   		"QSC_PRB_PROBE_NAME", // 5
+		   		"QSC_SPN_WILDTYPE", // 9
+		   		"QSC_PROBE_TYPE", // 10
+		   		"QSC_SUB_THUMBNAIL", // 12
+		   		"QSC_TISSUE", // 13
+		   		"QSC_SMP_TITLE", // 14
+		   		"QSC_SAMPLE_DESCRIPTION", // 15
+		   		"QSC_SER_GEO_ID" // 16
+		    };*/
+	   
+	   String[] browseAllColumnList =
+		   {"QSC_RPR_SYMBOL", // 0
+			   "QSC_SUB_ACCESSION_ID", // 1
+			   "QSC_SUB_SOURCE", // 2
+			   "QSC_SUB_SUB_DATE", // 3
+			   "QSC_ASSAY_TYPE", // 4
+			   "QSC_PRB_PROBE_NAME", // 5
+		   		"QSC_SUB_EMBRYO_STG", // 6
+		   		"QSC_AGE", // 7
+		   		"QSC_SPN_SEX", // 8
+		   		"QSC_SPN_WILDTYPE", // 9
+		   		"QSC_PROBE_TYPE", // 10
+		   		"QSC_SPN_ASSAY_TYPE", // 11
 		   		"QSC_SUB_THUMBNAIL", // 12
 		   		"QSC_TISSUE", // 13
 		   		"QSC_SMP_TITLE", // 14
@@ -786,9 +843,10 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 	   // if specify column other than gene symbol or stage, 
 	   // order by the specified column and the default column (symbol & stage);
 	   // if no specified column, use symbol and stage
-	   if (queryType == 3) {
+	   /*if (queryType == 3) {
 		   
-	   } else {
+	   } 
+	   else {
 		   if (columnIndex == 0) {
 			   if (queryType == 1) {
 				   orderByString = "natural_sort(QSC_SUB_ACCESSION_ID) " + order + ", " + defaultCol;
@@ -814,6 +872,50 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		   } else if (columnIndex == 10) {
 			   orderByString = "QSC_SPN_WILDTYPE " + order + ", " + defaultCol;
 		   } else if (columnIndex == 11) {
+			   orderByString = "QSC_PROBE_TYPE " + order + ", " + defaultCol;
+		   } else if (columnIndex == 12) {
+			   orderByString = "QSC_SUB_THUMBNAIL " + order + ", " + defaultCol;
+		   } else if (columnIndex == 13) {
+			   orderByString = "QSC_TISSUE " + order + ", " + defaultCol;
+		   } else if (columnIndex == 14) {
+			   orderByString = "QSC_SMP_TITLE " + order + ", " + defaultCol;
+		   } else if (columnIndex == 15) {
+			   orderByString = "QSC_SAMPLE_DESCRIPTION " + order + ", " + defaultCol;
+		   } else if (columnIndex == 16) {
+			   orderByString = "QSC_SER_GEO_ID " + order + ", " + defaultCol;
+		   } else {
+			   orderByString = defaultCol;
+		   }
+	   }*/
+	   if (queryType == 3) {
+		   
+	   } 
+	   else {
+		   if (columnIndex == 1) {
+			   if (queryType == 1) {
+				   orderByString = "natural_sort(QSC_SUB_ACCESSION_ID) " + order + ", " + defaultCol;
+			   } 
+		   } else if (columnIndex == 0) {
+			   orderByString = geneSymbolCol + " " + order +", " + theilerStageCol;
+		   } else if (columnIndex == 6) {
+			   orderByString = theilerStageCol + " " + order +", " + geneSymbolCol;
+		   } else if (columnIndex == 7) {
+			   orderByString = "QSC_AGE " + order + ", " + defaultCol;
+		   } else if (columnIndex == 2) {
+			   orderByString = "QSC_PER_NAME " + order + ", " + defaultCol;
+		   } else if (columnIndex == 3) {
+			   orderByString = "QSC_SUB_SUB_DATE " + order + ", " + defaultCol;
+		   } else if (columnIndex == 4) {
+			   orderByString = "QSC_ASSAY_TYPE " + order + ", " + defaultCol;
+		   } else if (columnIndex == 11) {
+			   orderByString = "QSC_SPN_ASSAY_TYPE " + order + ", " + defaultCol;
+		   } else if (columnIndex == 8) {
+			   orderByString = "QSC_SPN_SEX " + order + ", " + defaultCol;
+		   } else if (columnIndex == 5) {
+			   orderByString = "QSC_PRB_PROBE_NAME " + order + ", " + defaultCol;
+		   } else if (columnIndex == 9) {
+			   orderByString = "QSC_SPN_WILDTYPE " + order + ", " + defaultCol;
+		   } else if (columnIndex == 10) {
 			   orderByString = "QSC_PROBE_TYPE " + order + ", " + defaultCol;
 		   } else if (columnIndex == 12) {
 			   orderByString = "QSC_SUB_THUMBNAIL " + order + ", " + defaultCol;

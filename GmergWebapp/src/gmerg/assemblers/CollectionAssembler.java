@@ -24,7 +24,7 @@ import java.util.Set;
 public class CollectionAssembler { //Singleton 
 		   
 	static private CollectionAssembler _instance = null;
-    private boolean debug = false;
+    private boolean debug = true;
 
 	protected CollectionAssembler() {
 	if (debug)
@@ -192,12 +192,14 @@ public class CollectionAssembler { //Singleton
 					return collectionItemsIds;
 				}
 				
-				if (attributeCol>=0 && attributeCol!=idCol) {	// attribut column is present
+				if (attributeCol>=0 && attributeCol!=idCol) {	// attribute column is present
+				//if (attributeCol>=0) {	// DEREK attributE column is present
 					OffMemoryTableAssembler assembler = Globals.getCollectionBrowseHelper(collectionItemsIds, collectionType).getCollectionBrowseAssembler();
 					DataItem[][] collectionItems = assembler.retrieveData(-1, true, 0, Integer.MAX_VALUE);
 					for (int j=0; j<collectionItems.length; j++) {
 						String value = collectionItems[j][attributeCol].getValue().toString();
 						String key = collectionItems[j][idCol].getValue().toString();
+						
 						if (i==0)
 							result.put(key, value);
 						else {

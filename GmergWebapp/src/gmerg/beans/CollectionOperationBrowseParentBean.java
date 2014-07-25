@@ -8,7 +8,7 @@ import gmerg.utils.Visit;
 import gmerg.utils.table.*;
 
 abstract public class CollectionOperationBrowseParentBean {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
     protected int collectionType;
     protected String collectionOperation;
@@ -37,7 +37,8 @@ abstract public class CollectionOperationBrowseParentBean {
 		collectionType = Integer.parseInt(Visit.getRequestParam("collectionType", "0"));
 		selectedCollectionsString = Visit.getRequestParam("selectedCollections", "");
 		collectionAttribute = Visit.getRequestParam("collectionAttribute");
-		collectionNames = "";
+		/*collectionAttribute = Visit.getRequestParam("collectionAttribute", "0");//DEREK SET DEFAULT
+*/		collectionNames = "";
 	}
 
 	// ********************************************************************************
@@ -53,7 +54,8 @@ abstract public class CollectionOperationBrowseParentBean {
 		tableView.setViewParameter("collectionType", collectionType);
 		tableView.setViewParameter("selectedCollections", selectedCollectionsString);
 		tableView.setViewParameter("collectionNames", collectionNames);
-		TableUtil.saveTableView(tableView);
+		/*tableView.setViewParameter("collectionAttribute", collectionAttribute);//DEREK get operation on entries over genes
+*/		TableUtil.saveTableView(tableView);
 	}
 	
 	protected GenericTableView populateCollectionOperationTableView(String viewName, String resultId) {

@@ -82,7 +82,7 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
     }
 
 	public HeaderItem[] createHeader() {
-		String headerTitles[] = {"Id", "Name", "Description", "Owner Id", "Owner", "Focus group", "Entries", "Status", "Last modifed", "Download", "Share" };
+		String headerTitles[] = {"Name", "Id", "Description", "Owner Id", "Owner", "Focus group", "Entries", "Status", "Last modifed", "Download", "Share" };
 		boolean headerSortable[] = {true, true, true, true, true, true, true, true, true, false, false };
 		int colNum = headerTitles.length;
 		HeaderItem[] tableHeader = new HeaderItem[colNum];
@@ -135,8 +135,11 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
     // 13 - share (not an database column)
     //////////////////////////////////////////
     public void convertCollectionsRowToDataItemFormat (DataItem[] formatedRow, String[] row) {
-        formatedRow[0] = new DataItem(row[0]);
-    	formatedRow[1] = new DataItem(row[1], "Click to view collection", "collection_browse.html?collectionId="+row[0]+"&collectionType="+String.valueOf(collectionType)+"&focusGroup="+row[10], 10);
+    	//make the ID col =1
+    	formatedRow[0] = new DataItem(row[1], "Click to view collection", "collection_browse.html?collectionId="+row[0]+"&collectionType="+String.valueOf(collectionType)+"&focusGroup="+row[10], 10);
+    	formatedRow[1] = new DataItem(row[0]);
+        /*formatedRow[0] = new DataItem(row[0]);
+    	formatedRow[1] = new DataItem(row[1], "Click to view collection", "collection_browse.html?collectionId="+row[0]+"&collectionType="+String.valueOf(collectionType)+"&focusGroup="+row[10], 10);*/
         formatedRow[2] = new DataItem(row[2]);
         formatedRow[3] = new DataItem(row[3]);
         formatedRow[4] = (Integer.parseInt(row[3])==userId) ? new DataItem("own"):new DataItem(row[4]);

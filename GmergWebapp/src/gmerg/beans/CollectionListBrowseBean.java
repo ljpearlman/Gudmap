@@ -65,8 +65,8 @@ public class CollectionListBrowseBean {
 	    GenericTableView tableView = new GenericTableView (viewName, 20, table);
 		tableView.setRowsSelectable();
 		tableView.setCollectionBottons(0);
-//		tableView.setColVisible(new boolean[]{true, true, true, true, true, true, true, true, true, true, true});
-		tableView.setColHidden(0, true); // Hide Id column from display 
+		//tableView.setColHidden(0, true); // Hide Id column from display 
+		tableView.setColHidden(1, true); // Hide Id column from display DEREK
 		tableView.setColHidden(3, true); // Hide OwnerId column from display 
 		tableView.setDisplayTotals(false);
 		tableView.setColVisible(10, false);

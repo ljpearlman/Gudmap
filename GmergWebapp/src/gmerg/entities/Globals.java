@@ -137,10 +137,10 @@ public class Globals {
     }//end class CollectionCategory
     
     private static final CollectionAttribute[] entriesCollectionAttributes = {
-	new CollectionAttribute(0, "Ids", false), 
-	new CollectionAttribute(1, "Genes", false)};
-    /*new CollectionAttribute(1, "Ids", false), 
-	new CollectionAttribute(0, "Genes", false)};*/
+	/*new CollectionAttribute(0, "Ids", false), 
+	new CollectionAttribute(1, "Genes", false)};*/
+    new CollectionAttribute(1, "Ids", false), 
+	new CollectionAttribute(0, "Genes", false)};//derek
     
     private static final CollectionCategory[] collectionCategories = {
 	new CollectionCategory("Entries", entriesCollectionAttributes), 
@@ -217,19 +217,19 @@ public class Globals {
 	
 	return getCollectionBrowseHelper(collectionItemsIds, collectionType, "3_2");
     }
-    
-    /*public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType, String masterTableId) {
+    //DEREK
+    public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType, String masterTableId) {
 		switch (collectionType) {
 		case 0:	return new EntriesCollectionBrowseHelper(collectionItemsIds, 0, "collectionIds", 1);
-		case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneSymbols", 0);
-		case 2:	return new ImagesCollectionBrowseHelper(collectionItemsIds, 2, "imageIds", 0);
-		case 3:	return new ProbesCollectionBrowseHelper("GPL1261", masterTableId, collectionItemsIds, 3, "probeIds", 0); 
-		case 4:	return new ProbesCollectionBrowseHelper("GPL6246", masterTableId, collectionItemsIds, 4, "probeIds", 0);
+		case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneSymbols", 1);
+		case 2:	return new ImagesCollectionBrowseHelper(collectionItemsIds, 2, "imageIds", 1);
+		case 3:	return new ProbesCollectionBrowseHelper("GPL1261", masterTableId, collectionItemsIds, 3, "probeIds", 1); 
+		case 4:	return new ProbesCollectionBrowseHelper("GPL6246", masterTableId, collectionItemsIds, 4, "probeIds", 1);
 		}	
 		return null;
-    }*/
-    
-    public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType, String masterTableId) {
+    }
+    // The 4th parameter is the IDcol from which the selections are made 
+    /*public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType, String masterTableId) {
 		switch (collectionType) {
 		case 0:	return new EntriesCollectionBrowseHelper(collectionItemsIds, 0, "collectionIds", 0);
 		case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneSymbols", 0);
@@ -238,7 +238,7 @@ public class Globals {
 		case 4:	return new ProbesCollectionBrowseHelper("GPL6246", masterTableId, collectionItemsIds, 4, "probeIds", 0);
 		}	
 		return null;
-    }
+    }*/
     
     //************************************************************************
 	private static final String[] focusGroups = {	

@@ -145,7 +145,7 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		String order = (ascending == true ? "ASC" : "DESC");
 		
 		// start to translate
-		if (columnIndex == 1) { // name
+		if (columnIndex == 0) { // name DEREK WAS 1
 			column += defaultOrder + order;
 		} else if (columnIndex == 2) { // description
 			column = "CLN_DESCRIPTION " + order + ", " + defaultOrder;

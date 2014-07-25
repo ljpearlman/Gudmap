@@ -8,7 +8,7 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.*;
 
 public class CollectionOperationBrowseBean extends CollectionOperationBrowseParentBean{
-    protected boolean debug = false;
+    protected boolean debug = true;
 
     private String[] selectedIds;	// it has to be accesed using a lazy getter because of multiple populate tableViews when operation is difference
 	
