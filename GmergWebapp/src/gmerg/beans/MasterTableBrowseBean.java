@@ -25,7 +25,7 @@ import gmerg.utils.Visit;
  * 
 */
 public class MasterTableBrowseBean {
-    static private boolean debug = false;
+    static private boolean debug = true;
 
 	private String genelistId;
 	private String geneSymbol;
@@ -70,7 +70,7 @@ public class MasterTableBrowseBean {
 			return false;
 		}
 	                public void print() {
-			    System.out.println("selected = "+selected);
+			    System.out.println("MasterTableBrowseBean::selected= "+selected);
 			    if (null != info)
 				info.print();
 	               }
@@ -83,7 +83,7 @@ public class MasterTableBrowseBean {
 	
 	public MasterTableBrowseBean (){
 		if (debug)
-		    System.out.println("-------In MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol);
+		    System.out.println("MasterTableBrowseBean::constructor | genelistId="+genelistId+" | gene=="+geneSymbol);
 
 		try {
 		    init();
@@ -104,7 +104,7 @@ public class MasterTableBrowseBean {
 		    if (null != masterTables)
 			iSize = masterTables.length;
 		    for(i=0; i<iSize; i++) {
-			System.out.println(i+"th master table Id = "+ masterTables[i].getId()+"  Title = "+ masterTables[i].getTitle());
+		    	System.out.println("MasterTableBrowseBean::init " + i+"th master table Id = "+ masterTables[i].getId()+"  Title = "+ masterTables[i].getTitle());
 		    }
 		}
 
@@ -186,14 +186,14 @@ public class MasterTableBrowseBean {
 						
 		initialseTables(null);
 		if (debug) {
-		    System.out.println("-------End MasterTableBrowseBean constructor.   genelistId==="+genelistId+"   gene=="+geneSymbol+" displayTreeView = "+displayTreeView+" tableTitle="+tableTitle+" viewMode="+viewMode);
+		    System.out.println("End MasterTableBrowseBean::constructor. | genelistId="+genelistId+" | gene="+geneSymbol+" | displayTreeView= "+displayTreeView+" | tableTitle="+tableTitle+" | viewMode="+viewMode);
 		    iSize = 0;
 		    if (null != allMasterTables)
 		    	iSize = allMasterTables.size();
 		    MasterTableDisplayInfo item = null;
 		    for (i = 0; i < iSize; i++) {
 		    	item = (MasterTableDisplayInfo)allMasterTables.get(i);
-		    	System.out.println(i+"th MasterTableDisplayInfo");
+		    	System.out.println("MasterTableBrowseBean::constructor2 | "+i+"th MasterTableDisplayInfo");
 		    	item.print();
 		    }
 		}
@@ -235,7 +235,7 @@ public class MasterTableBrowseBean {
 	
 	private void initialseTables(String available) {
 	    if (debug)
-	    	System.out.println("MasterTableBrowseBean:initialseTables.   available ="+available);
+	    	System.out.println("MasterTableBrowseBean::initialseTables. | available ="+available);
 	    
 		String selectionString = getSelectionsString();
 		
@@ -246,7 +246,7 @@ public class MasterTableBrowseBean {
 		GenericTableView tableView = null;
 
 		if (debug) {
-		    System.out.println("MasterTableBrowseBean:initialseTables.   allMasterTables size = "+iSize+" selectionString = "+selectionString);
+		    System.out.println("MasterTableBrowseBean::initialseTables. | allMasterTables size= "+iSize+" | selectionString = "+selectionString);
 		    displayMasterTableInfo();
 		}
 		for(i=0; i<iSize; i++) {
@@ -270,7 +270,7 @@ public class MasterTableBrowseBean {
 	
 	private GenericTableView populateGenelistTableView(String viewName, String masterTableId) {
 	    if (debug)
-	    	System.out.println("===MasterTableBrowseBean===populateGenelistTableView = " + viewName + " " + masterTableId);
+	    	System.out.println("MasterTableBrowseBean::populateGenelistTableVie = " + viewName + " | " + masterTableId);
 		HashMap<String, Object> queryParams = new HashMap<String, Object>();
 		String platformId = DbUtility.getMasterTablePlatformId(masterTableId);
 		ArrayList<String> probeIds = new ArrayList<String>();

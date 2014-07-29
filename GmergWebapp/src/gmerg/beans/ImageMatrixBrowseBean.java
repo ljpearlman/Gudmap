@@ -36,7 +36,8 @@ public class ImageMatrixBrowseBean {
 		GenericTableView tableView = new GenericTableView (viewName, 10, table);
 		tableView.setCellsSelectable();
 		tableView.setCollectionBottons(1);
-		tableView.addCollection(2, 0);
+		//tableView.addCollection(2, 0);
+		tableView.addCollection(2, 4);//DEREK
 		tableView.setDisplayTotals(false);
 		tableView.setVerticalAlign(1);
 		

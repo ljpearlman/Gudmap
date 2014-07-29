@@ -13,6 +13,7 @@ public class ImageInfo {
 	protected String serialNo;
 	protected String note;
 	protected String assayType;
+	protected String unique_image;
 
 	public void print() {
 		System.out.println(" accessionId = "+ accessionId);
@@ -23,6 +24,7 @@ public class ImageInfo {
 		System.out.println(" serialNo = "+serialNo);
 		System.out.println(" note = "+note);
 		System.out.println(" assayType = "+assayType);
+		System.out.println(" unique_image = "+unique_image);
 	}
 
     public String getAccessionId() {
@@ -118,6 +120,14 @@ public class ImageInfo {
       public void setAssayType(String input) {
     	  assayType = input;
 	  }
+      
+      public String getUniqeImage() {
+  		return unique_image;
+        }
+
+        public void setUniqueImage(String input) {
+        	unique_image = input;
+  	  }
 
 	  
 }

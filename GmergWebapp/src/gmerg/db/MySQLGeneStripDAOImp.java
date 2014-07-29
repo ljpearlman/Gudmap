@@ -280,7 +280,7 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 			    img.setSpecimenType(resSet.getString(3));
 			    img.setFilePath(resSet.getString(4));
 			    img.setClickFilePath(resSet.getString(5));
-	
+			    img.setUniqueImage(resSet.getString(6));//DEREK
 	
 				if (tempSubmissionId == null || !submissionId.equals(tempSubmissionId)) { // its first record or a new submission
 				    tempSubmissionId = submissionId;

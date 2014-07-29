@@ -996,6 +996,7 @@ protected ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype
 		ParamQuery parQ = InsituDBQuery.getParamQuery("GET_RELEVANT_IMAGE_IDS");
 		String queryString = parQ.getQuerySQL();
 		String imageIdString = DBHelper.convertItemsFromArrayListToString(candidateImageIds);
+		//String imageIdString = convertAccessionToImageId(candidateImageIds); //DEREK
 		queryString = queryString.replace("CONCAT(SUB_OID, '_', IMG_FILENAME) IN", 
 				"CONCAT(SUB_OID, '_', IMG_FILENAME) IN (" +imageIdString + ")");
 		int subStatus = DBHelper.getSubStatusByPrivilege(userPrivilege);
@@ -1026,6 +1027,19 @@ protected ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype
 			DBHelper.closePreparedStatement(prepStmt);
 			DBHelper.closeResultSet(resSet);
 		}
+	}
+    
+    public  String convertAccessionToImageId(ArrayList itemList) {
+		if (itemList == null || itemList.size() == 0) {
+			return null;
+		}
+		int len = itemList.size();
+		String result = "'";
+		for (int i=0;i<len;i++) {
+			result += itemList.get(i).toString().substring(8) + "', '";
+		}
+		result = result.substring(0, result.length()-3);
+		return result;
 	}
     
 }

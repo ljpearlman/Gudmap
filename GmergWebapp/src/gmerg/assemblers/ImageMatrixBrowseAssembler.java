@@ -47,6 +47,7 @@ public class ImageMatrixBrowseAssembler extends OffMemoryCollectionAssembler {
 		String submissionId = null;
 		String stage = null;
 		String serialNumber = null;
+	    String uniqueImage = null;//DEREK
 		
 		for (int i=0; i<numRows; i++)  
 		    for (int j=0, col=0; j<imageData.size(); j++) {
@@ -62,6 +63,7 @@ public class ImageMatrixBrowseAssembler extends OffMemoryCollectionAssembler {
 				    submissionId = imageInfoItem.getAccessionId();
 				    stage = imageInfoItem.getStage();
 				    serialNumber = imageInfoItem.getSerialNo();
+				    uniqueImage = imageInfoItem.getUniqeImage();//derek
 		
 				    if (debug) {
 				    	System.out.println("submissionId=" +submissionId+" imageUrl = "+imageInfoItem.getFilePath()+" stage = "+stage+" clickUrl = "+imageInfoItem.getClickFilePath());
@@ -72,6 +74,7 @@ public class ImageMatrixBrowseAssembler extends OffMemoryCollectionAssembler {
 				    complexValue.add(new DataItem(stage,"", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+stage.toLowerCase()+"definition.html", 3));  // stage
 				    DataItem zoomViewerItem = new DataItem(imageInfoItem.getFilePath(), "Click to open in the zoom viewer", imageInfoItem.getClickFilePath(), 14);
 				    complexValue.add(zoomViewerItem);  // zoom viewer
+				    complexValue.add(new DataItem(uniqueImage, -1));//DEREK
 				    dataItems[i][col] = new DataItem(complexValue, 80);
 				}
 				col++;
