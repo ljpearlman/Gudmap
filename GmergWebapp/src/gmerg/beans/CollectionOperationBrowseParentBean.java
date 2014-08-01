@@ -58,13 +58,30 @@ abstract public class CollectionOperationBrowseParentBean {
 */		TableUtil.saveTableView(tableView);
 	}
 	
-	protected GenericTableView populateCollectionOperationTableView(String viewName, String resultId) {
+	/*protected GenericTableView populateCollectionOperationTableView(String viewName, String resultId) {
 	    if (debug)
 	    System.out.println("CollectionOperationBrowseParentBean.populateCollectionOperationTableView  viewName = "+viewName+" resultId = "+resultId+" collectionType = "+collectionType);
 		CollectionBrowseHelper collectionBrowseHelper = Globals.getCollectionBrowseHelper(null, collectionType);
 		if (collectionBrowseHelper==null)
 			return null;
 		int idCol = collectionBrowseHelper.getCollectionTableViewIdCol();
+		ArrayList<String> collectionItemsIds = getCollectionIds(idCol, resultId);
+		if (debug) 
+		    System.out.println("CollectionOperationBrowseParentBean.populateCollectionOperationTableView  idCol = "+idCol+" resultId = "+resultId+" collectionItemsIds = "+collectionItemsIds);
+
+		collectionBrowseHelper.setCollectionItemsIds(collectionItemsIds);
+		GenericTableView tableView = collectionBrowseHelper.getCollectionTableView(viewName);
+		return  tableView;
+	}*/
+	
+	protected GenericTableView populateCollectionOperationTableView(String viewName, String resultId, boolean collectionVsCookies) {
+	    if (debug)
+	    System.out.println("CollectionOperationBrowseParentBean.populateCollectionOperationTableView  viewName = "+viewName+" resultId = "+resultId+" collectionType = "+collectionType);
+		CollectionBrowseHelper collectionBrowseHelper = Globals.getCollectionBrowseHelper(null, collectionType);
+		if (collectionBrowseHelper==null)
+			return null;
+		int idCol = collectionBrowseHelper.getCollectionTableViewIdCol();
+		/*int idCol = (collectionVsCookies)?1:collectionBrowseHelper.getCollectionTableViewIdCol();*/
 		ArrayList<String> collectionItemsIds = getCollectionIds(idCol, resultId);
 		if (debug) 
 		    System.out.println("CollectionOperationBrowseParentBean.populateCollectionOperationTableView  idCol = "+idCol+" resultId = "+resultId+" collectionItemsIds = "+collectionItemsIds);

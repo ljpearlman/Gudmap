@@ -250,7 +250,7 @@ public class CollectionBrowseBean {
 	
 	public String getCollectionName() {
 		if (isClipboard())
-			return " my " + Globals.getCollectionCategories()[collectionType].getCategory();
+			return " My " + Globals.getCollectionCategories()[collectionType].getCategory();
 		
 		return getCollectionInfo().getName();
 	}

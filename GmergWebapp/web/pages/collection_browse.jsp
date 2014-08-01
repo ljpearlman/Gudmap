@@ -48,7 +48,7 @@
 		</h:panelGroup>
 <%--  	
 		<h:panelGrid columns="2" columnClasses="plaintextbold, plaintext" rendered="#{CollectionBrowseBean.clipboard}" >
-			<h:outputText value="Display my: " />
+			<h:outputText value="Display My: " />
 			<h:selectOneMenu value="#{CollectionBrowseBean.collectionType}"
 							 onchange="getById('collectionBrowseForm:reload').onclick()">
 				<f:selectItems value="#{CollectionBrowseBean.collectionCategories}" />
@@ -187,7 +187,7 @@
 			</h:panelGrid>
 		</h:panelGrid>
 	
-		<h:panelGrid columns="2" styleClass="header-stripey" width="100%" columnClasses="align-left,align-right" 
+		<%-- REMOVE DUPLICATION OF VIEW STORED COLLECTIONS <h:panelGrid columns="2" styleClass="header-stripey" width="100%" columnClasses="align-left,align-right" 
 					 rendered="#{UserBean.userLoggedIn && CollectionBrowseBean.clipboard}">
 			<h:commandLink id="saveCollection" action="#{CollectionBrowseBean.saveCollection}" styleClass="plaintextbold">
 				<h:outputText value="Store #{CollectionBrowseBean.collectionName} in database" />
@@ -195,9 +195,17 @@
 			</h:commandLink>
 			<h:panelGrid styleClass="rightAlign" >
 				<h:outputLink value="collectionList_browse.html" styleClass="plaintextbold" >
-					<h:outputText value="View stored collections" />
+					<h:outputText value="View stored collectionsssss" />
 				</h:outputLink>
 			</h:panelGrid>
+		</h:panelGrid>	 --%>
+		
+		<h:panelGrid columns="1" styleClass="header-stripey" width="100%" columnClasses="align-left,align-right" 
+					 rendered="#{UserBean.userLoggedIn && CollectionBrowseBean.clipboard}">
+			<h:commandLink id="saveCollection" action="#{CollectionBrowseBean.saveCollection}" styleClass="plaintextbold">
+				<h:outputText value="Store #{CollectionBrowseBean.collectionName} in database" />
+				<f:param name="actionMethodCalled" value="true" />
+			</h:commandLink>
 		</h:panelGrid>	
 
 	</h:form>

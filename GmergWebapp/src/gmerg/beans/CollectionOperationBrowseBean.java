@@ -109,7 +109,8 @@ public class CollectionOperationBrowseBean extends CollectionOperationBrowsePare
 	}
 
 	protected GenericTableView populateCollectionOperationTableView(String viewName, String resultId) {
-		GenericTableView tableView = super.populateCollectionOperationTableView(viewName, resultId);
+		/*GenericTableView tableView = super.populateCollectionOperationTableView(viewName, resultId);*/
+		GenericTableView tableView = super.populateCollectionOperationTableView(viewName, resultId, false);
 		tableView.setCollectionBottons(3); 
 		return  tableView;
 	}

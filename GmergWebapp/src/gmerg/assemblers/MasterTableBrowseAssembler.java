@@ -134,7 +134,7 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 	 */
 	public HeaderItem[] createHeader() {
 	    if (debug)
-		System.out.println("MasterTableBrowseAssembler - createHeader");
+	    	System.out.println("MasterTableBrowseAssembler - createHeader");
 	    /* annotationTitles is "Gene Symbol", "Probe Seq ID", "MGI Gene ID", 
 	       "Entrez Gene ID", "Human Ortholog Symbol", "Human Ortholog Entez ID" from
 	       retrieveAnnotaionTitles
@@ -156,8 +156,8 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 			title = (expressionTitles[i].getDescription() + "_" + expressionTitles[i].getTitle()).replaceAll("\\s", ""); // used for vertical image title display
 
 			item  = new HeaderItem(screenTip, false, 1, "../dynamicImages/title_"+title + ".jpg?masterTable=");
-			if (debug)
-			    System.out.println("MasterTableBrowseAssembler.createHeader title = "+item.getTitle()+" image name = "+item.getImageName());
+			//if (debug)
+			   // System.out.println("MasterTableBrowseAssembler.createHeader title = "+item.getTitle()+" image name = "+item.getImageName());
 
 			headers[i+offset] = item;
 		}
@@ -206,8 +206,8 @@ public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
 		for(int row=0; row<rowNum; row++) {
 		    if (debug)
 		    	System.out.println("MasterTableBrowseAssembler - getTableDataFormatFromMastertableData row = "+row);
-if (row == 74)
-	System.out.println(" row = "+row);
+			if (row == 74)
+				System.out.println(" row = "+row);
 		    col=0;		
 			probeID = onePageIds.get(row);
 			tableData[row][col++] = new DataItem(probeID); //Probe ID
@@ -249,7 +249,7 @@ if (row == 74)
 		    	System.out.println("MasterTableBrowseAssembler - getTableDataFormatFromMastertableData  exit row = "+row);
 		}
 		
-		if (debug) {
+		/*if (debug) {
 		    iSize = tableData.length;
 		    i = 0;
 		    int jSize = 0;
@@ -260,7 +260,7 @@ if (row == 74)
 			    if (null != tableData[i][j])
 				System.out.println("MasterTableBrowseAssembler.getTableDataFormatFromMastertableData tableData ("+i+", "+j+") = "+tableData[i][j].getValue());
 		    }
-		}
+		}*/
 		return tableData;
 	}
 

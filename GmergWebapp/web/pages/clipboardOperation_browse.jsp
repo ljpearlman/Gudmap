@@ -5,7 +5,7 @@
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 
-	<h:outputText value="#{ClipboardOperationBrowseBean.operation} with my #{ClipboardOperationBrowseBean.clipboardName}" styleClass="plaintextbold" />
+	<h:outputText value="#{ClipboardOperationBrowseBean.operation} with My #{ClipboardOperationBrowseBean.clipboardName}" styleClass="plaintextbold" />
 	
 	<f:subview id="clipboardOperationBrowse">
 		<jsp:include page="../includes/browse_table.jsp" />

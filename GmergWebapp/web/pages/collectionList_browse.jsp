@@ -75,7 +75,7 @@
 
 			<h:outputLink id="viewClipboard" styleClass="plaintextbold" 
 						  value="collection_browse.html?collectionId=clipboard&collectionType=#{CollectionListBrowseBean.collectionType}">
-				<h:outputText value="View my selections" />
+				<h:outputText value="View My selections" />
 			</h:outputLink>
 			<h:panelGroup>
 				<h:outputLink id="getDifference" styleClass="plaintextbold" 

@@ -99,14 +99,14 @@ public class MasterTableBrowseBean {
 		displayTreeView = false;
 		viewMode = "0";
 		MasterTableInfo[] masterTables = DbUtility.getAllMasterTablesInfo();
-		if (debug) {
+		/*if (debug) {
 		    iSize = 0;
 		    if (null != masterTables)
 			iSize = masterTables.length;
 		    for(i=0; i<iSize; i++) {
 		    	System.out.println("MasterTableBrowseBean::init " + i+"th master table Id = "+ masterTables[i].getId()+"  Title = "+ masterTables[i].getTitle());
 		    }
-		}
+		}*/
 
 		    
 		allMasterTables = new ArrayList<MasterTableDisplayInfo>();
@@ -185,7 +185,7 @@ public class MasterTableBrowseBean {
 		updateSelectedItems();	
 						
 		initialseTables(null);
-		if (debug) {
+		/*if (debug) {
 		    System.out.println("End MasterTableBrowseBean::constructor. | genelistId="+genelistId+" | gene="+geneSymbol+" | displayTreeView= "+displayTreeView+" | tableTitle="+tableTitle+" | viewMode="+viewMode);
 		    iSize = 0;
 		    if (null != allMasterTables)
@@ -196,7 +196,7 @@ public class MasterTableBrowseBean {
 		    	System.out.println("MasterTableBrowseBean::constructor2 | "+i+"th MasterTableDisplayInfo");
 		    	item.print();
 		    }
-		}
+		}*/
 	}
 
 	// ********************************************************************************
