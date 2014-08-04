@@ -20,7 +20,7 @@ import gmerg.utils.Visit;
  */
 
 public class TableUtil {
-    static boolean debug = true;
+    static boolean debug = false;
 
 	static final protected String distinguishingParam = "tableViewName";
 	

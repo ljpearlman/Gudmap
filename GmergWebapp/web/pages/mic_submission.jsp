@@ -92,10 +92,20 @@
         </h:panelGrid>
 		
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty MicroarraySingleSubmissionBean.submission.archiveId}">
-			<h:outputText value="Archive/Batch ID"/>
-			<%-- <h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{MicroarraySingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{MicroarraySingleSubmissionBean.submission.archiveId != null}">
-				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.archiveId}" />
-			</h:outputLink> --%>
+			
+			<h:outputText value="Archive ID:" styleClass="plaintext"     rendered="#{MicroarraySingleSubmissionBean.submission.archiveId > 0}"/>
+			<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{MicroarraySingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{MicroarraySingleSubmissionBean.submission.archiveId > 0}">
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.archiveId}"    rendered="#{MicroarraySingleSubmissionBean.submission.archiveId > 0}"/>
+			</h:outputLink>
+		</h:panelGrid>
+		<h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty MicroarraySingleSubmissionBean.submission.batchId}">
+			
+			<h:outputText value="Batch ID:" styleClass="plaintext"  rendered="#{MicroarraySingleSubmissionBean.submission.batchId > 0}"/>
+			<h:outputLink value="/gudmap/pages/focus_mic_browse.html?batchId=#{MicroarraySingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{MicroarraySingleSubmissionBean.submission.batchId > 0}">
+				<h:outputText value="#{MicroarraySingleSubmissionBean.submission.batchId}"  rendered="#{MicroarraySingleSubmissionBean.submission.batchId > 0}"/>
+			</h:outputLink>
+			
+			<%-- <h:outputText value="Archive/Batch ID"/>
 			<h:panelGrid columns="3">
 				<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{MicroarraySingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{MicroarraySingleSubmissionBean.submission.archiveId > 0}">
 					<h:outputText value="#{MicroarraySingleSubmissionBean.submission.archiveId}"  rendered="#{MicroarraySingleSubmissionBean.submission.archiveId > 0}"/>
@@ -104,7 +114,7 @@
 				<h:outputLink value="/gudmap/pages/focus_mic_browse.html?batchId=#{MicroarraySingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{MicroarraySingleSubmissionBean.submission.batchId > 0}">
 					<h:outputText value="#{MicroarraySingleSubmissionBean.submission.batchId}"  rendered="#{MicroarraySingleSubmissionBean.submission.batchId > 0}"/>
 				</h:outputLink>
-			</h:panelGrid>
+			</h:panelGrid> --%>
         </h:panelGrid>
 		
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">

@@ -23,7 +23,7 @@ import java.util.HashMap;
  *
  */
 public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembler {
-    private boolean debug = true;
+    private boolean debug = false;
     protected RetrieveDataCache cache = null;
 
 

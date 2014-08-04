@@ -11,6 +11,7 @@ public class CollectionOperationBrowseBean extends CollectionOperationBrowsePare
     protected boolean debug = true;
 
     private String[] selectedIds;	// it has to be accesed using a lazy getter because of multiple populate tableViews when operation is difference
+    private boolean tab1,tab2,tab3,tab4;
 	
 	// ********************************************************************************
 	// Constructors & Initializers
@@ -153,6 +154,17 @@ public class CollectionOperationBrowseBean extends CollectionOperationBrowsePare
 	public boolean getSetViewNameSecondSet() {	// Dumy method to set tableViewName parameter. It is a work around for jsp:param in jsf1.2 
 		TableUtil.setTableViewNameParam("collectionOperationDifferenceSecondSet"); 
 		return false;
+	}
+	
+	public void controlTab1 () {
+		tab1=true;
+		tab2=false;
+		tab3=false;
+		tab4=false;
+		if(debug){
+			System.out.println("CollectionOperationBrowseBean::setOutControlTab1 | tab1="+tab1+" |tab2="+tab2);
+		}
+		
 	}
 
 }

@@ -11,8 +11,17 @@
 		<h:outputLink value="http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc=#{NGDSeriesBean.series.geoID}" target="gmerg_external" styleClass="plaintext" rendered="#{not empty NGDSeriesBean.series.geoID}">
 			<h:outputText value="#{NGDSeriesBean.series.geoID}" rendered="#{not empty NGDSeriesBean.series.geoID}"/>
 		</h:outputLink>
+		
+		<h:outputText value="Archive ID:" styleClass="plaintext"     rendered="#{NGDSeriesBean.series.archiveId > 0}"/>
+		<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{NGDSeriesBean.series.archiveId}" styleClass="plaintext" rendered="#{NGDSeriesBean.series.archiveId > 0}">
+			<h:outputText value="#{NGDSeriesBean.series.archiveId}"    rendered="#{NGDSeriesBean.series.archiveId > 0}"/>
+		</h:outputLink>
+		<h:outputText value="Batch ID:" styleClass="plaintext"  rendered="#{NGDSeriesBean.series.batchId > 0}"/>
+		<h:outputLink value="/gudmap/pages/focus_ngd_browse.html?batchId=#{NGDSeriesBean.series.batchId}" styleClass="plaintext" rendered="#{NGDSeriesBean.series.batchId > 0}">
+			<h:outputText value="#{NGDSeriesBean.series.batchId}"  rendered="#{NGDSeriesBean.series.batchId > 0}"/>
+		</h:outputLink>
 
-		<h:outputText value="Archive/Batch ID:" styleClass="plaintext" />
+		<%-- <h:outputText value="Archive/Batch ID:" styleClass="plaintext" />
 		<h:panelGrid columns="3" >
 		<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{NGDSeriesBean.series.archiveId}" styleClass="plaintext" rendered="#{NGDSeriesBean.series.archiveId > 0}">
 			<h:outputText value="#{NGDSeriesBean.series.archiveId}"    rendered="#{NGDSeriesBean.series.archiveId > 0}"/>
@@ -21,7 +30,7 @@
 		<h:outputLink value="/gudmap/pages/focus_ngd_browse.html?batchId=#{NGDSeriesBean.series.batchId}" styleClass="plaintext" rendered="#{NGDSeriesBean.series.batchId > 0}">
 			<h:outputText value="#{NGDSeriesBean.series.batchId}"  rendered="#{NGDSeriesBean.series.batchId > 0}"/>
 		</h:outputLink>
-		</h:panelGrid>
+		</h:panelGrid> --%>
 
 		<h:outputText styleClass="plaintext" value="Number of Samples:" />
 		<h:outputText styleClass="datatext" value="#{NGDSeriesBean.series.numSamples} samples" />

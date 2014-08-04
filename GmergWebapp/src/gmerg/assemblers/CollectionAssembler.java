@@ -24,7 +24,7 @@ import java.util.Set;
 public class CollectionAssembler { //Singleton 
 		   
 	static private CollectionAssembler _instance = null;
-    private boolean debug = true;
+    private boolean debug = false;
 
 	protected CollectionAssembler() {
 	if (debug)

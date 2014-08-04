@@ -6,7 +6,8 @@
 
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
-	<h:outputText value="" />
+
+	<h:outputText value=" Note: Changing the column selection will default back to the first tab (A-B)" style="font-style:italic;font-size:0.8em;"/>
 	<h:panelGrid columns="2" columnClasses="plaintextbold, plaintext" > 
 		<h:outputText value="Compare two collections:" />
 		<h:outputText value="#{CollectionOperationBrowseBean.collectionNames}" escape="false"/>
@@ -14,7 +15,7 @@
 	<rich:tabPanel switchType="client" activeTabClass="header-stripey" tabClass="header-stripey">
 		<rich:tab label="A - B" >
 			<f:subview id="collectionDifferenceBrowse1">
-				<h:outputText value="" rendered="#{CollectionOperationBrowseBean.setViewNameDifference1}" />
+				<h:outputText value="" rendered="#{CollectionOperationBrowseBean.setViewNameDifference1}"  />
 				<jsp:include page="../includes/browse_table.jsp" />
 			</f:subview>
 		</rich:tab>

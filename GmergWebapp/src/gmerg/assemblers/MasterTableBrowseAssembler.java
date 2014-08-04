@@ -31,7 +31,7 @@ import gmerg.utils.table.OffMemoryCollectionAssembler;
  *
  */
 public class MasterTableBrowseAssembler extends OffMemoryCollectionAssembler {
-    protected boolean debug = true;
+    protected boolean debug = false;
 
     // due to JSP life cycle, fail to stop retrive data twice
     // so use cache to avoid DB access twice

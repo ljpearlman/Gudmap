@@ -8,7 +8,7 @@ import gmerg.utils.Visit;
 import gmerg.utils.table.*;
 
 abstract public class CollectionOperationBrowseParentBean {
-    protected boolean debug = true;
+    protected boolean debug = false;
 
     protected int collectionType;
     protected String collectionOperation;

@@ -23,7 +23,7 @@ import gmerg.utils.Utility;
 
 public class TableBean extends MultipleInstanceBean {
 	
-	private boolean debug = true;
+	private boolean debug = false;
 
 	protected DataModel data = null;
 

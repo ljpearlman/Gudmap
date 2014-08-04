@@ -89,25 +89,30 @@
         </h:panelGrid>
  		
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty NGDSingleSubmissionBean.submission.archiveId}">
-			<h:outputText value="Archive / Batch ID"/>
-			<%-- <h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{NGDSingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{NGDSingleSubmissionBean.submission.archiveId != null}">
-				<h:outputText value="#{NGDSingleSubmissionBean.submission.archiveId}" />
-			</h:outputLink> --%>
+			
+			<h:outputText value="Archive ID:" styleClass="plaintext"     rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}"/>
+			<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{NGDSingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}">
+				<h:outputText value="#{NGDSingleSubmissionBean.submission.archiveId}"    rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}"/>
+			</h:outputLink>
+		</h:panelGrid>
+		<h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty NGDSingleSubmissionBean.submission.batchId}">
+			<h:outputText value="Batch ID:" styleClass="plaintext"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}"/>
+			<h:outputLink value="/gudmap/pages/focus_ngd_browse.html?batchId=#{NGDSingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}">
+				<h:outputText value="#{NGDSingleSubmissionBean.submission.batchId}"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}"/>
+			</h:outputLink>
+			
+			<%-- <h:outputText value="Archive / Batch ID"/>
 			<h:panelGrid columns="3">
 				<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{NGDSingleSubmissionBean.submission.archiveId}" styleClass="plaintext"  rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}">
 					<h:outputText value="#{NGDSingleSubmissionBean.submission.archiveId}"   rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}"/>
-				</h:outputLink>
-				
-				<h:outputText value="- "   rendered="#{NGDSingleSubmissionBean.submission.archiveId == 0}"/>
-				
-				
+				</h:outputLink>				
+				<h:outputText value="- "   rendered="#{NGDSingleSubmissionBean.submission.archiveId == 0}"/>				
 				<h:outputText value="/"/>
 				<h:outputLink value="/gudmap/pages/focus_ngd_browse.html?batchId=#{NGDSingleSubmissionBean.submission.batchId}" styleClass="plaintext"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}">
 					<h:outputText value="#{NGDSingleSubmissionBean.submission.batchId}"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}"/>
-				</h:outputLink>
-				
+				</h:outputLink>				
 				<h:outputText value=" -"  rendered="#{NGDSingleSubmissionBean.submission.batchId == 0}"/>
-			</h:panelGrid>
+			</h:panelGrid> --%>
         </h:panelGrid>
 		
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
