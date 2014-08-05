@@ -32,8 +32,8 @@
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
         	<h:outputText value="External/Internal Links: " />
         	<h:panelGrid columns="1" columnClasses="plaintext, datatext">    
-	    	    <h:outputLink styleClass="datatext" value="http://www.gudmap.org/Internal/Consortium/Work_In_Progress/nextgen.html">
-	    			<h:outputText value="IGV" />
+	    	    <h:outputLink styleClass="datatext" value="http://www.gudmap.org/Help/SeqData_Help.html">
+	    			<h:outputText value="View sequencing data on UCSC Genome Browser or IGV" />
 	    	    </h:outputLink>
 	    	    <%-- <h:outputLink styleClass="datatext" value="http://www.gudmap.org/">
 	    			<h:outputText value="UCSC" />
@@ -88,15 +88,15 @@
 			</h:panelGrid>	
         </h:panelGrid>
  		
-        <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty NGDSingleSubmissionBean.submission.archiveId}">
+        <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty NGDSingleSubmissionBean.submission.archiveId && NGDSingleSubmissionBean.submission.archiveId > 0}">
 			
-			<h:outputText value="Archive ID:" styleClass="plaintext"     rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}"/>
+			<h:outputText value="Archive ID:" rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}"/>
 			<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{NGDSingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}">
 				<h:outputText value="#{NGDSingleSubmissionBean.submission.archiveId}"    rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}"/>
 			</h:outputLink>
 		</h:panelGrid>
-		<h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty NGDSingleSubmissionBean.submission.batchId}">
-			<h:outputText value="Batch ID:" styleClass="plaintext"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}"/>
+		<h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty NGDSingleSubmissionBean.submission.batchId && NGDSingleSubmissionBean.submission.batchId > 0 }">
+			<h:outputText value="Batch ID:"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}"/>
 			<h:outputLink value="/gudmap/pages/focus_ngd_browse.html?batchId=#{NGDSingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}">
 				<h:outputText value="#{NGDSingleSubmissionBean.submission.batchId}"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}"/>
 			</h:outputLink>
@@ -325,6 +325,9 @@
 			
 			<h:outputText value="Format and Content:" rendered="#{not empty dp.formatContent}" />
 			<h:outputText value="#{dp.formatContent}" escape="false"  rendered="#{not empty dp.formatContent}"/>
+			
+			<h:outputText value="_________"/>
+			<h:outputText value=""/>
 		</h:panelGrid>
 		
 		</h:column>

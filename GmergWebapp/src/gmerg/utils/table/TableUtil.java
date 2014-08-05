@@ -270,7 +270,15 @@ public class TableUtil {
 						item = ((ArrayList<DataItem>)(item.getValue())).get(columnId + offset);
 					}
 				}
+				try
+				{
 				value = (String)item.getValue();
+				}
+				catch (ClassCastException e){
+					;
+				}
+				
+				
 				if (value!=null && !value.trim().equals(""))
 					selectedIds.add(value);
 			}

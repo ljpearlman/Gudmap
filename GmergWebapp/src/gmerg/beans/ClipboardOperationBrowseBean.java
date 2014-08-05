@@ -10,7 +10,7 @@ import gmerg.assemblers.CollectionAssembler;
 
 public class ClipboardOperationBrowseBean extends CollectionOperationBrowseParentBean {
     
-    protected boolean debug = false;
+    protected boolean debug = true;
 
 	// ********************************************************************************
 	// Constructors & Initializers
@@ -33,11 +33,10 @@ public class ClipboardOperationBrowseBean extends CollectionOperationBrowseParen
 		 
 	    if (debug)
 	    	System.out.println("ClipboradOperationBrowseBean::getCollectionIds | idCol= "+idCol+" | resultId= "+resultId+" | collectionType= "+collectionType);
-
 	  //Use this only for operations on non-stored collections. gets the ids of the entry/gene
 	    String[] selectedIds = TableUtil.getSelectedIdsForCollection(collectionType);  
 	  //Use this only for operations on db-stored collections. Gets the ids of the collections
-		String[] selectedColectionIds = TableUtil.getSelectedIds(idCol);
+	    String[] selectedColectionIds = TableUtil.getSelectedIds(idCol);
 
 		// convert collection id to union of element ids of collections DEREK - WHY IS IT GOING TO THE DB?
 		boolean ignoreCase = !Globals.getCollectionCategory(collectionType).isCaseSensitiveIds();
@@ -51,7 +50,7 @@ public class ClipboardOperationBrowseBean extends CollectionOperationBrowseParen
 		
 		List list = CollectionAssembler.instance().getUnionOfCollections(selectedColectionIds,  collectionType, ignoreCase);
 		
-		if (null == list)
+		if (null == list || list.isEmpty())
 		   // selectedIds = null;
 		;
 		else
