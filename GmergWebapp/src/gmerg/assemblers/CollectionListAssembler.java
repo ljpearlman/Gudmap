@@ -136,8 +136,8 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
     //////////////////////////////////////////
     public void convertCollectionsRowToDataItemFormat (DataItem[] formatedRow, String[] row) {
     	//make the ID col =1
-/*    	formatedRow[0] = new DataItem(row[1], "Click to view collection", "collection_browse.html?collectionId="+row[0]+"&collectionType="+String.valueOf(collectionType)+"&focusGroup="+row[10], 10);
-*/    	formatedRow[0] = new DataItem(row[1], "Click to view collection", "collection_browse.html?collectionId="+row[0]+"&collectionType="+String.valueOf(collectionType)+"&focusGroup="+row[10]+"&cleartabs=true", 10);
+    	formatedRow[0] = new DataItem(row[1], "Click to view collection", "collection_browse.html?collectionId="+row[0]+"&collectionType="+String.valueOf(collectionType)+"&focusGroup="+row[10], 10);
+    	//formatedRow[0] = new DataItem(row[1], "Click to view collection", "collection_browse.html?collectionId="+row[0]+"&collectionType="+String.valueOf(collectionType)+"&focusGroup="+row[10]+"&cleartabs=true", 10);
     	formatedRow[1] = new DataItem(row[0]);
         /*formatedRow[0] = new DataItem(row[0]);
     	formatedRow[1] = new DataItem(row[1], "Click to view collection", "collection_browse.html?collectionId="+row[0]+"&collectionType="+String.valueOf(collectionType)+"&focusGroup="+row[10], 10);*/

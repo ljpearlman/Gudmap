@@ -87,7 +87,8 @@ public class CollectionListBrowseBean {
 	}
 	
 	public String removeCollections() {
-		String[] selectedIds = TableUtil.getSelectedIds(0);
+		//String[] selectedIds = TableUtil.getSelectedIds(0);
+		String[] selectedIds = TableUtil.getSelectedIds(1);
 		String result = CollectionAssembler.instance().removeCollections(selectedIds, Utility.getUser().getUserId());
 		TableUtil.getTableViewFromSession().refreshTable();
 		if (result==null)

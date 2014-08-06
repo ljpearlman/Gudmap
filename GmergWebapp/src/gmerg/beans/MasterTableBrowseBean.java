@@ -181,7 +181,7 @@ public class MasterTableBrowseBean {
 			for (MasterTableDisplayInfo masterTableInfo : allMasterTables)
 				masterTableInfo.selected = true;
 
-		//clearSelectionsString();
+		clearSelectionsString();
 		updateSelectedItems();	
 						
 		initialseTables(null);
