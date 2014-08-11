@@ -82,9 +82,9 @@ public class NGDFocusBrowseBean {
 	public String getTitle() {
 		
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
-			return "Next Gen Sample Submissions" + this.getOrganTitle() + this.getStageTitle();
+			return "GUDMAP Sequencing Sample Submissions" + this.getOrganTitle() + this.getStageTitle();
 		}
 		else 
-			return "Next Gen Samples";
+			return "Sequencing Sample Submissions";
 	}
 }

@@ -62,7 +62,7 @@ public class NGDSeriesBrowseBean  {
 		
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
 			if (organ==null || "".equals(organ))
-				return "Gudmap Sequencing Series submissions";
+				return "GUDMAP Sequencing Series submissions";
 		
 			return "GUDMAP Sequencing Series submissions in <em>" + DatabaseHomepageBean.getOrganName(organ) + "</em>";
 		}
