@@ -250,8 +250,8 @@ public class MySQLIHCDAOImp implements IHCDAO {
 			
 		} else { // if don't specify order by column, order by gene symbol ascend by default
 //			queryString = query + " ORDER BY TRIM(RPR_SYMBOL)";
-//			queryString = query + organsql + defaultOrder+ ", SUB_EMBRYO_STG";
-			queryString = query;
+			queryString = query + organsql + defaultOrder+ ", SUB_EMBRYO_STG";//DEREK NEED TO ADD GROUP BY INTO QUERY
+			//queryString = query;
 		}
 		
         if (debug)
