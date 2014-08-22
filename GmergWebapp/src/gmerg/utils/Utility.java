@@ -37,6 +37,7 @@ import javax.faces.context.FacesContext;
 public class Utility {
     public static final String domainUrl="http://www.gudmap.org/";
     public static final String appUrl=domainUrl+"gudmap/";
+    public static final String applicationRoot="/gudmap/";
     
     /**
      * modified by xingjun - 27/04/2009 - changed link for several help pages

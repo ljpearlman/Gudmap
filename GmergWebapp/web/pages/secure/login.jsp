@@ -20,11 +20,18 @@
     </style>
 </head> --%>
 
+
+
 <f:view >
-	<jsp:include page="/includes/header.jsp">
+	<%-- <jsp:include page="/includes/header.jsp">
+		<jsp:param name="headerParam" value="onlyHeader" />
+		<jsp:param name="headerOnloadParam" value="setTimeout('resetLoginForm()', 20)" />
+	</jsp:include> --%>
+	<jsp:include page="header_ssl.jsp">
 		<jsp:param name="headerParam" value="onlyHeader" />
 		<jsp:param name="headerOnloadParam" value="setTimeout('resetLoginForm()', 20)" />
 	</jsp:include>
+	
 	<%-- JSF form can not be used because of autocomplete attribute; BUT a mixture of html form and jsf tags is problematic so I used jsf form and cleared all tags in the onload method --%>
 	<h:panelGroup>
 	<f:verbatim>
@@ -87,7 +94,7 @@ Please contact <a href="mailto:GUDMAP-EDITORS@gudmap.org">GUDMAP-EDITORS@gudmap.
 
     <p><strong><a href="http://www.gudmap.org/Help/Annotation_Tool_Help.html">Annotation Tool Help Pages</a></strong></p>
     </div> -->
-	<jsp:include page="/includes/footer.jsp" />
+	<%-- <jsp:include page="/includes/footer.jsp" /> --%>
 </f:view>
 	
 

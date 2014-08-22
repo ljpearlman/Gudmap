@@ -33,22 +33,22 @@
 	</style>
 	<![endif]-->
 
-	<script src="http://www.gudmap.org/Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
-	<script src="http://www.gudmap.org/Scripts/swfobject_modified.js" type="text/javascript"></script>
+	<script src="https://www.gudmap.org/Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
+	<script src="https://www.gudmap.org/Scripts/swfobject_modified.js" type="text/javascript"></script>
 
-	<script src="http://www.gudmap.org/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
-	<script src="http://www.gudmap.org/SpryAssets/SpryValidationSelect.js" type="text/javascript"></script>
+	<script src="https://www.gudmap.org/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
+	<script src="https://www.gudmap.org/SpryAssets/SpryValidationSelect.js" type="text/javascript"></script>
 
-	<link href="http://www.gudmap.org/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
-	<link href="http://www.gudmap.org/SpryAssets/SpryValidationSelect.css" rel="stylesheet" type="text/css" />
-	<link href="http://www.gudmap.org/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
+	<link href="https://www.gudmap.org/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
+	<link href="https://www.gudmap.org/SpryAssets/SpryValidationSelect.css" rel="stylesheet" type="text/css" />
+	<link href="https://www.gudmap.org/SpryAssets/SpryMenuBarHorizontal.css" rel="stylesheet" type="text/css" />
 	<link href="${pageContext.request.contextPath}/css/gudmap_css.css" type="text/css" rel="stylesheet" />
 	<link href="${pageContext.request.contextPath}/css/gudmap_customcomponents_css.css" type="text/css" rel="stylesheet" />
 	<link href="${pageContext.request.contextPath}/css/help.css" type="text/css" rel="stylesheet" />
 	<link href="${pageContext.request.contextPath}/css/gudmapmain_css.css" type="text/css" rel="stylesheet" />
 	<link href="${pageContext.request.contextPath}/css/TSContainer.css" type="text/css" rel="stylesheet" />
 	<link href="${pageContext.request.contextPath}/css/TSGlossary.css" type="text/css" rel="stylesheet" />
-	<link href="http://www.gudmap.org/Styles/main.css" type="text/css" rel="stylesheet" />
+	<link href="https://www.gudmap.org/Styles/main.css" type="text/css" rel="stylesheet" />
 	<link href="${pageContext.request.contextPath}/css/table_css.css" type="text/css" rel="stylesheet" />
 
 	<style type="text/css">
@@ -137,7 +137,7 @@
 									<tr>
 										<td>&nbsp;&nbsp;&nbsp;
 											<a href="http://www.gudmap.org/index.html">
-												<img src="http://www.gudmap.org/Images/Banner/logo.png" width="211" height="64" alt="GUDMAP Logo" style="border:0px" />
+												<img src="https://www.gudmap.org/Images/Banner/logo.png" width="211" height="64" alt="GUDMAP Logo" style="border:0px" />
 											</a>
 										</td>
 									</tr>

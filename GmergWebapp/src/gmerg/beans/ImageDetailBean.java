@@ -155,6 +155,8 @@ public class ImageDetailBean {
 	public String getViewerFrameSourceName() {
 		if (debug)
 		    System.out.println(" ImageDetailBean.getViewerFrameSourceName");
+		//just for testing the port to glenelgin
+		/*return "http://glenelgin.hgu.mrc.ac.uk/mrciip/mrciip_gudmap.html";*/
 	
 		return Utility.domainUrl+"mrciip/mrciip_gudmap.html";
 	}

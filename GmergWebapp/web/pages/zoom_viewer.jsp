@@ -55,8 +55,10 @@
 			}
 			
 			function setDomain() {
+				alert('zoomViewer::setDomain');
 				if(!isIE) {   // This is a work around for IE only (when image viewer frame is faild to show)
 					document.getElementById('zoomViewerSection').style.visibility = 'visible';
+					//alert('zoom_viewer::setDomain | !isIE');
 					return false;
 				}
 //				window.opener.setZoomViewerLoaded(); // This is to inform oppener window that the main page (not the frame) is loading
@@ -71,11 +73,13 @@
 				else {
 					document.domain = newDomain;
 				}
+				//alert('zoomView.jsp::newdomain:'+newDomain+' | originalDomain:'+zoomViewerOriginalDomain);
 				
 				return true;
 			}
 			
 			function setViewerFrameLoaded() {  // This is called by mrciip viewer frame (from its server; this is why domain was changed before)
+				//alert('zoomView.jsp::setViewerFrameLoaded');	
 				isViewerFrameLoaded = true;
 				document.getElementById('zoomViewerSection').style.visibility = 'visible';
 			}

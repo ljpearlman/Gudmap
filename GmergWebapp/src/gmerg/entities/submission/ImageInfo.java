@@ -70,7 +70,10 @@ public class ImageInfo {
 	      }
 
 	      if (null == clickFilePath || clickFilePath.endsWith("tif")) {
-			  String ret = gmerg.utils.Utility.appUrl+"pages/zoom_viewer.html?id="+accessionId;
+	    	  //DONT NEED THE DOMAIN. CAN NOW TEST ON OTHER MACHINES
+			  /*String ret = gmerg.utils.Utility.appUrl+"pages/zoom_viewer.html?id="+accessionId;*/
+	    	  
+	    	  String ret = gmerg.utils.Utility.applicationRoot +"pages/zoom_viewer.html?id="+accessionId;
 			  if (null == serialNo)
 			      ret += "&serialNo=1";
 			  else

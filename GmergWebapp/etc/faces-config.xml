@@ -670,7 +670,8 @@
   <from-view-id>/pages/secure/login.jsp</from-view-id>
   <navigation-case>
    <from-outcome>refererPage</from-outcome>
-   <to-view-id>/pages/#{UtilityBean.refererURI}</to-view-id>
+  <!-- <to-view-id>/pages/#{UtilityBean.refererURI}</to-view-id> -->
+  <to-view-id>/pages/secure/redirect_login.jsp</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>

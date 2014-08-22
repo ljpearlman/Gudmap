@@ -98,4 +98,8 @@ public class HeaderQuickSearchBean  implements Serializable {
     public String getAppUrl() {
     	return gmerg.utils.Utility.appUrl;
     }
+    
+    public String getApplicationRoot() {
+    	return gmerg.utils.Utility.applicationRoot;
+    }
 }

@@ -770,7 +770,7 @@
 		</h:panelGrid>
 
 		<h:panelGrid cellspacing="0" cellpadding="2px" width="100%" >
-			<h:panelGrid rendered="#{EntryPageBean.databaseServer == 'clynelish'}"	style="border:1px solid red; width:100%;" >
+			<h:panelGrid rendered="#{EntryPageBean.databaseServer == 'glengrant'}"	style="border:1px solid red; width:100%;" >
 			</h:panelGrid>
 			<h:outputText value="<span class='plaintextboldlight'>Last Editorial Update:</span> #{EntryPageBean.lastEditorialUpdate}" styleClass="plaintextlight" escape="false" />
 			<h:outputText value="<span class='plaintextboldlight'>Last Software Update:</span> #{EntryPageBean.lastSoftwareUpdate} (V #{EntryPageBean.applicationVersion})" styleClass="plaintextlight" escape="false" />
