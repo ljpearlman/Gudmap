@@ -302,7 +302,7 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 			if("Microarray".equalsIgnoreCase(row[6])) 
 				tableData[i][1] = new DataItem(row[0], "Click to view Samples page","mic_submission.html?id="+row[0], 10);			//sub id
 			else if ("ISH".equalsIgnoreCase(row[6]) || "ISH control".equalsIgnoreCase(row[6])  || "IHC".equalsIgnoreCase(row[6]) || "OPT".equalsIgnoreCase(row[6])) 
-				tableData[i][1] = new DataItem(row[0], row[0], "ish_submission.html?id="+row[10], 10);	  			
+				tableData[i][1] = new DataItem(row[0], row[0], "ish_submission.html?id="+row[0], 10);	  			
 			else if ("TG".equalsIgnoreCase(row[6]))  
 				tableData[i][1] = new DataItem(row[0], row[0], "ish_submission.html?id="+row[0], 10);
 			else if ("NextGen".equalsIgnoreCase(row[6]))  

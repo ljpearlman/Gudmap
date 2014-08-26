@@ -55,7 +55,7 @@
 			}
 			
 			function setDomain() {
-				alert('zoomViewer::setDomain');
+				//alert('zoomViewer::setDomain');
 				if(!isIE) {   // This is a work around for IE only (when image viewer frame is faild to show)
 					document.getElementById('zoomViewerSection').style.visibility = 'visible';
 					//alert('zoom_viewer::setDomain | !isIE');

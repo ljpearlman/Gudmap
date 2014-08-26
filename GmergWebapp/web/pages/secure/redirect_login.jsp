@@ -5,6 +5,6 @@
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 
 <html>
-<head><meta http-equiv="refresh" content="0; url=http://www.gudmap.org/pages/database_homepage.html" /></head>
+<head><meta http-equiv="refresh" content="0; url=http://www.gudmap.org/gudmap/pages/database_homepage.html" /></head>
 <body></body>
 </html>
