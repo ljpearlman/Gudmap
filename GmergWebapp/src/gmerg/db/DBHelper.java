@@ -390,6 +390,50 @@ public final class DBHelper {
     	return null;
     }
     
+ public static ArrayList formatLabBrowseResultSetISH(ResultSet resSet) throws SQLException {
+    	
+        if (resSet.first()) {
+            //need to reset cursor as 'if' move it on a place
+            resSet.beforeFirst();
+
+            //create array to store each row of results in
+            ArrayList<String[]> results = new ArrayList<String[]>();                        
+            
+            while (resSet.next()) {
+            	String[] ishBrowseSubmission = new String[14];
+         	
+                ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
+                ishBrowseSubmission[ 1] = resSet.getString(2); // id
+                ishBrowseSubmission[ 2] = resSet.getString(3); // source
+                ishBrowseSubmission[ 3] = resSet.getString(4); // date
+                String assay = resSet.getString(5);
+                ishBrowseSubmission[ 4] = (assay.equals("TG")? "Tg":assay); // assay
+                ishBrowseSubmission[ 5] = resSet.getString(6); // probe name
+                ishBrowseSubmission[ 6] = resSet.getString(7); // ts
+                ishBrowseSubmission[ 7] = resSet.getString(8); // age
+                ishBrowseSubmission[ 8] = resSet.getString(9); // sex name
+                ishBrowseSubmission[ 9] = resSet.getString(10); // genotype
+                ishBrowseSubmission[10] = resSet.getString(11); // tissue
+        		String expression = resSet.getString(12); // insitu strength
+        		if (expression.contains("present"))
+        			ishBrowseSubmission[11] = "present";
+        		else if (expression.contains("uncertain"))
+        			ishBrowseSubmission[11] = "uncertain";
+        		else if (expression.contains("not detected"))
+        			ishBrowseSubmission[11] = "not detected";
+        		else
+        			ishBrowseSubmission[11] = "";
+                
+                ishBrowseSubmission[12] = resSet.getString(13); // speciman
+                ishBrowseSubmission[13] = resSet.getString(14); // thumbnail
+                
+                results.add(ishBrowseSubmission);
+            }
+            return results;
+        }
+    	return null;
+    }
+    
     public static ArrayList formatBrowseResultSetISHForAnnotation(ResultSet resSet) throws SQLException {
     	
         if (resSet.first()) {

@@ -4142,8 +4142,8 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("MySQLISHDAOImp:getSubmissionsByLabId = "+prepStmt);
 		    
 		    resSet = prepStmt.executeQuery();
-		    result = DBHelper.formatBrowseResultSetISH(resSet);
-	//	    result = DBHelper.formatLabISHBrowseResultSet(resSet);
+	//	    result = DBHelper.formatBrowseResultSetISH(resSet);
+		    result = DBHelper.formatLabBrowseResultSetISH(resSet);
 		    
 	        return result;
 		    

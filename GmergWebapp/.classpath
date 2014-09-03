@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry excluding="gmerg/assemblers/" kind="src" path="unittest"/>
 	<classpathentry kind="src" path="unittest/gmerg/assemblers"/>
-	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/ajax4jsf-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
@@ -28,13 +27,13 @@
 	<classpathentry kind="lib" path="lib/TreeView.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_git/GmergWebapp/lib/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_latest/Gudmap/GmergWebapp/lib/activation.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_latest/Gudmap/GmergWebapp/lib/analysis.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_latest/Gudmap/GmergWebapp/lib/json-simple.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_latest/Gudmap/GmergWebapp/lib/mysql-connector-java-5.1.29-bin.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_latest/Gudmap/GmergWebapp/lib/nanoxml-2.2.2.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_latest/Gudmap/GmergWebapp/lib/richfaces-api-3.3.2.SR1.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_latest/Gudmap/GmergWebapp/lib/richfaces-impl-3.3.2.SR1.jar"/>
-	<classpathentry kind="lib" path="/export/data0/bernardh/workspace_latest/Gudmap/GmergWebapp/lib/richfaces-ui-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/export/data0/workroom2/gudmapwebapp/Gudmap/GmergWebapp/lib/activation.jar"/>
+	<classpathentry kind="lib" path="/export/data0/workroom2/gudmapwebapp/Gudmap/GmergWebapp/lib/analysis.jar"/>
+	<classpathentry kind="lib" path="/export/data0/workroom2/gudmapwebapp/Gudmap/GmergWebapp/lib/json-simple.jar"/>
+	<classpathentry kind="lib" path="/export/data0/workroom2/gudmapwebapp/Gudmap/GmergWebapp/lib/mysql-connector-java-5.1.29-bin.jar"/>
+	<classpathentry kind="lib" path="/export/data0/workroom2/gudmapwebapp/Gudmap/GmergWebapp/lib/nanoxml-2.2.2.jar"/>
+	<classpathentry kind="lib" path="/export/data0/workroom2/gudmapwebapp/Gudmap/GmergWebapp/lib/richfaces-api-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/export/data0/workroom2/gudmapwebapp/Gudmap/GmergWebapp/lib/richfaces-impl-3.3.2.SR1.jar"/>
+	<classpathentry kind="lib" path="/export/data0/workroom2/gudmapwebapp/Gudmap/GmergWebapp/lib/richfaces-ui-3.3.2.SR1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
