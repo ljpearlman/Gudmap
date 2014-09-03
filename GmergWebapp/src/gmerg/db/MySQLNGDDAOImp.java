@@ -102,16 +102,22 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
 	    SupplementaryFile supplementaryFile = new SupplementaryFile();
 	    List<String> pFiles=new ArrayList<String>();
 	    List<String> rFiles=new ArrayList<String>();
+	    StringBuffer filesize=new StringBuffer();
 	    do
 	    {
+	    	filesize.setLength(0);
+	    	if(resSet.getString(4)!=null)
+	    		filesize.append("("+resSet.getString(4)+")");
+	    		
 	    	if(resSet.getString(3).equalsIgnoreCase("raw"))
 	    	{
-	    		 rFiles.add(resSet.getString(2).trim());//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW
+	    		 rFiles.add(resSet.getString(2).trim()+"   "+filesize);//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW; 4.NGF_FILESIZE
 	    	}
 	    	else if (resSet.getString(3).equalsIgnoreCase("processed"))
 	    	{
-	    		pFiles.add(resSet.getString(2).trim());//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW
-	    	}
+	    		/*pFiles.add(resSet.getString(2).trim());//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW 4.NGF_FILESIZE
+*/				pFiles.add(resSet.getString(2).trim()+"   "+filesize);//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW 4.NGF_FILESIZE
+	    		}
 		    
 	    }
 	    while(resSet.next());

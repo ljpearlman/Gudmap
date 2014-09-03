@@ -1856,7 +1856,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
     final static String query262 = "SELECT COUNT(DISTINCT NGP_LIBRARY_STRATEGY) " + NGD_SAMPLE_SERIES_TABS_WITHOUT_GROUP_BY_CLAUSE;
     
     final static String name263 = "SUBMISSION_SUPPLEMENTARY_FILES_NGD";
-    final static String query263 = "SELECT DISTINCT NGF_FILEPATH,NGF_FILENAME, NGF_RAW " +
+    final static String query263 = "SELECT DISTINCT NGF_FILEPATH,NGF_FILENAME, NGF_RAW, NGF_FILESIZE " +
                                   "FROM NGD_FILES " +
                                   "JOIN NGD_SAMPLE ON NGF_SAMPLE_FK=NGS_OID " +
                                   "JOIN ISH_SUBMISSION ON NGS_SUBMISSION_FK = SUB_OID AND SUB_ACCESSION_ID = ? ";
