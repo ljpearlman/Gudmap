@@ -2007,7 +2007,8 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    
 		    prepStmt = conn.prepareStatement(queryString);
 		    resSet = prepStmt.executeQuery();
-		    result = DBHelper.formatBrowseResultSetISH(resSet);
+		    /*result = DBHelper.formatBrowseResultSetISH(resSet);*/
+		    result = DBHelper.formatLabBrowseResultSetISH(resSet);
 	    	return result;
 		    
     	} catch (SQLException se) {

@@ -66,7 +66,7 @@ public class LabTGBrowseBean {
 			table.setNumRows(0);
 	    
 		GenericTableView tableView = ISHBrowseBean.getDefaultIshBrowseTableView(viewName, table);
-		tableView.setDisplayTotals(true); // Bernie 25/3/2011 - display totals in header
+		tableView.setDisplayTotals(false); // Bernie 25/3/2011 - display totals in header
 		tableView.setColHidden(9, true); // hide probe name from displaying - 29/08/2008
 		tableView.setColHidden(11, true); // hide probe type from displaying - 29/08/2008
 		return  tableView;
