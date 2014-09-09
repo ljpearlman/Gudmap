@@ -165,7 +165,7 @@
 			</h:column>
 		</h:dataTable>
 	</h:panelGrid>
-
+<!--
 	<h:panelGrid rendered="#{GeneInfoBean.gene != null && GeneInfoBean.gene.numMicArrays != null}">
       	                <f:verbatim>&nbsp;</f:verbatim>
 	</h:panelGrid>
@@ -173,14 +173,11 @@
 		<h:outputText value="Microarrays" />
 	</h:panelGrid>
   	<f:subview id="GeneArrayTable" rendered="#{GeneInfoBean.gene != null && GeneInfoBean.gene.numMicArrays != null}">
-<!-- change gen strip bean to array bean --> 
                                 <h:outputText value="" rendered="#{GeneInfoBean.setTableViewNameToArrayData}" />
-<!-- change gen strip bean to array bean --> 
 		<jsp:include page="../includes/browse_table.jsp" />
 	</f:subview> 
-<!-- change back to gen strip bean --> 
 	<h:outputText value="" rendered="#{UtilityBean.setActiveTableViewName}" />
-<!-- change back to gen strip bean --> 
+--> 
 
 	<jsp:include page="/includes/footer.jsp" />
     
