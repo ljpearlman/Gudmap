@@ -79,8 +79,8 @@
 			</h:outputLink>
 
 			<h:outputText value="UCSC:" />
-			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.ucscURL}" target="_blank">
-				<h:outputText value="View probes for this gene in UCSC Browser" />
+			<h:outputLink styleClass="plaintext" value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&hubUrl=http%3A//www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&position=#{GeneInfoBean.gene.symbol}" target="_blank">
+				<h:outputText value="View sequencing data for this gene in UCSC Genome Browser" />
 			</h:outputLink>
 			
 			<h:outputText value="OMIM:" />

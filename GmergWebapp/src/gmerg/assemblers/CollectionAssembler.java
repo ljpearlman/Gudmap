@@ -440,6 +440,33 @@ public class CollectionAssembler { //Singleton
 		}
 	}
 	
+	public String removeCollectionItems(String collectionId, int userId, String[] ids) {
+		if (collectionId == null) {
+			return "There is no collection selected";
+		}
+		
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			CollectionInfo collectionInfo = collectionDAO.getCollectionInfoById(Integer.parseInt(collectionId));
+			if (collectionInfo != null && collectionInfo.getOwner() != userId) {
+				return "Cannot remove collections belonging to others";
+			}
+			
+			// make change to database
+			collectionDAO.removeCollectionItems(collectionId, ids);
+			return null;
+		}
+		catch(Exception e){
+			System.out.println("CollectionAssembler::removeCollectionItemss failed !!!");
+			return null;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
+	}
+
 	private boolean collectionInfoValueAssigned(CollectionInfo collectionInfo) {
 		if (collectionInfo.getName() == null || collectionInfo.getName().equals("")) {
 			return false;

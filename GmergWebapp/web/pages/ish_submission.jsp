@@ -189,7 +189,7 @@
 					
 					<h:graphicImage value="/images/tree/UbiquitousRound20x20.png" styleClass="icon" />
 					<h:outputText value="Ubiquitous" styleClass="plaintext" />
-					
+<!--  					
 					<h:graphicImage value="/images/tree/OtherRound20x20.png" styleClass="icon" rendered="#{ISHSingleSubmissionBean.submission.project != 'GUDMAP'}" />
 					<h:outputText value="Other" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.project != 'GUDMAP'}" />
 					
@@ -198,7 +198,14 @@
 					
 					<h:graphicImage value="/images/tree/SingleCellRound20x20.png" styleClass="icon" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}" />
 					<h:outputText value="Single cell" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}" />
+-->	
+					<h:graphicImage value="/images/tree/RestrictedRound20x20.png" styleClass="icon" />
+					<h:outputText value="Restricted" styleClass="plaintext" />
 					
+					<h:graphicImage value="/images/tree/SingleCellRound20x20.png" styleClass="icon" />
+					<h:outputText value="Single cell" styleClass="plaintext" />
+
+				
 					<h:graphicImage value="/images/tree/note.gif" styleClass="icon" />
 					<h:outputText value="Contains note" styleClass="plaintext" />
 				</h:panelGrid>

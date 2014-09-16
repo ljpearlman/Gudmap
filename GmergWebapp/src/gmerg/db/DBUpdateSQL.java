@@ -276,7 +276,9 @@ public class DBUpdateSQL {
 	  		"AND SUB_PI_FK = ? " +
 	  		"AND SUB_DB_STATUS_FK = ? " +
 	  		"AND SUB_ARCHIVE_ID = ? ";
-	  
+	    
+	  final static String name38 = "REMOVE_COLLECTION_ITEMS";
+	  final static String query38 = "DELETE FROM CLN_COLLECTION_ITEM WHERE CLI_COLLECTION_FK = ? AND CLI_VALUE = ?";
 	  
 	  final static String name = "";
 	  final static String query = "";
@@ -321,7 +323,8 @@ public class DBUpdateSQL {
 	      new ParamQuery(name34, query34),
 	      new ParamQuery(name35, query35),
 	      new ParamQuery(name36, query36),
-	      new ParamQuery(name37, query37)
+	      new ParamQuery(name37, query37),
+	      new ParamQuery(name38, query38)
 	  };
 	  
 	  /** table list */

@@ -519,12 +519,39 @@
 					<h:outputLink id="ViewAllCollections1" value="collectionList_browse.html" styleClass="plaintextbold" rendered="#{UserBean.userLoggedIn}" >
 						<h:outputText value="View stored collections" />
 					</h:outputLink>
+			<h:outputText value="" rendered="#{UserBean.userLoggedIn}"/>
 					<h:commandLink id="deleteSelectedEntries" action="#{TableBean.deleteSelectedEntries}" onclick="saveSelections(event)"
 									rendered="#{UserBean.userLoggedIn && UserBean.user.userPrivilege>=5 && TableBean.tableView.table.deletable}" >
 						<h:outputText value="Delete Selected Entries" />
 						<f:param name="tableOperation" value="deleteSelected" />
 					</h:commandLink>
-					<h:outputText value="" />
+					<h:outputText value="" />	
+					
+			<!--  Bernie commands to remove items from clipboard storage --> 						
+			<h:commandLink id="deleteFromCollection" styleClass="plaintextbold" 
+							rendered="#{CollectionBrowseBean.clipboard && TableBean.clipboardItemsNum > 0 && view.viewId =='/pages/collection_browse.jsp' && CollectionBrowseBean.collectionName != ' My Entries'}" 
+							action="#{TableBean.removeClipboardWithSelected}" onclick="return saveSelections(event)">
+				<h:outputText value="Remove selected items from #{CollectionBrowseBean.collectionName} " />
+				<f:param name="tableOperation" value="removeClipboardWithSelected" />
+			</h:commandLink>
+			<h:commandLink id="emptyCollection" styleClass="plaintextbold" 
+			    			rendered="#{CollectionBrowseBean.clipboard && TableBean.clipboardItemsNum > 0  && view.viewId =='/pages/collection_browse.jsp' && CollectionBrowseBean.collectionName != ' My Entries'}"
+							action="#{TableBean.removeAllValuesFromClipboard}" >
+				<h:outputText value="Remove all items from #{TableBean.clipboardName}" />
+				<f:param name="tableOperation" value="removeAllValuesFromClipboard" />
+			</h:commandLink>
+			
+			<!--  Bernie commands to remove items from database storage --> 								
+			<h:commandLink id="deleteFromCollection2" styleClass="plaintextbold" 
+							action="#{TableBean.removeCollectionWithSelected}"  onclick="return saveSelections(event)"
+						    rendered="#{!CollectionBrowseBean.clipboard && (CollectionBrowseBean.collectionType=='3' || CollectionBrowseBean.collectionType=='4')}">
+				<h:outputText value="Remove selected items from #{CollectionBrowseBean.collectionName}" />
+				<f:param name="tableOperation" value="removeCollectionWithSelected" />
+				<f:param name="collectionType" value="#{CollectionBrowseBean.collectionInfo.type}" />
+				<f:param name="collectionId" value="#{CollectionBrowseBean.collectionInfo.id}" />
+			</h:commandLink>
+			<h:outputText value="" rendered="#{!CollectionBrowseBean.clipboard && (CollectionBrowseBean.collectionType=='3' || CollectionBrowseBean.collectionType=='4')}"/>
+			
 				</h:panelGrid>
 				
 				<h:panelGrid columns="2" styleClass="header-stripey" border="0" width="100%" columnClasses="leftAlign,rightAlign" 

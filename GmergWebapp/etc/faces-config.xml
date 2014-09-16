@@ -591,6 +591,38 @@
    <to-view-id>/pages/#{GeneListTreeBean.resultURL}</to-view-id>
    <redirect/>
   </navigation-case> 
+
+	<!-- Bernie added to refresh clipboard removal page -->  
+  <navigation-case>
+   <from-action>#{TableBean.removeClipboardWithSelected}</from-action>
+   <from-outcome>leaf3</from-outcome>
+   <to-view-id>/pages/collection_browse.jsp?collectionType=3</to-view-id>
+   <redirect/>
+  </navigation-case>   
+  <navigation-case>
+   <from-action>#{TableBean.removeClipboardWithSelected}</from-action>
+   <from-outcome>leaf4</from-outcome>
+   <to-view-id>/pages/collection_browse.jsp?collectionType=4</to-view-id>
+   <redirect/>
+  </navigation-case>   
+  <navigation-case>
+   <from-action>#{TableBean.removeClipboardWithSelected}</from-action>
+   <from-outcome>leaf0</from-outcome>
+   <to-view-id>/pages/collection_browse.jsp?collectionType=0</to-view-id>
+   <redirect/>
+  </navigation-case>   
+  <navigation-case>
+   <from-action>#{TableBean.removeAllValuesFromClipboard}</from-action>
+   <from-outcome>leaf</from-outcome>
+   <to-view-id>/pages/collection_browse.jsp?collectionType=3</to-view-id>
+   <redirect/>
+  </navigation-case>       
+  <navigation-case>
+   <from-action>#{TableBean.removeCollectionWithSelected}</from-action>
+   <from-outcome>leaf</from-outcome>
+   <to-view-id>/pages/#{TableBean.resultURL}</to-view-id>
+   <redirect/>
+  </navigation-case>   
   
  </navigation-rule>
 

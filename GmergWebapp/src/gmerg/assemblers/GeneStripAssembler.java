@@ -211,10 +211,10 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				boolean ucscUrlWithSessionId = false;
 	
 				// get chrome info from the database
-				ChromeDetail chromeDetail = this.getChromeDetail(conn, symbol);
-				if (chromeDetail == null) {
-					data[i][7] = new DataItem(nextGenSeqString);
-				} else {
+//				ChromeDetail chromeDetail = this.getChromeDetail(conn, symbol);
+//				if (chromeDetail == null) {
+//					data[i][7] = new DataItem(nextGenSeqString);
+//				} else {
 //					String ucscUrl = "";
 //					if (ucscUrlWithSessionId) { // access by session id
 //						ucscUrl = ucscUrlPrefix + chromeDetail.getChromeName() + ":" + 
@@ -229,7 +229,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 					data[i][7] = 
 						new DataItem(nextGenSeqString, "", ucscUrl, 10);
 						//new DataItem(nextGenSeqString, "Click to see RNA-SEQ data on UCSC genome browser for " + symbol, ucscUrl, 10);
-				}
+//				}
 	
 				/** 9 - geneset */
 				// not decided yet, check with ED & duncan

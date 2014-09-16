@@ -697,4 +697,36 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 			DBHelper.closeResultSet(resSet);
 		}
 	}
+	
+	public int removeCollectionItems(String collectionId, String[] ids){
+		ParamQuery parQ = DBUpdateSQL.getParamQuery("REMOVE_COLLECTION_ITEMS");
+		String queryString = parQ.getQuerySQL();
+		PreparedStatement prepStmt = null;
+		ResultSet resSet = null;
+		int updatedRecordNumber = 0;
+		String items = "";
+		try {
+			for (int i=0; i < ids.length; i++){
+				// update
+				queryString = parQ.getQuerySQL();
+				prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setString(1, collectionId); 
+				prepStmt.setString(2, ids[i]); 
+			    if (debug)
+				 System.out.println("MySQLCollectionDAOImp.prepStmt = "+prepStmt);
+	
+			    updatedRecordNumber += prepStmt.executeUpdate();
+			}
+		    return updatedRecordNumber;
+		    
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return 0;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
+	}
+	
 }

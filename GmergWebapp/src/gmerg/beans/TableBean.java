@@ -6,12 +6,15 @@ import javax.faces.model.SelectItem;
 
 import java.util.*;
 
+import gmerg.assemblers.CollectionAssembler;
+import gmerg.entities.CollectionInfo;
 import gmerg.entities.Globals;
 import gmerg.model.ClipboardDelegateCookieImp;
 import gmerg.model.HeatmapDisplayTransform;
 import gmerg.utils.table.*;
 import gmerg.utils.FacesUtil;
 import gmerg.utils.Utility;
+import gmerg.utils.Visit;
 
 /**
  * Managed Bean for Generic tables display. Because there might be multiple tables
@@ -510,6 +513,77 @@ public class TableBean extends MultipleInstanceBean {
 		return null;
 	}
 
+	public String removeClipboardWithSelected() {
+//		System.out.println("==========In remove Clipboard With Selected");
+		String[] selectedSubs = getSelectedSubmissions();
+		setClipboardItemsNum(ClipboardDelegateCookieImp.removeValuesFromClipboard(selectedCollection, selectedSubs).size());
+		
+		if (selectedCollection == 0)
+			return "leaf0";
+		else if (selectedCollection == 3)
+			return "leaf3";
+		else if (selectedCollection == 4)
+			return "leaf4";
+		else
+			return null;
+		
+	}	
+	
+	public String removeCollectionWithSelected() {
+		FacesUtil.setFacesRequestParamValue("selectionsString", selectionsString);
+		String[] selectedSubs = getSelectedSubmissions();
+		
+		String type = FacesUtil.getAnyRequestParamValue("collectionType");
+		String collectionId = FacesUtil.getAnyRequestParamValue("collectionId");
+		
+		CollectionInfo collectionInfo = CollectionAssembler.instance().getCollectionInfo(Integer.parseInt(collectionId));
+		collectionInfo.setOwner(Utility.getUser().getUserId());
+		String currentDate = Utility.convertToDatabaseDate(new Date());
+		collectionInfo.setLastUpdate(currentDate);
+		
+		CollectionAssembler.instance().removeCollectionItems(collectionId, Utility.getUser().getUserId(), selectedSubs);
+		
+		return "leaf";
+		
+	}	
+
+	public String removeAllValuesFromClipboard() {
+//		System.out.println("==========In removeAllClipboardValues");
+		
+		ClipboardDelegateCookieImp.removeAllValuesFromClipboard(selectedCollection);
+		setClipboardItemsNum(0);
+//		return null;
+		return "leaf";
+	}
+
+    public String getResultURL () {
+		String type = FacesUtil.getAnyRequestParamValue("collectionType");
+		String id = FacesUtil.getAnyRequestParamValue("collectionId");
+
+		String result = "collection_browse.html?collectionId="+id+"&collectionType="+type;
+    	
+    	if (debug)
+    		System.out.println("getSearchParams:result: " + result);
+    	
+        return result;
+    }
+
+    public String getSearchParams(){
+	
+		String urlParams = null;
+		HashMap<String, String> params = new HashMap<String, String>();		
+		
+		Integer selectedCollection = getSelectedCollection();
+		params.put("collectionType", selectedCollection.toString());
+		
+    	urlParams = Visit.packParams(params);	
+    	
+		if (urlParams==null)
+			return "";
+
+		return "?" + urlParams;
+	}
+	
 	// ********************************************************************************
 	// Getters & Setter
 	// ********************************************************************************
