@@ -82,10 +82,15 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 	    }*/
 	    ////////!!!!!!
 
-	    if (debug)
-	    	System.out.println("MySQLTransgenicDAOImp.sql = "+queryString);
 	    
         prepStmt = conn.prepareStatement(queryString);
+        
+        
+	    if (debug)
+	    	System.out.println("MySQLTransgenicDAOImp.sql = "+prepStmt);
+        
+        
+        
         resSet = prepStmt.executeQuery();
         result = formatBrowseResultSet(resSet);
         return result;
