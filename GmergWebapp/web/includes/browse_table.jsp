@@ -411,12 +411,12 @@
 					<h:selectOneMenu value="#{TableBean.selectedCollection}" onchange="reload(event)">
 						<f:selectItems value="#{TableBean.collectionsSelectItems}" />
 					</h:selectOneMenu>
-					<h:outputText value=" : <span class='plaintextbold'>#{TableBean.clipboardItemsNum}</span>" styleClass="plaintext" escape="false" />						
+					<h:outputText value=" Clipboard : <span class='plaintextbold'>#{TableBean.clipboardItemsNum}</span>" styleClass="plaintext" escape="false" />						
 				</h:panelGroup>
 			
 				<h:outputLink id="intersectClipboard" styleClass="plaintextbold" onclick="return processSelectionsForLink(event)" 
 							  value="clipboardOperation_browse.html?collectionOperation=intersection&collectionType=#{TableBean.selectedCollection}">
-					<h:outputText value="Get intersection with My #{TableBean.clipboardName}" />
+					<h:outputText value="Get intersection with My #{TableBean.clipboardName} Clipboard" />
 				</h:outputLink>
 
 				<h:graphicImage url="/images/gu_intersect.gif" alt="intersection"/>
@@ -453,29 +453,26 @@
 				<h:panelGrid columns="3" styleClass="header-stripey" columnClasses="leftAlign,rightAlign,collectionButtonsCol3" 
 							 rendered="#{TableBean.collectionBottons!=4}" border="0" width="100%">
 				
-					<h:outputText value="Items in My #{TableBean.clipboardName}: <span class='plaintextbold'>#{TableBean.clipboardItemsNum}</span>" 
+					<h:outputText value="Items in My #{TableBean.clipboardName} Clipboard: <span class='plaintextbold'>#{TableBean.clipboardItemsNum}</span>" 
 								  styleClass="plaintext" escape="false" rendered="#{!TableBean.multipleCollections}" />
 					<h:panelGrid rendered="#{!TableBean.multipleCollections && (TableBean.collectionBottons==2 || TableBean.collectionBottons==3)}" styleClass="rightAlign" >
 						<h:commandLink id="replaceClipboard" action="#{TableBean.replaceClipboard}" styleClass="plaintextbold" >
-							<h:outputText value="Replace My #{TableBean.clipboardName} with this collection" 
+							<h:outputText value="Replace My #{TableBean.clipboardName} Clipboard with this collection" 
 											rendered="#{TableBean.collectionBottons==2}" />
-							<h:outputText value="Replace My #{TableBean.clipboardName} with all items in this result" 
+							<h:outputText value="Replace My #{TableBean.clipboardName} Clipboard with all items in this result" 
 											rendered="#{TableBean.collectionBottons==3}" />
 							<f:param name="tableOperation" value="replaceClipboard" />
 						</h:commandLink>
 					</h:panelGrid>
+				<h:outputText value="" rendered="#{!TableBean.multipleCollections && (TableBean.collectionBottons==2 || TableBean.collectionBottons==3)}"/>
 				 	
-				<%--<h:outputText rendered="#{!TableBean.multipleCollections && !(TableBean.collectionBottons==2 || TableBean.collectionBottons==3)}" value="BH1" />
-				<h:outputText rendered="#{!TableBean.multipleCollections}" value="BH2" />--%>
 				<h:panelGroup rendered="#{!TableBean.multipleCollections && !(TableBean.collectionBottons==2 || TableBean.collectionBottons==3)}">
 				<h:outputLink id="intersectClipboard2" styleClass="plaintextbold" onclick="return processSelectionsForLink(event)" 
 								  value="clipboardOperation_browse.html?collectionOperation=intersection&collectionType=#{TableBean.selectedCollection}">
-						<h:outputText value="Get intersection with My #{TableBean.clipboardName}" />
+						<h:outputText value="Get intersection with My #{TableBean.clipboardName} Clipboard" />
 				</h:outputLink>
 				</h:panelGroup>
-				<h:graphicImage url="/images/gu_intersect.gif" alt="intersection" rendered="#{!TableBean.multipleCollections}"/>
-				
-			
+				<h:graphicImage url="/images/gu_intersect.gif" alt="intersection" rendered="#{!TableBean.multipleCollections && !(TableBean.collectionBottons==2 || TableBean.collectionBottons==3)}"/>
 			
 				<h:panelGroup>				
 				<h:commandLink id="addClipboard" action="#{TableBean.addToClipboard}" onclick="return saveSelections(event)" >
@@ -500,7 +497,7 @@
 
 					<h:outputLink id="differenceCollection" onclick="return processSelectionsForLink(event)" styleClass="plaintextbold" 
 								  value="clipboardOperation_browse.html?collectionOperation=difference&collectionType=#{TableBean.selectedCollection}">
-						<h:outputText value="Get difference with My #{TableBean.clipboardName}" />
+						<h:outputText value="Get difference with My #{TableBean.clipboardName} Clipboard" />
 					</h:outputLink>
 					<h:graphicImage url="/images/gu_difference.gif" alt="difference"/>
 				
@@ -514,7 +511,7 @@
 					<h:outputText value="" rendered="#{TableBean.clipboardItemsNum == 0}"/>					
 					<h:outputLink id="ViewClipboard1" styleClass="plaintextbold" rendered="#{TableBean.clipboardItemsNum > 0}"
 								  value="collection_browse.html?collectionType=#{TableBean.selectedCollection}">
-						<h:outputText value="View My #{TableBean.clipboardName}" />
+						<h:outputText value="View My #{TableBean.clipboardName} Clipboard" />
 					</h:outputLink>
 					<h:outputLink id="ViewAllCollections1" value="collectionList_browse.html" styleClass="plaintextbold" rendered="#{UserBean.userLoggedIn}" >
 						<h:outputText value="View stored collections" />
@@ -557,22 +554,22 @@
 				<h:panelGrid columns="2" styleClass="header-stripey" border="0" width="100%" columnClasses="leftAlign,rightAlign" 
 							 rendered="#{TableBean.collectionBottons==4}" >
 				
-					<h:outputText value="Items in My #{TableBean.clipboardName}: <span class='plaintextbold'>#{TableBean.clipboardItemsNum}</span>" 
+					<h:outputText value="Items in My #{TableBean.clipboardName} Clipboard: <span class='plaintextbold'>#{TableBean.clipboardItemsNum}</span>" 
 								  styleClass="plaintext" escape="false" />
 					<h:outputText value="" />
 					<h:commandLink id="replaceClipboardWithSelected2" action="#{TableBean.replaceClipboardWithSelected}" 
 									onclick="return saveSelections(event)" styleClass="plaintextbold" >
-						<h:outputText value="Replace My #{TableBean.clipboardName}" />
+						<h:outputText value="Replace My #{TableBean.clipboardName} Clipboard" />
 						<f:param name="tableOperation" value="replaceClipboardWithSelected" />
 					</h:commandLink>
 					<h:commandLink id="replaceClipboard2" action="#{TableBean.replaceClipboard}" styleClass="plaintextbold" >
-						<h:outputText value="Replace My #{TableBean.clipboardName} with all items in this result" />
+						<h:outputText value="Replace My #{TableBean.clipboardName} Clipboard with all items in this result" />
 						<f:param name="tableOperation" value="replaceClipboard" />
 					</h:commandLink>
 					
 					<h:outputLink id="ViewClipboard2" styleClass="plaintextbold"
 								  value="collection_browse.html?collectionType=#{TableBean.selectedCollection}">
-						<h:outputText value="View My #{TableBean.clipboardName}" />
+						<h:outputText value="View My #{TableBean.clipboardName} Clipboard" />
 					</h:outputLink>
 					<h:outputLink id="ViewAllCollections2" value="collectionList_browse.html" styleClass="plaintextbold" rendered="#{UserBean.userLoggedIn}" >
 						<h:outputText value="View stored collections" />
