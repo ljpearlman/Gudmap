@@ -9,6 +9,7 @@ import gmerg.entities.submission.nextgen.NGDSample;
 import gmerg.entities.submission.nextgen.NGDSeries;
 import gmerg.entities.submission.nextgen.Protocol;
 import gmerg.entities.submission.nextgen.DataProcessing;
+import gmerg.entities.submission.nextgen.NGDSupFiles;
 import gmerg.db.MySQLArrayDAOImp;
 
 import java.sql.PreparedStatement;
@@ -69,7 +70,7 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
 		    if (debug)
 			System.out.println("MySQLNGDDAOImp.findSupplementaryFileInfoBySubmissionId 1 arg = "+submissionAccessionId);
 		    prepStmt.setString(1, submissionAccessionId);
-		    
+		    //prepStmt.setString(2, submissionAccessionId);//DEREK TO FORCE COUNT IN FIRST ROW
 		    // execute
 		    resSet = prepStmt.executeQuery();
 		    supplementaryFiles = formatSupplementaryFileResultSet(resSet); 
@@ -96,12 +97,13 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
      * @return
      * @throws SQLException
      */
-    private SupplementaryFile formatSupplementaryFileResultSet(ResultSet resSet) throws SQLException {
+  private SupplementaryFile formatSupplementaryFileResultSet(ResultSet resSet) throws SQLException {
 	
 	if (resSet.first()) {
 	    SupplementaryFile supplementaryFile = new SupplementaryFile();
-	    List<String> pFiles=new ArrayList<String>();
-	    List<String> rFiles=new ArrayList<String>();
+	    List<NGDSupFiles> rFiles=new ArrayList<NGDSupFiles>();
+	    List<NGDSupFiles> pFiles=new ArrayList<NGDSupFiles>();
+	    NGDSupFiles ngdsupfiles=null;
 	    StringBuffer filesize=new StringBuffer();
 	    do
 	    {
@@ -111,13 +113,20 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
 	    		
 	    	if(resSet.getString(3).equalsIgnoreCase("raw"))
 	    	{
-	    		 rFiles.add(resSet.getString(2).trim()+"   "+filesize);//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW; 4.NGF_FILESIZE
+	    		ngdsupfiles=new NGDSupFiles();
+	    		ngdsupfiles.setFilename(resSet.getString(2).trim());
+    	    	ngdsupfiles.setFilesize(filesize.toString());
+    	    	ngdsupfiles.setFiletype(resSet.getString(3).trim());
+	    		rFiles.add(ngdsupfiles);//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW; 4.NGF_FILESIZE
 	    	}
 	    	else if (resSet.getString(3).equalsIgnoreCase("processed"))
 	    	{
-	    		/*pFiles.add(resSet.getString(2).trim());//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW 4.NGF_FILESIZE
-*/				pFiles.add(resSet.getString(2).trim()+"   "+filesize);//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW 4.NGF_FILESIZE
-	    		}
+	    		ngdsupfiles=new NGDSupFiles();
+	    		ngdsupfiles.setFilename(resSet.getString(2).trim());
+    	    	ngdsupfiles.setFilesize(filesize.toString());
+    	    	ngdsupfiles.setFiletype(resSet.getString(3).trim());
+	    		pFiles.add(ngdsupfiles);//1.NGF_FILEPATH; 2.NGF_FILENAME; 3.NGF_RAW; 4.NGF_FILESIZE
+	    	}
 		    
 	    }
 	    while(resSet.next());
@@ -125,17 +134,19 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
 	    if (0 == pFiles.size())
 	    	supplementaryFile.setProcessedFile(null);
 	    else 
-	    	supplementaryFile.setProcessedFile((String[])pFiles.toArray(new String[0]));
+	    	supplementaryFile.setProcessedFile(pFiles);
 	    
 	    if (0 == rFiles.size())
 	    	supplementaryFile.setRawFile(null);
 	    else 
-	    	supplementaryFile.setRawFile((String[])rFiles.toArray(new String[0]));
+	    	supplementaryFile.setRawFile(rFiles);
 	    
 	    return supplementaryFile;
 	}
 	return null;
-    }
+  }
+    
+ 
     
     /**
      * <p> modified by xingjun - 18/11/2009 - relevant sample info might be null</p>

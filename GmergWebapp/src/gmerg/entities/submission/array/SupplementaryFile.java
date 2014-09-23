@@ -3,6 +3,10 @@
  */
 package gmerg.entities.submission.array;
 
+import java.util.List;
+
+import gmerg.entities.submission.nextgen.NGDSupFiles;
+
 /**
  * @author xingjun
  *
@@ -16,8 +20,8 @@ public class SupplementaryFile {
     private String expFile;
     private String txtFile;
     
-    private String[] rawFiles;
-    private String [] processedFiles;
+    private List<NGDSupFiles> rawFiles;
+    private List<NGDSupFiles> processedFiles;
     
     public SupplementaryFile() {
     	
@@ -71,19 +75,21 @@ public class SupplementaryFile {
         return txtFile;
     }
     
-    public void setRawFile(String[] file) {
+    public void setRawFile(List<NGDSupFiles> file) {
         rawFiles = file;
     }
 
-    public String[] getRawFile() {
+    public List<NGDSupFiles> getRawFile() {
         return rawFiles;
     }
 
-    public void setProcessedFile(String []file) {
+    public void setProcessedFile(List<NGDSupFiles> file) {
        processedFiles = file;
     }
 
-    public String[] getProcessedFile() {
+    public List<NGDSupFiles> getProcessedFile() {
         return processedFiles;
     }
+    
+
 }

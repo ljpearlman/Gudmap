@@ -69,22 +69,28 @@
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 		<h:outputText value="Supplementary Data Files" />
 			<h:panelGrid columns="2" columnClasses="plaintext, datatext">
-				<h:outputText value="Raw file:" />
-				<h:dataTable  columnClasses="text-normal,text-top"  value="#{NGDSingleSubmissionBean.submission.rawFile}" var="rfile">
+				<h:outputText value="Raw file:" rendered="#{not empty NGDSingleSubmissionBean.submission.rawFile}"/>
+					<h:dataTable  columnClasses="text-normal,text-top"  value="#{NGDSingleSubmissionBean.submission.rawFile}" var="rfile" rendered="#{not empty NGDSingleSubmissionBean.submission.rawFile}">
+						<h:column>
+							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/raw/#{rfile.filename}">
+								<h:outputText value="#{rfile.filename}"/>
+							</h:outputLink>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{rfile.filesize}" rendered="#{not empty rfile.filesize}"/>
+						</h:column>
+					</h:dataTable>
+				<h:outputText value="Processed file:"  rendered="#{not empty NGDSingleSubmissionBean.submission.processedFile}"/>
+				<h:dataTable  columnClasses="text-normal,text-top"  value="#{NGDSingleSubmissionBean.submission.processedFile}" var="pfile"  rendered="#{not empty NGDSingleSubmissionBean.submission.processedFile}">
 					<h:column>
-						<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/raw/#{rfile}">
-							<h:outputText value="#{rfile}"/>
+						<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/processed/#{pfile.filename}">
+							<h:outputText value="#{pfile.filename}"/>
 						</h:outputLink>
 					</h:column>
+					<h:column>
+							<h:outputText value="#{pfile.filesize}" rendered="#{not empty pfile.filesize}"/>
+						</h:column>
 				</h:dataTable>	
-				<h:outputText value="Processed file:" />
-				<h:dataTable  columnClasses="text-normal,text-top"  value="#{NGDSingleSubmissionBean.submission.processedFile}" var="pfile">
-					<h:column>
-						<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/processed/#{pfile}">
-							<h:outputText value="#{pfile}"/>
-						</h:outputLink>
-					</h:column>
-				</h:dataTable>
 			</h:panelGrid>	
         </h:panelGrid>
  		

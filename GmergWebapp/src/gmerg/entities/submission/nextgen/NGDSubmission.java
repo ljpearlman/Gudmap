@@ -3,18 +3,20 @@ package gmerg.entities.submission.nextgen;
 import gmerg.entities.submission.Submission;
 import gmerg.entities.submission.nextgen.Protocol;
 import gmerg.entities.submission.nextgen.DataProcessing;
+import gmerg.entities.submission.nextgen.NGDSupFiles;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class NGDSubmission extends Submission {
 
     protected NGDSeries series;
     protected Protocol protocol;
     protected NGDSample sample;
-    /*protected DataProcessing dataProcessing;*/
     protected DataProcessing[] dataProcessing;
     protected String filesLocation;
-    protected String [] rawFile;
-    protected String [] processedFile;
+    protected List<NGDSupFiles>  rawFile;
+    protected List<NGDSupFiles> processedFile;
     protected ArrayList linkedSubmissions;
     protected ArrayList linkedPublications;
     protected String[] acknowledgements;
@@ -67,21 +69,22 @@ public class NGDSubmission extends Submission {
         return filesLocation;
     }
 
-    public void setRawFile(String[] file) {
+    public void setRawFile(List<NGDSupFiles> file) {
         rawFile = file;
     }
 
-    public String[] getRawFile() {
+    public List<NGDSupFiles> getRawFile() {
         return rawFile;
     }
 
-    public void setProcessedFile(String[] file) {
+    public void setProcessedFile(List<NGDSupFiles> file) {
        processedFile = file;
     }
 
-    public String[] getProcessedFile() {
+    public List<NGDSupFiles> getProcessedFile() {
         return processedFile;
     }
+    
     
     public void setLinkedSubmissions(ArrayList linkedSubmissions){
     	this.linkedSubmissions = linkedSubmissions;
