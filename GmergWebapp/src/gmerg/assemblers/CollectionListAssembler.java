@@ -82,7 +82,7 @@ public class CollectionListAssembler extends OffMemoryTableAssembler{
     }
 
 	public HeaderItem[] createHeader() {
-		String headerTitles[] = {"Name", "Id", "Description", "Owner Id", "Owner", "Focus group", "Entries", "Status", "Last modifed", "Download", "Share" };
+		String headerTitles[] = {"Name", "Id", "Description", "Owner Id", "Owner", "Focus group", "Entity Count", "Status", "Last modifed", "Download", "Share" };
 		boolean headerSortable[] = {true, true, true, true, true, true, true, true, true, false, false };
 		int colNum = headerTitles.length;
 		HeaderItem[] tableHeader = new HeaderItem[colNum];

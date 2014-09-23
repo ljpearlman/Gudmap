@@ -693,8 +693,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
            query = "(" + queryIS + ")" +  " UNION " + "(" + queryArray + " )";
 
            defaultOrder = " ORDER BY natural_sort(TRIM(QSC_RPR_SYMBOL))";
-           queryString =
-        	   assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num);
+           queryString = assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num);
 //           System.out.println("ISHDevDAO:getAllSubmissionBySubmissionId:sql: " + queryString);
        
        } else if (type == 1) { // in situ
@@ -710,8 +709,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
             sb.append(") ");
         }
         defaultOrder = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
-        queryString =
-                assembleBrowseSubmissionQueryStringISH(1, sb.toString(), defaultOrder, columnIndex, ascending, offset, num);
+        queryString = assembleBrowseSubmissionQueryStringISH(1, sb.toString(), defaultOrder, columnIndex, ascending, offset, num);
     	   
        } else if (type == 2) {// array
     	   
