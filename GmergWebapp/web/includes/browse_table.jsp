@@ -197,7 +197,7 @@
 				<h:selectOneMenu id="resultsPerPage" value="#{TableBean.resultsPerPage}" onchange="clickPerPage(event)" >
 					<f:selectItems value="#{TableBean.perPageOptions}"/>
 				</h:selectOneMenu>
-				<h:outputText value=" entries per page" styleClass="nav3" />
+				<h:outputText value=" rows per page" styleClass="nav3" />
 				<h:commandLink id="perPage" action="#{TableBean.changeResultsPerPage}" >
 					<f:param name="tableOperation" value="perPage" />
 				</h:commandLink>
@@ -213,7 +213,8 @@
 					 border="0" width="100%" styleClass="stripey" cellpadding="2" cellspacing="2" style="white-space:nowrap" 
 					 columns="5" columnClasses="navPageNoCol, centreAlign, centreAlign, centreAlign, navGotoBoxCol, navGotoButtonCol, navScrollCol" >
 
-			<h:outputText rendered="#{TableBean.tableView.table.numRows > 0}" value="#{TableBean.tableView.table.numRows} Row: Page #{TableBean.tableView.currentPage} of #{TableBean.tableView.numPages}" styleClass="plaintext"/>
+			<h:outputText rendered="#{TableBean.tableView.table.numRows > 1}" value="#{TableBean.tableView.table.numRows} Rows: Page #{TableBean.tableView.currentPage} of #{TableBean.tableView.numPages}" styleClass="plaintext"/>
+			<h:outputText rendered="#{TableBean.tableView.table.numRows == 1}" value="#{TableBean.tableView.table.numRows} Row: Page #{TableBean.tableView.currentPage} of #{TableBean.tableView.numPages}" styleClass="plaintext"/>
 
 			<h:panelGroup rendered="#{TableBean.tableView.numPages > 1}">
 				<h:commandLink id="first" action="#{TableBean.tableNavigation}" styleClass="nav3" >

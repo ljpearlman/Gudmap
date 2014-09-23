@@ -19,7 +19,8 @@ public class EntriesCollectionBrowseHelper extends CollectionBrowseHelper {
 	    GenericTable table = assembler.createTable();
 	    GenericTableView tableView = new GenericTableView (viewName, 20, table);
 	    if(Utility.getProject().equals("GUDMAP")) 
-	    	tableView.setColVisible(new boolean[]{ true, true, true, false, false, false, true, false, true, false, false, false, true, true,  false, true, true });
+	    	tableView.setColVisible(new boolean[]{ true, true, false, false, true, false, true, false, true, false, false, true, true, false, false, false, false });
+//    	tableView.setColVisible(new boolean[]{ true, true, true, false, false, false, true, false, true, false, false, false, true, true,  false, true, true });
 	    else 
 	    	tableView.setColVisible(new boolean[]{ true, true, true, false, true, false, false, true, false, true, true, true, true });
 		//tableView.addCollection(0, 0); //CollectionType:0

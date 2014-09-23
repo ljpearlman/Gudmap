@@ -227,6 +227,7 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		HeaderItem[] ishHeader = new HeaderItem[ishColNum];
 		for(int i=0; i<ishColNum; i++)
 			ishHeader[i] = new HeaderItem(ishHeaderTitles[i], ishHeaderSortable[i]);
+		
 		String arraySampleHeaderTitles[] = {"Tissue Type", "Title", "Description", "Series ID"};
 		boolean arraySampleHeaderSortable[] = {true, true, true, true};
 		int colNum = arraySampleHeaderTitles.length;
