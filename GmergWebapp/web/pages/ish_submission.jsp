@@ -20,20 +20,17 @@
 
 </p>	
 	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage && ISHSingleSubmissionBean.submission.released && !ISHSingleSubmissionBean.submission.deleted}">
-		<h:panelGrid width="100%" columns="1" styleClass="block-stripey">
+		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
+		<h:panelGrid columns="1">
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" rendered="#{empty ISHSingleSubmissionBean.submission.euregeneId}" />
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID} (#{ISHSingleSubmissionBean.submission.euregeneId})" rendered="#{not empty ISHSingleSubmissionBean.submission.euregeneId}"/>
-		</h:panelGrid>
-		
-		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
-                                                <h:outputText styleClass="plaintextbold" value="Data Source" />
-                        
-                                                 <h:graphicImage value="../images/GUDMAP_Logo.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
-                                                 <h:graphicImage value="../images/button_euregene2.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}"/>
+		                   
+            <h:graphicImage value="../images/GUDMAP_Logo.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
+            <h:graphicImage value="../images/button_euregene2.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}"/>
 		</h:panelGrid>
 
 		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
-			<h:outputText value="Gene"/>
+			<h:outputText value="Gene:"/>
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{empty ISHSingleSubmissionBean.submission.geneSymbol}"/>
 			<h:panelGrid columns="3"  rendered="#{not empty ISHSingleSubmissionBean.submission.geneSymbol}" >
 				<h:outputLink styleClass="plaintext" value="gene.html">
@@ -42,19 +39,32 @@
 				</h:outputLink>
 				<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.geneName}" />
 			</h:panelGrid>
-		</h:panelGrid>
-			
-		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
-			<h:outputText value="Theiler Stage" />
-			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
-				<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
-			</h:outputLink>
+			<h:outputText value="Stage:" />
+			<h:panelGrid columns="1"  >
+				<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
+					<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
+				</h:outputLink>
+			</h:panelGrid>
+			<h:outputText value="Tissue:" />
+			<h:panelGrid columns="1"  >
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
+			</h:panelGrid>
+			<h:outputText value="Species:" />
+			<h:panelGrid columns="1"  >
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.species}"/> 
+			</h:panelGrid>
+			<h:outputText value="Assay Type:" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
+			<h:panelGrid columns="1"  rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}">
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.assayType} #{ISHSingleSubmissionBean.submission.specimen.assayType}"/> 
+			</h:panelGrid>
 		</h:panelGrid>
 
-		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" rendered="#{not empty ISHSingleSubmissionBean.submission.tissue}">
-			<h:outputText value="Tissue" />
-			<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
 		</h:panelGrid>
+
+
+			
+
+
 
 		<h:panelGrid  width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol" >
 			<h:outputText value="Images" />

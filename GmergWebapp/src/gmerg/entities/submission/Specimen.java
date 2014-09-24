@@ -12,6 +12,7 @@ public class Specimen {
     private String embedding="";
     private String phase = "";
     private String[] notes= new String[0];
+    private String species = "";
 
     public String getStageFormat() {
         return stageFormat;
@@ -143,4 +144,16 @@ public class Specimen {
 	if (null == notes)
 	    notes = new String[0];
     }
+    
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String value) {
+	if (null == value) 
+		species= "";
+	else
+		species = value.trim();
+    }
+   
 }

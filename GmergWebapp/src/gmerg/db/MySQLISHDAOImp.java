@@ -1010,6 +1010,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             specimen.setOtherStageValue(resSetSpecimen.getString(7));
             specimen.setPhase(resSetSpecimen.getString(11));
             specimen.setSex(resSetSpecimen.getString(9));
+            specimen.setSpecies(resSetSpecimen.getString(12));
 	    
             List<String> notes = new ArrayList<String>();
             String str = null;
