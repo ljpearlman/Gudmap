@@ -221,10 +221,22 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 			
 			//get related ish submissions
 			ArrayList relatedSubmissionISH = ishDAO.findRelatedSubmissionBySymbolISH(geneSymbol);
+
+			//get related ish submissions
+			ArrayList relatedSubmissionIHC = ishDAO.findRelatedSubmissionBySymbolIHC(geneSymbol);
+
+			//get related ish submissions
+			ArrayList relatedSubmissionTG = ishDAO.findRelatedSubmissionBySymbolTG(geneSymbol);
 			
 			/** ---complete gene object---  */
 			if (null != relatedSubmissionISH) {
 				geneInfo.setIshSubmissions(relatedSubmissionISH);
+			}
+			if (null != relatedSubmissionIHC) {
+				geneInfo.setIhcSubmissions(relatedSubmissionIHC);
+			}
+			if (null != relatedSubmissionTG) {
+				geneInfo.setTgSubmissions(relatedSubmissionTG);
 			}
 			if (null != associatedProbe) {
 				geneInfo.setAssocProbes(associatedProbe);

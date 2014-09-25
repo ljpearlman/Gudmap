@@ -24,6 +24,8 @@ public class Gene {
     private String refSeqID = null;
     private String refSeqURL = null;
     private ArrayList ishSubmissions;
+    private ArrayList ihcSubmissions;
+    private ArrayList tgSubmissions;
     private ArrayList maProbes;
     private ArrayList arraySubmissions;
     private ArrayList ontologyTerms;
@@ -229,6 +231,26 @@ public class Gene {
         return ishSubmissions;
     }
 
+    public void setIhcSubmissions(ArrayList values) {
+    	ihcSubmissions = values;
+	if (null != ihcSubmissions && 0 == ihcSubmissions.size())
+	    ishSubmissions = null;
+    }
+
+    public ArrayList getIhcSubmissions() { 	  	
+        return ihcSubmissions;
+    }
+    
+    public void setTgSubmissions(ArrayList values) {
+    	tgSubmissions = values;
+	if (null != tgSubmissions && 0 == tgSubmissions.size())
+	    ishSubmissions = null;
+    }
+
+    public ArrayList getTgSubmissions() { 	  	
+        return tgSubmissions;
+    }
+    
     public void setAssocProbes(ArrayList values) {
         maProbes = values;
 	if (null != maProbes && 0 == maProbes.size())
