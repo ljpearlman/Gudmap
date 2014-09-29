@@ -422,7 +422,7 @@ public class AdvancedSearchDBQuery {
 	  final static public String getISHSelect(){
 		  return "(select distinct QIC_RPR_SYMBOL col1, "+
 		"GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') col2,"+  
-		"'' col3,"+
+		"QIC_EXP_STRENGTH col3,"+
 		"QIC_SUB_SOURCE col4,"+
 		"QIC_SUB_SUB_DATE col5,"+
 		"QIC_SUB_EMBRYO_STG col6,"+

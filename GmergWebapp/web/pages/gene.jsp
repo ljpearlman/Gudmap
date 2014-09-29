@@ -128,8 +128,8 @@
 	</h:panelGrid>
 	
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ishSubmissions == null}">
-		  <h:outputText value="ISH-Data" />
-		  <h:outputText value="" />
+		  <h:outputText value="ISH Data" />
+		  <h:outputText value="no data" />
 	</h:panelGrid>	
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ishSubmissions != null}">
 		        <h:outputText value="ISH-Data" />
@@ -171,9 +171,13 @@
 		</h:dataTable>
 	</h:panelGrid>
 	
+	<h:panelGrid rendered="#{GeneInfoBean.gene.ihcSubmissions != null}">
+      	                <f:verbatim>&nbsp;</f:verbatim>
+	</h:panelGrid>
+
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ihcSubmissions == null}">
-		 <h:outputText value="IHC-Data" />
-		 <h:outputText value="" />	
+		 <h:outputText value="IHC Data" />
+		 <h:outputText value="no data" />	
 	</h:panelGrid>
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ihcSubmissions != null}">
 		 <h:outputText value="IHC-Data" />
@@ -215,10 +219,13 @@
 		</h:dataTable>
 	</h:panelGrid>
 
+	<h:panelGrid rendered="#{GeneInfoBean.gene.tgSubmissions != null}">
+      	                <f:verbatim>&nbsp;</f:verbatim>
+	</h:panelGrid>
 
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.tgSubmissions == null}">
 		        <h:outputText value="Transgenic Data" />
-		        <h:outputText value="" />
+		        <h:outputText value="no data" />
 	</h:panelGrid>
 
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.tgSubmissions != null}">
