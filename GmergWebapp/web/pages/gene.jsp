@@ -4,7 +4,28 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
+<head>
+<style>
+.columnWidthgp1 {
+    width:80px;
+    text-align:left;
+}
+.columnWidthgp2 {
+    width:30px;
+    text-align:left;
+}
+.columnWidthgp3 {
+    width:80px;
+    text-align:left;
+}
+.columnWidthgp4 {
+    width:180px;
+    text-align:left;
+}
 
+</style>
+</head>
+<body>
 	<h3>Gene Details</h3>
 	<h:outputText value="There is no available data on the selected gene." styleClass="plaintext" rendered="#{GeneInfoBean.gene == null}" />
 	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null}">
@@ -153,7 +174,7 @@
 				<h:outputText value="#{sub[3]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
-,				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] != 'probe.html'}">
+				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] != 'probe.html'}">
 					<h:outputText value="#{sub[6]}" />
 				</h:outputLink>				
 				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] == 'probe.html'}">
@@ -201,7 +222,7 @@
 				<h:outputText value="#{sub[3]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
-,				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] != 'probe.html'}">
+				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] != 'probe.html'}">
 					<h:outputText value="#{sub[6]}" />
 				</h:outputLink>				
 				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] == 'probe.html'}">
@@ -270,6 +291,6 @@
 --> 
 
 	<jsp:include page="/includes/footer.jsp" />
-    
+</body>    
 </f:view>
 

@@ -535,7 +535,7 @@
 			<h:commandLink id="emptyCollection" styleClass="plaintextbold" 
 			    			rendered="#{CollectionBrowseBean.clipboard && TableBean.clipboardItemsNum > 0  && view.viewId =='/pages/collection_browse.jsp' && CollectionBrowseBean.collectionName != ' My Entries'}"
 							action="#{TableBean.removeAllValuesFromClipboard}" >
-				<h:outputText value="Remove all items from #{TableBean.clipboardName}" />
+				<h:outputText value="Remove all items from My #{TableBean.clipboardName}" />
 				<f:param name="tableOperation" value="removeAllValuesFromClipboard" />
 			</h:commandLink>
 			
