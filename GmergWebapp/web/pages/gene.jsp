@@ -153,7 +153,7 @@
 		  <h:outputText value="no data" />
 	</h:panelGrid>	
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ishSubmissions != null}">
-		        <h:outputText value="ISH-Data" />
+		        <h:outputText value="ISH Data" />
 		        <h:dataTable cellspacing="5" value="#{GeneInfoBean.gene.ishSubmissions}" var="sub">
 			<h:column>
 				<h:outputLink styleClass="datatext" value="#{sub[1]}">
@@ -201,7 +201,7 @@
 		 <h:outputText value="no data" />	
 	</h:panelGrid>
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ihcSubmissions != null}">
-		 <h:outputText value="IHC-Data" />
+		 <h:outputText value="IHC Data" />
 		    <h:dataTable cellspacing="5" value="#{GeneInfoBean.gene.ihcSubmissions}" var="sub">
 			<h:column>
 				<h:outputLink styleClass="datatext" value="#{sub[1]}">
