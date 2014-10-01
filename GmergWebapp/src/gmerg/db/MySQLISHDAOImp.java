@@ -6052,8 +6052,12 @@ public class MySQLISHDAOImp implements ISHDAO {
     	    
             resultSet = prepStmt.executeQuery();
             
-            if (resultSet.first()) 
+            if (resultSet.first()) {
                 tissue = resultSet.getString(1);
+				while (resultSet.next()) {
+					tissue += "," + resultSet.getString(1);
+				}
+            }
             
 	        if (debug) 	    
             	System.out.println("tissue: " + tissue);
