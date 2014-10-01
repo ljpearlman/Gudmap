@@ -168,7 +168,7 @@
 				<h:outputText value="#{sub[5]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
-				<h:outputText value="#{sub[8]}" styleClass="datatext" />
+				<h:outputText value="#{sub[8]}" title="#{sub[7]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
 				<h:outputText value="#{sub[3]}" styleClass="datatext" />
@@ -212,7 +212,7 @@
 				<h:outputText value="#{sub[5]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
-				<h:outputText value="#{sub[8]}" styleClass="datatext" />
+				<h:outputText value="#{sub[8]}" title="#{sub[7]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
 				<h:outputText value="#{sub[3]}" styleClass="datatext" />
@@ -257,7 +257,7 @@
 				<h:outputText value="#{sub[5]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
-				<h:outputText value="#{sub[8]}" styleClass="datatext" />
+				<h:outputText value="#{sub[8]}" title="#{sub[7]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
 				<h:outputText value="#{sub[3]}" styleClass="datatext" />
