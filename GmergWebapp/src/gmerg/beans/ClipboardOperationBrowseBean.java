@@ -10,7 +10,7 @@ import gmerg.assemblers.CollectionAssembler;
 
 public class ClipboardOperationBrowseBean extends CollectionOperationBrowseParentBean {
     
-    protected boolean debug = true;
+    protected boolean debug = false;
 
 	// ********************************************************************************
 	// Constructors & Initializers

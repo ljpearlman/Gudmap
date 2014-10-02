@@ -89,7 +89,8 @@
 										onchange="setGeneStageHidden()" >
 										<f:selectItems value="#{DatabaseHomepageBean.stageItems}" />
 									</h:selectOneMenu>
-<%-- xingjun - 27/05/2010 - use geneStageHidden to set geneStage value - dont know why selectOneMenu not working --%> 
+<%-- xingjun - 27/05/2010 - use geneStageHidden to set geneStage value - dont know why selectOneMenu not working --%>
+
 									<h:inputHidden id="geneStageHidden" value="#{DatabaseHomepageBean.geneStage}" />
 								</h:panelGroup>
 								<h:panelGroup rendered="#{1 == 0}">

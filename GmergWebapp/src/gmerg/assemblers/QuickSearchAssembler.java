@@ -253,12 +253,12 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			// ish expression
 			/*tableData[i][11] = new DataItem(row[2]);*/
 			
-			if(row[11]==null){
+			if(row[2]==null){
 			tableData[i][11] = new DataItem("");
 			}
 			else
 			{
-				String expression = row[11];
+				String expression = row[2];
 				if (expression.contains("present"))
 					tableData[i][11] = new DataItem("present");
 				else if (expression.contains("uncertain"))

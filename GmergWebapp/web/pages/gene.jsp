@@ -4,7 +4,28 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
+<head>
+<style>
+.columnWidthgp1 {
+    width:80px;
+    text-align:left;
+}
+.columnWidthgp2 {
+    width:30px;
+    text-align:left;
+}
+.columnWidthgp3 {
+    width:80px;
+    text-align:left;
+}
+.columnWidthgp4 {
+    width:180px;
+    text-align:left;
+}
 
+</style>
+</head>
+<body>
 	<h3>Gene Details</h3>
 	<h:outputText value="There is no available data on the selected gene." styleClass="plaintext" rendered="#{GeneInfoBean.gene == null}" />
 	<h:panelGrid columns="2" rowClasses="header-stripey,header-nostripe" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null}">
@@ -123,11 +144,16 @@
 		</h:panelGrid>
 	</h:panelGrid>
 
-	<h:panelGrid rendered="#{GeneInfoBean.gene.ishSubmissions != null}">
+	<h:panelGrid>
       	                <f:verbatim>&nbsp;</f:verbatim>
 	</h:panelGrid>
+	
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ishSubmissions == null}">
+		  <h:outputText value="ISH Data" />
+		  <h:outputText value="no data" />
+	</h:panelGrid>	
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ishSubmissions != null}">
-		        <h:outputText value="In-Situs" />
+		        <h:outputText value="ISH Data" />
 		        <h:dataTable cellspacing="5" value="#{GeneInfoBean.gene.ishSubmissions}" var="sub">
 			<h:column>
 				<h:outputLink styleClass="datatext" value="#{sub[1]}">
@@ -142,13 +168,13 @@
 				<h:outputText value="#{sub[5]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
-				<h:outputText value="#{sub[8]}" styleClass="datatext" />
+				<h:outputText value="#{sub[8]}" title="#{sub[7]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
 				<h:outputText value="#{sub[3]}" styleClass="datatext" />
 			</h:column>
 			<h:column>
-,				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] != 'probe.html'}">
+				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] != 'probe.html'}">
 					<h:outputText value="#{sub[6]}" />
 				</h:outputLink>				
 				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] == 'probe.html'}">
@@ -165,6 +191,83 @@
 			</h:column>
 		</h:dataTable>
 	</h:panelGrid>
+	
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ihcSubmissions == null}">
+		 <h:outputText value="IHC Data" />
+		 <h:outputText value="no data" />	
+	</h:panelGrid>
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.ihcSubmissions != null}">
+		 <h:outputText value="IHC Data" />
+		    <h:dataTable cellspacing="5" value="#{GeneInfoBean.gene.ihcSubmissions}" var="sub">
+			<h:column>
+				<h:outputLink styleClass="datatext" value="#{sub[1]}">
+					<f:param value="#{sub[0]}" name="id" />
+					<h:outputText value="#{sub[0]}" />
+				</h:outputLink>			
+			</h:column>
+			<h:column>
+				<h:outputText value="#{sub[2]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<h:outputText value="#{sub[5]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<h:outputText value="#{sub[8]}" title="#{sub[7]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<h:outputText value="#{sub[3]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] != 'probe.html'}">
+					<h:outputText value="#{sub[6]}" />
+				</h:outputLink>				
+				<h:outputLink styleClass="datatext" value="#{sub[10]}" rendered="#{sub[10] == 'probe.html'}">
+					<f:param name="probe" value="#{sub[6]}" />
+					<h:outputText value="#{sub[6]}" />
+				</h:outputLink>				
+			</h:column>
+			<h:column>
+				<h:outputLink styleClass="datatext" value="probe.html">
+					<f:param name="probe" value="#{sub[6]}" />
+					<f:param name="maprobe" value="#{sub[9]}" />
+					<h:outputText value=" (#{sub[9]})" rendered="#{sub[9] != ''}"/>
+				</h:outputLink>
+			</h:column>
+		</h:dataTable>
+	</h:panelGrid>
+
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.tgSubmissions == null}">
+		        <h:outputText value="Transgenic Data" />
+		        <h:outputText value="no data" />
+	</h:panelGrid>
+
+	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene.tgSubmissions != null}">
+		        <h:outputText value="Transgenic Data" />
+		        <h:dataTable cellspacing="5" value="#{GeneInfoBean.gene.tgSubmissions}" var="sub">
+			<h:column>
+				<h:outputLink styleClass="datatext" value="#{sub[1]}">
+					<f:param value="#{sub[0]}" name="id" />
+					<h:outputText value="#{sub[0]}" />
+				</h:outputLink>			
+			</h:column>
+			<h:column>
+				<h:outputText value="#{sub[2]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<h:outputText value="#{sub[5]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<h:outputText value="#{sub[8]}" title="#{sub[7]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<h:outputText value="#{sub[3]}" styleClass="datatext" />
+			</h:column>
+			<h:column>
+				<h:outputText value="#{sub[11]}" styleClass="datatext" />
+			</h:column>
+		</h:dataTable>
+	</h:panelGrid>
+	
 <!--
 	<h:panelGrid rendered="#{GeneInfoBean.gene != null && GeneInfoBean.gene.numMicArrays != null}">
       	                <f:verbatim>&nbsp;</f:verbatim>
@@ -180,6 +283,6 @@
 --> 
 
 	<jsp:include page="/includes/footer.jsp" />
-    
+</body>    
 </f:view>
 

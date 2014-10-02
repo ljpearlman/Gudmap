@@ -151,7 +151,7 @@
 --%>			
 			<h:commandLink id="deleteFromCollection" styleClass="plaintextbold" action="#{CollectionBrowseBean.removeSelectedItems}" 
 						   onclick="return processSelectionsForAction(event, 'collectionBrowse')"
-						   rendered="#{CollectionBrowseBean.collectionType=='0' || CollectionBrowseBean.collectionType=='1' || CollectionBrowseBean.collectionType=='2'}">
+						   rendered="#{!CollectionBrowseBean.clipboard && (CollectionBrowseBean.collectionType=='0' || CollectionBrowseBean.collectionType=='1' || CollectionBrowseBean.collectionType=='2')}">
 				<h:outputText value="Remove selected items from #{CollectionBrowseBean.collectionName}" />
 				<f:param name="actionMethodCalled" value="true" />
 			</h:commandLink>
@@ -167,7 +167,7 @@
 			<h:panelGrid styleClass="rightAlign" >
 				<h:commandLink id="emptyCollection" styleClass="plaintextbold" action="#{CollectionBrowseBean.emptyCollection}"  
 							   onclick="if (confirm('Are you sure you want to remove all items?')) passTableViewName(event, 'collectionBrowse'); else return false;" 
-							   rendered="#{CollectionBrowseBean.collectionType=='0' || CollectionBrowseBean.collectionType=='1' || CollectionBrowseBean.collectionType=='2'}">
+							   rendered="#{!CollectionBrowseBean.clipboard && (CollectionBrowseBean.collectionType=='0' || CollectionBrowseBean.collectionType=='1' || CollectionBrowseBean.collectionType=='2')}">
 					<h:outputText value="Remove all items from #{CollectionBrowseBean.collectionName}" />
 					<f:param name="actionMethodCalled" value="true" />
 				</h:commandLink>

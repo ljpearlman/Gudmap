@@ -59,6 +59,8 @@ public interface ISHDAO {
     /** gene page */
 	public Gene findGeneInfoBySymbol(String symbol); // q11
 	public ArrayList findRelatedSubmissionBySymbolISH(String symbol);
+	public ArrayList findRelatedSubmissionBySymbolIHC(String symbol);
+	public ArrayList findRelatedSubmissionBySymbolTG(String symbol);
 	public ArrayList findRelatedSubmissionBySymbolArray(String symbol, int columnIndex,
                                          boolean ascending, int offset,
                                          int num);

@@ -39,7 +39,7 @@ public class DBQuery {
 		    		"ELSE (SELECT DISTINCT GROUP_CONCAT(ALE_LAB_NAME_ALLELE) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND " +
 		    		"SAL_SUBMISSION_FK=SUB_OID) END  END AS GENOTYPE",
 		 /* "SPN_WILDTYPE",*/
-		  "ANO_COMPONENT_NAME",
+		  "GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME)",
 		  "(SELECT GROUP_CONCAT(DISTINCT EXP_STRENGTH) FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID) EXP_STRENGTH",
 //		  "SUB_INSITU_EXP",
 //		  "GROUP_CONCAT(DISTINCT EXP_STRENGTH)",
@@ -500,7 +500,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                                 "CASE WHEN (CONCAT(RPR_PREFIX,RPR_OID) =  RPR_JAX_ACC) THEN '' ELSE CONCAT(RPR_PREFIX,RPR_OID) END, " +
                           		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
                            		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
-                           		"ELSE 'probe.html' END " +
+                           		"ELSE 'probe.html' END, " +
+                          		"GROUP_CONCAT(DISTINCT ALE_ALLELE_NAME ORDER BY SAL_ORDER)  " +
                                 "FROM ISH_SUBMISSION " + 
                                 "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
                                 "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
@@ -511,8 +512,10 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                                 "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
                                 "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
                                 "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC " +
+                                "LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +                                
                                 "WHERE RPR_SYMBOL = ? " + 
                                 "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
+                                "AND SUB_ASSAY_TYPE = ? " +
                                 "GROUP BY SUB_OID " +
                                 "ORDER BY CONCAT(STG_PREFIX, SUB_EMBRYO_STG), natural_sort(SUB_ACCESSION_ID)";
 
