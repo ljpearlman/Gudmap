@@ -501,7 +501,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                           		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
                            		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
                            		"ELSE 'probe.html' END, " +
-                          		"ALE_ALLELE_NAME " +
+                          		"GROUP_CONCAT(DISTINCT ALE_ALLELE_NAME ORDER BY SAL_ORDER)  " +
                                 "FROM ISH_SUBMISSION " + 
                                 "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
                                 "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 

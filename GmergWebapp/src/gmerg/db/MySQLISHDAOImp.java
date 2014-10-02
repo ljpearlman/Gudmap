@@ -1679,7 +1679,7 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @param symbol
      * @return
      */
-    public ArrayList findRelatedSubmissionBySymbolISH(String symbol) {
+    public ArrayList<String[]> findRelatedSubmissionBySymbolISH(String symbol) {
 		if (symbol == null || symbol.equals("")) {
 		    return null;
 		}
@@ -1713,7 +1713,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
     }
  
-    public ArrayList findRelatedSubmissionBySymbolIHC(String symbol) {
+    public ArrayList<String[]> findRelatedSubmissionBySymbolIHC(String symbol) {
 		if (symbol == null || symbol.equals("")) {
 		    return null;
 		}
@@ -1733,9 +1733,9 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("findRelatedSubmissionBySymbolIHC:prepStmt  = "+prepStmt);
             resSet = prepStmt.executeQuery();
             
-            ArrayList<String[]> relatedSubmissionISH = DBHelper.formatResultSetToArrayList(resSet);
+            ArrayList<String[]> relatedSubmissionIHC = DBHelper.formatResultSetToArrayList(resSet);
 	    
-            return relatedSubmissionISH;
+            return relatedSubmissionIHC;
             
         } catch (SQLException se) {
             se.printStackTrace();
@@ -1747,7 +1747,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
     }
  
-    public ArrayList findRelatedSubmissionBySymbolTG(String symbol) {
+    public ArrayList<String[]> findRelatedSubmissionBySymbolTG(String symbol) {
 		if (symbol == null || symbol.equals("")) {
 		    return null;
 		}
@@ -1767,9 +1767,9 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("findRelatedSubmissionBySymbolTG:prepStmt  = "+prepStmt);
             resSet = prepStmt.executeQuery();
             
-            ArrayList<String[]> relatedSubmissionISH = DBHelper.formatResultSetToArrayList(resSet);
+            ArrayList<String[]> relatedSubmissionTg = DBHelper.formatResultSetToArrayList(resSet);
 	    
-            return relatedSubmissionISH;
+            return relatedSubmissionTg;
             
         } catch (SQLException se) {
             se.printStackTrace();
