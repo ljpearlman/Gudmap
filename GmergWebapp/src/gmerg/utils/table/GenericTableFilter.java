@@ -24,7 +24,8 @@ public class GenericTableFilter {
 	int[] tableToSqlColMap;
 	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_ASSAY_TYPE","QIC_PRB_PROBE_NAME","QIC_SUB_EMBRYO_STG","#","QIC_SPN_SEX","QIC_SPN_WILDTYPE","#","QIC_EXP_STRENGTH","#","QIC_SPN_ASSAY_TYPE","#","#","#"};
 //	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_ASSAY_TYPE","QIC_EXP_STRENGTH","#","#","QIC_SUB_EMBRYO_STG","7","QIC_SPN_SEX","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_SPN_ASSAY_TYPE","#","#","#"};
-	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","#","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
+	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","QMC_SUB_SOURCE","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
+//	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","#","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
 	String[] microarrayMapQuery = {"#","#","#","#","#","#","QMC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","QMC_SUB_SOURCE","QMC_SUB_SUB_DATE","QMC_SPN_ASSAY_TYPE","#","#","#"};
 			
 	public GenericTableFilter() {

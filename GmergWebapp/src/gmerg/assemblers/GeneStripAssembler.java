@@ -676,8 +676,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			for (int i=0;i<analen;i++) {
 	//			System.out.println("structure: " + i);
 				// get component ids
-				String[] componentIds = 
-					(String[])AdvancedSearchDBQuery.getEMAPID().get(interestedAnatomyStructures[i]);
+				String[] componentIds = (String[])AdvancedSearchDBQuery.getEMAPID().get(interestedAnatomyStructures[i]);
 				
 				// put component ids into componentIdsInAll arrayList
 				int eLen = componentIds.length;
@@ -687,8 +686,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				}
 	
 				// get expression info
-				ArrayList expressionOfGivenComponents = 
-					geneStripDAO.getGeneExpressionForStructure(symbol, componentIds, true);
+				ArrayList expressionOfGivenComponents = geneStripDAO.getGeneExpressionForStructure(symbol, componentIds, true);
 				
 				// start to calculate - only relevant expression exists
 				double indicator = 0;
