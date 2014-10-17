@@ -20,8 +20,8 @@
 
 </p>	
 	<h:form id="mainForm" rendered="#{ISHSingleSubmissionBean.renderPage && ISHSingleSubmissionBean.submission.released && !ISHSingleSubmissionBean.submission.deleted}">
-		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
-		<h:panelGrid columns="1">
+		<h:panelGrid width="100%"  border="0" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
+		<h:panelGrid border="0" columns="1">
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID}" rendered="#{empty ISHSingleSubmissionBean.submission.euregeneId}" />
 			<h:outputText styleClass="plaintextbold" value="#{ISHSingleSubmissionBean.submission.accID} (#{ISHSingleSubmissionBean.submission.euregeneId})" rendered="#{not empty ISHSingleSubmissionBean.submission.euregeneId}"/>
 		                   
@@ -29,34 +29,29 @@
             <h:graphicImage value="../images/button_euregene2.png" styleClass="icon" height="50" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}"/>
 		</h:panelGrid>
 
-		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
+		<h:panelGrid width="100%" border="0" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
 			<h:outputText value="Gene:"/>
-			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{empty ISHSingleSubmissionBean.submission.geneSymbol}"/>
-			<h:panelGrid columns="3"  rendered="#{not empty ISHSingleSubmissionBean.submission.geneSymbol}" >
+			<h:panelGroup >
 				<h:outputLink styleClass="plaintext" value="gene.html">
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
 					<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
 				</h:outputLink>
-				<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.geneName}" />
-			</h:panelGrid>
+				<h:outputText styleClass="datatext" value=", #{ISHSingleSubmissionBean.submission.geneName}" />
+			</h:panelGroup>
+			
 			<h:outputText value="Stage:" />
-			<h:panelGrid columns="1"  >
-				<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
-					<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
-				</h:outputLink>
-			</h:panelGrid>
+			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
+				<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
+			</h:outputLink>
+				
 			<h:outputText value="Tissue:" />
-			<h:panelGrid columns="1"  >
-				<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
-			</h:panelGrid>
+			<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
+
 			<h:outputText value="Species:" />
-			<h:panelGrid columns="1"  >
-				<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.species}"/> 
-			</h:panelGrid>
+			<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.species}"/> 
+
 			<h:outputText value="Assay Type:" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
-			<h:panelGrid columns="1"  rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}">
-				<h:outputText value="#{ISHSingleSubmissionBean.submission.assayType} #{ISHSingleSubmissionBean.submission.specimen.assayType}"/> 
-			</h:panelGrid>
+			<h:outputText value="#{ISHSingleSubmissionBean.submission.assayType} #{ISHSingleSubmissionBean.submission.specimen.assayType}" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/> 
 		</h:panelGrid>
 
 		</h:panelGrid>
@@ -130,20 +125,19 @@
 			<h:outputText value="Submitters" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
-		                                                <h:outputText value="Principal Investigator(s):" />
-			                                <t:dataList id="piDataList" var="piInfo"
-				                          value="#{ISHSingleSubmissionBean.submission.principalInvestigators}" >
+		            <h:outputText value="Principal Investigator(s):" />
+			        <t:dataList id="piDataList" var="piInfo" value="#{ISHSingleSubmissionBean.submission.principalInvestigators}" >
 						<h:outputLink  title="#{piInfo.fullAddress}"  styleClass="datatext" value="javascript:showLabDetails(#{piInfo.id})">
-						                <h:outputText value="#{piInfo.name}, " />
+						      <h:outputText value="#{piInfo.name}, " />
 						</h:outputLink>
 						<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.displayAddress}" /><br/>
-			                                </t:dataList>
+			        </t:dataList>
 					<h:outputText value="Contributors:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.authors}" />
 					<h:outputText value="Submitted By:" />
 					<h:panelGroup>
-                                                                                       <h:outputLink title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{ISHSingleSubmissionBean.submission.submitter.id})">
-					                <h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.name}, " />
+                            <h:outputLink title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{ISHSingleSubmissionBean.submission.submitter.id})">
+					             <h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.name}, " />
 					       </h:outputLink>
 					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.displayAddress}" />
 					</h:panelGroup>
