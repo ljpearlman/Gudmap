@@ -136,7 +136,7 @@ function Folder(folderDescription, hreference, group, expression, strength, patt
     	this.patternIcons[a] = ICONPATH + "RestrictedRound20x20.png";
     }
   }
-  
+    
   //if a note exists, add a note icon to be rendered on the page
   if(note) {
     this.noteIcon = ICONPATH + "note.gif";
@@ -309,7 +309,7 @@ function drawFolder(insertAtObj)
       docW = docW + "&nbsp;<img id='patternIcon" + b + this.id + "' name='patternIcon" + b + this.id + "' src='" + this.patternIcons[b] + "' border=0>"
     }
   }
-    
+
   if(this.noteIcon != null) {
     docW = docW + "&nbsp;<img id='noteIcon" + this.id + "' name='noteIcon" + this.id + "' src='" + this.noteIcon + "' border=0>"
   }
@@ -567,8 +567,8 @@ function iconImageSrc() {
  * @param pattern - pattern of expresssion
  * @param note - if there is a note associated with the component
  */
-function Item(itemDescription, group, expression, strength, pattern, note) // Constructor
-{
+function Item(itemDescription, group, expression, strength, pattern, densityTotal, densityDirection, densityMagnitude, note) // Constructor
+{	
   // constant data
   this.desc = itemDescription
   this.isGroup = group
@@ -579,6 +579,8 @@ function Item(itemDescription, group, expression, strength, pattern, note) // Co
   this.iconSrc;
   this.patternIcons = new Array();
   this.noteIcon;
+  this.densityTotalIcon;
+  this.densityAgeIcon;
   
   /* need to determine what icon is displayed in the html depending on what type of expression
    * and set the expression instance variables to 1 or 0 accordingly
@@ -654,6 +656,33 @@ function Item(itemDescription, group, expression, strength, pattern, note) // Co
     }
   }
   
+  if (densityTotal.indexOf("High") >=0){
+	  this.densityTotalIcon = ICONPATH + "max_high.gif";
+  }
+  else if (densityTotal.indexOf("Medium") >=0){
+	  this.densityTotalIcon = ICONPATH + "mod_medium.gif";
+  }
+  else if (densityTotal.indexOf("Low") >=0){
+	  this.densityTotalIcon = ICONPATH + "min_low.gif";
+  }
+  
+  if(densityDirection.indexOf("Increased") >=0){
+	  if(densityMagnitude.indexOf("Large") >= 0){
+	  	this.densityAgeIcon = ICONPATH + "inc_large.gif";
+	  }
+	  else if(densityMagnitude.indexOf("Small") >= 0){
+		 this.densityAgeIcon = ICONPATH + "inc_small.gif";
+	  }
+  }
+  else if(densityDirection.indexOf("Decreased") >=0){
+	  if(densityMagnitude.indexOf("Large") >= 0){
+		  this.densityAgeIcon = ICONPATH + "dec_large.gif";
+	  }
+	  else if(densityMagnitude.indexOf("Small") >= 0){
+		  this.densityAgeIcon = ICONPATH + "dec_small.gif";
+	  }
+  }
+ 
   if(note) {
     this.noteIcon = ICONPATH + "note.gif";
   }
@@ -766,7 +795,15 @@ function drawItem(insertAtObj)
       docW = docW + "&nbsp;<img id='patternIcon" + b + this.id + "' name='patternIcon" + b + this.id + "' src='" + this.patternIcons[b] + "' border=0>"
     }
   }
-    
+  
+  if(this.densityTotalIcon != null) { 
+	  docW = docW + "&nbsp;<img id='densityTotalIcon" + this.id + "' name='densityTotalIcon" + this.id + "' src='" + this.densityTotalIcon + "' border=0>";
+  } 
+  
+  if(this.densityAgeIcon != null) { 
+	  docW = docW + "&nbsp;<img id='densityAgeIcon" + this.id + "' name='densityAgeIcon" + this.id + "' src='" + this.densityAgeIcon + "' border=0>";
+  } 
+  
   if(this.noteIcon != null) { 
     docW = docW + "&nbsp;<img id='noteIcon" + this.id + "' name='noteIcon" + this.id + "' src='" + this.noteIcon + "' border=0>";
   }
@@ -1609,7 +1646,7 @@ function insDoc(parentFolder, document)
  * @param pattern - pattern of expresssion
  * @param note - if there is a note associated with the component
  */
-function gFld(description, hreference, group, expression, strength, pattern, note)
+function gFld(description, hreference, group, expression, strength, pattern, densityTotal, densityDirection, densityMagnitude, note)
 {
   folder = new Folder(description, hreference, group, expression, strength, pattern, note);
   return folder;
@@ -1626,7 +1663,7 @@ function gFld(description, hreference, group, expression, strength, pattern, not
  * @param pattern - pattern of expresssion
  * @param note - if there is a note associated with the component 
  */
-function gLnk(optionFlags, description, linkData, group, expression, strength, pattern, note)
+function gLnk(optionFlags, description, linkData, group, expression, strength, pattern, densityTotal, densityDirection, densityMagnitude, note)
 {
   if (optionFlags>=0) { //is numeric (old style) or empty (error)
     //Target changed from numeric to string in Aug 2002, and support for numeric style was entirely dropped in Mar 2004
@@ -1634,7 +1671,10 @@ function gLnk(optionFlags, description, linkData, group, expression, strength, p
     return;
   }
   //create the item object
-  newItem = new Item(description, group, expression, strength, pattern, note);
+//  var densityTotal = "Low";
+//  var densityDirection = "Decreased";
+//  var densityMagnitude = "Small";
+  newItem = new Item(description, group, expression, strength, pattern, densityTotal, densityDirection, densityMagnitude, note);
   setItemLink(newItem, optionFlags, linkData);
   return newItem;
 }

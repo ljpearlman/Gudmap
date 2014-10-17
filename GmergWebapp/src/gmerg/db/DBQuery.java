@@ -300,6 +300,23 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
   		                        "AND EXP_SUBMISSION_FK = SUB_OID " +
   		                        "AND SUB_ACCESSION_ID = ? " +
                                 "AND EXP_COMPONENT_ID = ? ";
+
+  final static String name272 = "DENSITY_NOTE";
+  final static String query272 = "SELECT DNN_VALUE " +
+  		                        "FROM ISH_EXPRESSION, ISH_SUBMISSION, ISH_DENSITY_NOTE, ISH_DENSITY " +
+  		                        "WHERE DNN_DENSITY_FK = DEN_OID " +
+  		                        "AND DEN_EXPRESSION_FK = EXP_OID " +
+  		                        "AND EXP_SUBMISSION_FK = SUB_OID " +
+  		                        "AND SUB_ACCESSION_ID = ? " +
+                                "AND EXP_COMPONENT_ID = ? ";
+
+  final static String name273 = "DENSITY_DETAIL";
+  final static String query273 = "SELECT DEN_RELATIVE_TO_TOTAL, DEN_DIRECTION_CHANGE, DEN_MAGNITUDE_CHANGE " +
+  		                        "FROM ISH_EXPRESSION, ISH_SUBMISSION, ISH_DENSITY " +
+  		                        "WHERE DEN_EXPRESSION_FK = EXP_OID " +
+  		                        "AND EXP_SUBMISSION_FK = SUB_OID " +
+  		                        "AND SUB_ACCESSION_ID = ? " +
+                                "AND EXP_COMPONENT_ID = ? ";
   
   final static String name117 = "EXPRESSION_PATTERNS";
   final static String query117 = "SELECT DISTINCT PTN_OID, PTN_PATTERN FROM ISH_PATTERN WHERE PTN_EXPRESSION_FK = ?";
@@ -755,7 +772,9 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                                  "and CSTG.STG_OID = CATN.ATN_STAGE_FK " +
                                  "and CSTG.STG_SEQUENCE = stg.STG_SEQUENCE) as kids," +
                                  "case when !APO_IS_PRIMARY_PATH OR ANO_IS_GROUP THEN 1 ELSE 0 END AS IP, " +
-                                 "exp.EXP_STRENGTH AS EXP, exp.EXP_ADDITIONAL_STRENGTH, exp.EXP_OID, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE " +
+                                 "exp.EXP_STRENGTH AS EXP, exp.EXP_ADDITIONAL_STRENGTH, exp.EXP_OID, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE, " +
+                                 "DEN_RELATIVE_TO_AGE, DEN_RELATIVE_TO_TOTAL, DEN_DIRECTION_CHANGE, DEN_MAGNITUDE_CHANGE, "+  
+                                 "DNN_VALUE , CASE WHEN DNN_VALUE IS NULL THEN 0 ELSE 1 END AS D_NOTE " +
                                "FROM ANA_NODE PARENT " +
                                "JOIN ANAD_PART_OF " +
                                  "ON APO_NODE_FK = PARENT.ANO_OID AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' " +
@@ -776,11 +795,14 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                                  "AND exp.EXP_COMPONENT_ID = ATN_PUBLIC_ID " +
                                "LEFT JOIN ISH_EXPRESSION_NOTE " +
                                  "ON exp.EXP_OID = ENT_EXPRESSION_FK " +
+                                 "LEFT JOIN ISH_DENSITY ON DEN_EXPRESSION_FK = EXP_OID "+
+                                 "LEFT JOIN ISH_DENSITY_NOTE ON DNN_DENSITY_FK = DEN_OID "+
                                "GROUP BY PARENT.ANO_COMPONENT_NAME,'RANGE',PATN.ATN_PUBLIC_ID, APO_SEQUENCE, APO_DEPTH,strt.STG_NAME,end.STG_NAME " +
                                "ORDER BY APO_SEQUENCE";
                                
   final static String name127 = "ANNOT_LIST";
-  final static String query127 = "SELECT DISTINCT EXP_OID, ATN_PUBLIC_ID, ANO_COMPONENT_NAME, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE "+
+  final static String query127 = "SELECT DISTINCT EXP_OID, ATN_PUBLIC_ID, ANO_COMPONENT_NAME, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE, "+
+		  						 "DEN_RELATIVE_TO_AGE, DEN_RELATIVE_TO_TOTAL, DEN_COMPONENT_ID, DEN_DIRECTION_CHANGE, DEN_MAGNITUDE_CHANGE "+
                                  "FROM ANA_NODE "+
                                  "JOIN ANA_TIMED_NODE "+
                                  "ON ANO_OID = ATN_NODE_FK "+
@@ -790,6 +812,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                                  "ON EXP_SUBMISSION_FK = SUB_OID AND SUB_ACCESSION_ID = ? " +
                                  "LEFT JOIN ISH_EXPRESSION_NOTE " +
                                  "ON ENT_EXPRESSION_FK = EXP_OID "+
+                                 "LEFT JOIN ISH_DENSITY ON DEN_EXPRESSION_FK = EXP_OID "+
                                  "ORDER BY ANO_COMPONENT_NAME";
   
   /** microarray */
@@ -2155,8 +2178,10 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
       new ParamQuery(name268,query268),
       new ParamQuery(name269,query269),
       new ParamQuery(name270,query270),
-      new ParamQuery(name271,query271)
-  };
+      new ParamQuery(name271,query271),
+      new ParamQuery(name272,query272),
+      new ParamQuery(name273,query273)
+ };
 
   // finds ParamQuery object by name and returns
   public static ParamQuery getParamQuery(String name) {

@@ -4,6 +4,7 @@
 package gmerg.assemblers;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import gmerg.db.DBHelper;
@@ -55,6 +56,7 @@ public class ExpressionDetailAssembler {
 				ishDAO.findExpressionDetailBySubmissionIdAndComponentId(submissionAccessionId, componentId);
 			if (expressionDetail != null) {
 				String expressionNotes = ishDAO.findAnnotationNote(submissionAccessionId, componentId);
+				String densityNotes = ishDAO.findDensityNote(submissionAccessionId, componentId);
 				
 				ExpressionPattern [] patterns = 
 					ishDAO.findPatternsAndLocations(String.valueOf(expressionDetail.getExpressionId()));
@@ -63,6 +65,13 @@ public class ExpressionDetailAssembler {
 				// fill out the expression detail object
 				expressionDetail.setSubmissionId(submissionAccessionId);
 				expressionDetail.setExpressionNote(expressionNotes);
+				expressionDetail.setDensityNote(densityNotes);
+				
+				ArrayList<String> densityDetail = ishDAO.findDensityDetail(submissionAccessionId, componentId);
+				expressionDetail.setDensityRelativeToTotal(densityDetail.get(0));
+				expressionDetail.setDensityDirectionalChange(densityDetail.get(1));
+				expressionDetail.setDensityMagnitudeChange(densityDetail.get(2));
+
 				
 			} else {
 	                

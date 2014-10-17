@@ -221,11 +221,13 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
         	conn = DBHelper.reconnect2DB(conn);
 
 			// execute query
-		if (debug) 
-		    System.out.println("MySQLAnatomyDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setString(1, startStage);
 			prepStmt.setString(2, endStage);
+
+			if (debug) 
+			    System.out.println("MySQLAnatomyDAOImp.sql = "+queryString.toLowerCase());
+			
 			resSet = prepStmt.executeQuery();
 			
 			// build the tree
@@ -533,8 +535,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 int row = resSet.getRow() - 1;
                 String componentName = resSet.getString(4);
                 String id = resSet.getString(3);
-                String expression = resSet.getString(8);
-            
+                String expression = resSet.getString(8);           
                 String strength = resSet.getString(9);
             
                 if(expression == null){
@@ -544,14 +545,36 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                     strength = "";
                 }
 
+                String densityTotal = resSet.getString(13);
+                String densityMagnitude = resSet.getString(15);
+                String densityDirection =  resSet.getString(14);
+                String densityNoteString =  resSet.getString(16);
+                int densityNote = 0;
+                if (densityNoteString != null && densityNoteString.length() > 0) 
+                	densityNote = 1;
+                
+                // set note flag for both expression and density
+                int note = resSet.getInt(11); //expression note
+                if (note == 0){
+                	note = densityNote; //density note
+                }
+                	
+              
                 //resSet.getInt(1) tells you the depth of the component in the tree so
-                //each line of javasciprt code produced is determined by this
+                //each line of javascript code produced is determined by this
                 if (resSet.getInt(1) == 0) {
                     results.add("foldersTree = gFld(\"" + componentName + " " +
                             additionalInfo + "\", \"" + javascriptFunc +
                             "(&quot;" + id + "&quot;,&quot;" + componentName +
                             "&quot;,&quot;" + row + "&quot;)\"," +
-                            resSet.getInt(7) + ",\"" + expression + "\",\"" +strength + "\",\""+patterns+"\","+resSet.getInt(11)+")");
+                            resSet.getInt(7) + ",\"" + 
+                            expression + "\",\"" + 
+                            strength + "\",\"" + 
+                            patterns + "\",\"" + 
+                            densityTotal + "\",\"" + 
+                            densityDirection + "\",\"" + 
+                            densityMagnitude+"\"," + 
+                            note+")");
 
                 } else if (resSet.getInt(1) > 0) {
 
@@ -567,7 +590,12 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                                     "&quot;,&quot;" + row + "&quot;)\"," +
                                     resSet.getInt(7) + ",\"" +
                                     expression + "\",\"" +
-                                    strength + "\",\""+patterns+"\","+resSet.getInt(11)+"))");
+                                    strength + "\",\"" + 
+                                    patterns + "\",\"" + 
+                                    densityTotal + "\",\"" + 
+                                    densityDirection + "\",\"" + 
+                                    densityMagnitude+"\"," + 
+                                    note+"))");
                         } else {
                             results.add("aux" + resSet.getInt(1) +
                                     " = insFld (aux" +
@@ -578,7 +606,12 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                                      "&quot;,&quot;" + row + "&quot;)\"," +
                                      resSet.getInt(7) + ",\"" +
                                      expression + "\",\"" +
-                                     strength + "\",\""+patterns+"\","+resSet.getInt(11)+"))");
+                                     strength + "\",\"" + 
+                                     patterns + "\",\"" + 
+                                     densityTotal + "\",\"" + 
+                                     densityDirection + "\",\"" + 
+                                     densityMagnitude+"\"," + 
+                                     note+"))");
                         }
                     } else {
                         if (resSet.getInt(1) == 1) {
@@ -589,7 +622,12 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                                     "&quot;,&quot;" + row + "&quot;)\"," +
                                     resSet.getInt(7) + ",\"" +
                                     expression + "\",\"" +
-                                    strength + "\",\""+patterns+"\","+resSet.getInt(11)+"))");
+                                    strength + "\",\"" + 
+                                    patterns + "\",\"" + 
+                                    densityTotal + "\",\"" + 
+                                    densityDirection + "\",\"" + 
+                                    densityMagnitude+"\"," + 
+                                    note+"))");
                         } else {
                             results.add("insDoc(aux" + (resSet.getInt(1) - 1) +
                                     ", gLnk(\"S\", \"" + componentName +
@@ -599,19 +637,29 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                                     "&quot;,&quot;" + row + "&quot;)\"," +
                                     resSet.getInt(7) + ",\"" +
                                     expression + "\",\"" +
-                                    strength + "\",\""+patterns+"\","+resSet.getInt(11)+"))");
+                                    strength + "\",\"" + 
+                                    patterns + "\",\"" + 
+                                    densityTotal + "\",\"" + 
+                                    densityDirection + "\",\"" + 
+                                    densityMagnitude+"\"," + 
+                                    note+"))");
                         }
                     }
                 }
             }
+            
+            if(debug){
+            	for (String str : results){
+            		System.out.println("MysqlAnatomyDAOImp.buildTreeStructure result = "+str);
+            	}
+            }
+            
             return results;
         }
         return null;
     }
     
     String getPatternsForAnnotatedComponent(String expressionOID) throws SQLException{
-	if (debug)
-	    System.out.println("MysqlAnatomyDAOImp.getPatternsForAnnotatedComponent");
         
         ParamQuery parQ = DBQuery.getParamQuery("EXPRESSION_PATTERNS");
         PreparedStatement prepStat = null;
@@ -690,6 +738,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
+        	if (debug)
+        	    System.out.println("MysqlAnatomyDAOImp.findAnnotatedListBySubmissionIds SUB_HAS_ANNOTATION = "+prepStmt);
 
             // execute
             resSet = prepStmt.executeQuery();
@@ -702,6 +752,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 annotationQ.setPrepStat(conn);
                 prepStmt = annotationQ.getPrepStat();
                 prepStmt.setString(1,submissionAccessionId);
+            	if (debug)
+            	    System.out.println("MysqlAnatomyDAOImp.findAnnotatedListBySubmissionIds ANNOT_LIST = "+prepStmt);
                 
                 //execute query 
                 resSet = prepStmt.executeQuery();
@@ -729,33 +781,38 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                     result[index].setPrimaryStrength(resSet.getString(4));
                     result[index].setSecondaryStrength(resSet.getString(5));
                     result[index].setNoteExists(resSet.getBoolean(6));
-                    
+                                       
                     str = Utility.netTrim(resSet.getString(4));
-		    if (null != str) {
-			if(str.trim().equalsIgnoreCase("present")){
-			    str = Utility.netTrim(resSet.getString(5));
-			    if(str == null){
-				result[index].setExpressionImage(imgPath+"DetectedRoundPlus20x20.gif");
-			    } else if(str.equals("strong")){
-				result[index].setExpressionImage(imgPath+"StrongRoundPlus20x20.gif");
-			    } else if(str.equals("moderate")){
-				result[index].setExpressionImage(imgPath+"ModerateRoundPlus20x20.gif");
-			    } else if(str.equals("weak")){
-				result[index].setExpressionImage(imgPath+"WeakRoundPlus20x20.gif");
-			    }
-			} else if(str.equalsIgnoreCase("not detected")){
-			    result[index].setExpressionImage(imgPath+"NotDetectedRoundMinus20x20.gif");
-			} else if(str.equalsIgnoreCase("uncertain") || str.equalsIgnoreCase("possible")){
-			    result[index].setExpressionImage(imgPath+"PossibleRound20x20.gif");
-			}
-                    }
                     
+				    if (null != str) {
+						if(str.trim().equalsIgnoreCase("present")){
+						    str = Utility.netTrim(resSet.getString(5));
+						    if(str == null){
+							result[index].setExpressionImage(imgPath+"DetectedRoundPlus20x20.gif");
+						    } else if(str.equals("strong")){
+							result[index].setExpressionImage(imgPath+"StrongRoundPlus20x20.gif");
+						    } else if(str.equals("moderate")){
+							result[index].setExpressionImage(imgPath+"ModerateRoundPlus20x20.gif");
+						    } else if(str.equals("weak")){
+							result[index].setExpressionImage(imgPath+"WeakRoundPlus20x20.gif");
+						    }
+						} else if(str.equalsIgnoreCase("not detected")){
+						    result[index].setExpressionImage(imgPath+"NotDetectedRoundMinus20x20.gif");
+						} else if(str.equalsIgnoreCase("uncertain") || str.equalsIgnoreCase("possible")){
+						    result[index].setExpressionImage(imgPath+"PossibleRound20x20.gif");
+						}
+		            }
+		                    
                     //annotationQ is changed to contain query to find list of expression patterns for this component
                     annotationQ = DBQuery.getParamQuery("EXPRESSION_PATTERNS");
                     //prepare and execute query
                     annotationQ.setPrepStat(conn);    
                     patternStmt = annotationQ.getPrepStat();
                     patternStmt.setString(1,resSet.getString(1));
+                    
+                	if (debug)
+                	    System.out.println("MysqlAnatomyDAOImp.findAnnotatedListBySubmissionIds EXPRESSION_PATTERNS = "+patternStmt);
+                    
                     patternSet = patternStmt.executeQuery();
                     
                     //if pattern values exist for this component
@@ -811,6 +868,8 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                             
                             locationStmt = annotationQ.getPrepStat();
                             locationStmt.setString(1, patternSet.getString(1));
+                        	if (debug)
+                        	    System.out.println("MysqlAnatomyDAOImp.findAnnotatedListBySubmissionIds EXP_PATTERN_LOCATIONS = "+locationStmt);
                             
                             //execute query
                             locationSet = locationStmt.executeQuery();
@@ -822,10 +881,10 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                                 
                                 //all loations will be stored in a String (comma separated)
                                 locations = new StringBuffer("");
-				String adjacentTxt = "adjacent to ";
-				String atnPubIdVal = null;
-                                        ResourceBundle bundle = ResourceBundle.getBundle("configuration");
-                                        String anatIdPrefix = bundle.getString("anatomy_id_prefix");
+								String adjacentTxt = "adjacent to ";
+								String atnPubIdVal = null;
+                                ResourceBundle bundle = ResourceBundle.getBundle("configuration");
+                                String anatIdPrefix = bundle.getString("anatomy_id_prefix");
                                 
                                 while(locationSet.next()){
                                  
@@ -848,6 +907,10 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                                         annotationQ.setPrepStat(conn);
                                         compNmeStmt = annotationQ.getPrepStat();
                                         compNmeStmt.setString(1, anatIdPrefix+atnPubIdVal);
+                                    	if (debug)
+                                    	    System.out.println("MysqlAnatomyDAOImp.findAnnotatedListBySubmissionIds COMPONENT_NAME_FROM_ATN_PUBLIC_ID = "+compNmeStmt);
+                                        
+                                        
                                         compNmeSet = compNmeStmt.executeQuery();
                                         if(compNmeSet.first()){
                                             locations.append(adjacentTxt+ compNmeSet.getString(1));
@@ -865,12 +928,49 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                             if(locations != null){
                                 patterns[index2].setLocations(locations.toString());
                             }
-                            
+                             
                             index2++;
                         }
                         //set the location value in the ExpressionPattern object for the specified element in the array
                         result[index].setPattern(patterns);
                     }
+                    
+                    //set values in the AnnotatedComponent object for nerve density                    
+                    result[index].setDensityRelativeToTotal(resSet.getString(8));
+                    result[index].setDensityComponentId(resSet.getString(9));
+                    result[index].setDensityDirectionalChange(resSet.getString(10));
+                    result[index].setDensityMagnitudeChange(resSet.getString(11));
+                    
+                    str = Utility.netTrim(resSet.getString(8));                    
+				    if (null != str) {
+						if(str.trim().equalsIgnoreCase("high")){
+							result[index].setDensityImageRelativeToTotal(imgPath+"max_high.gif");
+						} else if(str.equalsIgnoreCase("medium")){
+						    result[index].setDensityImageRelativeToTotal(imgPath+"mod_medium.gif");
+						} else if(str.equalsIgnoreCase("low")){
+						    result[index].setDensityImageRelativeToTotal(imgPath+"min_low.gif");
+						}
+		            }
+                    
+				    str = Utility.netTrim(resSet.getString(10));
+				    if (null != str) {
+						if(str.trim().equalsIgnoreCase("increased")){
+						    str = Utility.netTrim(resSet.getString(11));
+						    if(str.equalsIgnoreCase("small")){
+						    	result[index].setDensityImageRelativeToAge(imgPath+"inc_small.gif");
+						    } else if(str.equalsIgnoreCase("large")){
+						    	result[index].setDensityImageRelativeToAge(imgPath+"inc_large.gif");
+						    }
+						} else if(str.equalsIgnoreCase("decreased")){
+						    str = Utility.netTrim(resSet.getString(11));
+						    if(str.equalsIgnoreCase("small")){
+						    	result[index].setDensityImageRelativeToAge(imgPath+"dec_small.gif");
+						    } else if(str.equalsIgnoreCase("large")){
+						    	result[index].setDensityImageRelativeToAge(imgPath+"dec_large.gif");
+						    }
+						}
+		            }
+                    
                     index++;
                 }
                 return result;

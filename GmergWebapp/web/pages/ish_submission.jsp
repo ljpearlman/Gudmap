@@ -204,12 +204,47 @@
 					
 					<h:graphicImage value="/images/tree/SingleCellRound20x20.png" styleClass="icon" />
 					<h:outputText value="Single cell" styleClass="plaintext" />
+					<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>				
+				</h:panelGrid>
 
-				
+				<h:outputText value="Nerve Density: <br/><br/>" escape="false" styleClass="plaintextbold" rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}" />
+				<h:outputText value="Relative to Total:" styleClass="plaintextbold" rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}" />
+				<h:panelGrid columns="2" rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}">
+					
+					<h:graphicImage value="/images/tree/max_high.png" styleClass="icon" />
+					<h:outputText value="Maximum" styleClass="plaintext" />
+					
+					<h:graphicImage value="/images/tree/mod_medium.png" styleClass="icon" />
+					<h:outputText value="Moderate" styleClass="plaintext" />
+
+					<h:graphicImage value="/images/tree/min_low.png" styleClass="icon" />
+					<h:outputText value="Low" styleClass="plaintext" />
+					<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>	
+				</h:panelGrid>
+				<h:outputText value="Relative to P0/Adult:" styleClass="plaintextbold" rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}" />
+				<h:panelGrid columns="2" rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}">
+
+					<h:graphicImage value="/images/tree/inc_large.png" styleClass="icon" />
+					<h:outputText value="Increase, large" styleClass="plaintext" />
+					
+					<h:graphicImage value="/images/tree/inc_small.png" styleClass="icon" />
+					<h:outputText value="Increase, small" styleClass="plaintext" />
+
+					<h:graphicImage value="/images/tree/dec_large.png" styleClass="icon" />
+					<h:outputText value="Decrease, large" styleClass="plaintext" />
+					
+					<h:graphicImage value="/images/tree/dec_small.png" styleClass="icon" />
+					<h:outputText value="Decrease, small" styleClass="plaintext" />
+					
+					<f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
 					<h:graphicImage value="/images/tree/note.gif" styleClass="icon" />
 					<h:outputText value="Contains note" styleClass="plaintext" />
 				</h:panelGrid>
 			</h:panelGroup>
+			
+			
+			
+			
 			<h:panelGroup>
 				<h:outputText value="No Expression Mapping Data Available" styleClass="datatext" rendered="#{!ISHSingleSubmissionBean.expressionMapped}" />
 				
@@ -292,6 +327,25 @@
 									</h:panelGrid>
 								</h:column>
 							</h:dataTable>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Densities" styleClass="plaintextbold"/>
+							</f:facet>
+							<h:panelGrid columns="2">
+								<h:graphicImage rendered="#{not empty component.densityComponentId}" value="#{component.densityImageRelativeToTotal}" styleClass="icon" alt="" />
+								<h:graphicImage rendered="#{empty component.densityComponentId}" value="" styleClass="icon" alt="" />
+								<h:panelGroup>
+									<h:outputText value="Rel to Total:#{component.densityRelativeToTotal}" rendered="#{not empty component.densityComponentId}" styleClass="datatext" />
+									<h:outputText value="" rendered="#{empty component.densityComponentId}" styleClass="datatext" />
+								</h:panelGroup>
+								<h:graphicImage rendered="#{not empty component.densityComponentId}" value="#{component.densityImageRelativeToAge}" styleClass="icon" alt="" />
+								<h:graphicImage rendered="#{empty component.densityComponentId}" value="" styleClass="icon" alt="" />
+								<h:panelGroup>
+									<h:outputText value="Rel to P0/Adult:#{component.densityDirectionalChange},#{component.densityMagnitudeChange}"  rendered="#{not empty component.densityComponentId}" styleClass="datatext" />
+									<h:outputText value=""  rendered="#{empty component.densityComponentId}" styleClass="datatext" />
+								</h:panelGroup>							
+							</h:panelGrid>
 						</h:column>
 					</h:dataTable>
 				</h:panelGroup>

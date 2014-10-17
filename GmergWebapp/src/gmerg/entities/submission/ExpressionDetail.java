@@ -19,6 +19,14 @@ public class ExpressionDetail {
     private boolean noteExists;
     private int submissionDbStatus;
     
+    private String densityImageRelativeToTotal;
+    private String densityImageRelativeToAge;
+    private String densityRelativeToTotal;
+    private String densityDirectionalChange;
+    private String densityMagnitudeChange;
+    private String densityChange;
+    private String densityNote;
+    private String densityComponentId;
     
     public String getSubmissionId(){
         return submissionId;
@@ -139,4 +147,74 @@ public class ExpressionDetail {
     public void setSubmissionDbStatus(int submissionDbStatus) {
     	this.submissionDbStatus = submissionDbStatus;
     }
+    
+    public void setDensityImageRelativeToTotal(String value){
+    	densityImageRelativeToTotal = value;
+    }
+    
+    public String getDensityImageRelativeToTotal() {
+        return densityImageRelativeToTotal;
+    }
+
+    public void setDensityImageRelativeToAge(String value){
+    	densityImageRelativeToAge = value;
+    }
+    
+    public String getDensityImageRelativeToAge() {
+        return densityImageRelativeToAge;
+    }
+
+    public String getDensityRelativeToTotal() {
+        return densityRelativeToTotal;
+    }
+
+    public void setDensityRelativeToTotal(String densityRelativeToTotal) {
+        this.densityRelativeToTotal = densityRelativeToTotal;
+    }
+
+    public String getDensityDirectionalChange() {
+        return densityDirectionalChange;
+    }
+
+    public void setDensityDirectionalChange(String densityDirectionalChange) {
+        this.densityDirectionalChange = densityDirectionalChange;
+    }
+
+    public String getDensityMagnitudeChange() {
+        return densityMagnitudeChange;
+    }
+
+    public void setDensityMagnitudeChange(String densityMagnitudeChange) {
+        this.densityMagnitudeChange = densityMagnitudeChange;
+    }
+
+    public String getDensityNote() {
+        return densityNote;
+    }
+
+    public void setDensityNote(String densityNote) {
+        this.densityNote = densityNote;
+    }
+
+    public String getDensityComponentId() {
+        return densityComponentId;
+    }
+
+    public void setDensityComponentId(String value) {
+        this.densityComponentId = value;
+    }
+
+    public String getDensityChange() {
+    	if (densityDirectionalChange == null && densityMagnitudeChange == null)
+    		densityChange = "";
+    	else if (densityDirectionalChange == null && densityMagnitudeChange != null)
+    		densityChange = densityMagnitudeChange;
+    	else if (densityDirectionalChange != null && densityMagnitudeChange == null)
+    		densityChange = densityDirectionalChange;
+    	else
+    		densityChange = densityDirectionalChange + "," + densityMagnitudeChange;
+    	
+        return densityChange;
+    }
+    
 }
