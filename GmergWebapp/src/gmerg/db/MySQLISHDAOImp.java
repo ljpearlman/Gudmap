@@ -5314,6 +5314,73 @@ public class MySQLISHDAOImp implements ISHDAO {
             DBHelper.closeResultSet(resSet);
         }
     }
+ 
+    public String findDensityNote(String submissionAccessionId,String componentId) {
+		String densityNote = null;
+		ResultSet resSet = null;
+		ParamQuery parQ = DBQuery.getParamQuery("DENSITY_NOTE");
+		PreparedStatement prepStmt = null;
+		try {
+			// if disconnected from db, re-connected
+			conn = DBHelper.reconnect2DB(conn);
+			
+			parQ.setPrepStat(conn);
+			prepStmt = parQ.getPrepStat();
+			prepStmt.setString(1, submissionAccessionId);
+			prepStmt.setString(2, componentId);
+			if (debug)
+				System.out.println("MySQLISHDAOImp:findDensityNote = "+prepStmt);
+			resSet = prepStmt.executeQuery();
+			if (resSet.first()) {
+				densityNote = DBHelper.formatResultSetToString(resSet);
+			}
+			
+			return densityNote;
+			
+		} catch (SQLException se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
+	}
+
+    public ArrayList<String> findDensityDetail(String submissionAccessionId,String componentId) {
+    	ArrayList<String> densityDetail = null;
+		ResultSet resSet = null;
+		ParamQuery parQ = DBQuery.getParamQuery("DENSITY_DETAIL");
+		PreparedStatement prepStmt = null;
+		try {
+			// if disconnected from db, re-connected
+			conn = DBHelper.reconnect2DB(conn);
+			
+			parQ.setPrepStat(conn);
+			prepStmt = parQ.getPrepStat();
+			prepStmt.setString(1, submissionAccessionId);
+			prepStmt.setString(2, componentId);
+			if (debug)
+				System.out.println("MySQLISHDAOImp:findDensityDetail = "+prepStmt);
+			resSet = prepStmt.executeQuery();
+            if (resSet.first()) {
+                densityDetail = new ArrayList<String>();
+                densityDetail.add(resSet.getString(1));
+                densityDetail.add(resSet.getString(2));
+                densityDetail.add(resSet.getString(3));
+            }
+			
+			return densityDetail;
+			
+		} catch (SQLException se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
+	}
     
     //created by chris - may need to be changed by Xingjun.
     public ExpressionPattern[] findPatternsAndLocations(String expressionId) {

@@ -17,6 +17,7 @@ import gmerg.entities.submission.Submission;
 import gmerg.entities.submission.ish.ISHBrowseSubmission;
 import gmerg.entities.submission.StatusNote;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
@@ -175,6 +176,8 @@ public ArrayList getComponentCountInfoByGeneInfo(String inputType, String inputS
 	/** ---expression detail--- */
 	public ExpressionDetail findExpressionDetailBySubmissionIdAndComponentId(String submissionAccessionId, String componentId);
 	public String findAnnotationNote(String submissionAccessionId, String componentId); // q27
+	public String findDensityNote(String submissionAccessionId, String componentId); // q27
+	public ArrayList<String> findDensityDetail(String submissionAccessionId, String componentId); // q27
 	public String findStageBySubmissionId(String submissionAccessionId); // q33
 	public ExpressionPattern [] findPatternsAndLocations(String expressionId);
 	public ExpressionPattern [] findPatternsAndLocations(boolean forEditing, String expressionId);

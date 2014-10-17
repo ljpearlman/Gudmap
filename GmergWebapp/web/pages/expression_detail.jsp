@@ -76,6 +76,22 @@
           </h:panelGrid>
           
         </h:panelGroup>
+        
+        <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
+        
+        <h:outputText value="Density:" />
+        <h:panelGroup>
+          <h:panelGrid columns="2" columnClasses="text-top, data-textCol">
+            <h:outputText styleClass="plaintext" value="Rel. to Total:" />
+            <h:outputText styleClass="datatext" value="#{ExpressionDetailBean.expressionDetail.densityRelativeToTotal}" />
+            <h:outputText styleClass="plaintext" value="Rel. to P0/Adult:" />
+            <h:outputText styleClass="datatext" value="#{ExpressionDetailBean.expressionDetail.densityChange}"/>
+             <h:outputText styleClass="plaintext" value="Note:" />
+            <h:outputText styleClass="datatext" value="#{ExpressionDetailBean.expressionDetail.densityNote}" />
+            
+          </h:panelGrid>
+        </h:panelGroup>
+        
       </h:panelGrid>
       
       <br/>
