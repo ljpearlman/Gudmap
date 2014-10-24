@@ -432,6 +432,18 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 resSet = prepStmt.executeQuery();
                 resSet.first();
                 String stageName = resSet.getString(1);
+                String species = resSet.getString(2);
+                String stage = resSet.getString(3);
+                
+                if(species.equalsIgnoreCase("homo sapiens")){
+                    stageQ = DBQuery.getParamQuery("MAP_STAGE_NAME");
+                    stageQ.setPrepStat(conn);
+                    prepStmt = stageQ.getPrepStat();
+                    prepStmt.setString(1, stage);
+                    resSet = prepStmt.executeQuery();
+                    resSet.first();
+                    stageName = "TS" + resSet.getString(1);
+                }
                 
                 ParamQuery annotationQ = DBQuery.getParamQuery("ANNOT_TREE_CONTENT");
                 annotationQ.setPrepStat(conn);

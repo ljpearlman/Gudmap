@@ -41,7 +41,8 @@
 			
 			<h:outputText value="Stage:" />
 			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
-				<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
+				<h:outputText value="Theiler Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
+				<h:outputText value="Carnegie Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 			</h:outputLink>
 				
 			<h:outputText value="Tissue:" />
@@ -614,13 +615,13 @@
 		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol">
 			<h:outputText value="Specimen" />
 			<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
-				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/stagecriteria.html" styleClass="plaintext"> 
-					<h:outputText value="Theiler Stage:" />
-				</h:outputLink>
+				<h:outputText value="Stage:" />
 					
-				<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
-					<h:outputText value="#{stageSeriesShort}#{ISHSingleSubmissionBean.submission.stage}" />
+				<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
+				<h:outputText value="TS#{ISHSingleSubmissionBean.submission.stage}" />
 				</h:outputLink>
+				
+				<h:outputText value="CS#{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species != 'Mus musculus'}"/>
 
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="Other Staging System:" />
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="#{ISHSingleSubmissionBean.submission.specimen.otherStage}" />

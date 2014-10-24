@@ -278,8 +278,13 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
 
   //query (find the name of the stage for a submission)
   final static String name11 = "SUB_STAGE_NAME";
-  final static String query11 = "SELECT CONCAT(STG_PREFIX,SUB_EMBRYO_STG) FROM ISH_SUBMISSION, ISH_SPECIMEN, REF_STAGE WHERE SUB_OID = SPN_SUBMISSION_FK AND SPN_SPECIES = STG_SPECIES_FK AND SUB_ACCESSION_ID = ?";
+  final static String query11 = "SELECT CONCAT(STG_PREFIX,SUB_EMBRYO_STG),SPN_SPECIES,SUB_EMBRYO_STG  FROM ISH_SUBMISSION, ISH_SPECIMEN, REF_STAGE WHERE SUB_OID = SPN_SUBMISSION_FK AND SUB_ACCESSION_ID = ?";
+//  final static String query11 = "SELECT CONCAT(STG_PREFIX,SUB_EMBRYO_STG) FROM ISH_SUBMISSION, ISH_SPECIMEN, REF_STAGE WHERE SUB_OID = SPN_SUBMISSION_FK AND SPN_SPECIES = STG_SPECIES_FK AND SUB_ACCESSION_ID = ?";
 
+  //query (map human to mouse stage)
+  final static String name274 = "MAP_STAGE_NAME";
+  final static String query274 = "SELECT STG_VALUE FROM REF_STAGE, REF_HUMAN_STAGE WHERE HSS_MOUSE_FK = STG_OID AND HSS_CARNEGIE = ?";
+  
   //query 26 (find expression mapping for a particular component in a submission)
   final static String name13 = "EXPRESSION_DETAIL";
   final static String query13 = "SELECT EXP_COMPONENT_ID, ANO_COMPONENT_NAME, APO_FULL_PATH, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH, EXP_OID, SUB_EMBRYO_STG, SUB_OID, SUB_DB_STATUS_FK " +
@@ -2180,7 +2185,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
       new ParamQuery(name270,query270),
       new ParamQuery(name271,query271),
       new ParamQuery(name272,query272),
-      new ParamQuery(name273,query273)
+      new ParamQuery(name273,query273),
+      new ParamQuery(name274,query274)
  };
 
   // finds ParamQuery object by name and returns

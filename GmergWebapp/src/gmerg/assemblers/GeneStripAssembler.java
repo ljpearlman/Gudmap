@@ -226,9 +226,15 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 //					}
 					//Bernie 28 Aug 2014 - mantis983
 					String ucscUrl = "http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&hubUrl=http://www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&position="+symbol;
-					data[i][7] = 
-						new DataItem(nextGenSeqString, "", ucscUrl, 10);
+					String igvUrl = "http://www.broadinstitute.org/igv/projects/current/igv.php?sessionURL=http://www.gudmap.org/Gudmap/ngsData/igv_session_genes.xml&locus="+symbol;
+//					data[i][7] = new DataItem(nextGenSeqString, "", ucscUrl, 10);
 						//new DataItem(nextGenSeqString, "Click to see RNA-SEQ data on UCSC genome browser for " + symbol, ucscUrl, 10);
+					ArrayList<DataItem> complexValue2 = new ArrayList<DataItem>();
+					element = new DataItem("View on UCSC", "Click to see RNA-SEQ data on UCSC genome browser for " + symbol, ucscUrl, 10);
+					complexValue2.add(element);
+					element = new DataItem("View on IGV", "Open IGV in Java Web Start to see GUDMAP sequencing data for " + symbol, igvUrl, 10);
+					complexValue2.add(element);
+					data[i][7] = new DataItem(complexValue2, 81);
 //				}
 	
 				/** 9 - geneset */
@@ -259,10 +265,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	}
 	
 	public HeaderItem[] createHeader()	{
-		String headerTitles[] = {"Gene", "Synonyms", "Disease", "Theiler Stage", 
-								 "Expression Profile",  
-								 "Expression Images", "Microarray expression profile", "RNA-SEQ", "Genesets"};
-		boolean headerSortable[] = {true, false, false, false, false, false, false, false, false, false};
+		String headerTitles[] = {"Gene", "Synonyms", "Disease", "Theiler Stage","Expression Profile",  
+//								 "Expression Images", "Microarray expression profile", "RNA-SEQ", "Genesets"};
+		 						 "Expression Images", "Microarray expression profile", "RNA-SEQ"};
+//		boolean headerSortable[] = {true, false, false, false, false, false, false, false, false, false};
+		boolean headerSortable[] = {true, false, false, false, false, false, false, false, false};
 		int colNum = headerTitles.length;
 		HeaderItem[] header = new HeaderItem[colNum];
 		for(int i=0; i<colNum; i++)
