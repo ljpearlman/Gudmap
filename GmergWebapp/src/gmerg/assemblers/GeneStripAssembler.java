@@ -226,7 +226,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 //					}
 					//Bernie 28 Aug 2014 - mantis983
 					String ucscUrl = "http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&hubUrl=http://www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&position="+symbol;
-					String igvUrl = "http://www.broadinstitute.org/igv/projects/current/igv.php?sessionURL=http://www.gudmap.org/Gudmap/ngsData/igv_session_genes.xml&locus="+symbol;
+					String igvUrl = "http://www.broadinstitute.org/igv/projects/current/igv.php?sessionURL=http://www.gudmap.org/Gudmap/ngsData/gudmap_igv_seq_genes.xml&locus="+symbol;
 //					data[i][7] = new DataItem(nextGenSeqString, "", ucscUrl, 10);
 						//new DataItem(nextGenSeqString, "Click to see RNA-SEQ data on UCSC genome browser for " + symbol, ucscUrl, 10);
 					ArrayList<DataItem> complexValue2 = new ArrayList<DataItem>();
