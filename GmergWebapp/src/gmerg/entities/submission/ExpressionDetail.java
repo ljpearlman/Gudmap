@@ -210,9 +210,9 @@ public class ExpressionDetail {
     	else if (densityDirectionalChange == null && densityMagnitudeChange != null)
     		densityChange = densityMagnitudeChange;
     	else if (densityDirectionalChange != null && densityMagnitudeChange == null)
-    		densityChange = densityDirectionalChange;
+    		densityChange = densityDirectionalChange.replace("ed", "e");
     	else
-    		densityChange = densityDirectionalChange + "," + densityMagnitudeChange;
+    		densityChange = densityDirectionalChange.replace("ed", "e, ") + densityMagnitudeChange.toLowerCase();
     	
         return densityChange;
     }

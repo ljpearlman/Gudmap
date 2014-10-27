@@ -40,10 +40,10 @@
 			</h:panelGroup>
 			
 			<h:outputText value="Stage:" />
-			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" >
+			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
 				<h:outputText value="Theiler Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
-				<h:outputText value="Carnegie Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 			</h:outputLink>
+			<h:outputText value="Carnegie Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 				
 			<h:outputText value="Tissue:" />
 			<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
@@ -51,8 +51,8 @@
 			<h:outputText value="Species:" />
 			<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.species}"/> 
 
-			<h:outputText value="Assay Type:" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/>
-			<h:outputText value="#{ISHSingleSubmissionBean.submission.assayType} #{ISHSingleSubmissionBean.submission.specimen.assayType}" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP'}"/> 
+			<h:outputText value="Assay Type:"/>
+			<h:outputText value="#{ISHSingleSubmissionBean.submission.assayType} #{ISHSingleSubmissionBean.submission.specimen.assayType}" /> 
 		</h:panelGrid>
 
 		</h:panelGrid>
@@ -300,7 +300,8 @@
 								<h:graphicImage value="#{component.expressionImage}" styleClass="icon" alt="" />
 								<h:panelGroup>
 									<h:outputText value="#{component.primaryStrength} " styleClass="datatext" />
-									<h:outputText rendered="#{not empty component.secondaryStrength}" value="(#{component.secondaryStrength})" styleClass="datatext" />
+									<h:outputText rendered="#{component.secondaryStrength != ' ' && component.secondaryStrength != ''}" value="(#{component.secondaryStrength})" styleClass="datatext" />
+									<h:outputText rendered="#{component.secondaryStrength == ' ' || component.secondaryStrength == ''}" value="(unspecified)" styleClass="datatext" />
 								</h:panelGroup>
 							</h:panelGrid>
 						</h:column>
@@ -338,18 +339,10 @@
 								<h:outputText value="Densities" styleClass="plaintextbold"/>
 							</f:facet>
 							<h:panelGrid columns="2">
-								<h:graphicImage rendered="#{not empty component.densityComponentId}" value="#{component.densityImageRelativeToTotal}" styleClass="icon" alt="" />
-								<h:graphicImage rendered="#{empty component.densityComponentId}" value="" styleClass="icon" alt="" />
-								<h:panelGroup>
-									<h:outputText value="Rel to Total:#{component.densityRelativeToTotal}" rendered="#{not empty component.densityComponentId}" styleClass="datatext" />
-									<h:outputText value="" rendered="#{empty component.densityComponentId}" styleClass="datatext" />
-								</h:panelGroup>
-								<h:graphicImage rendered="#{not empty component.densityComponentId}" value="#{component.densityImageRelativeToAge}" styleClass="icon" alt="" />
-								<h:graphicImage rendered="#{empty component.densityComponentId}" value="" styleClass="icon" alt="" />
-								<h:panelGroup>
-									<h:outputText value="Rel to P0/Adult:#{component.densityDirectionalChange},#{component.densityMagnitudeChange}"  rendered="#{not empty component.densityComponentId}" styleClass="datatext" />
-									<h:outputText value=""  rendered="#{empty component.densityComponentId}" styleClass="datatext" />
-								</h:panelGroup>							
+									<h:graphicImage value="#{component.densityImageRelativeToTotal}" styleClass="icon" alt="" rendered="#{component.densityImageRelativeToTotal != null}"/>
+									<h:outputText value="Rel to Total: #{component.densityRelativeToTotal}" styleClass="datatext" rendered="#{component.densityImageRelativeToTotal != null}"/>
+									<h:graphicImage value="#{component.densityImageRelativeToAge}" styleClass="icon" alt="" rendered="#{component.densityImageRelativeToAge != null}"/>
+									<h:outputText value="Rel to P0/Adult: #{component.densityChange}" styleClass="datatext" rendered="#{component.densityImageRelativeToAge != null}"/>
 							</h:panelGrid>
 						</h:column>
 					</h:dataTable>
