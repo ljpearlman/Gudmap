@@ -5,17 +5,17 @@ db_driver=com.mysql.jdbc.Driver
 #database=EureGudmap
 
 #production database
-#host=jdbc:mysql://lochdhu:3306/
-#user=gudmap
-#password=patience
-#database=GudmapGX
+host=jdbc:mysql://lochdhu:3306/
+user=gudmap
+password=patience
+database=GudmapGX
 
 
 #test database
-host=jdbc:mysql://glenmoray:3306/
-user=gudmap
-password=patience
-database=GudmapGX_test
+#host=jdbc:mysql://glenmoray:3306/
+#user=gudmap
+#password=patience
+#database=GudmapGX_test
 
 
 #local database
