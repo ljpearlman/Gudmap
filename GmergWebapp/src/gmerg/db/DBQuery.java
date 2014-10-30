@@ -1188,7 +1188,9 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                                   "and CSTG.STG_SEQUENCE BETWEEN qs1.STG_SEQUENCE AND qs2.STG_SEQUENCE) as kids,"+
                                   "case when !APO_IS_PRIMARY OR ANO_IS_GROUP THEN 1 ELSE 0 END AS IP, "+
                                   "'','', '', 0 "+
-                               "FROM ANA_NODE PARENT "+
+                                  "'', '', '', '', "+  
+                                  "'', '' " +
+                              "FROM ANA_NODE PARENT "+
                                "JOIN ANAD_PART_OF "+
                                  "ON ANO_OID = APO_NODE_FK AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' "+
                                "JOIN ANAD_PART_OF_PERSPECTIVE " +
