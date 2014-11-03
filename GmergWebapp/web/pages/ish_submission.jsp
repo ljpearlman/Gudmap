@@ -36,7 +36,7 @@
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
 					<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
 				</h:outputLink>
-				<h:outputText styleClass="datatext" value=", #{ISHSingleSubmissionBean.submission.geneName}" />
+				<h:outputText styleClass="datatext" value=", #{ISHSingleSubmissionBean.submission.geneName}" rendered="#{not empty ISHSingleSubmissionBean.submission.geneName}"/>
 			</h:panelGroup>
 			
 			<h:outputText value="Stage:" />
@@ -52,7 +52,8 @@
 			<h:outputText value="#{ISHSingleSubmissionBean.submission.specimen.species}"/> 
 
 			<h:outputText value="Assay Type:"/>
-			<h:outputText value="#{ISHSingleSubmissionBean.submission.assayType} #{ISHSingleSubmissionBean.submission.specimen.assayType}" /> 
+			<h:outputText value="#{ISHSingleSubmissionBean.submission.assayType} #{ISHSingleSubmissionBean.submission.specimen.assayType}" rendered="#{ISHSingleSubmissionBean.submission.specimen.assayType != 'unspecified' }"/> 
+			<h:outputText value="#{ISHSingleSubmissionBean.submission.assayType}" rendered="#{ISHSingleSubmissionBean.submission.specimen.assayType == 'unspecified' }"/> 
 		</h:panelGrid>
 
 		</h:panelGrid>

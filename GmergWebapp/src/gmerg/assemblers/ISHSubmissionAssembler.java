@@ -97,6 +97,8 @@ public class ISHSubmissionAssembler {
 				probe = ishDAO.findProbeBySubmissionId(accessionId);
 			} else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
 				antibody = ishDAO.findAntibodyBySubmissionId(accessionId);
+			} else if (assayType.indexOf("TG") >= 0) { // assay type is IHC
+				probe = ishDAO.findProbeBySubmissionId(accessionId);
 			}
 			
 			// get specimen info
@@ -134,6 +136,8 @@ public class ISHSubmissionAssembler {
 	    		ishSubmission.setProbe(probe);
 	        } else if (assayType.indexOf("IHC") >=0) {
 	        	ishSubmission.setAntibody(antibody);
+	        } else if (assayType.indexOf("TG") >=0) {
+	        	ishSubmission.setProbe(probe);
 	        }
 			
 			ishSubmission.setSpecimen(specimen);
