@@ -68,9 +68,11 @@ public class ExpressionDetailAssembler {
 				expressionDetail.setDensityNote(densityNotes);
 				
 				ArrayList<String> densityDetail = ishDAO.findDensityDetail(submissionAccessionId, componentId);
-				expressionDetail.setDensityRelativeToTotal(densityDetail.get(0));
-				expressionDetail.setDensityDirectionalChange(densityDetail.get(1));
-				expressionDetail.setDensityMagnitudeChange(densityDetail.get(2));
+				if (densityDetail != null){
+					expressionDetail.setDensityRelativeToTotal(densityDetail.get(0));
+					expressionDetail.setDensityDirectionalChange(densityDetail.get(1));
+					expressionDetail.setDensityMagnitudeChange(densityDetail.get(2));
+				}
 
 				
 			} else {
