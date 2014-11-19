@@ -15,9 +15,6 @@
 	<jsp:param name="headerParam" value="databaseHomepage" />
 </jsp:include>
 
-<p><span class="small_red_text">The GUDMAP database and website will not be accessible from <strong>Friday 14th November 2014 at 15:00 GMT</strong> (1500 UTC), until <strong>Monday 17th November 2014 at 0900 GMT</strong> (0900 UTC). This is due to a scheduled power outage made necessary by ongoing building work. We apologise for the inconvenience.</span> </p> 
-</br>
-
 <h:form id="mainForm" >
 <h:panelGrid columns="2" cellspacing="0px">
 	<h:panelGroup style="margin-right:20px"> <%-- left hand side --%>
