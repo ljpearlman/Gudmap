@@ -194,8 +194,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	public int findNumberOfPublicSubmissionTG(String[] emapids) {
         int result = 0;
         ResultSet resSet = null;
-        ParamQuery parQ =
-        	new ParamQuery("NUM_TG",AdvancedSearchDBQuery.getPublicTransgenicNumber(emapids));
+        ParamQuery parQ = new ParamQuery("NUM_TG",AdvancedSearchDBQuery.getPublicTransgenicNumber(emapids));
         Statement stmt = null;
         try {
         	// if disconnected from db, re-connected

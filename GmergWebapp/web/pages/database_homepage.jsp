@@ -753,9 +753,9 @@
 			</h:outputLink>
 			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsIHC}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsIHC == '0'}"/>
 			
-			<h:outputText value="Tg"   style="cursor:help" title="Please note: 3 transgenic reporter genes are representated by full GUDMAP entries (41 total) and 25 are defined as a series of pdf characterisations, which can be found under the Marker Mouse Strains." />
-			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totTgGenes + 25}"  style="cursor:help" title="Please note: 3 transgenic reporter genes are representated by full GUDMAP entries (41 total) and 25 are defined as a series of pdf characterisations, which can be found under the Marker Mouse Strains." />
-			<h:outputLink value="focus_tg_browse.html#{DatabaseHomepageBean.organParam}"   style="cursor:help" title="Please note: 3 transgenic reporter genes are representated by full GUDMAP entries (41 total) and 25 are defined as a series of pdf characterisations, which can be found under the Marker Mouse Strains." rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsTG != '0'}">
+			<h:outputText value="Tg" />
+			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totTgGenes}"/>
+			<h:outputLink value="focus_tg_browse.html#{DatabaseHomepageBean.organParam}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsTG != '0'}">
 				<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsTG}" />
 			</h:outputLink>
 			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsTG}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSubmissionsTG == '0'}"/>

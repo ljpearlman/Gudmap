@@ -46,7 +46,8 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         PreparedStatement prepStmt = null;
 
         // assemble the query string
-        String query = parQ.getQuerySQL() + "AND SUB_ASSAY_TYPE = 'TG' AND SAL_ORDER = 1 GROUP BY SUB_ACCESSION_ID ";
+//        String query = parQ.getQuerySQL() + "AND SUB_ASSAY_TYPE = 'TG' AND SAL_ORDER = 1 GROUP BY SUB_ACCESSION_ID ";
+        String query = parQ.getQuerySQL() + "AND SUB_ASSAY_TYPE = 'TG' ";
         String defaultOrder = DBQuery.ORDER_BY_REF_PROBE_SYMBOL;
         String queryString = assembleBrowseSubmissionQueryString(1, query, defaultOrder, columnIndex, ascending, offset, num, organ, archiveId, batchId);
         
@@ -152,16 +153,17 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         	query += batchIdsql;
         }
 
+        String groupby =" GROUP BY SUB_OID ";
 		// order by
 		if (columnIndex != -1) {
-			queryString = query + organsql + " ORDER BY ";
+			queryString = query + organsql + groupby +" ORDER BY ";
 			
 			// translate parameters into database column names
 			String column = getBrowseSubmissionOrderByColumn(queryType, columnIndex, ascending);
 			queryString += column;
 			
 		} else { // if don't specify order by column, order by gene symbol ascend by default
-			queryString = query + organsql + defaultOrder+ ", SUB_EMBRYO_STG";
+			queryString = query + organsql + groupby + defaultOrder+ ", SUB_EMBRYO_STG";
 		}
 
 		// return assembled query string
