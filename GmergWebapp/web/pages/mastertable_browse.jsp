@@ -175,7 +175,7 @@
 		<h:outputText value="#{MasterTableBrowseBean.title}  " styleClass="plaintext" />
 		
 		<h:outputLink id="topGene" target="_blank" 
-					value ="http://toppgene.cchmc.org/ToppGene/CheckInput.action?training_set=#{MasterTableBrowseBean.geneList}&type=HGNC&query=TOPPFUN">
+					value ="http://toppgene.cchmc.org/CheckInput.action?training_set=#{MasterTableBrowseBean.geneList}&type=HGNC&query=TOPPFUN">
 <%-- 			<h:outputText value="Send To ToppFun" /> --%>
 			<h:graphicImage value="../images/ToppFun_Button.png" width="60"/>
 		</h:outputLink>
