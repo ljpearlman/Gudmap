@@ -415,6 +415,8 @@ public class MasterTableBrowseBean {
 		String genelist = "";
 		if (genelistId != null) 
 			genelist = DbUtility.retrieveGenelist(genelistId);
+		else
+			genelist = geneSymbol;
 		
 		return genelist;
 	}
