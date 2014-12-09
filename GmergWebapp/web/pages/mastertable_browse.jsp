@@ -86,7 +86,7 @@
 			</h:dataTable>
 --%> 
 
-			<h:panelGrid columns="3" columnClasses="leftAlign, leftAlign, leftAlign" >		
+			<h:panelGrid columns="2" columnClasses="leftAlign, leftAlign" >		
 	            <rich:dropDownMenu id="menu" style="border:1px solid #{a4jSkin.panelBorderColor}" direction="bottom-right" jointPoint="bl">
 		            <f:facet name="label"> 
 	                    <h:panelGroup>
@@ -95,62 +95,63 @@
 	                    </h:panelGroup>
 	                </f:facet>
 	                        
-	                <rich:menuItem value="Reproductive Gonadal (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedGonadalMOE430}"/>
-	                <rich:menuItem value="Reproductive Gonadal (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedGonadalMOE430}">
+	                <rich:menuItem value="Reproductive Gonadal (MOE430)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerGonadalMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedGonadalMOE430}"/>
+	                <rich:menuItem value="Reproductive Gonadal (MOE430)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerGonadalMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedGonadalMOE430}">
 		                <f:facet name="icon">
 		                    <h:graphicImage value="../images/tick.gif"/>  
 		                </f:facet>             
 	                </rich:menuItem>
 	                
-	                <rich:menuItem value="Lower Urinary Tract (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerLUTMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedLUTMOE430}"/>
-	                <rich:menuItem value="Lower Urinary Tract (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerLUTMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedLUTMOE430}">
+	                <rich:menuItem value="Lower Urinary Tract (MOE430)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerLUTMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedLUTMOE430}"/>
+	                <rich:menuItem value="Lower Urinary Tract (MOE430)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerLUTMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedLUTMOE430}">
 		                <f:facet name="icon">
 		                    <h:graphicImage value="../images/tick.gif"/>  
 		                </f:facet>             
 	                </rich:menuItem>
 	                
-	                <rich:menuItem value="Developing Kidney (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerKidneyMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedKidneyMOE430}"/>
-	                <rich:menuItem value="Developing Kidney (MOE430)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerKidneyMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedKidneyMOE430}">
+	                <rich:menuItem value="Developing Kidney (MOE430)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerKidneyMOE430}" reRender="topPanelForm:menu" rendered="#{!MasterTableBrowseBean.selectedKidneyMOE430}"/>
+	                <rich:menuItem value="Developing Kidney (MOE430)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerKidneyMOE430}" reRender="topPanelForm:menu" rendered="#{MasterTableBrowseBean.selectedKidneyMOE430}">
 		                <f:facet name="icon">
 		                    <h:graphicImage value="../images/tick.gif"/>  
 		                </f:facet>             
 	                </rich:menuItem>
 	
-	                <rich:menuItem value="Developing Pelvic Ganglia FACS (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerPelvicGangliaST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedPelvicGangliaST1}"/>
-	                <rich:menuItem value="Developing Pelvic Ganglia FACS (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerPelvicGangliaST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedPelvicGangliaST1}">
+	                <rich:menuItem value="Developing Pelvic Ganglia FACS (ST1)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerPelvicGangliaST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedPelvicGangliaST1}"/>
+	                <rich:menuItem value="Developing Pelvic Ganglia FACS (ST1)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerPelvicGangliaST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedPelvicGangliaST1}">
 		                <f:facet name="icon">
 		                    <h:graphicImage value="../images/tick.gif"/>  
 		                </f:facet>             
 	                </rich:menuItem>
 	                
-	                <rich:menuItem value="JGA Single Cell (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerJGAST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedJGAST1}"/>
-	                <rich:menuItem value="JGA Single Cell (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerJGAST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedJGAST1}">
+	                <rich:menuItem value="JGA Single Cell (ST1)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerJGAST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedJGAST1}"/>
+	                <rich:menuItem value="JGA Single Cell (ST1)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerJGAST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedJGAST1}">
 		                <f:facet name="icon">
 		                    <h:graphicImage value="../images/tick.gif"/>  
 		                </f:facet>             
 	                </rich:menuItem>
 	                
-	                <rich:menuItem value="Developing Kidney (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerKidneyST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedKidneyST1}"/>
-	                <rich:menuItem value="Developing Kidney (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerKidneyST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedKidneyST1}" >
+	                <rich:menuItem value="Developing Kidney (ST1)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerKidneyST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedKidneyST1}"/>
+	                <rich:menuItem value="Developing Kidney (ST1)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerKidneyST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedKidneyST1}" >
 		                <f:facet name="icon">
 		                    <h:graphicImage value="../images/tick.gif"/>  
 		                </f:facet>             
 	                </rich:menuItem>
 	                
-	                <rich:menuItem value="Developing Gonadal FACS (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedGonadalST1}"/>
-	                <rich:menuItem value="Developing Gonadal FACS (ST1)" submitMode="ajax" immediate="true" actionListener="#{MasterTableBrowseBean.listenerGonadalST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedGonadalST1}">
+	                <rich:menuItem value="Developing Gonadal FACS (ST1)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerGonadalST1}" reRender="menu" rendered="#{!MasterTableBrowseBean.selectedGonadalST1}"/>
+	                <rich:menuItem value="Developing Gonadal FACS (ST1)" immediate="true" action="#{MasterTableBrowseBean.updatePage}" actionListener="#{MasterTableBrowseBean.listenerGonadalST1}" reRender="menu" rendered="#{MasterTableBrowseBean.selectedGonadalST1}">
 		                <f:facet name="icon">
 		                    <h:graphicImage value="../images/tick.gif"/>  
 		                </f:facet>             
 	                </rich:menuItem>
 	            </rich:dropDownMenu>
-		 			
+
+<%--		 			
 				<h:commandLink id="updatePage" action="#{MasterTableBrowseBean.updatePage}">
 					<h:graphicImage value="../images/gotopage.gif" title="Update Page" alt="update" styleClass="icon"/>
 					<f:param name="actionMethod" value="updatePage" />
 					<f:param name="prevSelections" value="#{MasterTableBrowseBean.selectionsString}" />
 				</h:commandLink>
-				
+--%>				
 				<h:outputLink styleClass="plaintextbold" value ="http://www.gudmap.org/Help/Microarray_Help.html">
 					<h:outputText value= "  (View Microarray Analysis Help) " />
 				</h:outputLink>			

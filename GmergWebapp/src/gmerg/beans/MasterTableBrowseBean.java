@@ -29,6 +29,7 @@ public class MasterTableBrowseBean {
 
 	private String genelistId;
 	private String geneSymbol;
+	private String listOfGenes;
 	private boolean displayTreeView;
 	private String tableTitle;
 	private String viewMode;
@@ -181,7 +182,7 @@ public class MasterTableBrowseBean {
 			for (MasterTableDisplayInfo masterTableInfo : allMasterTables)
 				masterTableInfo.selected = true;
 
-		clearSelectionsString();
+//		clearSelectionsString();
 		updateSelectedItems();	
 						
 		initialseTables(null);
@@ -203,7 +204,8 @@ public class MasterTableBrowseBean {
 	// Action Methods
 	// ********************************************************************************
 	public String updatePage() {
-		String prevSelections = FacesUtil.getRequestParamValue("prevSelections");
+//		String prevSelections = FacesUtil.getRequestParamValue("prevSelections");
+		String prevSelections = getSelectionsString();
 		
 		initialseTables(prevSelections);
 		return null;
@@ -411,14 +413,23 @@ public class MasterTableBrowseBean {
 	}
 	
 	public String getGeneList(){
-		
 		String genelist = "";
 		if (genelistId != null) 
 			genelist = DbUtility.retrieveGenelist(genelistId);
+//		else if (listOfGenes != null) 
+//			genelist = DbUtility.retrieveGenelistFromGenes(listOfGenes);
 		else
 			genelist = geneSymbol;
 		
 		return genelist;
+	}
+	public String getListOfGenes(){
+		return listOfGenes;
+	}
+
+	
+	public String getGeneListId(){
+		return genelistId;
 	}
 	
     private List<String> menuItems;
