@@ -446,7 +446,7 @@ public class MasterTableBrowseBean {
     boolean selectedGonadalST1;
     public void listenerGonadalST1(ActionEvent event){
     	selectedGonadalST1 = !selectedGonadalST1;
-    	if (debug) System.out.println("listenerGonadalST1 selectedGonadalST1 = "+ selectedGonadalST1 );
+     	if (debug) System.out.println("listenerGonadalST1 selectedGonadalST1 = "+ selectedGonadalST1 );
     	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("GonadalST1", selectedGonadalST1);
     	updatePage();
     }    
