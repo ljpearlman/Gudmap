@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
  *
  */
 public class MySQLAnatomyDAOImp implements AnatomyDAO {
-    private boolean debug = false;
+    private boolean debug = true;
     private Connection conn;
 	
 	// default constructor
@@ -450,7 +450,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 prepStmt = annotationQ.getPrepStat();
                 prepStmt.setString(1, stageName);
                 prepStmt.setString(2, submissionAccessionId);
-                //System.out.println(prepStmt.toString());
+System.out.println(prepStmt.toString());
                 resSet = prepStmt.executeQuery();
                 
                 annotationTree = this.buildTreeStructure(resSet, hasAnnot, submissionAccessionId, isEditor);

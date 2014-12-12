@@ -784,7 +784,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                                "JOIN ANAD_PART_OF " +
                                  "ON APO_NODE_FK = PARENT.ANO_OID AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' " +
                                "JOIN ANAD_PART_OF_PERSPECTIVE " +
-                                 "ON POP_PERSPECTIVE_FK = '" + bundle.getString("perspective") + "' "+
+                                 "ON POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' "+
                                  " AND POP_APO_FK = APO_OID " +
                                "JOIN ANA_TIMED_NODE PATN  " +
                                  "ON PARENT.ANO_OID = PATN.ATN_NODE_FK " +
@@ -1194,7 +1194,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NA
                                "JOIN ANAD_PART_OF "+
                                  "ON ANO_OID = APO_NODE_FK AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' "+
                                "JOIN ANAD_PART_OF_PERSPECTIVE " +
-                                 "ON POP_PERSPECTIVE_FK = '" + bundle.getString("perspective") + "' "+
+                                 "ON POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' "+
                                  " AND POP_APO_FK = APO_OID " +
                                "JOIN ANA_STAGE qs1 "+
                                  "ON qs1.STG_NAME = ? "+
