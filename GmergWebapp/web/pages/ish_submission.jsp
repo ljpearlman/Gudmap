@@ -76,24 +76,19 @@
 					<h:outputText styleClass="notetext, topAlign" value="#{image.note}"/>
 			        </h:column>
 			</h:dataTable>
-			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}"/>
+			<%-- <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}"/>
 			<h:panelGroup rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}">
 					<h:outputText  value="View 3D opt image: "></h:outputText>
 					<h:outputLink value="#{ISHSingleSubmissionBean.submission.wlzImage.clickFilePath}">
 						<h:graphicImage value="../images/opt_logo.png" height="30" width="30"/>
-					</h:outputLink>
-<%--				
-					<h:outputLink value="">
-						<h:graphicImage value="../images/opt_logo.png" height="30" width="30"/>
-					</h:outputLink>
-
-					<h:outputText  style="color:red" value=" The 3D OPT image viewer is temporarily unavailable, this should restored by 11:00 on Monday 14th April"></h:outputText>
---%>			
-			</h:panelGroup>
+					</h:outputLink>			
+			</h:panelGroup> --%>
+			
 			<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}" />
-			<h:outputLink value="#{ISHSingleSubmissionBean.submission.wlzImage.filePath}" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}">
+			<%-- <h:outputLink value="#{ISHSingleSubmissionBean.submission.wlzImage.filePath}" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}">
 					<h:outputText value="Download 3D images in woolz format "></h:outputText>
-			</h:outputLink>
+			</h:outputLink> --%>
+			<h:outputText value="3D OPT - Awaiting data."  rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}"></h:outputText>
 
 		</h:panelGrid>
 
