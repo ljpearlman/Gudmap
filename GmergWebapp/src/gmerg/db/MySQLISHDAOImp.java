@@ -1694,7 +1694,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    
 		    prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, symbol);
-            prepStmt.setString(2, "ISH");
+//            prepStmt.setString(2, "ISH"); //mantis 1026
             
 		    if (debug)
 		    	System.out.println("findRelatedSubmissionBySymbolISH:prepStmt  = "+prepStmt);
