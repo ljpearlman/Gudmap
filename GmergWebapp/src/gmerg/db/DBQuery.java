@@ -97,9 +97,11 @@ public class DBQuery {
   
   final static String ORDER_BY_REF_PROBE_SYMBOL = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
   
-final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURAL_SORT(TRIM(SER_TITLE))";
+// natural_sort only works on <255 chars final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURAL_SORT(TRIM(SER_TITLE))";
+final static String ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
-final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURAL_SORT(TRIM(NGR_TITLE))";
+//natural_sort only works on <255 charsfinal static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME, NATURAL_SORT(TRIM(NGR_TITLE))";
+final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
   final static String ORDER_BY_ISH_PROBE_SYMBOL = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
   

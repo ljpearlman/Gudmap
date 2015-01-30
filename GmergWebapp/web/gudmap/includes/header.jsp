@@ -242,7 +242,7 @@
 								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Links/Funding.html">Funding</a></li>
 								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Links/Events.html">Events</a></li>
 								<li><a  class="mediumnavtext" href="http://www.gudmap.org/Links/index.html">Links</a></li>
-								<li><a  class="mediumnavtext" href="http://www.gudmap.org/fcgi-bin/gudmap_bb/YaBB.pl">Message Board</a></li>
+								<li><a  class="mediumnavtext" href="http://www.biomedatlas.org/smf/index.php?page=gudmap">Message Board</a></li>
 								<li><a  class="mediumnavtext" href="http://www.gudmap.org/About/Usage.html">Citing GUDMAP</a></li>
 							</ul>
 						</li>
