@@ -137,7 +137,7 @@
 									<tr>
 										<td>&nbsp;&nbsp;&nbsp;
 											<a href="http://www.gudmap.org/index.html">
-												<img src="http://www.gudmap.org/Images/Banner/logo.png" width="211" height="64" alt="GUDMAP Logo" style="border:0px" />
+												<img src="http://www.gudmap.org/Images/Banner/GUDMAP_Banner2.png" width="215" height="41" alt="GUDMAP Logo" style="border:0px;padding-top:20px;" />
 											</a>
 										</td>
 									</tr>

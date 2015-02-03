@@ -87,9 +87,9 @@ td { font-size: 100%; }
 }
 
 .twoColHybLtHdr #footernew a {
-	color:#FFFFFF;
+	color:#25496D;
 	text-decoration:none;
-	
+	font-size:120%;
 }
 
 .twoColHybLtHdr #footernew a:hover, #footernew a:focus {
@@ -99,7 +99,7 @@ td { font-size: 100%; }
 
 .twoColHybLtHdr #footerinner { 
 	background:#B0B0B0;
-	width:62em;
+	width:72em;
 	padding:0 85px;
 	margin:0 auto;
 }
