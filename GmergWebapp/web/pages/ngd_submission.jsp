@@ -251,6 +251,9 @@
 			<h:outputText value="Library Strategy:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.protocol.libraryStrategy}" />
 			
+			<h:outputText value="ChIP Antibody:" rendered="#{NGDSingleSubmissionBean.submission.protocol.libraryStrategy=='ChIP-Seq'}" />
+			<h:outputText value="#{NGDSingleSubmissionBean.submission.protocol.antibody}" rendered="#{NGDSingleSubmissionBean.submission.protocol.libraryStrategy=='ChIP-Seq'}"/>
+			
 			<h:outputText value="Extracted Molecule:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.protocol.extractedMolecule}" />
 			
