@@ -43,7 +43,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			String queryString = null;
 			try {
 				for(int i = 0; i < stage.length; i++) {
-					queryString = sql + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
+					queryString = sql + " and STG_STAGE_DISPLAY='"+stage[i]+"' ";
 					//System.out.println("FocusStageArray:"+queryString);
 				    if (debug)
 				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString);
@@ -52,7 +52,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 					resSet = prepStmt.executeQuery();
 					result[i][0] = formatBrowseSeriesResultSet(resSet);
 					
-					queryString = sql2 + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
+					queryString = sql2 + " and STG_STAGE_DISPLAY='"+stage[i]+"' ";
 //					System.out.println("FocusStageISH:"+queryString);
 					prepStmt = null;
 				    if (debug)
@@ -99,7 +99,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			try {
 				for(int i = 0; i < stage.length; i++) {
                     // append stage criteria
-					queryString = sql + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
+					queryString = sql + " and STG_STAGE_DISPLAY='"+stage[i]+"' ";
 					
 					// append component criteria
 					if(null != organ) {
@@ -138,7 +138,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 						result[i][0] = resSet.getString(1);
 					}
 					
-					queryString = sql2 + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
+					queryString = sql2 + " and STG_STAGE_DISPLAY='"+stage[i]+"' ";
 
 					// append component criteria
 					if(null != organ) {
@@ -213,7 +213,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 		if(null != stage) {
 			if (assayType.equals("insitu")) {
 				parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_IN_SITU");
-				stageString = " AND SUB_EMBRYO_STG = '";
+				stageString = " AND STG_STAGE_DISPLAY = '";
 				if (symbol != null && !symbol.equals("")) {
 					geneString += " AND RPR_SYMBOL = '" + symbol + "'";
 				}

@@ -250,7 +250,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
 			
 		} else { // if don't specify order by column, order by gene symbol ascend by default
 //			queryString = query + " ORDER BY TRIM(RPR_SYMBOL)";
-			queryString = query + organsql + defaultOrder+ ", SUB_EMBRYO_STG";//DEREK NEED TO ADD GROUP BY INTO QUERY
+			queryString = query + organsql + defaultOrder+ ", STG_STAGE_DISPLAY";//DEREK NEED TO ADD GROUP BY INTO QUERY
 			//queryString = query;
 		}
 		
@@ -279,7 +279,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
         			"SUB_SUB_DATE", 
         			"SUB_ASSAY_TYPE", 
         			"RPR_JAX_ACC",    			
-        			"SUB_EMBRYO_STG", 
+        			"STG_STAGE_DISPLAY", 
         			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", 
         			"SPN_SEX", 
         			"SPN_WILDTYPE", 
@@ -301,7 +301,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
         
         } else {
         	if(columnIndex == 0) {
-           		orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
+           		orderByString = geneSymbolCol + " " + order +", STG_STAGE_DISPLAY "; 
         	} else if (columnIndex == 1) {
         		if (queryType == 1) {
 	    			orderByString = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + 
@@ -316,7 +316,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
         	} else if (columnIndex == 5) {
         		orderByString = "NATURAL_SORT(TRIM(RPR_JAX_ACC))" + " " + order + ", " + geneSymbolCol;
         	} else if (columnIndex == 6) {
-        		orderByString = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol;
+        		orderByString = "STG_STAGE_DISPLAY" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 7) {
         		orderByString = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol;
         	}else if (columnIndex == 8) {
@@ -330,7 +330,7 @@ public class MySQLIHCDAOImp implements IHCDAO {
         	} else if (columnIndex == 12) {
         		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
         	} else {
-       			orderByString = geneSymbolCol + ", SUB_EMBRYO_STG ";
+       			orderByString = geneSymbolCol + ", STG_STAGE_DISPLAY ";
         	}
         }
     	return orderByString;

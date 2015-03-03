@@ -309,6 +309,8 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setLabId(resSet.getString(26));
             submissionInfo.setEuregeneId(resSet.getString(27));
             submissionInfo.setOid(resSet.getString(28));
+            submissionInfo.setStageName(resSet.getString(29));
+            
 	    
         }
         if (null != noteSet && null != submissionInfo) {
@@ -2052,7 +2054,7 @@ public class MySQLISHDAOImp implements ISHDAO {
     	// get stage condition
     	String stageString = null;
     	if (stage != null && !stage.equals("")) {
-    		stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
+    		stageString = " AND STG_STAGE_DISPLAY = '" + stage + "' ";
     	} else {
     		stageString = "";
     	}
@@ -2120,7 +2122,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	
         String stageString = null;
         if (stage != null && !stage.equals("")) {
-            stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
+            stageString = " AND STG_STAGE_DISPLAY = '" + stage + "' ";
         } else {
             stageString = "";
         }
@@ -2174,7 +2176,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    getGeneInfoString(inputType, criteria, inputString);
         String stageString = null;
         if (stage != null && !stage.equals("")) {
-            stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
+            stageString = " AND STG_STAGE_DISPLAY = '" + stage + "' ";
         } else {
             stageString = "";
         }
@@ -2386,7 +2388,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         // get stage condition
         String stageString = null;
         if (stage != null && !stage.equals("")) {
-            stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
+            stageString = " AND STG_STAGE_DISPLAY = '" + stage + "' ";
         } else {
             stageString = "";
         }
@@ -2490,7 +2492,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         // get stage condition
         String stageString = null;
         if (stage != null && !stage.equals("")) {
-            stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
+            stageString = " AND STG_STAGE_DISPLAY = '" + stage + "' ";
         } else {
             stageString = "";
         }
@@ -2569,7 +2571,7 @@ public class MySQLISHDAOImp implements ISHDAO {
     	// get stage condition
     	String stageString = null;
     	if (stage != null && !stage.equals("")) {
-    		stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
+    		stageString = " AND STG_STAGE_DISPLAY = '" + stage + "' ";
     	} else {
     		stageString = "";
     	}
@@ -2630,7 +2632,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    getGeneInfoString(inputType, criteria, inputString);
         String stageString = null;
         if (stage != null && !stage.equals("")) {
-            stageString = " AND SUB_EMBRYO_STG = '" + stage + "' ";
+            stageString = " AND STG_STAGE_DISPLAY = '" + stage + "' ";
         } else {
             stageString = "";
         }
@@ -5248,7 +5250,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             expression.setPrimaryStrength(resSet.getString(4));
             expression.setSecondaryStrength(resSet.getString(5));
             expression.setExpressionId(resSet.getInt(6));
-            expression.setStage("TS" + resSet.getString(7));
+            expression.setStage(resSet.getString(7));
             expression.setSubmissionDbStatus(resSet.getInt(9));
 
             return expression;

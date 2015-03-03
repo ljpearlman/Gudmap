@@ -265,7 +265,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	}
 	
 	public HeaderItem[] createHeader()	{
-		String headerTitles[] = {"Gene", "Synonyms", "Disease", "Theiler Stage","Expression Profile",  
+		String headerTitles[] = {"Gene", "Synonyms", "Disease", "Stage","Expression Profile",  
 //								 "Expression Images", "Microarray expression profile", "RNA-SEQ", "Genesets"};
 		 						 "Expression Images", "Microarray expression profile", "RNA-SEQ"};
 //		boolean headerSortable[] = {true, false, false, false, false, false, false, false, false, false};

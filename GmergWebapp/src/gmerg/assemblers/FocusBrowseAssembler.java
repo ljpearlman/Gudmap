@@ -286,8 +286,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	 */
 	public static HeaderItem[] createHeaderForArrayBrowseTable() {
 		 String[] headerTitles = { Utility.getProject()+" Entry Details", "GEO Sample ID",  "GEO Series ID", "Source",
-				 				   Utility.getStageSeriesMed()+" Stage", "Age", 
-				 				    "Date", "Sex",
+				 				   "Stage", "Age","Date", "Sex",
 				 				   "Sample Description", "Sample Name", "Genotype", "Component(s) sampled" };
 		 
 		int colNum = headerTitles.length;
@@ -431,7 +430,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			tableData[i][2] = new DataItem(row[9], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[9], 2); //SERIES GEO ID
 			tableData[i][3] = new DataItem(row[4], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);		//source
 			if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
-				tableData[i][4] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);
+				tableData[i][4] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[2].toLowerCase()+"definition.html", 10);
 			}
 			else {
 				tableData[i][4] = new DataItem(row[2]); //THEILER STAGE

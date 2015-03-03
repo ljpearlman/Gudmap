@@ -497,7 +497,7 @@ public final class DBHelper {
 			
 			
 		} else { // if don't specify order by column, order by gene symbol ascend by default
-			queryString = query + defaultOrder+ ", SUB_EMBRYO_STG";
+			queryString = query + defaultOrder+ ", STG_STAGE_DISPLAY";
 		}
 		
 		// offset and retrieval number
@@ -536,7 +536,7 @@ public final class DBHelper {
 			queryString += column;
 			
 		} else { // if don't specify order by column, order by gene symbol ascend by default
-			queryString = query + defaultOrder + ", SUB_EMBRYO_STG";
+			queryString = query + defaultOrder + ", STG_STAGE_DISPLAY";
 		}
 		
 		// offset and retrieval number
@@ -582,7 +582,7 @@ public final class DBHelper {
 			queryString += column;
 			
 		} else { // if don't specify order by column, order by gene symbol ascend by default
-			queryString = query + defaultOrder + ", SUB_EMBRYO_STG";
+			queryString = query + defaultOrder + ", STG_STAGE_DISPLAY";
 		}
 		
 		// offset and retrieval number
@@ -619,7 +619,7 @@ public final class DBHelper {
 			} else if (order[0].equals("byCompID")) {
 				column = "CAST(SUBSTRING(EXP_COMPONENT_ID, INSTR(EXP_COMPONENT_ID,':')+1) AS SIGNED) " + order[1];
 			} else if (order[0].equals("byTS")) {
-				column = "SUB_EMBRYO_STG " + order[1];
+				column = "STG_STAGE_DISPLAY " + order[1];
 			} else if (order[0].equals("byGroup")) {
 				column = "COUNT(SUB_ACCESSION_ID) " + order[1];
 			} else {
@@ -632,12 +632,12 @@ public final class DBHelper {
 				}
 			} else if (order[0].equals("byGene")) {
 				if (queryType == 1 || queryType == 2) {
-					column = geneSymbolCol + " " + order[1] +", SUB_EMBRYO_STG "; 
+					column = geneSymbolCol + " " + order[1] +", STG_STAGE_DISPLAY "; 
 				}
 			} else if (order[0].equals("byTS")) {
-				column = "SUB_EMBRYO_STG" + " " + order[1] +", " + geneSymbolCol; 
+				column = "STG_STAGE_DISPLAY" + " " + order[1] +", " + geneSymbolCol; 
 			} else if (order[0].equals("byStage")) {
-				column = "SUB_EMBRYO_STG" + " " + order[1] +", " + geneSymbolCol; 
+				column = "STG_STAGE_DISPLAY" + " " + order[1] +", " + geneSymbolCol; 
 			} else if (order[0].equals("byAge")) {
 				column = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order[1] +", " + geneSymbolCol; 
 			} else if (order[0].equals("byLab")) {
@@ -650,7 +650,7 @@ public final class DBHelper {
 				column = "SPN_ASSAY_TYPE" + " " + order[1] +", " + geneSymbolCol; 
 			} else {
 				if (queryType == 1 || queryType == 2) {
-					column = geneSymbolCol + ", SUB_EMBRYO_STG "; 
+					column = geneSymbolCol + ", STG_STAGE_DISPLAY "; 
 				}
 			}
 		}
@@ -687,7 +687,7 @@ public final class DBHelper {
 				column += "CAST(SUBSTRING(EXP_COMPONENT_ID, INSTR(EXP_COMPONENT_ID,':')+1) AS SIGNED) " + 
 				order + ", " + defaultOrder;
 			} else if (columnIndex == 3) { // stage
-				column += "SUB_EMBRYO_STG " + order + ", " + defaultOrder;
+				column += "STG_STAGE_DISPLAY " + order + ", " + defaultOrder;
 			} else if (columnIndex == 4) { // group
 				column += "COUNT(SUB_ACCESSION_ID) " + order + ", " + defaultOrder;
 			} else { // path by default
@@ -703,10 +703,10 @@ public final class DBHelper {
 				}
 			} else if (columnIndex == 1) { // gene
 				if (queryType == 1 || queryType == 2) {
-					column = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
+					column = geneSymbolCol + " " + order +", STG_STAGE_DISPLAY "; 
 				} 
 			} else if (columnIndex == 2) { // stage 
-				column = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol; 
+				column = "STG_STAGE_DISPLAY" + " " + order +", " + geneSymbolCol; 
 			} else if (columnIndex == 3) { // age
 				column = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol; 
 			} else if (columnIndex == 4) { // source
@@ -727,7 +727,7 @@ public final class DBHelper {
 				column = "PRB_PROBE_TYPE" + " " + order +", " + geneSymbolCol; 
 			} else {
 				if (queryType == 1 || queryType == 2) {
-					column = geneSymbolCol + ", SUB_EMBRYO_STG "; 
+					column = geneSymbolCol + ", STG_STAGE_DISPLAY "; 
 				} 
 			}
 		}
@@ -743,7 +743,7 @@ public final class DBHelper {
 		
 		// start to translate
 		if(columnIndex == 0) // symbol
-			column = geneSymbolCol + " " + order +", SUB_EMBRYO_STG ";
+			column = geneSymbolCol + " " + order +", STG_STAGE_DISPLAY ";
 		else if (columnIndex == 1)  // gudmap id
 			column = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS SIGNED) " + order + ", " + geneSymbolCol;
 		else if (columnIndex == 2)  // source
@@ -755,7 +755,7 @@ public final class DBHelper {
 		else if (columnIndex == 5)  // probe name
 			column = "NATURAL_SORT(TRIM(RPR_JAX_ACC))" + " " + order +", " + geneSymbolCol;
 		else if (columnIndex == 6)  // stage 
-			column = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol; 
+			column = "STG_STAGE_DISPLAY" + " " + order +", " + geneSymbolCol; 
 		else if (columnIndex == 7)  // age
 			column = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol; 
 		else if (columnIndex == 8)  // sex
@@ -767,7 +767,7 @@ public final class DBHelper {
 		else if (columnIndex == 11)  // specimen
 			column = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
 		else
-			column = geneSymbolCol + " " + order +", SUB_EMBRYO_STG ";
+			column = geneSymbolCol + " " + order +", STG_STAGE_DISPLAY ";
 			
 		return column;
 	} 

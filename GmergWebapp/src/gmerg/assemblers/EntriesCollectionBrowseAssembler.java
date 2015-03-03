@@ -321,7 +321,7 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 			}
 			//tableData[i][5] = new DataItem(row[9]);//probe name
 			if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
-				tableData[i][6] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);								// Theiler Stage
+				tableData[i][6] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[2].toLowerCase()+"definition.html", 10);								// Theiler Stage
 			else 
 				tableData[i][6] = new DataItem(row[2]);
 			//tableData[i][6] = new DataItem(row[2]);//stage
@@ -383,7 +383,7 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		
 		// Theiler Stage
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
-		    formatedRow[ 6] = new DataItem(row[6], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[6]+"definition.html", 10);								// Theiler Stage
+		    formatedRow[ 6] = new DataItem(row[6], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[6].toLowerCase()+"definition.html", 10);								// Theiler Stage
 		else 
 		    formatedRow[ 6] = new DataItem(row[6]);  
 		

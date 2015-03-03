@@ -1803,7 +1803,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    
 		    // assemble stage string (only needs to be done if specific stage has been entered by user)
 		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
-				ishStageString = " AND QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+				ishStageString = " AND QIC_STG_STAGE_DISPLAY = '" + queryCriteria[1] + "' ";
 				micStageString = " AND QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
 		    }
 	    
@@ -1961,7 +1961,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    // assemble stage string (only needs to be done if specific stage has been entered by user)
 		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
 				//stageString = " AND QSC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
-				ishStageString = " AND QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+				ishStageString = " AND QIC_STG_STAGE_DISPLAY = '" + queryCriteria[1] + "' ";
 				micStageString = " AND QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
 		    }
 	    
@@ -2083,7 +2083,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    // assemble stage string (only needs to be done if specific stage has been entered by user)
 		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
 				//stageString = " AND QSC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";// not sure which table does the column come from: need to test - xingjun - 05/12/2007
-				ishStageString = " AND QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+				ishStageString = " AND QIC_STG_STAGE_DISPLAY = '" + queryCriteria[1] + "' ";
 				micStageString = " AND QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
 		    }
 		    
@@ -2306,7 +2306,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    
 		    // assemble stage string (only needs to be done if specific stage has been entered by user)
 		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {		
-				ishStageString = "QIC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
+				ishStageString = "QIC_STG_STAGE_DISPLAY = '" + queryCriteria[1] + "' ";
 				micStageString = "QMC_SUB_EMBRYO_STG = '" + queryCriteria[1] + "' ";
 		    }
 		    /////////////////////////////////////////////

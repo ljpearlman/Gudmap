@@ -219,7 +219,7 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			
 			// theiler stage
             if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
-              tableData[i][6] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[5]+"definition.html", 10);         //stage
+              tableData[i][6] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[5].toLowerCase()+"definition.html", 10);         //stage
             }
             else {
               tableData[i][6] = new DataItem(row[5]);        

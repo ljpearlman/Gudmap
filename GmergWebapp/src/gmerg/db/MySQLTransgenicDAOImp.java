@@ -163,7 +163,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 			queryString += column;
 			
 		} else { // if don't specify order by column, order by gene symbol ascend by default
-			queryString = query + organsql + groupby + defaultOrder+ ", SUB_EMBRYO_STG";
+			queryString = query + organsql + groupby + defaultOrder+ ", STG_STAGE_DISPLAY";
 		}
 
 		// return assembled query string
@@ -188,7 +188,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     			"SUB_SUB_DATE", 
     			"SUB_ASSAY_TYPE", 
     			"RPR_JAX_ACC", 
-    			"SUB_EMBRYO_STG", 
+    			"STG_STAGE_DISPLAY", 
     			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", // 3
     			"SPN_ASSAY_TYPE", 
     			"SPN_SEX", 
@@ -226,7 +226,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         	}else if (columnIndex == 5) {
         		orderByString = "NATURAL_SORT(TRIM(RPR_JAX_ACC))" + " " + order + ", " + geneSymbolCol;
         	} else if (columnIndex == 6) {
-        		orderByString = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol;
+        		orderByString = "STG_STAGE_DISPLAY" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 7) {
         		orderByString = "AGE" + " " + order +", " + geneSymbolCol;
         	}else if (columnIndex == 8) {
@@ -240,7 +240,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         	}else if (columnIndex == 12) {
         		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
         	} else {
-       			orderByString = geneSymbolCol + ", SUB_EMBRYO_STG ";
+       			orderByString = geneSymbolCol + ", STG_STAGE_DISPLAY ";
         	}
         }
 

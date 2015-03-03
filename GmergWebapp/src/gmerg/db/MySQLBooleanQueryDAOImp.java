@@ -57,7 +57,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
             "'' col3,"+
             "QIC_SUB_SOURCE col4,"+
             "QIC_SUB_SUB_DATE col5,"+
-            "QIC_SUB_EMBRYO_STG col6,"+
+            "QIC_STG_STAGE_DISPLAY col6,"+
             "QIC_SPN_ASSAY_TYPE col7,"+
             "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
             "QIC_SUB_THUMBNAIL col9,"+
@@ -305,7 +305,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
         	where_buf=new StringBuffer("WHERE ");
         	StringBuffer subWhereClause = new StringBuffer("");
         	component_buf=new StringBuffer();
-        	stage_buf=new StringBuffer("QIC_SUB_EMBRYO_STG IN (");
+        	stage_buf=new StringBuffer("QIC_STG_STAGE_DISPLAY IN (");
 //        	expression_buf=new StringBuffer("AND QIC_EXP_STRENGTH IN (");
         	expression_buf=new StringBuffer("QIC_EXP_STRENGTH= ");
         	pattern_buf=new StringBuffer("AND QIC_PTN_PATTERN=");
@@ -694,7 +694,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
         	where_buf=new StringBuffer("WHERE ");
         	StringBuffer subWhereClause = new StringBuffer("");
         	component_buf=new StringBuffer();
-        	stage_buf=new StringBuffer("QIC_SUB_EMBRYO_STG IN (");
+        	stage_buf=new StringBuffer("QIC_STG_STAGE_DISPLAY IN (");
 //        	expression_buf=new StringBuffer("AND QIC_EXP_STRENGTH IN (");
         	expression_buf=new StringBuffer("QIC_EXP_STRENGTH= ");
         	pattern_buf=new StringBuffer("AND QIC_PTN_PATTERN=");

@@ -23,9 +23,9 @@
 		 </h:panelGrid>
     
          <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
-    	    <h:outputText value="#{stageSeriesLong} Stage" />
-    	    <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{MicroarraySingleSubmissionBean.submission.stage}definition.html">
-    		<h:outputText value="#{stageSeriesShort}#{MicroarraySingleSubmissionBean.submission.stage}" />
+    	    <h:outputText value="Stage" />
+    	    <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{MicroarraySingleSubmissionBean.submission.stageLowerCase}definition.html">
+    		<h:outputText value="#{MicroarraySingleSubmissionBean.submission.stageName}" />
     	    </h:outputLink>
         </h:panelGrid>
         
@@ -226,7 +226,7 @@
 			<h:outputText value="Development Age:" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.devAge}" />
 			
-			<h:outputText value="#{stageSeriesLong} Stage:" />
+			<h:outputText value="Stage:" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.stage}" />
 
 			<h:outputText value="Developmental Landmark:" rendered="#{not empty MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}"/>

@@ -40,8 +40,8 @@
 			</h:panelGroup>
 			
 			<h:outputText value="Stage:" />
-			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
-				<h:outputText value="Theiler Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
+			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{ISHSingleSubmissionBean.submission.stageLowerCase}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.stageName}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
 			</h:outputLink>
 			<h:outputText value="Carnegie Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 				
@@ -606,8 +606,8 @@
 			<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
 				<h:outputText value="Stage:" />
 					
-				<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
-				<h:outputText value="TS#{ISHSingleSubmissionBean.submission.stage}" />
+				<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{ISHSingleSubmissionBean.submission.stageLowerCase}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.stage}" />
 				</h:outputLink>
 				
 				<h:outputText value="CS#{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species != 'Mus musculus'}"/>

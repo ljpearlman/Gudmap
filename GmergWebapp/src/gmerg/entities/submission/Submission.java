@@ -36,6 +36,7 @@ public class Submission {
     protected String labId; // SUB_LAB_ID: 
     protected String localId; //SUB_LOCAL_ID
     protected String euregeneId; //SUB_ACCESSION_ID_2
+    protected String stageName;
 
     protected String[] resultNotes = null;
     
@@ -430,4 +431,17 @@ public class Submission {
 	    return false;
 	return true;
     }
+    
+    public void setStageName(String stgname) {
+        stageName = stgname;
+    }
+
+    public String getStageName() {
+        return stageName;
+    }
+
+    public String getStageLowerCase() {
+        return stage.toLowerCase();
+    }
+   
 }

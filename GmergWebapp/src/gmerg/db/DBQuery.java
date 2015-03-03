@@ -30,7 +30,8 @@ public class DBQuery {
 		  "SUB_SUB_DATE",
 		  "IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) SUB_ASSAY_TYPE",
 		  "RPR_JAX_ACC",
-		  "SUB_EMBRYO_STG",
+//		  "SUB_EMBRYO_STG",
+		  "STG_STAGE_DISPLAY",
 		  stageFormatConcat,
 		  "SPN_SEX",
 		  "CASE SPN_WILDTYPE WHEN 'Wild Type' THEN 'wild type' ELSE CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, " +
@@ -61,7 +62,7 @@ public class DBQuery {
 
   
   // added by xingjun 15/11/2007
-  final static String ISH_BROWSE_DEFAULT_ORDER_BY_COL = "NATURAL_SORT(TRIM(RPR_SYMBOL)), SUB_EMBRYO_STG, SPN_SEX";
+  final static String ISH_BROWSE_DEFAULT_ORDER_BY_COL = "NATURAL_SORT(TRIM(RPR_SYMBOL)), STG_STAGE_DISPLAY, SPN_SEX";
   
 
   final static String ISH_BROWSE_ALL_TABLES = "FROM ISH_SUBMISSION " +
@@ -69,6 +70,7 @@ public class DBQuery {
                                                   "JOIN ISH_PERSON ON SUB_PI_FK = PER_OID " +
                                                   "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
                                                   "JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " +
+                                              "LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +    
                                               "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
                                               "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
                                               "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +                                                  "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
@@ -82,8 +84,9 @@ public class DBQuery {
   final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
   final static String FOR_ANNOTATION_ENTRIES_Q = " WHERE STA_OID = ? AND SUB_IS_DELETED = 0 ";
                                                   
-  final static String GENES_IN_COMPONENT_COLS = "SELECT distinct APO_FULL_PATH, EXP_COMPONENT_ID,SUB_EMBRYO_STG, RPR_SYMBOL, COUNT(DISTINCT SUB_ACCESSION_ID) ";
+  final static String GENES_IN_COMPONENT_COLS = "SELECT distinct APO_FULL_PATH, EXP_COMPONENT_ID,STG_STAGE_DISPLAY, RPR_SYMBOL, COUNT(DISTINCT SUB_ACCESSION_ID) ";
   final static String GENES_IN_COMPONENT_TABLES = "FROM ISH_SUBMISSION, ISH_EXPRESSION, ISH_PROBE, ANA_NODE, ANA_TIMED_NODE, ANAD_PART_OF, REF_PROBE " +
+		  								  "LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
   		                                  "WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " +
   		                                  "AND SUB_OID = PRB_SUBMISSION_FK " +
   		                                  "AND ATN_PUBLIC_ID = EXP_COMPONENT_ID " +
@@ -93,7 +96,7 @@ public class DBQuery {
   		                                  "AND EXP_SUBMISSION_FK = SUB_OID " +
   		                                  "AND PRB_MAPROBE = RPR_OID ";
                                                   
-  final static String TOTAL_GENES_IN_COMP_COLS = "SELECT COUNT(distinct APO_FULL_PATH, EXP_COMPONENT_ID,SUB_EMBRYO_STG, RPR_SYMBOL) ";
+  final static String TOTAL_GENES_IN_COMP_COLS = "SELECT COUNT(distinct APO_FULL_PATH, EXP_COMPONENT_ID,STG_STAGE_DISPLAY, RPR_SYMBOL) ";
   
   final static String ORDER_BY_REF_PROBE_SYMBOL = " ORDER BY natural_sort(TRIM(RPR_SYMBOL))";
   
@@ -126,7 +129,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   // include submissions public and non-public
   final static String name232 = "ALL_COLLECTION_ENTRIES_ISH";
   final static String query232 = "SELECT DISTINCT SUB_ACCESSION_ID QSC_SUB_ACCESSION_ID, " +
-  		"RPR_SYMBOL QSC_RPR_SYMBOL, SUB_EMBRYO_STG QSC_SUB_EMBRYO_STG, " + 
+  		"RPR_SYMBOL QSC_RPR_SYMBOL, STG_STAGE_DISPLAY QSC_SUB_EMBRYO_STG, " + 
   		stageFormatConcat + " QSC_AGE, PER_SURNAME QSC_PER_NAME, SPN_ASSAY_TYPE QSC_SPN_ASSAY_TYPE, " +
   		"IF(SUB_CONTROL=0,SUB_ASSAY_TYPE,CONCAT(SUB_ASSAY_TYPE,' control')) QSC_ASSAY_TYPE, " +
   		"SUB_SUB_DATE QSC_SUB_SUB_DATE, SPN_SEX QSC_SPN_SEX, PRB_PROBE_NAME QSC_PRB_PROBE_NAME, " +
@@ -140,13 +143,15 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
   // find details of a particular submission
   final static String name1 = "SUBMISSION_DETAILS";
-  final static String query1 = "SELECT SUB_ACCESSION_ID, SUB_EMBRYO_STG, SUB_ASSAY_TYPE, " +
+  final static String query1 = "SELECT SUB_ACCESSION_ID, STG_STAGE_DISPLAY, SUB_ASSAY_TYPE, " +
   		"SUB_MODIFIED_DATE, SUB_MODIFIED_BY, SUB_VERSION_NO, SUB_IS_PUBLIC, SUB_ARCHIVE_ID, " +
   		"SUB_IS_DELETED, SUB_SUBMITTER_FK, SUB_PI_FK, SUB_ENTRY_BY_FK, SUB_MODIFIER_FK, " +
   		"SUB_DB_STATUS_FK, SUB_PROJECT_FK, SUB_BATCH, " +
   		"SUB_NAMESPACE, SUB_OS_ACCESSION, SUB_LOCAL_ID, SUB_SOURCE, SUB_VALIDATION, " +
   		"SUB_CONTROL, SUB_ASSESSMENT, SUB_CONFIDENCE, SUB_LOCALDB_NAME, " +
-  		"SUB_LAB_ID, SUB_ACCESSION_ID_2, SUB_OID FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID = ?";
+  		"SUB_LAB_ID, SUB_ACCESSION_ID_2, SUB_OID, STG_NAME FROM ISH_SUBMISSION " +
+  		"LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
+  		"WHERE SUB_ACCESSION_ID = ?";
 
   final static String name243 = "SUBMISSION_NOTES";
   final static String query243 = "SELECT SNT_VALUE, SNT_TYPE FROM ISH_SUBMISSION_NOTE WHERE  (CONCAT('GUDMAP:', SNT_SUBMISSION_FK) = ?)";
@@ -211,7 +216,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   
   //query2 (find details of a specimen likned to a submission)
   final static String name4 = "SUBMISSION_SPECIMEN";
-  final static String query4 = "SELECT SPN_WILDTYPE, SPN_ASSAY_TYPE, SPN_FIXATION_METHOD, SPN_EMBEDDING, SPN_STRAIN, SPN_STAGE_FORMAT, SPN_STAGE, SUB_EMBRYO_STG, SPN_SEX, SPN_TISSUE_TYPE, SPN_STAGE_ADD_VALUE, SPN_SPECIES  FROM ISH_SPECIMEN, ISH_SUBMISSION WHERE SPN_SUBMISSION_FK = SUB_OID AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND SUB_ACCESSION_ID = ?";
+  final static String query4 = "SELECT SPN_WILDTYPE, SPN_ASSAY_TYPE, SPN_FIXATION_METHOD, SPN_EMBEDDING, SPN_STRAIN, SPN_STAGE_FORMAT, SPN_STAGE, STG_STAGE_DISPLAY, SPN_SEX, SPN_TISSUE_TYPE, SPN_STAGE_ADD_VALUE, SPN_SPECIES  FROM ISH_SPECIMEN, ISH_SUBMISSION LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID WHERE SPN_SUBMISSION_FK = SUB_OID AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND SUB_ACCESSION_ID = ?";
 
   //query36 (find specimen notes linked to a submission)
   final static String name5 = "SPECIMEN_NOTE";
@@ -225,9 +230,10 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
   final static String name7 = "SUBMISSION_IMAGE_DETAIL";
   final static String query7 = "SELECT SUB_ACCESSION_ID, RPR_SYMBOL, RPR_NAME, " +
-  		"SUB_EMBRYO_STG, " + stageFormatConcat + ", SUB_ASSAY_TYPE, SPN_ASSAY_TYPE, " +
+  		"STG_STAGE_DISPLAY, " + stageFormatConcat + ", SUB_ASSAY_TYPE, SPN_ASSAY_TYPE, " +
   				"IMG_FILEPATH, IMG_FILENAME " +
   				"FROM ISH_PROBE " +
+  				"LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
   				"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
   				"JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK " +
   				"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
@@ -238,10 +244,11 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
   final static String name245 = "SUBMISSION_WLZ_DETAIL";
   final static String query245 = "SELECT SUB_ACCESSION_ID, RPR_SYMBOL, RPR_NAME, " +
-  		"SUB_EMBRYO_STG, " + stageFormatConcat + ", SUB_ASSAY_TYPE, SPN_ASSAY_TYPE, " +
+  		"STG_STAGE_DISPLAY, " + stageFormatConcat + ", SUB_ASSAY_TYPE, SPN_ASSAY_TYPE, " +
   				"CONCAT(I.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME), " +
   				"CONCAT(C.URL_URL, '?greyImg=', IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) " +
   				"FROM ISH_PROBE " +
+  				"LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
   				"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
   				"JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK " +
   				"JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
@@ -280,7 +287,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
   //query (find the name of the stage for a submission)
   final static String name11 = "SUB_STAGE_NAME";
-  final static String query11 = "SELECT CONCAT(STG_PREFIX,SUB_EMBRYO_STG),SPN_SPECIES,SUB_EMBRYO_STG  FROM ISH_SUBMISSION, ISH_SPECIMEN, REF_STAGE WHERE SUB_OID = SPN_SUBMISSION_FK AND SUB_ACCESSION_ID = ?";
+  final static String query11 = "SELECT STG_NAME,SPN_SPECIES,STG_STAGE_DISPLAY  FROM ISH_SUBMISSION, ISH_SPECIMEN, REF_STAGE WHERE SUB_OID = SPN_SUBMISSION_FK AND STG_OID = SUB_STAGE_FK AND SUB_ACCESSION_ID = ?";
+ // final static String query11 = "SELECT CONCAT(STG_PREFIX,SUB_EMBRYO_STG),SPN_SPECIES,SUB_EMBRYO_STG  FROM ISH_SUBMISSION, ISH_SPECIMEN, REF_STAGE WHERE SUB_OID = SPN_SUBMISSION_FK AND SUB_ACCESSION_ID = ?";
 //  final static String query11 = "SELECT CONCAT(STG_PREFIX,SUB_EMBRYO_STG) FROM ISH_SUBMISSION, ISH_SPECIMEN, REF_STAGE WHERE SUB_OID = SPN_SUBMISSION_FK AND SPN_SPECIES = STG_SPECIES_FK AND SUB_ACCESSION_ID = ?";
 
   //query (map human to mouse stage)
@@ -289,8 +297,9 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   
   //query 26 (find expression mapping for a particular component in a submission)
   final static String name13 = "EXPRESSION_DETAIL";
-  final static String query13 = "SELECT EXP_COMPONENT_ID, ANO_COMPONENT_NAME, APO_FULL_PATH, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH, EXP_OID, SUB_EMBRYO_STG, SUB_OID, SUB_DB_STATUS_FK " +
+  final static String query13 = "SELECT EXP_COMPONENT_ID, ANO_COMPONENT_NAME, APO_FULL_PATH, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH, EXP_OID, STG_STAGE_DISPLAY, SUB_OID, SUB_DB_STATUS_FK " +
     "FROM ISH_SUBMISSION, ISH_EXPRESSION, ANA_NODE, ANAD_PART_OF, ANA_TIMED_NODE " +
+    "LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
     "WHERE EXP_SUBMISSION_FK = SUB_OID " +
     "AND SUB_ACCESSION_ID = ? " + // 1
     "AND EXP_COMPONENT_ID = ? " + // 2
@@ -374,7 +383,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
   // query 33 (find the stage of specified submission)
   final static String name17 = "SUBMISSION_STAGE";
-  final static String query17 = "SELECT SUB_OID, SUB_EMBRYO_STG FROM ISH_SUBMISSION WHERE SUB_ACCESSION_ID = ?";
+  final static String query17 = "SELECT SUB_OID, STG_STAGE_DISPLAY FROM ISH_SUBMISSION LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID WHERE SUB_ACCESSION_ID = ?";
 
   // query 34 (find the current max oid for expression)
   final static String name18 = "MAX_EXPRESSION_ID";
@@ -509,7 +518,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
   //query to find ish submissions linked to a specific gene symbol
   final static String name30 = "GENE_RELATED_SUBMISSIONS_ISH";
-  final static String query30 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', CONCAT(STG_PREFIX, SUB_EMBRYO_STG), SPN_ASSAY_TYPE,  " + 
+  final static String query30 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
                                 "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
                                 "ELSE 'without annotation' " + 
                                 "END, " +
@@ -531,6 +540,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                                 "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
                                 "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
                                 "JOIN REF_STAGE " +
+                                "LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
                                 "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " + 
                                 "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
                                 "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
@@ -542,7 +552,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                                 "AND (SUB_ASSAY_TYPE = 'ISH' ||SUB_ASSAY_TYPE = 'IHC'||SUB_ASSAY_TYPE = 'TG') " +
 //                                "AND SUB_ASSAY_TYPE = ? " + // mantis 1026
                                 "GROUP BY SUB_OID " +
-                                "ORDER BY CONCAT(STG_PREFIX, SUB_EMBRYO_STG), natural_sort(SUB_ACCESSION_ID)";
+                                "ORDER BY STG_STAGE_DISPLAY, natural_sort(SUB_ACCESSION_ID)";
 
   //query to find maprobs associated with a particular gene entry
   final static String name31 = "GENE_RELATED_MAPROBE";
@@ -663,6 +673,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                         " JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK" +
                         " JOIN REF_URL U ON U.URL_OID = 1 LEFT " +
                         " JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
+                        " LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
                         " AND IMG_ORDER = " +
                         " (SELECT MIN(I.IMG_ORDER) " +
                         " FROM ISH_ORIGINAL_IMAGE I " +
@@ -676,7 +687,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   
   final static String NUMBER_OF_GENE_SYMBOL = "SELECT COUNT(DISTINCT RPR_SYMBOL) ";
   
-  final static String NUMBER_OF_THEILER_STAGE = "SELECT COUNT(DISTINCT SUB_EMBRYO_STG) ";
+  final static String NUMBER_OF_THEILER_STAGE = "SELECT COUNT(DISTINCT STG_STAGE_DISPLAY) ";
   
   final static String NUMBER_OF_GIVEN_STAGE = "SELECT COUNT(DISTINCT TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)) ";
   
@@ -1059,13 +1070,14 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   
   // component count query
   final static String select_expression_component_count_query = "SELECT DISTINCT APO_FULL_PATH, EXP_COMPONENT_ID," +
-  		                                                        "SUB_EMBRYO_STG, RPR_SYMBOL, " +
+  		                                                        "STG_STAGE_DISPLAY, RPR_SYMBOL, " +
   		                                                        "COUNT(DISTINCT SUB_ACCESSION_ID) " +
   		                                                        "FROM ISH_SUBMISSION ";
   
   final static String join_expression_component_count_query = "JOIN ISH_EXPRESSION AS E ON E.EXP_SUBMISSION_FK = SUB_OID " +
   		                                                      "JOIN REF_MGI_MRK " +
   		                                                      "LEFT JOIN REF_SYNONYM ON RSY_REF = RMM_ID " +
+  		                                                      "LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
   		                                                      "JOIN ISH_PROBE ON SUB_OID = PRB_SUBMISSION_FK " +
   		                                                      "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " +
   		                                                      "JOIN REF_URL ON URL_OID = 1 " +
@@ -1088,7 +1100,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   // geneInfo + stageCondition + orderByString;
 
   final static String name105 = "GROUP_BY_CLAUSE_COMPONENT_COUNT_QUERY";
-  final static String query105 = "GROUP BY APO_FULL_PATH, EXP_COMPONENT_ID, SUB_EMBRYO_STG, RPR_SYMBOL ";
+  final static String query105 = "GROUP BY APO_FULL_PATH, EXP_COMPONENT_ID, STG_STAGE_DISPLAY, RPR_SYMBOL ";
 
 
   // component query
@@ -1528,7 +1540,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
   
   final static String name178 = "COLLECTION_SUBMISSION_IN_SITU_PUBLIC";
-  final static String query178 = "SELECT DISTINCT QIC_SUB_ACCESSION_ID QSC_SUB_ACCESSION_ID, QIC_RPR_SYMBOL QSC_RPR_SYMBOL, QIC_SUB_EMBRYO_STG QSC_SUB_EMBRYO_STG, " +
+  final static String query178 = "SELECT DISTINCT QIC_SUB_ACCESSION_ID QSC_SUB_ACCESSION_ID, QIC_RPR_SYMBOL QSC_RPR_SYMBOL, QIC_STG_STAGE_DISPLAY QSC_SUB_EMBRYO_STG, " +
   		"CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) QSC_AGE, QIC_PER_NAME QSC_PER_NAME, QIC_SPN_ASSAY_TYPE QSC_SPN_ASSAY_TYPE, " +
   		"SUB_ASSAY_TYPE QSC_ASSAY_TYPE, QIC_SUB_SUB_DATE QSC_SUB_SUB_DATE, QIC_SPN_SEX QSC_SPN_SEX, QIC_PRB_PROBE_NAME QSC_PRB_PROBE_NAME, " +
   		"QIC_SPN_WILDTYPE QSC_SPN_WILDTYPE, " +
@@ -1910,10 +1922,11 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
     final static String name264 = "SUBMISSION_SAMPLE_NGD";
     final static String query264 = "SELECT NGS_GEO_ID, NGS_DESCRIPTION, NGS_SAMPLE_NAME, NGS_SPECIES, NGS_STRAIN, NGS_GENOTYPE, " +
     		"NGS_SEX, CASE WHEN NGS_STAGE_FORMAT='dpc' THEN CONCAT(NGS_DEV_STAGE,NGS_STAGE_FORMAT) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END age, " +
-    		"SUB_EMBRYO_STG, NGS_POOLED_SAMPLE, NGS_POOL_SIZE, NGS_EXPERIMENTAL_METHOD, NGS_SAMPLE_NOTES, " +
+    		"STG_STAGE_DISPLAY, NGS_POOLED_SAMPLE, NGS_POOL_SIZE, NGS_EXPERIMENTAL_METHOD, NGS_SAMPLE_NOTES, " +
     		"NGS_LIBRARY_POOL_SIZE, NGS_LIBRARY_READS, NGS_READ_LENGTH, NGS_MEAN_INSERT_SIZE " +
     		"FROM NGD_SAMPLE " +
     		"JOIN ISH_SUBMISSION ON NGS_SUBMISSION_FK = SUB_OID " +
+    		"LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
     		"WHERE SUB_ACCESSION_ID = ? ";
     
     
