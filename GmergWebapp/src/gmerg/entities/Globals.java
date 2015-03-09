@@ -328,11 +328,12 @@ public class Globals {
     }
     
     //******************************************************** Filters ****************
-	public enum PredefinedFilters {LAB, STAGE, SEX, ASSAY, SPECIMEN, GENOTYPE, DATE, EXPRESSION}
+	public enum PredefinedFilters {LAB, THEILER_STAGE, HUMAN_STAGE, SEX, ASSAY, SPECIMEN, GENOTYPE, DATE, EXPRESSION}
     
     // modified by Bernie - 20/05/2011 - changed length of options array from 13 to 12 (Mantis 550)
     public static FilterItem getPredefinedFilter(PredefinedFilters filter) {
 	int i = 0;
+	
 
 	switch(filter){
 	case LAB:
@@ -343,14 +344,22 @@ public class Globals {
 	    for (i = 0; i < iSize; i++)
 		source[i] = (String)list.get(i);
 	    return new FilterItem(FilterType.MULTIPLE, source, null); 
-	case STAGE: 
-	    String[]options = new String[12];
-	    options[0] = "";
-	    for (i=17; i<29; i++)
-		options[i-17] = ""+i;
-	    FilterItem stageFilter = new FilterItem(FilterType.LISTRANGE, options, null, true);
-	    stageFilter.setRangeSwap(true);
-	    return stageFilter;
+	case THEILER_STAGE: 
+	{
+		String[] mouse_options = DbUtility.getRefStages("Mus musculus");
+		String name = "Mouse Stage";
+	    FilterItem tsStageFilter = new FilterItem(FilterType.LISTRANGE, mouse_options, null, true, name);
+	    tsStageFilter.setRangeSwap(true);
+	    return tsStageFilter;
+	}
+	case HUMAN_STAGE: 
+	{
+		String[] human_options = DbUtility.getRefStages("Homo sapiens");
+		String name = "Human Stage";
+	    FilterItem csStageFilter = new FilterItem(FilterType.LISTRANGE, human_options, null, true, name);
+	    csStageFilter.setRangeSwap(true);
+	    return csStageFilter;
+	}
 	case SEX:
 	    return new FilterItem(FilterType.RADIO, new String[]{"male", "female", "unknown"}, null);
 	case ASSAY: 
@@ -369,9 +378,10 @@ public class Globals {
 	    FilterItem dateFilter = new FilterItem(FilterType.DATERANGE, null, null);
 	    dateFilter.setRangeSwap(true);
 	    return dateFilter;
-	case EXPRESSION: 
+	case EXPRESSION:
 	    return new FilterItem(FilterType.CHECKBOX, new String[]{"present", "not detected", "uncertain"}, new String[]{"present", "not detected"});
 	}
+	
 	return new FilterItem(FilterType.SIMPLE, null, null);
     }
     

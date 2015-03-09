@@ -3128,5 +3128,42 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    DBHelper.closeResultSet(resSet);
 		}
 	}
-    
+
+	public ArrayList<String> getRefStages(String stage) {
+		ArrayList<String> stages = null;
+        ResultSet resSet = null;
+        ParamQuery parQ = ArrayDBQuery.getParamQuery("GET_ALL_REF_STAGES");
+        PreparedStatement prepStmt = null;
+        
+        
+        String queryString = parQ.getQuerySQL();
+//        System.out.println("getAllAnalysisGeneLists sql: " + queryString);
+        try {
+	        parQ.setPrepStat(conn);
+	        prepStmt = parQ.getPrepStat();
+	        prepStmt.setString(1, stage);
+
+	        resSet = prepStmt.executeQuery();
+        	
+		    if (resSet.first()) {
+				resSet.beforeFirst();
+				stages = new ArrayList<String>();
+				while (resSet.next()) {
+				    stages.add(resSet.getString(1));
+				}
+		    }
+        	
+			return stages;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return null;
+		}
+		finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+		}
+	}
+	
+	
 }

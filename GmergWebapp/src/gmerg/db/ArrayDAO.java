@@ -88,5 +88,5 @@ public interface ArrayDAO {
 	public ArrayList<String> findSampleList(String dataset, String stage, String sample);
 	
 	public ArrayList<GenelistTreeInfo> getRefGenelists();
-	
+	public ArrayList<String> getRefStages(String stage);
 }

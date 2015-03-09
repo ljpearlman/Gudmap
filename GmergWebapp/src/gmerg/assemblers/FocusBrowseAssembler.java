@@ -466,7 +466,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			tableData[i][3] = new DataItem(row[3], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);//SUB_SOURCE
 			tableData[i][4] = new DataItem(row[4]);	//NGP_LIBRARY_STRATEGY			
 			if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
-				tableData[i][5] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[5]+"definition.html", 10);
+				tableData[i][5] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[5].toLowerCase()+"definition.html", 10);
 			}
 			else {
 				tableData[i][5] = new DataItem(row[5]);

@@ -503,7 +503,32 @@ public class DbUtility {
 		}	
 
 	}
-    
+	
+	public static String[] getRefStages(String stage) {
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			ArrayList<String> result = null;
+			result = arrayDAO.getRefStages(stage);
+			
+			String[] array = new String[result.size()];
+			for(int i=0; i<result.size(); i++){
+				array[i] = result.get(i);
+			}
+			
+			
+	    	return array;
+	    	
+		} catch(Exception e){
+			System.out.println("DBUtility::getRefGenelists failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
+	}
+   
 }   
     
   

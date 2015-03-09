@@ -349,9 +349,13 @@ public class ArrayDBQuery {
 								  "AND SMP_SUBMISSION_FK = SUB_OID AND SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID " +
 								  "AND ALE_LAB_NAME_ALLELE IS NOT NULL ORDER BY SUB_ACCESSION_ID, SAL_ORDER";
 	
+	final static String name40 = "GET_ALL_REF_STAGES";
+	final static String query40 = "SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_SPECIES = ?;";
+
 	final static String name = "";
 	final static String query = "";
-	  
+	
+	
 	static ParamQuery pqList[] = {
 		new ParamQuery(name1, query1),
 		new ParamQuery(name2, query2),
@@ -387,7 +391,10 @@ public class ArrayDBQuery {
 		new ParamQuery(name34, query34),
 		new ParamQuery(name35, query35),
 		new ParamQuery(name36, query36),
-		new ParamQuery(name37, query37)
+		new ParamQuery(name37, query37),
+		new ParamQuery(name38, query38),
+		new ParamQuery(name39, query39),
+		new ParamQuery(name40, query40)
 	};
 	
 	// finds ParamQuery object by name and returns

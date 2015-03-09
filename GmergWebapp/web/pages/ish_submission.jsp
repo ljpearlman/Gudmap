@@ -43,7 +43,7 @@
 			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{ISHSingleSubmissionBean.submission.stageLowerCase}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
 				<h:outputText value="#{ISHSingleSubmissionBean.submission.stageName}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
 			</h:outputLink>
-			<h:outputText value="Carnegie Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.stageName}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 				
 			<h:outputText value="Tissue:" />
 			<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
@@ -610,7 +610,7 @@
 				<h:outputText value="#{ISHSingleSubmissionBean.submission.stage}" />
 				</h:outputLink>
 				
-				<h:outputText value="CS#{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species != 'Mus musculus'}"/>
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species != 'Mus musculus'}"/>
 
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="Other Staging System:" />
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="#{ISHSingleSubmissionBean.submission.specimen.otherStage}" />

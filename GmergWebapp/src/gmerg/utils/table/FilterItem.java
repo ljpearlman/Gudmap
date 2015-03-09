@@ -57,9 +57,37 @@ public class FilterItem {
 	public FilterItem(FilterType type, String[] options, String[] initialValues, boolean numeric) {
 		this(0, type, options, initialValues, numeric);
 	}
+
+	public FilterItem(FilterType type, String[] options, String[] initialValues, boolean numeric, String name) {
+		this(0, type, options, initialValues, numeric, name);
+	}
 	
 	public FilterItem(int col, FilterType type, String[] options, String[] initialValues, boolean numeric) {
 		name = "filter-"+String.valueOf(col); //This will replace when assembler assigned to a table 
+		active = false;
+		this.col = col;
+		this.type = type;
+		this.options = options;
+		if (this.options != null) {
+			if(initialValues!=null) {
+				value1 = "";
+				for (int i=0; i<initialValues.length; i++)
+					value1 += ((i==0)?"":separator) + initialValues[i];
+			}
+			else
+				value1 = this.options[0];
+			if (isRange())
+				value2 = this.options[0];
+		}
+		else
+			value1 = value2 = "";
+		rangeSelect = isRange();
+		this.numeric = numeric;
+		rangeSwap = false;
+	}
+	
+	public FilterItem(int col, FilterType type, String[] options, String[] initialValues, boolean numeric, String name) {
+		this.name = name;
 		active = false;
 		this.col = col;
 		this.type = type;
@@ -88,6 +116,12 @@ public class FilterItem {
 		
 		//System.out.println("value1====="+value1);
 		//System.out.println("value2====="+value2);
+		if (colName == "STG_STAGE_DISPLAY"){
+			return "(SELECT STG_OID, STG_NAME FROM REF_STAGE_copy WHERE STG_ORDER BETWEEN (SELECT STG_ORDER FROM REF_STAGE_copy WHERE STG_ANATOMY = '" +
+					value1 + "' AND STG_SPECIES = 'Mus Musculus') AND (SELECT STG_ORDER FROM REF_STAGE_copy WHERE STG_ANATOMY = '" + 
+					value2 +"'AND STG_SPECIES = 'Mus Musculus') AND STG_SPECIES = 'Mus Musculus' ORDER BY STG_ORDER)";
+			
+		}
 		
 		if(type == FilterType.DATE || type == FilterType.DATERANGE) {
 			value1 = Utility.convertToDatabaseDate(value1);

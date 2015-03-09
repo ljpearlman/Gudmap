@@ -17,12 +17,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GenericTableFilter {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
 	boolean active;
 	TreeMap<Integer, FilterItem> filters;
 	int[] tableToSqlColMap;
-	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_ASSAY_TYPE","QIC_PRB_PROBE_NAME","QIC_SUB_EMBRYO_STG","#","QIC_SPN_SEX","QIC_SPN_WILDTYPE","#","QIC_EXP_STRENGTH","#","QIC_SPN_ASSAY_TYPE","#","#","#"};
+	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_ASSAY_TYPE","QIC_PRB_PROBE_NAME","QIC_SUB_EMBRYO_STG","QIC_SUB_EMBRYO_STG","QIC_SPN_SEX","QIC_SPN_WILDTYPE","#","QIC_EXP_STRENGTH","#","QIC_SPN_ASSAY_TYPE","#","#","#"};
 //	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_ASSAY_TYPE","QIC_EXP_STRENGTH","#","#","QIC_SUB_EMBRYO_STG","7","QIC_SPN_SEX","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_SPN_ASSAY_TYPE","#","#","#"};
 	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","QMC_SUB_SOURCE","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
 //	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","#","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
@@ -44,8 +44,14 @@ public class GenericTableFilter {
 	}
 
 	public void setFilterTitles(HeaderItem[] header) {
-		for(FilterItem filter: filters.values()) 
-			filter.setName(header[filter.getCol()].getTitle());
+		for(FilterItem filter: filters.values()) {
+			
+			String name = filter.getName();
+			System.out.println("filter name = "+name);
+			
+			if (name.contains("filter"))
+				filter.setName(header[filter.getCol()].getTitle());
+		}
 	}
 	
 	public TreeMap<Integer, FilterItem> getFilters() {
