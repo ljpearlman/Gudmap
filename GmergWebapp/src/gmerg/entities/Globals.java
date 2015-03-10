@@ -347,7 +347,7 @@ public class Globals {
 	case THEILER_STAGE: 
 	{
 		String[] mouse_options = DbUtility.getRefStages("Mus musculus");
-		String name = "Mouse Stage";
+		String name = "Theiler Stage";
 	    FilterItem tsStageFilter = new FilterItem(FilterType.LISTRANGE, mouse_options, null, true, name);
 	    tsStageFilter.setRangeSwap(true);
 	    return tsStageFilter;

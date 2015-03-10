@@ -520,7 +520,7 @@ public class DbUtility {
 	    	return array;
 	    	
 		} catch(Exception e){
-			System.out.println("DBUtility::getRefGenelists failed !!!");
+			System.out.println("DBUtility::getRefStages failed !!!");
 			return null;
 		}
 		finally{
@@ -528,7 +528,25 @@ public class DbUtility {
 		}	
 
 	}
-   
+
+	public static String getRefStageOrder(String stage) {
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			String result = arrayDAO.getRefStageOrder(stage);
+
+	    	return result;
+	    	
+		} catch(Exception e){
+			System.out.println("DBUtility::getRefStageOrder failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
+	}
+	
 }   
     
   

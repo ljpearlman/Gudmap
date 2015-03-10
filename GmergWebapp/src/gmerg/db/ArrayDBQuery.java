@@ -352,6 +352,9 @@ public class ArrayDBQuery {
 	final static String name40 = "GET_ALL_REF_STAGES";
 	final static String query40 = "SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_SPECIES = ?;";
 
+	final static String name41 = "GET_REF_STAGE_ORDER";
+	final static String query41 = "SELECT STG_ORDER FROM REF_STAGE WHERE STG_STAGE_DISPLAY = ?;";
+	
 	final static String name = "";
 	final static String query = "";
 	
@@ -394,7 +397,8 @@ public class ArrayDBQuery {
 		new ParamQuery(name37, query37),
 		new ParamQuery(name38, query38),
 		new ParamQuery(name39, query39),
-		new ParamQuery(name40, query40)
+		new ParamQuery(name40, query40),
+		new ParamQuery(name41, query41)
 	};
 	
 	// finds ParamQuery object by name and returns

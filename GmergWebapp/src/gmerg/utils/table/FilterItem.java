@@ -1,5 +1,6 @@
 package gmerg.utils.table;
 
+import gmerg.utils.DbUtility;
 import gmerg.utils.Utility;
 
 import java.util.Date;
@@ -117,10 +118,13 @@ public class FilterItem {
 		//System.out.println("value1====="+value1);
 		//System.out.println("value2====="+value2);
 		if (colName == "STG_STAGE_DISPLAY"){
-			return "(SELECT STG_OID, STG_NAME FROM REF_STAGE_copy WHERE STG_ORDER BETWEEN (SELECT STG_ORDER FROM REF_STAGE_copy WHERE STG_ANATOMY = '" +
-					value1 + "' AND STG_SPECIES = 'Mus Musculus') AND (SELECT STG_ORDER FROM REF_STAGE_copy WHERE STG_ANATOMY = '" + 
-					value2 +"'AND STG_SPECIES = 'Mus Musculus') AND STG_SPECIES = 'Mus Musculus' ORDER BY STG_ORDER)";
-			
+			colName = "STG_ORDER";
+			value1 = DbUtility.getRefStageOrder(value1);
+			value2 = DbUtility.getRefStageOrder(value2);
+//			return "(SELECT STG_OID, STG_NAME FROM REF_STAGE_copy WHERE STG_ORDER BETWEEN (SELECT STG_ORDER FROM REF_STAGE_copy WHERE STG_ANATOMY = '" +
+//					value1 + "' AND STG_SPECIES = 'Mus Musculus') AND (SELECT STG_ORDER FROM REF_STAGE_copy WHERE STG_ANATOMY = '" + 
+//					value2 +"'AND STG_SPECIES = 'Mus Musculus') AND STG_SPECIES = 'Mus Musculus' ORDER BY STG_ORDER)";
+//			
 		}
 		
 		if(type == FilterType.DATE || type == FilterType.DATERANGE) {

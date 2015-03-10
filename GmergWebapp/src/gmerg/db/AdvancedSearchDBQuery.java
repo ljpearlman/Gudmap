@@ -291,7 +291,7 @@ public class AdvancedSearchDBQuery {
 			lookupInDB.put("Fixation Method", "QIC_SPN_FIXATION_METHOD, QMC_SPN_FIXATION_METHOD");
 			lookupInDB.put("Specimen Strain", "QIC_SPN_STRAIN, QMC_SPN_STRAIN");
 			lookupInDB.put("Sex", "QIC_SPN_SEX, QMC_SPN_SEX");
-			lookupInDB.put("Stage", "QIC_STG_STAGE_DISPLAY, QMC_SUB_EMBRYO_STG");
+			lookupInDB.put("Stage", "QIC_STG_STAGE_DISPLAY, QMC_STG_STAGE_DISPLAY");
 			lookupInDB.put("Age", "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END), " +
 					"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END)");
 			lookupInDB.put("Genotype", "QIC_SPN_WILDTYPE, QMC_SPN_WILDTYPE");
@@ -393,7 +393,7 @@ public class AdvancedSearchDBQuery {
 			lookupTable.put("QIC_SPN_FIXATION_METHOD, QMC_SPN_FIXATION_METHOD","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Fixation Method
 			lookupTable.put("QIC_SPN_STRAIN, QMC_SPN_STRAIN","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Specimen Strain
 			lookupTable.put("QIC_SPN_SEX, QMC_SPN_SEX","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Sex
-			lookupTable.put("QIC_STG_STAGE_DISPLAY, QMC_SUB_EMBRYO_STG","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Stage
+			lookupTable.put("QIC_STG_STAGE_DISPLAY, QMC_STG_STAGE_DISPLAY","QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Stage
 			lookupTable.put("TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END), " +
 					"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END)",
 					"QSC_ISH_CACHE as ish,QSC_MIC_CACHE as mic");//Age
@@ -447,7 +447,7 @@ public class AdvancedSearchDBQuery {
     	    "QIC_EXP_STRENGTH col3,"+
     	    "QIC_SUB_SOURCE col4,"+
     	    "QIC_SUB_SUB_DATE col5,"+
-    	    "QIC_SUB_EMBRYO_STG col6,"+
+    	    "QIC_STG_STAGE_DISPLAY col6,"+
     	    "QIC_SPN_ASSAY_TYPE col7,"+
     	    "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
                    "QIC_SUB_THUMBNAIL col9,"+
@@ -479,7 +479,7 @@ public class AdvancedSearchDBQuery {
 	                "'' col3,"+
 			"QMC_SUB_SOURCE col4,"+
 			"QMC_SUB_SUB_DATE col5,"+
-			"QMC_SUB_EMBRYO_STG col6,"+
+			"QMC_STG_STAGE_DISPLAY col6,"+
 			"QMC_SPN_ASSAY_TYPE col7,"+
 			"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) col8,"+
 			"'' col9,"+
@@ -518,7 +518,7 @@ public class AdvancedSearchDBQuery {
 	                "'' col3,"+
 			"QMC_SUB_SOURCE col4,"+
 			"QMC_SUB_SUB_DATE col5,"+
-			"QMC_SUB_EMBRYO_STG col6,"+
+			"QMC_STG_STAGE_DISPLAY col6,"+
 			"QMC_SPN_ASSAY_TYPE col7,"+
 			"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) col8,"+
 			"'' col9,"+
@@ -534,7 +534,7 @@ public class AdvancedSearchDBQuery {
                 "'' col3,"+
 		"QMC_SUB_SOURCE col4,"+
 		"QMC_SUB_SUB_DATE col5,"+
-		"QMC_SUB_EMBRYO_STG col6,"+
+		"QMC_STG_STAGE_DISPLAY col6,"+
 		"QMC_SPN_ASSAY_TYPE col7,"+
 		"TRIM(CASE QMC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QMC_SPN_STAGE, ' ', QMC_SPN_STAGE_FORMAT) ELSE CONCAT(QMC_SPN_STAGE_FORMAT, QMC_SPN_STAGE) END) col8,"+
 		"'' col9,"+

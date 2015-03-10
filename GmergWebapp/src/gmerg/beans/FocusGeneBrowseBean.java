@@ -197,7 +197,7 @@ System.out.println("widecard2="+ wildcards[2]);
 		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.DATE));		
 		filter.addFilter(4, Globals.getPredefinedFilter(PredefinedFilters.ASSAY));
 		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.THEILER_STAGE));
-//		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.HUMAN_STAGE));
+		filter.addFilter(7, Globals.getPredefinedFilter(PredefinedFilters.HUMAN_STAGE));
 		filter.addFilter(8, Globals.getPredefinedFilter(PredefinedFilters.SEX));
 		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
 		filter.addFilter(13, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
