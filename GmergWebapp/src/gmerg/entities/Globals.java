@@ -328,7 +328,7 @@ public class Globals {
     }
     
     //******************************************************** Filters ****************
-	public enum PredefinedFilters {LAB, THEILER_STAGE, HUMAN_STAGE, SEX, ASSAY, SPECIMEN, GENOTYPE, DATE, EXPRESSION}
+	public enum PredefinedFilters {GENE, LAB, PROBE_NAME, THEILER_STAGE, HUMAN_STAGE, SEX, ASSAY, SPECIMEN, GENOTYPE, DATE, EXPRESSION}
     
     // modified by Bernie - 20/05/2011 - changed length of options array from 13 to 12 (Mantis 550)
     public static FilterItem getPredefinedFilter(PredefinedFilters filter) {
@@ -336,6 +336,16 @@ public class Globals {
 	
 
 	switch(filter){
+	case GENE:
+	    FilterItem geneFilter = new FilterItem(0, FilterType.SIMPLE, null); 
+	    geneFilter.setName("Gene");
+	    geneFilter.setKey(filter);
+	    return geneFilter;
+	case PROBE_NAME:
+	    FilterItem probeNameFilter = new FilterItem(0, FilterType.SIMPLE, null); 
+	    probeNameFilter.setName("Probe Name");
+	    probeNameFilter.setKey(filter);
+	    return probeNameFilter;
 	case LAB:
 	    String[] source = null;
 	    List list = DbUtility.query(DBQuery.dataSource);
@@ -343,12 +353,16 @@ public class Globals {
 	    source = new String[iSize];
 	    for (i = 0; i < iSize; i++)
 		source[i] = (String)list.get(i);
-	    return new FilterItem(FilterType.MULTIPLE, source, null); 
+	    FilterItem labFilter = new FilterItem(FilterType.MULTIPLE, source, null); 
+	    labFilter.setName("Lab");
+	    labFilter.setKey(filter);
+	    return labFilter;
 	case THEILER_STAGE: 
 	{
 		String[] mouse_options = DbUtility.getRefStages("Mus musculus");
 		String name = "Theiler Stage";
 	    FilterItem tsStageFilter = new FilterItem(FilterType.LISTRANGE, mouse_options, null, true, name);
+	    tsStageFilter.setKey(filter);
 	    tsStageFilter.setRangeSwap(true);
 	    return tsStageFilter;
 	}
@@ -357,29 +371,44 @@ public class Globals {
 		String[] human_options = DbUtility.getRefStages("Homo sapiens");
 		String name = "Human Stage";
 	    FilterItem csStageFilter = new FilterItem(FilterType.LISTRANGE, human_options, null, true, name);
+	    csStageFilter.setKey(filter);
 	    csStageFilter.setRangeSwap(true);
 	    return csStageFilter;
 	}
 	case SEX:
-	    return new FilterItem(FilterType.RADIO, new String[]{"male", "female", "unknown"}, null);
+		FilterItem sexFilter =  new FilterItem(FilterType.RADIO, new String[]{"male", "female", "unknown"}, null);
+		sexFilter.setName("Sex");
+		sexFilter.setKey(filter);
+		return sexFilter;
+		
 	case ASSAY: 
-	    return new FilterItem(FilterType.CHECKBOX, new String[]{"ISH", "IHC", "Array", "TG"}, null);
-	    /*return new FilterItem(FilterType.CHECKBOX, new String[]{"ISH", "IHC", "Array", "TG", "Sequence"}, null);*/
+		FilterItem assayFilter =  new FilterItem(FilterType.CHECKBOX, new String[]{"ISH", "IHC", "Array", "TG"}, null);
+		assayFilter.setName("Assay Type");
+		assayFilter.setKey(filter);
+		return assayFilter;
 	case SPECIMEN:
 	{
-		return new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount", "opt-wholemount"}, null);
-		/*FilterItem specimenFilter=new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount", "opt-wholemount"}, new String[]{"section"});
-	    specimenFilter.setActive(true); 
-	    return specimenFilter;*/
+		FilterItem specimanFilter = new FilterItem(FilterType.CHECKBOX, new String[]{"section", "wholemount", "opt-wholemount"}, null);
+		specimanFilter.setName("Speciman Type");
+		specimanFilter.setKey(filter);
+		return specimanFilter;
 	}
 	case GENOTYPE: 
-	    return new FilterItem(FilterType.LIST, new String[]{"wholemount", "section"}, null);
+		FilterItem genotypeFilter = new FilterItem(FilterType.LIST, new String[]{"wholemount", "section"}, null);
+		genotypeFilter.setName("GenoType");
+		genotypeFilter.setKey(filter);
+		return genotypeFilter;
 	case DATE:
 	    FilterItem dateFilter = new FilterItem(FilterType.DATERANGE, null, null);
+	    dateFilter.setName("Submission Date");
+	    dateFilter.setKey(filter);
 	    dateFilter.setRangeSwap(true);
 	    return dateFilter;
 	case EXPRESSION:
-	    return new FilterItem(FilterType.CHECKBOX, new String[]{"present", "not detected", "uncertain"}, new String[]{"present", "not detected"});
+		FilterItem expressionFilter = new FilterItem(FilterType.CHECKBOX, new String[]{"present", "not detected", "uncertain"}, new String[]{"present", "not detected"});
+		expressionFilter.setName("In Situ Expression");
+		expressionFilter.setKey(filter);
+		return expressionFilter;
 	}
 	
 	return new FilterItem(FilterType.SIMPLE, null, null);

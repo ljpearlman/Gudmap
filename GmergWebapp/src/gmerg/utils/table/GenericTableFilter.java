@@ -11,8 +11,9 @@ import gmerg.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
+//import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,9 +21,10 @@ public class GenericTableFilter {
     protected boolean debug = true;
 
 	boolean active;
-	TreeMap<Integer, FilterItem> filters;
+//	TreeMap<Integer, FilterItem> filters;
+	LinkedHashMap<String, FilterItem> filters;
 	int[] tableToSqlColMap;
-	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_ASSAY_TYPE","QIC_PRB_PROBE_NAME","QIC_STG_STAGE_DISPLAY","QIC_STG_STAGE_DISPLAY","QIC_SPN_SEX","QIC_SPN_WILDTYPE","#","QIC_EXP_STRENGTH","#","QIC_SPN_ASSAY_TYPE","#","#","#"};
+	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_ASSAY_TYPE","QIC_PRB_PROBE_NAME","QIC_STG_STAGE_DISPLAY","7","QIC_SPN_SEX","QIC_SPN_WILDTYPE","#","QIC_EXP_STRENGTH","#","QIC_SPN_ASSAY_TYPE","#","#","#"};
 //	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_ASSAY_TYPE","QIC_EXP_STRENGTH","#","#","QIC_SUB_EMBRYO_STG","7","QIC_SPN_SEX","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_SPN_ASSAY_TYPE","#","#","#"};
 	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","QMC_SUB_SOURCE","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
 //	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","#","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
@@ -30,17 +32,19 @@ public class GenericTableFilter {
 			
 	public GenericTableFilter() {
 		active = false;
-		filters = new TreeMap<Integer, FilterItem>();
+//		filters = new TreeMap<Integer, FilterItem>();
+		filters = new LinkedHashMap<String, FilterItem>();
 		tableToSqlColMap = null;
 	}
 
 	public void addFilter(FilterItem filter) {
-		filters.put(filter.getCol(), filter);
+//		filters.put(filter.getCol(), filter);
+		filters.put(filter.getName(), filter);
 	}
 
 	public void addFilter(int col, FilterItem filter) {
 		filter.setCol(col);
-		filters.put(col, filter);
+		filters.put(filter.getName(), filter);
 	}
 
 	public void setFilterTitles(HeaderItem[] header) {
@@ -54,7 +58,7 @@ public class GenericTableFilter {
 		}
 	}
 	
-	public TreeMap<Integer, FilterItem> getFilters() {
+	public LinkedHashMap<String, FilterItem> getFilters() {
 		return filters;
 	}
 	
@@ -131,8 +135,13 @@ public class GenericTableFilter {
 				if (debug)
 				    System.out.println("colName = "+colName+" filterSql = "+filterSql+" current sql = "+currentSql);
 
-				if (filterSql != "")
-					sql += ((sql.equals(""))? "" : " AND ") + filterSql;
+				// modified to allow both human and theiler stages to be selected in the filters
+				if (filterSql != ""){
+					if (filterSql.contains("STG_ORDER"))
+						sql += ((sql.equals(""))? "" : " OR ") + filterSql;
+					else
+						sql += ((sql.equals(""))? "" : " AND ") + filterSql;
+				}
 			}
 		}
 		
