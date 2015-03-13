@@ -502,7 +502,7 @@ public class AdvancedSearchDBQuery {
                 "'' col3,"+
 		"MBC_SUB_SOURCE col4,"+
 		"MBC_SUB_SUB_DATE col5,"+
-		"MBC_SUB_EMBRYO_STG col6,"+
+		"MBC_STG_STAGE_DISPLAY col6,"+
 		"MBC_SPN_ASSAY_TYPE col7,"+
 		"concat(TRIM(CASE MBC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(MBC_SPN_STAGE,' ',MBC_SPN_STAGE_FORMAT) ELSE CONCAT(MBC_SPN_STAGE_FORMAT,MBC_SPN_STAGE) END)) col8,"+
 		"'' col9,"+

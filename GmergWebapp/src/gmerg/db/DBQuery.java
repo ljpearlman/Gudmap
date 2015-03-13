@@ -539,7 +539,6 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                                 "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
                                 "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
                                 "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
-                                "JOIN REF_STAGE " +
                                 "LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
                                 "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " + 
                                 "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +

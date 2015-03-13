@@ -452,10 +452,12 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 //				System.out.println("array stage value is not null#########");
 				int aLen = arrayGeneStages.length;
 				// get earliest stage of insitu and array
-				int ealiestStageInsitu = Integer.parseInt(insituGeneStages[0]);
+				int ealiestStageInsitu = Integer.parseInt(insituGeneStages[0].substring(2));
+//				int ealiestStageInsitu = Integer.parseInt(insituGeneStages[0]);
 				int ealiestStageArray = Integer.parseInt(arrayGeneStages[0]);
 				// get latest stage of insitu and array
-				int latestStageInsitu = Integer.parseInt(insituGeneStages[iLen-1]);
+				int latestStageInsitu = Integer.parseInt(insituGeneStages[iLen-1].substring(2));
+//				int latestStageInsitu = Integer.parseInt(insituGeneStages[iLen-1]);
 				int latestStageArray = Integer.parseInt(arrayGeneStages[aLen-1]);
 				// get stage range
 				// earliest
