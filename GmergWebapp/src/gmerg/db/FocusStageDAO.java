@@ -10,4 +10,6 @@ public interface FocusStageDAO {
 	public String[] getStageList(String assayType, String[] stage, String organ, String symbol);
 	public Object[][] getGeneIndex(String prefix, String organ);
 	public String getDpcStageValue(String theilerStage);
+	public ArrayList<String> getStages();
+	
 }

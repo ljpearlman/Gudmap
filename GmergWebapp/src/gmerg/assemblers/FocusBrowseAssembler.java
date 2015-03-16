@@ -482,4 +482,32 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		}					   
 		return tableData;
 	}
+	
+	public String[] getStages() {
+		
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			
+			/** get data from database */
+			// get insitu stage list
+			ArrayList<String> array =  focusStageDAO.getStages();
+			String[] stages = new String[array.size()];
+			
+			for(int i = 0; i< array.size(); i++)
+				stages[i] = array.get(i);
+			
+			return stages;
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseAssembler::getStageList !!!");
+			return null;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
+		
+		
+	}
+	
 }

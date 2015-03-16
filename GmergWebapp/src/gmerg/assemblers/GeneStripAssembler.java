@@ -142,7 +142,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				// stage string
 				String stage = "";
 				if (geneStageRange[0] != "-1" || geneStageRange[1] != "-1") {
-					stage = "TS" + geneStageRange[0] + "-" + geneStageRange[1];
+					stage = geneStageRange[0] + "-" + geneStageRange[1];
 	//				System.out.println("stage range: " + stage);
 					data[i][3] = 
 						new DataItem(stage, "Click to see stage summary for "+symbol, 

@@ -26,7 +26,7 @@ public class InsituDBQuery {
 
 	// find equivalent dpc value for given theiler stage
 	final static String name1 = "EQUIVALENT_DPC_STAGE_FOR_THEILER_STAGE";
-	final static String query1 = "SELECT STG_DPC_PREFIX, STG_DPC_VALUE FROM REF_STAGE WHERE STG_VALUE = ?";
+	final static String query1 = "SELECT STG_ALT_STAGE FROM REF_STAGE WHERE STG_STAGE_DISPLAY = ?";
 	  
 	// find number of gene involved in the submission
 	// in situ
@@ -324,6 +324,10 @@ public class InsituDBQuery {
 
 	final static String name115 = "TOTAL_NUMBER_OF_TISSUES_TG";
 	final static String query115 = NUMBER_OF_TISSUES + BROWSE_ALL_TABLES_TG + PUBLIC_ENTRIES_Q + getAssayType("TG");
+
+	// find all theiler stage
+	final static String name116 = "THEILER_STAGES_FROM_REF_STAGE";
+	final static String query116 = "SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_SPECIES = 'Mus musculus'";
 	
 	public static String stageFormatConcat = bundle.getString("project").equals("GUDMAP") ?
 			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) " +
@@ -381,8 +385,8 @@ public class InsituDBQuery {
 		new ParamQuery(name112, query112),
 		new ParamQuery(name113, query113),
 		new ParamQuery(name114, query114),
-		new ParamQuery(name115, query115)
-		
+		new ParamQuery(name115, query115),
+		new ParamQuery(name116, query116)		
 	};
 	
 	// finds ParamQuery object by name and returns

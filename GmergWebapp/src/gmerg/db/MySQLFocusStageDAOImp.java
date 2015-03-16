@@ -222,12 +222,12 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 				// if gene criteria is not provided, use alternative query and much faster
 				if (symbol != null && !symbol.equals("")) {
 					parQ = ArrayDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_ARRAY");
-					stageString = " AND MBC_SUB_EMBRYO_STG = '";
+					stageString = " AND MBC_STG_STAGE_DISPLAY = '";
 					geneString += " AND MBC_GNF_SYMBOL = '" + symbol + "'";
 					componentString = " AND MBC_COMPONENT_ID IN ";
 				} else {
 					parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_ARRAY");
-					stageString = " AND SUB_EMBRYO_STG = '";
+					stageString = " AND STG_STAGE_DISPLAY = '";
 					componentString = " AND EXP_COMPONENT_ID IN ";
 				}
 			}
@@ -382,7 +382,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 		    	System.out.println("MySQLFocusStageDAOImp.sql5 = "+prepStmt);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
-				dpcStageValue = resSet.getString(1) + " " + resSet.getString(2);
+				dpcStageValue = resSet.getString(1) ;
 			} else {
 				dpcStageValue = "";
 			}
@@ -396,4 +396,39 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			DBHelper.closeResultSet(resSet);		
 		}
 	}
+	
+
+	public ArrayList<String> getStages() {
+		
+		ArrayList<String> stages = new ArrayList<String>();
+		
+		ResultSet resSet = null;
+		ParamQuery parQ = null;
+		PreparedStatement prepStmt = null;
+		parQ = InsituDBQuery.getParamQuery("THEILER_STAGES_FROM_REF_STAGE");
+		String queryString = parQ.getQuerySQL();
+//		System.out.println("getDpcValueQuery: " + queryString);
+		try {
+			prepStmt = conn.prepareStatement(queryString);
+			resSet = prepStmt.executeQuery();
+			if (resSet.first()) {
+				//need to reset cursor as 'if' move it on a place
+				resSet.beforeFirst();
+				while(resSet.next()) {
+					String stage = resSet.getString(1);
+			        stages.add(stage);
+				}
+			}
+			return stages;
+			
+		} catch(Exception se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);		
+		}
+	}
+
 }
