@@ -14,6 +14,7 @@ import gmerg.utils.table.OffMemoryTableAssembler;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -491,11 +492,20 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			
 			/** get data from database */
 			// get insitu stage list
-			ArrayList<String> array =  focusStageDAO.getStages();
-			String[] stages = new String[array.size()];
+			ArrayList<String> isharray =  focusStageDAO.getIshStages();
+			ArrayList<String> micarray =  focusStageDAO.getMicStages();
+			if (micarray != null){
+				isharray.remove(micarray);
+				isharray.addAll(micarray);
+			}
+			Collections.sort(isharray);
 			
-			for(int i = 0; i< array.size(); i++)
-				stages[i] = array.get(i);
+			String[] stages = new String[isharray.size()];
+			
+			for(int i = 0; i< isharray.size(); i++)
+				stages[i] = isharray.get(i);
+
+			
 			
 			return stages;
 		}

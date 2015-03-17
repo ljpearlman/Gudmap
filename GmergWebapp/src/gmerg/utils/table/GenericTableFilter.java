@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GenericTableFilter {
-    protected boolean debug = true;
+    protected boolean debug = false;
 
 	boolean active;
 //	TreeMap<Integer, FilterItem> filters;

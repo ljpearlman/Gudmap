@@ -326,8 +326,12 @@ public class InsituDBQuery {
 	final static String query115 = NUMBER_OF_TISSUES + BROWSE_ALL_TABLES_TG + PUBLIC_ENTRIES_Q + getAssayType("TG");
 
 	// find all theiler stage
-	final static String name116 = "THEILER_STAGES_FROM_REF_STAGE";
-	final static String query116 = "SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_SPECIES = 'Mus musculus'";
+	final static String name116 = "ISH_THEILER_STAGES_FROM_REF_STAGE";
+	final static String query116 = "SELECT DISTINCT(STG_STAGE_DISPLAY) FROM QSC_ISH_CACHE LEFT JOIN REF_STAGE ON QIC_SUB_STAGE_FK = STG_OID WHERE STG_SPECIES = 'Mus musculus'";
+	final static String name117 = "MIC_THEILER_STAGES_FROM_REF_STAGE";
+	final static String query117 = "SELECT DISTINCT(STG_STAGE_DISPLAY) FROM QMC_ISH_CACHE LEFT JOIN REF_STAGE ON QMC_SUB_STAGE_FK = STG_OID WHERE STG_SPECIES = 'Mus musculus'";
+
+	public static String QMC_GENE_AVERAGE = "select distinct (QMC_STG_STAGE_DISPLAY) from QMC_ISH_CACHE left join REF_STAGE on QMC_SUB_STAGE_FK = STG_OID where STG_SPECIES ='mus musculus'";
 	
 	public static String stageFormatConcat = bundle.getString("project").equals("GUDMAP") ?
 			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) " +
@@ -386,7 +390,8 @@ public class InsituDBQuery {
 		new ParamQuery(name113, query113),
 		new ParamQuery(name114, query114),
 		new ParamQuery(name115, query115),
-		new ParamQuery(name116, query116)		
+		new ParamQuery(name116, query116),		
+		new ParamQuery(name117, query117)		
 	};
 	
 	// finds ParamQuery object by name and returns

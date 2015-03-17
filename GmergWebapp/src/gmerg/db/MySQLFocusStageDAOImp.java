@@ -398,14 +398,14 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 	}
 	
 
-	public ArrayList<String> getStages() {
+	public ArrayList<String> getIshStages() {
 		
 		ArrayList<String> stages = new ArrayList<String>();
 		
 		ResultSet resSet = null;
 		ParamQuery parQ = null;
 		PreparedStatement prepStmt = null;
-		parQ = InsituDBQuery.getParamQuery("THEILER_STAGES_FROM_REF_STAGE");
+		parQ = InsituDBQuery.getParamQuery("ISH_THEILER_STAGES_FROM_REF_STAGE");
 		String queryString = parQ.getQuerySQL();
 //		System.out.println("getDpcValueQuery: " + queryString);
 		try {
@@ -431,4 +431,37 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 		}
 	}
 
+	public ArrayList<String> getMicStages() {
+		
+		ArrayList<String> stages = new ArrayList<String>();
+		
+		ResultSet resSet = null;
+		ParamQuery parQ = null;
+		PreparedStatement prepStmt = null;
+		parQ = InsituDBQuery.getParamQuery("MIC_THEILER_STAGES_FROM_REF_STAGE");
+		String queryString = parQ.getQuerySQL();
+//		System.out.println("getDpcValueQuery: " + queryString);
+		try {
+			prepStmt = conn.prepareStatement(queryString);
+			resSet = prepStmt.executeQuery();
+			if (resSet.first()) {
+				//need to reset cursor as 'if' move it on a place
+				resSet.beforeFirst();
+				while(resSet.next()) {
+					String stage = resSet.getString(1);
+			        stages.add(stage);
+				}
+			}
+			return stages;
+			
+		} catch(Exception se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);		
+		}
+	}
+	
 }

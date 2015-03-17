@@ -13,7 +13,7 @@ import gmerg.utils.table.GenericTableFilter;
 import gmerg.utils.Utility;
 
 public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
-    private boolean debug = true;
+    private boolean debug = false;
 
 	private Connection conn; 
 	private int ColumnNumbers = 17;
