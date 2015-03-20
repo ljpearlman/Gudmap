@@ -430,7 +430,7 @@ public class AdvancedSearchDBQuery {
 		"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
 		"QIC_SUB_THUMBNAIL col9,"+
 		"QIC_SUB_ACCESSION_ID col10,"+
-		"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, " +
+		"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_SUB_ASSAY_TYPE col14, " +
 		" QIC_SPN_SEX col15,"+
 		"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 ";
 	  }
@@ -441,6 +441,11 @@ public class AdvancedSearchDBQuery {
           "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID ";
 	  }
 
+	  final static public String fromISHStage(){		  
+		  return "LEFT JOIN REF_STAGE ON STG_OID = QIC_SUB_STAGE_FK ";
+	  }
+	  
+	  
     final static public String getISHSelectForAnatomy(){
     	return "(select distinct QIC_RPR_SYMBOL col1, "+
     	    "'' col2,"+
@@ -452,7 +457,7 @@ public class AdvancedSearchDBQuery {
     	    "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
                    "QIC_SUB_THUMBNAIL col9,"+
     	    "QIC_SUB_ACCESSION_ID col10,"+
-    	    "'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15,"+
+    	    "'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_SUB_ASSAY_TYPE col14, QIC_SPN_SEX col15,"+
     		"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 ";
 	    }
  
@@ -468,7 +473,7 @@ public class AdvancedSearchDBQuery {
 			"TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
 			"QIC_SUB_THUMBNAIL col9,"+
 			"QIC_SUB_ACCESSION_ID col10,"+
-			"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15," +
+			"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_SUB_ASSAY_TYPE col14, QIC_SPN_SEX col15," +
 			"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 ";
 	  }
 	  
@@ -545,7 +550,7 @@ public class AdvancedSearchDBQuery {
 	  
 	  final static public String getNGDSelect(){
 		  return "(SELECT DISTINCT '' col1, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') col2, '' col3, SUB_SOURCE col4, " +
-				  "SUB_SUB_DATE col5, SUB_EMBRYO_STG col6, SUB_ASSAY_TYPE col7, TRIM(CASE NGS_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(NGS_DEV_STAGE,' ',NGS_STAGE_FORMAT) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END) col8, " +
+				  "SUB_SUB_DATE col5, STG_STAGE_DISPLAY col6, SUB_ASSAY_TYPE col7, TRIM(CASE NGS_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(NGS_DEV_STAGE,' ',NGS_STAGE_FORMAT) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END) col8, " +
 				  "'' col9, SUB_ACCESSION_ID col10, '' col11, '' col12, '' col13, 'Sequence' col14, NGS_SEX col15, '' col16, CASE NGS_GENOTYPE WHEN 'true' THEN 'wild type' ELSE " +
 				  "CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) IS NOT NULL THEN " +
 				  "(SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) " +
@@ -563,7 +568,7 @@ public class AdvancedSearchDBQuery {
 	  
 	  
 	  final static public String getISHFrom(){
-		  return " from QSC_ISH_CACHE ";
+		  return " from QSC_ISH_CACHE LEFT JOIN REF_STAGE ishstage ON ishstage.STG_OID = QIC_SUB_STAGE_FK ";
 	  }
 	  
 	  final static public String getISHFromLocation(){
@@ -573,6 +578,7 @@ public class AdvancedSearchDBQuery {
 	  final static public String getMICFrom(){
 		  return 
 		" from MIC_BROWSE_CACHE as Gene "+
+		"LEFT JOIN REF_STAGE ON STG_OID = MBC_SUB_STAGE_FK "+
 		"join QSC_MIC_CACHE as Cache WHERE MBC_SUB_ACCESSION_ID=QMC_SUB_ACCESSION_ID ";
 	  }
 	  
@@ -596,7 +602,7 @@ public class AdvancedSearchDBQuery {
 	  }
 	  
 	  final static public String getMICFromForAnatomy() {
-		  return " FROM QSC_MIC_CACHE as Gene ";
+		  return " FROM QSC_MIC_CACHE as Gene LEFT JOIN REF_STAGE ON STG_OID = QMC_SUB_STAGE_FK";
 	  }
 	  
 	  final static public String getNGDFrom(){
@@ -604,6 +610,7 @@ public class AdvancedSearchDBQuery {
 		" FROM ISH_SUBMISSION JOIN NGD_SAMPLE ON NGS_SUBMISSION_FK = SUB_OID JOIN NGD_SAMPLE_SERIES ON NGL_SAMPLE_FK = NGS_OID " +
 		"JOIN NGD_SERIES ON NGL_SERIES_FK = NGR_OID JOIN NGD_PROTOCOL ON NGS_PROTOCOL_FK=NGP_OID JOIN ISH_PERSON ON PER_OID = SUB_PI_FK " +
 		"JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK=SUB_OID JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID=IST_COMPONENT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
+		"LEFT JOIN REF_STAGE ON STG_OID = SUB_STAGE_FK "+
 		"LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID WHERE SUB_ASSAY_TYPE = 'NextGen' " +
 		"AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 	  }

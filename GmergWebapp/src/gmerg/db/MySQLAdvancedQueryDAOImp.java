@@ -13,7 +13,7 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
-    protected boolean debug = false;
+    protected boolean debug = true;
     
     private Connection conn;
     private int ColumnNumbers = 17; //15;// 14 //Bernie - 01/03/2012 - (Mantis 619) added 'sex column so increase from 14 to 15'
@@ -1797,9 +1797,9 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				input = this.getSymbolsFromGeneInputParams(input, queryCriteria[0]);	
 		    }
 	    
-		    if(input == null){ //no gene symbols have been found based on users input
-		    	return null;
-		    }
+//		    if(input == null){ //no gene symbols have been found based on users input
+//		    	return null;
+//		    }
 	    
 		    // assemble stage string (only needs to be done if specific stage has been entered by user)
 		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {
@@ -1856,8 +1856,8 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	    
 		    //ishpart - string to contain the query to interrogate the ish cache tables
 		    // Bernie 26/10/2010 - added AdvancedSearchDBQuery.fromISHTissue() to return tissue values
-		    String ishpart = 
-			AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() + " WHERE "+ ishStr;  
+		    String ishpart = AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() + " WHERE "+ ishStr;  
+//		    String ishpart = AdvancedSearchDBQuery.getISHSelect() + AdvancedSearchDBQuery.getISHFrom() + AdvancedSearchDBQuery.fromISHTissue() + AdvancedSearchDBQuery.fromISHStage() + " WHERE "+ ishStr;  
 		    
 		    if(findMTFs == 0){
 				mtfStr = " QIC_RPR_MTF_JAX LIKE 'MTF#%' ";

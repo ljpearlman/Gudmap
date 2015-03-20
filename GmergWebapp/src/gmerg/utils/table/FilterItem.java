@@ -119,19 +119,29 @@ public class FilterItem {
 		
 		//System.out.println("value1====="+value1);
 		//System.out.println("value2====="+value2);
-		if (colName == "STG_STAGE_DISPLAY"){
+		String predef = this.getKey().toString();
+		if (predef == "THEILER_STAGE"|| predef == "HUMAN_STAGE"){
 			colName = "STG_ORDER";
-			
 			// converts stage to its associated number value
 			value1 = DbUtility.getRefStageOrder(value1);
 			value2 = DbUtility.getRefStageOrder(value2);
 		}
+		
+//		if (colName == "STG_STAGE_DISPLAY" || colName == "QIC_STG_STAGE_DISPLAY" || colName == "QMC_STG_STAGE_DISPLAY" || colName == "MBC_STG_STAGE_DISPLAY"){
+//			colName = "STG_ORDER";
+//				
+//			// converts stage to its associated number value
+//			value1 = DbUtility.getRefStageOrder(value1);
+//			value2 = DbUtility.getRefStageOrder(value2);
+//		}
+
 		
 		if(type == FilterType.DATE || type == FilterType.DATERANGE) {
 			value1 = Utility.convertToDatabaseDate(value1);
 			if (value2!=null)
 				value2 = Utility.convertToDatabaseDate(value2);
 		}
+				
 		String q = numeric? "" : "'";
 		if (isRange() & rangeSelect) {
 			if (rangeSwap && value2!=null && !value2.trim().equals(""))

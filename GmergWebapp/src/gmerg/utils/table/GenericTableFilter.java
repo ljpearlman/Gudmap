@@ -18,15 +18,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GenericTableFilter {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
 	boolean active;
 //	TreeMap<Integer, FilterItem> filters;
 	LinkedHashMap<String, FilterItem> filters;
 	int[] tableToSqlColMap;
-	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_ASSAY_TYPE","QIC_PRB_PROBE_NAME","QIC_STG_STAGE_DISPLAY","7","QIC_SPN_SEX","QIC_SPN_WILDTYPE","#","QIC_EXP_STRENGTH","#","QIC_SPN_ASSAY_TYPE","#","#","#"};
+	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_SUB_ASSAY_TYPE","QIC_PRB_PROBE_NAME","QIC_STG_STAGE_DISPLAY","7","QIC_SPN_SEX","QIC_SPN_WILDTYPE","#","QIC_EXP_STRENGTH","#","QIC_SPN_ASSAY_TYPE","#","#","#"};
 //	String[] insituMap = {"QIC_RPR_SYMBOL","#","QIC_ASSAY_TYPE","QIC_EXP_STRENGTH","#","#","QIC_SUB_EMBRYO_STG","7","QIC_SPN_SEX","QIC_SUB_SOURCE","QIC_SUB_SUB_DATE","QIC_SPN_ASSAY_TYPE","#","#","#"};
-	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","QMC_SUB_SOURCE","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
+	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","QMC_SUB_SOURCE","#","#","#","MBC_STG_STAGE_DISPLAY","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
 //	String[] microarrayMap = {"MBC_GNF_SYMBOL","#","#","#","#","#","MBC_SUB_EMBRYO_STG","#","QMC_SPN_SEX","MBC_SUB_SOURCE","MBC_SUB_SUB_DATE","MBC_SPN_ASSAY_TYPE","#","#","#"};
 	String[] microarrayMapQuery = {"#","#","#","#","#","#","QMC_STG_STAGE_DISPLAY","#","QMC_SPN_SEX","QMC_SUB_SOURCE","QMC_SUB_SUB_DATE","QMC_SPN_ASSAY_TYPE","#","#","#"};
 			
@@ -138,7 +138,11 @@ public class GenericTableFilter {
 				// modified to allow both human and theiler stages to be selected in the filters
 				if (filterSql != ""){
 					if (filterSql.contains("STG_ORDER"))
-						sql += ((sql.equals(""))? "" : " OR ") + filterSql;
+						if (sql.equals(""))
+							sql += filterSql;
+						else{
+							sql = "(" + sql + " OR " + filterSql + ")";
+						}
 					else
 						sql += ((sql.equals(""))? "" : " AND ") + filterSql;
 				}

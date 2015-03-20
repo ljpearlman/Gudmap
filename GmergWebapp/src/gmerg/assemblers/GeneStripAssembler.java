@@ -464,11 +464,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				if (ealiestStageInsitu <= ealiestStageArray) {
 					stageRange[0] = insituGeneStages[0];
 				} else {
-					stageRange[0] = arrayGeneStages[0];
+					stageRange[0] = "TS" + arrayGeneStages[0];
 				}
 				// latest
 				if (latestStageInsitu >= latestStageArray) {
-					stageRange[1] = insituGeneStages[iLen-1];
+					stageRange[1] = insituGeneStages[iLen-1].substring(2);
 				} else {
 					stageRange[1] = arrayGeneStages[aLen-1];
 				}

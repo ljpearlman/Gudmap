@@ -13,7 +13,7 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
     private Connection conn;
     private int MAX_COLUMNS = 12; // added extra column ALE_GENE

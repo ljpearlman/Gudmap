@@ -508,15 +508,16 @@ public class DbUtility {
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
-			ArrayList<String> result = null;
-			result = arrayDAO.getRefStages(stage);
+			List<String> result = arrayDAO.getRefStages(stage);
+			if(stage == "Mus musculus"){
+				result = result.subList(16, result.size());
+			}
 			
 			String[] array = new String[result.size()];
 			for(int i=0; i<result.size(); i++){
 				array[i] = result.get(i);
 			}
-			
-			
+
 	    	return array;
 	    	
 		} catch(Exception e){

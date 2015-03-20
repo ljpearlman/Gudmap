@@ -17,7 +17,7 @@ import java.util.Hashtable;
 import java.util.Arrays;
 
 public class QuickSearchAssembler extends OffMemoryTableAssembler {
-    protected boolean debug = false;
+    protected boolean debug = true;
     protected RetrieveDataCache cache = null;
 
 	String[] input;
