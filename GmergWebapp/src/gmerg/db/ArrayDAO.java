@@ -90,4 +90,4 @@ public interface ArrayDAO {
 	public ArrayList<GenelistTreeInfo> getRefGenelists();
 	public ArrayList<String> getRefStages(String stage);
 	public String getRefStageOrder(String stage);
-}
+	public String getRefStageFromOrder(String order);}

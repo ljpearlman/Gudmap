@@ -183,20 +183,38 @@ public class AdvancedSearchDBQuery {
 	  final static public Hashtable getRefTableAndColTofindGeneSymbols() {
 		  //each string array contains the main query at [0] and the column to be parameterised at [1]
 		  Hashtable<String, String[]> lookup = new Hashtable<String,String[]>();
-		  lookup.put("RefProbe_Symbol", new String [] {"SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE WHERE ","RPR_SYMBOL"});
-		  lookup.put("RefProbe_Name", new String [] {"SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE WHERE ","RPR_NAME"});
-		  lookup.put("RefGeneInfo_Symbol", new String [] {"SELECT DISTINCT GNF_SYMBOL FROM REF_GENE_INFO WHERE ","GNF_SYMBOL"});
-		  lookup.put("RefGeneInfo_Name", new String [] {"SELECT DISTINCT GNF_SYMBOL FROM REF_GENE_INFO WHERE ","GNF_NAME"});
-		  lookup.put("RefMgiMrk_MGIAcc", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK WHERE ","RMM_MGIACC"});
-		  lookup.put("RefEnsGene_EnsemblId", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK, REF_ENS_GENE WHERE RMM_MGIACC = REG_PRIMARY_ACC AND ","REG_STABLE"});
-		  lookup.put("RefSyn_Synonym", new String [] {"SELECT RSY_SYNONYM FROM REF_SYNONYM WHERE ","RSY_SYNONYM"});
-		  lookup.put("RefGeneInfo_synonym", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_SYNONYM JOIN REF_MGI_MRK ON RSY_REF = RMM_ID JOIN REF_GENE_INFO ON RMM_SYMBOL = GNF_SYMBOL WHERE ","RSY_SYNONYM"});
-		  lookup.put("RefMgiMrkRefSyn_Synonym", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK,REF_SYNONYM WHERE RSY_REF = RMM_ID AND RMM_SYMBOL IN (SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE) AND ","RSY_SYNONYM"});
-		  lookup.put("RefProbe_MTFJax", new String [] {"SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE WHERE RPR_MTF_JAX LIKE 'MTF%' AND ","RPR_MTF_JAX"});
-		  lookup.put("RefGoTerm_GoId", new String [] {"SELECT DISTINCT GOT_ID FROM REF_GO_TERM WHERE ","GOT_TERM"});
-		  lookup.put("RefMgiGoGene_MrkSymbol", new String [] {"SELECT DISTINCT GOG_MRK_SYMBOL FROM REF_MGI_GOGENE WHERE ","GOG_TERM"});
+		  lookup.put("RefProbe_Symbol", new String [] {"SELECT RPR_SYMBOL, RPR_LOCUS_TAG, RMM_SPECIES FROM REF_PROBE JOIN REF_MGI_MRK ON RPR_LOCUS_TAG=RMM_MGIACC WHERE ","RPR_SYMBOL","GROUP BY RPR_LOCUS_TAG"});
+		  lookup.put("RefProbe_Name", new String [] {"SELECT RPR_SYMBOL, RPR_LOCUS_TAG, RMM_SPECIES FROM REF_PROBE JOIN REF_MGI_MRK ON RPR_LOCUS_TAG=RMM_MGIACC WHERE ","RPR_NAME","GROUP BY RPR_LOCUS_TAG"});
+		  lookup.put("RefGeneInfo_Symbol", new String [] {"SELECT DISTINCT GNF_SYMBOL, GNF_ID, RMM_SPECIES FROM REF_GENE_INFO JOIN REF_MGI_MRK ON GNF_ID=RMM_MGIACC WHERE ","GNF_SYMBOL",""});
+		  lookup.put("RefGeneInfo_Name", new String [] {"SELECT DISTINCT GNF_SYMBOL, GNF_ID, RMM_SPECIES FROM REF_GENE_INFO JOIN REF_MGI_MRK ON GNF_ID=RMM_MGIACC WHERE ","GNF_NAME",""});
+		  lookup.put("RefMgiMrk_MGIAcc", new String [] {"SELECT RPR_SYMBOL, RPR_LOCUS_TAG, RMM_SPECIES FROM REF_PROBE JOIN REF_MGI_MRK ON RMM_MGIACC=RPR_LOCUS_TAG WHERE ","RMM_MGIACC","GROUP BY RPR_LOCUS_TAG"});
+		  lookup.put("RefEnsGene_EnsemblId", new String [] {"SELECT RPR_SYMBOL, RPR_LOCUS_TAG, RMM_SPECIES FROM REF_PROBE JOIN REF_MGI_MRK ON RMM_MGIACC=RPR_LOCUS_TAG JOIN REF_ENS_GENE ON RMM_MGIACC = REG_PRIMARY_ACC WHERE ","REG_STABLE","GROUP BY RPR_LOCUS_TAG"});
+		  lookup.put("RefSyn_Synonym", new String [] {"SELECT RSY_SYNONYM FROM REF_SYNONYM WHERE ","RSY_SYNONYM",""});
+		  lookup.put("RefGeneInfo_synonym", new String [] {"SELECT DISTINCT GNF_SYMBOL, GNF_ID, RMM_SPECIES FROM REF_GENE_INFO JOIN REF_MGI_MRK ON RMM_SYMBOL = GNF_SYMBOL JOIN REF_SYNONYM ON RSY_REF=RMM_ID WHERE ","RSY_SYNONYM",""});
+		  lookup.put("RefProbe_synonym", new String [] {"SELECT RPR_SYMBOL, RPR_LOCUS_TAG, RMM_SPECIES FROM REF_PROBE JOIN REF_MGI_MRK ON RMM_MGIACC=RPR_LOCUS_TAG JOIN REF_SYNONYM ON RSY_REF=RMM_ID WHERE ","RSY_SYNONYM","GROUP BY RPR_LOCUS_TAG"});
+		  lookup.put("RefMgiMrkRefSyn_Synonym", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK,REF_SYNONYM WHERE RSY_REF = RMM_ID AND RMM_SYMBOL IN (SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE) AND ","RSY_SYNONYM",""});
+		  lookup.put("RefProbe_MTFJax", new String [] {"SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE WHERE RPR_MTF_JAX LIKE 'MTF%' AND ","RPR_MTF_JAX",""});
+		  lookup.put("RefGoTerm_GoId", new String [] {"SELECT DISTINCT GOT_ID FROM REF_GO_TERM WHERE ","GOT_TERM",""});
+		  lookup.put("RefMgiGoGene_MrkSymbol", new String [] {"SELECT DISTINCT GOG_MRK_SYMBOL FROM REF_MGI_GOGENE WHERE ","GOG_TERM",""});
 		  return lookup;
 	  }
+//	  final static public Hashtable getRefTableAndColTofindGeneSymbols() {
+//		  //each string array contains the main query at [0] and the column to be parameterised at [1]
+//		  Hashtable<String, String[]> lookup = new Hashtable<String,String[]>();
+//		  lookup.put("RefProbe_Symbol", new String [] {"SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE WHERE ","RPR_SYMBOL"});
+//		  lookup.put("RefProbe_Name", new String [] {"SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE WHERE ","RPR_NAME"});
+//		  lookup.put("RefGeneInfo_Symbol", new String [] {"SELECT DISTINCT GNF_SYMBOL FROM REF_GENE_INFO WHERE ","GNF_SYMBOL"});
+//		  lookup.put("RefGeneInfo_Name", new String [] {"SELECT DISTINCT GNF_SYMBOL FROM REF_GENE_INFO WHERE ","GNF_NAME"});
+//		  lookup.put("RefMgiMrk_MGIAcc", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK WHERE ","RMM_MGIACC"});
+//		  lookup.put("RefEnsGene_EnsemblId", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK, REF_ENS_GENE WHERE RMM_MGIACC = REG_PRIMARY_ACC AND ","REG_STABLE"});
+//		  lookup.put("RefSyn_Synonym", new String [] {"SELECT RSY_SYNONYM FROM REF_SYNONYM WHERE ","RSY_SYNONYM"});
+//		  lookup.put("RefGeneInfo_synonym", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_SYNONYM JOIN REF_MGI_MRK ON RSY_REF = RMM_ID JOIN REF_GENE_INFO ON RMM_SYMBOL = GNF_SYMBOL WHERE ","RSY_SYNONYM"});
+//		  lookup.put("RefMgiMrkRefSyn_Synonym", new String [] {"SELECT DISTINCT RMM_SYMBOL FROM REF_MGI_MRK,REF_SYNONYM WHERE RSY_REF = RMM_ID AND RMM_SYMBOL IN (SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE) AND ","RSY_SYNONYM"});
+//		  lookup.put("RefProbe_MTFJax", new String [] {"SELECT DISTINCT RPR_SYMBOL FROM REF_PROBE WHERE RPR_MTF_JAX LIKE 'MTF%' AND ","RPR_MTF_JAX"});
+//		  lookup.put("RefGoTerm_GoId", new String [] {"SELECT DISTINCT GOT_ID FROM REF_GO_TERM WHERE ","GOT_TERM"});
+//		  lookup.put("RefMgiGoGene_MrkSymbol", new String [] {"SELECT DISTINCT GOG_MRK_SYMBOL FROM REF_MGI_GOGENE WHERE ","GOG_TERM"});
+//		  return lookup;
+//	  }
 	  
 	  
 	  final static public Hashtable getLookup(){
@@ -1196,6 +1214,39 @@ public class AdvancedSearchDBQuery {
 		  return symbolsQ.toString();
 	  }
 	  
+	  static public String getSymbolsFromGeneInputParamsQuery(String [] input, 
+			  String startQuery, String searchColumn, String order, int type){
+		  if(input == null)
+			  return "";
+		  StringBuffer symbolsQ = new StringBuffer(startQuery);
+		  //0 == 'like' query ('contains' or 'starts with')
+		  if(type == 0) {
+			  symbolsQ.append("(");
+			  for(int i=0; i<input.length;i++){
+	    			if(i==0){
+	    				symbolsQ.append(searchColumn+" RLIKE ? ");
+	    			}
+	    			else {
+	    				symbolsQ.append("OR "+searchColumn+" RLIKE ? ");
+	    			}
+	    		}
+	    		symbolsQ.append(")");
+		  }
+		  //else type will be 1: equivalent to 'equals'
+		  else {
+			  symbolsQ.append(searchColumn + " IN (");
+			  for(int i=0;i<input.length;i++){
+	            	if(i == input.length-1){
+	            		symbolsQ.append("?)");
+	            	}
+	            	else {
+	            		symbolsQ.append("?, ");
+	            	}
+	            }
+		  }
+		  return symbolsQ.toString() + order;
+	  }
+	  
 	  final static String name140 = "GENE_EXPRESSION_FOR_GIVEN_STRUCTURE";
 	  final static String query140 = "SELECT DISTINCT EXP_COMPONENT_ID, EXP_STRENGTH FROM ISH_EXPRESSION " +
 	  		"JOIN ISH_SUBMISSION ON EXP_SUBMISSION_FK = SUB_OID AND SUB_ASSAY_TYPE IN ('ISH', 'IHC', 'TG') " +
@@ -1226,11 +1277,14 @@ public class AdvancedSearchDBQuery {
 
 	  // query for counting relevant omim disease number for given gene
 	  final static String name143 = "TOTOAL_NUMBER_OF_DISEASE_FOR_GENE";
-	  final static String query143 = "SELECT COUNT(DISTINCT OMD_NAME) FROM DIS_OMIM_DISEASE " +
-	  		"JOIN LNK_GENE_OMIMDIS ON DGA_OMIMID = OMD_OMIMID " +
-	  		"JOIN DIS_GENE ON GNE_MGIACC = DGA_MGIACC " +
-	  		"WHERE GNE_SYMBOL = ? " +
-	  		"AND (DGA_FLAG = 'N' || DGA_FLAG = 'U' || DGA_FLAG = 'R')"; // modified by xingjun - 30/04/2009
+//	  final static String query143 = "SELECT COUNT(DISTINCT OMD_NAME) FROM DIS_OMIM_DISEASE " +
+//	  		"JOIN LNK_GENE_OMIMDIS ON DGA_OMIMID = OMD_OMIMID " +
+//	  		"JOIN DIS_GENE ON GNE_MGIACC = DGA_MGIACC " +
+//	  		"WHERE GNE_SYMBOL = ? " +
+//	  		"AND (DGA_FLAG = 'N' || DGA_FLAG = 'U' || DGA_FLAG = 'R')"; // modified by xingjun - 30/04/2009
+	  final static String query143 = "SELECT COUNT(DISTINCT OMD_NAME) FROM LNK_GENE_OMIMDIS " +
+		  		"JOIN REF_MGI_ORTHOLOGS ON OTH_MGIID=DGA_MGIACC " +
+		  		"WHERE ((OTH_MGIID = 'MGI:98358') | (OTH_HUMAN_ENTID = 'MGI:98358')) ";
 	  
 	  final static String name145 = "ALL_NGD_SERIES";
 	  final static String query145 ="SELECT DISTINCT NGR_TITLE, NGR_GEO_ID, SUB_SOURCE, (SELECT COUNT(distinct NGL_SAMPLE_FK) FROM NGD_SAMPLE_SERIES WHERE NGL_SERIES_FK = NGR_OID) SAMPLE_NUMBER, " +

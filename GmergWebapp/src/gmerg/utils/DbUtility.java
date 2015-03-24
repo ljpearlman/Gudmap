@@ -547,6 +547,24 @@ public class DbUtility {
 		}	
 
 	}
+
+	public static String getRefStageFromOrder(String order) {
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			String result = arrayDAO.getRefStageFromOrder(order);
+
+	    	return result;
+	    	
+		} catch(Exception e){
+			System.out.println("DBUtility::getRefStageFromOrder failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
+	}
 	
 }   
     

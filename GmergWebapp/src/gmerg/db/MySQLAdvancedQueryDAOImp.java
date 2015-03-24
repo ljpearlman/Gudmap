@@ -1797,9 +1797,9 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				input = this.getSymbolsFromGeneInputParams(input, queryCriteria[0]);	
 		    }
 	    
-//		    if(input == null){ //no gene symbols have been found based on users input
-//		    	return null;
-//		    }
+		    if(input == null){ //no gene symbols have been found based on users input
+		    	return null;
+		    }
 	    
 		    // assemble stage string (only needs to be done if specific stage has been entered by user)
 		    if (queryCriteria[1] != null && !queryCriteria[1].equalsIgnoreCase("All")) {

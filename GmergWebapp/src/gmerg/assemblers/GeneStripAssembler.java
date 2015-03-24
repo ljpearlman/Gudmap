@@ -30,7 +30,7 @@ import gmerg.entities.ChromeDetail;
  *
  */
 public class GeneStripAssembler extends OffMemoryCollectionAssembler {
-    protected boolean debug = false;
+    protected boolean debug = true;
     protected RetrieveDataCache cache = null;
 
 	static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
@@ -156,15 +156,13 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				/** 5 - in situe expression profile */
 				double[] insituExprofile = this.getExpressionProfile(symbol);
 	//			for (int j=0;j<insituExprofile.length;j++) System.out.println("insituEF-" +i+ "-" + j + ": " + insituExprofile[j]);
-				String[] interestedAnatomyStructures = 
-					AdvancedSearchDBQuery.getInterestedAnatomyStructureIds();
+				String[] interestedAnatomyStructures =  AdvancedSearchDBQuery.getInterestedAnatomyStructureIds();
 				data[i][4] = 
 					new DataItem(getExpressionHtmlCode(insituExprofile, interestedAnatomyStructures, symbol), 50);
 	
 				/** 6 - representative image */
 				// choose the 'right' one based on the discussion with DD
-				String candidateSubmission = 
-					this.chooseRepresentativeInsituSubmission(relatedInsituSubmissions);
+				String candidateSubmission = this.chooseRepresentativeInsituSubmission(relatedInsituSubmissions);
 				String thumbnail = null;
 				// get the image and put the url into the string
 				if (candidateSubmission != null) {
@@ -432,9 +430,8 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 
 		String[] stageRange = new String[2];
 		if (insituGeneStages == null || insituGeneStages.length == 0) { //  no insitu submission
-//			System.out.println("insitu stage value is null");
+
 			if (arrayGeneStages == null || arrayGeneStages.length == 0) { // no array submission
-//				System.out.println("array stage value is null");
 				stageRange[0] = "-1";
 				stageRange[1] = "-1";
 			} else { // do have array submissions
@@ -443,39 +440,33 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				stageRange[1] = arrayGeneStages[aLen-1];
 			}
 		}  else { // do have insitu submissions
-//			System.out.println("insitu stage value is not null########");
 			int iLen = insituGeneStages.length;
 			if (arrayGeneStages == null || arrayGeneStages.length == 0) { // no array submission
 				stageRange[0] = insituGeneStages[0];
 				stageRange[1] = insituGeneStages[iLen-1];
 			} else { // do have array submissions
-//				System.out.println("array stage value is not null#########");
 				int aLen = arrayGeneStages.length;
-				// get earliest stage of insitu and array
-				int ealiestStageInsitu = Integer.parseInt(insituGeneStages[0].substring(2));
-//				int ealiestStageInsitu = Integer.parseInt(insituGeneStages[0]);
+
+				int ealiestStageInsitu = Integer.parseInt(insituGeneStages[0]);
 				int ealiestStageArray = Integer.parseInt(arrayGeneStages[0]);
-				// get latest stage of insitu and array
-				int latestStageInsitu = Integer.parseInt(insituGeneStages[iLen-1].substring(2));
-//				int latestStageInsitu = Integer.parseInt(insituGeneStages[iLen-1]);
+
+				int latestStageInsitu = Integer.parseInt(insituGeneStages[iLen-1]);
 				int latestStageArray = Integer.parseInt(arrayGeneStages[aLen-1]);
-				// get stage range
-				// earliest
+
 				if (ealiestStageInsitu <= ealiestStageArray) {
-					stageRange[0] = insituGeneStages[0];
+					stageRange[0] = DbUtility.getRefStageFromOrder(insituGeneStages[0]);
 				} else {
-					stageRange[0] = "TS" + arrayGeneStages[0];
+					stageRange[0] = DbUtility.getRefStageFromOrder(arrayGeneStages[0]);
 				}
-				// latest
+
 				if (latestStageInsitu >= latestStageArray) {
-					stageRange[1] = insituGeneStages[iLen-1].substring(2);
+					stageRange[1] = DbUtility.getRefStageFromOrder(insituGeneStages[iLen-1]);
 				} else {
-					stageRange[1] = arrayGeneStages[aLen-1];
+					stageRange[1] = DbUtility.getRefStageFromOrder(arrayGeneStages[aLen-1]);
 				}
 			}
 		}
-//		System.out.println("stage ragne e: " + stageRange[0]);
-//		System.out.println("stage ragne l: " + stageRange[1]);
+
 		return stageRange;
 	}
 	

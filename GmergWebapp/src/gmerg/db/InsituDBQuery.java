@@ -16,7 +16,14 @@ public class InsituDBQuery {
 
 	// find the distribution of theiler stage of the insitu data
 	final static String name0 = "GENE_THEILER_STAGES_INSITU";
-	final static String query0 = "SELECT DISTINCT STG_STAGE_DISPLAY FROM ISH_SUBMISSION " +
+//	final static String query0 = "SELECT DISTINCT STG_STAGE_DISPLAY FROM ISH_SUBMISSION " +
+//			"JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " +
+//			"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
+//			"LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
+//			"WHERE SUB_ASSAY_TYPE IN ('ISH', 'IHC', 'TG') " +
+//			"AND RPR_SYMBOL = ? " +
+//			"ORDER BY NATURAL_SORT(STG_STAGE_DISPLAY)";
+	final static String query0 = "SELECT DISTINCT STG_ORDER FROM ISH_SUBMISSION " +
 			"JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " +
 			"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
 			"LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +

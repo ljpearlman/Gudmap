@@ -16,7 +16,7 @@ import gmerg.utils.Utility;
  *
  */
 public class MySQLGeneDAOImp implements GeneDAO {
-    private boolean debug = false; 
+    private boolean debug = true; 
 	Connection conn;
 
 	// default constructor
@@ -120,6 +120,8 @@ public class MySQLGeneDAOImp implements GeneDAO {
 		
 		// this qury will return a list of syns to be used as input in another genefinding query - symbolsFromSynListQ
 		String synonymListQ;
+		//string to contain sql to find gene symbol from REF_PROBE using gene synonym
+		String symbolsFromRefProbeSynonymQ;
 		
 		PreparedStatement stmt = null;
 		ResultSet resSet = null;
@@ -153,35 +155,43 @@ public class MySQLGeneDAOImp implements GeneDAO {
 				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
 				//create sql from components and user input
 				synonymListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
+				//get components to build query to find synonymns from REF_PROBE using synonym as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_synonym");
+				//create sql from components and user input
+				symbolsFromRefProbeSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 0);
 			}
 			//search for an exact string
 			else {
 				//get components to build query to find symbols from REF_PROBE using gene symbol as a param to narrow search
 				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Symbol");
 				//create sql from components and user input
-				symbolsFromRefProbeSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				symbolsFromRefProbeSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
 				//get components to build query to find symbols from REF_PROBE using gene name as a param to narrow search
 				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_Name");
 				//create sql from components and user input
-				symbolsFromRefProbeNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				symbolsFromRefProbeNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
 				//get components to build query to find symbols from REF_GENE_INFO using gene symbol as a param to narrow search
 				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Symbol");
 				//create sql from components and user input
-				symbolsFromrefGeneInfoSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				symbolsFromrefGeneInfoSymbolQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
 				//get components to build query to find symbols from REF_GENE_INFO using gene name as a param to narrow search
 				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_Name");
 				//create sql from components and user input
-				symbolsFromrefGeneInfoNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				symbolsFromrefGeneInfoNameQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 0);
 				// 09/10/2009 - START
 				//get components to build query to find symbol from REF_GENE_INFO using gene synonym as a param to narrow search
 				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefGeneInfo_synonym");
 				//create sql from components and user input
-				symbolsFromrefGeneInfoSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				symbolsFromrefGeneInfoSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1],0);
 				// 09/10/2009 - END
 				//get components to build query to find synonymns from REF_SYNONYM using synonym as a param to narrow search
 				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefSyn_Synonym");
 				//create sql from components and user input
 				synonymListQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+				//get components to build query to find synonymns from REF_PROBE using synonym as a param to narrow search
+				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_synonym");
+				//create sql from components and user input
+				symbolsFromRefProbeSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 1);
 			}
 
 			// need to execute query to get syn list here
@@ -215,10 +225,10 @@ public class MySQLGeneDAOImp implements GeneDAO {
 			}
 
 			symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefMgiMrk_MGIAcc");
-			String symbolsFromMGiAccQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+			String symbolsFromMGiAccQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 1);
 			
 			symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefEnsGene_EnsemblId");
-			String symbolsFromEnsemblIdQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], 1);
+			String symbolsFromEnsemblIdQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 1);
 			
 			// sligtly different query - had to get list of relevant synonyms
 			// from db to use as input for this query
@@ -239,7 +249,7 @@ public class MySQLGeneDAOImp implements GeneDAO {
 			}
 //			System.out.println("geneDAO:getSymbolsFromGeneInput:symbolsFromrefGeneInfoSynonymQ: " + symbolsFromrefGeneInfoSynonymQ);
 		    if (debug)
-			System.out.println("MySQLGeneDAOImp.sql = "+allQueriesQ.toLowerCase());
+			System.out.println("MySQLGeneDAOImp.sql = "+allQueriesQ);
 			stmt = conn.prepareStatement(allQueriesQ);
 			
 			//for the first 4 in 'union' query, set the parameters
@@ -270,7 +280,26 @@ public class MySQLGeneDAOImp implements GeneDAO {
 			    	stmt.setString((7*input.length+1+i), synList[i].trim());// xingjun - 09/10/2009 - change from 6 to 7
 			    }
 			}
+		    if (debug)
+			System.out.println("MySQLGeneDAOImp stmt = "+stmt);
 
+// to include the gene id		    
+//			resSet = stmt.executeQuery();
+//			String str = null;
+//			if(resSet.first()){
+//				resSet.last();
+//				geneSymbols = new ArrayList<String[]>();
+//				resSet.beforeFirst();
+//				while (resSet.next()) {
+//					String[] item = new String[2];
+//				    str = Utility.netTrim(resSet.getString(1));
+//				    if(null != str){
+//				    	item[0] =  Utility.netTrim(resSet.getString(1));
+//				    	item[1] =  Utility.netTrim(resSet.getString(2));
+//				    	geneSymbols.add(item);
+//				    }
+//				}
+//			}
 			resSet = stmt.executeQuery();
 			String str = null;
 			if(resSet.first()){
