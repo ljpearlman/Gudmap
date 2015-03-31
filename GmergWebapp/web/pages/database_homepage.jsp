@@ -766,6 +766,13 @@
 				<h:outputText value="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs}" />
 			</h:outputLink>
 			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs}" rendered="#{DatabaseHomepageBean.dbSummary.totAvailArraySubs == '0'}"/>
+
+			<h:outputText value="Sequencing" />
+			<h:outputText value=""/>
+			<h:outputLink value="focus_ngd_browse.html#{DatabaseHomepageBean.organParam}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSequences != '0'}">
+				<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSequences}" />
+			</h:outputLink>
+			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSequences}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSequences == '0'}"/>
 			
 			
 		</h:panelGrid>

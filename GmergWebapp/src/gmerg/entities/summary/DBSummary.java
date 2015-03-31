@@ -20,6 +20,7 @@ public class DBSummary {
     private String totalAvailableSubmissionsSISH;
     private String totOptGenes;
     private String totalAvailableSubmissionsOPT;
+    private String totalAvailableSequences;
     
     private String applicationVersion;
     private String lastEditorUpdate;
@@ -205,6 +206,14 @@ public class DBSummary {
     
     public String getTotalAvailableSubmissionsOPT() {
     	return totalAvailableSubmissionsOPT;
+    }
+
+    public void setTotalAvailableSequences(String totalAvailableSequences) {
+    	this.totalAvailableSequences= totalAvailableSequences;
+    }
+    
+    public String getTotalAvailableSequences() {
+    	return totalAvailableSequences;
     }
     
 }

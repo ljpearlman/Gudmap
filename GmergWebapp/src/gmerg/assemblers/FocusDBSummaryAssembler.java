@@ -73,6 +73,7 @@ public class FocusDBSummaryAssembler {
 		    int numberOfPublicGenesWISH = focusForAllDAO.findNumberOfPublicGenes("wholemount", emapids);
 		    int numberOfPublicGenesSISH = focusForAllDAO.findNumberOfPublicGenes("section", emapids);
 		    int numberOfPublicGenesOPT = focusForAllDAO.findNumberOfPublicGenes("opt-wholemount", emapids);
+//			int numberOfSequences = focusForAllDAO.findTotalNumberOfSequences();
 			
 			
 			/** ---complement summary object--- */
@@ -90,9 +91,10 @@ public class FocusDBSummaryAssembler {
 			dbSummary.setTotalAvailableSubmissionsIHC(Integer.toString(numberOfPublicSubmissionsIHC));
 			// added by xingjun - 28/08/2008
 			dbSummary.setTotalAvailableSubmissionsTG(Integer.toString(numberOfPublicSubmissionsTG));
-			dbSummary.setTotalAvailableSubmissionsWISH(Integer.toString(numberOfPublicSubmissionsWISH));
+			dbSummary.setTotalAvailableSubmissionsWISH(Integer.toString(numberOfPublicSubmissionsWISH + numberOfPublicSubmissionsOPT));
 			dbSummary.setTotalAvailableSubmissionsSISH(Integer.toString(numberOfPublicSubmissionsSISH));
 			dbSummary.setTotalAvailableSubmissionsOPT(Integer.toString(numberOfPublicSubmissionsOPT));
+//			dbSummary.setTotalAvailableSequences(Integer.toString(numberOfSequences));
 	
 			dbSummary.setDatabaseServer(databaseHost);
 			dbSummary.setProject(project);

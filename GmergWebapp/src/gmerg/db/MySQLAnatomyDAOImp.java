@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
  *
  */
 public class MySQLAnatomyDAOImp implements AnatomyDAO {
-    private boolean debug = true;
+    private boolean debug = false;
     private Connection conn;
 	
 	// default constructor

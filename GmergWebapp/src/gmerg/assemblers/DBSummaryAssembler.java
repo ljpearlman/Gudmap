@@ -91,6 +91,8 @@ public class DBSummaryAssembler {
 			// get number of public transgenic sumbissions
 			int numberOfPublicSubmissionsTG = ishDAO.findNumberOfPublicSubmissionTG();
 			
+			int numberOfSequences = ishDAO.findTotalNumberOfSequences();
+			
 			// get last editorial update date
 			String lastEdtorialUpdateDate = ishDAO.findLastEditorialUpdateDate();
 			
@@ -127,11 +129,12 @@ public class DBSummaryAssembler {
 			dbSummary.setTotTgGenes(Integer.toString(numberOfPublicGenesTG));
 			
 			dbSummary.setTotWishGenes(Integer.toString(numberOfPublicGenesWISH));
-			dbSummary.setTotalAvailableSubmissionsWISH(Integer.toString(numberOfPublicSubmissionsWISH));
+			dbSummary.setTotalAvailableSubmissionsWISH(Integer.toString(numberOfPublicSubmissionsWISH + numberOfPublicSubmissionsOPT));
 			dbSummary.setTotSishGenes(Integer.toString(numberOfPublicGenesSISH));
 			dbSummary.setTotalAvailableSubmissionsSISH(Integer.toString(numberOfPublicSubmissionsSISH));
 			dbSummary.setTotOptGenes(Integer.toString(numberOfPublicGenesOPT));
 			dbSummary.setTotalAvailableSubmissionsOPT(Integer.toString(numberOfPublicSubmissionsOPT));
+			dbSummary.setTotalAvailableSequences(Integer.toString(numberOfSequences));
 			
 			dbSummary.setLastEditorUpdate(lastEdtorialUpdateDate);
 			dbSummary.setLastSoftwrUpdate(lastSoftwareUpdateDate);

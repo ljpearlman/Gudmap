@@ -110,6 +110,16 @@
 				<h:outputText styleClass="plaintextbold" value=")." />
 			</h:panelGroup>
 		</h:panelGrid>
+		
+		<h:panelGrid width="100%" columns="1" styleClass="block-stripey" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP' && ISHSingleSubmissionBean.submission.assayType == 'TG' && ISHSingleSubmissionBean.submission.specimen.assayType == 'mouse marker strain'}">
+			<h:panelGroup>
+				<h:outputText styleClass="plaintextbold" value="Mouse marker strain entries are unique GUDMAP entries that can contain data for multiple probes at multiple stages of development (" />
+				<h:outputLink styleClass="plaintext" value="#" onclick="var w=window.open('tg_moreInfo.jsf','mouse marker strain','resizable=1,toolbar=0,scrollbars=1,width=600,height=600');w.focus();return false;" >
+					<h:outputText value="more info" />
+				</h:outputLink>
+				<h:outputText styleClass="plaintextbold" value=")." />
+			</h:panelGroup>
+		</h:panelGrid>
   
 		<h:panelGrid width="100%" columns="1" styleClass="block-stripey" rendered="#{ISHSingleSubmissionBean.submission.project == 'EUREGENE'}">
 			<h:panelGroup>

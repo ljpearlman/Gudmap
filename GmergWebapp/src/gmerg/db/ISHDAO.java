@@ -59,9 +59,10 @@ public interface ISHDAO {
 	
     /** gene page */
 	public Gene findGeneInfoBySymbol(String symbol); // q11
-	public ArrayList findRelatedSubmissionBySymbolISH(String symbol);
-	public ArrayList findRelatedSubmissionBySymbolIHC(String symbol);
-	public ArrayList findRelatedSubmissionBySymbolTG(String symbol);
+	public ArrayList<String[]> findRelatedSubmissionBySymbolISH(String symbol);
+	public ArrayList<String[]> findRelatedSubmissionBySymbolISHOnly(String symbol);
+	public ArrayList<String[]> findRelatedSubmissionBySymbolIHC(String symbol);
+	public ArrayList<String[]> findRelatedSubmissionBySymbolTG(String symbol);
 	public ArrayList findRelatedSubmissionBySymbolArray(String symbol, int columnIndex,
                                          boolean ascending, int offset,
                                          int num);
@@ -146,7 +147,7 @@ public ArrayList getComponentCountInfoByGeneInfo(String inputType, String inputS
 	public int findTotalNumberOfSubmissionISH(); // numTotalIshSubmissionsQuery
 	public int findTotalNumberOfSubmissionArray(); // numTotalArraySubmissionsQuery
 	public int findTotalNumberOfSubmissionIHC();
-	
+	public int findTotalNumberOfSequences();	
 	
 	// find the number of public submissions
 	public int findNumberOfPublicSubmissionISH(); // numPubISHSubmissionsQuery

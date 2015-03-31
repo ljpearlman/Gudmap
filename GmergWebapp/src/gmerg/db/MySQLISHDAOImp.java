@@ -1685,7 +1685,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    return null;
 		}
         ResultSet resSet = null;
-        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_ISH");
+        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_INSITU");
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         try {
@@ -1694,7 +1694,6 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    
 		    prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, symbol);
-//            prepStmt.setString(2, "ISH"); //mantis 1026
             
 		    if (debug)
 		    	System.out.println("findRelatedSubmissionBySymbolISH:prepStmt  = "+prepStmt);
@@ -1713,7 +1712,41 @@ public class MySQLISHDAOImp implements ISHDAO {
             DBHelper.closeResultSet(resSet);
         }
     }
- 
+    
+    public ArrayList<String[]> findRelatedSubmissionBySymbolISHOnly(String symbol) {
+		if (symbol == null || symbol.equals("")) {
+		    return null;
+		}
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_ISH");
+        String queryString = parQ.getQuerySQL();
+        PreparedStatement prepStmt = null;
+        try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+            prepStmt.setString(1, symbol);
+            prepStmt.setString(2, "ISH"); //mantis 1026
+            
+		    if (debug)
+		    	System.out.println("findRelatedSubmissionBySymbolISH:prepStmt  = "+prepStmt);
+            resSet = prepStmt.executeQuery();
+            
+            ArrayList<String[]> relatedSubmissionISH = DBHelper.formatResultSetToArrayList(resSet);
+	    
+            return relatedSubmissionISH;
+            
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
+    }
+
     public ArrayList<String[]> findRelatedSubmissionBySymbolIHC(String symbol) {
 		if (symbol == null || symbol.equals("")) {
 		    return null;
@@ -4838,6 +4871,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             DBHelper.closeResultSet(resSet);   	
         }
     }
+
     
     /**
      *
@@ -6141,5 +6175,32 @@ public class MySQLISHDAOImp implements ISHDAO {
             DBHelper.closeResultSet(resultSet);
         }
     }
-    
+
+    public int findTotalNumberOfSequences() {
+        int result = 0;
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("NUMBER_OF_NEXTGEN_SEQUENCES");
+        Statement stmt = null;
+        try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+	    
+            stmt = conn.createStatement();
+            resSet = stmt.executeQuery(parQ.getQuerySQL());
+            if (resSet.first()) {
+                result = resSet.getInt(1);
+            }
+	    
+            return result;
+    	    
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return 0;
+        }
+        finally{
+            DBHelper.closeStatement(stmt);      
+            DBHelper.closeResultSet(resSet);
+        }
+    }
+   
 }
