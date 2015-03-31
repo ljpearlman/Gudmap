@@ -28,6 +28,7 @@ public interface CollectionDAO {
     public int updateCollectionSummary(CollectionInfo collectionInfo);
     
     public ArrayList<String> getInsituSubmissionImageIdByGene(String symbol);
+    public ArrayList<String> getInsituSubmissionImageIdByGeneId(String symbolId);
     
 	public int removeCollectionItems(String collectionId, String[] ids);
 }

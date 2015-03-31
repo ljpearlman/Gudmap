@@ -16,7 +16,7 @@ import gmerg.entities.ChromeDetail;
  * @author xingjun
  */
 public class MySQLGeneStripDAOImp implements GeneStripDAO {
-    protected boolean debug = false;
+    protected boolean debug = true;
     private Connection conn;
 	private ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 	
@@ -67,25 +67,63 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         }
 	}
 	
+	public String findSynonymsBySymbolId(String symbolId) {
+		if (symbolId == null || symbolId.equals("")) {
+			return "";
+		}
+        String synonyms = new String("");
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("GET_GENE_SYNONYM_BY_SYMBOLID");
+        String queryString = parQ.getQuerySQL();
+        if (debug)
+	        System.out.println("query for synonyms: " + queryString);
+        PreparedStatement prepStmt = null;
+        try {
+        	// if disconnected from db, re-connected
+        	conn = DBHelper.reconnect2DB(conn);
+
+        	prepStmt = conn.prepareStatement(queryString);
+        	prepStmt.setString(1, symbolId);
+        	resSet = prepStmt.executeQuery();
+        	if (resSet.first()) {
+        		resSet.beforeFirst();
+        		while (resSet.next()) {
+        			synonyms += resSet.getString(1) + ", ";
+        		}
+        		synonyms = synonyms.substring(0, synonyms.lastIndexOf(","));
+        	}
+    		return synonyms;
+
+        } catch (SQLException se) {
+        	se.printStackTrace();
+    		return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
+	}
+	
 	/**
 	 * @author xingjun - 27/01/2009
 	 * @param symbol: gene symbol
 	 * @param assayType: insitu or microarray
 	 * @return
 	 */
-	public String[] getGeneStages(String symbol, String assayType) { 
+	public String[] getGeneStages(String symbolId, String assayType) { 
 		
-		if (symbol == null || symbol.equals("")) {
+		if (symbolId == null || symbolId.equals("")) {
 			return null;
 		}
         String[] stages = null;
 		ResultSet resSet = null;
         ParamQuery parQ = null;
-        if (assayType.equals("Microarray")) {
-            parQ = ArrayDBQuery.getParamQuery("GENE_THEILER_STAGES_ARRAY");
-        } else if (assayType.equals("insitu")) {
-        	parQ = InsituDBQuery.getParamQuery("GENE_THEILER_STAGES_INSITU");
-        }
+//        if (assayType.equals("Microarray")) {
+//            parQ = ArrayDBQuery.getParamQuery("GENE_THEILER_STAGES_ARRAY");
+//        } else if (assayType.equals("insitu")) {
+//        	parQ = InsituDBQuery.getParamQuery("GENE_THEILER_STAGES_INSITU");
+//        }
+        parQ = InsituDBQuery.getParamQuery("GENE_THEILER_STAGES");
         String queryString = parQ.getQuerySQL();
         if (debug)
         	System.out.println("getGeneStagesQueryString: " + queryString);
@@ -95,8 +133,12 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         	conn = DBHelper.reconnect2DB(conn);
 
         	prepStmt = conn.prepareStatement(queryString);
-        	prepStmt.setString(1, symbol);
-        	resSet = prepStmt.executeQuery();
+        	prepStmt.setString(1, symbolId);
+        	prepStmt.setString(2, symbolId);        	
+            if (debug)
+            	System.out.println("getGeneStagesQueryString: " + prepStmt);
+       	
+            resSet = prepStmt.executeQuery();
         	stages = DBHelper.formatResultSetToStringArray(resSet);
         	
     		return stages;
@@ -119,14 +161,14 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 	 * - flag to specify find expression linked to given strucutre
 	 *   or expression linked to non-given structures
 	 */
-	public ArrayList getGeneExpressionForStructure(String symbol, String[] componentIds, 
+	public ArrayList getGeneExpressionForStructure(String symbolid, String[] componentIds, 
 			                                       boolean expressionForGivenComponents) {
-		if (symbol == null || symbol.equals("")) {
+		if (symbolid == null || symbolid.equals("")) {
 			return null;
 		}
 		
 		if (debug) {
-		    System.out.println("symbol: " + symbol);
+		    System.out.println("symbolid: " + symbolid);
 		    System.out.println("component id number in dao: " + componentIds.length);
 		}
 
@@ -168,8 +210,6 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         	queryString = 
         		parQ.getQuerySQL().replace("AND EXP_COMPONENT_ID NOT IN", componentClause);
         }
-        if (debug)
-        	System.out.println("getGeneExpressionForStructure:queryString: " + queryString);
         
         // get the expression
         try {
@@ -177,7 +217,11 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         	conn = DBHelper.reconnect2DB(conn);
 
         	prepStmt = conn.prepareStatement(queryString);
-        	prepStmt.setString(1, symbol);
+        	prepStmt.setString(1, symbolid);
+        	
+            if (debug)
+            	System.out.println("getGeneExpressionForStructure:queryString: " + prepStmt);
+        	
         	resSet = prepStmt.executeQuery();
         	expressions = DBHelper.formatResultSetToArrayList(resSet);
 //        	if (expressions == null) System.out.println("no expression info for this structure!");
@@ -309,7 +353,7 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 		int diseaseNumber = 0;
 		ResultSet resSet = null;
 		
-        ParamQuery parQ = AdvancedSearchDBQuery.getParamQuery("TOTOAL_NUMBER_OF_DISEASE_FOR_GENE");
+        ParamQuery parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_DISEASE_FOR_GENEID");
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         
@@ -321,6 +365,7 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, symbol);
+        	prepStmt.setString(2, symbol);
         	resSet = prepStmt.executeQuery();
         	if (resSet.first()) {
         		diseaseNumber = resSet.getInt(1);
@@ -386,5 +431,43 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
     	}
     	return chromeDetail;
     }
+	
+	public String[] getGeneFromId(String id){
+		ResultSet resSet = null;
+		String[] gene = new String[4];
+		
+		String queryString = "select RMM_SYMBOL,RMM_SPECIES_ID,RMM_SPECIES from REF_MGI_MRK where RMM_MGIACC = ? ";
+        PreparedStatement prepStmt = null;
+        
+        try {
+        	// if disconnected from db, re-connected
+        	conn = DBHelper.reconnect2DB(conn);
+
+        	prepStmt = conn.prepareStatement(queryString);
+        	prepStmt.setString(1, id);
+        	
+            if (debug)
+            	System.out.println("genefromid: " + prepStmt);
+            
+        	resSet = prepStmt.executeQuery();
+        	if (resSet.first()) {
+        		gene[0] = id;
+        		gene[1] = resSet.getString(1);//symbol
+        		gene[2] = resSet.getString(2);//speciesId
+        		gene[3] = resSet.getString(3);//species
+        	}
+        	
+    		return gene;
+
+        } catch (SQLException se) {
+        	se.printStackTrace();
+    		return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
+
+	}
 		
 }

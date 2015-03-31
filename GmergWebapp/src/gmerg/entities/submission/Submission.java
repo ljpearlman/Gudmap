@@ -85,15 +85,25 @@ public class Submission {
 	}
     }
 
+    public String getGeneId() {
+		String ret = null;
+		if (null != allele && 0 < allele.length)
+	    	ret = allele[0].getGeneId();
+	    
+		if (null != ret && ret.trim().equals(""))
+		    ret = null;
+		
+		return ret;
+    }
     public String getGeneSymbol() {
-	String ret = null;
-	if (null != allele && 0 < allele.length)
-	    ret = allele[0].getGeneSymbol();
-    
-	if (null != ret && ret.trim().equals(""))
-	    ret = null;
-	
-	return ret;
+		String ret = null;
+		if (null != allele && 0 < allele.length)
+		    ret = allele[0].getGeneSymbol();
+	    
+		if (null != ret && ret.trim().equals(""))
+		    ret = null;
+		
+		return ret;
     }
     public String getGeneName() {
 	return null;

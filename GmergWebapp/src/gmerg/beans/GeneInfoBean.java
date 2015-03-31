@@ -28,7 +28,9 @@ public GeneInfoBean() {
 		System.out.println("GeneInfoBean.constructor");
 
 	// get the gene symbol as a parameter
-	geneId = FacesUtil.getRequestParamValue("gene");
+//	geneId = FacesUtil.getRequestParamValue("id");	    
+	geneId = FacesUtil.getRequestParamValue("geneId");
+//	geneId = FacesUtil.getRequestParamValue("gene");
 	probeset = FacesUtil.getRequestParamValue("probeset");
 	
 	//if no parameter found, see if it is in session
@@ -75,7 +77,8 @@ public GeneInfoBean() {
 			// - sometimes geneId is actually synonym of the gene and symbol of gene object 
 			//   will always be the real symbol
 //			GenericTableView geneStripTableView = GeneStripBrowseBean.populateGeneStripTableView(geneStripViewName, geneId);
-			GenericTableView geneStripTableView = GeneStripBrowseBean.populateGeneStripTableView(geneStripViewName, gene.getSymbol(), false);
+//			GenericTableView geneStripTableView = GeneStripBrowseBean.populateGeneStripTableView(geneStripViewName, gene.getSymbol(), false);
+			GenericTableView geneStripTableView = GeneStripBrowseBean.populateGeneStripTableView(geneStripViewName, gene.getMgiAccID(), false);
 			geneStripTableView.setDisplayHeader(false);
 //			geneStripTableView.setNotSelectable();
 			geneStripTableView.setCollectionBottons(0);

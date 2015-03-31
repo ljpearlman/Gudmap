@@ -15,6 +15,7 @@ import gmerg.entities.ChromeDetail;
 public interface GeneStripDAO {
 
 	public String findSynonymsBySymbol(String symbol);
+	public String findSynonymsBySymbolId(String symbolId);
 	public ArrayList getGeneExpressionForStructure(String symbol, String[] componentIds, 
 			boolean expressionForGivenComponents);
 	public ArrayList<ImageDetail> getInsituSubmissionImagesByImageId(ArrayList<String> imageIds);
@@ -22,4 +23,5 @@ public interface GeneStripDAO {
 	public String[] getGeneStages(String symbol, String assayType);
 	public int getGeneDiseaseNumber(String symbol);
 	public ChromeDetail getChromeDetailBySymbol(String symbol);
+	public String[] getGeneFromId(String id);
 }

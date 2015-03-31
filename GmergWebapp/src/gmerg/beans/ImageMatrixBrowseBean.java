@@ -10,12 +10,14 @@ public class ImageMatrixBrowseBean {
     private boolean debug = false;
 
 	String gene;
+	String symbolId;
 	
 	public ImageMatrixBrowseBean() {
 	    if (debug)
 		System.out.println("ImageMatrixBrowseBean.constructor");
 
 	    gene = Visit.getRequestParam("gene");
+	    symbolId = Visit.getRequestParam("symbolid");
 		String viewName = "imageMatrix_" + gene;
 		if (TableUtil.isTableViewInSession())
 			return;

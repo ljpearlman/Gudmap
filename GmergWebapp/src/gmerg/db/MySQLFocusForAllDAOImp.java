@@ -17,7 +17,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 
     private Connection conn;
     private int MAX_COLUMNS = 12; // added extra column ALE_GENE
-    private int MAX_ISH_COLUMNS = 14;
+    private int MAX_ISH_COLUMNS = 15;//14;
     private int MAX_NGD_COLUMNS = 13;
 
 

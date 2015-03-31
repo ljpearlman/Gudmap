@@ -202,7 +202,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 	 * @param symbol
 	 * @return
 	 */
-	public String[] getStageList(String assayType, String[] stage, String organ, String symbol) {
+	public String[] getStageList(String assayType, String[] stage, String organ, String symbolid) {
 		String[] result = new String[stage.length];
 		ResultSet resSet = null;
 		ParamQuery parQ = null;
@@ -214,16 +214,18 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			if (assayType.equals("insitu")) {
 				parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_IN_SITU");
 				stageString = " AND STG_STAGE_DISPLAY = '";
-				if (symbol != null && !symbol.equals("")) {
-					geneString += " AND RPR_SYMBOL = '" + symbol + "'";
+				if (symbolid != null && !symbolid.equals("")) {
+//					geneString += " AND RPR_SYMBOL = '" + symbol + "'";
+					geneString += " AND RPR_LOCUS_TAG = '" + symbolid + "'";
 				}
 				componentString = " AND EXP_COMPONENT_ID IN ";
 			} else if (assayType.equals("Microarray")) {
 				// if gene criteria is not provided, use alternative query and much faster
-				if (symbol != null && !symbol.equals("")) {
+				if (symbolid != null && !symbolid.equals("")) {
 					parQ = ArrayDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_ARRAY");
 					stageString = " AND MBC_STG_STAGE_DISPLAY = '";
-					geneString += " AND MBC_GNF_SYMBOL = '" + symbol + "'";
+//					geneString += " AND MBC_GNF_SYMBOL = '" + symbolid + "'";
+					geneString += " AND MBC_MAN_MGI_ID = '" + symbolid + "'";
 					componentString = " AND MBC_COMPONENT_ID IN ";
 				} else {
 					parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_ARRAY");
@@ -398,7 +400,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 	}
 	
 
-	public ArrayList<String> getIshStages() {
+	public ArrayList<String> getIshStages(String species) {
 		
 		ArrayList<String> stages = new ArrayList<String>();
 		
@@ -410,6 +412,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 //		System.out.println("getDpcValueQuery: " + queryString);
 		try {
 			prepStmt = conn.prepareStatement(queryString);
+			prepStmt.setString(1, species);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
 				//need to reset cursor as 'if' move it on a place
@@ -431,7 +434,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 		}
 	}
 
-	public ArrayList<String> getMicStages() {
+	public ArrayList<String> getMicStages(String species) {
 		
 		ArrayList<String> stages = new ArrayList<String>();
 		
@@ -443,6 +446,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 //		System.out.println("getDpcValueQuery: " + queryString);
 		try {
 			prepStmt = conn.prepareStatement(queryString);
+			prepStmt.setString(1, species);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
 				//need to reset cursor as 'if' move it on a place

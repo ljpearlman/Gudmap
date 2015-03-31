@@ -975,7 +975,8 @@ public class AdvancedSearchDBQuery {
 			"(SELECT GROUP_CONCAT(DISTINCT EXP_STRENGTH) FROM ISH_EXPRESSION WHERE EXP_SUBMISSION_FK=SUB_OID) EXP_STRENGTH",
 			"SPN_ASSAY_TYPE",
 			"CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_SML_FILENAME)",
-			"REPLACE(SUB_ACCESSION_ID, ':', 'no')" };
+			"RPR_LOCUS_TAG",
+			"REPLACE(SUB_ACCESSION_ID, ':', 'no')", };
 		
 		
 		
@@ -1252,7 +1253,7 @@ public class AdvancedSearchDBQuery {
 	  		"JOIN ISH_SUBMISSION ON EXP_SUBMISSION_FK = SUB_OID AND SUB_ASSAY_TYPE IN ('ISH', 'IHC', 'TG') " +
 	  		"JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " +
 	  		"JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
-	  		"WHERE RPR_SYMBOL = ? " +
+	  		"WHERE RPR_LOCUS_TAG = ? " +
 	  		"AND EXP_COMPONENT_ID IN " +
 	  		"ORDER BY EXP_STRENGTH DESC, NATURAL_SORT(EXP_COMPONENT_ID)";
 
@@ -1275,16 +1276,11 @@ public class AdvancedSearchDBQuery {
 	  		"AND ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
 	  		"AND APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true";
 
-	  // query for counting relevant omim disease number for given gene
-	  final static String name143 = "TOTOAL_NUMBER_OF_DISEASE_FOR_GENE";
-//	  final static String query143 = "SELECT COUNT(DISTINCT OMD_NAME) FROM DIS_OMIM_DISEASE " +
-//	  		"JOIN LNK_GENE_OMIMDIS ON DGA_OMIMID = OMD_OMIMID " +
-//	  		"JOIN DIS_GENE ON GNE_MGIACC = DGA_MGIACC " +
-//	  		"WHERE GNE_SYMBOL = ? " +
-//	  		"AND (DGA_FLAG = 'N' || DGA_FLAG = 'U' || DGA_FLAG = 'R')"; // modified by xingjun - 30/04/2009
-	  final static String query143 = "SELECT COUNT(DISTINCT OMD_NAME) FROM LNK_GENE_OMIMDIS " +
+	  // query for counting relevant omim disease number for given geneid
+	  final static String name143 = "TOTAL_NUMBER_OF_DISEASE_FOR_GENEID";
+	  final static String query143 = "SELECT COUNT(DISTINCT DGA_OMIMID) FROM LNK_GENE_OMIMDIS " +
 		  		"JOIN REF_MGI_ORTHOLOGS ON OTH_MGIID=DGA_MGIACC " +
-		  		"WHERE ((OTH_MGIID = 'MGI:98358') | (OTH_HUMAN_ENTID = 'MGI:98358')) ";
+		  		"WHERE ((OTH_MGIID = ?) | (OTH_HUMAN_ENTID = ?)) ";
 	  
 	  final static String name145 = "ALL_NGD_SERIES";
 	  final static String query145 ="SELECT DISTINCT NGR_TITLE, NGR_GEO_ID, SUB_SOURCE, (SELECT COUNT(distinct NGL_SAMPLE_FK) FROM NGD_SAMPLE_SERIES WHERE NGL_SERIES_FK = NGR_OID) SAMPLE_NUMBER, " +

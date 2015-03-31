@@ -193,7 +193,7 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 	static public void convertIshRowToDataItemFormat (DataItem[] formatedRow, String[] row) {
 
 		// Gene
-		formatedRow[ 0] = new DataItem(row[0], "", "gene.html?gene="+row[0], 10);					
+		formatedRow[ 0] = new DataItem(row[0], "", "gene.html?geneId="+row[14], 10);					
 
 		// GUDMAP entry details
 		if("Microarray".equalsIgnoreCase(row[4])) 

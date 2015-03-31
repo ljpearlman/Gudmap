@@ -52,6 +52,7 @@
 	</h:panelGrid>
 
 	<f:verbatim>&nbsp;</f:verbatim>
+ 
 	<f:subview id="geneStripTable" rendered="#{GeneInfoBean.gene!=null}"> 
 		<h:outputText value="" rendered="#{GeneInfoBean.setTableViewNameToGeneStrip}" />
 		<jsp:include page="../includes/browse_table.jsp" />

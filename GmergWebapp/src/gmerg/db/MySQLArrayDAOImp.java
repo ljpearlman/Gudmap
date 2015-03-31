@@ -2042,7 +2042,46 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 			}
 		}
     }
-    
+
+    public ArrayList<String> getProbeSetIdBySymbolId(String symbolId, String platformId) {
+ 		
+		ArrayList<String> probeSetIds = null;
+        ResultSet resSet = null;
+        ParamQuery parQ =
+            DBQuery.getParamQuery("ARRAY_PROBE_SET_IDS_FOR_GIVEN_SYMBOLID");
+        String queryString = parQ.getQuerySQL();
+        PreparedStatement prepStmt = null;
+		try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    if (debug)
+			System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase() + "1 arg = "+symbolId+" 2 arg = "+platformId);
+		    prepStmt = conn.prepareStatement(queryString);
+		    prepStmt.setString(1, symbolId);
+		    prepStmt.setString(2, platformId);
+		    resSet = prepStmt.executeQuery();
+		    if (resSet.first()) {
+				resSet.beforeFirst();
+				probeSetIds = new ArrayList<String>();
+				while (resSet.next()) {
+				    probeSetIds.add(resSet.getString(1));
+				}
+		    }
+		    //			probeSetIds = DBHelper.formatResultSetToArrayList(resSet);
+		    
+			return probeSetIds;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return null;
+		}
+		finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+		}
+    }
+   
     /**
      * @author xingjun - 19/03/2009
      * <p>modified by xingjun - 25/03/2009 - modified sql, added assemble query string method</p>

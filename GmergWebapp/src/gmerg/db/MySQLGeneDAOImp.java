@@ -191,7 +191,7 @@ public class MySQLGeneDAOImp implements GeneDAO {
 				//get components to build query to find synonymns from REF_PROBE using synonym as a param to narrow search
 				symbolsQParts = (String[]) (AdvancedSearchDBQuery.getRefTableAndColTofindGeneSymbols()).get("RefProbe_synonym");
 				//create sql from components and user input
-				symbolsFromRefProbeSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 1);
+				symbolsFromRefProbeSynonymQ = AdvancedSearchDBQuery.getSymbolsFromGeneInputParamsQuery(input,symbolsQParts[0], symbolsQParts[1], symbolsQParts[2], 0);
 			}
 
 			// need to execute query to get syn list here
@@ -242,6 +242,7 @@ public class MySQLGeneDAOImp implements GeneDAO {
 					+ symbolsFromrefGeneInfoSymbolQ + union
 					+ symbolsFromrefGeneInfoNameQ + union
 					+ symbolsFromrefGeneInfoSynonymQ + union // 09/10/2009
+					+ symbolsFromRefProbeSynonymQ + union
 					+ symbolsFromMGiAccQ + union 
 					+ symbolsFromEnsemblIdQ;
 			if(!symbolsFromSynListQ.equals("")){
@@ -268,7 +269,7 @@ public class MySQLGeneDAOImp implements GeneDAO {
 			}
 			//start the loop at 4 since we have already set params for the first four queries.
 			//set the params for the remaining 'union' queries
-			for(int i=5;i<7;i++){// xingjun - 09/10/2009 - change from 4 to 5 and 6 to 7 respectively
+			for(int i=5;i<8;i++){// xingjun - 09/10/2009 - change from 4 to 5 and 6 to 7 respectively
 				for(int j=0;j<input.length;j++){
 					stmt.setString((i*input.length)+j+1, input[j].trim());
 				}
@@ -307,7 +308,7 @@ public class MySQLGeneDAOImp implements GeneDAO {
 				geneSymbols = new ArrayList<String>();
 				resSet.beforeFirst();
 				while (resSet.next()) {
-				    str = Utility.netTrim(resSet.getString(1));
+				    str = Utility.netTrim(resSet.getString(2));
 				    if(null != str){
 					geneSymbols.add(str);
 				    }

@@ -11,6 +11,7 @@ public class StageFocusBrowseBean {
 	private String[] stage;
 	private String[][] stageList;
 	private String gene;
+	private String species;
 	
 	/**
 	 * modified by xingjun - 29/01/2009
@@ -23,9 +24,10 @@ public class StageFocusBrowseBean {
 
 		String organ = Visit.getRequestParam("focusedOrgan");
 		gene = Visit.getRequestParam("gene");
+		species = Visit.getRequestParam("species"); 
 		assembler = new FocusBrowseAssembler();
 //		stageList = assembler.getStageList(stage, organ);
-		stage = assembler.getStages();
+		stage = assembler.getStages(species);
 		stageList = assembler.getStageList(stage, organ, gene);
 	}
 

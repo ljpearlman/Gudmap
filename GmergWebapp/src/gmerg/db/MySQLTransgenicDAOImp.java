@@ -360,7 +360,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
             //create array to store each row of results in
             ArrayList<String[]> results = new ArrayList<String[]>();
             while (resSet.next()) {
-                String[] ishBrowseSubmission = new String[14];
+                String[] ishBrowseSubmission = new String[15];
                 ishBrowseSubmission[0] = resSet.getString(1); // symbol
                 ishBrowseSubmission[1] = resSet.getString(2); // id
                 ishBrowseSubmission[2] = resSet.getString(3); // source
@@ -384,6 +384,8 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
         			ishBrowseSubmission[11] = "";
                 ishBrowseSubmission[12] = resSet.getString(13); // specimen
                 ishBrowseSubmission[13] = resSet.getString(14); // thumbnail
+                
+                ishBrowseSubmission[14] = resSet.getString(15); // symbolID
                 results.add(ishBrowseSubmission);
             }
             return results;

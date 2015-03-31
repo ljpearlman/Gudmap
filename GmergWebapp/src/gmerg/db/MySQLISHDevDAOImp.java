@@ -217,7 +217,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		String str = null;
 
             while (resSet.next()) {
-                ishBrowseSubmission = new String[14];
+                ishBrowseSubmission = new String[15];
                 ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
                 ishBrowseSubmission[ 1] = resSet.getString(2); // id
                 ishBrowseSubmission[ 2] = resSet.getString(3); // source
@@ -250,6 +250,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                 else {
                 	ishBrowseSubmission[13] = resSet.getString(14); // thumbnail
                 }
+                ishBrowseSubmission[14] = resSet.getString(15);//geneId
                 results.add(ishBrowseSubmission);
             }
             return results;

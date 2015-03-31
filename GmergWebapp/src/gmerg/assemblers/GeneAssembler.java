@@ -184,7 +184,7 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 		try{
 			ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 			// get gene info
-			Gene geneInfo = ishDAO.findGeneInfoBySymbol(geneSymbol);
+			Gene geneInfo = ishDAO.findGeneInfoBySymbolId(geneSymbol);
 			
 			// might not find the gene
 			if (geneInfo == null) {
@@ -220,13 +220,13 @@ public class GeneAssembler extends OffMemoryTableAssembler{
 			ArrayList associatedProbe = ishDAO.findRelatedMAProbeBySymbol(geneSymbol);
 			
 			//get related ish submissions
-			ArrayList relatedSubmissionISH = ishDAO.findRelatedSubmissionBySymbolISH(geneSymbol);
+			ArrayList relatedSubmissionISH = ishDAO.findRelatedSubmissionBySymbolIdISH(geneSymbol);
 
 			//get related ish submissions
-			ArrayList relatedSubmissionIHC = ishDAO.findRelatedSubmissionBySymbolIHC(geneSymbol);
+			ArrayList relatedSubmissionIHC = ishDAO.findRelatedSubmissionBySymbolIdIHC(geneSymbol);
 
 			//get related ish submissions
-			ArrayList relatedSubmissionTG = ishDAO.findRelatedSubmissionBySymbolTG(geneSymbol);
+			ArrayList relatedSubmissionTG = ishDAO.findRelatedSubmissionBySymbolIdTG(geneSymbol);
 			
 			/** ---complete gene object---  */
 			if (null != relatedSubmissionISH) {

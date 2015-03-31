@@ -68,7 +68,7 @@ public class GeneQueryResultBean {
 		}
 		
 		// get gene symbols
-		ArrayList<String> geneSymbols = DbUtility.retrieveGeneSymbolsFromGeneInput(input, wildcard);
+		ArrayList geneSymbols = DbUtility.retrieveGeneSymbolsFromGeneInput(input, wildcard);
 //    	System.out.println("geneQueryResultBean@gene numbers: " + geneSymbols.size());
 		CollectionBrowseHelper helper = Globals.getCollectionBrowseHelper(geneSymbols, 1); // corresponds to gene symbols collection
 		OffMemoryTableAssembler assembler = helper.getCollectionBrowseAssembler();

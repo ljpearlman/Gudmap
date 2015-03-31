@@ -1625,6 +1625,50 @@ public class MySQLISHDAOImp implements ISHDAO {
             DBHelper.closeResultSet(resSet2);
         }
     }
+ 
+    public Gene findGeneInfoBySymbolId(String symbolId) {
+        if (symbolId == null) {
+		    //            throw new NullPointerException("gene symbol needed");
+		    return null;
+        }
+        Gene geneInfo = null;
+        ResultSet resSet = null;
+        ResultSet resSet2 = null;
+        ParamQuery parQ = DBQuery.getParamQuery("GENE_INFO_BY_SYMBOLID");
+        PreparedStatement prepStmt = null;
+        PreparedStatement prepStmt2 = null; 
+	//        System.out.println("gene query:" + parQ.getQuerySQL());
+        try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+	    
+            // gene info
+            parQ.setPrepStat(conn);
+            prepStmt = parQ.getPrepStat();
+            prepStmt.setString(1, symbolId);
+            resSet = prepStmt.executeQuery();
+	    
+            parQ = DBQuery.getParamQuery("TOTAL_GENEID_RELATED_ARRAYS");
+            parQ.setPrepStat(conn);
+            prepStmt2 = parQ.getPrepStat();
+            prepStmt2.setString(1, symbolId);
+            resSet2 = prepStmt2.executeQuery();
+	    
+            // assemble
+            geneInfo = formatGeneInfoResultSet(resSet, resSet2);
+            return geneInfo;
+            
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+        finally {
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closePreparedStatement(prepStmt2);
+            DBHelper.closeResultSet(resSet);
+            DBHelper.closeResultSet(resSet2);
+        }
+    }
     
     /**
      * @param resSet
@@ -1682,6 +1726,39 @@ public class MySQLISHDAOImp implements ISHDAO {
      * @param symbol
      * @return
      */
+    public ArrayList<String[]> findRelatedSubmissionBySymbolIdISH(String symbolId) {
+		if (symbolId == null || symbolId.equals("")) {
+		    return null;
+		}
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("GENEID_RELATED_SUBMISSIONS_ISH");
+        String queryString = parQ.getQuerySQL();
+        PreparedStatement prepStmt = null;
+        try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+            prepStmt.setString(1, symbolId);
+            
+		    if (debug)
+		    	System.out.println("findRelatedSubmissionBySymbolIdISH:prepStmt  = "+prepStmt);
+            resSet = prepStmt.executeQuery();
+            
+            ArrayList<String[]> relatedSubmissionISH = DBHelper.formatResultSetToArrayList(resSet);
+	    
+            return relatedSubmissionISH;
+            
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
+    }
+ 
     public ArrayList<String[]> findRelatedSubmissionBySymbolISH(String symbol) {
 		if (symbol == null || symbol.equals("")) {
 		    return null;
@@ -1715,13 +1792,13 @@ public class MySQLISHDAOImp implements ISHDAO {
             DBHelper.closeResultSet(resSet);
         }
     }
- 
-    public ArrayList<String[]> findRelatedSubmissionBySymbolIHC(String symbol) {
-		if (symbol == null || symbol.equals("")) {
+    
+    public ArrayList<String[]> findRelatedSubmissionBySymbolIdIHC(String symbolId) {
+		if (symbolId == null || symbolId.equals("")) {
 		    return null;
 		}
         ResultSet resSet = null;
-        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_ISH");
+        ParamQuery parQ = DBQuery.getParamQuery("GENEID_RELATED_SUBMISSIONS_IHC");
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         try {
@@ -1729,8 +1806,8 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    conn = DBHelper.reconnect2DB(conn);
 		    
 		    prepStmt = conn.prepareStatement(queryString);
-            prepStmt.setString(1, symbol);
-            prepStmt.setString(2, "IHC");
+            prepStmt.setString(1, symbolId);
+ //           prepStmt.setString(2, "IHC");
             
 		    if (debug)
 		    	System.out.println("findRelatedSubmissionBySymbolIHC:prepStmt  = "+prepStmt);
@@ -1750,12 +1827,12 @@ public class MySQLISHDAOImp implements ISHDAO {
         }
     }
  
-    public ArrayList<String[]> findRelatedSubmissionBySymbolTG(String symbol) {
-		if (symbol == null || symbol.equals("")) {
+    public ArrayList<String[]> findRelatedSubmissionBySymbolIdTG(String symbolId) {
+		if (symbolId == null || symbolId.equals("")) {
 		    return null;
 		}
         ResultSet resSet = null;
-        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_ISH");
+        ParamQuery parQ = DBQuery.getParamQuery("GENEID_RELATED_SUBMISSIONS_TG");
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         try {
@@ -1763,8 +1840,8 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    conn = DBHelper.reconnect2DB(conn);
 		    
 		    prepStmt = conn.prepareStatement(queryString);
-            prepStmt.setString(1, symbol);
-            prepStmt.setString(2, "TG");
+            prepStmt.setString(1, symbolId);
+//            prepStmt.setString(2, "TG");
             
 		    if (debug)
 		    	System.out.println("findRelatedSubmissionBySymbolTG:prepStmt  = "+prepStmt);

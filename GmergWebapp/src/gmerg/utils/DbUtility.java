@@ -3,6 +3,7 @@
  */
 package gmerg.utils;
 
+import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.db.ArrayDAO;
 import gmerg.db.ArrayDevDAO;
 import gmerg.db.CollectionDAO;
@@ -49,6 +50,31 @@ public class DbUtility {
 	    	DBHelper.closeJDBCConnection(conn);
 		}	
     }
+
+    public static ArrayList<String> retrieveGeneProbeIdsByGeneId(String symbolId, String platformId) {
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			
+		        // get data from database
+			ArrayList<String> probeIds = arrayDAO.getProbeSetIdBySymbol(symbolId, platformId);
+			if (probeIds == null || probeIds.size() == 0) {
+			    GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
+			    String alternateSymbol = geneDAO.findSymbolBySynonym(symbolId);
+			    probeIds = arrayDAO.getProbeSetIdBySymbol(alternateSymbol, platformId);
+			}
+			
+			return probeIds;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGeneProbeIds failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+    }
     
     /**
      * @author xingjun 16/10/2009
@@ -61,6 +87,22 @@ public class DbUtility {
 		try{
 			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
 			ArrayList<String> imageIds = collectionDAO.getInsituSubmissionImageIdByGene(symbol);
+			return imageIds;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveImageIdsByGeneSymbol failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+    }
+    public static ArrayList<String> retrieveImageIdsByGeneSymbolId(String symbolId) {
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			ArrayList<String> imageIds = collectionDAO.getInsituSubmissionImageIdByGeneId(symbolId);
 			return imageIds;
 			
 		} catch(Exception e){
@@ -204,7 +246,7 @@ public class DbUtility {
      * @param wildcard
      * @return
      */
-    public static ArrayList retrieveGeneSymbolsFromGeneInput(String input, String wildcard) {
+    public static ArrayList<String> retrieveGeneSymbolsFromGeneInput(String input, String wildcard) {
 		if (input == null || input.equals(""))
 		    return null;
 		
@@ -212,7 +254,7 @@ public class DbUtility {
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
-			ArrayList geneSymbols = geneDAO.getSymbolsFromGeneInput(input, wildcard);
+			ArrayList<String> geneSymbols = geneDAO.getSymbolsFromGeneInput(input, wildcard);
 			return geneSymbols;
 			
 		} catch(Exception e){
@@ -565,7 +607,7 @@ public class DbUtility {
 		}	
 
 	}
-	
+
 }   
     
   

@@ -28,7 +28,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	private String[] organs;
 	private String stage;
 	private String gene;
-    private String archiveId;
+	private String geneid;
+	private String archiveId;
     private String batchId;
     private String specimenType;
 
@@ -58,6 +59,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		organs = getParams("organ");
 		stage = getParam("stage");
 		gene = getParam("gene");
+		geneid = getParam("geneid");
 		archiveId = getParam("archiveId");
 		batchId = getParam("batchId");
 		this.specimenType = getParam("specimenType");
@@ -376,12 +378,10 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			
 			/** get data from database */
 			// get insitu stage list
-			String[] insituStageList = 
-				focusStageDAO.getStageList("insitu", stage, organ, symbol);
+			String[] insituStageList = focusStageDAO.getStageList("insitu", stage, organ, symbol);
 			
 			// get microarray stage list
-			String[] arrayStageList = 
-				focusStageDAO.getStageList("Microarray", stage, organ, symbol);
+			String[] arrayStageList = focusStageDAO.getStageList("Microarray", stage, organ, symbol);
 			
 			// get age (dpc) stage list
 			int len = stage.length;
@@ -484,7 +484,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		return tableData;
 	}
 	
-	public String[] getStages() {
+	public String[] getStages(String species) {
 		
 		Connection conn = DBHelper.getDBConnection();
 		try{
@@ -492,11 +492,15 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			
 			/** get data from database */
 			// get insitu stage list
-			ArrayList<String> isharray =  focusStageDAO.getIshStages();
-			ArrayList<String> micarray =  focusStageDAO.getMicStages();
+			ArrayList<String> isharray =  focusStageDAO.getIshStages(species);
+			ArrayList<String> micarray =  focusStageDAO.getMicStages(species);
 			if (micarray != null){
-				isharray.remove(micarray);
-				isharray.addAll(micarray);
+				for (String item : micarray){
+					if (!isharray.contains(item))
+						isharray.add(item);
+				}
+//				isharray.remove(micarray);
+//				isharray.addAll(micarray);
 			}
 			Collections.sort(isharray);
 			

@@ -34,7 +34,7 @@
 			<h:panelGroup >
 				<h:outputLink styleClass="plaintext" value="gene.html">
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
-					<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
+					<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneId}" />
 				</h:outputLink>
 				<h:outputText styleClass="datatext" value=", #{ISHSingleSubmissionBean.submission.geneName}" rendered="#{not empty ISHSingleSubmissionBean.submission.geneName}"/>
 			</h:panelGroup>
@@ -373,7 +373,7 @@
 							<h:outputText styleClass="plaintext" value="Symbol: " />
 							<h:outputLink styleClass="datatext" value="gene.html">
 								<h:outputText value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
-								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
+								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneId}" />
 							</h:outputLink>
 						</h:panelGroup>
 						<h:panelGroup>
@@ -491,7 +491,7 @@
 							<h:outputText styleClass="plaintext" value="Symbol: " />
 							<h:outputLink styleClass="datatext" value="gene.html">
 								<h:outputText value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
-								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
+								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneId}" />
 							</h:outputLink>
 						</h:panelGroup>
 						<h:panelGroup>
@@ -635,7 +635,7 @@
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:outputLink styleClass="datatext" value="gene.html">
 						<h:outputText value="#{allele.geneSymbol}" />
-						<f:param name="gene" value="#{allele.geneSymbol}" />
+						<f:param name="gene" value="#{allele.geneId}" />
 					</h:outputLink>
 
 					<h:outputText value="MGI ID"  rendered="#{not empty allele.alleleId}"/>

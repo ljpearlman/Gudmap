@@ -32,42 +32,63 @@ public class ISHSubmission extends Submission {
     
     }
 
-    public String getGeneSymbol() {
-	String str = assayType.toLowerCase();
-	String ret = null;
-
-	if (-1 != str.indexOf("ish")) {
-	    if (null != probe)
-		ret = probe.getGeneSymbol();
-	} else if (-1 == str.indexOf("tg")) {
-	    if (null != antibody)
-		ret = antibody.getGeneSymbol();
-	} else
-	    ret = super.getGeneSymbol();
-    
-	if (null != ret && ret.trim().equals(""))
-	    ret = null;
+    public String getGeneId() {
+		String str = assayType.toLowerCase();
+		String ret = null;
 	
-	return ret;
+		if (-1 != str.indexOf("ish")) {
+		    if (null != probe)
+			ret = probe.getGeneID();
+		} else if (-1 == str.indexOf("tg")) {
+		    if (null != antibody)
+			ret = antibody.getGeneId();
+		} else
+		    ret = super.getGeneId();
+	    
+		if (null != ret && ret.trim().equals(""))
+		    ret = null;
+		
+		return ret;
     }
-    public String getGeneName() {
-	String str = assayType.toLowerCase();
-	String ret = null;
 
-	if (-1 != str.indexOf("ish")) {
-	    if (null != probe)
-		ret = probe.getGeneName();
-	} else if (str.contains("tg")) {
-	    if (null != antibody)
-		ret = antibody.getGeneName();
-	    if (null != probe)
-		ret = probe.getGeneName();
-	}
     
-	if (null != ret && ret.trim().equals(""))
-	    ret = null;
+    public String getGeneSymbol() {
+		String str = assayType.toLowerCase();
+		String ret = null;
 	
-	return ret;
+		if (-1 != str.indexOf("ish")) {
+		    if (null != probe)
+		    	ret = probe.getGeneSymbol();
+		} else if (-1 == str.indexOf("tg")) {
+		    if (null != antibody)
+		    	ret = antibody.getGeneSymbol();
+		} else
+		    ret = super.getGeneSymbol();
+	    
+		if (null != ret && ret.trim().equals(""))
+		    ret = null;
+		
+		return ret;
+    }
+    
+    public String getGeneName() {
+		String str = assayType.toLowerCase();
+		String ret = null;
+	
+		if (-1 != str.indexOf("ish")) {
+		    if (null != probe)
+			ret = probe.getGeneName();
+		} else if (str.contains("tg")) {
+		    if (null != antibody)
+			ret = antibody.getGeneName();
+		    if (null != probe)
+			ret = probe.getGeneName();
+		}
+	    
+		if (null != ret && ret.trim().equals(""))
+		    ret = null;
+		
+		return ret;
     }
     
     public void setProbe(Probe prb) {
