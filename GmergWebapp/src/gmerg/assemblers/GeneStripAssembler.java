@@ -158,7 +158,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		//				System.out.println("stage range: " + stage);
 						data[i][3] = 
 							new DataItem(stage, "Click to see stage summary for "+symbol, 
-									"focus_stage_browse.html?gene="+symbolid+"&species="+species, 10);
+									"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
 					} else {
 						stage = "N/A";
 						data[i][3] = new DataItem(stage);
