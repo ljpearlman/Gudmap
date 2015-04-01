@@ -572,7 +572,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			String sql = parQ.getQuerySQL();
 			if(specimenType!=null){
 			if(specimenType.equals("WISH"))
-				sql+=" AND SPN_ASSAY_TYPE='wholemount' ";
+				sql+=" AND (SPN_ASSAY_TYPE='wholemount' OR SPN_ASSAY_TYPE='opt-wholemount') ";
 			else if(specimenType.equals("SISH"))
 				sql+=" AND SPN_ASSAY_TYPE='section' ";
 			else if(specimenType.equals("OPT"))

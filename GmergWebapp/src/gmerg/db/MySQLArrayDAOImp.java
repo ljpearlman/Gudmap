@@ -30,7 +30,7 @@ import analysis.DataSet;
  *
  */
 public class MySQLArrayDAOImp implements ArrayDAO {
-    protected boolean debug = false;
+    protected boolean debug = true;
     protected boolean performance = true;
     Connection conn;
     
@@ -1996,7 +1996,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
      * @param platformId - GEO platform id
      * @return a list of probe set ids
      */
-    public ArrayList<String> getProbeSetIdBySymbol(String symbol, String platformId) {
+    public ArrayList<String> getProbeSetIdBySymbol(String geneId, String platformId) {
     	long enter = 0;
 		if (performance)
 		    enter = System.currentTimeMillis();
@@ -2011,11 +2011,13 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    // if disconnected from db, re-connected
 		    conn = DBHelper.reconnect2DB(conn);
 		    
-		    if (debug)
-			System.out.println("MySQLArrayDAOImp.sql = "+queryString.toLowerCase() + "1 arg = "+symbol+" 2 arg = "+platformId);
 		    prepStmt = conn.prepareStatement(queryString);
-		    prepStmt.setString(1, symbol);
+		    prepStmt.setString(1, geneId);
 		    prepStmt.setString(2, platformId);
+		    
+		    if (debug) System.out.println("MySQLArrayDAOImp.sql = "+ prepStmt);
+
+		    
 		    resSet = prepStmt.executeQuery();
 		    if (resSet.first()) {
 				resSet.beforeFirst();
@@ -2944,6 +2946,8 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		    prepStmt.setInt(1, Integer.parseInt(masterId));
 		    // xingjun - 03/02/2010 - finish
 		    
+		    
+		    System.out.println("MySQLArrayDAOImp.getMasterTablePlatformId platformId query = " + prepStmt);
 		    resSet = prepStmt.executeQuery();
 		    
 		    if (resSet.first()) {

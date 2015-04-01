@@ -559,7 +559,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   		                        "AND (IUP_SYMBOL = ? OR IUP_MGIACC = ?) ";
 
   //query to find ish submissions linked to a specific gene symbol
-  final static String name30 = "GENE_RELATED_SUBMISSIONS_ISH";
+  final static String name30 = "GENE_RELATED_SUBMISSIONS_INSITU";
   final static String query30 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
                                 "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
                                 "ELSE 'without annotation' " + 
@@ -596,8 +596,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                                 "ORDER BY STG_STAGE_DISPLAY, natural_sort(SUB_ACCESSION_ID)";
 
   //query to find ish submissions linked to a specific gene id
-  final static String name276 = "GENEID_RELATED_SUBMISSIONS_ISH";
-  final static String query276 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
+  final static String name275 = "GENEID_RELATED_SUBMISSIONS_ISH";
+  final static String query275 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
                                 "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
                                 "ELSE 'without annotation' " + 
                                 "END, " +
@@ -627,81 +627,10 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                                 "LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +                                
                                 "WHERE RPR_LOCUS_TAG = ? " + 
                                 "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
-                                "AND (SUB_ASSAY_TYPE = 'ISH') " +
+                                "AND SUB_ASSAY_TYPE = ? " +
                                 "GROUP BY SUB_OID " +
                                 "ORDER BY STG_STAGE_DISPLAY, natural_sort(SUB_ACCESSION_ID)";
 
-  //query to find ish submissions linked to a specific gene id
-  final static String name280 = "GENEID_RELATED_SUBMISSIONS_IHC";
-  final static String query280 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
-                                "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
-                                "ELSE 'without annotation' " + 
-                                "END, " +
-                                "CASE WHEN (SPN_SEX = 'unknown') THEN 'unknown sex' " + 
-                                "ELSE SPN_SEX " + 
-                                "END, " +
-                                "RPR_JAX_ACC, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '), " + 
-                                "CASE WHEN (LOCATE(';',GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ')) > 0) THEN " + 
-                                "CONCAT(SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '),'; ',1),'...') " +
-                                "ELSE GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') " +
-                                "END, " + 
-                                "CASE WHEN (CONCAT(RPR_PREFIX,RPR_OID) =  RPR_JAX_ACC) THEN '' ELSE CONCAT(RPR_PREFIX,RPR_OID) END, " +
-                          		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
-                           		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
-                           		"ELSE 'probe.html' END, " +
-                          		"GROUP_CONCAT(DISTINCT ALE_ALLELE_NAME ORDER BY SAL_ORDER)  " +
-                                "FROM ISH_SUBMISSION " + 
-                                "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
-                                "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
-                                "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
-                                "LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
-                                "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " + 
-                                "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
-                                "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
-                                "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
-                                "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC " +
-                                "LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +                                
-                                "WHERE RPR_LOCUS_TAG = ? " + 
-                                "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
-                                "AND (SUB_ASSAY_TYPE = 'IHC') " +
-                                "GROUP BY SUB_OID " +
-                                "ORDER BY STG_STAGE_DISPLAY, natural_sort(SUB_ACCESSION_ID)";  
-  
-  //query to find ish submissions linked to a specific gene id
-  final static String name281 = "GENEID_RELATED_SUBMISSIONS_TG";
-  final static String query281 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
-                                "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
-                                "ELSE 'without annotation' " + 
-                                "END, " +
-                                "CASE WHEN (SPN_SEX = 'unknown') THEN 'unknown sex' " + 
-                                "ELSE SPN_SEX " + 
-                                "END, " +
-                                "RPR_JAX_ACC, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '), " + 
-                                "CASE WHEN (LOCATE(';',GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ')) > 0) THEN " + 
-                                "CONCAT(SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '),'; ',1),'...') " +
-                                "ELSE GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') " +
-                                "END, " + 
-                                "CASE WHEN (CONCAT(RPR_PREFIX,RPR_OID) =  RPR_JAX_ACC) THEN '' ELSE CONCAT(RPR_PREFIX,RPR_OID) END, " +
-                          		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
-                           		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
-                           		"ELSE 'probe.html' END, " +
-                          		"GROUP_CONCAT(DISTINCT ALE_ALLELE_NAME ORDER BY SAL_ORDER)  " +
-                                "FROM ISH_SUBMISSION " + 
-                                "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
-                                "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
-                                "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
-                                "LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
-                                "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " + 
-                                "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
-                                "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
-                                "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
-                                "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC " +
-                                "LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +                                
-                                "WHERE RPR_LOCUS_TAG = ? " + 
-                                "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
-                                "AND (SUB_ASSAY_TYPE = 'TG') " +
-                                "GROUP BY SUB_OID " +
-                                "ORDER BY STG_STAGE_DISPLAY, natural_sort(SUB_ACCESSION_ID)";  
   
   //query to find maprobs associated with a particular gene entry
   final static String name31 = "GENE_RELATED_MAPROBE";
@@ -1464,6 +1393,11 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   final static String query271 = "SELECT COUNT(DISTINCT SUB_OID) TOTAL FROM REF_PROBE, ISH_PROBE, ISH_SUBMISSION, ISH_SPECIMEN WHERE " +
 		  						 "PRB_MAPROBE = RPR_OID AND PRB_SUBMISSION_FK = SUB_OID AND SPN_SUBMISSION_FK = SUB_OID AND SUB_IS_DELETED = '0' AND " +
 		  						 "SUB_IS_PUBLIC = 1 AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE = 'ISH' AND SPN_ASSAY_TYPE = 'opt-wholemount'";
+ 
+  
+//query to find the number of nextgen sequences in db
+  final static String name276 = "NUMBER_OF_NEXTGEN_SEQUENCES";
+  final static String query276 = "SELECT COUNT(DISTINCT SUB_OID) TOTAL FROM ISH_SUBMISSION WHERE SUB_IS_DELETED = '0' AND SUB_IS_PUBLIC = '1' AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE = 'NextGen'";
   
   //query to find date of last modification by editor
   final static String name99 = "LAST_ENTRY_DATE_EDITORIAL";
@@ -1889,8 +1823,8 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   		"WHERE RMM_SYMBOL = ?";
 
   // find synonym(s) for given symbolid - no matter if there's corresponding submissions
-  final static String name275 = "GET_GENE_SYNONYM_BY_SYMBOLID";
-  final static String query275 = "SELECT RSY_SYNONYM FROM REF_SYNONYM " +
+  final static String name280 = "GET_GENE_SYNONYM_BY_SYMBOLID";
+  final static String query280 = "SELECT RSY_SYNONYM FROM REF_SYNONYM " +
   		"JOIN REF_MGI_MRK ON RSY_REF = RMM_ID " +
   		"WHERE RMM_MGIACC = ?";
  
@@ -2378,8 +2312,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
       new ParamQuery(name277,query277),
       new ParamQuery(name278,query278),
       new ParamQuery(name279,query279),
-      new ParamQuery(name280,query280),
-      new ParamQuery(name281,query281)
+      new ParamQuery(name280,query280)
    };
 
   // finds ParamQuery object by name and returns

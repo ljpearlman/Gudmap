@@ -148,7 +148,7 @@ public ArrayList getComponentCountInfoByGeneInfo(String inputType, String inputS
 	public int findTotalNumberOfSubmissionISH(); // numTotalIshSubmissionsQuery
 	public int findTotalNumberOfSubmissionArray(); // numTotalArraySubmissionsQuery
 	public int findTotalNumberOfSubmissionIHC();
-	
+	public int findTotalNumberOfSequences();	
 	
 	// find the number of public submissions
 	public int findNumberOfPublicSubmissionISH(); // numPubISHSubmissionsQuery

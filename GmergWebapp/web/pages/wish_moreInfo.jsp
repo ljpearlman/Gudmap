@@ -15,7 +15,7 @@
     </table>
     <table border="0" cellpadding="0" cellspacing="0">
       <tr class="header-stripey">
-        <td><b>WISH expression data Interpretion</b></td>
+        <td><b>WISH expression data interpretion</b></td>
       </tr>
       <tr class="header-stripey">
         <td class="plaintext">

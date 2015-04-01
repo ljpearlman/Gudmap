@@ -26,17 +26,17 @@ import java.util.ArrayList;
 
 public class DbUtility {
     
-    public static ArrayList<String> retrieveGeneProbeIds(String geneSymbol, String platformId) {
+    public static ArrayList<String> retrieveGeneProbeIds(String geneId, String platformId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			
 		        // get data from database
-			ArrayList<String> probeIds = arrayDAO.getProbeSetIdBySymbol(geneSymbol, platformId);
+			ArrayList<String> probeIds = arrayDAO.getProbeSetIdBySymbol(geneId, platformId);
 			if (probeIds == null || probeIds.size() == 0) {
 			    GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
-			    String alternateSymbol = geneDAO.findSymbolBySynonym(geneSymbol);
+			    String alternateSymbol = geneDAO.findSymbolBySynonym(geneId);
 			    probeIds = arrayDAO.getProbeSetIdBySymbol(alternateSymbol, platformId);
 			}
 			
