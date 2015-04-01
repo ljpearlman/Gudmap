@@ -170,7 +170,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 					stage = stage.substring(0, stage.length()-1);
 					data[i][3] = 
 							new DataItem(stage, "Click to see stage summary for "+symbol, 
-									"focus_stage_browse.html?gene="+symbolid+"&species="+species, 10);
+									"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
 				}
 	
 				/** 5 - in situe expression profile */
@@ -207,7 +207,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				    if (DbUtility.retrieveGeneProbeIdsByGeneId(symbolid, item.getPlatform()) != null) {//check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
 					element = new DataItem("../dynamicimages/heatmap_" + symbolid + ".jpg?tile=5&masterTableId="+item.getId(), 
 							       "Click to see " + item.getTitle() + " microarray expression profile for "+ symbol, 
-							       "mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId()+"&cleartabs=true", 15);
+							       "mastertable_browse.html?gene="+symbol+"&geneId="+symbolid+"&masterTableId="+item.getId()+"&cleartabs=true", 15);
 					if (debug) 
 					    System.out.println("GeneStripAssembler.retrieveData value = "+element.getValue()+" title = "+element.getTitle()+" link = "+element.getLink());
 					complexValue.add(element);
