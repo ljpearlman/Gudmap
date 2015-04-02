@@ -16,7 +16,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
     protected boolean debug = true;
     
     private Connection conn;
-    private int ColumnNumbers = 17; //15;// 14 //Bernie - 01/03/2012 - (Mantis 619) added 'sex column so increase from 14 to 15'
+    private int ColumnNumbers = 18; //17; //15;// 14 //Bernie - 01/03/2012 - (Mantis 619) added 'sex column so increase from 14 to 15'
     private int ColumnQuickNumbers = 15; //14;
     private int MAXROWS = 20;
     
@@ -1286,7 +1286,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				if (debug)
 				    System.out.println("MySQLAdvancedQueryDAOImp orderpart = "+orderpart );
 	        	
-				sql[0] = "SELECT DISTINCT x.col1, GROUP_CONCAT(DISTINCT x.col2), x.col3, x.col4, x.col5, x.col6, x.col7, x.col8, x.col9, x.col10, x.col11, x.col12, x.col13, x.col14, x.col15, col16, col17 FROM ("+sql[0]+") AS x GROUP BY x.col10 " + orderpart.replaceAll("col", "x.col");
+				sql[0] = "SELECT DISTINCT x.col1, GROUP_CONCAT(DISTINCT x.col2), x.col3, x.col4, x.col5, x.col6, x.col7, x.col8, x.col9, x.col10, x.col11, x.col12, x.col13, x.col14, x.col15, col16, col17, col18 FROM ("+sql[0]+") AS x GROUP BY x.col10 " + orderpart.replaceAll("col", "x.col");
 
 				if (debug)
 				    System.out.println("MySQLAdvancedQueryDAOImp sql[0] = "+sql[0] );

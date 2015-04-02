@@ -30,7 +30,7 @@ public GeneInfoBean() {
 	// get the gene symbol as a parameter
 //	geneId = FacesUtil.getRequestParamValue("id");	    
 	geneId = FacesUtil.getRequestParamValue("geneId");
-//	geneId = FacesUtil.getRequestParamValue("gene");
+//	gene = FacesUtil.getRequestParamValue("gene");
 	probeset = FacesUtil.getRequestParamValue("probeset");
 	
 	//if no parameter found, see if it is in session

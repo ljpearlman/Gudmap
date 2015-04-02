@@ -450,7 +450,7 @@ public class AdvancedSearchDBQuery {
 		"QIC_SUB_ACCESSION_ID col10,"+
 		"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_SUB_ASSAY_TYPE col14, " +
 		" QIC_SPN_SEX col15,"+
-		"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 ";
+		"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17, QIC_RPR_LOCUS_TAG col18 ";
 	  }
 	  
 	  final static public String fromISHTissue(){		  
@@ -476,7 +476,7 @@ public class AdvancedSearchDBQuery {
                    "QIC_SUB_THUMBNAIL col9,"+
     	    "QIC_SUB_ACCESSION_ID col10,"+
     	    "'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_SUB_ASSAY_TYPE col14, QIC_SPN_SEX col15,"+
-    		"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 ";
+    		"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17, QIC_RPR_LOCUS_TAG col18 ";
 	    }
  
     
@@ -492,7 +492,7 @@ public class AdvancedSearchDBQuery {
 			"QIC_SUB_THUMBNAIL col9,"+
 			"QIC_SUB_ACCESSION_ID col10,"+
 			"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_SUB_ASSAY_TYPE col14, QIC_SPN_SEX col15," +
-			"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17 ";
+			"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17, QIC_RPR_LOCUS_TAG col18 ";
 	  }
 	  
 		  final static public String getMICSelect(){
@@ -531,7 +531,7 @@ public class AdvancedSearchDBQuery {
 		"'' col9,"+
 		"MBC_SUB_ACCESSION_ID col10,"+
 		"'' col11,"+
-		"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17 ";
+		"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17, MBC_MAN_MGI_ID col18 ";
 	  }
 
 	  final static public String getMICSelectForAnatomy(){
@@ -547,7 +547,7 @@ public class AdvancedSearchDBQuery {
 			"'' col9,"+
 			"QMC_SUB_ACCESSION_ID col10,"+
 			"'' col11,"+
-			"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17 ";
+			"'' col12, '' col13, 'Microarray' col14, QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17, '' col18 ";
 	  }	 
 	  
 	  final static public String getMICSelectForGEOID(){
@@ -563,7 +563,7 @@ public class AdvancedSearchDBQuery {
 		"'' col9,"+
 		"QMC_SUB_ACCESSION_ID col10,"+
 		"'' col11,"+
-		"'' col12, '' col13, 'Microarray' col14 , QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17 ";
+		"'' col12, '' col13, 'Microarray' col14 , QMC_SPN_SEX col15, '' col16, QMC_SPN_WILDTYPE col17, '' col18 ";
 	  }	
 	  
 	  final static public String getNGDSelect(){
@@ -572,7 +572,7 @@ public class AdvancedSearchDBQuery {
 				  "'' col9, SUB_ACCESSION_ID col10, '' col11, '' col12, '' col13, 'Sequence' col14, NGS_SEX col15, '' col16, CASE NGS_GENOTYPE WHEN 'true' THEN 'wild type' ELSE " +
 				  "CASE WHEN (SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) IS NOT NULL THEN " +
 				  "(SELECT DISTINCT GROUP_CONCAT(ALE_ALLELE_NAME) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) " +
-				  "ELSE (SELECT DISTINCT GROUP_CONCAT(ALE_LAB_NAME_ALLELE) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) END  END col17 ";
+				  "ELSE (SELECT DISTINCT GROUP_CONCAT(ALE_LAB_NAME_ALLELE) FROM ISH_ALLELE, LNK_SUB_ALLELE  WHERE SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID) END  END col17, '' col18 ";
 	  }
 	  
 	  final static public String getISHCount(){

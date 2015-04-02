@@ -194,7 +194,7 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
 			row = (String[])list.get(i); 
 		
 			// gene
-			tableData[i][0] = new DataItem(row[0], "Click to view gene page","gene.html?gene="+row[0], 10);	//gene		  	
+			tableData[i][0] = new DataItem(row[0], "Click to view gene page","gene.html?geneId="+row[17], 10);	//gene		  	
 			
 			// gudmap id
 			if(null != row[13] && row[13].equals("Microarray")) {

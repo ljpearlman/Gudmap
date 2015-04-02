@@ -65,7 +65,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
             "'' col11,"+
             "(SELECT GROUP_CONCAT(DISTINCT B.QIC_EXP_STRENGTH) FROM QSC_ISH_CACHE B WHERE B.QIC_SUB_ACCESSION_ID=QIC_SUB_ACCESSION_ID) col12,"+
             "REPLACE(QIC_SUB_ACCESSION_ID, ':', 'no') col13,"+
-            "QIC_SUB_ASSAY_TYPE col14, QIC_SPN_SEX col15, QIC_PRB_PROBE_NAME col16, QIC_SPN_WILDTYPE col17 ";
+            "QIC_SUB_ASSAY_TYPE col14, QIC_SPN_SEX col15, QIC_PRB_PROBE_NAME col16, QIC_SPN_WILDTYPE col17, QIC_RPR_LOCUS_TAG col18 ";
 
     // clause to find all parent of specified anatomy term(s)
     private String INHERITANCE_CRITERIA_STR_ANSCESTOR = " AND QIC_ATN_PUBLIC_ID IN ( " +
