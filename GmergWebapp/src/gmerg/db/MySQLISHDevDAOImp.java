@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *
  */
 public class MySQLISHDevDAOImp implements ISHDevDAO {
-	private boolean debug = false;
+	private boolean debug = true;
 
     private Connection conn;
 
@@ -266,7 +266,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
             //create array to store each row of results in
             ArrayList<String[]> results = new ArrayList<String[]>();
-            int columnNumber = 17;
+            int columnNumber = 18;//17;
 
             while (resSet.next()) {
                 String[] ishBrowseSubmission = new String[columnNumber];
@@ -287,7 +287,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                 ishBrowseSubmission[14] = resSet.getString(15); // sample title
                 ishBrowseSubmission[15] = resSet.getString(16); // sample description
                 ishBrowseSubmission[16] = resSet.getString(17); // series id
-                results.add(ishBrowseSubmission);
+                ishBrowseSubmission[17] = resSet.getString(18); // gene id
+               results.add(ishBrowseSubmission);
             }
             return results;
         }

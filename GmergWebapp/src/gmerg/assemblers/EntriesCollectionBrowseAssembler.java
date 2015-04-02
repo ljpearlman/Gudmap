@@ -299,7 +299,7 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		
 		for(int i=0; i<rowNum; i++) {
 			String[] row =  (String[])collectionList.get(i);
-			tableData[i][0] = new DataItem(row[1], "", "gene.html?gene="+row[1], 10);//gene
+			tableData[i][0] = new DataItem(row[1], "", "gene.html?geneId="+row[17], 10);//gene
 			if("Microarray".equalsIgnoreCase(row[6])) 
 				tableData[i][1] = new DataItem(row[0], "Click to view Samples page","mic_submission.html?id="+row[0], 10);			//sub id
 			else if ("ISH".equalsIgnoreCase(row[6]) || "ISH control".equalsIgnoreCase(row[6])  || "IHC".equalsIgnoreCase(row[6]) || "OPT".equalsIgnoreCase(row[6])) 
