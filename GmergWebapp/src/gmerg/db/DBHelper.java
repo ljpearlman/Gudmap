@@ -1057,11 +1057,14 @@ public final class DBHelper {
 			return null;
 		}
 		int len = itemList.size();
-		String result = "'";
+		if (len == 1)
+			return "IN ('" + itemList.get(0).toString() + "')";
+		
+		String result = "IN (";
 		for (int i=0;i<len;i++) {
-			result += itemList.get(i) + "', '";
+			result += "'" + itemList.get(i).toString() + "',";
 		}
-		result = result.substring(0, result.length()-3);
+		result = result.substring(0, result.length()-1) + ")";
 		return result;
 	}
 

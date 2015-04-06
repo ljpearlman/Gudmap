@@ -265,11 +265,10 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 
 //				}
 	
-				/** 9 - geneset */
-				// not decided yet, check with ED & duncan
-				// leave it for time being ///////////////
-	//			String geneSetNumber = "0";
-				data[i][8] = new DataItem("Genesets(n)");
+				/** 9 - geneid */ 
+				// changed to allow id to be used when storing collections
+				data[i][8] = new DataItem(symbolid);
+				
 			}
 			
 			if (null == cache)

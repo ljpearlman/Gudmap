@@ -271,10 +271,12 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		CollectionInfo collectionInfo = null;
 		
 		try {
-		    if (debug)
-			System.out.println("MySQLCollectionDAOImp.sql = "+query.toLowerCase());
 			prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, collectionId);
+			
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+prepStmt);
+			
 			resSet = prepStmt.executeQuery();
 			
 			if (resSet.first()) {

@@ -221,7 +221,8 @@ public class Globals {
     public static CollectionBrowseHelper getCollectionBrowseHelper(ArrayList<String> collectionItemsIds, int collectionType, String masterTableId) {
 		switch (collectionType) {
 		case 0:	return new EntriesCollectionBrowseHelper(collectionItemsIds, 0, "collectionIds", 1);
-		case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneSymbols", 1);
+//		case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneSymbols", 1);
+		case 1:	return new GenesCollectionBrowseHelper(collectionItemsIds, 1, "geneIds", 8);
 		case 2:	return new ImagesCollectionBrowseHelper(collectionItemsIds, 2, "imageIds", 1);//4
 		case 3:	return new ProbesCollectionBrowseHelper("GPL1261", masterTableId, collectionItemsIds, 3, "probeIds", 1); 
 		case 4:	return new ProbesCollectionBrowseHelper("GPL6246", masterTableId, collectionItemsIds, 4, "probeIds", 1);

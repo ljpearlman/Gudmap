@@ -43,7 +43,7 @@ public class GeneStripBrowseBean {
         GenericTableView tableView = new GenericTableView (viewName, 20, table);
 		tableView.setRowsSelectable();
 		tableView.setCollectionBottons(1);
-		tableView.addCollection(1, 0);
+		tableView.addCollection(1, 8);
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
         	tableView.setNoDataMessage(Utility.getNoDataMessageForQueryPage("", ""));
 		tableView.setColMaxWidth(1, 30, true);	//limit sysnonym colum width

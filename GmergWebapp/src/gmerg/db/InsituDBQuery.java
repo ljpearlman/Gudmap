@@ -147,7 +147,22 @@ public class InsituDBQuery {
 			"JOIN REF_GENE_INFO ON RMM_SYMBOL = GNF_SYMBOL WHERE RSY_SYNONYM LIKE ?) " + // 4
 			"ORDER BY NATURAL_SORT(GENE) " +
 			"LIMIT ? "; // 5
-	  
+
+	final static String name120 = "GENE_SYMBOLS_FROM_GENEID";
+	final static String query120 = "(SELECT DISTINCT RMM_MGIACC GENEID FROM REF_MGI_MRK " +
+			"WHERE RMM_MGIACC IN ( ? )" +
+			"AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK <= ? " +
+			"ORDER BY NATURAL_SORT(GENE) " +
+			"LIMIT ? "; // 5
+
+	final static String name121 = "GENE_SYMBOLS_FROM_GENEID2";
+	final static String query121 = "SELECT DISTINCT RMM_MGIACC GENEID FROM REF_MGI_MRK " +
+			"JOIN REF_PROBE ON RMM_SYMBOL = RPR_SYMBOL " +
+			"JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID " +
+			"JOIN ISH_SUBMISSION ON PRB_SUBMISSION_FK = SUB_OID " +
+			"WHERE RMM_MGIACC IN ( ? )" +
+			"AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK <= ? ";
+	
 	final static String name5 = "ANNATOMY_TERMS";
 	// query to find out anatomical terms in cache tables
 	final static String query5 = "SELECT DISTINCT ANO_COMPONENT_NAME FROM ANA_NODE " +
@@ -422,7 +437,9 @@ public class InsituDBQuery {
 		new ParamQuery(name116, query116),		
 		new ParamQuery(name117, query117),		
 		new ParamQuery(name118, query118),		
-		new ParamQuery(name119, query119)		
+		new ParamQuery(name119, query119),		
+		new ParamQuery(name120, query120),		
+		new ParamQuery(name121, query121)		
 	};
 	
 	// finds ParamQuery object by name and returns

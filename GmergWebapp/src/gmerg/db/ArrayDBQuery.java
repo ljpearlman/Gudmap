@@ -45,8 +45,8 @@ public class ArrayDBQuery {
 			"WHERE ATN_PUBLIC_ID = MBC_COMPONENT_ID " +
 			"AND ATN_NODE_FK = ANO_OID ";
 	  
-	final static String name5 = "GET_GENE_BY_SYMBOL";
-	final static String query5 = "SELECT GNF_SYMBOL, GNF_NAME from REF_GENE_INFO WHERE GNF_SYMBOL = ";
+	final static String name5 = "GET_GENE_BY_SYMBOLID";
+	final static String query5 = "SELECT GNF_SYMBOL, GNF_NAME from REF_GENE_INFO WHERE GNF_ID = ";
 	  
 	final static String name6 = "GET_ALL_ANALYSIS_GENELISTS";
 	final static String query6 = "SELECT ANG_OID, ANG_TITLE, PER_NAME, ANG_SUMMARY, IF (ANG_CDT_FILENAME = '', URL_URL, '') , ANG_FILEPATH, ANG_FILENAME, ANG_CDT_FILENAME, ANG_SUBMITTER, ANG_ENTRY_DATE, ANG_IS_CLUSTERED, ANG_NUMBER_OF_ENTRIES, ANG_PLATFORM_ID " +

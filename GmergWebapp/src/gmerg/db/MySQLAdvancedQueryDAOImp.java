@@ -983,7 +983,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    if(synList != null) {
 				for(int i = 0;i< synList.length;i++){
 				    //as there are 6 previous queries, need to start setting params from 6 onwards.
-				    stmt.setString((7*input.length+1+i), synList[i].trim());// xingjun - 12/10/2009 - change from 6 to 7
+				    stmt.setString((8*input.length+1+i), synList[i].trim());// xingjun - 12/10/2009 - change from 6 to 7
 				}
 		    }
 		    
