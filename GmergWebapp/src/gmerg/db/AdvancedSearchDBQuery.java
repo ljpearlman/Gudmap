@@ -1108,10 +1108,10 @@ public class AdvancedSearchDBQuery {
 	  final static public String getISHGeneIndex(String prefix, String organ) {
 		  String sql =  "";
 		  if(!prefix.equals("0-9")) {
-			  sql = "select distinct QGI_RPR_SYMBOL, QGI_ISH_PRESENT, QGI_ISH_NOT_DETECTED, QGI_ISH_UNKNOWN, QGI_MIC_PRESENT, QGI_MIC_NOT_DETECTED, QGI_MIC_UNKNOWN "+
+			  sql = "select distinct QGI_RPR_SYMBOL, QGI_ISH_PRESENT, QGI_ISH_NOT_DETECTED, QGI_ISH_UNKNOWN, QGI_MIC_PRESENT, QGI_MIC_NOT_DETECTED, QGI_MIC_UNKNOWN, QGI_RPR_LOCUS_TAG "+
 			  		" from QSC_GENE_INDEX where QGI_RPR_SYMBOL like '"+prefix+"%' ";
 		  } else {
-			  sql = "select distinct QGI_RPR_SYMBOL, QGI_ISH_PRESENT, QGI_ISH_NOT_DETECTED, QGI_ISH_UNKNOWN, QGI_MIC_PRESENT, QGI_MIC_NOT_DETECTED, QGI_MIC_UNKNOWN "+
+			  sql = "select distinct QGI_RPR_SYMBOL, QGI_ISH_PRESENT, QGI_ISH_NOT_DETECTED, QGI_ISH_UNKNOWN, QGI_MIC_PRESENT, QGI_MIC_NOT_DETECTED, QGI_MIC_UNKNOWN, QGI_RPR_LOCUS_TAG "+
 		  		" from QSC_GENE_INDEX where (QGI_RPR_SYMBOL like '0%' or QGI_RPR_SYMBOL like '1%' or "+
 			  "QGI_RPR_SYMBOL like '2%' or QGI_RPR_SYMBOL like '3%' or "+
 			  "QGI_RPR_SYMBOL like '4%' or QGI_RPR_SYMBOL like '5%' or "+

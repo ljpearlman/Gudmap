@@ -1947,13 +1947,21 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 						System.out.println("MySQLAdvancedQueryDAOImp  ######### micpart: " + micpart);
 						System.out.println("MySQLAdvancedQueryDAOImp ######### orderpart: " + orderpart);
 					}
-				    all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart + orderpart;
+// updated to remove microarray data when query on GENE
+//				    all[0] = ishpart + AdvancedSearchDBQuery.getUnion() + micpart + orderpart;
+//				    all[1] = AdvancedSearchDBQuery.getISHCount()+ AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
+//		            		//added for organ
+//		            		organISHStr + ishStageString + ishAnnotationString;
+//				    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
+//				    all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
+//				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+					all[0] = ishpart + orderpart;
 				    all[1] = AdvancedSearchDBQuery.getISHCount()+ AdvancedSearchDBQuery.getISHFrom() + " WHERE " + ishStr + 
 		            		//added for organ
 		            		organISHStr + ishStageString + ishAnnotationString;
-				    all[2] = countMicStr + micStr + micStageString + micAnnotationString + ") as tablea";
+				    all[2] = null;
 				    all[3] = String.valueOf(ish.length); //how many times you have to cycle through the list of inputs to set the params in the sql for ish
-				    all[4] = String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
+				    all[4] = "0";//String.valueOf(mic.length); //how many times you have to cycle through the list of inputs to set the params in the sql for array
 				}
 		    }
 		    sqlAndParams.add(all);

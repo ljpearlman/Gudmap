@@ -20,10 +20,11 @@
 				<f:facet name="header">
 					<h:outputText styleClass="bigplaintext" value="Gene Symbol" />
 				</f:facet>
-				<h:outputLink styleClass="plaintext" value="gene.html">
+				<h:outputLink styleClass="plaintext" value="gene.html" rendered='#{row[7] != "" }'>
 					<h:outputText styleClass="plaintext" value="#{row[0]}"/>
-					<f:param value="#{row[0]}" name="gene" />
+					<f:param value="#{row[7]}" name="geneId" />
 				</h:outputLink>
+				<h:outputText styleClass="plaintext" value="#{row[0]}" rendered='#{row[7] == "" }'/>
 			</h:column>
 			
 			<h:column>
