@@ -288,6 +288,24 @@ public class DbUtility {
 		}	
     }
     
+    public static String retrieveGeneIdBySymbol(String symbol, String species) {
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
+			String geneId = geneDAO.getGeneIdBySymbol(symbol, species);
+			return geneId;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGeneIdBySymbol failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+    }
+   
+    
     /**
      * <p>created by Mehran and implemented by xingjun on 11/08/2009</p>
      * @return
@@ -608,6 +626,7 @@ public class DbUtility {
 
 	}
 
+	
 }   
     
   

@@ -396,6 +396,10 @@ public class InsituDBQuery {
 		"JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
 		"JOIN REF_URL ON URL_OID = IMG_URL_FK " +
 		" WHERE SUB_ACCESSION_ID = ? ORDER BY IMG_ORDER LIMIT ?,1";
+
+	final static String name122 = "GET_GENEID_BY_SYMBOL";
+	final static String query122 = "SELECT RMM_MGIACC FROM REF_MGI_MRK WHERE RMM_SYMBOL = ?  AND RMM_SPECIES = ? ";
+	
 	
 	final static String name = "";
 	final static String query = "";
@@ -439,7 +443,8 @@ public class InsituDBQuery {
 		new ParamQuery(name118, query118),		
 		new ParamQuery(name119, query119),		
 		new ParamQuery(name120, query120),		
-		new ParamQuery(name121, query121)		
+		new ParamQuery(name121, query121),		
+		new ParamQuery(name122, query122)		
 	};
 	
 	// finds ParamQuery object by name and returns

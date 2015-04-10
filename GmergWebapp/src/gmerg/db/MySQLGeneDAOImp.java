@@ -358,5 +358,37 @@ public class MySQLGeneDAOImp implements GeneDAO {
             DBHelper.closeResultSet(resSet);        	
         }
     }
-    
+  
+    public String getGeneIdBySymbol(String symbol, String species) {
+        String geneId = null;
+        ResultSet resSet = null;
+        ParamQuery parQ = InsituDBQuery.getParamQuery("GET_GENEID_BY_SYMBOL");
+        PreparedStatement prepStmt = null;
+        try {
+        	// if disconnected from db, re-connected
+        	conn = DBHelper.reconnect2DB(conn);
+
+            parQ.setPrepStat(conn);
+            prepStmt = parQ.getPrepStat();
+            prepStmt.setString(1, symbol);
+            prepStmt.setString(2, species);
+
+            // execute
+            resSet = prepStmt.executeQuery();
+            if (resSet.first()) {
+            	geneId = resSet.getString(1);
+            }
+
+            return geneId;
+
+        } catch (SQLException se) {
+        	se.printStackTrace();
+            return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);        	
+        }
+    }
+   
 }

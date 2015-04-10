@@ -1,9 +1,11 @@
 package gmerg.beans;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import gmerg.assemblers.GeneAssembler;
 import gmerg.utils.table.*;
 import gmerg.entities.submission.*;
+import gmerg.utils.DbUtility;
 import gmerg.utils.FacesUtil;
 import gmerg.utils.Utility;
 
@@ -11,7 +13,7 @@ import gmerg.utils.Utility;
  * The GeneInfoBean retrieves a user specified string parameter (gene symbol) and passes it to a DAO to query
  * the database in order to find relevant info on the gene matching the specified symbol and display it to the user
  */
-public class GeneInfoBean {
+public class GeneInfoBean  implements Serializable{
     private boolean debug = false;
 private Gene gene;
 private String geneId;
@@ -22,7 +24,9 @@ private boolean linkedArraysExist;
 private GeneAssembler assembler;
 private String arrayDataViewName;
 private String geneStripViewName;
-	
+private String symbol;	
+private String species;
+
 public GeneInfoBean() {
 	    if (debug)
 		System.out.println("GeneInfoBean.constructor");
@@ -30,15 +34,26 @@ public GeneInfoBean() {
 	// get the gene symbol as a parameter
 //	geneId = FacesUtil.getRequestParamValue("id");	    
 	geneId = FacesUtil.getRequestParamValue("geneId");
-//	gene = FacesUtil.getRequestParamValue("gene");
+	symbol = FacesUtil.getRequestParamValue("gene");
+	species = FacesUtil.getRequestParamValue("species");
 	probeset = FacesUtil.getRequestParamValue("probeset");
 	
-	//if no parameter found, see if it is in session
-	if(geneId== null || geneId.equals("")){
-		geneId = (String)FacesUtil.getSessionValue("geneId");
-		probeset = (String)FacesUtil.getSessionValue("geneId");
-	}
+	
+//	//if no parameter found, see if it is in session
+//	if(geneId== null || geneId.equals("")){
+//		geneId = (String)FacesUtil.getSessionValue("geneId");
+//		probeset = (String)FacesUtil.getSessionValue("geneId");
+//	}
 
+	//if no geneId then look for gene
+	if(geneId== null || geneId.equals("")){
+		if(species== null || species.equals("")){
+			species = "Mus musculus";
+		}
+		geneId = DbUtility.retrieveGeneIdBySymbol(symbol, species);
+	}	
+	
+	
 	geneStripViewName = "geneStrip_";		// tableViewNames must even if geneId is null because they are referenced in the page
 	arrayDataViewName = "geneArrayData_";	// tableViewNames must even if geneId is null because they are referenced in the page
 
