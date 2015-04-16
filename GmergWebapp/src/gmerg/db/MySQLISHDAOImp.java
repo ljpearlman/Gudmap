@@ -1548,6 +1548,9 @@ public class MySQLISHDAOImp implements ISHDAO {
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
+            
+		    if (debug) System.out.println("findLinkedSubmissionBySubmissionId:SUBMISSION_OID  = "+prepStmt);
+            
             resSet = prepStmt.executeQuery();
             if(resSet.first()) {
                 subOid = resSet.getString(1);
@@ -1560,6 +1563,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             prepStmt = parQ.getPrepStat();
 		    prepStmt.setString(1, submissionAccessionId);
 		    prepStmt.setString(2, subOid);
+		    if (debug) System.out.println("findLinkedSubmissionBySubmissionId:MUS_SUB_LINKED_SUBMISSIONS  = "+prepStmt);
 	    
             // execute
             resSet = prepStmt.executeQuery();
