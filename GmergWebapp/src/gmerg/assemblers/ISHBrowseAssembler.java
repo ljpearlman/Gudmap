@@ -224,8 +224,14 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		}
 		
 		// Theiler Stage
-		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
-		    formatedRow[ 6] = new DataItem(row[6], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[6].toLowerCase()+"definition.html", 10);								// Theiler Stage
+		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
+			String stage = row[6];
+			if (stage.contains("TS"))
+				formatedRow[ 6] = new DataItem(row[6], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[6].toLowerCase()+"definition.html", 10);
+			else
+				formatedRow[ 6] = new DataItem(row[6]);
+				
+		}
 		else 
 		    formatedRow[ 6] = new DataItem(row[6]);  
 		

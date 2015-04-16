@@ -159,6 +159,10 @@ public GeneInfoBean() {
 	public Gene getGene() {
 		return gene;
 	}
+
+	public String getSpecies() {
+		return species;
+	}
 	
 	public String geneInfo() {
 		return "sucess";

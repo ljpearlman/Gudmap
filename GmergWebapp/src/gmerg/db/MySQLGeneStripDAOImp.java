@@ -320,7 +320,7 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 	
 			    submissionId = resSet.getString(1);
 			    img.setAccessionId(submissionId);
-			    img.setStage("TS"+resSet.getString(2));
+			    img.setStage(resSet.getString(2));
 			    img.setSpecimenType(resSet.getString(3));
 			    img.setFilePath(resSet.getString(4));
 			    img.setClickFilePath(resSet.getString(5));

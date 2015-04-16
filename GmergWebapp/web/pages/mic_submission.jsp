@@ -187,7 +187,7 @@
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:outputLink styleClass="datatext" value="gene.html">
 						<h:outputText value="#{allele.geneSymbol}" />
-						<f:param name="gene" value="#{allele.geneSymbol}" />
+						<f:param name="geneId" value="#{allele.geneId}" />
 					</h:outputLink>
 
 					<h:outputText value="MGI ID"  rendered="#{not empty allele.alleleId}"/>

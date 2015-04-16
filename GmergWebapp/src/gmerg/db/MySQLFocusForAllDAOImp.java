@@ -400,7 +400,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	 * @return
 	 */
 	public ArrayList getFocusBrowseList(String[] organ, int column, boolean ascending, 
-			String query, String stage, String gene, String archiveId, String batchId, String specimenType, String offset, String resPerPage, GenericTableFilter filter) {
+			String query, String stage, String gene, String geneid, String archiveId, String batchId, String specimenType, String offset, String resPerPage, GenericTableFilter filter) {
 //		System.out.println("FocusForAll:getFocusBrowseList:column: " + column);
 //		System.out.println("query type: " + query);
 
@@ -768,6 +768,10 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if (gene != null && !gene.equals("")) {
 				sql += " and RPR_SYMBOL = '" + gene + "' ";
 			}
+			// geneid 
+			if (geneid != null && !geneid.equals("")) {
+				sql += " and RPR_LOCUS_TAG = '" + geneid + "' ";
+			}
 			// archiveId & batchId
 	        if (null != archiveId && !archiveId.equals("")){
 	        	sql += " and (SUB_ARCHIVE_ID = " + archiveId + " ) ";
@@ -846,8 +850,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
      * overload version 
      * @return
      */
-    public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, String archiveId, String batchId, String specimenType, GenericTableFilter filter) {
-    	ArrayList list = getFocusBrowseList(inputs, 1, true, query, stage, symbol, archiveId, batchId, specimenType, null, null,filter);
+    public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, String geneid, String archiveId, String batchId, String specimenType, GenericTableFilter filter) {
+    	ArrayList list = getFocusBrowseList(inputs, 1, true, query, stage, symbol, geneid, archiveId, batchId, specimenType, null, null,filter);
     	if(null == list) {
     		return 0;
     	} else {

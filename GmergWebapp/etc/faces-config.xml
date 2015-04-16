@@ -519,6 +519,13 @@
 	<managed-bean-scope>session</managed-bean-scope>
  </managed-bean> 
  
+   <managed-bean>
+	<managed-bean-name>AnalysisPythonBean</managed-bean-name>
+	<managed-bean-class>gmerg.beans.AnalysisPythonBean</managed-bean-class>
+	<managed-bean-scope>session</managed-bean-scope>
+ </managed-bean> 
+ 
+ 
  <!-- *********************END SECTION: MANAGED BEAN************************** 
  =================== Initialize Image Map Hotspot Data ============== 
  *********************START SECTION: NAVIGATION RULE*********************-->

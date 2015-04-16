@@ -1004,9 +1004,9 @@ public class AdvancedSearchDBQuery {
           "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
           "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
           	  "LEFT JOIN REF_PROBE ON RPR_OID = PRB_MAPROBE " +
-              "JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
+              "LEFT JOIN ISH_ORIGINAL_IMAGE ON SUB_OID = IMG_SUBMISSION_FK " +
               "AND IMG_TYPE NOT LIKE '%wlz%' AND IMG_ORDER = (SELECT MIN(I.IMG_ORDER) FROM ISH_ORIGINAL_IMAGE I WHERE I.IMG_SUBMISSION_FK = SUB_OID) "+
-              "JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK"; 
+              "LEFT JOIN REF_URL IMG_URL ON IMG_URL.URL_OID = IMG_URL_FK"; 
 	                                                  
 	  final static String PUBLIC_ENTRIES_Q = " WHERE SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 ";
 	  final static public String getAssayType(String type) {

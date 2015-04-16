@@ -1646,12 +1646,16 @@ public class MySQLISHDAOImp implements ISHDAO {
             parQ.setPrepStat(conn);
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, symbolId);
+            
+            if (debug) System.out.println("gene GENE_INFO_BY_SYMBOLID:" + prepStmt);
             resSet = prepStmt.executeQuery();
 	    
             parQ = DBQuery.getParamQuery("TOTAL_GENEID_RELATED_ARRAYS");
             parQ.setPrepStat(conn);
             prepStmt2 = parQ.getPrepStat();
             prepStmt2.setString(1, symbolId);
+            
+            if (debug) System.out.println("gene TOTAL_GENEID_RELATED_ARRAYS:" + prepStmt2);
             resSet2 = prepStmt2.executeQuery();
 	    
             // assemble
@@ -1717,6 +1721,7 @@ public class MySQLISHDAOImp implements ISHDAO {
             if(resSet2.first()){
                 geneInfo.setNumMicArrays(resSet2.getString(1));
             }
+            geneInfo.setSpecies(resSet.getString(18)); 
             return geneInfo;
         }
         return null;

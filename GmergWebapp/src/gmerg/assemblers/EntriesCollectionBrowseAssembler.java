@@ -320,8 +320,13 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 					tableData[i][5] = new DataItem(row[9], "Probe Details", "probe.html?probe="+row[9], 10);
 			}
 			//tableData[i][5] = new DataItem(row[9]);//probe name
-			if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
-				tableData[i][6] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[2].toLowerCase()+"definition.html", 10);								// Theiler Stage
+			if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
+				String stage = row[2];
+				if (stage.contains("TS"))
+					tableData[i][6] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[2].toLowerCase()+"definition.html", 10);								// Theiler Stage
+				else
+					tableData[i][6] = new DataItem(row[2]);
+			}
 			else 
 				tableData[i][6] = new DataItem(row[2]);
 			//tableData[i][6] = new DataItem(row[2]);//stage
@@ -382,8 +387,13 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		}
 		
 		// Theiler Stage
-		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
-		    formatedRow[ 6] = new DataItem(row[6], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[6].toLowerCase()+"definition.html", 10);								// Theiler Stage
+		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
+			String stage = row[6];
+			if (stage.contains("TS"))
+				formatedRow[ 6] = new DataItem(row[6], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[6].toLowerCase()+"definition.html", 10);								// Theiler Stage
+			else
+				formatedRow[ 6] = new DataItem(row[6]);
+		}
 		else 
 		    formatedRow[ 6] = new DataItem(row[6]);  
 		

@@ -90,20 +90,28 @@
 	<h:panelGrid columns="2" rowClasses="stripey" columnClasses="leftCol,rightCol" width="100%" rendered="#{GeneInfoBean.gene != null}">
 		<h:outputText value="Links" />
 		<h:panelGrid columns="2" columnClasses="plaintext,datatext">
-			<h:outputText value="MGI:"/>
-			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.mgiURL}" rendered="#{!GeneInfoBean.xenbaseEntryExists}" target="_blank">
+			<h:outputText value="MGI:" rendered="#{GeneInfoBean.gene.species == 'Mus musculus'}"/>
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.mgiURL}" rendered="#{GeneInfoBean.gene.species == 'Mus musculus'}" target="_blank">
+				<h:outputText value="#{GeneInfoBean.gene.mgiAccID}" />
+			</h:outputLink>
+			<h:outputText value="NCBI:" rendered="#{GeneInfoBean.gene.species != 'Mus musculus'}"/>
+			<h:outputLink styleClass="plaintext" value="http://www.ncbi.nlm.nih.gov/gene/#{GeneInfoBean.gene.mgiAccID}" rendered="#{GeneInfoBean.gene.species != 'Mus musculus'}" target="_blank">
 				<h:outputText value="#{GeneInfoBean.gene.mgiAccID}" />
 			</h:outputLink>
 
 			<h:outputText value="Ensembl:" />
-			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.ensemblURL}" target="_blank">
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.ensemblURL}" rendered="#{GeneInfoBean.gene.species == 'Mus musculus'}" target="_blank">
 				<h:outputText value="#{GeneInfoBean.gene.ensemblID}" />
+			</h:outputLink>
+			<h:outputLink styleClass="plaintext" value="http://www.ensembl.org/Homo_sapiens/Location/View?g=#{GeneInfoBean.gene.symbol}" rendered="#{GeneInfoBean.gene.species != 'Mus musculus'}" target="_blank">
+				<h:outputText value="View #{GeneInfoBean.gene.symbol} at Ensembl" />
 			</h:outputLink>
 
 			<h:outputText value="UCSC:" />
-			<h:outputLink styleClass="plaintext" value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&hubUrl=http%3A//www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&position=#{GeneInfoBean.gene.symbol}" target="_blank">
+			<h:outputLink styleClass="plaintext" value="http://genome.ucsc.edu/cgi-bin/hgTracks?db=mm9&hubUrl=http%3A//www.gudmap.org/Gudmap/ngsData/gudmap_ucsc_hub/hub.txt&position=#{GeneInfoBean.gene.symbol}" rendered="#{GeneInfoBean.gene.species == 'Mus musculus'}" target="_blank">
 				<h:outputText value="View sequencing data for this gene in UCSC Genome Browser" />
 			</h:outputLink>
+			<h:outputText value="" rendered="#{GeneInfoBean.gene.species != 'Mus musculus'}"/>
 			
 			<h:outputText value="OMIM:" />
 			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.omimURL}" target="_blank">
@@ -122,9 +130,10 @@
 			</h:outputLink>
 			
 			<h:outputText value="GO:" />
-			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.goURL}"  target="_blank">
+			<h:outputLink styleClass="plaintext" value="#{GeneInfoBean.gene.goURL}"  rendered="#{GeneInfoBean.gene.species == 'Mus musculus'}" target="_blank">
 				<h:outputText value="MGI GO Annotations" />
 			</h:outputLink>
+			<h:outputText value="" rendered="#{GeneInfoBean.gene.species != 'Mus musculus'}"/>
 		</h:panelGrid>
 	</h:panelGrid>
 

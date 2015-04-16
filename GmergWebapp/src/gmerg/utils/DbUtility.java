@@ -106,7 +106,7 @@ public class DbUtility {
 			return imageIds;
 			
 		} catch(Exception e){
-			System.out.println("DBUtility::retrieveImageIdsByGeneSymbol failed !!!");
+			System.out.println("DBUtility::retrieveImageIdsByGeneSymbolId failed !!!");
 			return null;
 		}
 		finally{

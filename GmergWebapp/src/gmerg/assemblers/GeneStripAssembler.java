@@ -156,9 +156,9 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 					if (geneStageRange[0] != "-1" || geneStageRange[1] != "-1") {
 						stage = geneStageRange[0] + "-" + geneStageRange[1];
 		//				System.out.println("stage range: " + stage);
-						data[i][3] = 
-							new DataItem(stage, "Click to see stage summary for "+symbol, 
-									"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
+							data[i][3] = 
+								new DataItem(stage, "Click to see stage summary for "+symbol, 
+										"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
 					} else {
 						stage = "N/A";
 						data[i][3] = new DataItem(stage);
@@ -168,7 +168,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 						stage += DbUtility.getRefStageFromOrder(insituGeneStages[j]) + ",";
 					
 					stage = stage.substring(0, stage.length()-1);
-					data[i][3] = 
+						data[i][3] = 
 							new DataItem(stage, "Click to see stage summary for "+symbol, 
 									"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
 				}
@@ -177,7 +177,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				double[] insituExprofile = this.getExpressionProfile(symbolid);
 	//			for (int j=0;j<insituExprofile.length;j++) System.out.println("insituEF-" +i+ "-" + j + ": " + insituExprofile[j]);
 				String[] interestedAnatomyStructures =  AdvancedSearchDBQuery.getInterestedAnatomyStructureIds();
-				data[i][4] = new DataItem(getExpressionHtmlCode(insituExprofile, interestedAnatomyStructures, symbol), 50);
+				data[i][4] = new DataItem(getExpressionHtmlCode(insituExprofile, interestedAnatomyStructures, symbol, symbolid), 50);
 	
 				/** 6 - representative image */
 				// get relevant submissions and their ts, specimen type info
@@ -190,7 +190,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 					thumbnail = this.getThumbnailURL(conn, candidateSubmission);
 					if (thumbnail != ""){
 		//				data[i][5] = new DataItem(thumbnail, "Click to see submission details for "+ candidateSubmission, "image_matrix_browse.html?gene="+symbol, 13);
-						data[i][5] = new DataItem(thumbnail, "Click to see image matrix for "+symbol, "image_matrix_browse.html?gene="+symbol+"&symbolId="+symbolid, 13);
+						data[i][5] = new DataItem(thumbnail, "Click to see image matrix for "+symbol, "image_matrix_browse.html?gene="+symbol+"&symbolid="+symbolid, 13);
 					} else{
 						data[i][5] = new DataItem("");						
 					}
@@ -317,7 +317,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @param symbol
 	 * @return
 	 */
-	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol) {
+	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol, String symbolId) {
 		// added by xingjun - 08/05/2009 - its possible values is null
 		if (values == null || values.length == 0) {
 			return "";
@@ -335,7 +335,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 //		System.out.println("focusGroupString: " + focusGroupString);
 		
 		// url
-		String browseLink = "'focus_insitu_browse.html?gene=" + symbol + "&focusedOrgan='";
+		String browseLink = "'focus_insitu_browse.html?geneid=" + symbolId + "&focusedOrgan='";
 		
 		// concatenate script string
     	code += "<script>var val=";

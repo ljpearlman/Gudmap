@@ -523,8 +523,9 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   		                        "REG_CHROM_START, REG_CHROM_END, REG_CHROME_NAME, M.MIS_ENS_GENEBUILD, " +
                                 "CONCAT(GENECARDS_URL.URL_URL,RPR_SYMBOL,GENECARDS_URL.URL_SUFFIX), " +
                                 "CONCAT(HGNC_SYMBOL_SEARCH_URL.URL_URL,RPR_SYMBOL), " +
-                                "CONCAT(UCSC_URL.URL_URL, REG_CHROME_NAME, ':', REG_CHROM_START, '-', REG_CHROM_END, UCSC_URL.URL_SUFFIX) " + // added by xingjun - 30/04/2009
-  		                        "FROM REF_MISC M, ISH_PROBE " +
+                                "CONCAT(UCSC_URL.URL_URL, REG_CHROME_NAME, ':', REG_CHROM_START, '-', REG_CHROM_END, UCSC_URL.URL_SUFFIX), " + // added by xingjun - 30/04/2009
+  		                        "RMM_SPECIES " +  
+  		                        "FROM REF_MISC M, ISH_PROBE " +  
   		                        "JOIN ISH_SUBMISSION ON SUB_OID = PRB_SUBMISSION_FK " +
   		                        "LEFT JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " +
   		                        "LEFT JOIN REF_ENS_GENE ON REG_STABLE = RPR_ENSEMBL " +

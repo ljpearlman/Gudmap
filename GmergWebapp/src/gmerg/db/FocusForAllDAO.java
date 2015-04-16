@@ -27,9 +27,9 @@ public interface FocusForAllDAO {
 	// find the number of public gene entries related to given assay type
 	public int findNumberOfPublicGenes(String assayType, String[] emapids);
 	
-	public ArrayList getFocusBrowseList(String[] organ, int column, boolean ascending, String query, String stage, String gene, String archiveId, String batchId, String specimenType, String offset, String resPerPage, GenericTableFilter filter);
+	public ArrayList getFocusBrowseList(String[] organ, int column, boolean ascending, String query, String stage, String gene, String geneid, String archiveId, String batchId, String specimenType, String offset, String resPerPage, GenericTableFilter filter);
 
-	public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, String archiveId, String batchId, String specimenType, GenericTableFilter filter);
+	public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, String geneid, String archiveId, String batchId, String specimenType, GenericTableFilter filter);
 
 	public ArrayList getSeriesList(int columnIndex, boolean ascending, int offset, int num, String organ, String platform);
 
