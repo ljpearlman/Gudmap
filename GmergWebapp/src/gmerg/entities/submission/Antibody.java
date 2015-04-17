@@ -355,7 +355,7 @@ public class Antibody {
 	
 	public void setLocusTag(String locusTag) {
 		this.locusTag = locusTag;
-	}
+		this.geneId = locusTag;	}
 
     public ArrayList getIshSubmissions() { 	  	
         return ishSubmissions;

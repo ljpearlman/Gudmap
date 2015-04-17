@@ -32,7 +32,7 @@
         <h:panelGrid columns="2" columnClasses="plaintext,datatext">
           <h:outputText value="Symbol:" />
           <h:outputLink value="gene.html" styleClass="datatext">
-            <f:param name="gene" value="#{AntibodyBean.antibody.geneSymbol}" />
+            <f:param name="geneId" value="#{AntibodyBean.antibody.geneId}" />
             <h:outputText value="#{AntibodyBean.antibody.geneSymbol}" />
           </h:outputLink>
           <h:outputText value="Name:" />

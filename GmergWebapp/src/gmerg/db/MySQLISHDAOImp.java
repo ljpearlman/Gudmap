@@ -5292,6 +5292,8 @@ public class MySQLISHDAOImp implements ISHDAO {
             prepStmt = parQ.getPrepStat();
             prepStmt.setString(1, submissionAccessionId);
             prepStmt.setString(2, componentId);
+            
+            System.out.println("expression query:EXPRESSION_DETAIL " + prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {          
                 expression = formatExpressionDetailResultSet(resSet);
@@ -5847,7 +5849,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    	System.out.println("MySQLISHDAOImp:findStageBySubmissionId = "+prepStmt);
             resSet = prepStmt.executeQuery();
             if (resSet.first()) {
-                stage = "TS" + resSet.getString(2);
+                stage = resSet.getString(2);
                 //				  System.out.println("stage: " + stage);
             }
             return stage;

@@ -48,7 +48,7 @@
         <h:panelGrid columns="2" columnClasses="plaintext,datatext">
           <h:outputText value="Symbol:" />
           <h:outputLink value="gene.html" styleClass="datatext">
-            <f:param name="gene" value="#{MaProbeBean.maProbe.geneSymbol}" />
+            <f:param name="geneId" value="#{MaProbeBean.maProbe.geneID}" />
             <h:outputText value="#{MaProbeBean.maProbe.geneSymbol}" />
           </h:outputLink>
           <h:outputText value="Name:" />
