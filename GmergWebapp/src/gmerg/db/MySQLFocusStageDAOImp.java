@@ -212,7 +212,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 		String componentString = null;
 		if(null != stage) {
 			if (assayType.equals("insitu")) {
-				parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_IN_SITU");
+				parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_IN_ALL_SITU");
 				stageString = " AND STG_STAGE_DISPLAY = '";
 				if (symbolid != null && !symbolid.equals("")) {
 //					geneString += " AND RPR_SYMBOL = '" + symbol + "'";

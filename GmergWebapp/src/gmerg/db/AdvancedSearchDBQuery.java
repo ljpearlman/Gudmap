@@ -1060,6 +1060,9 @@ public class AdvancedSearchDBQuery {
 	  
 	  final static String name40 = "TOTAL_NUMBER_OF_SUBMISSION_IN_SITU";
 	  final static String query40 = NUMBER_OF_SUBMISSION + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType(new String[]{"ISH", "IHC"});
+
+	  final static String name148 = "TOTAL_NUMBER_OF_SUBMISSION_IN_ALL_SITU";
+	  final static String query148 = NUMBER_OF_SUBMISSION + ISH_BROWSE_ALL_TABLES + PUBLIC_ENTRIES_Q + getAssayType(new String[]{"ISH", "IHC", "TG"});
 	  
 	  final static String name41 = "TOTAL_NUMBER_OF_SUBMISSION_ARRAY";
 	  final static String query41 = NUMBER_OF_SUBMISSION + endsBrowseSubmissionArray;
@@ -1355,7 +1358,8 @@ public class AdvancedSearchDBQuery {
 	      new ParamQuery(name144, query144),
 	      new ParamQuery(name145, query145),
 	      new ParamQuery(name146, query146),
-	      new ParamQuery(name147, query147)
+	      new ParamQuery(name147, query147),
+	      new ParamQuery(name148, query148)
 	  };
 
 	  //  finds ParamQuery object by name and returns
