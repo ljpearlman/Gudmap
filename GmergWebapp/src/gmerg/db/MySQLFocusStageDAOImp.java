@@ -43,7 +43,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			String queryString = null;
 			try {
 				for(int i = 0; i < stage.length; i++) {
-					queryString = sql + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
+					queryString = sql + " and STG_STAGE_DISPLAY='"+stage[i]+"' ";
 					//System.out.println("FocusStageArray:"+queryString);
 				    if (debug)
 				    	System.out.println("MySQLFocusStageDAOImp.sql = "+queryString);
@@ -52,7 +52,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 					resSet = prepStmt.executeQuery();
 					result[i][0] = formatBrowseSeriesResultSet(resSet);
 					
-					queryString = sql2 + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
+					queryString = sql2 + " and STG_STAGE_DISPLAY='"+stage[i]+"' ";
 //					System.out.println("FocusStageISH:"+queryString);
 					prepStmt = null;
 				    if (debug)
@@ -99,7 +99,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			try {
 				for(int i = 0; i < stage.length; i++) {
                     // append stage criteria
-					queryString = sql + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
+					queryString = sql + " and STG_STAGE_DISPLAY='"+stage[i]+"' ";
 					
 					// append component criteria
 					if(null != organ) {
@@ -138,7 +138,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 						result[i][0] = resSet.getString(1);
 					}
 					
-					queryString = sql2 + " and SUB_EMBRYO_STG='"+stage[i]+"' ";
+					queryString = sql2 + " and STG_STAGE_DISPLAY='"+stage[i]+"' ";
 
 					// append component criteria
 					if(null != organ) {
@@ -202,7 +202,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 	 * @param symbol
 	 * @return
 	 */
-	public String[] getStageList(String assayType, String[] stage, String organ, String symbol) {
+	public String[] getStageList(String assayType, String[] stage, String organ, String symbolid) {
 		String[] result = new String[stage.length];
 		ResultSet resSet = null;
 		ParamQuery parQ = null;
@@ -213,21 +213,23 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 		if(null != stage) {
 			if (assayType.equals("insitu")) {
 				parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_IN_SITU");
-				stageString = " AND SUB_EMBRYO_STG = '";
-				if (symbol != null && !symbol.equals("")) {
-					geneString += " AND RPR_SYMBOL = '" + symbol + "'";
+				stageString = " AND STG_STAGE_DISPLAY = '";
+				if (symbolid != null && !symbolid.equals("")) {
+//					geneString += " AND RPR_SYMBOL = '" + symbol + "'";
+					geneString += " AND RPR_LOCUS_TAG = '" + symbolid + "'";
 				}
 				componentString = " AND EXP_COMPONENT_ID IN ";
 			} else if (assayType.equals("Microarray")) {
 				// if gene criteria is not provided, use alternative query and much faster
-				if (symbol != null && !symbol.equals("")) {
+				if (symbolid != null && !symbolid.equals("")) {
 					parQ = ArrayDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_ARRAY");
-					stageString = " AND MBC_SUB_EMBRYO_STG = '";
-					geneString += " AND MBC_GNF_SYMBOL = '" + symbol + "'";
+					stageString = " AND MBC_STG_STAGE_DISPLAY = '";
+//					geneString += " AND MBC_GNF_SYMBOL = '" + symbolid + "'";
+					geneString += " AND MBC_MAN_MGI_ID = '" + symbolid + "'";
 					componentString = " AND MBC_COMPONENT_ID IN ";
 				} else {
 					parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_SUBMISSION_ARRAY");
-					stageString = " AND SUB_EMBRYO_STG = '";
+					stageString = " AND STG_STAGE_DISPLAY = '";
 					componentString = " AND EXP_COMPONENT_ID IN ";
 				}
 			}
@@ -382,7 +384,7 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 		    	System.out.println("MySQLFocusStageDAOImp.sql5 = "+prepStmt);
 			resSet = prepStmt.executeQuery();
 			if (resSet.first()) {
-				dpcStageValue = resSet.getString(1) + " " + resSet.getString(2);
+				dpcStageValue = resSet.getString(1) ;
 			} else {
 				dpcStageValue = "";
 			}
@@ -396,4 +398,74 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 			DBHelper.closeResultSet(resSet);		
 		}
 	}
+	
+
+	public ArrayList<String> getIshStages(String species) {
+		
+		ArrayList<String> stages = new ArrayList<String>();
+		
+		ResultSet resSet = null;
+		ParamQuery parQ = null;
+		PreparedStatement prepStmt = null;
+		parQ = InsituDBQuery.getParamQuery("ISH_THEILER_STAGES_FROM_REF_STAGE");
+		String queryString = parQ.getQuerySQL();
+//		System.out.println("getDpcValueQuery: " + queryString);
+		try {
+			prepStmt = conn.prepareStatement(queryString);
+			prepStmt.setString(1, species);
+			resSet = prepStmt.executeQuery();
+			if (resSet.first()) {
+				//need to reset cursor as 'if' move it on a place
+				resSet.beforeFirst();
+				while(resSet.next()) {
+					String stage = resSet.getString(1);
+			        stages.add(stage);
+				}
+			}
+			return stages;
+			
+		} catch(Exception se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);		
+		}
+	}
+
+	public ArrayList<String> getMicStages(String species) {
+		
+		ArrayList<String> stages = new ArrayList<String>();
+		
+		ResultSet resSet = null;
+		ParamQuery parQ = null;
+		PreparedStatement prepStmt = null;
+		parQ = InsituDBQuery.getParamQuery("MIC_THEILER_STAGES_FROM_REF_STAGE");
+		String queryString = parQ.getQuerySQL();
+//		System.out.println("getDpcValueQuery: " + queryString);
+		try {
+			prepStmt = conn.prepareStatement(queryString);
+			prepStmt.setString(1, species);
+			resSet = prepStmt.executeQuery();
+			if (resSet.first()) {
+				//need to reset cursor as 'if' move it on a place
+				resSet.beforeFirst();
+				while(resSet.next()) {
+					String stage = resSet.getString(1);
+			        stages.add(stage);
+				}
+			}
+			return stages;
+			
+		} catch(Exception se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);		
+		}
+	}
+	
 }

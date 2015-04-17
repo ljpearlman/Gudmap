@@ -15,7 +15,9 @@ public interface GeneDAO {
 	
 	public String findSymbolBySynonym(String synonym);
 	
-	public ArrayList getSymbolsFromGeneInput(String input, String wildcard);
+	public ArrayList<String> getSymbolsFromGeneInput(String input, String wildcard);
 	
 	public String getGeneSymbolByMGIId(String mgiId);
+	
+	public String getGeneIdBySymbol(String symbol, String species);
 }

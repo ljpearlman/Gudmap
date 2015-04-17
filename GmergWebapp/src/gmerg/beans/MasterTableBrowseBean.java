@@ -29,6 +29,7 @@ public class MasterTableBrowseBean {
 
 	private String genelistId;
 	private String geneSymbol;
+	private String geneId;
 	private String listOfGenes;
 	private boolean displayTreeView;
 	private String tableTitle;
@@ -120,6 +121,7 @@ public class MasterTableBrowseBean {
 			GenericTableView tableView = TableUtil.getTableViewFromSession();
 			genelistId = (String)tableView.getViewParameter("genelistId");
 			geneSymbol = (String)tableView.getViewParameter("gene");
+			geneId = (String)tableView.getViewParameter("geneId");
 			selections = (String)tableView.getViewParameter("selections");
 			viewMode = (String)tableView.getViewParameter("viewMode");
 			setVisibleMasterTables(selections);
@@ -136,6 +138,7 @@ public class MasterTableBrowseBean {
 		
 		genelistId = Visit.getRequestParam("genelistId");
 		geneSymbol = Visit.getRequestParam("gene");
+		geneId = Visit.getRequestParam("geneId");
 		if (FacesUtil.getRequestParamValue("actionMethod") != null) 
 			return;
 
@@ -262,6 +265,7 @@ public class MasterTableBrowseBean {
 					tableView = populateGenelistTableView(getViewName(masterTableId), masterTableId);
 					tableView.setViewParameter("genelistId", genelistId);
 					tableView.setViewParameter("gene", geneSymbol);
+					tableView.setViewParameter("geneId", geneId);
 					TableUtil.saveTableView(tableView);
 				}
 				tableView.setViewParameter("viewMode", viewMode);
@@ -289,8 +293,8 @@ public class MasterTableBrowseBean {
 				queryParams.put("genelistId", genelistId);	// It will be null except for genelists when the same platform is probes are requested
 		}
 		else 
-			if (geneSymbol != null) 
-				probeIds = DbUtility.retrieveGeneProbeIds(geneSymbol, platformId);
+			if (geneId != null) 
+				probeIds = DbUtility.retrieveGeneProbeIds(geneId, platformId);
 		CollectionBrowseHelper helper = Globals.getCollectionBrowseHelper(probeIds, getCollectionType(platformId), masterTableId);
 		GenericTableView ret = getDefaultTableViewForMasterTable(viewName, helper.getCollectionBrowseAssembler(), platformId);
 

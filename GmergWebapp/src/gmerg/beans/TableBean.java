@@ -1166,7 +1166,7 @@ return "background-color:" + htmlColor(150,150, 150);
 		GenericTableFilter filters = tableView.getTable().getAssembler().getFilter();
 		if (filters==null)
 			return false;
-		TreeMap<Integer, FilterItem> filterList  = filters.getFilters();
+		LinkedHashMap<String, FilterItem> filterList  = filters.getFilters();
 		for (FilterItem filterItem: filterList.values())  
 			if (filterItem.isActive()) 
 				return true;

@@ -65,6 +65,7 @@ public interface ArrayDAO {
 
 	// used for heatmap display
 	public ArrayList<String> getProbeSetIdBySymbol(String symbol, String platformId);
+	public ArrayList<String> getProbeSetIdBySymbolId(String symbolId, String platformId);
 	public HeatmapData getExpressionByGivenProbeSetIds(ArrayList probeSetIds, 
 			String masterTableId, String genelistId);
 	public HeatmapData getExpressionByGivenProbeSetIds(ArrayList probeSetIds, 
@@ -88,5 +89,6 @@ public interface ArrayDAO {
 	public ArrayList<String> findSampleList(String dataset, String stage, String sample);
 	
 	public ArrayList<GenelistTreeInfo> getRefGenelists();
-	
-}
+	public ArrayList<String> getRefStages(String stage);
+	public String getRefStageOrder(String stage);
+	public String getRefStageFromOrder(String order);}

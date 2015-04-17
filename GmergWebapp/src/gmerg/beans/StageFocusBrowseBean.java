@@ -7,9 +7,12 @@ public class StageFocusBrowseBean {
     private boolean debug = false;
 
 	private FocusBrowseAssembler assembler = null;
-	private String[] stage = new String[]{"17","18","19","20","21","22","23","24","25","26","27","28"};
+//	private String[] stage = new String[]{"17","18","19","20","21","22","23","24","25","26","27","28"};
+	private String[] stage;
 	private String[][] stageList;
 	private String gene;
+	private String geneId;
+	private String species;
 	
 	/**
 	 * modified by xingjun - 29/01/2009
@@ -22,9 +25,12 @@ public class StageFocusBrowseBean {
 
 		String organ = Visit.getRequestParam("focusedOrgan");
 		gene = Visit.getRequestParam("gene");
+		geneId = Visit.getRequestParam("geneId");
+		species = Visit.getRequestParam("species"); 
 		assembler = new FocusBrowseAssembler();
 //		stageList = assembler.getStageList(stage, organ);
-		stageList = assembler.getStageList(stage, organ, gene);
+		stage = assembler.getStages(species);
+		stageList = assembler.getStageList(stage, organ, geneId);
 	}
 
 	/**
@@ -35,7 +41,7 @@ public class StageFocusBrowseBean {
 	public String[][] getSubmissions() {
 		String[][] tableData = new String[stage.length][5];
 		for(int i=0; i<stage.length; i++) {
-			tableData[i][0] = new String("TS"+stage[i]);
+			tableData[i][0] = new String(stage[i]);
 			if(null != stageList[i][0]) {
 				tableData[i][1] = new String(stageList[i][0]);
 			} else {

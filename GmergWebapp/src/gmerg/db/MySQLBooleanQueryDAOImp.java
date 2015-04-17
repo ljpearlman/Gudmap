@@ -16,7 +16,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
     private boolean debug = false;
 
 	private Connection conn; 
-	private int ColumnNumbers = 17;
+	private int ColumnNumbers = 18;//17;
 	
 	String outputString;
 
@@ -57,7 +57,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
             "'' col3,"+
             "QIC_SUB_SOURCE col4,"+
             "QIC_SUB_SUB_DATE col5,"+
-            "QIC_SUB_EMBRYO_STG col6,"+
+            "QIC_STG_STAGE_DISPLAY col6,"+
             "QIC_SPN_ASSAY_TYPE col7,"+
             "TRIM(CASE QIC_SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(QIC_SPN_STAGE, ' ', QIC_SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) ELSE CONCAT(QIC_SPN_STAGE_FORMAT, QIC_SPN_STAGE) END) col8,"+
             "QIC_SUB_THUMBNAIL col9,"+
@@ -65,7 +65,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
             "'' col11,"+
             "(SELECT GROUP_CONCAT(DISTINCT B.QIC_EXP_STRENGTH) FROM QSC_ISH_CACHE B WHERE B.QIC_SUB_ACCESSION_ID=QIC_SUB_ACCESSION_ID) col12,"+
             "REPLACE(QIC_SUB_ACCESSION_ID, ':', 'no') col13,"+
-            "QIC_ASSAY_TYPE col14, QIC_SPN_SEX col15, QIC_PRB_PROBE_NAME col16, QIC_SPN_WILDTYPE col17 ";
+            "QIC_SUB_ASSAY_TYPE col14, QIC_SPN_SEX col15, QIC_PRB_PROBE_NAME col16, QIC_SPN_WILDTYPE col17, QIC_RPR_LOCUS_TAG col18 ";
 
     // clause to find all parent of specified anatomy term(s)
     private String INHERITANCE_CRITERIA_STR_ANSCESTOR = " AND QIC_ATN_PUBLIC_ID IN ( " +
@@ -305,7 +305,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
         	where_buf=new StringBuffer("WHERE ");
         	StringBuffer subWhereClause = new StringBuffer("");
         	component_buf=new StringBuffer();
-        	stage_buf=new StringBuffer("QIC_SUB_EMBRYO_STG IN (");
+        	stage_buf=new StringBuffer("QIC_STG_STAGE_DISPLAY IN (");
 //        	expression_buf=new StringBuffer("AND QIC_EXP_STRENGTH IN (");
         	expression_buf=new StringBuffer("QIC_EXP_STRENGTH= ");
         	pattern_buf=new StringBuffer("AND QIC_PTN_PATTERN=");
@@ -617,7 +617,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
         }
         for(int i=from;i<=to;i++)
         {
-            stage_buf.append(i);
+            stage_buf.append("'TS" + i + "'");
             if(i<to)
                 stage_buf.append(",");
             if(i==to)
@@ -694,7 +694,7 @@ public class MySQLBooleanQueryDAOImp implements BooleanQueryDAO {
         	where_buf=new StringBuffer("WHERE ");
         	StringBuffer subWhereClause = new StringBuffer("");
         	component_buf=new StringBuffer();
-        	stage_buf=new StringBuffer("QIC_SUB_EMBRYO_STG IN (");
+        	stage_buf=new StringBuffer("QIC_STG_STAGE_DISPLAY IN (");
 //        	expression_buf=new StringBuffer("AND QIC_EXP_STRENGTH IN (");
         	expression_buf=new StringBuffer("QIC_EXP_STRENGTH= ");
         	pattern_buf=new StringBuffer("AND QIC_PTN_PATTERN=");

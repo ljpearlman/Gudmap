@@ -25,7 +25,7 @@
          <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
     	    <h:outputText value="#{stageSeriesLong} Stage" />
     	    <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{NGDSingleSubmissionBean.submission.stage}definition.html">
-    		<h:outputText value="#{stageSeriesShort}#{NGDSingleSubmissionBean.submission.stage}" />
+    		<h:outputText value="#{NGDSingleSubmissionBean.submission.stage}" />
     	    </h:outputLink>
         </h:panelGrid>
         
@@ -187,7 +187,7 @@
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:outputLink styleClass="datatext" value="gene.html">
 						<h:outputText value="#{allele.geneSymbol}" />
-						<f:param name="gene" value="#{allele.geneSymbol}" />
+						<f:param name="geneId" value="#{allele.geneId}" />
 					</h:outputLink>
 
 					<h:outputText value="MGI ID"  rendered="#{not empty allele.alleleId}"/>

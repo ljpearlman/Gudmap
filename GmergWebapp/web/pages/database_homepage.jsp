@@ -774,7 +774,6 @@
 			</h:outputLink>
 			<h:outputText value="#{DatabaseHomepageBean.dbSummary.totalAvailableSequences}" rendered="#{DatabaseHomepageBean.dbSummary.totalAvailableSequences == '0'}"/>
 			
-			
 		</h:panelGrid>
 
 		<h:panelGrid cellspacing="0" cellpadding="2px" width="100%" >

@@ -112,7 +112,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 			
 		} else { // if don't specify order by column, order by gene symbol ascend by default
 //			queryString = query + " ORDER BY TRIM(RPR_SYMBOL)";
-			queryString = query + defaultOrder+ ", SUB_EMBRYO_STG";
+			queryString = query + defaultOrder+ ", STG_STAGE_DISPLAY";
 		}
 		
 		// offset and retrieval number
@@ -142,7 +142,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
     			"SUB_SUB_DATE", 
     			"SUB_ASSAY_TYPE", 
     			"RPR_JAX_ACC",    			
-    			"SUB_EMBRYO_STG", 
+    			"STG_STAGE_DISPLAY", 
     			"TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)", 
     			"SPN_SEX", 
     			"ANO_COMPONENT_NAME",
@@ -164,7 +164,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         
         } else {
         	if(columnIndex == 0) {
-           		orderByString = geneSymbolCol + " " + order +", SUB_EMBRYO_STG "; 
+           		orderByString = geneSymbolCol + " " + order +", STG_STAGE_DISPLAY "; 
         	} else if (columnIndex == 1) {
 //        		if (queryType == 1) {
 	    			orderByString = "CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + 
@@ -179,7 +179,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         	} else if (columnIndex == 5) {
         		orderByString = "NATURAL_SORT(TRIM(RPR_JAX_ACC))" + " " + order + ", " + geneSymbolCol;
         	} else if (columnIndex == 6) {
-        		orderByString = "SUB_EMBRYO_STG" + " " + order +", " + geneSymbolCol;
+        		orderByString = "STG_STAGE_DISPLAY" + " " + order +", " + geneSymbolCol;
         	} else if (columnIndex == 7) {
 //        		orderByString = "CONCAT(SPN_STAGE,SPN_STAGE_FORMAT)" + " " + order +", " + geneSymbolCol;
         		orderByString = "TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END)" + " " + order +", " + geneSymbolCol;
@@ -192,7 +192,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
         	} else if (columnIndex == 11) {
         		orderByString = "SPN_ASSAY_TYPE" + " " + order +", " + geneSymbolCol;
         	} else {
-       			orderByString = geneSymbolCol + ", SUB_EMBRYO_STG ";
+       			orderByString = geneSymbolCol + ", STG_STAGE_DISPLAY ";
         	}
         }
     	return orderByString;
@@ -217,7 +217,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 		String str = null;
 
             while (resSet.next()) {
-                ishBrowseSubmission = new String[14];
+                ishBrowseSubmission = new String[15];
                 ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
                 ishBrowseSubmission[ 1] = resSet.getString(2); // id
                 ishBrowseSubmission[ 2] = resSet.getString(3); // source
@@ -250,6 +250,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                 else {
                 	ishBrowseSubmission[13] = resSet.getString(14); // thumbnail
                 }
+                ishBrowseSubmission[14] = resSet.getString(15);//geneId
                 results.add(ishBrowseSubmission);
             }
             return results;
@@ -265,7 +266,7 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
 
             //create array to store each row of results in
             ArrayList<String[]> results = new ArrayList<String[]>();
-            int columnNumber = 17;
+            int columnNumber = 18;//17;
 
             while (resSet.next()) {
                 String[] ishBrowseSubmission = new String[columnNumber];
@@ -286,7 +287,8 @@ public class MySQLISHDevDAOImp implements ISHDevDAO {
                 ishBrowseSubmission[14] = resSet.getString(15); // sample title
                 ishBrowseSubmission[15] = resSet.getString(16); // sample description
                 ishBrowseSubmission[16] = resSet.getString(17); // series id
-                results.add(ishBrowseSubmission);
+                ishBrowseSubmission[17] = resSet.getString(18); // gene id
+               results.add(ishBrowseSubmission);
             }
             return results;
         }

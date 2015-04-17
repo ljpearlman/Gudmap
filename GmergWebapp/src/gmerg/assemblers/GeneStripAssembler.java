@@ -67,62 +67,76 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		
 		return cache.getData();
 	    }
+	    
+		Connection conn = DBHelper.getDBConnection();
 
-
-		if (ascending || column <0) 
-			Collections.sort(ids);// natural sort the gene symbols
-		else
-			Collections.sort(ids, Collections.reverseOrder());// natural sort the gene symbols
+	    ArrayList<String[]> geneData = this.getGenesFromIds(conn, ids);
+	    
+//		if (ascending || column <0) 
+//			Collections.sort(ids);// natural sort the gene symbols
+//		else
+//			Collections.sort(ids, Collections.reverseOrder());// natural sort the gene symbols
 		
 	    if (debug) {
 		System.out.println("geneStripAssembler:retrieveData:original symbol number: " + ids.size());
 		System.out.println("geneStripAssembler:retrieveData:original symbols: " + ids.toString());
 	    }
 
-		int len = ids.size();
+//		int len = ids.size();
+//		
+//		// calculate to display
+//		// - get required symbols to assemble gene strip(s)
+//		// - ignore parameter 'column': only symbol column is sortable
+//		ArrayList<String> requiredSymbols = new ArrayList<String>();
+//		for (int i=0, j=0;j<num; i++) {
+//			int position = offset + i;
+//			if (position == len) 
+//				break; // number of available symbols might be less than num
+//			String symbol = ids.get(position); 
+//			if (symbol==null || symbol.equals(""))
+//				continue;
+//			requiredSymbols.add(symbol);
+//			j++;
+//		}
 		
-		// calculate to display
-		// - get required symbols to assemble gene strip(s)
-		// - ignore parameter 'column': only symbol column is sortable
-		ArrayList<String> requiredSymbols = new ArrayList<String>();
-		for (int i=0, j=0;j<num; i++) {
-			int position = offset + i;
-			if (position == len) 
-				break; // number of available symbols might be less than num
-			String symbol = ids.get(position); 
-			if (symbol==null || symbol.equals(""))
-				continue;
-			requiredSymbols.add(symbol);
-			j++;
-		}
-		
-		int geneStripArraySize = requiredSymbols.size();
+//		int geneStripArraySize = requiredSymbols.size();
+	    int geneStripArraySize = geneData.size();
+	    
 //		System.out.println("geneStripAssembler:retrieveData:required symbol number: " + requiredSymbols.size());
 //		System.out.println("geneStripAssembler:retrieveData:required symbols : " + requiredSymbols.toString());
 		
 		DataItem[][] data = new DataItem[geneStripArraySize][9];
 
-		// connect to database
-		Connection conn = DBHelper.getDBConnection();
 		try{
 			DataItem element = null;
 			for (int i=0;i<geneStripArraySize;i++) {
 				/** 1 - symbol */
-				String symbol = requiredSymbols.get(i);
+//				String symbol = requiredSymbols.get(i);
+				String symbolid = geneData.get(i)[0];
+				String symbol = geneData.get(i)[1];
+				String speciesid = geneData.get(i)[2];
+				String species = geneData.get(i)[3];
+				
+				
 				if (getParam("geneSymbolNoLink")!=null)	// this is used for display of genestrip in the gene details page inwhich symbol shouldn't be a link
 					data[i][0] = new DataItem(symbol);
-				else
-					data[i][0] = new DataItem(symbol, "Click to see detailed information for "+symbol, "gene.html?gene="+symbol, 10);
+				else{
+					if (species.contains("Mus musculus"))
+							data[i][0] = new DataItem(symbol, "Click to see detailed information for "+symbol, "gene.html?geneId="+symbolid, 10);
+					else{
+						String name = symbol + " (Homo sapien)";
+						data[i][0] = new DataItem(name, "Click to see detailed information for "+symbol, "gene.html?geneId="+symbolid, 10);
+					}
+
+				}
 	
 				/** 2 - synonyms */
-				String synonyms = this.getSynonyms(conn, symbol);
+				String synonyms = this.getSynonyms(conn, symbolid);
 				data[i][1] = new DataItem(synonyms);
 	
-				// get relevant submissions and their ts, specimen type info
-				ArrayList relatedInsituSubmissions = this.getRelatedInsituSubmissions(conn, symbol);
 	
 				/** 3 - number of diseases */
-				int diseaseNumber = this.getNumberOfDisease(conn, symbol);
+				int diseaseNumber = this.getNumberOfDisease(conn, symbolid);
 				String diseaseString = "OMIM(" + Integer.toString(diseaseNumber) + ")";
 				// not display link if there's no relevant disease
 				if (diseaseNumber ==0) {
@@ -135,42 +149,58 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	
 				/** 4 - developmental stage */
 				// insitu stages
-				String[] insituGeneStages = this.getGeneStagesInsitu(conn, symbol);
-				// array stages
-				String[] arrayGeneStages = this.getGeneStagesArray(conn, symbol);
-				String[] geneStageRange = this.getGeneStages(insituGeneStages, arrayGeneStages);
-				// stage string
+				String[] insituGeneStages = this.getGeneStagesInsitu(conn, symbolid);
 				String stage = "";
-				if (geneStageRange[0] != "-1" || geneStageRange[1] != "-1") {
-					stage = "TS" + geneStageRange[0] + "-" + geneStageRange[1];
-	//				System.out.println("stage range: " + stage);
-					data[i][3] = 
-						new DataItem(stage, "Click to see stage summary for "+symbol, 
-								"focus_stage_browse.html?gene="+symbol, 10);
+				int iLen = insituGeneStages.length;
+				if (iLen > 3){
+					String[] geneStageRange = new String[2];
+					geneStageRange[0] = DbUtility.getRefStageFromOrder(insituGeneStages[0]);
+					geneStageRange[1] = DbUtility.getRefStageFromOrder(insituGeneStages[iLen-1]);
+					// array stages
+	//				String[] arrayGeneStages = this.getGeneStagesArray(conn, symbol);
+	//				String[] geneStageRange = this.getGeneStages(insituGeneStages, arrayGeneStages);
+					// stage string
+					if (geneStageRange[0] != "-1" || geneStageRange[1] != "-1") {
+						stage = geneStageRange[0] + "-" + geneStageRange[1];
+		//				System.out.println("stage range: " + stage);
+							data[i][3] = 
+								new DataItem(stage, "Click to see stage summary for "+symbol, 
+										"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
+					} else {
+						stage = "N/A";
+						data[i][3] = new DataItem(stage);
+					}
 				} else {
-					stage = "N/A";
-					data[i][3] = 
-						new DataItem(stage);
+					for (int j=0; j < iLen; j++)
+						stage += DbUtility.getRefStageFromOrder(insituGeneStages[j]) + ",";
+					
+					stage = stage.substring(0, stage.length()-1);
+						data[i][3] = 
+							new DataItem(stage, "Click to see stage summary for "+symbol, 
+									"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
 				}
 	
 				/** 5 - in situe expression profile */
-				double[] insituExprofile = this.getExpressionProfile(symbol);
+				double[] insituExprofile = this.getExpressionProfile(symbolid);
 	//			for (int j=0;j<insituExprofile.length;j++) System.out.println("insituEF-" +i+ "-" + j + ": " + insituExprofile[j]);
-				String[] interestedAnatomyStructures = 
-					AdvancedSearchDBQuery.getInterestedAnatomyStructureIds();
-				data[i][4] = 
-					new DataItem(getExpressionHtmlCode(insituExprofile, interestedAnatomyStructures, symbol), 50);
+				String[] interestedAnatomyStructures =  AdvancedSearchDBQuery.getInterestedAnatomyStructureIds();
+				data[i][4] = new DataItem(getExpressionHtmlCode(insituExprofile, interestedAnatomyStructures, symbol, symbolid), 50);
 	
 				/** 6 - representative image */
+				// get relevant submissions and their ts, specimen type info
+				ArrayList relatedInsituSubmissions = this.getRelatedInsituSubmissions(conn, symbolid);
 				// choose the 'right' one based on the discussion with DD
-				String candidateSubmission = 
-					this.chooseRepresentativeInsituSubmission(relatedInsituSubmissions);
+				String candidateSubmission = this.chooseRepresentativeInsituSubmission(relatedInsituSubmissions);
 				String thumbnail = null;
 				// get the image and put the url into the string
 				if (candidateSubmission != null) {
 					thumbnail = this.getThumbnailURL(conn, candidateSubmission);
-	//				data[i][5] = new DataItem(thumbnail, "Click to see submission details for "+ candidateSubmission, "image_matrix_browse.html?gene="+symbol, 13);
-					data[i][5] = new DataItem(thumbnail, "Click to see image matrix for "+symbol, "image_matrix_browse.html?gene="+symbol, 13);
+					if (thumbnail != ""){
+		//				data[i][5] = new DataItem(thumbnail, "Click to see submission details for "+ candidateSubmission, "image_matrix_browse.html?gene="+symbol, 13);
+						data[i][5] = new DataItem(thumbnail, "Click to see image matrix for "+symbol, "image_matrix_browse.html?gene="+symbol+"&symbolid="+symbolid, 13);
+					} else{
+						data[i][5] = new DataItem("");						
+					}
 				} else {
 					thumbnail = "N/A";
 					data[i][5] = new DataItem(thumbnail);
@@ -179,12 +209,12 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				/** 7 - array expression profile */
 				ArrayList<DataItem> complexValue = new ArrayList<DataItem>();
 				MasterTableInfo[] masterTableInfo = DbUtility.getAllMasterTablesInfo();
-				String geneSymbol = requiredSymbols.get(i);
+//				String geneSymbol = requiredSymbols.get(i);
 				for (MasterTableInfo item : masterTableInfo) 
-				    if (DbUtility.retrieveGeneProbeIds(geneSymbol, item.getPlatform()) != null) {//check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
-					element = new DataItem("../dynamicimages/heatmap_" + geneSymbol + ".jpg?tile=5&masterTableId="+item.getId(), 
+				    if (DbUtility.retrieveGeneProbeIdsByGeneId(symbolid, item.getPlatform()) != null) {//check to see if there is possible data for this symbol (it is to avoid refering to null images which display as a crsss icon in IE) 
+					element = new DataItem("../dynamicimages/heatmap_" + symbolid + ".jpg?tile=5&masterTableId="+item.getId(), 
 							       "Click to see " + item.getTitle() + " microarray expression profile for "+ symbol, 
-							       "mastertable_browse.html?gene="+symbol+"&masterTableId="+item.getId()+"&cleartabs=true", 15);
+							       "mastertable_browse.html?gene="+symbol+"&geneId="+symbolid+"&masterTableId="+item.getId()+"&cleartabs=true", 15);
 					if (debug) 
 					    System.out.println("GeneStripAssembler.retrieveData value = "+element.getValue()+" title = "+element.getTitle()+" link = "+element.getLink());
 					complexValue.add(element);
@@ -234,14 +264,18 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 					complexValue2.add(element);
 					element = new DataItem("View on IGV", "Open IGV in Java Web Start to see GUDMAP sequencing data for " + symbol, igvUrl, 10);
 					complexValue2.add(element);
-					data[i][7] = new DataItem(complexValue2, 81);
+					
+					if (speciesid.contains("1"))
+						data[i][7] = new DataItem(complexValue2, 81);
+					else
+						data[i][7] = new DataItem("");
+
 //				}
 	
-				/** 9 - geneset */
-				// not decided yet, check with ED & duncan
-				// leave it for time being ///////////////
-	//			String geneSetNumber = "0";
-				data[i][8] = new DataItem("Genesets(n)");
+				/** 9 - geneid */ 
+				// changed to allow id to be used when storing collections
+				data[i][8] = new DataItem(symbolid);
+				
 			}
 			
 			if (null == cache)
@@ -265,7 +299,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	}
 	
 	public HeaderItem[] createHeader()	{
-		String headerTitles[] = {"Gene", "Synonyms", "Disease", "Theiler Stage","Expression Profile",  
+		String headerTitles[] = {"Gene", "Synonyms", "Disease", "Stage","Expression Profile",  
 //								 "Expression Images", "Microarray expression profile", "RNA-SEQ", "Genesets"};
 		 						 "Expression Images", "Microarray expression profile", "RNA-SEQ"};
 //		boolean headerSortable[] = {true, false, false, false, false, false, false, false, false, false};
@@ -290,7 +324,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @param symbol
 	 * @return
 	 */
-	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol) {
+	public static String getExpressionHtmlCode(double[] values, String[] focusGroups, String symbol, String symbolId) {
 		// added by xingjun - 08/05/2009 - its possible values is null
 		if (values == null || values.length == 0) {
 			return "";
@@ -308,7 +342,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 //		System.out.println("focusGroupString: " + focusGroupString);
 		
 		// url
-		String browseLink = "'focus_insitu_browse.html?gene=" + symbol + "&focusedOrgan='";
+		String browseLink = "'focus_insitu_browse.html?geneid=" + symbolId + "&focusedOrgan='";
 		
 		// concatenate script string
     	code += "<script>var val=";
@@ -335,14 +369,14 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @param symbol
 	 * @return
 	 */
-	private String getSynonyms(Connection conn, String symbol) {
+	private String getSynonyms(Connection conn, String symbolId) {
 		
-		if (symbol == null || symbol.equals("")) {
+		if (symbolId == null || symbolId.equals("")) {
 			return "";
 		}
 
 		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		String synonyms = geneStripDAO.findSynonymsBySymbol(symbol); 
+		String synonyms = geneStripDAO.findSynonymsBySymbolId(symbolId); 
         geneStripDAO = null;
 
         return synonyms;
@@ -391,13 +425,13 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @param symbol
 	 * @return
 	 */
-	private String[] getGeneStagesInsitu(Connection conn, String symbol) {
-		if (symbol == null || symbol.equals("")) {
+	private String[] getGeneStagesInsitu(Connection conn, String symbolId) {
+		if (symbolId == null || symbolId.equals("")) {
 			return null;
 		}
 		
 		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		String[] stages = geneStripDAO.getGeneStages(symbol, "insitu");
+		String[] stages = geneStripDAO.getGeneStages(symbolId, "insitu");
         geneStripDAO = null;
 
 		return stages;
@@ -432,9 +466,8 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 
 		String[] stageRange = new String[2];
 		if (insituGeneStages == null || insituGeneStages.length == 0) { //  no insitu submission
-//			System.out.println("insitu stage value is null");
+
 			if (arrayGeneStages == null || arrayGeneStages.length == 0) { // no array submission
-//				System.out.println("array stage value is null");
 				stageRange[0] = "-1";
 				stageRange[1] = "-1";
 			} else { // do have array submissions
@@ -443,37 +476,32 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				stageRange[1] = arrayGeneStages[aLen-1];
 			}
 		}  else { // do have insitu submissions
-//			System.out.println("insitu stage value is not null########");
 			int iLen = insituGeneStages.length;
 			if (arrayGeneStages == null || arrayGeneStages.length == 0) { // no array submission
 				stageRange[0] = insituGeneStages[0];
 				stageRange[1] = insituGeneStages[iLen-1];
 			} else { // do have array submissions
-//				System.out.println("array stage value is not null#########");
 				int aLen = arrayGeneStages.length;
-				// get earliest stage of insitu and array
+
 				int ealiestStageInsitu = Integer.parseInt(insituGeneStages[0]);
 				int ealiestStageArray = Integer.parseInt(arrayGeneStages[0]);
-				// get latest stage of insitu and array
+
 				int latestStageInsitu = Integer.parseInt(insituGeneStages[iLen-1]);
 				int latestStageArray = Integer.parseInt(arrayGeneStages[aLen-1]);
-				// get stage range
-				// earliest
+
 				if (ealiestStageInsitu <= ealiestStageArray) {
-					stageRange[0] = insituGeneStages[0];
+					stageRange[0] = DbUtility.getRefStageFromOrder(insituGeneStages[0]);
 				} else {
-					stageRange[0] = arrayGeneStages[0];
+					stageRange[0] = DbUtility.getRefStageFromOrder(arrayGeneStages[0]);
 				}
-				// latest
+
 				if (latestStageInsitu >= latestStageArray) {
-					stageRange[1] = insituGeneStages[iLen-1];
+					stageRange[1] = DbUtility.getRefStageFromOrder(insituGeneStages[iLen-1]);
 				} else {
-					stageRange[1] = arrayGeneStages[aLen-1];
+					stageRange[1] = DbUtility.getRefStageFromOrder(arrayGeneStages[aLen-1]);
 				}
 			}
 		}
-//		System.out.println("stage ragne e: " + stageRange[0]);
-//		System.out.println("stage ragne l: " + stageRange[1]);
 		return stageRange;
 	}
 	
@@ -483,13 +511,13 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @param symbol
 	 * @return
 	 */
-	private ArrayList getRelatedInsituSubmissions(Connection conn, String symbol) {
-		if (symbol == null || symbol.equals("")) {
+	private ArrayList getRelatedInsituSubmissions(Connection conn, String symbolid) {
+		if (symbolid == null || symbolid.equals("")) {
 			return null;
 		}
 
 		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-        ArrayList relatedInsituSubmission = ishDAO.findRelatedSubmissionBySymbolISH(symbol);
+        ArrayList relatedInsituSubmission = ishDAO.findRelatedSubmissionBySymbolIdISH(symbolid);
         ishDAO = null;
 
 		return relatedInsituSubmission;
@@ -657,8 +685,8 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @param symbol
 	 * @return
 	 */
-	private double[] getExpressionProfile(String symbol) {
-		if (symbol == null || symbol.equals("")) {
+	private double[] getExpressionProfile(String symbolid) {
+		if (symbolid == null || symbolid.equals("")) {
 			return null;
 		}
 		String[] interestedAnatomyStructures = 
@@ -693,7 +721,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				}
 	
 				// get expression info
-				ArrayList expressionOfGivenComponents = geneStripDAO.getGeneExpressionForStructure(symbol, componentIds, true);
+				ArrayList expressionOfGivenComponents = geneStripDAO.getGeneExpressionForStructure(symbolid, componentIds, true);
 				
 				// start to calculate - only relevant expression exists
 				double indicator = 0;
@@ -745,18 +773,33 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @param symbol
 	 * @return
 	 */
-	private int getNumberOfDisease(Connection conn, String symbol) {
-		if (symbol == null || symbol.equals("")) {
+	private int getNumberOfDisease(Connection conn, String symbolId) {
+		if (symbolId == null || symbolId.equals("")) {
 			return 0;
 		}
 
 		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		int diseaseNumber = geneStripDAO.getGeneDiseaseNumber(symbol);
+		int diseaseNumber = geneStripDAO.getGeneDiseaseNumber(symbolId);
 		geneStripDAO = null;
 
         return diseaseNumber;
 	}
 
+	private ArrayList<String[]> getGenesFromIds(Connection conn, ArrayList<String> ids) {
+		if (ids == null || ids.equals("")) {
+			return null;
+		}
+		ArrayList<String[]> genes = new ArrayList<String[]>();
+		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
+		for(String id:ids){
+			String[] gene = geneStripDAO.getGeneFromId(id);
+			genes.add(gene);
+		}
+		geneStripDAO = null;
+
+        return genes;
+	}
+	
 	/**
 	 * @author xingjun - 21/07/2011
 	 */

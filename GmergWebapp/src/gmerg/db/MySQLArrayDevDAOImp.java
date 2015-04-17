@@ -856,20 +856,28 @@ protected ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype
 		}
 		ArrayList<String> relevantSymbols = new ArrayList<String>();
 		ResultSet resSet = null;
-		ParamQuery parQ = InsituDBQuery.getParamQuery("GENE_SYMBOLS_AND_SYNONYMS");
-		String queryString = parQ.getQuerySQL();
-		String SymbolString = DBHelper.convertItemsFromArrayListToString(candidateSymbols);
-		queryString = queryString.replace("RPR_SYMBOL LIKE ?", "RPR_SYMBOL IN (" +SymbolString + ")");
-		queryString = queryString.replace("RSY_SYNONYM LIKE ?", "RSY_SYNONYM IN (" +SymbolString + ")");
-		queryString = queryString.replace("GNF_SYMBOL LIKE ?", "GNF_SYMBOL IN (" +SymbolString + ")");
-		queryString = queryString.replace("ORDER BY NATURAL_SORT(GENE) LIMIT ?", "");
+//		ParamQuery parQ = InsituDBQuery.getParamQuery("GENE_SYMBOLS_AND_SYNONYMS");
+//		String queryString = parQ.getQuerySQL();
+//		String SymbolString = DBHelper.convertItemsFromArrayListToString(candidateSymbols);
+//		queryString = queryString.replace("RPR_SYMBOL LIKE ?", "RPR_SYMBOL IN (" +SymbolString + ")");
+//		queryString = queryString.replace("RSY_SYNONYM LIKE ?", "RSY_SYNONYM IN (" +SymbolString + ")");
+//		queryString = queryString.replace("GNF_SYMBOL LIKE ?", "GNF_SYMBOL IN (" +SymbolString + ")");
+//		queryString = queryString.replace("ORDER BY NATURAL_SORT(GENE) LIMIT ?", "");
 //		System.out.println("ArrayDevDAO:getRelevantSymbols:SQL: " + queryString);
+
+		
+		
+		ParamQuery parQ = InsituDBQuery.getParamQuery("GENE_SYMBOLS_FROM_GENEID");
+		String queryString = parQ.getQuerySQL();
+		String SymbolString = DBHelper.convertItemsFromArrayListToString(candidateSymbols);		
+		queryString = queryString.replace("IN ( ? )",SymbolString);
 		
 		PreparedStatement prepStmt = null;
 		try {
-	    if (debug)
-		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
+			
+		    if (debug) System.out.println("MySQLArrayDevDAOImp.getRelevantSymbols prepStmt = "+prepStmt); 
+		    
 			resSet = prepStmt.executeQuery();
 			if(resSet.first()){
 				resSet.beforeFirst();
@@ -899,29 +907,30 @@ protected ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype
 		}
 		ArrayList<String> relevantSymbols = new ArrayList<String>();
 		ResultSet resSet = null;
-		ParamQuery parQ = InsituDBQuery.getParamQuery("GENE_SYMBOLS_AND_SYNONYMS");
-		String queryString = parQ.getQuerySQL();
-		String SymbolString = DBHelper.convertItemsFromArrayListToString(candidateSymbols);
-		queryString = queryString.replace("RPR_SYMBOL LIKE ?", "RPR_SYMBOL IN (" +SymbolString + ")");
-		queryString = queryString.replace("RSY_SYNONYM LIKE ?", "RSY_SYNONYM IN (" +SymbolString + ")");
-		queryString = queryString.replace("GNF_SYMBOL LIKE ?", "GNF_SYMBOL IN (" +SymbolString + ")");
-		queryString = queryString.replace("ORDER BY NATURAL_SORT(GENE) LIMIT ?", "");
+//		ParamQuery parQ = InsituDBQuery.getParamQuery("GENE_SYMBOLS_AND_SYNONYMS");
+//		String queryString = parQ.getQuerySQL();
+//		String SymbolString = DBHelper.convertItemsFromArrayListToString(candidateSymbols);
+//		queryString = queryString.replace("RPR_SYMBOL LIKE ?", "RPR_SYMBOL IN (" +SymbolString + ")");
+//		queryString = queryString.replace("RSY_SYNONYM LIKE ?", "RSY_SYNONYM IN (" +SymbolString + ")");
+//		queryString = queryString.replace("GNF_SYMBOL LIKE ?", "GNF_SYMBOL IN (" +SymbolString + ")");
+//		queryString = queryString.replace("ORDER BY NATURAL_SORT(GENE) LIMIT ?", "");
 
-		int subStatus = DBHelper.getSubStatusByPrivilege(userPrivilege);
-		queryString = 
-			queryString.replaceAll("AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4", 
-					"AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK <= ?");
 		
-//		System.out.println("ArrayDevDAO:getRelevantSymbols:subStatus: " + subStatus);
-//		System.out.println("ArrayDevDAO:getRelevantSymbols:SQL: " + queryString);
+		ParamQuery parQ = InsituDBQuery.getParamQuery("GENE_SYMBOLS_FROM_GENEID2");
+		String queryString = parQ.getQuerySQL();
+		String SymbolString = DBHelper.convertItemsFromArrayListToString(candidateSymbols);		
+		queryString = queryString.replace("IN ( ? )",SymbolString);
+		
+		int subStatus = DBHelper.getSubStatusByPrivilege(userPrivilege);
 		
 		PreparedStatement prepStmt = null;
 		try {
-	    if (debug)
-		System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
+//			prepStmt.setString(1, SymbolString);
 			prepStmt.setInt(1, subStatus);
-			prepStmt.setInt(2, subStatus);
+			
+		    if (debug) System.out.println("MySQLArrayDevDAOImp.prepStmt = "+prepStmt);
+		    
 			resSet = prepStmt.executeQuery();
 			if(resSet.first()){
 				resSet.beforeFirst();

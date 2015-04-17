@@ -3,6 +3,7 @@
  */
 package gmerg.utils;
 
+import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.db.ArrayDAO;
 import gmerg.db.ArrayDevDAO;
 import gmerg.db.CollectionDAO;
@@ -25,17 +26,42 @@ import java.util.ArrayList;
 
 public class DbUtility {
     
-    public static ArrayList<String> retrieveGeneProbeIds(String geneSymbol, String platformId) {
+    public static ArrayList<String> retrieveGeneProbeIds(String geneId, String platformId) {
 		// create a dao
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
 			
 		        // get data from database
-			ArrayList<String> probeIds = arrayDAO.getProbeSetIdBySymbol(geneSymbol, platformId);
+			ArrayList<String> probeIds = arrayDAO.getProbeSetIdBySymbol(geneId, platformId);
 			if (probeIds == null || probeIds.size() == 0) {
 			    GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
-			    String alternateSymbol = geneDAO.findSymbolBySynonym(geneSymbol);
+			    String alternateSymbol = geneDAO.findSymbolBySynonym(geneId);
+			    probeIds = arrayDAO.getProbeSetIdBySymbol(alternateSymbol, platformId);
+			}
+			
+			return probeIds;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGeneProbeIds failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+    }
+
+    public static ArrayList<String> retrieveGeneProbeIdsByGeneId(String symbolId, String platformId) {
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			
+		        // get data from database
+			ArrayList<String> probeIds = arrayDAO.getProbeSetIdBySymbol(symbolId, platformId);
+			if (probeIds == null || probeIds.size() == 0) {
+			    GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
+			    String alternateSymbol = geneDAO.findSymbolBySynonym(symbolId);
 			    probeIds = arrayDAO.getProbeSetIdBySymbol(alternateSymbol, platformId);
 			}
 			
@@ -65,6 +91,22 @@ public class DbUtility {
 			
 		} catch(Exception e){
 			System.out.println("DBUtility::retrieveImageIdsByGeneSymbol failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+    }
+    public static ArrayList<String> retrieveImageIdsByGeneSymbolId(String symbolId) {
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			CollectionDAO collectionDAO = MySQLDAOFactory.getCollectionDAO(conn);
+			ArrayList<String> imageIds = collectionDAO.getInsituSubmissionImageIdByGeneId(symbolId);
+			return imageIds;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveImageIdsByGeneSymbolId failed !!!");
 			return null;
 		}
 		finally{
@@ -204,7 +246,7 @@ public class DbUtility {
      * @param wildcard
      * @return
      */
-    public static ArrayList retrieveGeneSymbolsFromGeneInput(String input, String wildcard) {
+    public static ArrayList<String> retrieveGeneSymbolsFromGeneInput(String input, String wildcard) {
 		if (input == null || input.equals(""))
 		    return null;
 		
@@ -212,7 +254,7 @@ public class DbUtility {
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
-			ArrayList geneSymbols = geneDAO.getSymbolsFromGeneInput(input, wildcard);
+			ArrayList<String> geneSymbols = geneDAO.getSymbolsFromGeneInput(input, wildcard);
 			return geneSymbols;
 			
 		} catch(Exception e){
@@ -245,6 +287,24 @@ public class DbUtility {
 	    	DBHelper.closeJDBCConnection(conn);
 		}	
     }
+    
+    public static String retrieveGeneIdBySymbol(String symbol, String species) {
+		// create a dao
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			GeneDAO geneDAO = MySQLDAOFactory.getGeneDAO(conn);
+			String geneId = geneDAO.getGeneIdBySymbol(symbol, species);
+			return geneId;
+			
+		} catch(Exception e){
+			System.out.println("DBUtility::retrieveGeneIdBySymbol failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+    }
+   
     
     /**
      * <p>created by Mehran and implemented by xingjun on 11/08/2009</p>
@@ -503,7 +563,70 @@ public class DbUtility {
 		}	
 
 	}
-    
+	
+	public static String[] getRefStages(String stage) {
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			List<String> result = arrayDAO.getRefStages(stage);
+			if(stage == "Mus musculus"){
+				result = result.subList(16, result.size());
+			}
+			
+			String[] array = new String[result.size()];
+			for(int i=0; i<result.size(); i++){
+				array[i] = result.get(i);
+			}
+
+	    	return array;
+	    	
+		} catch(Exception e){
+			System.out.println("DBUtility::getRefStages failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
+	}
+
+	public static String getRefStageOrder(String stage) {
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			String result = arrayDAO.getRefStageOrder(stage);
+
+	    	return result;
+	    	
+		} catch(Exception e){
+			System.out.println("DBUtility::getRefStageOrder failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
+	}
+
+	public static String getRefStageFromOrder(String order) {
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			String result = arrayDAO.getRefStageFromOrder(order);
+
+	    	return result;
+	    	
+		} catch(Exception e){
+			System.out.println("DBUtility::getRefStageFromOrder failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
+	}
+
+	
 }   
     
   

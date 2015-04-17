@@ -17,7 +17,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 
     private Connection conn;
     private int MAX_COLUMNS = 12; // added extra column ALE_GENE
-    private int MAX_ISH_COLUMNS = 14;
+    private int MAX_ISH_COLUMNS = 15;//14;
     private int MAX_NGD_COLUMNS = 13;
 
 
@@ -336,7 +336,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}  else if(4 == orderby){
 					orderStr = " order by NGP_LIBRARY_STRATEGY " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(5 == orderby){
-					orderStr = " order by SUB_EMBRYO_STG " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();	
+					orderStr = " order by STG_STAGE_DISPLAY " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();	
 				}  else if(6 == orderby){
 					orderStr = " order by TRIM(CASE NGS_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(NGS_DEV_STAGE,' ',NGS_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',NGS_DEV_STAGE) ELSE CONCAT(NGS_STAGE_FORMAT,NGS_DEV_STAGE) END) " + order + "," + AdvancedSearchDBQuery.getMICDefaultSort();
 				}  else if(7 == orderby){
@@ -357,7 +357,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				if(orderby < 0) {
 					orderStr = " order by " + AdvancedSearchDBQuery.getISHDefaultSort(); 
 				} else if(0 == orderby){
-					orderStr = " order by NATURAL_SORT(RPR_SYMBOL) " + order + "," + "SUB_EMBRYO_STG, SPN_SEX";
+					orderStr = " order by NATURAL_SORT(RPR_SYMBOL) " + order + "," + "STG_STAGE_DISPLAY, SPN_SEX";
 				} else if(1 == orderby) {
 					orderStr = " order by CAST(SUBSTRING(SUB_ACCESSION_ID, INSTR(SUB_ACCESSION_ID,'" + ":" + "')+1) AS UNSIGNED) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort(); 
 				}  else if(2 == orderby){
@@ -369,12 +369,12 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 				}  else if(5 == orderby){
 					orderStr = " order by NATURAL_SORT(TRIM(RPR_JAX_ACC)) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(6 == orderby){
-					orderStr = " order by SUB_EMBRYO_STG " + order + "," + "NATURAL_SORT(RPR_SYMBOL), SPN_SEX";
+					orderStr = " order by STG_STAGE_DISPLAY " + order + "," + "NATURAL_SORT(RPR_SYMBOL), SPN_SEX";
 				}  else if(7 == orderby){
 					orderStr = " order by TRIM(CASE SPN_STAGE_FORMAT WHEN 'dpc' THEN CONCAT(SPN_STAGE,' ',SPN_STAGE_FORMAT) WHEN 'P' THEN CONCAT('P',SPN_STAGE) ELSE CONCAT(SPN_STAGE_FORMAT,SPN_STAGE) END) " 
 						+ order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 				}  else if(8 == orderby){
-					orderStr = " order by SPN_SEX " + order + "," + "NATURAL_SORT(RPR_SYMBOL), SUB_EMBRYO_STG, SPN_SEX";
+					orderStr = " order by SPN_SEX " + order + "," + "NATURAL_SORT(RPR_SYMBOL), STG_STAGE_DISPLAY, SPN_SEX";
 				}  else if(9 == orderby){
 					//orderStr = " order by SPN_WILDTYPE " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
 					orderStr = " order by natural_sort(GENOTYPE) " + order + "," + AdvancedSearchDBQuery.getISHDefaultSort();
@@ -400,7 +400,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 	 * @return
 	 */
 	public ArrayList getFocusBrowseList(String[] organ, int column, boolean ascending, 
-			String query, String stage, String gene, String archiveId, String batchId, String specimenType, String offset, String resPerPage, GenericTableFilter filter) {
+			String query, String stage, String gene, String geneid, String archiveId, String batchId, String specimenType, String offset, String resPerPage, GenericTableFilter filter) {
 //		System.out.println("FocusForAll:getFocusBrowseList:column: " + column);
 //		System.out.println("query type: " + query);
 
@@ -453,7 +453,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if(null == stage || stage.equals("") || stage.equals("null")) {
 				sql += AdvancedSearchDBQuery.groupBySubmissionArray + orderResult(column, ascending, query);
 			} else {
-				sql += " and SUB_EMBRYO_STG='"+stage+"' " + AdvancedSearchDBQuery.groupBySubmissionArray + orderResult(column, ascending, query);
+				sql += " and STG_STAGE_DISPLAY='"+stage+"' " + AdvancedSearchDBQuery.groupBySubmissionArray + orderResult(column, ascending, query);
 			}
 			
 			// offset and limit
@@ -531,7 +531,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if(null == stage || stage.equals("") || stage.equals("null")) {
 				sql += AdvancedSearchDBQuery.groupBySubmissionNGD + orderResult(column, ascending, query);
 			} else {
-				sql += " and SUB_EMBRYO_STG='"+stage+"' " + AdvancedSearchDBQuery.groupBySubmissionNGD + orderResult(column, ascending, query);
+				sql += " and STG_STAGE_DISPLAY='"+stage+"' " + AdvancedSearchDBQuery.groupBySubmissionNGD + orderResult(column, ascending, query);
 			}
 			
 			// offset and limit
@@ -619,7 +619,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if(null == stage || stage.equals("") || stage.equals("null")) {
 				sql += group + orderResult(column, ascending, query);
 			} else {
-				sql += " and SUB_EMBRYO_STG='"+stage+"' " + group + orderResult(column, ascending, query);
+				sql += " and STG_STAGE_DISPLAY='"+stage+"' " + group + orderResult(column, ascending, query);
 			}
 			// offset and limit
 			sql+= new String(null == resPerPage?
@@ -697,7 +697,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if(null == stage || stage.equals("") || stage.equals("null")) {
 				sql += group + orderResult(column, ascending, query);
 			} else {
-				sql += " and SUB_EMBRYO_STG='"+stage+"' " + group + orderResult(column, ascending, query);
+				sql += " and STG_STAGE_DISPLAY='"+stage+"' " + group + orderResult(column, ascending, query);
 			}
 			// offset and limit
 			sql+= new String(null == resPerPage?
@@ -768,6 +768,10 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if (gene != null && !gene.equals("")) {
 				sql += " and RPR_SYMBOL = '" + gene + "' ";
 			}
+			// geneid 
+			if (geneid != null && !geneid.equals("")) {
+				sql += " and RPR_LOCUS_TAG = '" + geneid + "' ";
+			}
 			// archiveId & batchId
 	        if (null != archiveId && !archiveId.equals("")){
 	        	sql += " and (SUB_ARCHIVE_ID = " + archiveId + " ) ";
@@ -782,7 +786,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			if(null == stage || stage.equals("") || stage.equals("null")) {
 				sql += group + orderResult(column, ascending, query);
 			} else {
-				sql += " and SUB_EMBRYO_STG='"+stage+"' " + group + orderResult(column, ascending, query);
+				sql += " and STG_STAGE_DISPLAY='"+stage+"' " + group + orderResult(column, ascending, query);
 			}
 			// offset and limit
 			sql+= new String(null == resPerPage?
@@ -846,8 +850,8 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
      * overload version 
      * @return
      */
-    public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, String archiveId, String batchId, String specimenType, GenericTableFilter filter) {
-    	ArrayList list = getFocusBrowseList(inputs, 1, true, query, stage, symbol, archiveId, batchId, specimenType, null, null,filter);
+    public int getQuickNumberOfRows(String query, String[] inputs, String stage, String symbol, String geneid, String archiveId, String batchId, String specimenType, GenericTableFilter filter) {
+    	ArrayList list = getFocusBrowseList(inputs, 1, true, query, stage, symbol, geneid, archiveId, batchId, specimenType, null, null,filter);
     	if(null == list) {
     		return 0;
     	} else {

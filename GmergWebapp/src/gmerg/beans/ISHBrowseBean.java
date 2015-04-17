@@ -111,16 +111,20 @@ public class ISHBrowseBean extends MultipleInstanceBean {
 
 	public static GenericTableFilter getDefaultIshFilter() { //this is compatible with AdvancedSearchQuery version
 		GenericTableFilter filter = new GenericTableFilter();
-		filter.addFilter(new FilterItem(0));
+//		filter.addFilter(new FilterItem(0));
+		filter.addFilter(0, Globals.getPredefinedFilter(PredefinedFilters.GENE));
 		if(Utility.getProject().equalsIgnoreCase("gudmap")) 
 			filter.addFilter(2, Globals.getPredefinedFilter(PredefinedFilters.LAB));
 		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.DATE));
 		filter.addFilter(4, Globals.getPredefinedFilter(PredefinedFilters.ASSAY));
-		filter.addFilter(new FilterItem(5));
-		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.STAGE));
+//		filter.addFilter(new FilterItem(5));
+		filter.addFilter(5, Globals.getPredefinedFilter(PredefinedFilters.PROBE_NAME));
+		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.THEILER_STAGE));
+		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.HUMAN_STAGE));
 		filter.addFilter(8, Globals.getPredefinedFilter(PredefinedFilters.SEX));
 //		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
 		filter.addFilter(12, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));
+		
 		return filter;
 	}
 }

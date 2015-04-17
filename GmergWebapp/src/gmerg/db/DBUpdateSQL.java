@@ -389,7 +389,7 @@ public class DBUpdateSQL {
 	  final static String columnName6 = "BAT_OID";
 	  
 	  final static String columnId7 = "SUBMISSION_STAGE";
-	  final static String columnName7 = "SUB_EMBRYO_STG";
+	  final static String columnName7 = "STG_STAGE_DISPLAY";
 	  
 	  final static String columnId8 = "SUBMISSION_MULTI";
 	  final static String columnName8 = "SUBMISSION_MULTI";

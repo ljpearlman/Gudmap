@@ -37,7 +37,7 @@
 	<f:verbatim>
 			 <h1>Login Page   <a href="#Link735744Context" name="Link735744Context" id="Link735744Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID735744', 'Login', 'Login is optional. &lt;br&gt;When logged-in you can save personal collections of genes, images and database entries and submit new gene expression annotations using the online annotation tool. Please contact &lt;a href=\&quot;mailto:GUDMAP-EDITORS@gudmap.org\&quot;&gt; GUDMAP-EDITORS@gudmap.org &lt;/a&gt; for a login. &lt;br&gt;', 'Link735744Context')"><img src="../../images/focus/n_information.gif" width="22" height="24" border="0" /></a></h1>
 			  </f:verbatim></h:panelGroup>
-	<h:form id="loginForm" style="visibility:hidden">
+	<h:form id="loginForm" style="visibility:visible">
 		<h:panelGrid width="300px" cellspacing="2" cellpadding="2" styleClass="centreAlign" style="text-align:left" >
 		  <h:panelGrid columns="2" cellpadding="2" cellspacing="2" style="text-align:center" >
 			<h:outputText value="Please login" styleClass="plaintextbold" />

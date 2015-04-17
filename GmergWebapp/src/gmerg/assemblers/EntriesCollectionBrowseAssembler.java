@@ -299,7 +299,7 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		
 		for(int i=0; i<rowNum; i++) {
 			String[] row =  (String[])collectionList.get(i);
-			tableData[i][0] = new DataItem(row[1], "", "gene.html?gene="+row[1], 10);//gene
+			tableData[i][0] = new DataItem(row[1], "", "gene.html?geneId="+row[17], 10);//gene
 			if("Microarray".equalsIgnoreCase(row[6])) 
 				tableData[i][1] = new DataItem(row[0], "Click to view Samples page","mic_submission.html?id="+row[0], 10);			//sub id
 			else if ("ISH".equalsIgnoreCase(row[6]) || "ISH control".equalsIgnoreCase(row[6])  || "IHC".equalsIgnoreCase(row[6]) || "OPT".equalsIgnoreCase(row[6])) 
@@ -320,8 +320,13 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 					tableData[i][5] = new DataItem(row[9], "Probe Details", "probe.html?probe="+row[9], 10);
 			}
 			//tableData[i][5] = new DataItem(row[9]);//probe name
-			if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
-				tableData[i][6] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);								// Theiler Stage
+			if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
+				String stage = row[2];
+				if (stage.contains("TS"))
+					tableData[i][6] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[2].toLowerCase()+"definition.html", 10);								// Theiler Stage
+				else
+					tableData[i][6] = new DataItem(row[2]);
+			}
 			else 
 				tableData[i][6] = new DataItem(row[2]);
 			//tableData[i][6] = new DataItem(row[2]);//stage
@@ -382,8 +387,13 @@ public class EntriesCollectionBrowseAssembler extends OffMemoryCollectionAssembl
 		}
 		
 		// Theiler Stage
-		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) 
-		    formatedRow[ 6] = new DataItem(row[6], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[6]+"definition.html", 10);								// Theiler Stage
+		if(Utility.getProject().equalsIgnoreCase("GUDMAP")) {
+			String stage = row[6];
+			if (stage.contains("TS"))
+				formatedRow[ 6] = new DataItem(row[6], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[6].toLowerCase()+"definition.html", 10);								// Theiler Stage
+			else
+				formatedRow[ 6] = new DataItem(row[6]);
+		}
 		else 
 		    formatedRow[ 6] = new DataItem(row[6]);  
 		

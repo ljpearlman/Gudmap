@@ -36,16 +36,17 @@ public class ArrayDBQuery {
 
 	// find the distribution of theiler stage of the microarray data
 	final static String name3 = "GENE_THEILER_STAGES_ARRAY";
-	final static String query3 = "SELECT DISTINCT MBC_STG_NAME FROM MIC_BROWSE_CACHE WHERE MBC_GNF_SYMBOL = ? ORDER BY NATURAL_SORT(MBC_STG_NAME) ";
-	  
+//	final static String query3 = "SELECT DISTINCT MBC_STG_NAME FROM MIC_BROWSE_CACHE WHERE MBC_GNF_SYMBOL = ? ORDER BY NATURAL_SORT(MBC_STG_NAME) ";
+	final static String query3 = "SELECT DISTINCT STG_ORDER FROM MIC_BROWSE_CACHE LEFT JOIN REF_STAGE ON STG_OID = MBC_SUB_STAGE_FK WHERE MBC_GNF_SYMBOL = ? ORDER BY NATURAL_SORT(MBC_STG_NAME) ";
+  
 	final static String name4 = "TOTAL_NUMBER_OF_SUBMISSION_ARRAY";
 	final static String query4 = "SELECT COUNT(DISTINCT MBC_SUB_ACCESSION_ID) " +
 			"FROM MIC_BROWSE_CACHE, ANA_TIMED_NODE, ANA_NODE " +
 			"WHERE ATN_PUBLIC_ID = MBC_COMPONENT_ID " +
 			"AND ATN_NODE_FK = ANO_OID ";
 	  
-	final static String name5 = "GET_GENE_BY_SYMBOL";
-	final static String query5 = "SELECT GNF_SYMBOL, GNF_NAME from REF_GENE_INFO WHERE GNF_SYMBOL = ";
+	final static String name5 = "GET_GENE_BY_SYMBOLID";
+	final static String query5 = "SELECT GNF_SYMBOL, GNF_NAME from REF_GENE_INFO WHERE GNF_ID = ";
 	  
 	final static String name6 = "GET_ALL_ANALYSIS_GENELISTS";
 	final static String query6 = "SELECT ANG_OID, ANG_TITLE, PER_NAME, ANG_SUMMARY, IF (ANG_CDT_FILENAME = '', URL_URL, '') , ANG_FILEPATH, ANG_FILENAME, ANG_CDT_FILENAME, ANG_SUBMITTER, ANG_ENTRY_DATE, ANG_IS_CLUSTERED, ANG_NUMBER_OF_ENTRIES, ANG_PLATFORM_ID " +
@@ -349,9 +350,20 @@ public class ArrayDBQuery {
 								  "AND SMP_SUBMISSION_FK = SUB_OID AND SAL_ALE_OID_FK=ALE_OID AND SAL_SUBMISSION_FK=SUB_OID " +
 								  "AND ALE_LAB_NAME_ALLELE IS NOT NULL ORDER BY SUB_ACCESSION_ID, SAL_ORDER";
 	
+	final static String name40 = "GET_ALL_REF_STAGES";
+	final static String query40 = "SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_SPECIES = ?;";
+
+	final static String name41 = "GET_REF_STAGE_ORDER";
+	final static String query41 = "SELECT STG_ORDER FROM REF_STAGE WHERE STG_STAGE_DISPLAY = ?;";
+	
+	final static String name42 = "GET_REF_STAGE_FROM_ORDER";
+	final static String query42 = "SELECT STG_STAGE_DISPLAY FROM REF_STAGE WHERE STG_ORDER = ?;";
+	
+	
 	final static String name = "";
 	final static String query = "";
-	  
+	
+	
 	static ParamQuery pqList[] = {
 		new ParamQuery(name1, query1),
 		new ParamQuery(name2, query2),
@@ -387,7 +399,12 @@ public class ArrayDBQuery {
 		new ParamQuery(name34, query34),
 		new ParamQuery(name35, query35),
 		new ParamQuery(name36, query36),
-		new ParamQuery(name37, query37)
+		new ParamQuery(name37, query37),
+		new ParamQuery(name38, query38),
+		new ParamQuery(name39, query39),
+		new ParamQuery(name40, query40),
+		new ParamQuery(name41, query41),
+		new ParamQuery(name42, query42)
 	};
 	
 	// finds ParamQuery object by name and returns

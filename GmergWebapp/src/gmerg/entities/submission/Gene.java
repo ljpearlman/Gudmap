@@ -35,7 +35,7 @@ public class Gene {
     private String ucscURL = null;
     protected String iuphar_db_URL = null;
     protected String iuphar_guide_URL = null;
-
+    private String species = null;
     /**
      * @param value the gene symbol
      */
@@ -343,4 +343,12 @@ public class Gene {
 	    iuphar_guide_URL = null;
     }
 
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+    
 }

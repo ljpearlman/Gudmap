@@ -1,5 +1,7 @@
 package gmerg.utils.table;
 
+import gmerg.entities.Globals.PredefinedFilters;
+import gmerg.utils.DbUtility;
 import gmerg.utils.Utility;
 
 import java.util.Date;
@@ -20,6 +22,7 @@ public class FilterItem {
 	private boolean active;
 	private int col;
 	private String name;
+	private PredefinedFilters key;
 	private FilterType type;
 	private String value1;
 	private String value2;
@@ -57,6 +60,10 @@ public class FilterItem {
 	public FilterItem(FilterType type, String[] options, String[] initialValues, boolean numeric) {
 		this(0, type, options, initialValues, numeric);
 	}
+
+	public FilterItem(FilterType type, String[] options, String[] initialValues, boolean numeric, String name) {
+		this(0, type, options, initialValues, numeric, name);
+	}
 	
 	public FilterItem(int col, FilterType type, String[] options, String[] initialValues, boolean numeric) {
 		name = "filter-"+String.valueOf(col); //This will replace when assembler assigned to a table 
@@ -81,6 +88,32 @@ public class FilterItem {
 		this.numeric = numeric;
 		rangeSwap = false;
 	}
+	
+	public FilterItem(int col, FilterType type, String[] options, String[] initialValues, boolean numeric, String name) {
+		this.name = name;
+		active = false;
+		this.col = col;
+		this.type = type;
+		this.options = options;
+		if (this.options != null) {
+			if(initialValues!=null) {
+				value1 = "";
+				for (int i=0; i<initialValues.length; i++)
+					value1 += ((i==0)?"":separator) + initialValues[i];
+			}
+			else
+				value1 = this.options[0];
+			if (isRange()){
+				int len = options.length;
+				value2 = this.options[len-1];
+			}
+		}
+		else
+			value1 = value2 = "";
+		rangeSelect = isRange();
+		this.numeric = numeric;
+		rangeSwap = false;
+	}
 
 	public String getSql(String colName) {
 		String value1 = this.value1;
@@ -88,12 +121,29 @@ public class FilterItem {
 		
 		//System.out.println("value1====="+value1);
 		//System.out.println("value2====="+value2);
+		String predef = this.getKey().toString();
+		if (predef == "THEILER_STAGE"|| predef == "HUMAN_STAGE"){
+			colName = "STG_ORDER";
+			// converts stage to its associated number value
+			value1 = DbUtility.getRefStageOrder(value1);
+			value2 = DbUtility.getRefStageOrder(value2);
+		}
+		
+//		if (colName == "STG_STAGE_DISPLAY" || colName == "QIC_STG_STAGE_DISPLAY" || colName == "QMC_STG_STAGE_DISPLAY" || colName == "MBC_STG_STAGE_DISPLAY"){
+//			colName = "STG_ORDER";
+//				
+//			// converts stage to its associated number value
+//			value1 = DbUtility.getRefStageOrder(value1);
+//			value2 = DbUtility.getRefStageOrder(value2);
+//		}
+
 		
 		if(type == FilterType.DATE || type == FilterType.DATERANGE) {
 			value1 = Utility.convertToDatabaseDate(value1);
 			if (value2!=null)
 				value2 = Utility.convertToDatabaseDate(value2);
 		}
+				
 		String q = numeric? "" : "'";
 		if (isRange() & rangeSelect) {
 			if (rangeSwap && value2!=null && !value2.trim().equals(""))
@@ -178,6 +228,14 @@ public class FilterItem {
 		this.name = name;
 	}
 
+	public PredefinedFilters getKey() {
+		return key;
+	}
+
+	public void setKey(PredefinedFilters filter) {
+		this.key = filter;
+	}
+	
 	public String[] getOptions() {
 		return options;
 	}

@@ -10,17 +10,19 @@ public class ImageMatrixBrowseBean {
     private boolean debug = false;
 
 	String gene;
+	String geneId;
 	
 	public ImageMatrixBrowseBean() {
 	    if (debug)
 		System.out.println("ImageMatrixBrowseBean.constructor");
 
 	    gene = Visit.getRequestParam("gene");
+	    geneId = Visit.getRequestParam("symbolid");
 		String viewName = "imageMatrix_" + gene;
 		if (TableUtil.isTableViewInSession())
 			return;
 		
-		ArrayList<String> imageIds = DbUtility.retrieveImageIdsByGeneSymbol(gene);	   
+		ArrayList<String> imageIds = DbUtility.retrieveImageIdsByGeneSymbolId(geneId);	   
        	TableUtil.saveTableView(populateImageMatrixTableView(viewName, imageIds));		
 	}	
 	

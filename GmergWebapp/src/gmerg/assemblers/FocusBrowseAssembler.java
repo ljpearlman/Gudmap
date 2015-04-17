@@ -14,6 +14,8 @@ import gmerg.utils.table.OffMemoryTableAssembler;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -27,7 +29,8 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	private String[] organs;
 	private String stage;
 	private String gene;
-    private String archiveId;
+	private String geneid;
+	private String archiveId;
     private String batchId;
     private String specimenType;
 
@@ -57,6 +60,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		organs = getParams("organ");
 		stage = getParam("stage");
 		gene = getParam("gene");
+		geneid = getParam("geneid");
 		archiveId = getParam("archiveId");
 		batchId = getParam("batchId");
 		this.specimenType = getParam("specimenType");
@@ -84,7 +88,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			
 			ArrayList submissions =
 				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
-						stage, gene, archiveId, batchId, specimenType, String.valueOf(offset), String.valueOf(num), filter);
+						stage, gene, geneid, archiveId, batchId, specimenType, String.valueOf(offset), String.valueOf(num), filter);
 
 			/** ---return the value object---  */
 			DataItem[][] ret = null;
@@ -126,7 +130,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, specimenType, filter);
+			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, geneid, archiveId, batchId, specimenType, filter);
 			return n;
 		}
 		catch(Exception e){
@@ -286,8 +290,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 	 */
 	public static HeaderItem[] createHeaderForArrayBrowseTable() {
 		 String[] headerTitles = { Utility.getProject()+" Entry Details", "GEO Sample ID",  "GEO Series ID", "Source",
-				 				   Utility.getStageSeriesMed()+" Stage", "Age", 
-				 				    "Date", "Sex",
+				 				   "Stage", "Age","Date", "Sex",
 				 				   "Sample Description", "Sample Name", "Genotype", "Component(s) sampled" };
 		 
 		int colNum = headerTitles.length;
@@ -376,12 +379,10 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			
 			/** get data from database */
 			// get insitu stage list
-			String[] insituStageList = 
-				focusStageDAO.getStageList("insitu", stage, organ, symbol);
+			String[] insituStageList = focusStageDAO.getStageList("insitu", stage, organ, symbol);
 			
 			// get microarray stage list
-			String[] arrayStageList = 
-				focusStageDAO.getStageList("Microarray", stage, organ, symbol);
+			String[] arrayStageList = focusStageDAO.getStageList("Microarray", stage, organ, symbol);
 			
 			// get age (dpc) stage list
 			int len = stage.length;
@@ -431,7 +432,11 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			tableData[i][2] = new DataItem(row[9], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[9], 2); //SERIES GEO ID
 			tableData[i][3] = new DataItem(row[4], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);		//source
 			if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
-				tableData[i][4] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);
+				String stage = row[2];
+				if (stage.contains("TS"))
+					tableData[i][4] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[2].toLowerCase()+"definition.html", 10);
+				else
+					tableData[i][4] = new DataItem(row[2]);
 			}
 			else {
 				tableData[i][4] = new DataItem(row[2]); //THEILER STAGE
@@ -467,7 +472,11 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			tableData[i][3] = new DataItem(row[3], "Source details", "lab_detail.html?id="+row[0], 6, 251, 500);//SUB_SOURCE
 			tableData[i][4] = new DataItem(row[4]);	//NGP_LIBRARY_STRATEGY			
 			if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
-				tableData[i][5] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[5]+"definition.html", 10);
+				String stage = row[5];
+				if (stage.contains("TS"))
+					tableData[i][5] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[5].toLowerCase()+"definition.html", 10);
+				else
+					tableData[i][5] = new DataItem(row[5]);
 			}
 			else {
 				tableData[i][5] = new DataItem(row[5]);
@@ -483,4 +492,51 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 		}					   
 		return tableData;
 	}
+	
+	public String[] getStages(String species) {
+		
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			FocusStageDAO focusStageDAO = MySQLDAOFactory.getFocusStageDAO(conn);
+			
+			/** get data from database */
+			// get insitu stage list
+			ArrayList<String> isharray =  focusStageDAO.getIshStages(species);
+			ArrayList<String> micarray =  focusStageDAO.getMicStages(species);
+			if (micarray != null){
+				for (String item : micarray){
+					if (!isharray.contains(item))
+						isharray.add(item);
+				}
+//				isharray.remove(micarray);
+//				isharray.addAll(micarray);
+			}
+			Collections.sort(isharray);
+			
+			for (int i=1 ; i<17; i++){
+				if (i<10)
+					isharray.remove("TS0"+i);
+				else
+					isharray.remove("TS" + i);
+			}
+			
+			String[] stages = new String[isharray.size()];			
+			for(int i = 0; i< isharray.size(); i++)
+				stages[i] = isharray.get(i);
+
+			
+			
+			return stages;
+		}
+		catch(Exception e){
+			System.out.println("FocusBrowseAssembler::getStageList !!!");
+			return null;
+		}
+		finally{
+			DBHelper.closeJDBCConnection(conn);
+		}
+		
+		
+	}
+	
 }

@@ -34,16 +34,16 @@
 			<h:panelGroup >
 				<h:outputLink styleClass="plaintext" value="gene.html">
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
-					<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
+					<f:param name="geneId" value="#{ISHSingleSubmissionBean.submission.geneId}" />
 				</h:outputLink>
 				<h:outputText styleClass="datatext" value=", #{ISHSingleSubmissionBean.submission.geneName}" rendered="#{not empty ISHSingleSubmissionBean.submission.geneName}"/>
 			</h:panelGroup>
 			
 			<h:outputText value="Stage:" />
-			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
-				<h:outputText value="Theiler Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
+			<h:outputLink styleClass="plaintext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{ISHSingleSubmissionBean.submission.stageLowerCase}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.stageName}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
 			</h:outputLink>
-			<h:outputText value="Carnegie Stage #{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.stageName}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 				
 			<h:outputText value="Tissue:" />
 			<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}"/> 
@@ -110,7 +110,7 @@
 				<h:outputText styleClass="plaintextbold" value=")." />
 			</h:panelGroup>
 		</h:panelGrid>
-		
+
 		<h:panelGrid width="100%" columns="1" styleClass="block-stripey" rendered="#{ISHSingleSubmissionBean.submission.project == 'GUDMAP' && ISHSingleSubmissionBean.submission.assayType == 'TG' && ISHSingleSubmissionBean.submission.specimen.assayType == 'mouse marker strain'}">
 			<h:panelGroup>
 				<h:outputText styleClass="plaintextbold" value="Mouse marker strain entries are unique GUDMAP entries that can contain data for multiple probes at multiple stages of development (" />
@@ -383,7 +383,7 @@
 							<h:outputText styleClass="plaintext" value="Symbol: " />
 							<h:outputLink styleClass="datatext" value="gene.html">
 								<h:outputText value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
-								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
+								<f:param name="geneId" value="#{ISHSingleSubmissionBean.submission.geneId}" />
 							</h:outputLink>
 						</h:panelGroup>
 						<h:panelGroup>
@@ -501,7 +501,7 @@
 							<h:outputText styleClass="plaintext" value="Symbol: " />
 							<h:outputLink styleClass="datatext" value="gene.html">
 								<h:outputText value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
-								<f:param name="gene" value="#{ISHSingleSubmissionBean.submission.geneSymbol}" />
+								<f:param name="geneId" value="#{ISHSingleSubmissionBean.submission.geneId}" />
 							</h:outputLink>
 						</h:panelGroup>
 						<h:panelGroup>
@@ -616,11 +616,11 @@
 			<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
 				<h:outputText value="Stage:" />
 					
-				<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{ISHSingleSubmissionBean.submission.stage}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
-				<h:outputText value="TS#{ISHSingleSubmissionBean.submission.stage}" />
+				<h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{ISHSingleSubmissionBean.submission.stageLowerCase}definition.html" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.stage}" />
 				</h:outputLink>
 				
-				<h:outputText value="CS#{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species != 'Mus musculus'}"/>
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.stage}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species != 'Mus musculus'}"/>
 
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="Other Staging System:" />
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="#{ISHSingleSubmissionBean.submission.specimen.otherStage}" />
@@ -645,7 +645,7 @@
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:outputLink styleClass="datatext" value="gene.html">
 						<h:outputText value="#{allele.geneSymbol}" />
-						<f:param name="gene" value="#{allele.geneSymbol}" />
+						<f:param name="geneId" value="#{allele.geneId}" />
 					</h:outputLink>
 
 					<h:outputText value="MGI ID"  rendered="#{not empty allele.alleleId}"/>

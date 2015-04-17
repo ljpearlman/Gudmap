@@ -271,10 +271,12 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 		CollectionInfo collectionInfo = null;
 		
 		try {
-		    if (debug)
-			System.out.println("MySQLCollectionDAOImp.sql = "+query.toLowerCase());
 			prepStmt = conn.prepareStatement(query);
 			prepStmt.setInt(1, collectionId);
+			
+		    if (debug)
+			System.out.println("MySQLCollectionDAOImp.sql = "+prepStmt);
+			
 			resSet = prepStmt.executeQuery();
 			
 			if (resSet.first()) {
@@ -672,6 +674,49 @@ public class MySQLCollectionDAOImp implements CollectionDAO {
 
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, symbol);
+        	
+		    if (debug)
+		    	System.out.println("MySQLCollectionDAOImp:getInsituSubmissionImageIdByGene prepStmt = "+prepStmt);        	
+        	
+        	resSet = prepStmt.executeQuery();
+        	if (resSet.first()) {
+        		imageIds = new ArrayList<String>();
+        		resSet.beforeFirst();
+        		while (resSet.next()) {
+        			String imageId = resSet.getString(1);
+        			imageIds.add(imageId);
+        		}
+        	}
+//        	System.out.println("CollectionDAO:getInsituSubmissionImageIdByGene:image number: " + images.size());
+        	
+			return imageIds;
+		} catch(SQLException se) {
+			se.printStackTrace();
+			return null;
+		}	
+		finally{
+			DBHelper.closePreparedStatement(prepStmt);
+			DBHelper.closeResultSet(resSet);
+		}
+	}
+
+	public ArrayList<String> getInsituSubmissionImageIdByGeneId(String symbolId) {
+		if (symbolId == null || symbolId.equals("")) {
+			return null;
+		}
+        ArrayList<String> imageIds = null;
+		ResultSet resSet = null;
+        ParamQuery parQ = InsituDBQuery.getParamQuery("INSITU_SUBMISSION_IMAGE_ID_BY_GENE_SYMBOLID");
+        String queryString = parQ.getQuerySQL();
+//        System.out.println("CollectionDAO:getInsituSubmissionImageIdByGene:symbol: " + symbol);
+//        System.out.println("CollectionDAO:getInsituSubmissionImageIdByGene:sql: " + queryString);
+        PreparedStatement prepStmt = null;
+        try {
+        	// if disconnected from db, re-connected
+        	conn = DBHelper.reconnect2DB(conn);
+
+        	prepStmt = conn.prepareStatement(queryString);
+        	prepStmt.setString(1, symbolId);
         	
 		    if (debug)
 		    	System.out.println("MySQLCollectionDAOImp:getInsituSubmissionImageIdByGene prepStmt = "+prepStmt);        	

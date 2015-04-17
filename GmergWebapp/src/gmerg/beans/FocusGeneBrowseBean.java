@@ -191,12 +191,14 @@ System.out.println("widecard2="+ wildcards[2]);
 	    	System.out.println("FocusGeneBrowseBean:getFilter(in)");
 		GenericTableFilter filter = new GenericTableFilter();
 		filter.setTableToSqlColMap(colMap);
-		filter.addFilter(new FilterItem(0));
+//		filter.addFilter(new FilterItem(0));
+		filter.addFilter(0, Globals.getPredefinedFilter(PredefinedFilters.GENE));
 		if(Utility.getProject().equalsIgnoreCase("gudmap")) 
 			filter.addFilter(2, Globals.getPredefinedFilter(PredefinedFilters.LAB));
 		filter.addFilter(3, Globals.getPredefinedFilter(PredefinedFilters.DATE));		
 		filter.addFilter(4, Globals.getPredefinedFilter(PredefinedFilters.ASSAY));
-		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.STAGE));
+		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.THEILER_STAGE));
+		filter.addFilter(6, Globals.getPredefinedFilter(PredefinedFilters.HUMAN_STAGE));
 		filter.addFilter(8, Globals.getPredefinedFilter(PredefinedFilters.SEX));
 		filter.addFilter(11, Globals.getPredefinedFilter(PredefinedFilters.EXPRESSION));
 		filter.addFilter(13, Globals.getPredefinedFilter(PredefinedFilters.SPECIMEN));

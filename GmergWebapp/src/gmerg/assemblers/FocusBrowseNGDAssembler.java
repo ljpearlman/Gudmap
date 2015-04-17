@@ -28,6 +28,7 @@ public class FocusBrowseNGDAssembler extends OffMemoryTableAssembler{
 	private String[] organs;
 	private String stage;
 	private String gene;
+	private String geneid;
     private String archiveId;
     private String batchId;
     private String specimenType;
@@ -58,6 +59,7 @@ public class FocusBrowseNGDAssembler extends OffMemoryTableAssembler{
 		organs = getParams("organ");
 		stage = getParam("stage");
 		gene = getParam("gene");
+		gene = getParam("geneid");
 		archiveId = getParam("archiveId");
 		batchId = getParam("batchId");
 		specimenType = getParam("specimenType");
@@ -85,7 +87,7 @@ public class FocusBrowseNGDAssembler extends OffMemoryTableAssembler{
 			
 			ArrayList submissions =
 				focusForAllDAO.getFocusBrowseList(organs, column, ascending, assayType,
-						stage, gene, archiveId, batchId, null, String.valueOf(offset), String.valueOf(num), filter);
+						stage, gene, geneid, archiveId, batchId, null, String.valueOf(offset), String.valueOf(num), filter);
 
 			/** ---return the value object---  */
 			DataItem[][] ret = null;
@@ -125,7 +127,7 @@ public class FocusBrowseNGDAssembler extends OffMemoryTableAssembler{
 		Connection conn = DBHelper.getDBConnection();
 		try{
 			FocusForAllDAO focusForAllDAO = MySQLDAOFactory.getFocusForAllDAO(conn);
-			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, archiveId, batchId, specimenType, filter);
+			int n = focusForAllDAO.getQuickNumberOfRows(assayType, organs, stage, gene, geneid, archiveId, batchId, specimenType, filter);
 			return n;
 		}
 		catch(Exception e){
@@ -343,7 +345,11 @@ public class FocusBrowseNGDAssembler extends OffMemoryTableAssembler{
 			tableData[i][0] = new DataItem(row[0], "Click to view Samples page","mic_submission.html?id="+row[0], 10 );	
 			tableData[i][1] = new DataItem(row[1], "Click to view GEO page", "http://www.ncbi.nlm.nih.gov/projects/geo/query/acc.cgi?acc="+row[1], 2);
 			if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
-				tableData[i][2] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts"+row[2]+"definition.html", 10);
+				String stage = row[2];
+				if (stage.contains("TS"))
+					tableData[i][2] = new DataItem(row[2], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[2].toLowerCase()+"definition.html", 10);
+				else
+					tableData[i][2] = new DataItem(row[2]);
 			}
 			else {
 				tableData[i][2] = new DataItem(row[2]);
