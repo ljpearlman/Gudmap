@@ -11,6 +11,7 @@ import gmerg.db.DBHelper;
 import gmerg.db.GeneDAO;
 import gmerg.db.GenelistDAO;
 import gmerg.db.MySQLDAOFactory;
+import gmerg.entities.GenelistRnaSeqTreeInfo;
 import gmerg.entities.GenelistTreeInfo;
 import gmerg.entities.submission.array.MasterTableInfo;
 import gmerg.entities.submission.array.SearchLink;
@@ -563,6 +564,25 @@ public class DbUtility {
 		}	
 
 	}
+
+	public static ArrayList<GenelistRnaSeqTreeInfo> getRefGenelistsRnaSeq() {
+		Connection conn = DBHelper.getDBConnection();
+		try{
+			ArrayDAO arrayDAO = MySQLDAOFactory.getArrayDAO(conn);
+			ArrayList<GenelistRnaSeqTreeInfo> result = null;
+			result = arrayDAO.getRefGenelistsRnaSeq();
+	    	return result;
+	    	
+		} catch(Exception e){
+			System.out.println("DBUtility::getRefGenelistsRnaSeq failed !!!");
+			return null;
+		}
+		finally{
+	    	DBHelper.closeJDBCConnection(conn);
+		}	
+
+	}
+	
 	
 	public static String[] getRefStages(String stage) {
 		Connection conn = DBHelper.getDBConnection();

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 import gmerg.entities.submission.array.*;
 import gmerg.entities.submission.Gene;
+import gmerg.entities.GenelistRnaSeqTreeInfo;
 import gmerg.entities.GenelistTreeInfo;
 import gmerg.entities.HeatmapData;
-
 import analysis.DataSet;
 
 /**
@@ -89,6 +89,7 @@ public interface ArrayDAO {
 	public ArrayList<String> findSampleList(String dataset, String stage, String sample);
 	
 	public ArrayList<GenelistTreeInfo> getRefGenelists();
+	public ArrayList<GenelistRnaSeqTreeInfo> getRefGenelistsRnaSeq();
 	public ArrayList<String> getRefStages(String stage);
 	public String getRefStageOrder(String stage);
 	public String getRefStageFromOrder(String order);}

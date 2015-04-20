@@ -13,6 +13,7 @@ import gmerg.entities.submission.array.Sample;
 import gmerg.entities.submission.array.SearchLink;
 import gmerg.entities.submission.array.Series;
 import gmerg.entities.submission.array.SupplementaryFile;
+import gmerg.entities.GenelistRnaSeqTreeInfo;
 import gmerg.entities.GenelistTreeInfo;
 import gmerg.entities.HeatmapData;
 import gmerg.utils.Utility;
@@ -3156,6 +3157,64 @@ public class MySQLArrayDAOImp implements ArrayDAO {
 		}
 	}
 
+	public ArrayList<GenelistRnaSeqTreeInfo> getRefGenelistsRnaSeq() {
+		ArrayList<GenelistRnaSeqTreeInfo> result = null;
+        ResultSet resSet = null;
+        ParamQuery parQ = ArrayDBQuery.getParamQuery("GET_ALL_REF_GENELISTS_RNASEQ");
+        PreparedStatement prepStmt = null;
+        String queryString = parQ.getQuerySQL();
+//        System.out.println("getAllAnalysisGeneLists sql: " + queryString);
+        try {
+        	prepStmt = conn.prepareStatement(queryString);
+        	resSet = prepStmt.executeQuery();
+        	
+        	if (resSet.first()) {
+        		resSet.beforeFirst();
+        		
+        		result = new ArrayList<GenelistRnaSeqTreeInfo>();
+        		while (resSet.next()) {
+        			GenelistRnaSeqTreeInfo genelistTreeInfo = new GenelistRnaSeqTreeInfo();
+        			
+        			genelistTreeInfo.setGenelistOID(resSet.getString(1));
+        			genelistTreeInfo.setShortName(resSet.getString(2));
+        			genelistTreeInfo.setLongName(resSet.getString(3));
+        			genelistTreeInfo.setDescription(resSet.getString(4));
+        			genelistTreeInfo.setGlsClass(resSet.getString(5));
+        			genelistTreeInfo.setSubClass(resSet.getString(6));
+        			genelistTreeInfo.setCluster(resSet.getString(7));
+        			genelistTreeInfo.setEmapId(resSet.getString(8));
+           			genelistTreeInfo.setGeneCount(resSet.getString(9));
+        			genelistTreeInfo.setHeatmap(resSet.getString(10));
+        			genelistTreeInfo.setEmapId(resSet.getString(11));
+        			genelistTreeInfo.setGoBp(resSet.getString(12));
+        			genelistTreeInfo.setGoBpGenes(resSet.getString(13));
+        			genelistTreeInfo.setGoCc(resSet.getString(14));
+        			genelistTreeInfo.setGoCcGenes(resSet.getString(15));
+        			genelistTreeInfo.setMousePheno(resSet.getString(16));
+        			genelistTreeInfo.setMousePhenoGenes(resSet.getString(17));
+        			genelistTreeInfo.setAuthor(resSet.getString(18));
+        			genelistTreeInfo.setDate(resSet.getString(19));
+        			genelistTreeInfo.setReference(resSet.getString(20));
+        			genelistTreeInfo.setPublished(Integer.toBinaryString(resSet.getInt(21)));
+        			genelistTreeInfo.setStage(resSet.getString(22));
+        			
+        			
+        			result.add(genelistTreeInfo);
+        		}
+        	}
+        	
+			return result;
+			
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return null;
+		}
+		finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+		}
+	}
+	
 	public ArrayList<String> getRefStages(String stage) {
 		ArrayList<String> stages = null;
         ResultSet resSet = null;
