@@ -176,8 +176,8 @@ public class GeneListTreeRnaSeqBean implements Serializable
 		ArrayList<String> publishedDatasets = new ArrayList<String>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
 			if(inf.getPublished().equalsIgnoreCase("1")){
-				if(!publishedDatasets.contains(inf.getDataset())){ 
-					publishedDatasets.add(inf.getDataset());
+				if(!publishedDatasets.contains(inf.getGlsClass())){ 
+					publishedDatasets.add(inf.getGlsClass());
 				}
 			}
 		}
@@ -205,8 +205,8 @@ public class GeneListTreeRnaSeqBean implements Serializable
 		ArrayList<String> unpublishedDatasets = new ArrayList<String>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
 			if(inf.getPublished().equalsIgnoreCase("0")){
-				if(!unpublishedDatasets.contains(inf.getDataset())){ 
-					unpublishedDatasets.add(inf.getDataset());
+				if(!unpublishedDatasets.contains(inf.getGlsClass())){ 
+					unpublishedDatasets.add(inf.getGlsClass());
 				}
 			}
 		}
@@ -245,8 +245,8 @@ public class GeneListTreeRnaSeqBean implements Serializable
 		ArrayList<String> publishedDatasets = new ArrayList<String>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
 			if(inf.getPublished().equalsIgnoreCase("1")){
-				if(!publishedDatasets.contains(inf.getDataset())){ 
-					publishedDatasets.add(inf.getDataset());
+				if(!publishedDatasets.contains(inf.getGlsClass())){ 
+					publishedDatasets.add(inf.getGlsClass());
 				}
 			}
 		}
@@ -285,8 +285,8 @@ public class GeneListTreeRnaSeqBean implements Serializable
 		ArrayList<String> unpublishedDatasets = new ArrayList<String>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
 			if(inf.getPublished().equalsIgnoreCase("0")){
-				if(!unpublishedDatasets.contains(inf.getDataset())){ 
-					unpublishedDatasets.add(inf.getDataset());
+				if(!unpublishedDatasets.contains(inf.getGlsClass())){ 
+					unpublishedDatasets.add(inf.getGlsClass());
 				}
 			}
 		}
@@ -315,299 +315,56 @@ public class GeneListTreeRnaSeqBean implements Serializable
 		attr.put("title", "Dataset = "+dataset);
 		obj.put("attr", attr);
 
-		ArrayList<String> samples = new ArrayList<String>();
+		ArrayList<String> subclasses = new ArrayList<String>();
 		ArrayList<GenelistRnaSeqTreeInfo> unnamedsamples = new ArrayList<GenelistRnaSeqTreeInfo>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset())){
-				String sample = inf.getSample();
-				if(sample.isEmpty()){
-					unnamedsamples.add(inf);
-				}
-				else if(!samples.contains(sample)){
-//					System.out.println("createUnpublishedDatasets sample = "+ sample + " , dataset = "+ dataset);
-						samples.add(sample);
-				}
+			if(dataset.equalsIgnoreCase(inf.getGlsClass())){
+				String subclass = inf.getSubClass();
+//			    System.out.println("createUnpublishedDatasets sample = "+ sample + " , dataset = "+ dataset);
+				subclasses.add(subclass);
 			}
 		}
-		Collections.sort(samples);
+		Collections.sort(subclasses);
 
 		
 		
 		JSONArray  list = new JSONArray();
 		
-		JSONArray l1 = new JSONArray();
-		list.addAll(createLevelAll(unnamedsamples));
-		
 		int id2 = -10;
-		for(String sample : samples){
+		for(String subclass : subclasses){
 			id2 = id2-1;
-			list.add(createSamples(genelist, dataset, "", sample, id2));	
-//			}
+			list.add(createClusters(genelist, dataset, subclass, id2));	
 		}				
 		obj.put("children", list);
 				
 		return obj;
 	}	
-	private JSONObject createUnpublishedDatasets2(ArrayList<GenelistRnaSeqTreeInfo> genelist, String dataset, int id){
-		
-		JSONObject obj = new JSONObject();		
-		obj.put("data", dataset);
-		obj.put("state", "closed");
-		
-		JSONObject attr = new JSONObject();
-		attr.put("id", id);
-		attr.put("title", "Dataset = "+dataset);
-		obj.put("attr", attr);
 
-		ArrayList<String> stages = new ArrayList<String>();
-		ArrayList<String> multistages = new ArrayList<String>();
-		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset())){
-				String st = inf.getStage();
-				if(!stages.contains(inf.getStage()) && !inf.getStage().trim().contentEquals("0")){
-					if (inf.getStage().length() == 4)
-						stages.add(inf.getStage());
-					else if(!multistages.contains(inf.getStage()))
-						multistages.add(inf.getStage());
-				}
-			}
-		}
-		Collections.sort(stages);
-		Collections.sort(multistages);
-		
-		JSONArray  list = new JSONArray();
-		
-		
 
-//		// put multiple stages here outside the stage node
-//		String redundantStage = "";
-//		for(String stage1 : stages){
-//			if (stage1.length() > 4){
-//				for(GenelistRnaSeqTreeInfo inf : genelist){
-//					if(dataset.equalsIgnoreCase(inf.getDataset()) && stage1.equalsIgnoreCase(inf.getStage())){
-//						System.out.println("sample for "+ dataset + ","+ stage1 + " = " + inf.getSample());
-//						if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-//							JSONObject obj1 = new JSONObject();
-//							obj1.put("data", inf.getName());
-//							JSONObject attr1 = new JSONObject();
-//							attr1.put("id", inf.getGenelistOID());
-//							String table = "";
-//							if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
-//								table = "4_" + inf.getDatasetId();
-//							else
-//								table = "3_" + inf.getDatasetId();
-//							attr1.put("table", table);
-//							attr1.put("rel", "Role");							
-//							attr1.put("title", "Dataset = "+ dataset +  ", " + stage1);
-//							obj1.put("attr", attr1);
-//							list.add(obj1);
-//						}
-//						else{
-////							JSONObject obj1 = new JSONObject();
-////							obj1.put("data", inf.getSample());
-////							obj1.put("state", "closed");
-////							JSONObject attr1 = new JSONObject();
-////							attr1.put("id", id-1);
-////							attr.put("title", "Dataset = "+ dataset + ", Sample = " +inf.getSample() + ", " + stage1);
-////							obj1.put("attr", attr1);
-////							JSONArray  list1 = new JSONArray();
-////							list1.add(createSamples(genelist, dataset, stage1, inf.getSample(), id));
-////							obj1.put("children", list1);
-////							list.add(obj1);
-//							list.add(createSamples(genelist, dataset, stage1, inf.getSample(), id));
-//						}
-//						redundantStage = stage1;
-//					}					
-//				}
-//			}
-//		}
-//		if (redundantStage.length() > 0)
-//			stages.remove(redundantStage);
-		
-		
-		
-		int id2 = -10;
-		for(String multistage : multistages){
-//			System.out.println("stage = " + stage);
-			id2 = id2-1;
-			list.add(createMultiStages(genelist, dataset, multistage, id2));					
-		}				
-		
-		for(String stage : stages){
-//			System.out.println("stage = " + stage);
-			id2 = id2-1;
-			list.add(createStages(genelist, dataset, stage, id2));					
-		}				
-		obj.put("children", list);
-				
-		return obj;
-	}
-
-	private JSONObject createStages(ArrayList<GenelistRnaSeqTreeInfo> genelist, String dataset, String stage, int id){
-
-		JSONObject obj = new JSONObject();		
-		obj.put("data", stage);
-		obj.put("state", "closed");
-		
-		JSONObject attr = new JSONObject();
-		attr.put("id",id);				
-		attr.put("title", "Dataset = "+ dataset + ", " + stage);
-		obj.put("attr", attr);
-
-		ArrayList<String> samples = new ArrayList<String>();
-		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
-				if(!samples.contains(inf.getSample()) && !inf.getSample().trim().equalsIgnoreCase(""))
-					samples.add(inf.getSample());
-			}
-		}
-		Collections.sort(samples);
-		
-		
-		JSONArray  list = new JSONArray();
-		int id2 = -100;
-		for(String sample : samples){
-			id2 = id2 - 1;
-			list.add(createSamples(genelist, dataset, stage, sample, id2));					
-		}				
-		obj.put("children", list);
-				
-		return obj;
-	}
-
-	private JSONObject createMultiStages(ArrayList<GenelistRnaSeqTreeInfo> genelist, String dataset, String stage, int id){
-		
-		if (debug)
-			System.out.println("dataset = "+ dataset + " stage = "+ stage);
-
-		ArrayList<String> samples = new ArrayList<String>();
-		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
-				if(!samples.contains(inf.getSample()) && !inf.getSample().trim().equalsIgnoreCase(""))
-					samples.add(inf.getSample());
-			}
-		}
-		Collections.sort(samples);
+	private JSONObject createClusters(ArrayList<GenelistRnaSeqTreeInfo> genelist, String glsclass, String subclass, int id){
 
 		JSONObject obj = new JSONObject();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage())){
-				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-					if (debug)
-						System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
-					obj = new JSONObject();
-					obj.put("data", inf.getName());
-					JSONObject attr1 = new JSONObject();
-					attr1.put("id", inf.getGenelistOID());
-					String table = "";
-					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
-						table = "4_" + inf.getDatasetId();
-					else
-						table = "3_" + inf.getDatasetId();
-					attr1.put("table", table);
-					attr1.put("rel", "Role");							
-					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
-					obj.put("attr", attr1);
-					return obj;
-				}
+			if(glsclass.equalsIgnoreCase(inf.getGlsClass()) && subclass.equalsIgnoreCase(inf.getSubClass())){
+				if (debug)
+					System.out.println("sample for "+ glsclass + ","+ stage + " = " + inf.getSample());
+				obj = new JSONObject();
+				obj.put("data", inf.getName());
+				JSONObject attr1 = new JSONObject();
+				attr1.put("id", inf.getGenelistOID());
+				String table = "";
+				if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
+					table = "4_" + inf.getDatasetId();
+				else
+					table = "3_" + inf.getDatasetId();
+				attr1.put("table", table);
+				attr1.put("rel", "Role");							
+				attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
+				obj.put("attr", attr1);
+				return obj;
 			}
-		}
+		}	
 
-		obj = new JSONObject();		
-		int id2 = -100;
-		for(String sample : samples){
-			id2 = id2 - 1;
-			obj = createSamples(genelist, dataset, stage, sample, id2);					
-		}				
-				
-		return obj;
-	}
-	
-	private JSONObject createUnnamedSamples(ArrayList<GenelistRnaSeqTreeInfo> genelist, String dataset, String stage, String sample, int id){
-
-		JSONObject obj = new JSONObject();
-		if(sample.contains("GSM") || sample.isEmpty()){
-		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
-				if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-					if (debug)
-						System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
-					obj = new JSONObject();
-					obj.put("data", inf.getName());
-					JSONObject attr1 = new JSONObject();
-					attr1.put("id", inf.getGenelistOID());
-					String table = "";
-					if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
-						table = "4_" + inf.getDatasetId();
-					else
-						table = "3_" + inf.getDatasetId();
-					attr1.put("table", table);
-					attr1.put("rel", "Role");							
-					attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
-					obj.put("attr", attr1);
-					return obj;
-				}
-			}
-		}
-		}
-		
-		
-		
-
-
-
-		obj.put("data", sample);
-		obj.put("state", "closed");
-		
-		JSONObject attr = new JSONObject();
-		attr.put("id",id);
-		attr.put("title", "Dataset = "+ dataset + ", Sample = " +sample);
-		obj.put("attr", attr);
-
-
-		ArrayList<GenelistRnaSeqTreeInfo> allList = new ArrayList<GenelistRnaSeqTreeInfo>();
-		for(GenelistRnaSeqTreeInfo inf : genelist){
-//			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage()) && sample.equalsIgnoreCase(inf.getSample())){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
-				if(!allList.contains(inf.getSubset2()))
-					allList.add(inf);
-			}
-		}
-
-		JSONArray  list = new JSONArray();
-		list = createLevelAll(allList);
-		obj.put("children", list);
-				
-		return obj;
-	}
-
-	private JSONObject createSamples(ArrayList<GenelistRnaSeqTreeInfo> genelist, String dataset, String stage, String sample, int id){
-
-		JSONObject obj = new JSONObject();
-		if(sample.contains("GSM") || sample.isEmpty()){
-			for(GenelistRnaSeqTreeInfo inf : genelist){
-				if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
-					if (inf.getSample().contains("GSM") || inf.getSample().isEmpty()){
-						if (debug)
-							System.out.println("sample for "+ dataset + ","+ stage + " = " + inf.getSample());
-						obj = new JSONObject();
-						obj.put("data", inf.getName());
-						JSONObject attr1 = new JSONObject();
-						attr1.put("id", inf.getGenelistOID());
-						String table = "";
-						if (inf.getDatasetId().contentEquals("5") || inf.getDatasetId().contentEquals("6") || inf.getDatasetId().contentEquals("7"))
-							table = "4_" + inf.getDatasetId();
-						else
-							table = "3_" + inf.getDatasetId();
-						attr1.put("table", table);
-						attr1.put("rel", "Role");							
-						attr1.put("title", "Dataset = "+ dataset +  ", " + stage);
-						obj.put("attr", attr1);
-						return obj;
-					}
-				}
-			}	
-		}
 		
 		obj.put("data", sample);
 		obj.put("state", "closed");
@@ -621,7 +378,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 		ArrayList<GenelistRnaSeqTreeInfo> allList = new ArrayList<GenelistRnaSeqTreeInfo>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
 //			if(dataset.equalsIgnoreCase(inf.getDataset()) && stage.equalsIgnoreCase(inf.getStage()) && sample.equalsIgnoreCase(inf.getSample())){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && sample.equalsIgnoreCase(inf.getSample())){
+			if(dataset.equalsIgnoreCase(inf.getGlsClass()) && sample.equalsIgnoreCase(inf.getSample())){
 				if(!allList.contains(inf.getSubset2()))
 					allList.add(inf);
 			}
@@ -680,7 +437,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 			attr.put("id", all.getGenelistOID());
 			attr.put("table", table);
 			attr.put("rel", "Role");
-			attr.put("title", "Dataset = "+ all.getDataset() + ", Sample = " + all.getSample() + ", " + all.getStage() + ", " + all.getGenelistType() + ", " + all.getAuthor());
+			attr.put("title", "Dataset = "+ all.getGlsClass() + ", Sample = " + all.getSample() + ", " + all.getStage() + ", " + all.getGenelistType() + ", " + all.getAuthor());
 			obj.put("attr", attr);
 
 			JSONArray  clusterlist = new JSONArray();
@@ -717,7 +474,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 			JSONObject attr = new JSONObject();
 			attr.put("id", k.getGenelistOID());
 			attr.put("table", table);
-			attr.put("title", "Dataset = "+ k.getDataset() + ", Sample = " + k.getSample() + ", " + k.getStage() + ", " + k.getGenelistType() + ", " + k.getAuthor());
+			attr.put("title", "Dataset = "+ k.getGlsClass() + ", Sample = " + k.getSample() + ", " + k.getStage() + ", " + k.getGenelistType() + ", " + k.getAuthor());
 			obj.put("attr", attr);
 					
 			list.add(obj);
@@ -740,7 +497,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 
 		ArrayList<String> publishers = new ArrayList<String>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset())){
+			if(dataset.equalsIgnoreCase(inf.getGlsClass())){
 				if(!publishers.contains(inf.getLpuRef()) && inf.getLpuRef() != null)
 					publishers.add(inf.getLpuRef());
 			}
@@ -772,7 +529,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 
 		ArrayList<GenelistRnaSeqTreeInfo> names = new ArrayList<GenelistRnaSeqTreeInfo>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef())){
+			if(dataset.equalsIgnoreCase(inf.getGlsClass()) && publisher.equalsIgnoreCase(inf.getLpuRef())){
 				if(!names.contains(inf.getName()))
 					names.add(inf);
 			}
@@ -799,7 +556,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 
 		ArrayList<String> stages = new ArrayList<String>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef())){
+			if(dataset.equalsIgnoreCase(inf.getGlsClass()) && publisher.equalsIgnoreCase(inf.getLpuRef())){
 				if(!stages.contains(inf.getStage()) && !inf.getStage().trim().contentEquals("0"))
 					stages.add(inf.getStage());
 			}
@@ -813,7 +570,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 		for(String stage1 : stages){
 			if (stage1.length() > 4){
 				for(GenelistRnaSeqTreeInfo inf : genelist){
-					if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef()) && stage1.equalsIgnoreCase(inf.getStage())){						
+					if(dataset.equalsIgnoreCase(inf.getGlsClass()) && publisher.equalsIgnoreCase(inf.getLpuRef()) && stage1.equalsIgnoreCase(inf.getStage())){						
 						JSONObject obj1 = new JSONObject();
 						obj1.put("data", inf.getName());
 						JSONObject attr1 = new JSONObject();
@@ -825,7 +582,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 							table = "3_" + inf.getDatasetId();
 						attr1.put("table", table);
 						attr1.put("rel", "Role");
-						attr1.put("title", "Dataset = "+ inf.getDataset() + ", Sample = " + inf.getName() + ", " + inf.getStage() + ", " + inf.getLpuRef() + ", " + inf.getAuthor());
+						attr1.put("title", "Dataset = "+ inf.getGlsClass() + ", Sample = " + inf.getName() + ", " + inf.getStage() + ", " + inf.getLpuRef() + ", " + inf.getAuthor());
 						obj1.put("attr", attr1);
 						list.add(obj1);
 						redundantStage = stage1;
@@ -861,7 +618,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 
 		ArrayList<GenelistRnaSeqTreeInfo> names = new ArrayList<GenelistRnaSeqTreeInfo>();
 		for(GenelistRnaSeqTreeInfo inf : genelist){
-			if(dataset.equalsIgnoreCase(inf.getDataset()) && publisher.equalsIgnoreCase(inf.getLpuRef()) && stage.equalsIgnoreCase(inf.getStage())){
+			if(dataset.equalsIgnoreCase(inf.getGlsClass()) && publisher.equalsIgnoreCase(inf.getLpuRef()) && stage.equalsIgnoreCase(inf.getStage())){
 				if(!names.contains(inf.getName()))
 					names.add(inf);
 			}
@@ -892,7 +649,7 @@ public class GeneListTreeRnaSeqBean implements Serializable
 				table = "3_" + inf.getDatasetId();
 			attr.put("table", table);
 			attr.put("rel", "Role");
-			attr.put("title", "Dataset = "+ inf.getDataset() + ", Sample = " + inf.getName() + ", " + inf.getStage() + ", " + inf.getLpuRef() + ", " + inf.getAuthor());
+			attr.put("title", "Dataset = "+ inf.getGlsClass() + ", Sample = " + inf.getName() + ", " + inf.getStage() + ", " + inf.getLpuRef() + ", " + inf.getAuthor());
 			obj.put("attr", attr);
 					
 			list.add(obj);
