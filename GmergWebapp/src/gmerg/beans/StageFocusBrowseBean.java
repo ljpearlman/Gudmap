@@ -27,6 +27,8 @@ public class StageFocusBrowseBean {
 		gene = Visit.getRequestParam("gene");
 		geneId = Visit.getRequestParam("geneId");
 		species = Visit.getRequestParam("species"); 
+		if (species == null)
+			species = "Mus Musculus";
 		assembler = new FocusBrowseAssembler();
 //		stageList = assembler.getStageList(stage, organ);
 		stage = assembler.getStages(species);
