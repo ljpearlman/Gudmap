@@ -100,9 +100,8 @@ public class GeneListRnaSeqTreeBean implements Serializable
     }
 
 	public String getTitle() {
-//    	createJSONFile();
 
-//		return "Microarray Analysis (gene list)";  
+
 		return "RNASEQ from Microarray Analysis";
 	}
 	
@@ -114,21 +113,13 @@ public class GeneListRnaSeqTreeBean implements Serializable
 	private void createJSONObject(ArrayList<GenelistRnaSeqTreeInfo> genelist){
 		
 		JSONObject obj = new JSONObject();
-//		obj.put("data", "Datasets");
-//		obj.put("state", "open");
-
-//		JSONObject attr = new JSONObject();
-//		attr.put("id", 0);
-//		obj.put("attr", attr);
 		
 		
 		obj.put("children", createIsPublished(genelist));
 		
 		JSONArray  outerlist = new JSONArray();
-//		outerlist.add(obj);
-		outerlist.add(createUnpublished(genelist));
-		
-//		System.out.println(outerlist);
+
+		outerlist.add(createUnpublished(genelist));		
 
 		try{
 			ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
@@ -354,7 +345,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 
 		for(GenelistRnaSeqTreeInfo inf : ids){
 			JSONObject obj = new JSONObject();		
-			obj.put("data", inf.getShortName());
+			obj.put("data", inf.getShortName() + "(" + inf.getGeneCount()  + " genes)");
 			obj.put("state", "closed");
 			
 			JSONObject attr = new JSONObject();

@@ -129,7 +129,7 @@ $(document).ready(function(){
 	 <h:inputText id="treeitem" value="#{GeneListRnaSeqTreeBean.selectedItem}" style="display:none; visibility: hidden; "/>
 	 <h:inputText id="genelist_mastertableId" value="#{GeneListRnaSeqTreeBean.masterTableId}" style="display:none; visibility: hidden; "/>
 	 <f:verbatim>
-		<div id="genelist_tree" class="demo" style="overflow: auto; align: left; height: 540px;">
+		<div id="genelist_tree" class="rnaseq" style="overflow: auto; align: left; height: 540px;">
 		</div>
 	</f:verbatim>
 	
