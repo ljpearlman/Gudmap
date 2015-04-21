@@ -525,6 +525,11 @@
 	<managed-bean-scope>session</managed-bean-scope>
  </managed-bean> 
  
+   <managed-bean>
+	<managed-bean-name>GeneListRnaSeqTreeBean</managed-bean-name>
+	<managed-bean-class>gmerg.beans.GeneListRnaSeqTreeBean</managed-bean-class>
+	<managed-bean-scope>session</managed-bean-scope>
+ </managed-bean> 
  
  <!-- *********************END SECTION: MANAGED BEAN************************** 
  =================== Initialize Image Map Hotspot Data ============== 

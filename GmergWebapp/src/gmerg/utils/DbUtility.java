@@ -564,7 +564,6 @@ public class DbUtility {
 		}	
 
 	}
-
 	public static ArrayList<GenelistRnaSeqTreeInfo> getRefGenelistsRnaSeq() {
 		Connection conn = DBHelper.getDBConnection();
 		try{

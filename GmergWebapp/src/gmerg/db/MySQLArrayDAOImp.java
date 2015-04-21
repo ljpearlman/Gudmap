@@ -3163,7 +3163,7 @@ public class MySQLArrayDAOImp implements ArrayDAO {
         ParamQuery parQ = ArrayDBQuery.getParamQuery("GET_ALL_REF_GENELISTS_RNASEQ");
         PreparedStatement prepStmt = null;
         String queryString = parQ.getQuerySQL();
-//        System.out.println("getAllAnalysisGeneLists sql: " + queryString);
+        System.out.println("getAllAnalysisGeneLists sql: " + queryString);
         try {
         	prepStmt = conn.prepareStatement(queryString);
         	resSet = prepStmt.executeQuery();
@@ -3182,21 +3182,20 @@ public class MySQLArrayDAOImp implements ArrayDAO {
         			genelistTreeInfo.setGlsClass(resSet.getString(5));
         			genelistTreeInfo.setSubClass(resSet.getString(6));
         			genelistTreeInfo.setCluster(resSet.getString(7));
-        			genelistTreeInfo.setEmapId(resSet.getString(8));
-           			genelistTreeInfo.setGeneCount(resSet.getString(9));
-        			genelistTreeInfo.setHeatmap(resSet.getString(10));
-        			genelistTreeInfo.setEmapId(resSet.getString(11));
-        			genelistTreeInfo.setGoBp(resSet.getString(12));
-        			genelistTreeInfo.setGoBpGenes(resSet.getString(13));
-        			genelistTreeInfo.setGoCc(resSet.getString(14));
-        			genelistTreeInfo.setGoCcGenes(resSet.getString(15));
-        			genelistTreeInfo.setMousePheno(resSet.getString(16));
-        			genelistTreeInfo.setMousePhenoGenes(resSet.getString(17));
-        			genelistTreeInfo.setAuthor(resSet.getString(18));
-        			genelistTreeInfo.setDate(resSet.getString(19));
-        			genelistTreeInfo.setReference(resSet.getString(20));
-        			genelistTreeInfo.setPublished(Integer.toBinaryString(resSet.getInt(21)));
-        			genelistTreeInfo.setStage(resSet.getString(22));
+        			genelistTreeInfo.setGeneCount(resSet.getString(8));
+        			genelistTreeInfo.setHeatmap(resSet.getString(9));
+        			genelistTreeInfo.setEmapId(resSet.getString(10));
+        			genelistTreeInfo.setGoBp(resSet.getString(11));
+        			genelistTreeInfo.setGoBpGenes(resSet.getString(12));
+        			genelistTreeInfo.setGoCc(resSet.getString(13));
+        			genelistTreeInfo.setGoCcGenes(resSet.getString(14));
+        			genelistTreeInfo.setMousePheno(resSet.getString(15));
+        			genelistTreeInfo.setMousePhenoGenes(resSet.getString(16));
+        			genelistTreeInfo.setAuthor(resSet.getString(17));
+        			genelistTreeInfo.setDate(resSet.getString(18));
+        			genelistTreeInfo.setReference(resSet.getString(19));
+        			genelistTreeInfo.setPublished(Integer.toBinaryString(resSet.getInt(20)));
+        			genelistTreeInfo.setStage(resSet.getString(21));
         			
         			
         			result.add(genelistTreeInfo);
