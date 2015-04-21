@@ -721,7 +721,8 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 			for (int i=0;i<analen;i++) {
 	//			System.out.println("structure: " + i);
 				// get component ids
-				String[] componentIds = (String[])AdvancedSearchDBQuery.getEMAPID().get(interestedAnatomyStructures[i]);
+//				String[] componentIds = (String[])AdvancedSearchDBQuery.getEMAPID().get(interestedAnatomyStructures[i]);
+				String[] componentIds = (String[])AdvancedSearchDBQuery.getEMAPAID().get(interestedAnatomyStructures[i]);
 				
 				// put component ids into componentIdsInAll arrayList
 				int eLen = componentIds.length;

@@ -195,9 +195,15 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         	System.out.println("componentString: " + componentString);
         
         // assemble full component ids string including child nodes as well as parent component ids
-        ParamQuery parQChildNodes = AdvancedSearchDBQuery.getParamQuery("FIND_CHILD_NODE");
-        componentClause += parQChildNodes.getQuerySQL().replaceAll("WHERE ANCES_ATN.ATN_PUBLIC_ID IN", 
-        			("WHERE ANCES_ATN.ATN_PUBLIC_ID IN "+ componentString)) + ")";
+//        ParamQuery parQChildNodes = AdvancedSearchDBQuery.getParamQuery("FIND_CHILD_NODE");
+//        componentClause += parQChildNodes.getQuerySQL().replaceAll("WHERE ANCES_ATN.ATN_PUBLIC_ID IN", 
+//        			("WHERE ANCES_ATN.ATN_PUBLIC_ID IN "+ componentString)) + ")";
+
+        // mods for EMAPA
+        ParamQuery parQChildNodes = AdvancedSearchDBQuery.getParamQuery("FIND_CHILD_NODE_EMAPA");
+        componentClause += parQChildNodes.getQuerySQL().replaceAll("WHERE ANO_PUBLIC_ID IN ", 
+        			("WHERE ANO_PUBLIC_ID IN  "+ componentString)) + ")";
+        
         if (debug)
         	System.out.println("componentClause: " + componentClause);
         

@@ -88,7 +88,6 @@
 			<%-- <h:outputLink value="#{ISHSingleSubmissionBean.submission.wlzImage.filePath}" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}">
 					<h:outputText value="Download 3D images in woolz format "></h:outputText>
 			</h:outputLink> --%>
-			<h:outputText value="3D OPT - Awaiting data."  rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}"></h:outputText>
 
 		</h:panelGrid>
 

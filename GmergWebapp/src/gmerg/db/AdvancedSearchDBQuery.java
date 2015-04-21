@@ -97,6 +97,26 @@ public class AdvancedSearchDBQuery {
 
 			return lookupsection;
 	  }
+
+	  final static public Hashtable getEMAPAID(){
+			Hashtable<String, String[]> lookupsection = new Hashtable<String,String[]>();
+			lookupsection.put("1",new String[]{// metanephros (11)
+					"EMAPA:17373"}); 
+			lookupsection.put("2",new String[]{// early reproductive system (7)
+					"EMAPA:16744","EMAPA:16857","EMAPA:27644","EMAPA:17382","EMAPA:17383"}); 
+			lookupsection.put("3",new String[]{// Male Reproductive System (9)
+					"EMAPA:17968"}); 
+			lookupsection.put("4",new String[]{// Female Reproductive System (9)
+					"EMAPA:17959"}); 
+			lookupsection.put("5",new String[]{// Lower Urinary Tract (39)
+					"EMAPA:17210","EMAPA:17211","EMAPA:17212","EMAPA:17378","EMAPA:17379",
+					"EMAPA:17380","EMAPA:18321","EMAPA:28555","EMAPA:28747","EMAPA:30897",
+					"EMAPA:30901","EMAPA:31522"});
+			lookupsection.put("6", new String[]{// Mesonephros (11 all parts, all stages)
+					"EMAPA:16744","EMAPA:27644", "EMAPA:28909", "EMAPA:29138"});
+
+			return lookupsection;
+	  }
 	  
 	  final static public String[] interestedStructures = {
 		  "Mesonephros (all parts, all stages)", 
@@ -1280,6 +1300,16 @@ public class AdvancedSearchDBQuery {
 	  		"AND ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
 	  		"AND APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true";
 
+	  final static String name149 = "FIND_CHILD_NODE_EMAPA";
+	  final static String query149 = "SELECT DISTINCT DESC_TN.ATN_PUBLIC_ID " +
+	  		"FROM ANA_NODE " +
+			"JOIN ANAD_RELATIONSHIP_TRANSITIVE ON RTR_ANCESTOR_FK = ANO_OID " +
+	  		"JOIN ANA_TIMED_NODE ANCES_TN ON ANCES_TN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
+			"JOIN ANA_TIMED_NODE DESC_TN ON DESC_TN.ATN_NODE_FK = RTR_DESCENDENT_FK " +
+	  		"AND ANCES_TN.ATN_STAGE_FK = DESC_TN.ATN_STAGE_FK " +
+			"WHERE ANO_PUBLIC_ID IN ";
+//	  		"ORDER BY EXP_STRENGTH DESC, NATURAL_SORT(EXP_COMPONENT_ID)";
+	  
 	  // query for counting relevant omim disease number for given geneid
 	  final static String name143 = "TOTAL_NUMBER_OF_DISEASE_FOR_GENEID";
 	  final static String query143 = "SELECT COUNT(DISTINCT DGA_OMIMID) FROM LNK_GENE_OMIMDIS " +

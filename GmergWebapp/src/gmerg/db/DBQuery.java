@@ -111,9 +111,9 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   
   final static String JOIN_EXPRESSION_START = " JOIN ISH_EXPRESSION ON EXP_SUBMISSION_FK = SUB_OID AND ";
   
-  final static String ANATOMY_PERSPECTIVE_TERMS = "SELECT DISTINCT ANO_COMPONENT_NAME AS COL1 FROM ANA_NODE, ANAD_PART_OF_PERSPECTIVE WHERE ANO_OID = POP_NODE_FK AND !POP_IS_ANCESTOR AND POP_PERSPECTIVE_FK =  '"+ Utility.getPerspective() + "' "+ 
+  final static String ANATOMY_PERSPECTIVE_TERMS = "SELECT DISTINCT ANO_COMPONENT_NAME AS COL1 FROM ANA_NODE, ANAD_PART_OF_PERSPECTIVE WHERE ANO_OID = POP_NODE_FK AND !POP_IS_ANCESTOR AND POP_PERSPECTIVE_FK =  'Genitourinary System (GUDMAP)' "+ 
                                                   "UNION " +
-                                                  "SELECT DISTINCT SYN_SYNONYM AS COL1 FROM ANA_SYNONYM, ANA_NODE, ANAD_PART_OF_PERSPECTIVE WHERE SYN_OBJECT_FK = ANO_OID AND ANO_OID = POP_NODE_FK AND POP_PERSPECTIVE_FK = '"+ Utility.getPerspective() + "' AND !POP_IS_ANCESTOR " +
+                                                  "SELECT DISTINCT SYN_SYNONYM AS COL1 FROM ANA_SYNONYM, ANA_NODE, ANAD_PART_OF_PERSPECTIVE WHERE SYN_OBJECT_FK = ANO_OID AND ANO_OID = POP_NODE_FK AND POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' AND !POP_IS_ANCESTOR " +
                                                   "ORDER BY natural_sort(COL1)";
   
   /* ---query to find oid of a particular submission--- */
@@ -918,7 +918,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                                "JOIN ANAD_PART_OF " +
                                  "ON APO_NODE_FK = PARENT.ANO_OID AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' " +
                                "JOIN ANAD_PART_OF_PERSPECTIVE " +
-                               "ON POP_PERSPECTIVE_FK = '" + bundle.getString("perspective") + "' "+
+                               "ON POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' "+
                                  " AND POP_APO_FK = APO_OID " +
                                "JOIN ANA_TIMED_NODE PATN  " +
                                  "ON PARENT.ANO_OID = PATN.ATN_NODE_FK " +
@@ -938,7 +938,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                                  "LEFT JOIN ISH_DENSITY_NOTE ON DNN_DENSITY_FK = DEN_OID "+
                                "GROUP BY PARENT.ANO_COMPONENT_NAME,'RANGE',PATN.ATN_PUBLIC_ID, APO_SEQUENCE, APO_DEPTH,strt.STG_NAME,end.STG_NAME " +
                                "ORDER BY APO_SEQUENCE";
-                               
+                                 
   final static String name127 = "ANNOT_LIST";
   final static String query127 = "SELECT DISTINCT EXP_OID, ATN_PUBLIC_ID, ANO_COMPONENT_NAME, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE, "+
 		  						 "DEN_RELATIVE_TO_AGE, DEN_RELATIVE_TO_TOTAL, DEN_COMPONENT_ID, DEN_DIRECTION_CHANGE, DEN_MAGNITUDE_CHANGE "+
@@ -1329,7 +1329,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                                "JOIN ANAD_PART_OF "+
                                  "ON ANO_OID = APO_NODE_FK AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' "+
                                "JOIN ANAD_PART_OF_PERSPECTIVE " +
-                               "ON POP_PERSPECTIVE_FK = '" + bundle.getString("perspective") + "' "+
+                               "ON POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' "+
                                  " AND POP_APO_FK = APO_OID " +
                                "JOIN ANA_STAGE qs1 "+
                                  "ON qs1.STG_NAME = ? "+
@@ -1539,7 +1539,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   final static String ISH_NON_RENAL_SUBMISSION_QUERY_ADDITIONAL_JOIN =
 	  "JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK AND EXP_STRENGTH = 'present' " +
 	  "JOIN ANA_TIMED_NODE ON EXP_COMPONENT_ID = ATN_PUBLIC_ID " +
-	  "JOIN ANAD_PART_OF_PERSPECTIVE ON POP_NODE_FK = ATN_NODE_FK AND POP_PERSPECTIVE_FK = 'Urogenital' ";
+	  "JOIN ANAD_PART_OF_PERSPECTIVE ON POP_NODE_FK = ATN_NODE_FK AND POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' ";
   
   final static String name144 = "ISH_NON_RENAL_SUBMISSIONS";
 //  final static String query144 = ISH_BROWSE_ALL_COLUMNS + ISH_BROWSE_ALL_TABLES
@@ -1835,7 +1835,7 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
   final static String query217 = "SELECT DISTINCT SUBSTR(ATN_PUBLIC_ID, 6), CONCAT(ANO_COMPONENT_NAME, '(', ATN_PUBLIC_ID, ')') COMPONENT FROM ANA_TIMED_NODE " +
   		"JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
   		"JOIN ANA_STAGE ON ATN_STAGE_FK = STG_OID " +
-  		"JOIN ANAD_PART_OF_PERSPECTIVE ON POP_NODE_FK = ANO_OID AND POP_PERSPECTIVE_FK = 'Urogenital' " +
+  		"JOIN ANAD_PART_OF_PERSPECTIVE ON POP_NODE_FK = ANO_OID AND POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' " +
   		"WHERE STG_NAME = ? " +
   		"ORDER BY NATURAL_SORT(COMPONENT)";
   
