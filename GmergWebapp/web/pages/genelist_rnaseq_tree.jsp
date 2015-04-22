@@ -15,7 +15,7 @@
 <script type="text/javascript">
 
 jQuery(document).ready(function(){
-	jQuery("#genelist_tree").jstree({ 	
+	jQuery("#genelist_seq_tree").jstree({ 	
 		"json_data" : {
 		    "progressive_render" : true,
 		    "ajax" : {
@@ -38,7 +38,7 @@ jQuery(document).ready(function(){
 
 	})  		
 	.delegate("a", "click", function(e, data) {
-		//alert("click node");
+		alert("click node");
 		var node = jQuery.jstree._focused().get_selected();
 		jQuery.jstree._focused( ).save_selected( ) ;
 		
@@ -50,27 +50,30 @@ jQuery(document).ready(function(){
 			jQuery.jstree._focused().toggle_node(node);
 			return;
 		}
-		
+	
 		var selectedNode =  document.getElementById('mainForm:treeitem');
 		selectedNode.value = result;
 
 //		selectedNode =  document.getElementById('mainForm:genelist_crumb');
 //		selectedNode.value = node.attr("crumb");
 					
-		selectedNode =  document.getElementById('mainForm:genelist_mastertableId');
-		selectedNode.value = node.attr("table");
+		selectedNode =  document.getElementById('mainForm:genelist_htmlfile');
+		selectedNode.value = node.attr("file");
 
-		
+		alert("click node = "+ selectedNode);			
+		alert("click node value = "+ selectedNode.value);			
 		var dummyLink = document.getElementById("genelistLink");
 		if (document.createEvent)
 		{
+			alert("click node3");				
 		    var evObj = document.createEvent('MouseEvents');
 		    evObj.initEvent( 'click', true, false );
 		    dummyLink.dispatchEvent(evObj);
 		}
 		else if (document.createEventObject)
 		{
-		    dummyLink.fireEvent('onclick');
+			alert("click node4");	
+			dummyLink.fireEvent('onclick');
 		}
 
 	});
@@ -127,15 +130,14 @@ $(document).ready(function(){
 		<span class="collaps2"></span>
 	</div>
 	 <h:inputText id="treeitem" value="#{GeneListRnaSeqTreeBean.selectedItem}" style="display:none; visibility: hidden; "/>
-	 <h:inputText id="genelist_mastertableId" value="#{GeneListRnaSeqTreeBean.masterTableId}" style="display:none; visibility: hidden; "/>
+	 <h:inputText id="genelist_htmlfile" value="#{GeneListRnaSeqTreeBean.htmlFile}" style="display:none; visibility: hidden; "/>
 	 <f:verbatim>
-		<div id="genelist_tree" class="rnaseq" style="overflow: auto; align: left; height: 540px;">
+		<div id="genelist_seq_tree" class="rnaseq" style="overflow: auto; align: left; height: 540px;">
 		</div>
 	</f:verbatim>
 	
-	<t:commandLink id="genelistLink" forceId="true" style="display:none; visibility: hidden;" action="#{GeneListTreeBean.findNode}" actionListener="#{GeneListRnaSeqTreeBean.processAction}" >
+	<t:commandLink id="genelistLink" forceId="true" style="display:none; visibility: hidden;" action="#{GeneListRnaSeqTreeBean.findNode}" actionListener="#{GeneListRnaSeqTreeBean.processAction}" >
 	</t:commandLink>
-	<t:commandLink id="createChildren" forceId="true" style="display:none" action="#{GeneListRnaSeqTreeBean.createChildren}"/> 
 		
 	</h:form> 
 	<jsp:include page="/includes/footer.jsp" />

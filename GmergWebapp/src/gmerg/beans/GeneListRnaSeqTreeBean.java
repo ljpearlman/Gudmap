@@ -33,7 +33,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
  
 
 	private String genelistId;
-	private String masterTableId;
+	private String htmlFile;
 
 	
     public GeneListRnaSeqTreeBean(){
@@ -48,17 +48,22 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		genelistId = item;
 	}
 
-	public String getMasterTableId() {
-		return masterTableId;
+	public String getHtmlFile() {
+		return htmlFile;
 	}
 
-	public void setMasterTableId(String masterTableId) {
-		this.masterTableId = masterTableId;
+	public void setHtmlFile(String htmlFile) {
+		this.htmlFile = htmlFile;
 	}
 	
     public void processAction(ActionEvent event) throws AbortProcessingException,Exception {    
-		if (debug)
+		if (debug){
 			System.out.println("GeneListTreeRnaSeqBean:processAction");
+			System.out.println("GeneListTreeRnaSeqBean:selecteditrm = " + genelistId);
+			System.out.println("GeneListTreeRnaSeqBean:htmlFile = " + htmlFile);
+		}
+		
+		
     }
 
     public String findNode()
@@ -77,7 +82,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		String urlParams = null;
 		HashMap<String, String> params = new HashMap<String, String>();		
     	params.put("genelistId", genelistId);
-    	params.put("masterTableId", masterTableId);
+    	params.put("htmlFile", htmlFile);
     	params.put("cleartabs", "true");
     	urlParams = Visit.packParams(params);	
     	
@@ -91,7 +96,8 @@ public class GeneListRnaSeqTreeBean implements Serializable
 	}
 
     public String getResultURL () {
-    	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ masterTableId + "&cleartabs=true";
+//    	String result = "mastertable_browse.html?genelistId="+ genelistId + "&masterTableId="+ htmlFile + "&cleartabs=true";
+    	String result = "htmlFile";
     	
     	if (debug)
     		System.out.println("getResultURL:result: " + result);
@@ -146,9 +152,9 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		JSONArray  plist = new JSONArray();
 
 		// published datasets
-		JSONObject obj = new JSONObject();
+//		JSONObject obj = new JSONObject();
 
-		JSONObject attr = new JSONObject();
+//		JSONObject attr = new JSONObject();
 
 		ArrayList<GenelistRnaSeqTreeInfo> unpublishedGenelist = new ArrayList<GenelistRnaSeqTreeInfo>();
 		for (GenelistRnaSeqTreeInfo inf : genelist){
@@ -156,15 +162,15 @@ public class GeneListRnaSeqTreeBean implements Serializable
 				unpublishedGenelist.add(inf);				
 		}
 						
-		JSONArray  list = new JSONArray();
+//		JSONArray  list = new JSONArray();
 
 		
 		// unpublished datasets
-		obj = new JSONObject();
+		JSONObject obj = new JSONObject();
 		obj.put("data", "Unpublished");
 		obj.put("state", "open");
 
-		attr = new JSONObject();
+		JSONObject attr = new JSONObject();
 		attr.put("id", -2000);
 		obj.put("attr", attr);
 		
@@ -179,7 +185,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		}
 		Collections.sort(unpublishedDatasets);
 
-		list = new JSONArray();
+		JSONArray list = new JSONArray();
 		int id = -20000;
 		for(String dataset : unpublishedDatasets){
 			id = id - 1;
@@ -337,28 +343,30 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		return obj;
 	}
 	
-	private JSONArray createLeaf(ArrayList<GenelistRnaSeqTreeInfo> ids){
+	private JSONObject createLeaf(ArrayList<GenelistRnaSeqTreeInfo> ids){
 		
 		
-		JSONArray  list = new JSONArray();
-
+//		JSONArray  list = new JSONArray();
+		JSONObject obj = new JSONObject();
 
 		for(GenelistRnaSeqTreeInfo inf : ids){
-			JSONObject obj = new JSONObject();		
 			obj.put("data", inf.getShortName() + "(" + inf.getGeneCount()  + " genes)");
-			obj.put("state", "closed");
+			String file = inf.getShortName() + "_Full.html";
+				
+			String path = "/export/data0/bernardh/python_scripts/203Cells_V10_BA/";
 			
 			JSONObject attr = new JSONObject();
 			attr.put("id", inf.getGenelistOID());
 			attr.put("title", "Genelist = "+inf.getShortName());
 			attr.put("rel", "Role");
+			attr.put("file", path + file);
 			obj.put("attr", attr);
 			
-			list.add(obj);					
+//			list.add(obj);					
 		}
 		
 				
-		return list;
+		return obj;
 	}
 	
 }

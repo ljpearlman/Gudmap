@@ -603,6 +603,12 @@
    <to-view-id>/pages/#{GeneListTreeBean.resultURL}</to-view-id>
    <redirect/>
   </navigation-case> 
+  <navigation-case>
+   <from-action>#{GeneListRnaSeqTreeBean.findNode}</from-action>
+   <from-outcome>leaf</from-outcome>
+   <to-view-id>/pages/#{GeneListRnaSeqTreeBean.resultURL}</to-view-id>
+   <redirect/>
+  </navigation-case> 
 
 	<!-- Bernie added to refresh clipboard removal page -->  
   <navigation-case>
