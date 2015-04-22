@@ -511,7 +511,7 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 //				isharray.remove(micarray);
 //				isharray.addAll(micarray);
 			}
-			Collections.sort(isharray);
+//			Collections.sort(isharray);
 			
 			for (int i=1 ; i<17; i++){
 				if (i<10)

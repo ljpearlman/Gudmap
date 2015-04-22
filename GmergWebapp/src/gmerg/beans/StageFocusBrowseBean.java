@@ -75,4 +75,9 @@ public class StageFocusBrowseBean {
 			return gene;
 		}
 	}
+	
+	public String getSpecies() {
+		return species;
+	}
+	
 }

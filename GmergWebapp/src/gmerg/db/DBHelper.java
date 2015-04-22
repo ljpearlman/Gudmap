@@ -268,7 +268,7 @@ public final class DBHelper {
     		resSet.beforeFirst();
 			ArrayList<String> results = new ArrayList<String>();
     		while (resSet.next()) {
-		    str = Utility.netTrim(resSet.getString(1));
+		    str = Utility.netTrim(resSet.getString(2));
 			if (null != str)
 			    results.add(str);
     		}

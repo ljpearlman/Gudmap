@@ -124,7 +124,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 					if (species.contains("Mus musculus"))
 							data[i][0] = new DataItem(symbol, "Click to see detailed information for "+symbol, "gene.html?geneId="+symbolid, 10);
 					else{
-						String name = symbol + " (Homo sapien)";
+						String name = symbol + " (Human)";
 						data[i][0] = new DataItem(name, "Click to see detailed information for "+symbol, "gene.html?geneId="+symbolid, 10);
 					}
 
@@ -154,8 +154,8 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				int iLen = insituGeneStages.length;
 				if (iLen > 3){
 					String[] geneStageRange = new String[2];
-					geneStageRange[0] = DbUtility.getRefStageFromOrder(insituGeneStages[0]);
-					geneStageRange[1] = DbUtility.getRefStageFromOrder(insituGeneStages[iLen-1]);
+					geneStageRange[0] = insituGeneStages[0]; //DbUtility.getRefStageFromOrder(insituGeneStages[0]);
+					geneStageRange[1] = insituGeneStages[iLen -1]; //DbUtility.getRefStageFromOrder(insituGeneStages[iLen-1]);
 					// array stages
 	//				String[] arrayGeneStages = this.getGeneStagesArray(conn, symbol);
 	//				String[] geneStageRange = this.getGeneStages(insituGeneStages, arrayGeneStages);
@@ -172,7 +172,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 					}
 				} else {
 					for (int j=0; j < iLen; j++)
-						stage += DbUtility.getRefStageFromOrder(insituGeneStages[j]) + ",";
+						stage += insituGeneStages[j] + ",";
 					
 					stage = stage.substring(0, stage.length()-1);
 						data[i][3] = 
