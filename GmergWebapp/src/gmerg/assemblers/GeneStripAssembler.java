@@ -518,6 +518,11 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 
 		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
         ArrayList relatedInsituSubmission = ishDAO.findRelatedSubmissionBySymbolIdISH(symbolid);
+        if (relatedInsituSubmission == null){
+        	relatedInsituSubmission = ishDAO.findRelatedSubmissionBySymbolIdIHC(symbolid);
+	        if (relatedInsituSubmission == null)
+	        	relatedInsituSubmission = ishDAO.findRelatedSubmissionBySymbolIdTG(symbolid);
+        }
         ishDAO = null;
 
 		return relatedInsituSubmission;
