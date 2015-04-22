@@ -11,8 +11,7 @@
 		             value="#{StageFocusBrowseBean.submissions}" var="submission">
 			<h:column>
 				<f:facet name="header">
-					<h:outputText styleClass="plaintextbold" value="Theiler Stage"/>
-					<h:outputText styleClass="plaintextbold" value="Stage" rendered="#{StageFocusBrowseBean.species != 'Mus Musculus'}"/>
+					<h:outputText styleClass="plaintextbold" value="Stage"/>
 				</f:facet>
 <%-- 
 				<h:outputLink value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts#{submission[4]}" styleClass="plaintext">
