@@ -78,7 +78,7 @@ public class ISHSubmission extends Submission {
 		if (-1 != str.indexOf("ish")) {
 		    if (null != probe)
 			ret = probe.getGeneName();
-		} else if (str.contains("tg")) {
+		} else if (str.contains("tg") || str.contains("ihc")) {
 		    if (null != antibody)
 			ret = antibody.getGeneName();
 		    if (null != probe)

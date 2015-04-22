@@ -443,7 +443,7 @@
 									<f:facet name="header">
 										<h:outputText value="Accession ID" styleClass="plaintextbold" />
 									</f:facet>
-									<h:outputLink styleClass="plaintext" id="submissionID" value="ish_submission.html">
+									<h:outputLink styleClass="plaintext" id="submissionID" value="ngd_submission.html">
 										<f:param name="id" value="#{accessionIDAndTypes[0]}" />
 									 	<h:outputText value="#{accessionIDAndTypes[0]}"/>
 					 				</h:outputLink>

@@ -389,7 +389,10 @@
 						<h:panelGroup>
 							<h:outputText styleClass="plaintext" value="Name: " />
 							<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.geneName} " />
-							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.locusTag}">
+							<h:outputLink styleClass="datatext" value="http://www.ncbi.nlm.nih.gov/gene/#{ISHSingleSubmissionBean.submission.antibody.locusTag}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}">
+								<h:outputText value=" (NCBI ID: #{ISHSingleSubmissionBean.submission.antibody.locusTag})" />
+							</h:outputLink>							
+							<h:outputLink styleClass="datatext" value="http://www.informatics.jax.org/accession/#{ISHSingleSubmissionBean.submission.antibody.locusTag}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species != 'Homo sapiens'}">
 								<h:outputText value=" (#{ISHSingleSubmissionBean.submission.antibody.locusTag})" />
 							</h:outputLink>
 						</h:panelGroup>
