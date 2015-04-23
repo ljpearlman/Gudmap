@@ -115,11 +115,9 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 	    	ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
 
 		    if(null != privilege && Integer.parseInt(privilege)>=3 && labIshEdit) {
-			    ishBrowseSubmissions = 
-				    ishDAO.getSubmissionsForAnnotationByLabId(labId, assayType, submissionDate, archiveId, column, ascending, offset, num, isPublic);
+			    ishBrowseSubmissions = ishDAO.getSubmissionsForAnnotationByLabId(labId, assayType, submissionDate, archiveId, column, ascending, offset, num, isPublic);
 		    } else {		
-				ishBrowseSubmissions = 
-				    ishDAO.getSubmissionsByLabId(labId, assayType, submissionDate, archiveId, column, ascending, offset, num, batchId);
+				ishBrowseSubmissions = ishDAO.getSubmissionsByLabId(labId, assayType, submissionDate, archiveId, column, ascending, offset, num, batchId);
 		    }
 		    
 		    if(null != privilege && Integer.parseInt(privilege)>=3 && labIshEdit)

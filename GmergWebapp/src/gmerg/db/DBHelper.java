@@ -400,7 +400,7 @@ public final class DBHelper {
             ArrayList<String[]> results = new ArrayList<String[]>();                        
             
             while (resSet.next()) {
-            	String[] ishBrowseSubmission = new String[14];
+            	String[] ishBrowseSubmission = new String[15];
          	
                 ishBrowseSubmission[ 0] = resSet.getString(1); // symbol
                 ishBrowseSubmission[ 1] = resSet.getString(2); // id
@@ -426,6 +426,7 @@ public final class DBHelper {
                 
                 ishBrowseSubmission[12] = resSet.getString(13); // speciman
                 ishBrowseSubmission[13] = resSet.getString(14); // thumbnail
+                ishBrowseSubmission[14] = resSet.getString(15); // geneid
                 
                 results.add(ishBrowseSubmission);
             }
