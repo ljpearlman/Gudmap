@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GenericTableFilter {
-    protected boolean debug = false;
+    protected boolean debug = true;
 
 	boolean active;
 //	TreeMap<Integer, FilterItem> filters;
@@ -136,12 +136,19 @@ public class GenericTableFilter {
 				    System.out.println("colName = "+colName+" filterSql = "+filterSql+" current sql = "+currentSql);
 
 				// modified to allow both human and theiler stages to be selected in the filters
+				String predef = filter.getKey().toString();
+				String speciessql = "(STG_SPECIES = ";
+				if (predef == "THEILER_STAGE")
+					speciessql += "'Mus musculus')";
+				else
+					speciessql += "'Homo sapiens')";
+					
 				if (filterSql != ""){
 					if (filterSql.contains("STG_ORDER"))
 						if (sql.equals(""))
-							sql += filterSql;
+							sql += filterSql + "AND " + speciessql;
 						else{
-							sql = "(" + sql + " OR " + filterSql + ")";
+							sql = "(" + sql + " OR " + filterSql + ")" + "AND " + speciessql;
 						}
 					else
 						sql += ((sql.equals(""))? "" : " AND ") + filterSql;

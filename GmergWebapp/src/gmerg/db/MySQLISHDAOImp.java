@@ -32,7 +32,7 @@ import java.text.DateFormat;
  *
  */
 public class MySQLISHDAOImp implements ISHDAO {
-    private boolean debug = false;
+    private boolean debug = true;
     private Connection conn;
     
     // default constructor
@@ -1740,7 +1740,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    return null;
 		}
         ResultSet resSet = null;
-        ParamQuery parQ = DBQuery.getParamQuery("GENEID_RELATED_SUBMISSIONS_ISH");
+        ParamQuery parQ = DBQuery.getParamQuery("GENEID_RELATED_SUBMISSIONS_INSITU");
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         try {
@@ -1749,7 +1749,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    
 		    prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, symbolId);
-          prepStmt.setString(2, "ISH"); //mantis 1026
+ //         prepStmt.setString(2, "ISH"); //mantis 1026
            
 		    if (debug)
 		    	System.out.println("findRelatedSubmissionBySymbolIdISH:prepStmt  = "+prepStmt);

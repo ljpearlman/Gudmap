@@ -596,6 +596,42 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
                                 "GROUP BY SUB_OID " +
                                 "ORDER BY STG_STAGE_DISPLAY, natural_sort(SUB_ACCESSION_ID)";
 
+  final static String name281 = "GENEID_RELATED_SUBMISSIONS_INSITU";
+  final static String query281 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
+                                "CASE WHEN (EXP_SUBMISSION_FK > 0) THEN 'with annotation' " + 
+                                "ELSE 'without annotation' " + 
+                                "END, " +
+                                "CASE WHEN (SPN_SEX = 'unknown') THEN 'unknown sex' " + 
+                                "ELSE SPN_SEX " + 
+                                "END, " +
+                                "RPR_JAX_ACC, GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '), " + 
+                                "CASE WHEN (LOCATE(';',GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ')) > 0) THEN " + 
+                                "CONCAT(SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; '),'; ',1),'...') " +
+                                "ELSE GROUP_CONCAT(DISTINCT ANO_COMPONENT_NAME SEPARATOR '; ') " +
+                                "END, " + 
+                                "CASE WHEN (CONCAT(RPR_PREFIX,RPR_OID) =  RPR_JAX_ACC) THEN '' ELSE CONCAT(RPR_PREFIX,RPR_OID) END, " +
+                          		"CASE substring(RPR_JAX_ACC from 1 for 4)  WHEN 'MGI:' THEN " +
+                           		"CONCAT('http://www.informatics.jax.org/accession/', RPR_JAX_ACC) " +
+                           		"ELSE 'probe.html' END, " +
+                          		"GROUP_CONCAT(DISTINCT ALE_ALLELE_NAME ORDER BY SAL_ORDER)  " +
+                                "FROM ISH_SUBMISSION " + 
+                                "JOIN ISH_PROBE ON PRB_SUBMISSION_FK = SUB_OID " + 
+                                "JOIN REF_PROBE ON PRB_MAPROBE = RPR_OID " + 
+                                "JOIN ISH_SPECIMEN ON SUB_OID = SPN_SUBMISSION_FK " + 
+                                "LEFT JOIN REF_STAGE ON SUB_STAGE_FK = STG_OID " +
+                                "LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK " + 
+                                "LEFT JOIN ISH_SP_TISSUE ON IST_SUBMISSION_FK = SUB_OID " +
+                                "LEFT JOIN ANA_TIMED_NODE ON ATN_PUBLIC_ID = IST_COMPONENT " +
+                                "LEFT JOIN ANA_NODE ON ATN_NODE_FK = ANO_OID " +
+                                "LEFT JOIN REF_MGI_PRB ON RMP_MGIACC = RPR_JAX_ACC " +
+                                "LEFT JOIN LNK_SUB_ALLELE ON SAL_SUBMISSION_FK = SUB_OID LEFT JOIN ISH_ALLELE ON SAL_ALE_OID_FK = ALE_OID " +                                
+                                "WHERE RPR_LOCUS_TAG = ? " + 
+                                "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 " + 
+                                "AND (SUB_ASSAY_TYPE = 'ISH' ||SUB_ASSAY_TYPE = 'IHC'||SUB_ASSAY_TYPE = 'TG') " +
+//                                "AND SUB_ASSAY_TYPE = ? " + // mantis 1026
+                                "GROUP BY SUB_OID " +
+                                "ORDER BY STG_STAGE_DISPLAY, natural_sort(SUB_ACCESSION_ID)";
+  
   //query to find ish submissions linked to a specific gene id
   final static String name275 = "GENEID_RELATED_SUBMISSIONS_ISH";
   final static String query275 = "SELECT DISTINCT SUB_ACCESSION_ID, 'ish_submission.html', STG_STAGE_DISPLAY, SPN_ASSAY_TYPE,  " + 
@@ -2313,8 +2349,9 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
       new ParamQuery(name277,query277),
       new ParamQuery(name278,query278),
       new ParamQuery(name279,query279),
-      new ParamQuery(name280,query280)
-   };
+      new ParamQuery(name280,query280),
+      new ParamQuery(name281,query281)
+      };
 
   // finds ParamQuery object by name and returns
   public static ParamQuery getParamQuery(String name) {
