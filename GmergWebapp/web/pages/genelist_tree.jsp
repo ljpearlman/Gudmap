@@ -129,10 +129,10 @@ $(document).ready(function(){
 		
 	</div>
 	
-	<h:outputLink value="/gudmap_test/pages/genelist_rnaseq_tree.jsp" >
+	<h:outputLink value="genelist_rnaseq_tree.html" >
 		<h:outputText value="Link to RNASEQ Analysis"/>
 	</h:outputLink>
-	<br/>
+	<br/><br/>
 	
 	 <h:inputText id="treeitem" value="#{GeneListTreeBean.selectedItem}" style="display:none; visibility: hidden; "/>
 <%--  	 <h:inputText id="genelist_crumb" value="#{GeneListTreeBean.crumb}" style="display:none; visibility: hidden; "/>	--%>
