@@ -11,9 +11,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import gmerg.entities.GenelistRnaSeqTreeInfo;
-import gmerg.entities.GenelistRnaSeqTreeInfo;
+
 import gmerg.utils.DbUtility;
-import gmerg.utils.FacesUtil;
+
 import gmerg.utils.Visit;
 
 import java.io.FileWriter;
@@ -121,7 +121,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		JSONObject obj = new JSONObject();
 		
 		
-		obj.put("children", createIsPublished(genelist));
+//		obj.put("children", createIsPublished(genelist));
 		
 		JSONArray  outerlist = new JSONArray();
 
@@ -233,7 +233,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		int id = -20000;
 		for(String item : glsclasses){
 			id = id - 100;
-			list.add(createUnpublishedDatasets(genelist, item, id));
+			list.add(createUnpublishedDatasets2(genelist, item, id));
 		}				
 		obj.put("children", list);
 		
@@ -280,6 +280,41 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		return obj;
 	}	
 
+	private JSONObject createUnpublishedDatasets2(ArrayList<GenelistRnaSeqTreeInfo> genelist, String glsclass, int id){
+	    System.out.println("createUnpublishedDatasets dataset = "+ glsclass);
+		
+		JSONObject obj = new JSONObject();		
+		obj.put("data", glsclass);
+		obj.put("state", "closed");
+		
+		JSONObject attr = new JSONObject();
+		attr.put("id", id);
+		attr.put("title", "Dataset = "+glsclass);
+		obj.put("attr", attr);
+
+		ArrayList<String> clusters = new ArrayList<String>();
+		for(GenelistRnaSeqTreeInfo inf : genelist){
+			if(glsclass.equalsIgnoreCase(inf.getGlsClass())){
+				String cluster = inf.getCluster();
+			    System.out.println("createClusters cluster = "+ cluster);
+			    clusters.add(cluster);
+			}
+		}
+
+		
+		
+		JSONArray  list = new JSONArray();
+		
+
+		for(String cluster : clusters){
+			int id2 = id - 10;
+			list.add(createClusters2(genelist, glsclass, cluster, id2));	
+		}				
+		obj.put("children", list);
+				
+		return obj;
+	}	
+	
 	private JSONObject createSubclass(ArrayList<GenelistRnaSeqTreeInfo> genelist, String glsclass, String subclass, int id){
 
 		JSONObject obj = new JSONObject();		
@@ -341,6 +376,36 @@ public class GeneListRnaSeqTreeBean implements Serializable
 		obj.put("children", list);
 				
 		return obj;
+	}
+
+	private JSONObject createClusters2(ArrayList<GenelistRnaSeqTreeInfo> genelist, String glsclass, String cluster, int id){
+		System.out.println("glsclass = "+ glsclass );
+		System.out.println("cluster = "+ cluster );
+
+		JSONObject obj = new JSONObject();		
+//		obj.put("data", cluster);
+//		obj.put("state", "closed");
+//		
+//		JSONObject attr = new JSONObject();
+//		attr.put("id", id);
+//		attr.put("title", "Dataset = "+cluster);
+//		obj.put("attr", attr);
+		
+		
+		JSONArray  list = new JSONArray();
+		ArrayList<GenelistRnaSeqTreeInfo> ids = new ArrayList<GenelistRnaSeqTreeInfo>();
+		for(GenelistRnaSeqTreeInfo inf : genelist){
+			if(glsclass.equalsIgnoreCase(inf.getGlsClass()) && cluster.equalsIgnoreCase(inf.getCluster())){
+				if(!ids.contains(inf.getGenelistOID()))
+					ids.add(inf);
+			}
+		}
+		
+//		list.add(createLeaf(ids));	
+			
+//		obj.put("children", list);
+				
+		return createLeaf(ids);//;obj;
 	}
 	
 	private JSONObject createLeaf(ArrayList<GenelistRnaSeqTreeInfo> ids){
