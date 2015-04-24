@@ -130,7 +130,7 @@ $(document).ready(function(){
 	</div>
 	
 	<h:outputLink value="genelist_rnaseq_tree.html" >
-		<h:outputText value="Link to RNASEQ Analysis"/>
+		<h:outputText value="Link to RNASEQ Analysis - BETA VERSION"/>
 	</h:outputLink>
 	<br/><br/>
 	

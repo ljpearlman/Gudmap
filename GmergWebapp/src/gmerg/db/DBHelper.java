@@ -278,6 +278,23 @@ public final class DBHelper {
     	}
 		return null;
 	}
+    
+    public static String[] formatResultSetToStringArray2(ResultSet resSet) throws SQLException {
+    	String str = null;
+        	if (resSet.first()) {
+        		resSet.beforeFirst();
+    			ArrayList<String> results = new ArrayList<String>();
+        		while (resSet.next()) {
+    		    str = Utility.netTrim(resSet.getString(1));
+    			if (null != str)
+    			    results.add(str);
+        		}
+        		if (results != null && results.size() > 0) {
+        			return results.toArray(new String[0]);
+        		}
+        	}
+    		return null;
+    	}
 	
 	/**
 	 * @param resSet
