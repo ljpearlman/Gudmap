@@ -353,7 +353,7 @@ public class GeneListRnaSeqTreeBean implements Serializable
 			obj.put("data", inf.getShortName() + "(" + inf.getGeneCount()  + " genes)");
 			String file = inf.getShortName() + "_Full.html";
 				
-			String path = "/export/data0/bernardh/python_scripts/203Cells_V10_BA/";
+			String path = "http://www.gudmap.org/CellData/203Cells_V10_BA/";
 			
 			JSONObject attr = new JSONObject();
 			attr.put("id", inf.getGenelistOID());

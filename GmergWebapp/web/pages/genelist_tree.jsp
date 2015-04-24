@@ -125,7 +125,15 @@ $(document).ready(function(){
 		<a href="http://www.ncbi.nlm.nih.gov/pubmed/21386911" style="font-size:inherit;" >Thiagarajan et al. (2011)</a> Pubmed: 21386911<br/>
 		</p>
 		<span class="collaps2"></span>
+		
+		
 	</div>
+	
+	<h:outputLink value="/gudmap_test/pages/genelist_rnaseq_tree.jsp" >
+		<h:outputText value="Link to RNASEQ Analysis"/>
+	</h:outputLink>
+	<br/>
+	
 	 <h:inputText id="treeitem" value="#{GeneListTreeBean.selectedItem}" style="display:none; visibility: hidden; "/>
 <%--  	 <h:inputText id="genelist_crumb" value="#{GeneListTreeBean.crumb}" style="display:none; visibility: hidden; "/>	--%>
 	 <h:inputText id="genelist_mastertableId" value="#{GeneListTreeBean.masterTableId}" style="display:none; visibility: hidden; "/>
