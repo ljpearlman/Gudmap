@@ -1509,6 +1509,7 @@ public class MySQLISHDAOImp implements ISHDAO {
         PreparedStatement prepStmt = null;
         try {
 		    // if disconnected from db, re-connected
+		   // Connection conn2 = null;
 		    conn = DBHelper.reconnect2DB(conn);
 	    
             parQ.setPrepStat(conn);
@@ -1517,7 +1518,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 	    
             // execute
             resSet = prepStmt.executeQuery();
-            AcknowledgementInfo = DBHelper.formatResultSetToStringArray(resSet);
+            AcknowledgementInfo = DBHelper.formatResultSetToStringArray2(resSet);
             return AcknowledgementInfo;
 	    
         } catch (SQLException se) {
