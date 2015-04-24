@@ -86,7 +86,7 @@ function getCrumb(node){
 	<jsp:include page="/includes/header.jsp" />
 	
 	
-	<h:form id="mainForm2" >
+	<h:form id="mainForm" >
 	<h:outputText styleClass="bigplaintext" value="#{GeneListRnaSeqTreeBean.title}" rendered="true" escape="false" />
 
 	 <h:inputText id="treeitem" value="#{GeneListRnaSeqTreeBean.selectedItem}" style="display:none; visibility: hidden; "/>
