@@ -1775,7 +1775,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    return null;
 		}
         ResultSet resSet = null;
-        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_INSITU");
+        ParamQuery parQ = DBQuery.getParamQuery("GENEID_RELATED_SUBMISSIONS_INSITU");
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         try {
