@@ -121,7 +121,7 @@ public class InsituDBQuery {
 	// modified by xingjun - 24/09/2009 - appended query to get microarray related gene
 	// ish symbol + ish synonym + array symbol + array synonym (added on 09/10/2009)
 	final static String name4 = "GENE_SYMBOLS_AND_SYNONYMS";
-	final static String query4 = "(SELECT DISTINCT RPR_SYMBOL GENE FROM REF_PROBE " +
+	final static String query4 = "(SELECT DISTINCT RPR_SYMBOL GENE, " +
 			"(BINARY RPR_SYMBOL) BIN FROM REF_PROBE " + 
 			"JOIN ISH_PROBE ON PRB_MAPROBE = RPR_OID " +
 			"JOIN ISH_SUBMISSION ON PRB_SUBMISSION_FK = SUB_OID " +
@@ -143,7 +143,7 @@ public class InsituDBQuery {
 			"(SELECT DISTINCT GNF_SYMBOL GENE, (BINARY GNF_SYMBOL) BIN " +
 			"FROM REF_GENE_INFO WHERE GNF_SYMBOL LIKE ?) " + // 3
 			"UNION " +
-			"(SELECT DISTINCT RSY_SYNONYM GENE FROM REF_SYNONYM " +
+			"(SELECT DISTINCT RSY_SYNONYM GENE, (BINARY RSY_SYNONYM) FROM REF_SYNONYM " +
 			"JOIN REF_MGI_MRK ON RSY_REF = RMM_ID " +
 			"JOIN REF_GENE_INFO ON RMM_SYMBOL = GNF_SYMBOL WHERE RSY_SYNONYM LIKE ?) " + // 4
 			"ORDER BY NATURAL_SORT(GENE) " +
