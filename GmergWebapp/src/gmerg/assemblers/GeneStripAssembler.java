@@ -151,33 +151,38 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 				// insitu stages
 				String[] insituGeneStages = this.getGeneStagesInsitu(conn, symbolid);
 				String stage = "";
-				int iLen = insituGeneStages.length;
-				if (iLen > 3){
-					String[] geneStageRange = new String[2];
-					geneStageRange[0] = insituGeneStages[0]; //DbUtility.getRefStageFromOrder(insituGeneStages[0]);
-					geneStageRange[1] = insituGeneStages[iLen -1]; //DbUtility.getRefStageFromOrder(insituGeneStages[iLen-1]);
-					// array stages
-	//				String[] arrayGeneStages = this.getGeneStagesArray(conn, symbol);
-	//				String[] geneStageRange = this.getGeneStages(insituGeneStages, arrayGeneStages);
-					// stage string
-					if (geneStageRange[0] != "-1" || geneStageRange[1] != "-1") {
-						stage = geneStageRange[0] + "-" + geneStageRange[1];
-		//				System.out.println("stage range: " + stage);
+				if (insituGeneStages != null){
+					int iLen = insituGeneStages.length;
+					if (iLen > 3){
+						String[] geneStageRange = new String[2];
+						geneStageRange[0] = insituGeneStages[0]; //DbUtility.getRefStageFromOrder(insituGeneStages[0]);
+						geneStageRange[1] = insituGeneStages[iLen -1]; //DbUtility.getRefStageFromOrder(insituGeneStages[iLen-1]);
+						// array stages
+		//				String[] arrayGeneStages = this.getGeneStagesArray(conn, symbol);
+		//				String[] geneStageRange = this.getGeneStages(insituGeneStages, arrayGeneStages);
+						// stage string
+						if (geneStageRange[0] != "-1" || geneStageRange[1] != "-1") {
+							stage = geneStageRange[0] + "-" + geneStageRange[1];
+			//				System.out.println("stage range: " + stage);
+								data[i][3] = 
+									new DataItem(stage, "Click to see stage summary for "+symbol, 
+											"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
+						} else {
+							stage = "N/A";
+							data[i][3] = new DataItem(stage);
+						}
+					} else {
+						for (int j=0; j < iLen; j++)
+							stage += insituGeneStages[j] + ",";
+						
+						stage = stage.substring(0, stage.length()-1);
 							data[i][3] = 
 								new DataItem(stage, "Click to see stage summary for "+symbol, 
 										"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
-					} else {
-						stage = "N/A";
-						data[i][3] = new DataItem(stage);
 					}
-				} else {
-					for (int j=0; j < iLen; j++)
-						stage += insituGeneStages[j] + ",";
-					
-					stage = stage.substring(0, stage.length()-1);
-						data[i][3] = 
-							new DataItem(stage, "Click to see stage summary for "+symbol, 
-									"focus_stage_browse.html?gene="+symbol+"&geneId="+symbolid+"&species="+species, 10);
+				}
+				else {
+					data[i][3] = new DataItem("");
 				}
 	
 				/** 5 - in situe expression profile */

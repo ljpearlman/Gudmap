@@ -49,8 +49,6 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         	
         }
         try {
-		    if (debug)
-			 System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+queryString.toLowerCase());
 		    
         	prepStmt = conn.prepareStatement(queryString);
         	prepStmt.setString(1, geneString);
@@ -58,6 +56,11 @@ public class MySQLPredictiveTextSearchDAOImp implements PredictiveTextSearchDAO 
         	prepStmt.setString(3, geneString);
         	prepStmt.setString(4, geneString);
         	prepStmt.setInt(5, num);
+        	
+		    if (debug)
+			 System.out.println("MySQLPredictiveTextSearchDAOImp.sql = "+prepStmt);
+        	
+        	
         	resSet = prepStmt.executeQuery();
         	if (resSet.first()) {
         		result = new ArrayList<String>();
