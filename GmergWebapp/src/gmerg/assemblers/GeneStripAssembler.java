@@ -511,13 +511,13 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @param symbol
 	 * @return
 	 */
-	private ArrayList getRelatedInsituSubmissions(Connection conn, String symbolid) {
+	public ArrayList getRelatedInsituSubmissions(Connection conn, String symbolid) {
 		if (symbolid == null || symbolid.equals("")) {
 			return null;
 		}
 
 		ISHDAO ishDAO = MySQLDAOFactory.getISHDAO(conn);
-        ArrayList relatedInsituSubmission = ishDAO.findRelatedSubmissionBySymbolIdISH(symbolid);
+        ArrayList relatedInsituSubmission = ishDAO.findRelatedSubmissionBySymbolIdInsitu(symbolid);
         if (relatedInsituSubmission == null){
         	relatedInsituSubmission = ishDAO.findRelatedSubmissionBySymbolIdIHC(symbolid);
 	        if (relatedInsituSubmission == null)
@@ -646,7 +646,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		// try to find the first submission with assay type 'wholemount'
 		for (int i=0;i<len;i++) {
 			String assayType = ((String[])insituSubmissions.get(i))[3];
-			if (assayType.trim().equalsIgnoreCase("wholemount") || assayType.trim().equalsIgnoreCase("opt-wholemount")) {
+			if (assayType.trim().equalsIgnoreCase("wholemount") || assayType.trim().equalsIgnoreCase("opt-wholemount") || assayType.trim().equalsIgnoreCase("mouse marker strain")) {
 				submissionId = ((String[])insituSubmissions.get(i))[0];
 				String stage = ((String[])insituSubmissions.get(i))[2];
 //				System.out.println("submission id(" + submissionId +") chosen at " + stage + " - wholemount!!");

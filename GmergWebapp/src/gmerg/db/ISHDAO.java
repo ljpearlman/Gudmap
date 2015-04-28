@@ -60,6 +60,7 @@ public interface ISHDAO {
     /** gene page */
 	public Gene findGeneInfoBySymbol(String symbol); // q11
 	public Gene findGeneInfoBySymbolId(String symbolId); // q11
+	public ArrayList findRelatedSubmissionBySymbolIdInsitu(String symbol);
 	public ArrayList findRelatedSubmissionBySymbolIdISH(String symbol);
 	public ArrayList findRelatedSubmissionBySymbolISH(String symbol);
 	public ArrayList findRelatedSubmissionBySymbolIdIHC(String symbol);

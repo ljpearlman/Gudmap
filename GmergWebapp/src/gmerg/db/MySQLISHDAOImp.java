@@ -1741,7 +1741,7 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    return null;
 		}
         ResultSet resSet = null;
-        ParamQuery parQ = DBQuery.getParamQuery("GENEID_RELATED_SUBMISSIONS_INSITU");
+        ParamQuery parQ = DBQuery.getParamQuery("GENEID_RELATED_SUBMISSIONS_ISH");
         String queryString = parQ.getQuerySQL();
         PreparedStatement prepStmt = null;
         try {
@@ -1750,10 +1750,43 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    
 		    prepStmt = conn.prepareStatement(queryString);
             prepStmt.setString(1, symbolId);
- //         prepStmt.setString(2, "ISH"); //mantis 1026
+            prepStmt.setString(2, "ISH"); //mantis 1026
            
 		    if (debug)
 		    	System.out.println("findRelatedSubmissionBySymbolIdISH:prepStmt  = "+prepStmt);
+            resSet = prepStmt.executeQuery();
+            
+            ArrayList<String[]> relatedSubmissionISH = DBHelper.formatResultSetToArrayList(resSet);
+	    
+            return relatedSubmissionISH;
+            
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
+    }
+    
+    public ArrayList<String[]> findRelatedSubmissionBySymbolIdInsitu(String symbol) {
+		if (symbol == null || symbol.equals("")) {
+		    return null;
+		}
+        ResultSet resSet = null;
+        ParamQuery parQ = DBQuery.getParamQuery("GENE_RELATED_SUBMISSIONS_INSITU");
+        String queryString = parQ.getQuerySQL();
+        PreparedStatement prepStmt = null;
+        try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    prepStmt = conn.prepareStatement(queryString);
+            prepStmt.setString(1, symbol);
+            
+		    if (debug)
+		    	System.out.println("findRelatedSubmissionBySymbolISH:prepStmt  = "+prepStmt);
             resSet = prepStmt.executeQuery();
             
             ArrayList<String[]> relatedSubmissionISH = DBHelper.formatResultSetToArrayList(resSet);
