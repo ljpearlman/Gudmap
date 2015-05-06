@@ -520,8 +520,8 @@
  </managed-bean> 
  
    <managed-bean>
-	<managed-bean-name>AnalysisPythonBean</managed-bean-name>
-	<managed-bean-class>gmerg.beans.AnalysisPythonBean</managed-bean-class>
+	<managed-bean-name>CellAnalysisBean</managed-bean-name>
+	<managed-bean-class>gmerg.beans.CellAnalysisBean</managed-bean-class>
 	<managed-bean-scope>session</managed-bean-scope>
  </managed-bean> 
  

@@ -28,7 +28,7 @@
 				        }
 		</script>
 		
-<h:selectOneRadio layout="pageDirection">
+<h:selectOneRadio layout="pageDirection" value="#{CellAnalysisBean.file}">
 	<f:selectItem itemValue="item1" itemLabel="14434_KidneyCompon_RNAseq_normalized"/>
 	<f:selectItem itemValue="item2" itemLabel="14434_Mendelsohn_RNAseq_normalized"/>
 	<f:selectItem itemValue="item3" itemLabel="28853_ST1_GonadalCellTypes"/>
@@ -43,24 +43,13 @@
 <h:panelGroup style="margin-right:20px">
 
 <h3>Enter Gene Symbol</h3>
-	<h:inputText id="geneInput" value="#{DatabaseHomepageBean.geneInput}" size="18"  onkeypress="handleInput(this,event)"/>
-	<a4j:region renderRegionOnly="true">
-		<rich:suggestionbox for="geneInput" var="geneResult" suggestionAction="#{DatabaseHomepageBean.autocomplete}" >
-			<h:column>
-				<h:outputText value="#{geneResult}" />
-			</h:column>
-		</rich:suggestionbox>
-	</a4j:region>
+	<h:inputText id="geneInput" value="#{CellAnalysisBean.geneInput}" size="18"  onkeypress="handleInput(this,event)"/>
          
-	<h:commandButton id="go1" value="analyse" action="#{DatabaseHomepageBean.search}">
-			<f:param name="query" value="Gene" />
+	<h:commandButton id="go1" value="analyse" action="#{CellAnalysisBean.search}">
 	</h:commandButton>
 	
 </h:panelGroup>   
 
-
-
-	
 
 
 </h:form>
