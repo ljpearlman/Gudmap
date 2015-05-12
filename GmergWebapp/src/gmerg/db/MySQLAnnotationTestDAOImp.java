@@ -1623,7 +1623,7 @@ public class MySQLAnnotationTestDAOImp implements AnnotationTestDAO {
 			parQ.setPrepStat(conn);
 			prepStmt = parQ.getPrepStat();
 			prepStmt.setString(1, stage);
-            prepStmt.setString(2, id);
+ //           prepStmt.setString(2, id);
 			resSet = prepStmt.executeQuery();
 			treeContent = formatTreeContentForJavascript(resSet, hasAnnot, id);
 			return treeContent;

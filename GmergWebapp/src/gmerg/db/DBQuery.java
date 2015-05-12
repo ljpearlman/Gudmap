@@ -902,42 +902,50 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 
   // query to build anatomy tree for displaying annotation
   final static String name47 = "ANNOT_TREE_CONTENT";
-  final static String query47 = "SELECT APO_DEPTH,APO_SEQUENCE, PATN.ATN_PUBLIC_ID, PARENT.ANO_COMPONENT_NAME, CONCAT('(',strt.STG_NAME,'-',end.sTG_NAME,')') AS 'RANGE', " +
-                                 "(select count(*) " +
-                                 "from ANA_RELATIONSHIP, ANA_NODE CHILD, ANA_TIMED_NODE CATN, ANA_STAGE CSTG " +
-                                 "where REL_PARENT_FK = PARENT.ANO_OID " +
-                                 "and REL_CHILD_FK  = CHILD.ANO_OID " +
-                                 "and CATN.ATN_NODE_FK = CHILD.ANO_OID " +
-                                 "and CSTG.STG_OID = CATN.ATN_STAGE_FK " +
-                                 "and CSTG.STG_SEQUENCE = stg.STG_SEQUENCE) as kids," +
-                                 "case when !APO_IS_PRIMARY_PATH OR ANO_IS_GROUP THEN 1 ELSE 0 END AS IP, " +
-                                 "exp.EXP_STRENGTH AS EXP, exp.EXP_ADDITIONAL_STRENGTH, exp.EXP_OID, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE, " +
-                                 "DEN_RELATIVE_TO_AGE, DEN_RELATIVE_TO_TOTAL, DEN_DIRECTION_CHANGE, DEN_MAGNITUDE_CHANGE, "+  
-                                 "DNN_VALUE , CASE WHEN DNN_VALUE IS NULL THEN 0 ELSE 1 END AS D_NOTE " +
-                               "FROM ANA_NODE PARENT " +
-                               "JOIN ANAD_PART_OF " +
-                                 "ON APO_NODE_FK = PARENT.ANO_OID AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' " +
-                               "JOIN ANAD_PART_OF_PERSPECTIVE " +
-                               "ON POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' "+
-                                 " AND POP_APO_FK = APO_OID " +
-                               "JOIN ANA_TIMED_NODE PATN  " +
-                                 "ON PARENT.ANO_OID = PATN.ATN_NODE_FK " +
-                               "JOIN ANA_STAGE stg " +
-                                 "ON stg.STG_OID = PATN.ATN_STAGE_FK " +
-                                 "AND stg.STG_NAME = ? " +
-                               "JOIN ANA_STAGE strt " +
-                                 "ON APO_PATH_START_STAGE_FK = strt.STG_OID " +
-                               "JOIN ANA_STAGE end " +
-                                 "ON APO_PATH_END_STAGE_FK = end.STG_OID AND  stg.STG_SEQUENCE BETWEEN strt.STG_SEQUENCE AND end.STG_SEQUENCE " +
-                               "LEFT JOIN ISH_EXPRESSION exp " +
-                                 "ON exp.EXP_SUBMISSION_FK = (select SUB_OID from ISH_SUBMISSION where SUB_ACCESSION_ID = ? ) " +
-                                 "AND exp.EXP_COMPONENT_ID = ATN_PUBLIC_ID " +
-                               "LEFT JOIN ISH_EXPRESSION_NOTE " +
-                                 "ON exp.EXP_OID = ENT_EXPRESSION_FK " +
-                                 "LEFT JOIN ISH_DENSITY ON DEN_EXPRESSION_FK = EXP_OID "+
-                                 "LEFT JOIN ISH_DENSITY_NOTE ON DNN_DENSITY_FK = DEN_OID "+
-                               "GROUP BY PARENT.ANO_COMPONENT_NAME,'RANGE',PATN.ATN_PUBLIC_ID, APO_SEQUENCE, APO_DEPTH,strt.STG_NAME,end.STG_NAME " +
-                               "ORDER BY APO_SEQUENCE";
+//  final static String query47 = "SELECT APO_DEPTH,APO_SEQUENCE, PATN.ATN_PUBLIC_ID, PARENT.ANO_COMPONENT_NAME, CONCAT('(',strt.STG_NAME,'-',end.sTG_NAME,')') AS 'RANGE', " +
+//                                 "(select count(*) " +
+//                                 "from ANA_RELATIONSHIP, ANA_NODE CHILD, ANA_TIMED_NODE CATN, ANA_STAGE CSTG " +
+//                                 "where REL_PARENT_FK = PARENT.ANO_OID " +
+//                                 "and REL_CHILD_FK  = CHILD.ANO_OID " +
+//                                 "and CATN.ATN_NODE_FK = CHILD.ANO_OID " +
+//                                 "and CSTG.STG_OID = CATN.ATN_STAGE_FK " +
+//                                 "and CSTG.STG_SEQUENCE = stg.STG_SEQUENCE) as kids," +
+//                                 "case when !APO_IS_PRIMARY_PATH OR ANO_IS_GROUP THEN 1 ELSE 0 END AS IP, " +
+//                                 "exp.EXP_STRENGTH AS EXP, exp.EXP_ADDITIONAL_STRENGTH, exp.EXP_OID, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE, " +
+//                                 "DEN_RELATIVE_TO_AGE, DEN_RELATIVE_TO_TOTAL, DEN_DIRECTION_CHANGE, DEN_MAGNITUDE_CHANGE, "+  
+//                                 "DNN_VALUE , CASE WHEN DNN_VALUE IS NULL THEN 0 ELSE 1 END AS D_NOTE " +
+//                               "FROM ANA_NODE PARENT " +
+//                               "JOIN ANAD_PART_OF " +
+//                                 "ON APO_NODE_FK = PARENT.ANO_OID AND APO_FULL_PATH NOT LIKE '%mouse.embryo%' " +
+//                               "JOIN ANAD_PART_OF_PERSPECTIVE " +
+//                               "ON POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' "+
+//                                 " AND POP_APO_FK = APO_OID " +
+//                               "JOIN ANA_TIMED_NODE PATN  " +
+//                                 "ON PARENT.ANO_OID = PATN.ATN_NODE_FK " +
+//                               "JOIN ANA_STAGE stg " +
+//                                 "ON stg.STG_OID = PATN.ATN_STAGE_FK " +
+//                                 "AND stg.STG_NAME = ? " +
+//                               "JOIN ANA_STAGE strt " +
+//                                 "ON APO_PATH_START_STAGE_FK = strt.STG_OID " +
+//                               "JOIN ANA_STAGE end " +
+//                                 "ON APO_PATH_END_STAGE_FK = end.STG_OID AND  stg.STG_SEQUENCE BETWEEN strt.STG_SEQUENCE AND end.STG_SEQUENCE " +
+//                               "LEFT JOIN ISH_EXPRESSION exp " +
+//                                 "ON exp.EXP_SUBMISSION_FK = (select SUB_OID from ISH_SUBMISSION where SUB_ACCESSION_ID = ? ) " +
+//                                 "AND exp.EXP_COMPONENT_ID = ATN_PUBLIC_ID " +
+//                               "LEFT JOIN ISH_EXPRESSION_NOTE " +
+//                                 "ON exp.EXP_OID = ENT_EXPRESSION_FK " +
+//                                 "LEFT JOIN ISH_DENSITY ON DEN_EXPRESSION_FK = EXP_OID "+
+//                                 "LEFT JOIN ISH_DENSITY_NOTE ON DNN_DENSITY_FK = DEN_OID "+
+//                               "GROUP BY PARENT.ANO_COMPONENT_NAME,'RANGE',PATN.ATN_PUBLIC_ID, APO_SEQUENCE, APO_DEPTH,strt.STG_NAME,end.STG_NAME " +
+//                               "ORDER BY APO_SEQUENCE";
+  final static String query47 = "SELECT A.ART_DEPTH, A.ART_SEQUENCE_GUDMAP_ORDER, CONCAT('EMAPS:',SUBSTR(A.ART_PUBLIC_ID,7),SUBSTR(A.ART_STAGE_RANGE,2)), A.ART_COMPONENT_NAME, B.ART_STAGE_RANGE, " + 
+  								"A.ART_APO_OID, A.ART_ANO_OID, " +
+		  						"A.ART_FULL_PATH, A.ART_SYNONYMS, A.ART_DEFINITIONS, " +
+		  						"A.ART_STAGE_RANGE FROM ANAM_REALISED_TREE A LEFT JOIN " +
+		  						"ANAM_REALISED_TREE B ON A.ART_ANO_OID = B.ART_ANO_OID WHERE " + 
+		  						"A.ART_PERSPECTIVE_FK = 'Combined Perspective (GUDMAP)' AND A.ART_STAGE_RANGE = ? AND B.ART_TREE_TYPE = 'ABSTRACT' " + 
+		  						"GROUP BY A.ART_OID, B.ART_STAGE_RANGE ";
+		  						
                                  
   final static String name127 = "ANNOT_LIST";
   final static String query127 = "SELECT DISTINCT EXP_OID, ATN_PUBLIC_ID, ANO_COMPONENT_NAME, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH, CASE WHEN ENT_VALUE IS NULL THEN 0 ELSE 1 END AS E_NOTE, "+
