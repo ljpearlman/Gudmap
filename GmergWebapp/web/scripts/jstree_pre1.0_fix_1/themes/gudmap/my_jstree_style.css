@@ -22,7 +22,7 @@ text-align: center;
 margin: 0px;
 padding: 0px;
 width: 150px;
-background-image: url(../images/expression_gradient.png);
+background-image: url(expression_gradient.png);
 background-repeat: repeat-y;
 float: left;
 border: 1px solid #b2b7ba;
@@ -32,8 +32,6 @@ font-size: 9pt;
 #exp_key_div a {
 text-decoration: none;
 cursor: pointer;
-font-size: 8pt;
-color: #7F7F81;
 }
 
 #exp_key_div a:hover{
@@ -59,7 +57,7 @@ float: left;
 
 /***** classes for displaying expression icons on left hand side of jstree window *****/
 .exp_present_unspecified {
-background: url(../images/expression_images/present_unspecified.gif) no-repeat left top;
+background: url(expression_images/present_unspecified.gif) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
@@ -67,42 +65,42 @@ text-decoration: none;
 }
 
 .exp_present_strong {
-background: url(../images/expression_images/present_strong.gif) no-repeat left top;
+background: url(expression_images/present_strong.gif) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .exp_present_moderate {
-background: url(../images/expression_images/present_moderate.gif) no-repeat left top;
+background: url(expression_images/present_moderate.gif) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .exp_present_weak {
-background: url(../images/expression_images/present_weak.gif) no-repeat left top;
+background: url(expression_images/present_weak.gif) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .exp_uncertain {
-background: url(../images/expression_images/uncertain.gif) no-repeat left top;
+background: url(expression_images/uncertain.gif) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .exp_not_detected {
-background: url(../images/expression_images/notdetected.gif) no-repeat left top;
+background: url(expression_images/notdetected.gif) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .exp_not_examined {
-background: url(../images/expression_images/notexamined.gif) no-repeat left top;
+background: url(expression_images/notexamined.gif) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
@@ -111,7 +109,7 @@ text-decoration: none;
 
 /***** classes for displaying pattern icons on left hand side of jstree window *****/
 .graded {
-background: url(../images/pattern_images/graded.png) no-repeat left top;
+background: url(pattern_images/graded.png) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
@@ -119,49 +117,104 @@ text-decoration: none;
 }
 
 .regional {
-background: url(../images/pattern_images/regional.png) no-repeat left top;
+background: url(pattern_images/regional.png) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .spotted {
-background: url(../images/pattern_images/spotted.png) no-repeat left top;
+background: url(pattern_images/spotted.png) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .ubiquitous {
-background: url(../images/pattern_images/ubiquitous.png) no-repeat left top;
+background: url(pattern_images/ubiquitous.png) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .restricted {
-background: url(../images/pattern_images/restricted.png) no-repeat left top;
+background: url(pattern_images/restricted.png) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .single_cell {
-background: url(../images/pattern_images/single_cell.png) no-repeat left top;
+background: url(pattern_images/single_cell.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.homogeneous {
+background: url(pattern_images/homogeneous.png) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 .contains_note {
-background: url(../images/pattern_images/note.gif) no-repeat left top;
+background: url(pattern_images/note.gif) no-repeat left top;
 padding-left: 30px;
 padding-bottom: 10px;
 text-decoration: none;
 }
 
 
+/***** classes for displaying density icons on left hand side of jstree window *****/
+.max_density {
+background: url(density_images/max_high.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
 
+.mod_density {
+background: url(density_images/mod_medium.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.low_density {
+background: url(density_images/min_low.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.inc_large_density {
+background: url(density_images/inc_large.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.inc_small_density {
+background: url(density_images/inc_small.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.dec_large_density {
+background: url(density_images/dec_large.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
+
+.dec_small_density {
+background: url(density_images/dec_small.png) no-repeat left top;
+padding-left: 30px;
+padding-bottom: 10px;
+text-decoration: none;
+}
 /***** tooltip css for displaying note *****/
 
 .tooltip {
@@ -214,3 +267,9 @@ display: block; padding: 0.2em 0 0.6em 0;
    top: 0px;
    left: 0px;
 }
+
+
+
+  #demo2{
+    background-color: #EEF2FA;
+  }

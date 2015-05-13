@@ -1008,4 +1008,251 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
             DBHelper.closePreparedStatement(compNmeStmt);
         }
     }
+    
+    public String findAnnotationTreeExpressions(String submissionAccessionId) {
+		if (submissionAccessionId == null) {
+		//throw new NullPointerException("id parameter");
+		return null;
+		}
+		
+		ResultSet resSet = null;
+		//query to find out if the submission has any entries in the expression table of the db
+		ParamQuery parQ = DBQuery.getParamQuery("ANNOT_TREE_EXPRESSIONS");
+		PreparedStatement prepStmt = null;
+//		ArrayList<String[]> treeExpressions = null;
+		String treeExpressions = null;
+		
+		try {
+			// if disconnected from db, re-connected
+			conn = DBHelper.reconnect2DB(conn);
+			
+			parQ.setPrepStat(conn);
+			prepStmt = parQ.getPrepStat();			
+			prepStmt.setString(1, submissionAccessionId);
+            if(debug)
+            	System.out.println("MysqlAnatomyDAOImp.findAnnotationTreeExpressions prepStmt = "+prepStmt);
+
+
+			
+			// execute
+			resSet = prepStmt.executeQuery();
+			
+//			treeExpressions = DBHelper.formatResultSetToArrayList(resSet);
+			String result = null;
+			if (resSet.first()) {
+				resSet.beforeFirst();
+				result = new String("");
+				while (resSet.next()) {
+					result += resSet.getString(1) + "," + resSet.getString(2) + "," + resSet.getString(3) + "| ";
+				}
+				treeExpressions = result;
+			}
+			
+			return treeExpressions;
+		
+		} catch (Exception se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStmt);
+			
+		}
+	}
+
+    public String findAnnotationTreePatterns(String submissionAccessionId) {
+		if (submissionAccessionId == null) {
+		//throw new NullPointerException("id parameter");
+		return null;
+		}
+		
+		ResultSet resSet = null;
+		//query to find out if the submission has any entries in the expression table of the db
+		ParamQuery parQ = DBQuery.getParamQuery("ANNOT_TREE_PATTERNS");
+		PreparedStatement prepStmt = null;
+		String treePatterns = null;
+		
+		try {
+			// if disconnected from db, re-connected
+			conn = DBHelper.reconnect2DB(conn);
+			
+			parQ.setPrepStat(conn);
+			prepStmt = parQ.getPrepStat();			
+			prepStmt.setString(1, submissionAccessionId);
+            if(debug)
+            	System.out.println("MysqlAnatomyDAOImp.findAnnotationTreePatterns prepStmt = "+prepStmt);
+			
+			// execute
+			resSet = prepStmt.executeQuery();
+			
+//			treePatterns = DBHelper.formatResultSetToArrayList(resSet);
+			String result = null;
+			if (resSet.first()) {
+				resSet.beforeFirst();
+				result = new String("");
+				while (resSet.next()) {
+					result += resSet.getString(1) + "," + resSet.getString(2) + "| ";
+				}
+				treePatterns = result;
+			}
+			
+			return treePatterns;
+		
+		} catch (Exception se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStmt);			
+		}
+	}
+
+    public String findAnnotationTreeExpressionNotes(String submissionAccessionId) {
+		if (submissionAccessionId == null) {
+		//throw new NullPointerException("id parameter");
+		return null;
+		}
+		
+		ResultSet resSet = null;
+		//query to find out if the submission has any entries in the expression table of the db
+		ParamQuery parQ = DBQuery.getParamQuery("ANNOT_TREE_EXPRESSION_NOTES");
+		PreparedStatement prepStmt = null;
+		String treeExpressionNotes = null;
+		
+		try {
+			// if disconnected from db, re-connected
+			conn = DBHelper.reconnect2DB(conn);
+			
+			parQ.setPrepStat(conn);
+			prepStmt = parQ.getPrepStat();			
+			prepStmt.setString(1, submissionAccessionId);
+            if(debug)
+            	System.out.println("MysqlAnatomyDAOImp.findAnnotationTreeExpressionNotes prepStmt = "+prepStmt);
+			
+			// execute
+			resSet = prepStmt.executeQuery();
+			
+			
+//			treeExpressionNotes = DBHelper.formatResultSetToArrayList(resSet);
+			String result = null;
+			if (resSet.first()) {
+				resSet.beforeFirst();
+				result = new String("");
+				while (resSet.next()) {
+					result += resSet.getString(1) + "," + resSet.getString(2) + "| ";
+				}
+				treeExpressionNotes = result;
+			}
+						
+			return treeExpressionNotes;
+		
+		} catch (Exception se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStmt);			
+		}
+	}    
+
+    public String findAnnotationTreeDensities(String submissionAccessionId) {
+		if (submissionAccessionId == null) {
+		//throw new NullPointerException("id parameter");
+		return null;
+		}
+		
+		ResultSet resSet = null;
+		//query to find out if the submission has any entries in the expression table of the db
+		ParamQuery parQ = DBQuery.getParamQuery("ANNOT_TREE_DENSITY");
+		PreparedStatement prepStmt = null;
+		String treeDensities = null;
+		
+		try {
+			// if disconnected from db, re-connected
+			conn = DBHelper.reconnect2DB(conn);
+			
+			parQ.setPrepStat(conn);
+			prepStmt = parQ.getPrepStat();			
+			prepStmt.setString(1, submissionAccessionId);
+            if(debug)
+            	System.out.println("MysqlAnatomyDAOImp.findAnnotationTreeDensities prepStmt = "+prepStmt);
+			
+			// execute
+			resSet = prepStmt.executeQuery();
+			
+			
+			String result = null;
+			if (resSet.first()) {
+				resSet.beforeFirst();
+				result = new String("");
+				while (resSet.next()) {
+					result += resSet.getString(1) + "," + resSet.getString(2)  + "," + resSet.getString(3) + "," + resSet.getString(4) + "," + resSet.getString(5) + "| ";
+				}
+				treeDensities = result;
+			}
+						
+			return treeDensities;
+		
+		} catch (Exception se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStmt);			
+		}
+	}    
+ 
+    
+    public String findAnnotationTreeDensityNotes(String submissionAccessionId) {
+		if (submissionAccessionId == null) {
+		//throw new NullPointerException("id parameter");
+		return null;
+		}
+		
+		ResultSet resSet = null;
+		//query to find out if the submission has any entries in the expression table of the db
+		ParamQuery parQ = DBQuery.getParamQuery("ANNOT_TREE_DENSITY_NOTES");
+		PreparedStatement prepStmt = null;
+		String treeDensityNotes = null;
+		
+		try {
+			// if disconnected from db, re-connected
+			conn = DBHelper.reconnect2DB(conn);
+			
+			parQ.setPrepStat(conn);
+			prepStmt = parQ.getPrepStat();			
+			prepStmt.setString(1, submissionAccessionId);
+            if(debug)
+            	System.out.println("MysqlAnatomyDAOImp.findAnnotationTreeDensityNotes prepStmt = "+prepStmt);
+			
+			// execute
+			resSet = prepStmt.executeQuery();
+			
+			
+			String result = null;
+			if (resSet.first()) {
+				resSet.beforeFirst();
+				result = new String("");
+				while (resSet.next()) {
+					result += resSet.getString(1) + "," + resSet.getString(2)  + "| ";
+				}
+				treeDensityNotes = result;
+			}
+						
+			return treeDensityNotes;
+		
+		} catch (Exception se) {
+			se.printStackTrace();
+			return null;
+		}
+		finally{
+			DBHelper.closeResultSet(resSet);
+			DBHelper.closePreparedStatement(prepStmt);			
+		}
+	}    
+   
 }

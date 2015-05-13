@@ -59,15 +59,25 @@ public class ISHSubmissionAssembler {
 				return null;
 			}
 			
-			ArrayList annotationTree = null;
+			ArrayList<String> annotationTree = null;
+			String annotatedTreeExpressions = null;
+			String annotatedTreePatterns = null;
+			String annotatedTreeExpressionNotes = null;
+			String annotatedTreeDensities = null;
+			String annotatedTreeDensityNotes = null;
 			ExpressionDetail [] annotComp = null;
 			
 			if(displayAnnotationAsTree) {
 			// get expression info -- discuss with chris
-				annotationTree = anatomyDAO.findAnnotationTreeBySubmissionId(accessionId, isEditor, userBean);
+//				annotationTree = anatomyDAO.findAnnotationTreeBySubmissionId(accessionId, isEditor, userBean);
+				annotatedTreeExpressions = anatomyDAO.findAnnotationTreeExpressions(accessionId);
+				annotatedTreePatterns = anatomyDAO.findAnnotationTreePatterns(accessionId);
+				annotatedTreeExpressionNotes = anatomyDAO.findAnnotationTreeExpressionNotes(accessionId);
+				annotatedTreeDensities = anatomyDAO.findAnnotationTreeDensities(accessionId);
+				annotatedTreeDensityNotes = anatomyDAO.findAnnotationTreeDensityNotes(accessionId);
 			}
 			else {
-			annotComp = anatomyDAO.findAnnotatedListBySubmissionIds(accessionId, isEditor);
+				annotComp = anatomyDAO.findAnnotatedListBySubmissionIds(accessionId, isEditor);
 			}		
 			
 			// get probe info or antibody -- modified by xingjun 09-July-2007
@@ -88,6 +98,11 @@ public class ISHSubmissionAssembler {
 			ishSubmission.setProject(submission.getProject());
 			ishSubmission.setEuregeneId(submission.getEuregeneId());
 			ishSubmission.setResultNotes(submission.getResultNotes());
+			ishSubmission.setAnnotationTreeExpressions(annotatedTreeExpressions);
+			ishSubmission.setAnnotationTreePatterns(annotatedTreePatterns);
+			ishSubmission.setAnnotationTreeExpressionNotes(annotatedTreeExpressionNotes);
+			ishSubmission.setAnnotationTreeDensities(annotatedTreeDensities);
+			ishSubmission.setAnnotationTreeDensityNotes(annotatedTreeDensityNotes);
 			
 			if(onlyRetrieveTree) {
 				return ishSubmission;

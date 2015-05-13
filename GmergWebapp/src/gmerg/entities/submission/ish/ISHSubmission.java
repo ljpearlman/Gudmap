@@ -26,6 +26,13 @@ public class ISHSubmission extends Submission {
      *	          clickFilePath is the iip viewer url
     */
     protected ImageDetail wlzImage = null;
+    protected boolean isPublic;
+    protected boolean isDeleted;    
+    protected String annotatedTreeExpressions;
+    protected String annotatedTreePatterns;
+    protected String annotatedTreeExpressionNotes;
+    protected String annotatedTreeDensities;
+    protected String annotatedTreeDensityNotes;
 
 
     public ISHSubmission() {
@@ -162,5 +169,69 @@ public class ISHSubmission extends Submission {
     
     public void setWlzImage(ImageDetail input) {
     	this.wlzImage = input;
-    }    
+    } 
+
+    
+    public Boolean getPublic() {
+        return this.isPublic;
+    }
+    
+    public void setPublic(int  publicFlag) {
+    	if (publicFlag == 1)
+    		this.isPublic = true;
+    	else
+    		this.isPublic = false;
+    }
+    
+    public Boolean getDeleted() {
+        return this.isDeleted;
+    }
+    
+    public void setDeleted(int deleteFlag) {
+    	if (deleteFlag == 1)
+    		this.isDeleted = true;
+    	else
+    		this.isDeleted = false;
+    }
+
+    public String getAnnotationTreeExpressions(){
+        return annotatedTreeExpressions;
+    }
+    
+    public void setAnnotationTreeExpressions(String expressions){
+    	annotatedTreeExpressions = expressions;
+    }
+    
+    public String getAnnotationTreeExpressionNotes(){
+        return annotatedTreeExpressionNotes;
+    }
+    
+    public void setAnnotationTreeExpressionNotes(String notes){
+    	annotatedTreeExpressionNotes = notes;
+    }
+
+    public String getAnnotationTreePatterns(){
+        return annotatedTreePatterns;
+    }
+    
+    public void setAnnotationTreePatterns(String patterns){
+    	annotatedTreePatterns = patterns;
+    }       
+       
+    public String getAnnotationTreeDensities(){
+        return annotatedTreeDensities;
+    }
+    
+    public void setAnnotationTreeDensities(String densities){
+    	annotatedTreeDensities = densities;
+    }
+    
+    public String getAnnotationTreeDensityNotes(){
+        return annotatedTreeDensities;
+    }
+    
+    public void setAnnotationTreeDensityNotes(String notes){
+    	annotatedTreeDensityNotes = notes;
+    }
+    
 }

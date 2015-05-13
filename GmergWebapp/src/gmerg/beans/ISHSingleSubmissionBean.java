@@ -139,9 +139,9 @@ public class ISHSingleSubmissionBean implements Serializable{
 	            }
             }
             
-            if (submission.getAnnotationTree() != null || submission.getAnnotatedComponents() != null){
+ //           if (submission.getAnnotationTree() != null || submission.getAnnotatedComponents() != null){
                 expressionMapped = true;
-            }
+ //           }
         }
     }
     

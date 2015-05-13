@@ -28,5 +28,12 @@ public interface AnatomyDAO {
 	public ArrayList findAnnotationTreeBySubmissionId(String submissionAccessionId, boolean isEditor, UserBean userBean);
 	public ExpressionDetail [] findAnnotatedListBySubmissionIds(String submissionAccessionId, boolean isEditor);
 	public String getAnatomyTermFromPublicId(String id);
+
+
+	public String findAnnotationTreeExpressions(String submissionAccessionId);
+	public String findAnnotationTreePatterns(String submissionAccessionId);
+	public String findAnnotationTreeExpressionNotes(String submissionAccessionId);
+	public String findAnnotationTreeDensities(String submissionAccessionId);
+	public String findAnnotationTreeDensityNotes(String submissionAccessionId);
 	
 }

@@ -2100,6 +2100,20 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
     final static String name267 = "NGD_IMAGES";
     final static String query267 = "SELECT SUB_ACCESSION_ID, CONCAT(I.URL_URL, IMG_FILEPATH, IMG_FILENAME), CONCAT(C.URL_URL, IMG_CLICK_FILEPATH, IMG_CLICK_FILENAME) FROM ISH_ORIGINAL_IMAGE JOIN ISH_SUBMISSION ON SUB_ACCESSION_ID = ? AND  IMG_SUBMISSION_FK = SUB_OID  JOIN REF_URL I ON I.URL_OID = IMG_URL_FK JOIN REF_URL C ON C.URL_OID = IMG_CLICK_URL_FK WHERE SUB_IS_DELETED = 0 AND IMG_IS_PUBLIC = 1 AND IMG_TYPE NOT LIKE '%wlz%' AND SUB_DB_STATUS_FK = 4 AND SUB_ASSAY_TYPE='NextGen' ORDER BY IMG_ORDER ";
    
+	final static String name282 = "ANNOT_TREE_EXPRESSIONS";
+	final static String query282 = "SELECT EXP_COMPONENT_ID, EXP_STRENGTH, EXP_ADDITIONAL_STRENGTH FROM ISH_EXPRESSION WHERE (CONCAT('GUDMAP:',EXP_SUBMISSION_FK) = ?)";
+
+	final static String name283 = "ANNOT_TREE_PATTERNS";
+	final static String query283 = "SELECT EXP_COMPONENT_ID, PTN_PATTERN FROM ISH_EXPRESSION, ISH_PATTERN WHERE EXP_OID = PTN_EXPRESSION_FK AND (CONCAT('GUDMAP:',EXP_SUBMISSION_FK) = ?)";
+	
+	final static String name284 = "ANNOT_TREE_EXPRESSION_NOTES";
+	final static String query284 = "SELECT EXP_COMPONENT_ID,ENT_VALUE FROM ISH_EXPRESSION,ISH_EXPRESSION_NOTE WHERE EXP_OID = ENT_EXPRESSION_FK AND (CONCAT('GUDMAP:',EXP_SUBMISSION_FK) = ?)";
+
+	final static String name285 = "ANNOT_TREE_DENSITY";
+	final static String query285 = "SELECT EXP_COMPONENT_ID,DEN_RELATIVE_TO_AGE,DEN_RELATIVE_TO_TOTAL,DEN_DIRECTION_CHANGE,DEN_MAGNITUDE_CHANGE FROM ISH_EXPRESSION,ISH_DENSITY WHERE EXP_OID = DNN_DENSITY_FK AND (CONCAT('GUDMAP:',EXP_SUBMISSION_FK) = ?)";
+	
+	final static String name286 = "ANNOT_TREE_DENSITY_NOTES";
+	final static String query286 = "SELECT EXP_COMPONENT_ID,DNN_VALUE FROM ISH_EXPRESSION,ISH_DENSITY_NOTE WHERE EXP_OID = ENT_EXPRESSION_FK AND (CONCAT('GUDMAP:',EXP_SUBMISSION_FK) = ?)";
 	
   final static String name = "";
   final static String query = "";
@@ -2358,8 +2372,13 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
       new ParamQuery(name278,query278),
       new ParamQuery(name279,query279),
       new ParamQuery(name280,query280),
-      new ParamQuery(name281,query281)
-      };
+      new ParamQuery(name281,query281),
+      new ParamQuery(name282,query282),
+      new ParamQuery(name283,query283),
+      new ParamQuery(name284,query284),
+      new ParamQuery(name285,query285),
+      new ParamQuery(name286,query286)
+     };
 
   // finds ParamQuery object by name and returns
   public static ParamQuery getParamQuery(String name) {
