@@ -1133,6 +1133,10 @@ function showExprInfo(emapID, text_to_display, row) {
   var w = window.open('expression_detail.html?id='+SUBMISSION_ID+'&componentId='+emapID,'probePopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=400');
   w.focus();
 }
+function showExprInfo2(submissionID,emapID) {
+	  var w = window.open('expression_detail.html?id='+submissionID+'&componentId='+emapID,'probePopup','resizable=1,toolbar=0,scrollbars=1,width=600,height=400');
+	  w.focus();
+	}
 
 var numComps = 0;
 

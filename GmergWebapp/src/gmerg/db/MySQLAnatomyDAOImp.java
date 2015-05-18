@@ -231,7 +231,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 			resSet = prepStmt.executeQuery();
 			
 			// build the tree
-			treeStructure = this.buildTreeStructure(resSet, false, "", isForBooleanQ);
+//			treeStructure = this.buildTreeStructure(resSet, false, "", isForBooleanQ);
 			return treeStructure;
 			
 		} catch(SQLException se) {
@@ -456,7 +456,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
                 
                 resSet = prepStmt.executeQuery();
                 
-                annotationTree = this.buildTreeStructure(resSet, hasAnnot, submissionAccessionId, isEditor);
+//                annotationTree = this.buildTreeStructure(resSet, hasAnnot, submissionAccessionId, isEditor);
 
              }
             return annotationTree;
@@ -480,199 +480,199 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
      * @return
      * @throws SQLException
      */
-    public ArrayList buildTreeStructure(ResultSet resSet, boolean hasAnnot, String accno, boolean alternativeFunction) throws SQLException {
-	if (debug)
-	    System.out.println("MysqlAnatomyDAOImp.buildTreeStructure");
-            
-        if (resSet.first()) {
-
-            //need to reset cursor as 'if' move it on a place
-            resSet.beforeFirst();
-
-            //create ArrayList to store each row of results in
-            ArrayList<String> results = new ArrayList<String>();
-
-            //contains the javascript function for the tree
-            String javascriptFunc = "";
-            String additionalInfo = "";
-            
-            //javascript function changes depending on whether tree is annotated or not
-            if (!hasAnnot) {
-                
-            	if(FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/ish_edit_expression.jsp")) {
-	            	results.add("ANNOTATEDTREE = 0");
-	                results.add("OPENATVISCERAL = 1");
-	                results.add("HIGHLIGHT = 1");
-	                results.add("SUBMISSION_ID = \"" + accno + "\"");
-	                javascriptFunc = "javascript:showExprInfo";
-            	} else {
-            		results.add("ANNOTATEDTREE = 0");
-                    results.add("OPENATVISCERAL = 1");
-                    results.add("HIGHLIGHT = 1");
-                    if(alternativeFunction){
-                        javascriptFunc = "javascript:toggleParamGroup";
-                    }
-                    else {
-                        javascriptFunc = "javascript:showComponentID";
-                    }            		
-            	}
-            } else {
-                results.add("ANNOTATEDTREE = 1");
-                results.add("OPENATVISCERAL = 0");
-                results.add("HIGHLIGHT = 0");
-                results.add("SUBMISSION_ID = \"" + accno + "\"");
-                    javascriptFunc = "javascript:showExprInfo";
-            }
-            
-            results.add("USETEXTLINKS = 1");
-            results.add("STARTALLOPEN = 0");
-            results.add("USEFRAMES = 0");
-            results.add("USEICONS = 1");
-            results.add("PRESERVESTATE = 0");
-
-            while (resSet.next()) {
-                
-                String patterns = "";
- 
-                if (!hasAnnot) {
-                    additionalInfo = resSet.getString(5);
-                } else {
-                    patterns = this.getPatternsForAnnotatedComponent(resSet.getString(10));
-                    additionalInfo = resSet.getString(3);
-                }
-            
-                if(additionalInfo.indexOf(".") >=0){
-                    int pointIndex = additionalInfo.indexOf(".");
-                    additionalInfo = additionalInfo.substring(0, pointIndex);
-                }
-                additionalInfo = "("+ additionalInfo+")";
-
-                int row = resSet.getRow() - 1;
-                String componentName = resSet.getString(4);
-                String id = resSet.getString(3);
-                String expression = resSet.getString(8);           
-                String strength = resSet.getString(9);
-            
-                if(expression == null){
-                    expression = "not examined";
-                }
-                if(strength == null){
-                    strength = "";
-                }
-
-                String densityTotal = resSet.getString(13);
-                String densityMagnitude = resSet.getString(15);
-                String densityDirection =  resSet.getString(14);
-                String densityNoteString =  resSet.getString(16);
-                int densityNote = 0;
-                if (densityNoteString != null && densityNoteString.length() > 0) 
-                	densityNote = 1;
-                
-                // set note flag for both expression and density
-                int note = resSet.getInt(11); //expression note
-                if (note == 0){
-                	note = densityNote; //density note
-                }
-                	
-              
-                //resSet.getInt(1) tells you the depth of the component in the tree so
-                //each line of javascript code produced is determined by this
-                if (resSet.getInt(1) == 0) {
-                    results.add("foldersTree = gFld(\"" + componentName + " " +
-                            additionalInfo + "\", \"" + javascriptFunc +
-                            "(&quot;" + id + "&quot;,&quot;" + componentName +
-                            "&quot;,&quot;" + row + "&quot;)\"," +
-                            resSet.getInt(7) + ",\"" + 
-                            expression + "\",\"" + 
-                            strength + "\",\"" + 
-                            patterns + "\",\"" + 
-                            densityTotal + "\",\"" + 
-                            densityDirection + "\",\"" + 
-                            densityMagnitude+"\"," + 
-                            note+")");
-
-                } else if (resSet.getInt(1) > 0) {
-
-                    //if statement to determine whether the component has children. If it does,
-                    //it will be displayed as a folder in the tree.
-                    if (resSet.getInt(6) > 0) {
-                        //if the parent of the component is at depth 0, add 'foldersTree' to the code
-                        if (resSet.getInt(1) == 1) {
-                            results.add("aux1 = insFld(foldersTree, gFld(\"" +
-                                    componentName + " " + additionalInfo +
-                                    "\", \"" + javascriptFunc + "(&quot;" +
-                                    id + "&quot;,&quot;" + componentName +
-                                    "&quot;,&quot;" + row + "&quot;)\"," +
-                                    resSet.getInt(7) + ",\"" +
-                                    expression + "\",\"" +
-                                    strength + "\",\"" + 
-                                    patterns + "\",\"" + 
-                                    densityTotal + "\",\"" + 
-                                    densityDirection + "\",\"" + 
-                                    densityMagnitude+"\"," + 
-                                    note+"))");
-                        } else {
-                            results.add("aux" + resSet.getInt(1) +
-                                    " = insFld (aux" +
-                                    (resSet.getInt(1) - 1) + ", gFld(\"" +
-                                     componentName + " " + additionalInfo +
-                                     "\", \"" + javascriptFunc + "(&quot;" +
-                                     id + "&quot;,&quot;" + componentName +
-                                     "&quot;,&quot;" + row + "&quot;)\"," +
-                                     resSet.getInt(7) + ",\"" +
-                                     expression + "\",\"" +
-                                     strength + "\",\"" + 
-                                     patterns + "\",\"" + 
-                                     densityTotal + "\",\"" + 
-                                     densityDirection + "\",\"" + 
-                                     densityMagnitude+"\"," + 
-                                     note+"))");
-                        }
-                    } else {
-                        if (resSet.getInt(1) == 1) {
-                            results.add("insDoc(foldersTree, gLnk(\"S\", \"" +
-                                    componentName + " " + additionalInfo +
-                                    "\", \"" + javascriptFunc + "(&quot;" +
-                                    id + "&quot;,&quot;" + componentName +
-                                    "&quot;,&quot;" + row + "&quot;)\"," +
-                                    resSet.getInt(7) + ",\"" +
-                                    expression + "\",\"" +
-                                    strength + "\",\"" + 
-                                    patterns + "\",\"" + 
-                                    densityTotal + "\",\"" + 
-                                    densityDirection + "\",\"" + 
-                                    densityMagnitude+"\"," + 
-                                    note+"))");
-                        } else {
-                            results.add("insDoc(aux" + (resSet.getInt(1) - 1) +
-                                    ", gLnk(\"S\", \"" + componentName +
-                                    " " + additionalInfo + "\", \"" +
-                                    javascriptFunc + "(&quot;" + id +
-                                    "&quot;,&quot;" + componentName +
-                                    "&quot;,&quot;" + row + "&quot;)\"," +
-                                    resSet.getInt(7) + ",\"" +
-                                    expression + "\",\"" +
-                                    strength + "\",\"" + 
-                                    patterns + "\",\"" + 
-                                    densityTotal + "\",\"" + 
-                                    densityDirection + "\",\"" + 
-                                    densityMagnitude+"\"," + 
-                                    note+"))");
-                        }
-                    }
-                }
-            }
-            
-            if(debug){
-            	for (String str : results){
-            		System.out.println("MysqlAnatomyDAOImp.buildTreeStructure result = "+str);
-            	}
-            }
-            
-            return results;
-        }
-        return null;
-    }
+//    public ArrayList buildTreeStructure(ResultSet resSet, boolean hasAnnot, String accno, boolean alternativeFunction) throws SQLException {
+//	if (debug)
+//	    System.out.println("MysqlAnatomyDAOImp.buildTreeStructure");
+//            
+//        if (resSet.first()) {
+//
+//            //need to reset cursor as 'if' move it on a place
+//            resSet.beforeFirst();
+//
+//            //create ArrayList to store each row of results in
+//            ArrayList<String> results = new ArrayList<String>();
+//
+//            //contains the javascript function for the tree
+//            String javascriptFunc = "";
+//            String additionalInfo = "";
+//            
+//            //javascript function changes depending on whether tree is annotated or not
+//            if (!hasAnnot) {
+//                
+//            	if(FacesContext.getCurrentInstance().getViewRoot().getViewId().equalsIgnoreCase("/pages/ish_edit_expression.jsp")) {
+//	            	results.add("ANNOTATEDTREE = 0");
+//	                results.add("OPENATVISCERAL = 1");
+//	                results.add("HIGHLIGHT = 1");
+//	                results.add("SUBMISSION_ID = \"" + accno + "\"");
+//	                javascriptFunc = "javascript:showExprInfo";
+//            	} else {
+//            		results.add("ANNOTATEDTREE = 0");
+//                    results.add("OPENATVISCERAL = 1");
+//                    results.add("HIGHLIGHT = 1");
+//                    if(alternativeFunction){
+//                        javascriptFunc = "javascript:toggleParamGroup";
+//                    }
+//                    else {
+//                        javascriptFunc = "javascript:showComponentID";
+//                    }            		
+//            	}
+//            } else {
+//                results.add("ANNOTATEDTREE = 1");
+//                results.add("OPENATVISCERAL = 0");
+//                results.add("HIGHLIGHT = 0");
+//                results.add("SUBMISSION_ID = \"" + accno + "\"");
+//                    javascriptFunc = "javascript:showExprInfo";
+//            }
+//            
+//            results.add("USETEXTLINKS = 1");
+//            results.add("STARTALLOPEN = 0");
+//            results.add("USEFRAMES = 0");
+//            results.add("USEICONS = 1");
+//            results.add("PRESERVESTATE = 0");
+//
+//            while (resSet.next()) {
+//                
+//                String patterns = "";
+// 
+//                if (!hasAnnot) {
+//                    additionalInfo = resSet.getString(5);
+//                } else {
+//                    patterns = this.getPatternsForAnnotatedComponent(resSet.getString(10));
+//                    additionalInfo = resSet.getString(3);
+//                }
+//            
+//                if(additionalInfo.indexOf(".") >=0){
+//                    int pointIndex = additionalInfo.indexOf(".");
+//                    additionalInfo = additionalInfo.substring(0, pointIndex);
+//                }
+//                additionalInfo = "("+ additionalInfo+")";
+//
+//                int row = resSet.getRow() - 1;
+//                String componentName = resSet.getString(4);
+//                String id = resSet.getString(3);
+//                String expression = resSet.getString(8);           
+//                String strength = resSet.getString(9);
+//            
+//                if(expression == null){
+//                    expression = "not examined";
+//                }
+//                if(strength == null){
+//                    strength = "";
+//                }
+//
+//                String densityTotal = resSet.getString(13);
+//                String densityMagnitude = resSet.getString(15);
+//                String densityDirection =  resSet.getString(14);
+//                String densityNoteString =  resSet.getString(16);
+//                int densityNote = 0;
+//                if (densityNoteString != null && densityNoteString.length() > 0) 
+//                	densityNote = 1;
+//                
+//                // set note flag for both expression and density
+//                int note = resSet.getInt(11); //expression note
+//                if (note == 0){
+//                	note = densityNote; //density note
+//                }
+//                	
+//              
+//                //resSet.getInt(1) tells you the depth of the component in the tree so
+//                //each line of javascript code produced is determined by this
+//                if (resSet.getInt(1) == 0) {
+//                    results.add("foldersTree = gFld(\"" + componentName + " " +
+//                            additionalInfo + "\", \"" + javascriptFunc +
+//                            "(&quot;" + id + "&quot;,&quot;" + componentName +
+//                            "&quot;,&quot;" + row + "&quot;)\"," +
+//                            resSet.getInt(7) + ",\"" + 
+//                            expression + "\",\"" + 
+//                            strength + "\",\"" + 
+//                            patterns + "\",\"" + 
+//                            densityTotal + "\",\"" + 
+//                            densityDirection + "\",\"" + 
+//                            densityMagnitude+"\"," + 
+//                            note+")");
+//
+//                } else if (resSet.getInt(1) > 0) {
+//
+//                    //if statement to determine whether the component has children. If it does,
+//                    //it will be displayed as a folder in the tree.
+//                    if (resSet.getInt(6) > 0) {
+//                        //if the parent of the component is at depth 0, add 'foldersTree' to the code
+//                        if (resSet.getInt(1) == 1) {
+//                            results.add("aux1 = insFld(foldersTree, gFld(\"" +
+//                                    componentName + " " + additionalInfo +
+//                                    "\", \"" + javascriptFunc + "(&quot;" +
+//                                    id + "&quot;,&quot;" + componentName +
+//                                    "&quot;,&quot;" + row + "&quot;)\"," +
+//                                    resSet.getInt(7) + ",\"" +
+//                                    expression + "\",\"" +
+//                                    strength + "\",\"" + 
+//                                    patterns + "\",\"" + 
+//                                    densityTotal + "\",\"" + 
+//                                    densityDirection + "\",\"" + 
+//                                    densityMagnitude+"\"," + 
+//                                    note+"))");
+//                        } else {
+//                            results.add("aux" + resSet.getInt(1) +
+//                                    " = insFld (aux" +
+//                                    (resSet.getInt(1) - 1) + ", gFld(\"" +
+//                                     componentName + " " + additionalInfo +
+//                                     "\", \"" + javascriptFunc + "(&quot;" +
+//                                     id + "&quot;,&quot;" + componentName +
+//                                     "&quot;,&quot;" + row + "&quot;)\"," +
+//                                     resSet.getInt(7) + ",\"" +
+//                                     expression + "\",\"" +
+//                                     strength + "\",\"" + 
+//                                     patterns + "\",\"" + 
+//                                     densityTotal + "\",\"" + 
+//                                     densityDirection + "\",\"" + 
+//                                     densityMagnitude+"\"," + 
+//                                     note+"))");
+//                        }
+//                    } else {
+//                        if (resSet.getInt(1) == 1) {
+//                            results.add("insDoc(foldersTree, gLnk(\"S\", \"" +
+//                                    componentName + " " + additionalInfo +
+//                                    "\", \"" + javascriptFunc + "(&quot;" +
+//                                    id + "&quot;,&quot;" + componentName +
+//                                    "&quot;,&quot;" + row + "&quot;)\"," +
+//                                    resSet.getInt(7) + ",\"" +
+//                                    expression + "\",\"" +
+//                                    strength + "\",\"" + 
+//                                    patterns + "\",\"" + 
+//                                    densityTotal + "\",\"" + 
+//                                    densityDirection + "\",\"" + 
+//                                    densityMagnitude+"\"," + 
+//                                    note+"))");
+//                        } else {
+//                            results.add("insDoc(aux" + (resSet.getInt(1) - 1) +
+//                                    ", gLnk(\"S\", \"" + componentName +
+//                                    " " + additionalInfo + "\", \"" +
+//                                    javascriptFunc + "(&quot;" + id +
+//                                    "&quot;,&quot;" + componentName +
+//                                    "&quot;,&quot;" + row + "&quot;)\"," +
+//                                    resSet.getInt(7) + ",\"" +
+//                                    expression + "\",\"" +
+//                                    strength + "\",\"" + 
+//                                    patterns + "\",\"" + 
+//                                    densityTotal + "\",\"" + 
+//                                    densityDirection + "\",\"" + 
+//                                    densityMagnitude+"\"," + 
+//                                    note+"))");
+//                        }
+//                    }
+//                }
+//            }
+//            
+//            if(debug){
+//            	for (String str : results){
+//            		System.out.println("MysqlAnatomyDAOImp.buildTreeStructure result = "+str);
+//            	}
+//            }
+//            
+//            return results;
+//        }
+//        return null;
+//    }
     
     String getPatternsForAnnotatedComponent(String expressionOID) throws SQLException{
         
@@ -1194,7 +1194,10 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 				treeDensities = result;
 			}
 						
-			return treeDensities;
+            if(debug)
+            	System.out.println("MysqlAnatomyDAOImp.findAnnotationTreeDensities treeDensities = "+treeDensities);
+
+            return treeDensities;
 		
 		} catch (Exception se) {
 			se.printStackTrace();
@@ -1242,7 +1245,11 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 				}
 				treeDensityNotes = result;
 			}
-						
+
+			
+            if(debug)
+            	System.out.println("MysqlAnatomyDAOImp.findAnnotationTreeDensityNotes treeDensityNotes = "+treeDensityNotes);
+
 			return treeDensityNotes;
 		
 		} catch (Exception se) {

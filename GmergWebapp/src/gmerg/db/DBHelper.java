@@ -806,9 +806,9 @@ public final class DBHelper {
 		return result;
 	}
 	
-	public static ArrayList buildTreeStructure(ResultSet resSet, int hasAnnot, String accno, boolean isEditor) throws SQLException {
-		return buildTreeStructure(resSet, hasAnnot, accno, isEditor, "showComponentID");
-	}
+//	public static ArrayList buildTreeStructure(ResultSet resSet, int hasAnnot, String accno, boolean isEditor) throws SQLException {
+//		return buildTreeStructure(resSet, hasAnnot, accno, isEditor, "showComponentID");
+//	}
 	
 	/**
 	 * 

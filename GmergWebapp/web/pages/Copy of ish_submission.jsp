@@ -5,341 +5,6 @@
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 
 <%-- moved style definition to gudmap_css.css - xingjun - 30/07/2010 --%>
-<head>
-	<link href="${pageContext.request.contextPath}/scripts/jstree_pre1.0_fix_1/themes/gudmap/my_jstree_style.css" type="text/css" rel="stylesheet" />
-	<link href="${pageContext.request.contextPath}/scripts/jstree_pre1.0_fix_1/themes/gudmap/tooltip_style.css" type="text/css" rel="stylesheet" />
-
-<%--	<script type="text/javascript" src="../scripts/jstree.gudmap.globalsearch.js"></script> --%>
-
-
-	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.js"></script>
-	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.cookie.js"></script>
-	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.hotkeys.js"></script>
-	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/jquery.jstree.js"></script> 
-	<%--	
-	<script type="text/javascript" src="../scripts/jstree_v.pre1.0/_lib/jquery.js"></script>
-	<script type="text/javascript" src="../scripts/jstree_v.pre1.0/_lib/jquery.cookie.js"></script>
-	<script type="text/javascript" src="../scripts/jstree_v.pre1.0/_lib/jquery.hotkeys.js"></script>
-	<script type="text/javascript" src="../scripts/jstree_v.pre1.0/jquery.jstree.js"></script> 
-	--%>
-<style>
-  #exp_key_div a {
-    font-size: 8pt;
-    color: #7F7F81;
-  }
-  .expression_btn, .pattern_btn{
-    pointer-events: none;
-    cursor: default;
-  }
-
-  #demo2_view{
-    cursor: default;
-    background-color: #EEF2FA;
-  }
-
-  #demo2_view a{
-    cursor: default;
-  }
-</style>
-
-<script type="text/javascript">
-
-jQuery(document).ready(function(){
-    jQuery("#demo2_view").jstree({
-        "themes": {
-          "theme": "default",
-          "line": true,
-          "dots" : true,
-          "icons": true,
-		  "url" : "../scripts/jstree_pre1.0_fix_1/themes/anatomytree/style3.css"
-        },
-        "ui" : {
-          //"select_limit" : -1,
-          "select_limit" : 0,
-          //"select_multiple_modifier" : "ctrl",
-          //"select_range_modifier" :"shift",
-          //selected_parent_open
-          "selected_parent_close" : "select_parent"
-        },
-        "json_data" : {
-          "progressive_render" : false,
-          "selected_parent_open": true,
-          "ajax" : {
-        	  "data": function (n) { return { id: n.attr ? n.attr("id") : 0} },
-          	"url" : "../scripts/annotation_tree_json/" + "${ISHSingleSubmissionBean.submission.stage}" + ".json"
-         }
-        },
-        "plugins" : [ "themes", "json_data", "ui", "crrm" ]
-    })
-    .bind("loaded.jstree", function (e, data) { 	
-    	enhanceTree(e, data);
-    })
-	.delegate("a", "click", function(e, data) {
-	    var node = $(e.target).closest("li");
-	    var data = node.data("jstree");
-	    
-		var ano_public_id = node.attr('ANO_PUBLIC_ID');
-		var submission_id = String("${ISHSingleSubmissionBean.submission.accID}");
-		
-		showExprInfo2(submission_id,ano_public_id);
-	});
-}); 
-
-
-
-function enhanceTree(event, data) {
-
-    	var exp_from_db = new Array();
-    	exp_from_db = findExpressions();
-
-    	var pattern_from_db = new Array();
-    	pattern_from_db = findPatterns();
-
-    	var density_from_db = new Array();
-    	density_from_db = findDensities();
-
-    	var expnote_from_db = new Array();
-    	expnote_from_db = findExpressionNotes(exp_from_db);
-
-
-		var min_depth = 20;//min_depth is a global variable
-
-        if (exp_from_db.length == 0){  
-	        jQuery("#demo2_view").jstree("open_node", "#0--0");
-	        jQuery("#demo2_view").jstree("open_node", "#1--0");
-	        jQuery("#demo2_view").jstree("open_node", "#2--0");
-        }
-        else{
-
-			for (var i = 0; i < exp_from_db.length; i++) {
-		
-	            var node_name1 = String(exp_from_db[i][0]);
-	            var node_name = node_name1.replace(" ","");
-	            
-
-				jQuery("#demo2_view").find(jQuery("li[name='"+node_name+"']")).each(function (k, v) {
-					
-					data.inst.select_node(v);
-					data.inst.deselect_node(v);
-
-		            if(parseInt(jQuery(v).attr('APO_DEPTH')) < min_depth) {
-		                min_depth = jQuery(v).attr('APO_DEPTH');		            
-		            }
-
-					var ano_public_id = jQuery(v).attr('ANO_PUBLIC_ID');
-					var ano_component_name = jQuery(v).attr('ANO_COMPONENT_NAME');
-				
-		            var node_strength = exp_from_db[i][1];
-		            var node_add_strength = exp_from_db[i][2];
-		            
-		            var selected_class;
-		            if (node_strength == "present" && node_add_strength == ""){
-		              selected_class = "jstree-icon4";
-		            }
-		            else if (node_strength == "present" && node_add_strength == "strong")  {
-		              selected_class = "jstree-icon3";
-		            }
-		            else if (node_strength == "present" && node_add_strength == "moderate")  {
-		              selected_class = "jstree-icon2";
-		            }
-		            else if (node_strength == "present" && node_add_strength == "weak")  {
-		              selected_class = "jstree-icon5";
-		            }
-		            else if (node_strength == "uncertain" && node_add_strength == "")  {
-		              selected_class = "jstree-icon6";
-		            }
-		            else if (node_strength == "not detected" && node_add_strength == "")  {
-		              selected_class = "jstree-icon7";
-		            }
-		            else if (exp_node == "not_examined")  {
-		              selected_class = "jstree-icon";
-		            }
-		            
-		            jQuery("li[name='"+node_name+"'] > ins").attr("class",selected_class);// set class to display new icon
-		            jQuery("li[name='"+node_name+"'] > a ins").attr("class",selected_class);// set class to display new icon
-		        });
-
-		        for (p = 0; p < pattern_from_db.length; p++) {
-		        	var pattern_name = String(pattern_from_db[p][0]).replace(" ","");
-		        	if (node_name == pattern_name){
-//		        		alert("pattern icon");
-		                if (pattern_from_db[p][1] == "graded"){
-		                  selected_class = "pattern-icon1";
-		                }
-		                else if (pattern_from_db[p][1] == "regional")  {
-		                  selected_class = "pattern-icon2";
-		                }
-		                else if (pattern_from_db[p][1] == "spotted")  {
-		                  selected_class = "pattern-icon3";
-		                }
-		                else if (pattern_from_db[p][1] == "ubiquitous")  {
-		                  selected_class = "pattern-icon4";
-		                }
-		                else if (pattern_from_db[p][1] == "restricted")  {
-		                  selected_class = "pattern-icon5";
-		                }
-		                else if (pattern_from_db[p][1] == "single cell")  {
-		                  selected_class = "pattern-icon6";
-		                }
-		                else if (pattern_from_db[p][1] == "homogeneous")  {
-			              selected_class = "pattern-icon7";
-			            }
-		                
-						jQuery("li[name='"+node_name+"'] > a").append('<a style="cursor:default;"><ins class="' + selected_class + '">&nbsp;</ins></a>');		            	
-		            }// end if node_name	        	
-		        }// end for p loop
-
-		        for (d = 0; d < density_from_db.length; d++) {
-		        	var density_name = String(density_from_db[d][0]).replace(" ","");
-//		        	alert(node_name);
-//		        	alert(density_name);
-		        	if (node_name == density_name){
-//		        		alert("density icon");
-		                if (density_from_db[d][2] == "High"){
-		                  rel_total_selected_class = "max_den_icon";
-		                }
-		                else if (density_from_db[d][2] == "Medium")  {
-		               	  rel_total_selected_class = "mod_den_icon";
-		                }
-		                else if (density_from_db[d][2] == "Low")  {
-		                  rel_total_selected_class = "low_den_icon";
-		                }
-		                else {
-		                  rel_total_selected_class = "none";
-		                }
-		                
-		                if (rel_total_selected_class != "none"){
-						  jQuery("li[name='"+node_name+"'] > a").append('<a style="cursor:default;"><ins class="' + rel_total_selected_class + '">&nbsp;</ins></a>');		            			                	
-		                }
-		                
-		                if ((density_from_db[d][1] == "P0" || density_from_db[d][1] == "Adult") && 
-		                	(density_from_db[d][3] == "Increased" || density_from_db[d][4] == "Large")){
-		                    selected_class = "inc_large_icon";
-		                  }
-		                  else if ((density_from_db[d][1] == "P0" || density_from_db[d][1] == "Adult") && 
-			                	(density_from_db[d][3] == "Increased" || density_from_db[d][4] == "Small")){
-			                    selected_class = "inc_small_icon";
-			              }
-		                  else if ((density_from_db[d][1] == "P0" || density_from_db[d][1] == "Adult") && 
-				                	(density_from_db[d][3] == "Decreased" || density_from_db[d][4] == "Large")){
-				                    selected_class = "dec_large_icon";
-				          }
-		                  else if ((density_from_db[d][1] == "P0" || density_from_db[d][1] == "Adult") && 
-				                	(density_from_db[d][3] == "Decreased" || density_from_db[d][4] == "Small")){
-				                    selected_class = "dec_small_icon";
-				          }
-		                  else {
-		                	  selected_class = "none";
-		                  }
-		                
-		                if (selected_class != "none"){
-							jQuery("li[name='"+node_name+"'] > a").append('<a style="cursor:default;"><ins class="' + selected_class + '">&nbsp;</ins></a>');		            			                	
-		                }
-
-		            }// end if node_name	        	
-		        }// end for p loop
-		        
-		        
-		        for (n = 0; n < expnote_from_db.length; n++) {
-		        	var note_name = String(expnote_from_db[n][0]).replace(" ","");
-		        	if (node_name == note_name){
-//		        		alert("note-icon1 = " + expnote_from_db[n][1]);
-		                selected_class = "note-icon1";
-		                jQuery('li[name="'+node_name+'"] > a') .after('<a title=\''+ expnote_from_db[n][1] + '\' ><ins class="' + selected_class + '">&nbsp;</ins></a>');
-		            }		        	
-		        }// end for n loop
-								
-            }// end of for i loop
-        }// end of else              
-};
-
-function findExpressions(){
-
-	var expressions=String("${ISHSingleSubmissionBean.submission.annotationTreeExpressions}");
-	var temparray = expressions.split("|");
-	var count = temparray.length;
-	var expressions_array = new Array(count-1);
-	for(var i = 0; i < count-1; i++){
-		expressions_array[i] = new Array(3);
-		expressions_array[i] = temparray[i].replace(":","").split(",");
-	}
-
-	for(var i = 0; i < count-1; i++){
-//		alert(expressions_array[i]);
-	}
-	
-	return expressions_array;	
-}
-
-function findPatterns(){
-	
-	var patterns=String("${ISHSingleSubmissionBean.submission.annotationTreePatterns}");
-
-	var temparray = patterns.split("|");
-	var count = temparray.length;
-	var pattern_array = new Array(count-1);
-	for(var i = 0; i < count-1; i++){
-		pattern_array[i] = new Array(2);
-		pattern_array[i] = temparray[i].replace(":","").split(",");
-	}
-
-	for(var i = 0; i < count-1; i++){
-//		alert(pattern_array[i]);
-	}
-	
-	return pattern_array;	
-}
-
-function findDensities(){
-	
-	var densities=String("${ISHSingleSubmissionBean.submission.annotationTreeDensities}");
-	var temparray = densities.split("|");
-	var count = temparray.length;
-	var density_array = new Array(count-1);
-	for(var i = 0; i < count-1; i++){
-		density_array[i] = new Array(5);
-		density_array[i] = temparray[i].replace(":","").split(",");
-	}
-
-	for(var i = 0; i < count-1; i++){
-//		alert(density_array[i]);
-	}
-	
-	return density_array;	
-}
-
-function findExpressionNotes(){
-	
-	var notes=String("${ISHSingleSubmissionBean.submission.annotationTreeExpressionNotes}");
-	var temparray = notes.split("|");
-	var count = temparray.length;
-	var notes_array = new Array(count-1);
-	for(var i = 0; i < count-1; i++){
-		notes_array[i] = new Array(2);
-		notes_array[i] = temparray[i].replace(":","").split(",");
-//		alert(notes_array[i]);
-	}
-
-	var dnotes=String("${ISHSingleSubmissionBean.submission.annotationTreeDensityNotes}");
-//	alert(notes);
-	var dtemparray = dnotes.split("|");
-	var dcount = dtemparray.length;
-	var dnotes_array = new Array(dcount-1);
-	for(var j = 0; j < dcount-1; j++){
-		dnotes_array[j] = new Array(2);
-		dnotes_array[j] = dtemparray[j].replace(":","").split(",");
-		
-	}
-	
-//	notes_array = jQuery.merge(notes_array,dnotes_array);
-	
-	return notes_array;
-}
-
-</script>	
-
-</head>
-
 <f:view>
 	<jsp:include page="/includes/header.jsp" />
 
@@ -482,17 +147,10 @@ function findExpressionNotes(){
 					       </h:outputLink>
 					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.displayAddress}" />
 					</h:panelGroup>
-			
-			<h:outputText value="Archive ID:" rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}"/>
-			<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}">
-				<h:outputText value="#{ISHSingleSubmissionBean.submission.archiveId}"    rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}"/>
-			</h:outputLink>
-			<h:outputText value="Batch ID:"  rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}"/>
-			<h:outputLink value="/gudmap/pages/focus_insitu_browse.html?batchId=#{ISHSingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}">
-				<h:outputText value="#{ISHSingleSubmissionBean.submission.batchId}"  rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}"/>
-			</h:outputLink>
-
-			
+					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" value="Archive/Batch ID:" />
+					<h:outputLink rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" styleClass="datatext" value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" >
+						<h:outputText value="#{ISHSingleSubmissionBean.submission.archiveId}" />
+					</h:outputLink>
 					<h:outputText value="Submission ID:" />
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.labId}" />
 				</h:panelGrid>
@@ -683,7 +341,7 @@ function findExpressionNotes(){
 						</h:column>
 						<h:column>
 							<f:facet name="header">
-								<h:outputText value="Nerve Densities" styleClass="plaintextbold"/>
+								<h:outputText value="Densities" styleClass="plaintextbold"/>
 							</f:facet>
 							<h:panelGrid columns="2">
 									<h:graphicImage value="#{component.densityImageRelativeToTotal}" styleClass="icon" alt="" rendered="#{component.densityImageRelativeToTotal != null}"/>
@@ -695,14 +353,21 @@ function findExpressionNotes(){
 					</h:dataTable>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}">
-					 <f:verbatim>
-						<div id="demo2_view" class="demo" style="overflow: auto; align: left; height: 700px;">
-						</div>
-					</f:verbatim>	
-					<h:panelGroup>
-						<h:outputText styleClass="plaintextbold" value="G " />
-						<h:outputText styleClass="plaintext" value="Group or group descendent. Groups provide alternative groupings of terms." />
-					</h:panelGroup>				
+					<h:outputLink style="font-size:7pt;text-decoration:none;color:silver" value="http://www.treemenu.net/" target="_blank">
+						<h:outputText value="Javascript Tree Menu" />
+					</h:outputLink>
+					<f:verbatim>
+						<script type="text/javascript">
+							<c:forEach items="${ISHSingleSubmissionBean.submission.annotationTree}" var="row">
+								<c:out value="${row}" escapeXml="false"/>
+							</c:forEach>
+						</script>
+						<script type="text/javascript">initializeDocument('${ISHSingleSubmissionBean.displayOfAnnoGps}')</script>
+						<noscript>
+							<span class="plaintext">A tree of annotated anatomical components will open here if you enable JavaScript in your browser.</span>
+						</noscript>
+						&nbsp;
+					</f:verbatim>
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGrid>
