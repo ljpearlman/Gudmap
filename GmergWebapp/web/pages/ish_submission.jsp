@@ -73,6 +73,10 @@ jQuery(document).ready(function(){
     })
     .bind("loaded.jstree", function (e, data) { 	
     	enhanceTree(e, data);
+    	
+        jQuery("#demo2_view").jstree("select_node", "#0--0");
+        jQuery("#demo2_view").jstree("deselect_node", "#0--0");
+
     })
 	.delegate("a", "click", function(e, data) {
 	    var node = $(e.target).closest("li");
@@ -213,19 +217,19 @@ function enhanceTree(event, data) {
 		                }
 		                
 		                if ((density_from_db[d][1] == "P0" || density_from_db[d][1] == "Adult") && 
-		                	(density_from_db[d][3] == "Increased" || density_from_db[d][4] == "Large")){
+		                	(density_from_db[d][3] == "Increased" && density_from_db[d][4] == "Large")){
 		                    selected_class = "inc_large_icon";
 		                  }
 		                  else if ((density_from_db[d][1] == "P0" || density_from_db[d][1] == "Adult") && 
-			                	(density_from_db[d][3] == "Increased" || density_from_db[d][4] == "Small")){
+			                	(density_from_db[d][3] == "Increased" && density_from_db[d][4] == "Small")){
 			                    selected_class = "inc_small_icon";
 			              }
 		                  else if ((density_from_db[d][1] == "P0" || density_from_db[d][1] == "Adult") && 
-				                	(density_from_db[d][3] == "Decreased" || density_from_db[d][4] == "Large")){
+				                	(density_from_db[d][3] == "Decreased" && density_from_db[d][4] == "Large")){
 				                    selected_class = "dec_large_icon";
 				          }
 		                  else if ((density_from_db[d][1] == "P0" || density_from_db[d][1] == "Adult") && 
-				                	(density_from_db[d][3] == "Decreased" || density_from_db[d][4] == "Small")){
+				                	(density_from_db[d][3] == "Decreased" && density_from_db[d][4] == "Small")){
 				                    selected_class = "dec_small_icon";
 				          }
 		                  else {
@@ -317,7 +321,7 @@ function findExpressionNotes(){
 	for(var i = 0; i < count-1; i++){
 		notes_array[i] = new Array(2);
 		notes_array[i] = temparray[i].replace(":","").split(",");
-//		alert(notes_array[i]);
+		alert(notes_array[i]);
 	}
 
 	var dnotes=String("${ISHSingleSubmissionBean.submission.annotationTreeDensityNotes}");
@@ -328,7 +332,7 @@ function findExpressionNotes(){
 	for(var j = 0; j < dcount-1; j++){
 		dnotes_array[j] = new Array(2);
 		dnotes_array[j] = dtemparray[j].replace(":","").split(",");
-		
+		alert(dnotes_array[j]);		
 	}
 	
 //	notes_array = jQuery.merge(notes_array,dnotes_array);

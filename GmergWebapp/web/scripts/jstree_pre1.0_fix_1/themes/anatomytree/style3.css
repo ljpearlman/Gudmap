@@ -24,7 +24,7 @@
 .jstree-default a .jstree-icon3 { background-position:-56px -72px; }
 .jstree-default a .jstree-icon4 { background-position:-56px -90px; }
 .jstree-default a .jstree-icon5 { background-position:-56px -109px; }
-.jstree-default a .jstree-icon6 { background-position:-56px -127px; }
+.jstree-default a .jstree-icon6 { background-position:-56px -124px; }
 .jstree-default a .jstree-icon7 { background-position:-56px -141px; }
 
 /******** classes for patterns expressions ********/
@@ -38,14 +38,16 @@
 
 
 /******** classes for density expressions ********/
-.jstree-default a .max_den_icon { background-position:-56px -236px; }
-.jstree-default a .mod_den_icon { background-position:-56px -269px; }
-.jstree-default a .low_den_icon { background-position:-56px -251px; }
+.jstree-default a .max_den_icon { background-position:-56px -237px; }
+.jstree-default a .mod_den_icon { background-position:-56px -255px; }
+.jstree-default a .low_den_icon { background-position:-56px -274px; }
 
-.jstree-default a .inc_large_icon { background-position:-56px -198px; }
-.jstree-default a .inc_small_icon { background-position:-56px -214px; }
-.jstree-default a .dec_large_icon { background-position:-56px -179px; }
-.jstree-default a .dec_small_icon { background-position:-56px -161px; }
+.jstree-default a .dec_large_icon { background-position:-56px -161px; }
+.jstree-default a .dec_small_icon { background-position:-56px -180px; }
+.jstree-default a .inc_large_icon { background-position:-56px -199px; }
+.jstree-default a .inc_small_icon { background-position:-56px -218px; }
+
+
 
 /******** classes for patterns expressions -- END ********/
 
