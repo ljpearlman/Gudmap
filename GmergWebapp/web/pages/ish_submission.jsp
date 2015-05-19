@@ -9,19 +9,12 @@
 	<link href="${pageContext.request.contextPath}/scripts/jstree_pre1.0_fix_1/themes/gudmap/my_jstree_style.css" type="text/css" rel="stylesheet" />
 	<link href="${pageContext.request.contextPath}/scripts/jstree_pre1.0_fix_1/themes/gudmap/tooltip_style.css" type="text/css" rel="stylesheet" />
 
-<%--	<script type="text/javascript" src="../scripts/jstree.gudmap.globalsearch.js"></script> --%>
-
 
 	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.js"></script>
 	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.cookie.js"></script>
 	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.hotkeys.js"></script>
 	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/jquery.jstree.js"></script> 
-	<%--	
-	<script type="text/javascript" src="../scripts/jstree_v.pre1.0/_lib/jquery.js"></script>
-	<script type="text/javascript" src="../scripts/jstree_v.pre1.0/_lib/jquery.cookie.js"></script>
-	<script type="text/javascript" src="../scripts/jstree_v.pre1.0/_lib/jquery.hotkeys.js"></script>
-	<script type="text/javascript" src="../scripts/jstree_v.pre1.0/jquery.jstree.js"></script> 
-	--%>
+
 <style>
   #exp_key_div a {
     font-size: 8pt;
@@ -321,21 +314,38 @@ function findExpressionNotes(){
 	for(var i = 0; i < count-1; i++){
 		notes_array[i] = new Array(2);
 		notes_array[i] = temparray[i].replace(":","").split(",");
-		alert(notes_array[i]);
 	}
 
 	var dnotes=String("${ISHSingleSubmissionBean.submission.annotationTreeDensityNotes}");
-//	alert(notes);
 	var dtemparray = dnotes.split("|");
 	var dcount = dtemparray.length;
 	var dnotes_array = new Array(dcount-1);
-	for(var j = 0; j < dcount-1; j++){
+	for(var j = 0; j < 1; j++){
 		dnotes_array[j] = new Array(2);
-		dnotes_array[j] = dtemparray[j].replace(":","").split(",");
-		alert(dnotes_array[j]);		
+//		dnotes_array[j] = dtemparray[j].replace(":","").split(",");
+		dnotes_array[j][0] = "EMAPS2837028";
+		dnotes_array[j][1] = "density note test";
+	
 	}
 	
-//	notes_array = jQuery.merge(notes_array,dnotes_array);
+	notes_array = notes_array.concat(dnotes_array);
+	for(var i = 0; i < notes_array.length; i++){
+//		alert("n0 = " + notes_array[i][0]);
+//		alert("n1 = " + notes_array[i][1]);
+	}
+	
+	notes_array = notes_array .reduce(function(ob, ar) {
+        if (!(ar[0] in ob.nums)) {
+            ob.nums[ar[0]] = ar
+            ob.result.push(ar);
+        } else
+            ob.nums[ar[0]][1] = (" Exp Note: " + ob.nums[ar[0]][1]) + " | Den Note: " + ar[1];
+
+          return ob
+        }, {nums: {}, result: []}).result
+                .sort(function(a, b) {
+          return a[0] - b[0];
+        });
 	
 	return notes_array;
 }
