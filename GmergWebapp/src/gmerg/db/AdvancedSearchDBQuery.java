@@ -1333,6 +1333,12 @@ public class AdvancedSearchDBQuery {
 	  "join ANA_TIMED_NODE on ATN_PUBLIC_ID=IST_COMPONENT "+
 	  "join ANA_NODE on ATN_NODE_FK = ANO_OID where SUB_ACCESSION_ID=?"; 
 
+	  final static String name149 = "TOTAL_NUMBER_OF_NGSEQUENCES";
+	  final static String query149 = "SELECT COUNT(DISTINCT SUB_OID) TOTAL FROM ISH_SUBMISSION " +
+			  						 "join REF_STAGE on STG_OID = SUB_STAGE_FK " +
+			  						 "WHERE SUB_IS_DELETED = '0' AND SUB_IS_PUBLIC = '1' AND SUB_DB_STATUS_FK = 4 " +
+			  						 "AND SUB_ASSAY_TYPE = 'NextGen' and STG_ANATOMY = ? ";
+	  
 	  final static String name = "";
 	  final static String query = "";
 
@@ -1360,7 +1366,8 @@ public class AdvancedSearchDBQuery {
 	      new ParamQuery(name145, query145),
 	      new ParamQuery(name146, query146),
 	      new ParamQuery(name147, query147),
-	      new ParamQuery(name148, query148)
+	      new ParamQuery(name148, query148),
+	      new ParamQuery(name149, query149)
 	  };
 
 	  //  finds ParamQuery object by name and returns

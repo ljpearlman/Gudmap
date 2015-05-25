@@ -384,6 +384,9 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			// get microarray stage list
 			String[] arrayStageList = focusStageDAO.getStageList("Microarray", stage, organ, symbol);
 			
+			// get sequence stage list
+			String[] sequenceStageList = focusStageDAO.getStageList("sequence", stage, organ, symbol);			
+			
 			// get age (dpc) stage list
 			int len = stage.length;
 			String[] dpcStageList = new String[len];

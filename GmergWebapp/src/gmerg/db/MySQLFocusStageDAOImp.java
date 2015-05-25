@@ -232,6 +232,8 @@ public class MySQLFocusStageDAOImp implements FocusStageDAO{
 					stageString = " AND STG_STAGE_DISPLAY = '";
 					componentString = " AND EXP_COMPONENT_ID IN ";
 				}
+			} else if (assayType.equals("sequence")) {
+				parQ = AdvancedSearchDBQuery.getParamQuery("TOTAL_NUMBER_OF_NGSEQUENCES");
 			}
 			String querySQL = parQ.getQuerySQL();;
 			String queryString = "";
