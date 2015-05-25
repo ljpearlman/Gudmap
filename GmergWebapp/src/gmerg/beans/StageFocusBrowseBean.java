@@ -59,7 +59,7 @@ public class StageFocusBrowseBean {
 			} else {
 				tableData[i][3] = new String("0");
 			}
-			tableData[i][4] = new String(stage[i]);
+			tableData[i][4] = new String(stage[i].toLowerCase());
 		}
 		return tableData;
 	}

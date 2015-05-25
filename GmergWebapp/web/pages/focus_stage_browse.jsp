@@ -13,11 +13,8 @@
 				<f:facet name="header">
 					<h:outputText styleClass="plaintextbold" value="Stage"/>
 				</f:facet>
-<%-- 
-				<h:outputLink value="http://genex.hgu.mrc.ac.uk/Databases/Anatomy/Diagrams/ts#{submission[4]}" styleClass="plaintext">
---%>
-				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{submission[4]}definition.html" styleClass="plaintext">
-					<h:outputText styleClass="plaintext" value="#{submission[0]}"/>
+				<h:outputLink value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{submission[4]}definition.html" styleClass="plaintext">
+					<h:outputText value="#{submission[0]}"/>
 				</h:outputLink>
 			</h:column>
 			<h:column>
