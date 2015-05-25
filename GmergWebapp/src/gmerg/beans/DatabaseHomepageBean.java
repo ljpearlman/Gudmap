@@ -474,7 +474,7 @@ public class DatabaseHomepageBean {
 				dbSummary = dbSummaryAssembler.getData();
 			} else {
 				FocusDBSummaryAssembler dbSummaryAssembler = new FocusDBSummaryAssembler();
-			    dbSummary = dbSummaryAssembler.getData((String[])AdvancedSearchDBQuery.getEMAPID().get(focusedOrgan));
+			    dbSummary = dbSummaryAssembler.getData((String[])AdvancedSearchDBQuery.getEMAPAID().get(focusedOrgan));
 			}
 		return dbSummary;
 	}

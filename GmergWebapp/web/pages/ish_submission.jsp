@@ -206,7 +206,7 @@ function enhanceTree(event, data) {
 		                }
 		                
 		                if (rel_total_selected_class != "none"){
-						  jQuery("li[name='"+node_name+"'] > a").append('<a style="cursor:default;"><ins class="' + rel_total_selected_class + '">&nbsp;</ins></a>');		            			                	
+						  jQuery("li[name='" + node_name + "'] > a").append('<a style="cursor:default;"><ins class="' + rel_total_selected_class + '">&nbsp;</ins></a>');		            			                	
 		                }
 		                
 		                if ((density_from_db[d][1] == "P0" || density_from_db[d][1] == "Adult") && 
@@ -230,7 +230,7 @@ function enhanceTree(event, data) {
 		                  }
 		                
 		                if (selected_class != "none"){
-							jQuery("li[name='"+node_name+"'] > a").append('<a style="cursor:default;"><ins class="' + selected_class + '">&nbsp;</ins></a>');		            			                	
+							jQuery("li[name='" + node_name+"'] > a").append('<a style="cursor:default;"><ins class="' + selected_class + '">&nbsp;</ins></a>');		            			                	
 		                }
 
 		            }// end if node_name	        	
@@ -329,17 +329,17 @@ function findExpressionNotes(){
 	}
 	
 	notes_array = notes_array.concat(dnotes_array);
-	for(var i = 0; i < notes_array.length; i++){
+//	for(var i = 0; i < notes_array.length; i++){
 //		alert("n0 = " + notes_array[i][0]);
 //		alert("n1 = " + notes_array[i][1]);
-	}
+//	}
 	
 	notes_array = notes_array .reduce(function(ob, ar) {
         if (!(ar[0] in ob.nums)) {
             ob.nums[ar[0]] = ar
             ob.result.push(ar);
         } else
-            ob.nums[ar[0]][1] = (" Exp Note: " + ob.nums[ar[0]][1]) + " | Den Note: " + ar[1];
+            ob.nums[ar[0]][1] = (" Expression Note: " + ob.nums[ar[0]][1]) + "\r\n Density Note: " + ar[1];
 
           return ob
         }, {nums: {}, result: []}).result
@@ -422,7 +422,7 @@ function findExpressionNotes(){
 					</h:outputLink>
 			        </h:column>
 			        <h:column>
-					<h:outputText styleClass="notetext, topAlign" value="#{image.note}"/>
+					<h:outputText styleClass="datatext" value="#{image.note}"/>
 			        </h:column>
 			</h:dataTable>
 			<%-- <h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{null != ISHSingleSubmissionBean.submission.wlzImage}"/>
@@ -1047,7 +1047,7 @@ function findExpressionNotes(){
 				</h:panelGrid>
 				
 				<h:outputText value="Experiment Notes:" rendered="#{null != ISHSingleSubmissionBean.submission.specimen.notes}"/>
-				<h:dataTable value="#{ISHSingleSubmissionBean.submission.specimen.notes}" var="note" rendered="#{null != ISHSingleSubmissionBean.submission.specimen.notes}">
+				<h:dataTable value="#{ISHSingleSubmissionBean.submission.specimen.notes}" styleClass="datatext" var="note" rendered="#{null != ISHSingleSubmissionBean.submission.specimen.notes}">
                                                                          <h:column>
 					< h:outputText value="#{note}" />
                                                                          </h:column>

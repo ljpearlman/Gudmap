@@ -66,6 +66,7 @@ public class StageFocusBrowseBean {
 			} else {
 				tableData[i][5] = new String("0");
 			}
+
 		}
 		return tableData;
 	}

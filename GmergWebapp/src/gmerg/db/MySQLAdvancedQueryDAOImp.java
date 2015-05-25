@@ -13,7 +13,7 @@ import gmerg.utils.Utility;
 import gmerg.utils.table.GenericTableFilter;
 
 public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
-    protected boolean debug = false;
+    protected boolean debug = true;
     
     private Connection conn;
     private int ColumnNumbers = 18; //17; //15;// 14 //Bernie - 01/03/2012 - (Mantis 619) added 'sex column so increase from 14 to 15'
@@ -551,11 +551,13 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 	
     	//check whether you want to find ancestor or desendent - sql dependent on this clause
     	if(relationType.equalsIgnoreCase("ancestor")) { 
-    		transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "ANCES_ATN.ATN_PUBLIC_ID", "DESCEND_ATN.ATN_PUBLIC_ID");
+//    		transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "ANCES_ATN.ATN_PUBLIC_ID", "DESCEND_ATN.ATN_PUBLIC_ID", "");
+    		transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "ANCES_TN.ATN_PUBLIC_ID", "ANO_PUBLIC_ID", "RTR_DESCENDENT_FK");
     	}
     	//must be descendent
     	else {
-    		transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "DESCEND_ATN.ATN_PUBLIC_ID","ANCES_ATN.ATN_PUBLIC_ID");
+//    		transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "DESCEND_ATN.ATN_PUBLIC_ID","ANCES_ATN.ATN_PUBLIC_ID", "");
+    		transitiveRelationsQ = DBQuery.getComponentRelations(input.length, "DESC_TN.ATN_PUBLIC_ID","ANO_PUBLIC_ID", "RTR_ANCESTOR_FK");
     	}
 	
     	PreparedStatement stmt = null;
@@ -567,7 +569,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    	stmt.setString(i+1, input[i]);
 		    }
 		    if (debug)
-		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql1 = "+stmt.toString());
 		    
 		    resSet = stmt.executeQuery();
 		    if(resSet.first()){
@@ -613,7 +615,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    	stmt.setString(j+1, input);
 		    }
 		    if (debug)
-		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql2 = "+stmt.toString());
 		    //execute the query for a single element in the input array
 		    resSet = stmt.executeQuery();
 		    if(resSet.first()){
@@ -663,7 +665,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    }
 		    
 		    if (debug)
-		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql3 = "+stmt.toString());
 		    
 		    resSet = stmt.executeQuery();
 		    if(resSet.first()){
@@ -741,7 +743,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 		    }
 		    
 		    if (debug)
-		    	System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+		    	System.out.println("MySQLAdvancedQueryDAOImp.sql4 = "+stmt.toString());
 		    
 		    resSet = stmt.executeQuery();
 		    if (resSet.first()) {
@@ -768,7 +770,7 @@ public class MySQLAdvancedQueryDAOImp implements AdvancedQueryDAO{
 				}
 				
 				if (debug)
-				    System.out.println("MySQLAdvancedQueryDAOImp.sql = "+stmt.toString());
+				    System.out.println("MySQLAdvancedQueryDAOImp.sql5 = "+stmt.toString());
 				
 				resSet = stmt.executeQuery();
 				if(resSet.first()){

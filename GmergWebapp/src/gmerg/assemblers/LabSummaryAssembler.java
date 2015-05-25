@@ -328,8 +328,7 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 			// get last submission entry date for all labs
 			String[] entryDates = new String[piNumber];
 			for (int i=0;i<piNumber;i++) {
-			    entryDates[i] =
-				ishDAO.findLastEntryDateInDBByLabId(Integer.parseInt(pi[i][1]));
+			    entryDates[i] = ishDAO.findLastEntryDateInDBByLabId(Integer.parseInt(pi[i][1]));
 			}
 			
 			// get summary data for all labs
@@ -350,17 +349,14 @@ public class LabSummaryAssembler extends OffMemoryTableAssembler {
 		    
 		    for (int i=0;i<piNumber;i++) {
 				//			System.out.println("pi id: " + pi[i][1]);
-				SubmissionSummaryInDB =
-				    ishDAO.findSubmissionSummaryByLabId(Integer.parseInt(pi[i][1]), 1);
-				SubmissionSummaryInFTPRaw =
-				    ishDAO.findSubmissionSummaryByLabId(Integer.parseInt(pi[i][1]), 0);
+				SubmissionSummaryInDB = ishDAO.findSubmissionSummaryByLabId(Integer.parseInt(pi[i][1]), 1);
+				SubmissionSummaryInFTPRaw = ishDAO.findSubmissionSummaryByLabId(Integer.parseInt(pi[i][1]), 0);
 				
 				// refine the sumbission summary in the ftp
 				// merge the submission entries with the same submission date and assay type
 				SubmissionSummaryInFTPRefined = mergeSubmissionSummayOnFTP(SubmissionSummaryInFTPRaw);
 		
-				summaryInTotal =
-				    getSubmissionSummary(SubmissionSummaryInFTPRefined, SubmissionSummaryInDB);
+				summaryInTotal = getSubmissionSummary(SubmissionSummaryInFTPRefined, SubmissionSummaryInDB);
 				
 				/** assemble data */
 				LabSummary labSummary = new LabSummary();

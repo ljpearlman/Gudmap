@@ -170,7 +170,7 @@ public class InsituDBQuery {
 	// query to find out anatomical terms in cache tables
 	final static String query5 = "SELECT DISTINCT ANO_COMPONENT_NAME FROM ANA_NODE " +
 			"JOIN ANAD_PART_OF_PERSPECTIVE ON ANO_OID = POP_NODE_FK " +
-			"WHERE POP_PERSPECTIVE_FK = 'Genitourinary System (GUDMAP)' " +
+			"WHERE POP_PERSPECTIVE_FK = 'Combined Perspective (GUDMAP)' " +
 			"AND ANO_COMPONENT_NAME LIKE ? " +
 			"ORDER BY ANO_COMPONENT_NAME LIMIT ? ";
 

@@ -782,19 +782,21 @@ public class AdvancedSearchDBQuery {
 		  if(emapids.length >= 1) {
 			  ids = ids.substring(0, ids.length()-1);
 		  }
-		  return "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) FROM ISH_SUBMISSION, ISH_EXPRESSION WHERE SUB_ASSAY_TYPE = 'ISH' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND EXP_SUBMISSION_FK=SUB_OID and "+
-		  " EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
-		    " from ANA_TIMED_NODE ANCES_ATN, "+
-		         " ANAD_RELATIONSHIP_TRANSITIVE, "+
-		         " ANA_TIMED_NODE DESCEND_ATN, "+
-		         " ANA_NODE, "+
-		         " ANAD_PART_OF "+
-		    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
-		      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-		      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
-		      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
-		      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
-		      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true)" ;
+		  return "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) " +
+		  "FROM ISH_SUBMISSION, ISH_EXPRESSION " + 
+		  "WHERE EXP_SUBMISSION_FK=SUB_OID " +
+		  "AND SUB_ASSAY_TYPE = 'ISH' " + 
+		  "AND SUB_IS_PUBLIC = 1 " + 
+		  "AND SUB_IS_DELETED = 0  " +
+		  "AND SUB_DB_STATUS_FK = 4  " +
+		  "AND EXP_COMPONENT_ID IN  " +
+		  "(SELECT DISTINCT DESC_TN.ATN_PUBLIC_ID  " +
+		  "FROM ANA_NODE " +
+		  "JOIN ANAD_RELATIONSHIP_TRANSITIVE ON RTR_ANCESTOR_FK = ANO_OID  " +
+		  "JOIN ANA_TIMED_NODE ANCES_TN ON ANCES_TN.ATN_NODE_FK = RTR_ANCESTOR_FK  " +
+		  "JOIN ANA_TIMED_NODE DESC_TN ON DESC_TN.ATN_NODE_FK = RTR_DESCENDENT_FK " +
+		  "AND ANCES_TN.ATN_STAGE_FK  = DESC_TN.ATN_STAGE_FK " +
+		  "WHERE ANO_PUBLIC_ID IN ("+ids+"))";
 	  }
 	  
 	  final static public String getPublicISHTypesNumber(String[] emapids, String type) {
@@ -805,21 +807,23 @@ public class AdvancedSearchDBQuery {
 		  if(emapids.length >= 1) {
 			  ids = ids.substring(0, ids.length()-1);
 		  }
-		  return "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) FROM ISH_SUBMISSION, ISH_SPECIMEN, ISH_EXPRESSION WHERE SUB_ASSAY_TYPE = 'ISH' " +
-		  		 "AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND SPN_SUBMISSION_FK = SUB_OID AND " +
-		  		 "EXP_SUBMISSION_FK=SUB_OID AND SPN_ASSAY_TYPE='"+type+"' AND "+
-		  " EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
-		    " from ANA_TIMED_NODE ANCES_ATN, "+
-		         " ANAD_RELATIONSHIP_TRANSITIVE, "+
-		         " ANA_TIMED_NODE DESCEND_ATN, "+
-		         " ANA_NODE, "+
-		         " ANAD_PART_OF "+
-		    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
-		      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-		      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
-		      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
-		      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
-		      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true)" ;
+		  return "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) " +
+		  "FROM ISH_SUBMISSION, ISH_EXPRESSION, ISH_SPECIMEN " + 
+		  "WHERE EXP_SUBMISSION_FK=SUB_OID " +
+		  "AND SPN_SUBMISSION_FK = SUB_OID " +
+		  "AND SUB_ASSAY_TYPE = 'ISH' " + 
+		  "AND SPN_ASSAY_TYPE='"+type+"'" +
+		  "AND SUB_IS_PUBLIC = 1 " + 
+		  "AND SUB_IS_DELETED = 0  " +
+		  "AND SUB_DB_STATUS_FK = 4  " +
+		  "AND EXP_COMPONENT_ID IN  " +
+		  "(SELECT DISTINCT DESC_TN.ATN_PUBLIC_ID  " +
+		  "FROM ANA_NODE " +
+		  "JOIN ANAD_RELATIONSHIP_TRANSITIVE ON RTR_ANCESTOR_FK = ANO_OID  " +
+		  "JOIN ANA_TIMED_NODE ANCES_TN ON ANCES_TN.ATN_NODE_FK = RTR_ANCESTOR_FK  " +
+		  "JOIN ANA_TIMED_NODE DESC_TN ON DESC_TN.ATN_NODE_FK = RTR_DESCENDENT_FK " +
+		  "AND ANCES_TN.ATN_STAGE_FK  = DESC_TN.ATN_STAGE_FK " +
+		  "WHERE ANO_PUBLIC_ID IN ("+ids+"))";
 	  }
 	  
 	  // for every fomat except DPC, which is what GUDMAP uses, the format goes first.
@@ -842,19 +846,21 @@ public class AdvancedSearchDBQuery {
 		  if(emapids.length >= 1) {
 			  ids = ids.substring(0, ids.length()-1);
 		  }
-		  return "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) FROM ISH_SUBMISSION, ISH_EXPRESSION WHERE SUB_ASSAY_TYPE = 'IHC' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND EXP_SUBMISSION_FK=SUB_OID and "+
-		  " EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
-		    " from ANA_TIMED_NODE ANCES_ATN, "+
-		         " ANAD_RELATIONSHIP_TRANSITIVE, "+
-		         " ANA_TIMED_NODE DESCEND_ATN, "+
-		         " ANA_NODE, "+
-		         " ANAD_PART_OF "+
-		    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
-		      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-		      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
-		      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
-		      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
-		      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true)" ;
+		  return "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) " +
+		  "FROM ISH_SUBMISSION, ISH_EXPRESSION " + 
+		  "WHERE EXP_SUBMISSION_FK=SUB_OID " +
+		  "AND SUB_ASSAY_TYPE = 'IHC' " + 
+		  "AND SUB_IS_PUBLIC = 1 " + 
+		  "AND SUB_IS_DELETED = 0  " +
+		  "AND SUB_DB_STATUS_FK = 4  " +
+		  "AND EXP_COMPONENT_ID IN  " +
+		  "(SELECT DISTINCT DESC_TN.ATN_PUBLIC_ID  " +
+		  "FROM ANA_NODE " +
+		  "JOIN ANAD_RELATIONSHIP_TRANSITIVE ON RTR_ANCESTOR_FK = ANO_OID  " +
+		  "JOIN ANA_TIMED_NODE ANCES_TN ON ANCES_TN.ATN_NODE_FK = RTR_ANCESTOR_FK  " +
+		  "JOIN ANA_TIMED_NODE DESC_TN ON DESC_TN.ATN_NODE_FK = RTR_DESCENDENT_FK " +
+		  "AND ANCES_TN.ATN_STAGE_FK  = DESC_TN.ATN_STAGE_FK " +
+		  "WHERE ANO_PUBLIC_ID IN ("+ids+"))";
 	  }	  
 	  
 	  final static public String getPublicTransgenicNumber(String[] emapids) {
@@ -865,19 +871,21 @@ public class AdvancedSearchDBQuery {
 		  if(emapids.length >= 1) {
 			  ids = ids.substring(0, ids.length()-1);
 		  }
-		  return "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) FROM ISH_SUBMISSION, ISH_EXPRESSION WHERE SUB_ASSAY_TYPE = 'TG' AND SUB_IS_PUBLIC = 1 AND SUB_IS_DELETED = 0 AND SUB_DB_STATUS_FK = 4 AND EXP_SUBMISSION_FK=SUB_OID and "+
-		  " EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
-		    " from ANA_TIMED_NODE ANCES_ATN, "+
-		         " ANAD_RELATIONSHIP_TRANSITIVE, "+
-		         " ANA_TIMED_NODE DESCEND_ATN, "+
-		         " ANA_NODE, "+
-		         " ANAD_PART_OF "+
-		    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
-		      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-		      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
-		      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
-		      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
-		      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true)" ;
+		  return "SELECT COUNT(DISTINCT SUB_ACCESSION_ID) " +
+		  "FROM ISH_SUBMISSION, ISH_EXPRESSION " + 
+		  "WHERE EXP_SUBMISSION_FK=SUB_OID " +
+		  "AND SUB_ASSAY_TYPE = 'TG' " + 
+		  "AND SUB_IS_PUBLIC = 1 " + 
+		  "AND SUB_IS_DELETED = 0  " +
+		  "AND SUB_DB_STATUS_FK = 4  " +
+		  "AND EXP_COMPONENT_ID IN  " +
+		  "(SELECT DISTINCT DESC_TN.ATN_PUBLIC_ID  " +
+		  "FROM ANA_NODE " +
+		  "JOIN ANAD_RELATIONSHIP_TRANSITIVE ON RTR_ANCESTOR_FK = ANO_OID  " +
+		  "JOIN ANA_TIMED_NODE ANCES_TN ON ANCES_TN.ATN_NODE_FK = RTR_ANCESTOR_FK  " +
+		  "JOIN ANA_TIMED_NODE DESC_TN ON DESC_TN.ATN_NODE_FK = RTR_DESCENDENT_FK " +
+		  "AND ANCES_TN.ATN_STAGE_FK  = DESC_TN.ATN_STAGE_FK " +
+		  "WHERE ANO_PUBLIC_ID IN ("+ids+"))";
 	  }	  
 	  
 	  //query to find the number of public array submissions in db
@@ -949,14 +957,13 @@ public class AdvancedSearchDBQuery {
 	  
 	  public static String groupBySubmissionNGD = "GROUP BY SUB_ACCESSION_ID,NGS_GEO_ID,NGS_THEILER_STAGE,"+ stageFormatConcatForNGD + ", SUB_SOURCE, SUB_SUB_DATE,NGS_SEX,NGS_DESCRIPTION,NGS_SAMPLE_NAME, NGR_GEO_ID ";
 	  
-	  public static String findDescendant = " AND EXP_COMPONENT_ID IN (SELECT DISTINCT DESCEND_ATN.ATN_PUBLIC_ID " +
-	    "FROM ANA_TIMED_NODE ANCES_ATN, ANAD_RELATIONSHIP_TRANSITIVE, ANA_TIMED_NODE DESCEND_ATN, ANA_NODE, ANAD_PART_OF " +
-	    "WHERE ANCES_ATN.ATN_PUBLIC_ID in (COMPONENT_IDS) " +
-	    "AND ANCES_ATN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
-	    "AND RTR_DESCENDENT_FK = DESCEND_ATN.ATN_NODE_FK " +
-	    "AND ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK " +
-	    "AND ANO_OID = DESCEND_ATN.ATN_NODE_FK " +
-	    "AND APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) ";
+	  public static String findDescendant = " AND EXP_COMPONENT_ID IN (SELECT DISTINCT DESC_TN.ATN_PUBLIC_ID " +
+	    "FROM ANA_NODE " +
+		"JOIN ANAD_RELATIONSHIP_TRANSITIVE ON RTR_ANCESTOR_FK = ANO_OID "+
+	    "JOIN ANA_TIMED_NODE ANCES_TN ON ANCES_TN.ATN_NODE_FK = RTR_ANCESTOR_FK " +
+		"JOIN ANA_TIMED_NODE DESC_TN ON DESC_TN.ATN_NODE_FK = RTR_DESCENDENT_FK " +
+	    "AND ANCES_TN.ATN_STAGE_FK  = DESC_TN.ATN_STAGE_FK " +
+	    "WHERE ANO_PUBLIC_ID IN (COMPONENT_IDS)) ";
 
       /* ---query to find summary info on every array entry in the db--- */
 	  final static String name50 = "ALL_ENTRIES_ARRAY_FOCUS";
