@@ -148,10 +148,23 @@
 					       </h:outputLink>
 					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.displayAddress}" />
 					</h:panelGroup>
-					<h:outputText rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" value="Archive/Batch ID:" />
-					<h:outputLink rendered="#{ISHSingleSubmissionBean.submission.archiveId != '0'}" styleClass="datatext" value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" >
-						<h:outputText value="#{ISHSingleSubmissionBean.submission.archiveId}" />
-					</h:outputLink>
+			
+			<h:outputText value="Archive ID:" rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}"/>
+			<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}">
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.archiveId}"    rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}"/>
+			</h:outputLink>
+			<h:outputText value="Batch ID:"  rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}"/>
+			<h:outputLink value="/gudmap/pages/focus_ihc_browse.html?batchId=#{ISHSingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.batchId > 0 && ISHSingleSubmissionBean.submission.assayType == 'IHC'}">
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.batchId}"  rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}"/>
+			</h:outputLink>
+			<h:outputLink value="/gudmap/pages/focus_ish_browse.html?batchId=#{ISHSingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.batchId > 0 && ISHSingleSubmissionBean.submission.assayType == 'ISH'}">
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.batchId}"  rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}"/>
+			</h:outputLink>
+			<h:outputLink value="/gudmap/pages/focus_tg_browse.html?batchId=#{ISHSingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.batchId > 0 && ISHSingleSubmissionBean.submission.assayType == 'TG'}">
+				<h:outputText value="#{ISHSingleSubmissionBean.submission.batchId}"  rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}"/>
+			</h:outputLink>
+
+			
 					<h:outputText value="Submission ID:" />
 					<h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.labId}" />
 				</h:panelGrid>

@@ -81,6 +81,7 @@ public class ISHSubmissionAssembler {
 			ishSubmission.setStageName(submission.getStageName());
 			ishSubmission.setAssayType(assayType);
 			ishSubmission.setArchiveId(submission.getArchiveId());
+			ishSubmission.setBatchId(submission.getBatchId());
 			ishSubmission.setAnnotationTree(annotationTree);
 			ishSubmission.setAnnotatedComponents(annotComp);
 			ishSubmission.setLabId(submission.getLabId());// added by xingjun - 12/08/2010
