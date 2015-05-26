@@ -740,7 +740,7 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 			String sql = parQ.getQuerySQL();	
 			// organ
 			if(null != organ) {
-				String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPID().get(organ[0]);
+				String[] emapids = (String[])AdvancedSearchDBQuery.getEMAPAID().get(organ[0]);
 				String ids = "";
 				  for(int i = 0; i < emapids.length; i++) {
 					  ids += "'"+emapids[i] + "',";
@@ -749,18 +749,26 @@ public class MySQLFocusForAllDAOImp  implements FocusForAllDAO {
 					  ids = ids.substring(0, ids.length()-1);
 				  }
 				
-				sql+=" AND EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
-			    " from ANA_TIMED_NODE ANCES_ATN, "+
-			         " ANAD_RELATIONSHIP_TRANSITIVE, "+
-			         " ANA_TIMED_NODE DESCEND_ATN, "+
-			         " ANA_NODE, "+
-			         " ANAD_PART_OF "+
-			    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
-			      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
-			      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
-			      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
-			      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
-			      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) " ;
+//				sql+=" AND EXP_COMPONENT_ID in (select distinct DESCEND_ATN.ATN_PUBLIC_ID "+
+//			    " from ANA_TIMED_NODE ANCES_ATN, "+
+//			         " ANAD_RELATIONSHIP_TRANSITIVE, "+
+//			         " ANA_TIMED_NODE DESCEND_ATN, "+
+//			         " ANA_NODE, "+
+//			         " ANAD_PART_OF "+
+//			    " where ANCES_ATN.ATN_PUBLIC_ID       in ("+ids+") "+
+//			      " and ANCES_ATN.ATN_NODE_FK   = RTR_ANCESTOR_FK "+
+//			      " and RTR_DESCENDENT_FK       = DESCEND_ATN.ATN_NODE_FK "+
+//			      " and ANCES_ATN.ATN_STAGE_FK  = DESCEND_ATN.ATN_STAGE_FK "+      
+//			      " and ANO_OID = DESCEND_ATN.ATN_NODE_FK "+
+//			      " and APO_NODE_FK = ANO_OID AND APO_IS_PRIMARY = true) " ;
+
+				sql+=" AND EXP_COMPONENT_ID in (select distinct DESC_TN.ATN_PUBLIC_ID "+
+					    " from ANA_NODE "+
+					         "JOIN ANAD_RELATIONSHIP_TRANSITIVE ON RTR_ANCESTOR_FK = ANO_OID "+
+					         "JOIN ANA_TIMED_NODE ANCES_TN ON ANCES_TN.ATN_NODE_FK = RTR_ANCESTOR_FK "+
+					         "JOIN ANA_TIMED_NODE DESC_TN ON DESC_TN.ATN_NODE_FK = RTR_DESCENDENT_FK "+
+					         "AND ANCES_TN.ATN_STAGE_FK  = DESC_TN.ATN_STAGE_FK "+
+					    " where ANO_PUBLIC_ID  IN ("+ids+")) ";
 			} else { // remove redunant join to speed up query
 				sql = sql.replace(" LEFT JOIN ISH_EXPRESSION ON SUB_OID = EXP_SUBMISSION_FK", "");
 			}
