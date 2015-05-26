@@ -1337,7 +1337,7 @@ public class AdvancedSearchDBQuery {
 	  final static String query149 = "SELECT COUNT(DISTINCT SUB_OID) TOTAL FROM ISH_SUBMISSION " +
 			  						 "join REF_STAGE on STG_OID = SUB_STAGE_FK " +
 			  						 "WHERE SUB_IS_DELETED = '0' AND SUB_IS_PUBLIC = '1' AND SUB_DB_STATUS_FK = 4 " +
-			  						 "AND SUB_ASSAY_TYPE = 'NextGen' and STG_ANATOMY = ? ";
+			  						 "AND SUB_ASSAY_TYPE = 'NextGen'";
 	  
 	  final static String name = "";
 	  final static String query = "";

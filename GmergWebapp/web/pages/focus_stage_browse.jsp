@@ -41,6 +41,15 @@
 				</h:outputLink>
 				<h:outputText styleClass="plaintext" value="#{submission[3]}" rendered="#{submission[3]=='0'}"/>
 			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText styleClass="plaintextbold" value="Number of Sequence Submissions" />
+				</f:facet>
+				<h:outputLink value="focus_ngd_browse.html?stage=#{submission[4]}&#{Visit.statusParam}" styleClass="plaintext" rendered="#{submission[5]!='0'}">  
+					<h:outputText value="#{submission[5]}" />
+				</h:outputLink>
+				<h:outputText styleClass="plaintext" value="#{submission[5]}" rendered="#{submission[5]=='0'}"/>
+			</h:column>
 		</h:dataTable>
 	</h:form>
 	

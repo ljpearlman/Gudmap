@@ -41,7 +41,7 @@ public class StageFocusBrowseBean {
 	 * @return
 	 */
 	public String[][] getSubmissions() {
-		String[][] tableData = new String[stage.length][5];
+		String[][] tableData = new String[stage.length][6];
 		for(int i=0; i<stage.length; i++) {
 			tableData[i][0] = new String(stage[i]);
 			if(null != stageList[i][0]) {
@@ -60,6 +60,12 @@ public class StageFocusBrowseBean {
 				tableData[i][3] = new String("0");
 			}
 			tableData[i][4] = new String(stage[i].toLowerCase());
+			
+			if(null != stageList[i][3]) {
+				tableData[i][5] = new String(stageList[i][3]);
+			} else {
+				tableData[i][5] = new String("0");
+			}
 		}
 		return tableData;
 	}

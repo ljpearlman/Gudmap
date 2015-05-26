@@ -76,7 +76,7 @@ public class NGDFocusBrowseBean {
 		if (stage==null || "".equals(stage))
 			return "";
 		
-		return " at Theiler stage <em>" + stage + "</em>";  
+		return " at Theiler stage <em>" + stage.toUpperCase() + "</em>";  
 	}
 	
 	public String getTitle() {

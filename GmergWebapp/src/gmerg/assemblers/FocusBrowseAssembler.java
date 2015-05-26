@@ -395,11 +395,12 @@ public class FocusBrowseAssembler extends OffMemoryTableAssembler{
 			}
 			
 			// put them together
-			stageLists = new String[len][3];
+			stageLists = new String[len][4];
 			for (int i=0;i<len;i++) {
 				stageLists[i][0] = dpcStageList[i];
 				stageLists[i][1] = insituStageList[i];
 				stageLists[i][2] = arrayStageList[i];
+				stageLists[i][3] = sequenceStageList[i];
 			}
 			/** return the value object */
 			return stageLists;
