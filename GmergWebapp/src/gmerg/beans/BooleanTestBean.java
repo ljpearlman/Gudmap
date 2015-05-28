@@ -409,6 +409,12 @@ public class BooleanTestBean {
         FacesContext.getCurrentInstance().responseComplete();
     }
 
+    public String clearQuery(){
+    	input = "";
+        return "";
+
+    }
+    
     private String validateQueryString1() {	// Needs a proper parser to do a comprehensive validation
 //    	System.out.println("BooleanTestBean:validateQueryString:input:"+input);
 		if(input == null || input.equals("")) 

@@ -3,6 +3,96 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<head>
+	<link href="${pageContext.request.contextPath}/scripts/jstree_pre1.0_fix_1/themes/gudmap/my_jstree_style.css" type="text/css" rel="stylesheet" />
+	<link href="${pageContext.request.contextPath}/scripts/jstree_pre1.0_fix_1/themes/gudmap/tooltip_style.css" type="text/css" rel="stylesheet" />
+
+
+	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.js"></script>
+	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.cookie.js"></script>
+	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.hotkeys.js"></script>
+	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/jquery.jstree.js"></script> 
+
+<style>
+  #exp_key_div a {
+    font-size: 8pt;
+    color: #7F7F81;
+  }
+  .expression_btn, .pattern_btn{
+    pointer-events: none;
+    cursor: default;
+  }
+
+  #demo2_view{
+    cursor: default;
+    background-color: #EEF2FA;
+  }
+
+  #demo2_view a{
+    cursor: default;
+  }
+</style>
+
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+    jQuery("#demo2_view").jstree({
+        "themes": {
+          "theme": "default",
+          "line": true,
+          "dots" : true,
+          "icons": true,
+		  "url" : "../scripts/jstree_pre1.0_fix_1/themes/anatomytree/style3.css"
+        },
+        "ui" : {
+          //"select_limit" : -1,
+          "select_limit" : 0,
+          //"select_multiple_modifier" : "ctrl",
+          //"select_range_modifier" :"shift",
+          //selected_parent_open
+          "selected_parent_close" : "select_parent"
+        },
+        "json_data" : {
+          "progressive_render" : false,
+          "selected_parent_open": true,
+          "ajax" : {
+        	  "data": function (n) { return { id: n.attr ? n.attr("id") : 0} },
+          	"url" : "../scripts/annotation_tree_json/abstract.json"
+         }
+        },
+        "search" : {
+        	"case_insensitive" : true, 
+        	"ajax" : {
+        		"url" : "../scripts/annotation_tree_json/abstract.json" 
+        	}
+        },
+        "plugins" : [ "themes", "json_data", "search", "ui", "crrm" ]
+    })
+    .bind("loaded.jstree", function (e, data) { 	
+ 	    jQuery("#demo2_view").jstree("open_node", "#0--0");   	 
+    })
+	.delegate("a", "click", function(e, data) {
+	    var node = $(e.target).closest("li");
+	    var data = node.data("jstree");
+	    
+		var ano_public_id = node.attr('ANO_PUBLIC_ID');
+		var ano_comp_name = node.attr('ANO_COMPONENT_NAME');
+		var apo_sequence = node.attr('APO_SEQUENCE');
+		
+		toggleParamGroup('',ano_comp_name,apo_sequence);
+	});
+
+}); 
+
+function searchTree(v) {
+//	alert("searchTree = " + v);
+	jQuery("#demo2_view").jstree("search",v);
+}
+
+</script>	
+
+</head>
+
 <f:view>
   <jsp:include page="/includes/header.jsp" />
   <p><h:message for="stagesCheck" styleClass="plainred" /></p>
@@ -13,7 +103,7 @@
   <p><h:outputText styleClass="plaintext" value="Current anatomy display is for stage range #{BooleanTestBean.startStage} to #{BooleanTestBean.endStage}."/></p>
   <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
     <h:inputText id="componentSearchField" size="30" />
-    <h:commandButton onclick="openNodesMatchingSearchString(document.getElementById('componentSearchField').value, false)" value="Find Components in Tree" type="button" />
+    <h:commandButton onclick="searchTree(document.getElementById('componentSearchField').value)" value="Find Components in Tree" type="button" />
     <f:verbatim>
 	    <a href="#Link263891Context" name="Link263891Context" id="Link263891Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID263891', 'Find Components in Tree', 'To find structures in the anatomy tree, expand the tree or type all or part of the name of the structure in the text box and click - \'Find components in tree\' box.   TS = Theiler Stage.', 'Link263891Context')"> 
 	    	<img src="../images/focus/n_information.gif" alt="information" width="22" height="24" border="0" />
@@ -23,7 +113,7 @@
   
   <h:panelGrid columns="2" width="100%" columnClasses="topAlign45,topAlign55">
   <h:panelGroup>
-  <f:verbatim><div style="overflow:auto;height:455px;width:100%;"></f:verbatim>
+<%--   <f:verbatim><div style="overflow:auto;height:455px;width:100%;"></f:verbatim>--%>
 
     <h:message for="searchCriteriaCheck" styleClass="plainred" /><br />
 
@@ -37,30 +127,19 @@
                   <a href="#Link263892Context" name="Link263892Context" id="Link263892Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID263892', 'Add/Remove Structure(s) to the Search', 'Click on a structure in the tree to add it to the Boolean Query Search. The selected component appears in red in the right-hand Boolean Search section. To correct a mistake, click again on the structure: this will remove it from the search.', 'Link263892Context')"> <img src="../images/focus/n_information.gif" alt="information" width="22" height="24" border="0" /></a>
                 </f:verbatim>
               </h:panelGroup>
-              <h:outputLink style="font-size:7pt;text-decoration:none;color:silver" value="http://www.treemenu.net/" target="_blank">
-                <h:outputText value="Javascript Tree Menu" />
-              </h:outputLink>
             </h:panelGrid>
-            <f:verbatim>
-              <script type="text/javascript">
-                <c:forEach items="${BooleanTestBean.treeContent}" var="row">
-                  <c:out value="${row}" escapeXml="false"/>
-                </c:forEach>
-                initializeDocument();
-              </script>
-            </f:verbatim>
+              
+<f:verbatim>
+	<div id="demo2_view" class="demo" style="overflow: auto; align: left; height: 300px; width : 350px"></div>
+</f:verbatim>             
+
           </h:panelGroup>
         </h:panelGrid>
       </h:panelGrid>
     </h:panelGrid>
-    <h:panelGrid cellpadding="0" cellspacing="0" border="0" width="100%" columns="1">
-      <h:panelGroup>
-        <h:outputText styleClass="plaintextbold" value="G " />
-        <h:outputText styleClass="plaintext" value="Group or group descendent. Groups provide alternative groupings of terms." />
-      </h:panelGroup>
-    </h:panelGrid>
+
   
-  <f:verbatim></div></f:verbatim>
+
   </h:panelGroup>
   <h:form id="booleanQForm">
     <h:panelGrid columns="3" cellpadding="2" cellspacing="2">
@@ -199,11 +278,11 @@
   </h:panelGrid>
   <h:panelGrid>
     <h:form id="booleanQForm2">
-      <h:panelGrid columns="4" cellpadding="2" cellspacing="2">
+      <h:panelGrid columns="5" cellpadding="2" cellspacing="2">
         <h:inputText value="#{BooleanTestBean.input}"  onkeyup="checkButtonStatus()" size="70" id="queryBuilder" />
-        <h:commandButton value="Run Query" id="submitQBuilder" action="#{BooleanTestBean.goSearch}">	
-        </h:commandButton>
+        <h:commandButton value="Run Query" id="submitQBuilder" action="#{BooleanTestBean.goSearch}" />	
         <h:commandButton value="Save Query" id="saveQ" actionListener="#{BooleanTestBean.saveQuery}" />
+        <h:commandButton value="Clear Query" id="clearQ" action="#{BooleanTestBean.clearQuery}" />       
         <h:panelGroup>
         <f:verbatim>
         <a href="#Link263895Context" name="Link263895Context" id="Link263895Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID263895', 'Execute the Built Query', 'Click \'Run Query\' box to execute query or \'Save Query\' box to save. The query can be modified or extended using the same syntax (see &lt;a href=\&quot;http://www.gudmap.org/Help/Boolean_Syntax_Help.html\&quot;&gt;Help&lt;/a&gt;). In queries with more than one term, precedence is given to the first operator and all other operators are treated independently.', 'Link263895Context')"> <img src="../images/focus/n_information.gif" alt="information" width="22" height="24" border="0" /></a>
