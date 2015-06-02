@@ -22,17 +22,12 @@
   }
   .expression_btn, .pattern_btn{
     pointer-events: none;
-    cursor: default;
   }
 
   #demo2_view{
-    cursor: default;
     background-color: #EEF2FA;
   }
 
-  #demo2_view a{
-    cursor: default;
-  }
 </style>
 
 <script type="text/javascript">

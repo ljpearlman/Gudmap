@@ -14,23 +14,11 @@
 	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/jquery.jstree.js"></script> 
 
 <style>
-  #exp_key_div a {
-    font-size: 8pt;
-    color: #7F7F81;
-  }
-  .expression_btn, .pattern_btn{
-    pointer-events: none;
-    cursor: default;
-  }
 
   #demo2_view{
-    cursor: default;
     background-color: #EEF2FA;
   }
 
-  #demo2_view a{
-    cursor: default;
-  }
 </style>
 
 <script type="text/javascript">
@@ -68,8 +56,11 @@ jQuery(document).ready(function(){
         },
         "plugins" : [ "themes", "json_data", "search", "ui", "crrm" ]
     })
+    .bind("select_node.jstree", function (e, data) { 	
+    	data.inst._fix_scroll(data.rslt.obj);  
+    })
     .bind("loaded.jstree", function (e, data) { 	
- 	    jQuery("#demo2_view").jstree("open_node", "#0--0");   	 
+ 	    jQuery("#demo2_view").jstree("open_node", "#0--0");  
     })
 	.delegate("a", "click", function(e, data) {
 	    var node = $(e.target).closest("li");
@@ -86,7 +77,34 @@ jQuery(document).ready(function(){
 
 function searchTree(v) {
 //	alert("searchTree = " + v);
+
+	// reset the tree
+	jQuery("#demo2_view").find("a.jstree-search").css("color",'#0066cc');
+	jQuery("#demo2_view").removeClass("a.jstree-search");
+	
+	// apply the search
 	jQuery("#demo2_view").jstree("search",v);
+	
+	// set the text colour for found entries - style sheet does not seem to work
+	jQuery("#demo2_view").find("a.jstree-search").css("color","red");
+	
+	//	get the id of the first node returned by the search
+//	var node_id = jQuery("#demo2_view").find("a.jstree-search").eq(0).parent('li').attr("id");
+//	alert(node_id);
+
+//	jQuery("#demo2_view").jstree('select_node',node_id);
+//	var selnode = jQuery("#demo2_view").jstree._focused.get_selected();
+//	alert(selnode);
+//	jQuery("#demo2_view").getElementById( selnode ).scrollIntoView();
+	
+//    jQuery("#demo2_view").jstree("deselect_node", node_id);
+
+//	var jstree1 = document.getElementById('#demo2_view');
+//	alert(jstree1.offsetHeight/2);
+//	jstree1.scrollTop = findPos( document.getElementById( uid ) );
+	
+	
+//	jQuery("#demo2_view").getElementById( uid ).scrollIntoView()
 }
 
 </script>	
@@ -117,25 +135,20 @@ function searchTree(v) {
 
     <h:message for="searchCriteriaCheck" styleClass="plainred" /><br />
 
-    <h:panelGrid cellpadding="0" cellspacing="0" border="0" width="100%" columns="1" columnClasses="treeCol">
-      <h:panelGrid columns="1" cellpadding="4" cellspacing="0" width="100%" border="0">
-        <h:panelGrid columns="1" cellpadding="2" cellspacing="0" border="0" width="100%">
-          <h:panelGroup>
-            <h:panelGrid columns="2" border="0">
-              <h:panelGroup>
+    <h:panelGrid id="pg1" cellpadding="0" cellspacing="0" border="0" width="100%" columns="1" columnClasses="treeCol">
+           <h:panelGroup id="g1">
                 <f:verbatim>
                   <a href="#Link263892Context" name="Link263892Context" id="Link263892Context" style="cursor:help" onclick="javascript:createGlossary('TSGlossaryPanelID263892', 'Add/Remove Structure(s) to the Search', 'Click on a structure in the tree to add it to the Boolean Query Search. The selected component appears in red in the right-hand Boolean Search section. To correct a mistake, click again on the structure: this will remove it from the search.', 'Link263892Context')"> <img src="../images/focus/n_information.gif" alt="information" width="22" height="24" border="0" /></a>
                 </f:verbatim>
-              </h:panelGroup>
-            </h:panelGrid>
+
               
 <f:verbatim>
-	<div id="demo2_view" class="demo" style="overflow: auto; align: left; height: 300px; width : 350px"></div>
+	<div id="demo2_view" class="demo" style="overflow: auto; align: left; height: 350px; width : 450px"></div>
 </f:verbatim>             
 
           </h:panelGroup>
-        </h:panelGrid>
-      </h:panelGrid>
+
+
     </h:panelGrid>
 
   

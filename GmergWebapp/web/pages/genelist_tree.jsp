@@ -12,6 +12,14 @@
 	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/_lib/jquery.hotkeys.js"></script>
 	<script type="text/javascript" src="../scripts/jstree_pre1.0_fix_1/jquery.jstree.js"></script> 
 
+<style>
+
+  #genelist_tree{
+    background-color: #EEF2FA;
+  }
+
+</style>
+
 <script type="text/javascript">
 
 jQuery(document).ready(function(){
