@@ -79,7 +79,7 @@
         
         <f:verbatim>&nbsp;</f:verbatim><f:verbatim>&nbsp;</f:verbatim>
         
-        <h:outputText value="Density:" />
+        <h:outputText value="Nerve Density:" />
         <h:panelGroup>
           <h:panelGrid columns="2" columnClasses="text-top, data-textCol">
             <h:outputText styleClass="plaintext" value="Rel. to Total:" />

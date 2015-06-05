@@ -349,7 +349,7 @@
 						</h:column>
 						<h:column>
 							<f:facet name="header">
-								<h:outputText value="Densities" styleClass="plaintextbold"/>
+								<h:outputText value="Nerve Densities" styleClass="plaintextbold"/>
 							</f:facet>
 							<h:panelGrid columns="2">
 									<h:graphicImage value="#{component.densityImageRelativeToTotal}" styleClass="icon" alt="" rendered="#{component.densityImageRelativeToTotal != null}"/>
