@@ -15,7 +15,7 @@
 <style>
 
   #genelist_tree{
-    background-color: #EEF2FA;
+    background-color: #FFFFFF;
   }
 
 </style>

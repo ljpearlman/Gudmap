@@ -16,7 +16,7 @@
 <style>
 
   #demo2_view{
-    background-color: #EEF2FA;
+    background-color: #FFFFFF;
   }
 
 </style>
@@ -45,13 +45,13 @@ jQuery(document).ready(function(){
           "selected_parent_open": true,
           "ajax" : {
         	  "data": function (n) { return { id: n.attr ? n.attr("id") : 0} },
-          	"url" : "../scripts/annotation_tree_json/abstract.json"
+          	"url" : "../scripts/annotation_tree_json/abstract_tree_stages.json"
          }
         },
         "search" : {
         	"case_insensitive" : true, 
         	"ajax" : {
-        		"url" : "../scripts/annotation_tree_json/abstract.json" 
+        		"url" : "../scripts/annotation_tree_json/abstract_tree_stages.json" 
         	}
         },
         "plugins" : [ "themes", "json_data", "search", "ui", "crrm" ]
@@ -61,6 +61,9 @@ jQuery(document).ready(function(){
     })
     .bind("loaded.jstree", function (e, data) { 	
  	    jQuery("#demo2_view").jstree("open_node", "#0--0");  
+ 	    jQuery("#demo2_view").jstree("open_node", "#1--0");  
+ 	    jQuery("#demo2_view").jstree("open_node", "#1--1");  
+ 	    jQuery("#demo2_view").jstree("open_node", "#2--11");  
     })
 	.delegate("a", "click", function(e, data) {
 	    var node = $(e.target).closest("li");
