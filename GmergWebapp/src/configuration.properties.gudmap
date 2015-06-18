@@ -12,17 +12,17 @@ db_driver=com.mysql.jdbc.Driver
 
 
 #test database
-#host=jdbc:mysql://glenmoray.hgu.mrc.ac.uk:3306/
-#user=gudmap
-#password=patience
-#database=GudmapGX_test
+host=jdbc:mysql://glenmoray.hgu.mrc.ac.uk:3306/
+user=gudmap
+password=patience
+database=GudmapGX_test
 
 
 #local database
-host=jdbc:mysql://localhost:3306/
-user=root
-password=savewhales
-database=GudmapGX
+#host=jdbc:mysql://localhost:3306/
+#user=root
+#password=savewhales
+#database=GudmapGX
 
 #new glenelgin database
 #host=jdbc:mysql://localhost:3306/

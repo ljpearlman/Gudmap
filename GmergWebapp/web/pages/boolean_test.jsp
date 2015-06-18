@@ -63,8 +63,9 @@ jQuery(document).ready(function(){
  	    jQuery("#demo2_view").jstree("open_node", "#0--0");  
  	    jQuery("#demo2_view").jstree("open_node", "#1--0");  
  	    jQuery("#demo2_view").jstree("open_node", "#1--1");  
- 	    jQuery("#demo2_view").jstree("open_node", "#2--11");  
-    })
+ 	    jQuery("#demo2_view").jstree("open_node", "#2--0");  
+ 	    jQuery("#demo2_view").jstree("open_node", "#2--1");  
+   })
 	.delegate("a", "click", function(e, data) {
 	    var node = $(e.target).closest("li");
 	    var data = node.data("jstree");
