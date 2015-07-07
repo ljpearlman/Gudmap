@@ -97,9 +97,11 @@ function enhanceTree(event, data) {
 		var min_depth = 20;//min_depth is a global variable
 
         if (exp_from_db.length == 0){  
-	        jQuery("#demo2_view").jstree("open_node", "#0--0");
-	        jQuery("#demo2_view").jstree("open_node", "#1--0");
-	        jQuery("#demo2_view").jstree("open_node", "#2--0");
+     	    jQuery("#demo2_view").jstree("open_node", "#0--0");  
+     	    jQuery("#demo2_view").jstree("open_node", "#1--0");  
+     	    jQuery("#demo2_view").jstree("open_node", "#1--1");  
+     	    jQuery("#demo2_view").jstree("open_node", "#2--0");  
+     	    jQuery("#demo2_view").jstree("open_node", "#2--1");  
         }
         else{
 
