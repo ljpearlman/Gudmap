@@ -27,7 +27,7 @@ import java.util.HashMap;
 
 public class GeneListRnaSeqTreeBean implements Serializable
 {
-    protected boolean debug = true;
+    protected boolean debug = false;
 
 	private static final long serialVersionUID = 1L;
  
