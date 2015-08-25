@@ -1043,7 +1043,7 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 				resSet.beforeFirst();
 				result = new String("");
 				while (resSet.next()) {
-					result += resSet.getString(1) + "," + resSet.getString(2) + "," + resSet.getString(3) + "| ";
+					result += resSet.getString(1) + "," + resSet.getString(2) + "," + resSet.getString(3).trim() + "| ";
 				}
 				treeExpressions = result;
 			}
