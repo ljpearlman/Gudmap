@@ -305,12 +305,18 @@ function findDensities(){
 function findExpressionNotes(){
 	
 	var notes=String("${ISHSingleSubmissionBean.submission.annotationTreeExpressionNotes}");
+
 	var temparray = notes.split("|");
 	var count = temparray.length;
 	var notes_array = new Array(count-1);
 	for(var i = 0; i < count-1; i++){
 		notes_array[i] = new Array(2);
-		notes_array[i] = temparray[i].replace(":","").split(",");
+		var tmpstr = temparray[i].replace(":","");		
+		var idx = tmpstr.indexOf(",");
+		notes_array[i][0] = tmpstr.substring(0,idx);
+		notes_array[i][1] = tmpstr.substring(idx);
+//		alert(notes_array[i][0]);
+//		alert(notes_array[i][1]);
 	}
 
 	var dnotes=String("${ISHSingleSubmissionBean.submission.annotationTreeDensityNotes}");
