@@ -1223,10 +1223,10 @@ public class AdvancedSearchDBQuery {
 			  symbolsQ.append("(");
 			  for(int i=0; i<input.length;i++){
 	    			if(i==0){
-	    				symbolsQ.append(searchColumn+" LIKE ? ");
+	    				symbolsQ.append(searchColumn+" RLIKE ? ");
 	    			}
 	    			else {
-	    				symbolsQ.append("OR "+searchColumn+" LIKE ? ");
+	    				symbolsQ.append("OR "+searchColumn+" RLIKE ? ");
 	    			}
 	    		}
 	    		symbolsQ.append(")");
