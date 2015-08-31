@@ -37,6 +37,7 @@ public class Submission {
     protected String localId; //SUB_LOCAL_ID
     protected String euregeneId; //SUB_ACCESSION_ID_2
     protected String stageName;
+    protected String stageAnatomy;
 
     protected String[] resultNotes = null;
     
@@ -453,5 +454,13 @@ public class Submission {
     public String getStageLowerCase() {
         return stage.toLowerCase();
     }
-   
+ 
+    public void setStageAnatomy(String stganatomy) {
+        stageAnatomy = stganatomy;
+    }
+
+    public String getStageAnatomy() {
+        return stageAnatomy;
+    }
+    
 }

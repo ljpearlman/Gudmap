@@ -88,6 +88,7 @@ public class ISHSubmissionAssembler {
 			ishSubmission.setPublicFlag(submission.getPublicFlag());
 			ishSubmission.setDeletedFlag(submission.getDeletedFlag());
 			ishSubmission.setStage(submission.getStage());
+			ishSubmission.setStageAnatomy(submission.getStageAnatomy());
 			ishSubmission.setStageName(submission.getStageName());
 			ishSubmission.setAssayType(assayType);
 			ishSubmission.setArchiveId(submission.getArchiveId());

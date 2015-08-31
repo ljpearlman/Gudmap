@@ -54,7 +54,7 @@ jQuery(document).ready(function(){
           "selected_parent_open": true,
           "ajax" : {
         	  "data": function (n) { return { id: n.attr ? n.attr("id") : 0} },
-          	"url" : "../scripts/annotation_tree_json/" + "${ISHSingleSubmissionBean.submission.stage}" + ".json"
+          	"url" : "../scripts/annotation_tree_json/" + "${ISHSingleSubmissionBean.submission.stageAnatomy}" + ".json"
          }
         },
         "plugins" : [ "themes", "json_data", "ui", "crrm" ]
@@ -92,7 +92,6 @@ function enhanceTree(event, data) {
 
     	var expnote_from_db = new Array();
     	expnote_from_db = findExpressionNotes(exp_from_db);
-
 
 		var min_depth = 20;//min_depth is a global variable
 
