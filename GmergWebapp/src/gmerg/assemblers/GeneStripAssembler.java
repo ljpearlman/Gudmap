@@ -63,14 +63,24 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
 	    if (null != cache && cache.isSameQuery(column, ascending, offset, num)) {
 		if (debug)
-		    System.out.println("GeneStripAssembler.retriveData data not changed");
+		    System.out.println("GeneStripAssembler.retrieveData data not changed");
 		
 		return cache.getData();
 	    }
 	    
 		Connection conn = DBHelper.getDBConnection();
-
-	    ArrayList<String[]> geneData = this.getGenesFromIds(conn, ids);
+		
+		ArrayList<String[]> geneData = new ArrayList<String[]>();
+		if (ids.size() <= num){
+			geneData = this.getGenesFromIds(conn, ids);	
+		}
+		else{			
+		    ArrayList<String> subids =  new ArrayList<String>();		
+		    for (int i = offset; i < offset + num; i++){
+		    	subids.add(ids.get(i));
+		    }
+		    geneData = this.getGenesFromIds(conn, subids);
+		}
 	    
 //		if (ascending || column <0) 
 //			Collections.sort(ids);// natural sort the gene symbols
@@ -100,7 +110,15 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 //		}
 		
 //		int geneStripArraySize = requiredSymbols.size();
+	    
+	    
 	    int geneStripArraySize = geneData.size();
+//	    ArrayList<String[]> geneData =  new ArrayList<String[]>();
+//	    for (int i = offset; i < offset + num; i++){
+//	    	geneData.add(geneDataList.get(i));
+//	    }
+//	    int geneStripArraySize = geneData.size();	    
+
 	    
 //		System.out.println("geneStripAssembler:retrieveData:required symbol number: " + requiredSymbols.size());
 //		System.out.println("geneStripAssembler:retrieveData:required symbols : " + requiredSymbols.toString());

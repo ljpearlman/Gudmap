@@ -335,9 +335,9 @@ public class BooleanTestBean {
     
     public SelectItem [] getResultFormat() {
         return new SelectItem []
-        { new SelectItem(Utility.getProject(),Utility.getProject()+" entries"),
-          new SelectItem("GENE","genes") /*,
-          new SelectItem("TF","transcription factors")*/
+        { new SelectItem(Utility.getProject(),Utility.getProject()+" entries")
+//        		new SelectItem("GENE","genes") ,
+//        		new SelectItem("TF","transcription factors")
           };
     }
     

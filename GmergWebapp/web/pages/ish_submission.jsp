@@ -304,7 +304,7 @@ function findDensities(){
 function findExpressionNotes(){
 	
 	var notes=String("${ISHSingleSubmissionBean.submission.annotationTreeExpressionNotes}");
-
+//	notes.replace(/[\n\r]/g, ''); // replace cr and nl
 	var temparray = notes.split("|");
 	var count = temparray.length;
 	var notes_array = new Array(count-1);

@@ -158,12 +158,12 @@
 			<is-xml>false</is-xml>
 		</jsp-property-group>
 	</jsp-config>
-
+<!--
                 <session-config>
-                                <session-timeout>30</session-timeout> 
+                                <session-timeout>0</session-timeout> 
                                 <tracking-mode>COOKIE</tracking-mode>
                 </session-config>
-	
+-->	
 	<login-config>
 		<auth-method>BASIC</auth-method>
 	</login-config>

@@ -16,7 +16,7 @@ import gmerg.utils.Utility;
  *
  */
 public class MySQLGeneDAOImp implements GeneDAO {
-    private boolean debug = false; 
+    private boolean debug = true; 
 	Connection conn;
 
 	// default constructor
