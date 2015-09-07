@@ -754,7 +754,8 @@ protected ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype
 		ParamQuery parQ = InsituDBQuery.getParamQuery("GET_RELEVANT_SUBMISSION_IDS");
 		String queryString = parQ.getQuerySQL();
 		String gudmapIdString = DBHelper.convertItemsFromArrayListToString(candidateGudmapIds);
-		queryString = queryString.replace("SUB_ACCESSION_ID IN", "SUB_ACCESSION_ID IN (" +gudmapIdString + ")");
+//		queryString = queryString.replace("SUB_ACCESSION_ID IN", "SUB_ACCESSION_ID IN (" +gudmapIdString + ")");
+		queryString = queryString.replace("SUB_ACCESSION_ID IN", "SUB_ACCESSION_ID " +gudmapIdString);
 //		System.out.println("ArrayDevDAO:getRelevantGudmapIds:SQL: " + queryString);
 		
 		PreparedStatement prepStmt = null;
@@ -796,17 +797,18 @@ protected ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype
 		ParamQuery parQ = InsituDBQuery.getParamQuery("GET_RELEVANT_SUBMISSION_IDS");
 		String queryString = parQ.getQuerySQL();
 		String gudmapIdString = DBHelper.convertItemsFromArrayListToString(candidateGudmapIds);
-		queryString = queryString.replace("SUB_ACCESSION_ID IN", "SUB_ACCESSION_ID IN (" +gudmapIdString + ")");
+//		queryString = queryString.replace("SUB_ACCESSION_ID IN", "SUB_ACCESSION_ID IN (" +gudmapIdString + ")");
+		queryString = queryString.replace("SUB_ACCESSION_ID IN", "SUB_ACCESSION_ID " +gudmapIdString);
 		int subStatus = DBHelper.getSubStatusByPrivilege(userPrivilege);
 //		System.out.println("ArrayDevDAO:getRelevantGudmapIds:status: " + subStatus);
 //		System.out.println("ArrayDevDAO:getRelevantGudmapIds:SQL: " + queryString);
 		
 		PreparedStatement prepStmt = null;
 		try {
-			if (debug)
-				System.out.println("MySQLArrayDevDAOImp.sql = "+queryString.toLowerCase());
 			prepStmt = conn.prepareStatement(queryString);
 			prepStmt.setInt(1, subStatus);
+			if (debug)
+				System.out.println("MySQLArrayDevDAOImp.sql = "+prepStmt);
 			resSet = prepStmt.executeQuery();
 			if(resSet.first()){
 				resSet.beforeFirst();
@@ -964,7 +966,8 @@ protected ArrayList formatGenotypeResultSet(ArrayList series, ArrayList genotype
 		ParamQuery parQ = ArrayDBQuery.getParamQuery("GET_RELEVANT_PROBE_SET_IDS");
 		String queryString = parQ.getQuerySQL();
 		String ProbeSetIdString = DBHelper.convertItemsFromArrayListToString(candidateProbeSetIds);
-		queryString = queryString.replace("PRS_PROBE_SET_ID IN", "PRS_PROBE_SET_ID IN (" +ProbeSetIdString + ")");
+//		queryString = queryString.replace("PRS_PROBE_SET_ID IN", "PRS_PROBE_SET_ID IN (" +ProbeSetIdString + ")");
+		queryString = queryString.replace("PRS_PROBE_SET_ID IN", "PRS_PROBE_SET_ID " +ProbeSetIdString );
 //		System.out.println("ArrayDevDAO:getRelevantProbeSetIds:SQL: " + queryString);
 		
 		PreparedStatement prepStmt = null;
