@@ -248,6 +248,7 @@ public class MySQLGeneDAOImp implements GeneDAO {
 			if(!symbolsFromSynListQ.equals("")){
 				allQueriesQ += union + symbolsFromSynListQ;
 			}
+			allQueriesQ += " ORDER BY RPR_SYMBOL";
 //			System.out.println("geneDAO:getSymbolsFromGeneInput:symbolsFromrefGeneInfoSynonymQ: " + symbolsFromrefGeneInfoSynonymQ);
 		    if (debug)
 			System.out.println("MySQLGeneDAOImp.sql = "+allQueriesQ);
@@ -281,6 +282,7 @@ public class MySQLGeneDAOImp implements GeneDAO {
 			    	stmt.setString((8*input.length+1+i), synList[i].trim());// xingjun - 09/10/2009 - change from 6 to 7
 			    }
 			}
+			
 		    if (debug)
 			System.out.println("MySQLGeneDAOImp stmt = "+stmt);
 
@@ -289,14 +291,16 @@ public class MySQLGeneDAOImp implements GeneDAO {
 //			String str = null;
 //			if(resSet.first()){
 //				resSet.last();
-//				geneSymbols = new ArrayList<String[]>();
+////				geneSymbols = new ArrayList<String[]>();
 //				resSet.beforeFirst();
 //				while (resSet.next()) {
-//					String[] item = new String[2];
+//					String[] item = new String[4];
 //				    str = Utility.netTrim(resSet.getString(1));
 //				    if(null != str){
 //				    	item[0] =  Utility.netTrim(resSet.getString(1));
 //				    	item[1] =  Utility.netTrim(resSet.getString(2));
+//				    	item[2] =  Utility.netTrim(resSet.getString(3));
+//				    	item[3] =  Utility.netTrim(resSet.getString(4));
 //				    	geneSymbols.add(item);
 //				    }
 //				}

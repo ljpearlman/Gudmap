@@ -32,6 +32,7 @@ import gmerg.entities.ChromeDetail;
 public class GeneStripAssembler extends OffMemoryCollectionAssembler {
     protected boolean debug = false;
     protected RetrieveDataCache cache = null;
+    protected ArrayList<String[]> genedata = null;
 
 	static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 	public GeneStripAssembler (HashMap params, CollectionBrowseHelper helper) {
@@ -52,6 +53,12 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @return
 	 */
 
+	public void setGenedata(ArrayList<String[]> genedata){
+		this.genedata = genedata;		
+	}
+	public ArrayList<String[]> getGenedata(){
+		return genedata;		
+	}
 	/**
 	 * modified by xingjun - 18/03/2009 - modified way to get stage range
 	 * <p>modified by xingjun - 22/04/2009 
@@ -818,12 +825,14 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		if (ids == null || ids.equals("")) {
 			return null;
 		}
-		ArrayList<String[]> genes = new ArrayList<String[]>();
 		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		for(String id:ids){
-			String[] gene = geneStripDAO.getGeneFromId(id);
-			genes.add(gene);
-		}
+		ArrayList<String[]> genes = geneStripDAO.getGenesFromIds(ids);
+		
+//		ArrayList<String[]> genes = new ArrayList<String[]>();
+//		for(String id:ids){
+//			String[] gene = geneStripDAO.getGeneFromId(id);
+//			genes.add(gene);
+//		}
 		geneStripDAO = null;
 
         return genes;

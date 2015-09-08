@@ -19,7 +19,7 @@ import java.sql.ResultSetMetaData;
  *
  */
 public class MySQLArrayDevDAOImp implements ArrayDevDAO {
-    private boolean debug = true;
+    private boolean debug = false;
 	private Connection conn; 
 
 	// default constructor

@@ -473,7 +473,62 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
             DBHelper.closePreparedStatement(prepStmt);
             DBHelper.closeResultSet(resSet);
         }
+	}
+	
+	public ArrayList getGenesFromIds(ArrayList<String> ids){
+		ResultSet resSet = null;
+		String[] gene = new String[4];
+		ArrayList<String[]> result = new ArrayList<String[]>();
+		
+		String queryString = "select RMM_SYMBOL,RMM_SPECIES_ID,RMM_SPECIES,RMM_MGIACC from REF_MGI_MRK where RMM_MGIACC IN";
 
+		
+ 		String query = " IN ('" + ids.get(0).toString() + "'";
+		int len = ids.size();
+		for (int i=1;i<len;i++) {
+			query += ", '" + ids.get(i).toString()+"'";
+		}
+		query += ") ";
+	
+        queryString = queryString.replace("IN", query);
+        queryString += " ORDER BY RMM_SYMBOL";
+	
+		
+		
+		PreparedStatement prepStmt = null;
+        
+        try {
+        	// if disconnected from db, re-connected
+        	conn = DBHelper.reconnect2DB(conn);
+
+        	prepStmt = conn.prepareStatement(queryString);
+        	
+            if (debug)
+            	System.out.println("genefromid: " + prepStmt);
+            
+        	resSet = prepStmt.executeQuery();
+    		if (resSet.first()) {
+    		    resSet.beforeFirst();
+    		    while (resSet.next()) {
+    		    	gene = new String[4];
+               		gene[0] = resSet.getString(4);//id;
+            		gene[1] = resSet.getString(1);//symbol
+            		gene[2] = resSet.getString(2);//speciesId
+            		gene[3] = resSet.getString(3);//species
+            		result.add(gene);      		    
+    		    }
+    		}
+         	
+    		return result;
+
+        } catch (SQLException se) {
+        	se.printStackTrace();
+    		return null;
+        }
+        finally{
+            DBHelper.closePreparedStatement(prepStmt);
+            DBHelper.closeResultSet(resSet);
+        }
 	}
 		
 }
