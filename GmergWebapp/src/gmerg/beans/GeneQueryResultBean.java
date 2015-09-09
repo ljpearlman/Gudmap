@@ -68,12 +68,12 @@ public class GeneQueryResultBean {
 		}
 		
 		// get gene symbols
-		ArrayList geneSymbols = DbUtility.retrieveGeneSymbolsFromGeneInput(input, wildcard);
-//    	System.out.println("geneQueryResultBean@gene numbers: " + geneSymbols.size());
-		CollectionBrowseHelper helper = Globals.getCollectionBrowseHelper(geneSymbols, 1); // corresponds to gene symbols collection
+		ArrayList<String> geneData = DbUtility.retrieveGeneSymbolsFromGeneInput(input, wildcard);
+
+		CollectionBrowseHelper helper = Globals.getCollectionBrowseHelper(geneData, 1); // corresponds to gene symbols collection
 		OffMemoryTableAssembler assembler = helper.getCollectionBrowseAssembler();
-	    
-	    GenericTable table = assembler.createTable();
+		
+	    GenericTable table = assembler.createTable(0);
 	    GenericTableView tableView = GeneStripBrowseBean.getDefaultGeneStripTableView(viewName, table);
 
 	    tableView.setDisplayTotals(false);

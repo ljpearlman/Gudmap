@@ -288,23 +288,24 @@ public class MySQLGeneDAOImp implements GeneDAO {
 
 // to include the gene id		    
 //			resSet = stmt.executeQuery();
-//			String str = null;
+//			String str1 = null;
+//			ArrayList<String[]> geneSymbols2 = new ArrayList<String[]>();
 //			if(resSet.first()){
 //				resSet.last();
-////				geneSymbols = new ArrayList<String[]>();
 //				resSet.beforeFirst();
 //				while (resSet.next()) {
 //					String[] item = new String[4];
-//				    str = Utility.netTrim(resSet.getString(1));
-//				    if(null != str){
+//				    str1 = Utility.netTrim(resSet.getString(1));
+//				    if(null != str1){
 //				    	item[0] =  Utility.netTrim(resSet.getString(1));
 //				    	item[1] =  Utility.netTrim(resSet.getString(2));
 //				    	item[2] =  Utility.netTrim(resSet.getString(3));
-//				    	item[3] =  Utility.netTrim(resSet.getString(4));
-//				    	geneSymbols.add(item);
+////				    	item[3] =  Utility.netTrim(resSet.getString(4));
+//				    	geneSymbols2.add(item);
 //				    }
 //				}
 //			}
+			
 			resSet = stmt.executeQuery();
 			String str = null;
 			if(resSet.first()){

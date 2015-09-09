@@ -32,7 +32,6 @@ import gmerg.entities.ChromeDetail;
 public class GeneStripAssembler extends OffMemoryCollectionAssembler {
     protected boolean debug = false;
     protected RetrieveDataCache cache = null;
-    protected ArrayList<String[]> genedata = null;
 
 	static ResourceBundle bundle = ResourceBundle.getBundle("configuration");
 	public GeneStripAssembler (HashMap params, CollectionBrowseHelper helper) {
@@ -53,12 +52,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * @return
 	 */
 
-	public void setGenedata(ArrayList<String[]> genedata){
-		this.genedata = genedata;		
-	}
-	public ArrayList<String[]> getGenedata(){
-		return genedata;		
-	}
+
 	/**
 	 * modified by xingjun - 18/03/2009 - modified way to get stage range
 	 * <p>modified by xingjun - 22/04/2009 
@@ -67,6 +61,7 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 	 * </p>
 	 * 
 	 */
+	
 	public DataItem[][] retrieveData(int column, boolean ascending, int offset, int num) {
 	    if (null != cache && cache.isSameQuery(column, ascending, offset, num)) {
 		if (debug)
@@ -78,16 +73,17 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
 		Connection conn = DBHelper.getDBConnection();
 		
 		ArrayList<String[]> geneData = new ArrayList<String[]>();
-		if (ids.size() <= num){
-			geneData = this.getGenesFromIds(conn, ids);	
-		}
-		else{			
-		    ArrayList<String> subids =  new ArrayList<String>();		
-		    for (int i = offset; i < offset + num; i++){
-		    	subids.add(ids.get(i));
-		    }
-		    geneData = this.getGenesFromIds(conn, subids);
-		}
+		geneData = this.getGenesFromIds(conn, ids, ascending, offset, num);
+//		if (ids.size() <= num){
+//			geneData = this.getGenesFromIds(conn, ids, ascending, offset, num);	
+//		}
+//		else{			
+//		    ArrayList<String> subids =  new ArrayList<String>();		
+//		    for (int i = offset; i < offset + num; i++){
+//		    	subids.add(ids.get(i));
+//		    }
+//		    geneData = this.getGenesFromIds(conn, subids, ascending, offset, num);
+//		}
 	    
 //		if (ascending || column <0) 
 //			Collections.sort(ids);// natural sort the gene symbols
@@ -821,12 +817,12 @@ public class GeneStripAssembler extends OffMemoryCollectionAssembler {
         return diseaseNumber;
 	}
 
-	private ArrayList<String[]> getGenesFromIds(Connection conn, ArrayList<String> ids) {
+	private ArrayList<String[]> getGenesFromIds(Connection conn, ArrayList<String> ids, boolean ascending, int offset, int num ) {
 		if (ids == null || ids.equals("")) {
 			return null;
 		}
 		GeneStripDAO geneStripDAO = MySQLDAOFactory.getGeneStripDAO(conn);
-		ArrayList<String[]> genes = geneStripDAO.getGenesFromIds(ids);
+		ArrayList<String[]> genes = geneStripDAO.getGenesFromIds(ids, ascending, offset, num);
 		
 //		ArrayList<String[]> genes = new ArrayList<String[]>();
 //		for(String id:ids){

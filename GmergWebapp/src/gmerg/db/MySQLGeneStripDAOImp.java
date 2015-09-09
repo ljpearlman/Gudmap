@@ -475,7 +475,7 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
         }
 	}
 	
-	public ArrayList getGenesFromIds(ArrayList<String> ids){
+	public ArrayList getGenesFromIds(ArrayList<String> ids, boolean ascending, int offset, int num){
 		ResultSet resSet = null;
 		String[] gene = new String[4];
 		ArrayList<String[]> result = new ArrayList<String[]>();
@@ -491,8 +491,10 @@ public class MySQLGeneStripDAOImp implements GeneStripDAO {
 		query += ") ";
 	
         queryString = queryString.replace("IN", query);
-        queryString += " ORDER BY RMM_SYMBOL";
-	
+        if (ascending)
+        	queryString += " ORDER BY RMM_SYMBOL ASC LIMIT "  + offset + ", " + num;
+        else
+        	queryString += " ORDER BY RMM_SYMBOL DESC LIMIT "  + offset + ", " + num;
 		
 		
 		PreparedStatement prepStmt = null;

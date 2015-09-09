@@ -24,5 +24,5 @@ public interface GeneStripDAO {
 	public int getGeneDiseaseNumber(String symbol);
 	public ChromeDetail getChromeDetailBySymbol(String symbol);
 	public String[] getGeneFromId(String id);
-	public ArrayList<String[]> getGenesFromIds(ArrayList<String> ids);
+	public ArrayList<String[]> getGenesFromIds(ArrayList<String> ids, boolean ascending, int offset, int num);
 }
