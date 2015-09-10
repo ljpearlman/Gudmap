@@ -446,7 +446,7 @@ function findExpressionNotes(){
 			<h:outputText value="Results Notes" />
 			<h:dataTable columnClasses="text-normal,text-top" value="#{ISHSingleSubmissionBean.submission.resultNotes}" var="note">
 				<h:column>
-					<h:outputText value="#{note}"/>
+					<h:outputText styleClass="datatext" value="#{note}"/>
 				</h:column>
 			</h:dataTable>
 		</h:panelGrid>
@@ -989,44 +989,44 @@ function findExpressionNotes(){
 			                <t:dataTable id="alleleContentTable" 
         	                                                                   value="#{ISHSingleSubmissionBean.submission.allele}" var="allele"  style="margin-left:-5px; "  rendered="#{null != ISHSingleSubmissionBean.submission.allele}">
 				           <t:column>
-				             <h:panelGrid columns="3">
-					<h:outputText value="#{allele.title}" />
+				             <h:panelGrid columns="3" >
+					<h:outputText styleClass="plaintext" value="#{allele.title}" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 
-					<h:outputText value="Gene" />
+					<h:outputText styleClass="plaintext" value="Gene" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:outputLink styleClass="datatext" value="gene.html">
 						<h:outputText value="#{allele.geneSymbol}" />
 						<f:param name="geneId" value="#{allele.geneId}" />
 					</h:outputLink>
 
-					<h:outputText value="MGI ID"  rendered="#{not empty allele.alleleId}"/>
+					<h:outputText styleClass="plaintext" value="MGI ID"  rendered="#{not empty allele.alleleId}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleId}"/>
-					<h:outputText rendered="#{empty allele.alleleIdUrl && not empty allele.alleleId}" value="#{allele.alleleId}" escape="false"/>
+					<h:outputText styleClass="plaintext" rendered="#{empty allele.alleleIdUrl && not empty allele.alleleId}" value="#{allele.alleleId}" escape="false"/>
 					<h:outputLink rendered="#{not empty allele.alleleIdUrl && not empty allele.alleleId}"  styleClass="datatext" value="#{allele.alleleIdUrl}" target="gmerg_external2">
 						<h:outputText value="#{allele.alleleId}" />
 					</h:outputLink>
 
-					<h:outputText value="MGI Symbol or lab name"/>
+					<h:outputText styleClass="plaintext" value="MGI Symbol or lab name"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<h:outputText value="#{allele.alleleName}" escape="false" />
+					<h:outputText styleClass="datatext" value="#{allele.alleleName}" escape="false" />
 
-					<h:outputText value="Type"/>
+					<h:outputText styleClass="plaintext" value="Type"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<h:outputText value="#{allele.type}"/>
+					<h:outputText styleClass="datatext" value="#{allele.type}"/>
 			
-					<h:outputText value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
+					<h:outputText styleClass="plaintext" value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleFirstChrom}" />
-					<h:outputText value="#{allele.alleleFirstChrom}" escape="false" rendered="#{not empty allele.alleleFirstChrom}" />
+					<h:outputText styleClass="datatext" value="#{allele.alleleFirstChrom}" escape="false" rendered="#{not empty allele.alleleFirstChrom}" />
 									
-					<h:outputText value="Allele Second Chromatid"  rendered="#{not empty allele.alleleSecondChrom}"/>
+					<h:outputText styleClass="plaintext" value="Allele Second Chromatid"  rendered="#{not empty allele.alleleSecondChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleSecondChrom}"/>
-					<h:outputText value="#{allele.alleleSecondChrom}"  escape="false" rendered="#{not empty allele.alleleSecondChrom}" />
+					<h:outputText styleClass="datatext" value="#{allele.alleleSecondChrom}"  escape="false" rendered="#{not empty allele.alleleSecondChrom}" />
 					
-					<h:outputText value="Notes:" rendered="#{not empty allele.notes}" />
+					<h:outputText styleClass="plaintext" value="Notes:" rendered="#{not empty allele.notes}" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.notes}"/>
-					<h:outputText value="#{allele.notes}" rendered="#{not empty allele.notes}" escape="false" />
+					<h:outputText styleClass="datatext" value="#{allele.notes}" rendered="#{not empty allele.notes}" escape="false" />
 				         </h:panelGrid>
 				    </t:column>
 			                </t:dataTable>
