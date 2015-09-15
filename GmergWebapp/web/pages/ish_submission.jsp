@@ -1143,7 +1143,7 @@ function findExpressionNotes(){
 		<h:panelGrid width="100%" columns="2" styleClass="block-stripey" columnClasses="leftCol,rightCol"  rendered="#{null != ISHSingleSubmissionBean.submission.acknowledgements}">
 			<h:outputText value="Acknowledgements" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
-				<h:dataTable value="#{ISHSingleSubmissionBean.submission.acknowledgements}" var="ack">
+				<h:dataTable value="#{ISHSingleSubmissionBean.submission.acknowledgements}" styleClass="datatext" var="ack">
 					<h:column>
 						<h:outputText value = "#{ack}"/>
 					</h:column>
