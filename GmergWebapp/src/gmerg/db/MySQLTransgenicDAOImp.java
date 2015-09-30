@@ -60,6 +60,9 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
 		if (debug)
 		    System.out.println("TransgenicDAOImp:getAllSubmission:sql (post filter): " + queryString);
 		
+		//Bernie - quick fix for Gene selection on filter, the genericfilter uses RPR_SYMBOL, but TG's use ALE_GENE
+		queryString = queryString.replace("AND (RPR_SYMBOL=", "AND (ALE_GENE=");
+
 		// offset and retrieval number
 		queryString = queryString + " LIMIT " + offset + " ," + num;
 
