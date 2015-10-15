@@ -580,10 +580,10 @@ function findExpressionNotes(){
 				<h:panelGrid columns="2" rendered="#{ISHSingleSubmissionBean.expressionMapped && ISHSingleSubmissionBean.annotationDisplayType != 'list'}">
 					
 					<h:graphicImage value="/images/tree/max_high.png" styleClass="icon" />
-					<h:outputText value="Maximum" styleClass="plaintext" />
+					<h:outputText value="High" styleClass="plaintext" />
 					
 					<h:graphicImage value="/images/tree/mod_medium.png" styleClass="icon" />
-					<h:outputText value="Moderate" styleClass="plaintext" />
+					<h:outputText value="Medium" styleClass="plaintext" />
 
 					<h:graphicImage value="/images/tree/min_low.png" styleClass="icon" />
 					<h:outputText value="Low" styleClass="plaintext" />
@@ -715,10 +715,6 @@ function findExpressionNotes(){
 						<div id="demo2_view" class="demo" style="overflow: auto; align: left; height: 700px;">
 						</div>
 					</f:verbatim>	
-					<h:panelGroup>
-						<h:outputText styleClass="plaintextbold" value="G " />
-						<h:outputText styleClass="plaintext" value="Group or group descendent. Groups provide alternative groupings of terms." />
-					</h:panelGroup>				
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGrid>
