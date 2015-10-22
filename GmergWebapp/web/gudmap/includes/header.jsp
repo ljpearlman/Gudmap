@@ -307,7 +307,7 @@
 				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/genelist_tree.html">Analysis</a></p>
 				<%-- <p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/edit_entry_page_per_lab.html">Annotate</a></p> --%>
 				<p><a  class="mediumnavtext" href="http://www.gudmap.org/Submission_Archive/index.html">Downloads</a></p>
-				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/lab_summaries.html">Data Source</a></p>
+				<p><a  class="mediumnavtext" href="http://www.gudmap.org/Website_Reports/Stats/data_summary.php">Data Source</a></p>
 				<p><a  class="mediumnavtext" href="${pageContext.request.contextPath}/pages/collectionList_browse.html">Collections</a></p>
 			</div><!-- #EndLibraryItem -->
 			<h3>&nbsp; </h3>
