@@ -287,7 +287,7 @@ public class MySQLTransgenicDAOImp implements TransgenicDAO {
     	try {
     		for (int i = 0; i < queryNumber; i++) {
 				if (debug)
-				    System.out.println("MySQLTransgenicDAOImp.sql = "+queryString[i]);
+				    System.out.println("MySQLTransgenicDAOImp.query = queryNumber" + i + " sql = "+queryString[i]);
 
 				///////!!!!! poor databse table for different type of submissions
 			    ////////!!!! do not know why replaceAll does not work
