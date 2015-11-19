@@ -223,10 +223,10 @@
 			<h:outputText value="Sex:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.sex}" />
 			
-			<h:outputText value="Development Age:" />
+			<h:outputText value="Other Staging System:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.devAge}" />
 			
-			<h:outputText value="#{stageSeriesLong} Stage:" />
+			<h:outputText value="Stage:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.theilerStage}" />
 
 			<h:outputText value="Pooled Sample:" />
