@@ -217,8 +217,13 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 		// Probe Name
 		if(Utility.getProject().equalsIgnoreCase("GUDMAP")){
 			
-			if ("IHC".equalsIgnoreCase(row[4]))
-				formatedRow[ 5] = new DataItem(row[5], "Antibody Details", "antibody.html?antibody="+row[5], 10);	
+			
+			if ("IHC".equalsIgnoreCase(row[4])){
+				if (row[5].contains("MGI:"))
+					formatedRow[ 5] = new DataItem(row[5], "Antibody Details", "http://www.informatics.jax.org/accession/"+row[5], 10);
+				else
+					formatedRow[ 5] = new DataItem(row[5], "Antibody Details", "antibody.html?antibody="+row[5], 10);	
+			}
 			else
 				formatedRow[ 5] = new DataItem(row[5], "Probe Details", "probe.html?probe="+row[5], 10);
 		}
