@@ -43,7 +43,8 @@ public class Submission {
     
     protected Person[] principalInvestigators;
     protected Allele[] allele;
-
+    protected String species
+    ;
     public Submission() {
     
     }
@@ -462,5 +463,13 @@ public class Submission {
     public String getStageAnatomy() {
         return stageAnatomy;
     }
-    
+ 
+    public void setSpecies(String species) {
+    	this.species = species;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+   
 }

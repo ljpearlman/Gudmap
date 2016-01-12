@@ -104,7 +104,7 @@ public class ISHSubmissionAssembler {
 			ishSubmission.setAnnotationTreeExpressionNotes(annotatedTreeExpressionNotes);
 			ishSubmission.setAnnotationTreeDensities(annotatedTreeDensities);
 			ishSubmission.setAnnotationTreeDensityNotes(annotatedTreeDensityNotes);
-			
+			ishSubmission.setSpecies(submission.getSpecies());
 			if(onlyRetrieveTree) {
 				return ishSubmission;
 			}

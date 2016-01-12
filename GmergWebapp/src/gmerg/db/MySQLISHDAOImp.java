@@ -310,7 +310,8 @@ public class MySQLISHDAOImp implements ISHDAO {
             submissionInfo.setEuregeneId(resSet.getString(27));
             submissionInfo.setOid(resSet.getString(28));
             submissionInfo.setStageName(resSet.getString(29));
-            submissionInfo.setStageAnatomy(resSet.getString(30));            
+            submissionInfo.setStageAnatomy(resSet.getString(30)); 
+            submissionInfo.setSpecies(resSet.getString(31));
 	    
         }
         if (null != noteSet && null != submissionInfo) {

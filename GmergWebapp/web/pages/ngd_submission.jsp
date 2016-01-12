@@ -24,9 +24,10 @@
     
          <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
     	    <h:outputText value="#{stageSeriesLong} Stage" />
-    	    <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{NGDSingleSubmissionBean.submission.stage}definition.html">
-    		<h:outputText value="#{NGDSingleSubmissionBean.submission.stage}" />
+    	    <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{NGDSingleSubmissionBean.submission.stage}definition.html" rendered="#{NGDSingleSubmissionBean.submission.sample.organism != 'Homo sapiens'}">
+    			<h:outputText value="#{NGDSingleSubmissionBean.submission.stageName}" />
     	    </h:outputLink>
+    	    	<h:outputText value="#{NGDSingleSubmissionBean.submission.stageName}" rendered="#{NGDSingleSubmissionBean.submission.sample.organism == 'Homo sapiens'}"/>
         </h:panelGrid>
         
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
@@ -175,7 +176,8 @@
 
 
 				<h:outputText value="Genotype:" />
-				<h:outputText value="wild type" rendered="#{null == ISHSingleSubmissionBean.submission.allele}"/>
+				<h:outputText value="wild type" rendered="#{null == ISHSingleSubmissionBean.submission.allele  && NGDSingleSubmissionBean.submission.sample.organism != 'Homo sapiens'}"/>
+				<h:outputText value="" rendered="#{null == ISHSingleSubmissionBean.submission.allele  && NGDSingleSubmissionBean.submission.sample.organism == 'Homo sapiens'}"/>
 			    <t:dataTable id="alleleContentTable" value="#{ISHSingleSubmissionBean.submission.allele}" var="allele"  style="margin-left:-5px; " rendered="#{null != ISHSingleSubmissionBean.submission.allele}">
 				    <t:column>
 				    <h:panelGrid columns="3">

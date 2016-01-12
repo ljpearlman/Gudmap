@@ -90,6 +90,7 @@ public class NGDSubmissionAssembler {
 			ngdSubmission.setOid(submission.getOid());
 			ngdSubmission.setAccID(submission.getAccID());
 			ngdSubmission.setStage(submission.getStage());
+			ngdSubmission.setStageName(submission.getStageName());
 			ngdSubmission.setArchiveId(submission.getArchiveId());
 			ngdSubmission.setBatchId(submission.getBatchId());
 			ngdSubmission.setOriginalImages(images);
