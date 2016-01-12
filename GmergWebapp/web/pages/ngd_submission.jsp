@@ -24,7 +24,7 @@
     
          <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
     	    <h:outputText value="#{stageSeriesLong} Stage" />
-    	    <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/ts#{NGDSingleSubmissionBean.submission.stage}definition.html" rendered="#{NGDSingleSubmissionBean.submission.sample.organism != 'Homo sapiens'}">
+    	    <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{NGDSingleSubmissionBean.submission.stageLowerCase}definition.html" rendered="#{NGDSingleSubmissionBean.submission.sample.organism != 'Homo sapiens'}">
     			<h:outputText value="#{NGDSingleSubmissionBean.submission.stageName}" />
     	    </h:outputLink>
     	    	<h:outputText value="#{NGDSingleSubmissionBean.submission.stageName}" rendered="#{NGDSingleSubmissionBean.submission.sample.organism == 'Homo sapiens'}"/>
