@@ -144,12 +144,13 @@ public class GenericTableFilter {
 					speciessql += "'Homo sapiens')";
 					
 				if (filterSql != ""){
-					if (filterSql.contains("STG_ORDER"))
+					if (filterSql.contains("STG_ORDER")){
 						if (sql.equals(""))
-							sql += filterSql + "AND " + speciessql;
-						else{
-							sql = "(" + sql + " OR " + filterSql + ")" + "AND " + speciessql;
-						}
+							sql +=  filterSql + "AND " + speciessql;
+						else
+							sql +=  " AND " + filterSql + "AND " + speciessql;					
+//							sql = "(" + sql + " OR " + filterSql + ")" + "AND " + speciessql;
+					}
 					else
 						sql += ((sql.equals(""))? "" : " AND ") + filterSql;
 				}
