@@ -806,6 +806,9 @@ function findExpressionNotes(){
 					
 					<h:outputText value="Species Specificity:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.speciesSpecificity}" />
+
+					<h:outputText value="Curator Notes:" rendered="#{ISHSingleSubmissionBean.submission.antibody.curatorNotes != ''}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.curatorNotes}" rendered="#{ISHSingleSubmissionBean.submission.antibody.curatorNotes != ''}"/>
 					
 					<h:outputText value="Detection System:" />
 					<h:panelGrid columns="1" border="0" columnClasses="text-top,text-normal">

@@ -872,6 +872,8 @@ public class MySQLISHDAOImp implements ISHDAO {
 		    antibody.setSignalDetectionMethod(resSetAntibody.getString(25));
 		    
 		    // note
+		    antibody.setCuratorNotes(resSetAntibody.getString(26));
+		    
 		    if (resSetAntibodyNote != null && resSetAntibodyNote.first()) 
 		    	antibody.setNotes(resSetAntibodyNote.getString(1));
 		    
