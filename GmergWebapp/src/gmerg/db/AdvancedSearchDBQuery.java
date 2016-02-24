@@ -471,7 +471,10 @@ public class AdvancedSearchDBQuery {
 		"QIC_SUB_ACCESSION_ID col10,"+
 		"'' col11,'' col12, REPLACE(QIC_SUB_ACCESSION_ID, ':" + "', '" + "no" + "') col13, QIC_SUB_ASSAY_TYPE col14, " +
 		" QIC_SPN_SEX col15,"+
-		"QIC_PRB_PROBE_NAME col16,QIC_SPN_WILDTYPE col17, QIC_RPR_LOCUS_TAG col18 ";
+		"QIC_PRB_PROBE_NAME col16,"+
+//		"QIC_SPN_WILDTYPE col17,"+
+		"(CASE QIC_STG_SPECIES WHEN 'Homo sapiens' THEN '' ELSE QIC_SPN_WILDTYPE END) col17," +
+		"QIC_RPR_LOCUS_TAG col18 ";
 	  }
 	  
 	  final static public String fromISHTissue(){		  
