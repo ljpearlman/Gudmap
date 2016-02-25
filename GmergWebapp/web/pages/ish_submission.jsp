@@ -980,6 +980,9 @@ function findExpressionNotes(){
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="Other Staging System:" />
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="#{ISHSingleSubmissionBean.submission.specimen.otherStage}" />
 
+				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.stagingNotes}" value="Staging Notes:" />
+				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.stagingNotes}" value="#{ISHSingleSubmissionBean.submission.specimen.stagingNotes}" />
+
 				<h:outputText value="Tissue:" />
 				<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}" />
 					

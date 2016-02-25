@@ -231,6 +231,9 @@
 			<h:outputText value="Stage:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.theilerStage}" />
 
+			<h:outputText value="Staging Notes:" rendered="#{not empty NGDSingleSubmissionBean.submission.sample.stagingNotes}"/>
+			<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.stagingNotes}" rendered="#{not empty NGDSingleSubmissionBean.submission.sample.stagingNotes}"/>
+
 			<h:outputText value="Pooled Sample:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.pooledSample}" />
 			

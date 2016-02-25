@@ -12,7 +12,8 @@ public class NGDSample extends Sample {
     private String libraryReads;
     private String readLength;
     private String meanInsertSize;
-    
+    private String stagingNotes;
+   
 
     
     public void setStageFormat(String stageFormat) {
@@ -71,4 +72,12 @@ public class NGDSample extends Sample {
         return meanInsertSize;
     }
 
+    public void setStagingNotes(String stagingNotes) {
+        this.stagingNotes = stagingNotes;
+    }
+
+    public String getStagingNotes() {
+        return stagingNotes;
+    }
+    
 }

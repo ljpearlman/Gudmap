@@ -229,7 +229,7 @@
 			<h:outputText value="Stage:" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.stage}" />
 
-			<h:outputText value="Developmental Landmark:" rendered="#{not empty MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}"/>
+			<h:outputText value="Staging Notes:" rendered="#{not empty MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}"/>
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}" rendered="#{not empty MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}"/>
 			
 			<h:outputText value="Pooled Sample:" />
