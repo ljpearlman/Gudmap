@@ -1009,7 +1009,8 @@ public class AdvancedSearchDBQuery {
 			"SPN_ASSAY_TYPE",
 			"CONCAT(IMG_URL.URL_URL, IMG_FILEPATH, IMG_URL.URL_SUFFIX, IMG_SML_FILENAME)",
 			"RPR_LOCUS_TAG",
-			"REPLACE(SUB_ACCESSION_ID, ':', 'no')", };
+			"REPLACE(SUB_ACCESSION_ID, ':', 'no')",
+			"STG_SPECIES", };
 		
 		
 		

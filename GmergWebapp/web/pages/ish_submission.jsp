@@ -992,10 +992,10 @@ function findExpressionNotes(){
 				<h:outputText value="Genotype:" />
 				<h:outputText value="wild type" rendered="#{null == ISHSingleSubmissionBean.submission.allele && ISHSingleSubmissionBean.submission.species != 'Homo sapiens'}"/>
 				<h:outputText value="" rendered="#{null == ISHSingleSubmissionBean.submission.allele && ISHSingleSubmissionBean.submission.species == 'Homo sapiens'}"/>
-			                <t:dataTable id="alleleContentTable" 
-        	                                                                   value="#{ISHSingleSubmissionBean.submission.allele}" var="allele"  style="margin-left:-5px; "  rendered="#{null != ISHSingleSubmissionBean.submission.allele}">
-				           <t:column>
-				             <h:panelGrid columns="3" >
+			        <t:dataTable id="alleleContentTable" 
+        	            value="#{ISHSingleSubmissionBean.submission.allele}" var="allele"  style="margin-left:-5px; "  rendered="#{null != ISHSingleSubmissionBean.submission.allele}">
+				        <t:column>
+				         <h:panelGrid columns="3" >
 					<h:outputText styleClass="plaintext" value="#{allele.title}" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
