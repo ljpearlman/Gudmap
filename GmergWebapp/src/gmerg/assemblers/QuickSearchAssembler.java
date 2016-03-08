@@ -4,6 +4,7 @@ import gmerg.db.AdvancedQueryDAO;
 import gmerg.db.AdvancedSearchDBQuery;
 import gmerg.db.DBHelper;
 import gmerg.db.MySQLDAOFactory;
+import gmerg.utils.DbUtility;
 import gmerg.utils.Utility;
 import gmerg.utils.table.DataItem;
 import gmerg.utils.table.HeaderItem;
@@ -222,8 +223,13 @@ public class QuickSearchAssembler extends OffMemoryTableAssembler {
     			String stage = row[5];
     			if (stage.contains("TS"))
     				tableData[i][6] = new DataItem(row[5], "", "http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/"+row[5].toLowerCase()+"definition.html", 10);         //stage
-    			else
+    			else{
     				tableData[i][6] = new DataItem(row[5]);
+    				// Bernie 2/3/16 temporary fix to correct antibody gene and geneId for species type (Mantis 1162)
+    				String gene = row[0].toUpperCase();
+    				String geneId = DbUtility.retrieveGeneIdBySymbol(gene, "Homo sapiens");
+    				tableData[i][0] = new DataItem(gene, "Click to view gene page","gene.html?geneId="+geneId, 10);	//gene		  	
+    			}
             }
             else {
               tableData[i][6] = new DataItem(row[5]);        
