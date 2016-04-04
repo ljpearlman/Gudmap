@@ -1002,7 +1002,8 @@ function findExpressionNotes(){
 
 					<h:outputText styleClass="plaintext" value="Gene" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<h:outputLink styleClass="datatext" value="gene.html">
+					<h:outputText styleClass="datatext" value="#{allele.geneSymbol}" rendered="#{empty allele.geneId}"/>
+					<h:outputLink styleClass="datatext" value="gene.html" rendered="#{not empty allele.geneId}">
 						<h:outputText value="#{allele.geneSymbol}" />
 						<f:param name="geneId" value="#{allele.geneId}" />
 					</h:outputLink>
