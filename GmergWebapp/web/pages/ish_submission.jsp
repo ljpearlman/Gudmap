@@ -1022,6 +1022,10 @@ function findExpressionNotes(){
 					<h:outputText styleClass="plaintext" value="Type"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:outputText styleClass="datatext" value="#{allele.type}"/>
+						
+					<h:outputText styleClass="plaintext" value="Mutation" rendered="#{not empty allele.mutation}"/>
+					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.mutation}" />
+					<h:outputText styleClass="datatext" value="#{allele.mutation}" escape="false" rendered="#{not empty allele.mutation}" />
 			
 					<h:outputText styleClass="plaintext" value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleFirstChrom}" />

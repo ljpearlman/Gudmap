@@ -24,6 +24,7 @@ public class Allele {
     private String alleleFirstChrom;
     private String alleleSecondChrom;
     private String type;
+    private String mutation;
     
     public void print() {
 	System.out.println("title = "+title);
@@ -38,8 +39,17 @@ public class Allele {
 	System.out.println("alleleFirstChrom = "+alleleFirstChrom);
 	System.out.println("alleleSecondChrom = "+alleleSecondChrom);
 	System.out.println("type = "+type);
+	System.out.println("mutation = "+mutation);
     }
-
+    
+    public String getMutation() {
+    	return mutation;
+    }
+    
+    public void setMutation(String mutation) {
+    	this.mutation = mutation;
+    }
+    
     public String getType() {
     	return type;
     }
