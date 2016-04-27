@@ -1141,7 +1141,10 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 				resSet.beforeFirst();
 				result = new String("");
 				while (resSet.next()) {
-					result += resSet.getString(1) + "," + resSet.getString(2) + "| ";
+					String note = resSet.getString(2).trim();
+					note = note.replaceAll("\\r", "");
+					note = note.replaceAll("\\n", "");
+					result += resSet.getString(1) + "," + note + "| ";
 				}
 				treeExpressionNotes = result;
 			}
@@ -1241,7 +1244,10 @@ public class MySQLAnatomyDAOImp implements AnatomyDAO {
 				resSet.beforeFirst();
 				result = new String("");
 				while (resSet.next()) {
-					result += resSet.getString(1) + "," + resSet.getString(2)  + "| ";
+					String note = resSet.getString(2).trim();
+					note = note.replaceAll("\\r", "");
+					note = note.replaceAll("\\n", "");
+					result += resSet.getString(1) + "," + note  + "| ";
 				}
 				treeDensityNotes = result;
 			}

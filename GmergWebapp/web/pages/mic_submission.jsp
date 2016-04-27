@@ -204,6 +204,10 @@
 					<h:outputText value="Type"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:outputText value="#{allele.type}"/>
+						
+					<h:outputText value="Mutation" rendered="#{not empty allele.mutation}"/>
+					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.mutation}" />
+					<h:outputText value="#{allele.mutation}" rendered="#{not empty allele.mutation}" escape="false"/>
 			
 					<h:outputText value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleFirstChrom}" />
@@ -229,7 +233,7 @@
 			<h:outputText value="Stage:" />
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.stage}" />
 
-			<h:outputText value="Developmental Landmark:" rendered="#{not empty MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}"/>
+			<h:outputText value="Staging Notes:" rendered="#{not empty MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}"/>
 			<h:outputText value="#{MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}" rendered="#{not empty MicroarraySingleSubmissionBean.submission.sample.developmentalLandmarks}"/>
 			
 			<h:outputText value="Pooled Sample:" />

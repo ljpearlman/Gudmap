@@ -1,5 +1,6 @@
 package gmerg.db;
 
+import gmerg.utils.DbUtility;
 import gmerg.utils.table.FilterItem;
 import gmerg.utils.table.GenericTableFilter;
 
@@ -376,6 +377,15 @@ public class MySQLIHCDAOImp implements IHCDAO {
                 ishBrowseSubmission[12] = resSet.getString(13); // specimen
                 ishBrowseSubmission[13] = resSet.getString(14); // thumbnail
                 ishBrowseSubmission[14] = resSet.getString(15); // geneId
+                
+    			// Bernie 2/3/16 temporary fix to correct antibody gene and geneId for species type (Mantis 1162)
+                if (resSet.getString(17).contains("Homo sapiens")){
+                	String gene = resSet.getString(1).toUpperCase();
+                	String geneId = DbUtility.retrieveGeneIdBySymbol(gene, "Homo sapiens");
+                	ishBrowseSubmission[ 0] = gene;
+                	ishBrowseSubmission[14] = geneId;
+                }
+                
                 results.add(ishBrowseSubmission);
             }
             return results;

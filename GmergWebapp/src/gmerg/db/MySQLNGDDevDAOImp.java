@@ -146,10 +146,10 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
     	
     	//try to execute the query
     	try {
-		    if (debug)
-		    	System.out.println("MySQLNDGDevDAOImp.sql = "+queryString.toLowerCase());
     		prepStat = conn.prepareStatement(queryString);
     		prepStat.setInt(1, Integer.parseInt(oid));
+		    if (debug)
+		    	System.out.println("MySQLNDGDevDAOImp.sql = "+prepStat);
     		
     		resSet = prepStat.executeQuery();
     		/*result = formatBrowseSeriesResultSet(resSet);
@@ -179,12 +179,12 @@ public class MySQLNGDDevDAOImp extends  MySQLArrayDevDAOImp implements NGDDevDAO
     	
     	//try to execute the query
     	try {
-		    if (debug)
-		    	System.out.println("MySQLArrayDevDAOImp.sql = "+query.toLowerCase());
     		prepStat = conn.prepareStatement(query);
     		prepStat.setInt(1, Integer.parseInt(oid));
     		prepStat.setInt(2, Integer.parseInt(oid));
-    		
+		    if (debug)
+		    	System.out.println("MySQLArrayDevDAOImp.sql = "+prepStat);
+   		
     		resSet = prepStat.executeQuery();
     		result = Utility.formatResultSet(resSet);
     		

@@ -305,9 +305,12 @@ function findExpressionNotes(){
 	
 	var notes=String("${ISHSingleSubmissionBean.submission.annotationTreeExpressionNotes}");
 //	notes.replace(/[\n\r]/g, ''); // replace cr and nl
+
 	var temparray = notes.split("|");
 	var count = temparray.length;
 	var notes_array = new Array(count-1);
+	
+	
 	for(var i = 0; i < count-1; i++){
 		notes_array[i] = new Array(2);
 		var tmpstr = temparray[i].replace(":","");		
@@ -348,7 +351,7 @@ function findExpressionNotes(){
                 .sort(function(a, b) {
           return a[0] - b[0];
         });
-	
+		
 	return notes_array;
 }
 
@@ -803,6 +806,9 @@ function findExpressionNotes(){
 					
 					<h:outputText value="Species Specificity:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.speciesSpecificity}" />
+
+					<h:outputText value="Curator Notes:" rendered="#{ISHSingleSubmissionBean.submission.antibody.curatorNotes != ''}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.antibody.curatorNotes}" rendered="#{ISHSingleSubmissionBean.submission.antibody.curatorNotes != ''}"/>
 					
 					<h:outputText value="Detection System:" />
 					<h:panelGrid columns="1" border="0" columnClasses="text-top,text-normal">
@@ -974,6 +980,9 @@ function findExpressionNotes(){
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="Other Staging System:" />
 				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.otherStage}" value="#{ISHSingleSubmissionBean.submission.specimen.otherStage}" />
 
+				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.stagingNotes}" value="Staging Notes:" />
+				<h:outputText rendered="#{not empty ISHSingleSubmissionBean.submission.specimen.stagingNotes}" value="#{ISHSingleSubmissionBean.submission.specimen.stagingNotes}" />
+
 				<h:outputText value="Tissue:" />
 				<h:outputText value="#{ISHSingleSubmissionBean.submission.tissue}" />
 					
@@ -983,17 +992,18 @@ function findExpressionNotes(){
 				<h:outputText value="Genotype:" />
 				<h:outputText value="wild type" rendered="#{null == ISHSingleSubmissionBean.submission.allele && ISHSingleSubmissionBean.submission.species != 'Homo sapiens'}"/>
 				<h:outputText value="" rendered="#{null == ISHSingleSubmissionBean.submission.allele && ISHSingleSubmissionBean.submission.species == 'Homo sapiens'}"/>
-			                <t:dataTable id="alleleContentTable" 
-        	                                                                   value="#{ISHSingleSubmissionBean.submission.allele}" var="allele"  style="margin-left:-5px; "  rendered="#{null != ISHSingleSubmissionBean.submission.allele}">
-				           <t:column>
-				             <h:panelGrid columns="3" >
+			        <t:dataTable id="alleleContentTable" 
+        	            value="#{ISHSingleSubmissionBean.submission.allele}" var="allele"  style="margin-left:-5px; "  rendered="#{null != ISHSingleSubmissionBean.submission.allele}">
+				        <t:column>
+				         <h:panelGrid columns="3" >
 					<h:outputText styleClass="plaintext" value="#{allele.title}" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 
 					<h:outputText styleClass="plaintext" value="Gene" />
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
-					<h:outputLink styleClass="datatext" value="gene.html">
+					<h:outputText styleClass="datatext" value="#{allele.geneSymbol}" rendered="#{empty allele.geneId}"/>
+					<h:outputLink styleClass="datatext" value="gene.html" rendered="#{not empty allele.geneId}">
 						<h:outputText value="#{allele.geneSymbol}" />
 						<f:param name="geneId" value="#{allele.geneId}" />
 					</h:outputLink>
@@ -1012,6 +1022,10 @@ function findExpressionNotes(){
 					<h:outputText styleClass="plaintext" value="Type"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:outputText styleClass="datatext" value="#{allele.type}"/>
+						
+					<h:outputText styleClass="plaintext" value="Mutation" rendered="#{not empty allele.mutation}"/>
+					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.mutation}" />
+					<h:outputText styleClass="datatext" value="#{allele.mutation}" escape="false" rendered="#{not empty allele.mutation}" />
 			
 					<h:outputText styleClass="plaintext" value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleFirstChrom}" />

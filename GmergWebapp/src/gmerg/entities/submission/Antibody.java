@@ -49,6 +49,7 @@ public class Antibody {
 	private String locusTag;
     private ArrayList ishSubmissions; 
     private ArrayList<String[]> ishFilteredSubmissions; 
+    private String curatorNotes;
 	
 	
 	public String getName() {
@@ -382,4 +383,13 @@ public class Antibody {
     public ArrayList<String[]> getIshFilteredSubmissions() { 	  	
         return ishFilteredSubmissions;
     }
+    
+	public String getCuratorNotes() {
+		return curatorNotes;
+	}
+	
+	public void setCuratorNotes(String curatorNotes) {
+		this.curatorNotes = curatorNotes;
+	}
+    
 }

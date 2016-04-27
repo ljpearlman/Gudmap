@@ -203,6 +203,11 @@ public class ISHSubmission extends Submission {
     }
     
     public String getAnnotationTreeExpressionNotes(){
+//    	System.out.println("annotatedTreeExpressionNotes = " + annotatedTreeExpressionNotes);
+//    	String[] strarr = annotatedTreeExpressionNotes.split("\\|");
+//    	for (int i = 0; i < strarr.length; i++)
+//        	System.out.println("note = " + strarr[i]);
+   	
         return annotatedTreeExpressionNotes;
     }
     
@@ -227,7 +232,8 @@ public class ISHSubmission extends Submission {
     }
     
     public String getAnnotationTreeDensityNotes(){
-        return annotatedTreeDensities;
+//    	System.out.println("annotatedTreeDensityNotes = " + annotatedTreeDensityNotes);
+        return annotatedTreeDensityNotes;
     }
     
     public void setAnnotationTreeDensityNotes(String notes){

@@ -19,6 +19,7 @@ import gmerg.entities.submission.Allele;
 import gmerg.entities.submission.Submission;
 import gmerg.entities.submission.StatusNote;
 import gmerg.entities.submission.ish.ISHSubmission;
+import gmerg.utils.DbUtility;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -115,6 +116,14 @@ public class ISHSubmissionAssembler {
 				probe = ishDAO.findProbeBySubmissionId(accessionId);
 			} else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
 				antibody = ishDAO.findAntibodyBySubmissionId(accessionId);
+				
+				// Bernie 2/3/16 temporary fix to correct antibody gene and geneId for species type (Mantis 1162)
+				if (ishSubmission.getSpecies().contains("Homo sapiens")){
+					String gene = antibody.getGeneSymbol().toUpperCase();
+					String geneId = DbUtility.retrieveGeneIdBySymbol(gene, "Homo sapiens");
+					antibody.setGeneSymbol(gene);
+					antibody.setGeneId(geneId);
+				}
 			} else if (assayType.indexOf("TG") >= 0) { // assay type is IHC
 				probe = ishDAO.findProbeBySubmissionId(accessionId);
 			}

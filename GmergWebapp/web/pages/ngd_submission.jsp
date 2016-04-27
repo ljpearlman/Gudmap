@@ -23,7 +23,7 @@
 		 </h:panelGrid>
     
          <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
-    	    <h:outputText value="#{stageSeriesLong} Stage" />
+    	    <h:outputText value="Stage" />
     	    <h:outputLink styleClass="datatext" value="http://www.emouseatlas.org/emap/ema/theiler_stages/StageDefinition/#{NGDSingleSubmissionBean.submission.stageLowerCase}definition.html" rendered="#{NGDSingleSubmissionBean.submission.sample.organism != 'Homo sapiens'}">
     			<h:outputText value="#{NGDSingleSubmissionBean.submission.stageName}" />
     	    </h:outputLink>
@@ -206,7 +206,11 @@
 					<h:outputText value="Type"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" />
 					<h:outputText value="#{allele.type}"/>
-			
+					
+					<h:outputText value="Mutation" rendered="#{not empty allele.mutation}"/>
+					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.mutation}" />
+					<h:outputText value="#{allele.mutation}" rendered="#{not empty allele.mutation}" escape="false"/>
+															
 					<h:outputText value="Allele First Chromatid" rendered="#{not empty allele.alleleFirstChrom}"/>
 					<h:graphicImage alt="" value="../images/spacet.gif" width="35" height="1" rendered="#{not empty allele.alleleFirstChrom}" />
 					<h:outputText value="#{allele.alleleFirstChrom}" rendered="#{not empty allele.alleleFirstChrom}" escape="false"/>
@@ -230,6 +234,9 @@
 			
 			<h:outputText value="Stage:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.theilerStage}" />
+
+			<h:outputText value="Staging Notes:" rendered="#{not empty NGDSingleSubmissionBean.submission.sample.stagingNotes}"/>
+			<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.stagingNotes}" rendered="#{not empty NGDSingleSubmissionBean.submission.sample.stagingNotes}"/>
 
 			<h:outputText value="Pooled Sample:" />
 			<h:outputText value="#{NGDSingleSubmissionBean.submission.sample.pooledSample}" />
