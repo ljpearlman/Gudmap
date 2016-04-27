@@ -313,7 +313,7 @@ function findExpressionNotes(){
 		var tmpstr = temparray[i].replace(":","");		
 		var idx = tmpstr.indexOf(",");
 		notes_array[i][0] = tmpstr.substring(0,idx);
-		notes_array[i][1] = tmpstr.substring(idx);
+		notes_array[i][1] = tmpstr.substring(idx+1);
 //		alert(notes_array[i][0]);
 //		alert(notes_array[i][1]);
 	}
