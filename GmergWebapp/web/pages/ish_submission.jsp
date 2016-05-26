@@ -485,21 +485,24 @@ function findExpressionNotes(){
 			<h:outputText value="Submitters" />
 			<h:panelGrid width="100%" columns="2" columnClasses="width95, width5" >
 				<h:panelGrid columns="2" border="0" columnClasses="data-titleCol,data-textCol">
-		            <h:outputText value="Principal Investigator(s):" />
-			        <t:dataList id="piDataList" var="piInfo" value="#{ISHSingleSubmissionBean.submission.principalInvestigators}" >
+		            <h:outputText value="Principal Investigator(s):" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
+			        <t:dataList id="piDataList" var="piInfo" value="#{ISHSingleSubmissionBean.submission.principalInvestigators}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
 						<h:outputLink  title="#{piInfo.fullAddress}"  styleClass="datatext" value="javascript:showLabDetails(#{piInfo.id})">
 						      <h:outputText value="#{piInfo.name}, " />
 						</h:outputLink>
 						<h:outputText title="#{piInfo.fullAddress}"  styleClass="datatext" value="#{piInfo.displayAddress}" /><br/>
 			        </t:dataList>
 					<h:outputText value="Contributors:" />
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.authors}" />
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.authors}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.lab}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
+
 					<h:outputText value="Submitted By:" />
 					<h:panelGroup>
-                            <h:outputLink title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{ISHSingleSubmissionBean.submission.submitter.id})">
+                            <h:outputLink title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{ISHSingleSubmissionBean.submission.submitter.id})" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}">
 					             <h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.name}, " />
 					       </h:outputLink>
-					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.displayAddress}" />
+					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.displayAddress}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
+					       <h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.lab}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 					</h:panelGroup>
 			
 			<h:outputText value="Archive ID:" rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}"/>
