@@ -494,7 +494,7 @@ function findExpressionNotes(){
 			        </t:dataList>
 					<h:outputText value="Contributors:" />
 					<h:outputText value="#{ISHSingleSubmissionBean.submission.authors}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
-					<h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.lab}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
+					<h:outputText value="#{ISHSingleSubmissionBean.submission.sourceLab}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 
 					<h:outputText value="Submitted By:" />
 					<h:panelGroup>
@@ -502,7 +502,7 @@ function findExpressionNotes(){
 					             <h:outputText value="#{ISHSingleSubmissionBean.submission.submitter.name}, " />
 					       </h:outputLink>
 					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.displayAddress}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
-					       <h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.lab}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
+					       <h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.sourceLab}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 					</h:panelGroup>
 			
 			<h:outputText value="Archive ID:" rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}"/>

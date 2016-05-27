@@ -43,8 +43,9 @@ public class Submission {
     
     protected Person[] principalInvestigators;
     protected Allele[] allele;
-    protected String species
-    ;
+    protected String species;
+    protected String sourceLab;     
+    
     public Submission() {
     
     }
@@ -346,7 +347,10 @@ public class Submission {
     
     public void setSource(String source) {
     	this.source = source;
-    }
+    	
+    	String[] arr = source.split("-");
+    	setSourceLab(arr[1] + " Lab");
+   }
 
     public String getValidation() {
     	return validation;
@@ -470,6 +474,14 @@ public class Submission {
 
     public String getSpecies() {
         return species;
+    }
+
+    public void setSourceLab(String sourceLab) {
+        this.sourceLab = sourceLab;
+    }
+
+    public String getSourceLab() {
+        return sourceLab;
     }
    
 }
