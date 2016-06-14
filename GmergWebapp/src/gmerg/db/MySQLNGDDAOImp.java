@@ -39,7 +39,46 @@ public class MySQLNGDDAOImp extends MySQLArrayDAOImp implements NGDDAO {
     	this.conn = conn;
     }
     
-    
+	public String findSpeciesBySubmissionId(String submissionAccessionId){
+
+		
+		if (submissionAccessionId == null) {
+		    return null;
+		}
+		
+		String species = null;
+		ResultSet resSet = null;
+		ParamQuery parQ = DBQuery.getParamQuery("NGD_SPECIES");
+		PreparedStatement prepStmt = null;
+		
+		try {
+		    // if disconnected from db, re-connected
+		    conn = DBHelper.reconnect2DB(conn);
+		    
+		    parQ.setPrepStat(conn);
+		    prepStmt = parQ.getPrepStat();
+		    prepStmt.setString(1, submissionAccessionId);
+		    
+		    if (debug)
+		    	System.out.println("MySQLNGDDAOImp.findSpeciesBySubmissionId = "+prepStmt);
+		    
+		    resSet = prepStmt.executeQuery();
+			if (resSet.first()) {
+				species = resSet.getString(1);
+			}
+			return species;
+
+		} catch(SQLException se) {
+		    se.printStackTrace();
+			return null;
+		}
+		finally{
+		    DBHelper.closePreparedStatement(prepStmt);
+		    DBHelper.closeResultSet(resSet);
+		}
+
+	}
+   
     /**
      * 
      * @param submissionAccessionId

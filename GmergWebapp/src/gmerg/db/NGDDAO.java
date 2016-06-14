@@ -41,6 +41,7 @@ public interface NGDDAO {
 	
 	public ArrayList findSamplesInCertainSeriesBySubmissionId(String submissionAccessionId);
 	
+	public String findSpeciesBySubmissionId(String submissionAccessionId);
 	
 	
 }

@@ -74,6 +74,10 @@ public class NGDSubmissionAssembler {
 			
 			// get series info
 			NGDSeries series = ngdDAO.findSeriesBySubmissionId(accessionId);
+			
+			// get species info
+			String species = ngdDAO.findSpeciesBySubmissionId(accessionId);
+			
 						
 			// array submission does not have specimen so get allele if any
 			Allele[] allele = ishDAO.findAlleleBySubmissionId(accessionId);
@@ -94,6 +98,8 @@ public class NGDSubmissionAssembler {
 			ngdSubmission.setArchiveId(submission.getArchiveId());
 			ngdSubmission.setBatchId(submission.getBatchId());
 			ngdSubmission.setOriginalImages(images);
+			ngdSubmission.setSpecies(species);
+			ngdSubmission.setSource(submission.getSource());
 	
 			if (null != supplementaryFiles) {
 			    ngdSubmission.setRawFile(supplementaryFiles.getRawFile());

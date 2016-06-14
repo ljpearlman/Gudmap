@@ -122,9 +122,9 @@
 			</h:panelGrid> --%>
         </h:panelGrid>
 		
-        <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
-			<h:outputText value="Principal Investigator(s)" />
-			<t:dataList id="piDataList" var="piInfo"
+        <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{NGDSingleSubmissionBean.submission.species == 'Mus musculus'}">
+			<h:outputText value="Principal Investigator(s)" rendered="#{NGDSingleSubmissionBean.submission.species == 'Mus musculus'}"/>
+			<t:dataList id="piDataList" var="piInfo" rendered="#{NGDSingleSubmissionBean.submission.species == 'Mus musculus'}"
 					value="#{NGDSingleSubmissionBean.submission.principalInvestigators}">
 					<h:outputLink  title="#{piInfo.fullAddress}"  styleClass="datatext" value="javascript:showLabDetails(#{piInfo.id})">
 						<h:outputText value="#{piInfo.name}, " />
@@ -136,16 +136,18 @@
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">
 			<h:outputText value="Submitted By" />
 			<h:panelGroup>
-				<h:outputLink title="#{NGDSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{NGDSingleSubmissionBean.submission.submitter.id})">
+				<h:outputLink title="#{NGDSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="javascript:showLabDetails(#{NGDSingleSubmissionBean.submission.submitter.id})" rendered="#{NGDSingleSubmissionBean.submission.species == 'Mus musculus'}">
 				       <h:outputText value="#{NGDSingleSubmissionBean.submission.submitter.name}, " />
 				</h:outputLink>
-				<h:outputText title="#{NGDSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{NGDSingleSubmissionBean.submission.submitter.displayAddress}" />			
+				<h:outputText title="#{NGDSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{NGDSingleSubmissionBean.submission.submitter.displayAddress}" rendered="#{NGDSingleSubmissionBean.submission.species == 'Mus musculus'}"/>			
+				<h:outputText value="#{NGDSingleSubmissionBean.submission.sourceLab}" styleClass="datatext" rendered="#{NGDSingleSubmissionBean.submission.species == 'Homo sapiens'}"/>
 			</h:panelGroup>
         </h:panelGrid>
               
        <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey"  rendered="#{not empty NGDSingleSubmissionBean.submission.authors}">
 			<h:outputText value="Contributors" />
-			<h:outputText value="#{NGDSingleSubmissionBean.submission.authors}"   rendered="#{not empty NGDSingleSubmissionBean.submission.authors}"/>
+			<h:outputText value="#{NGDSingleSubmissionBean.submission.authors}"   rendered="#{not empty NGDSingleSubmissionBean.submission.authors  && NGDSingleSubmissionBean.submission.species == 'Mus musculus'}"/>
+			<h:outputText value="#{NGDSingleSubmissionBean.submission.sourceLab}" rendered="#{NGDSingleSubmissionBean.submission.species == 'Homo sapiens'}"/>
         </h:panelGrid>
         
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey">

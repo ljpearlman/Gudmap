@@ -116,6 +116,10 @@ public class ISHSubmissionAssembler {
 			Antibody antibody = null;
 			if (assayType.indexOf("ISH") >= 0) {
 				probe = ishDAO.findProbeBySubmissionId(accessionId);
+				// Bernie 2/3/16 temporary fix to correct antibody gene and geneId for species type (Mantis 1162)
+				if (ishSubmission.getSpecies().contains("Homo sapiens")){
+					probe.setGeneIdUrl("http://www.ncbi,nlm.nih.gov/gene/"+ probe.getGeneID());
+				}
 			} else if (assayType.indexOf("IHC") >= 0) { // assay type is IHC
 				antibody = ishDAO.findAntibodyBySubmissionId(accessionId);
 				

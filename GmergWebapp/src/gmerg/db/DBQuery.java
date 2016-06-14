@@ -2116,6 +2116,10 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
 	
 	final static String name286 = "ANNOT_TREE_DENSITY_NOTES";
 	final static String query286 = "SELECT EXP_COMPONENT_ID,DNN_VALUE FROM ISH_EXPRESSION,ISH_DENSITY_NOTE WHERE EXP_OID = DNN_DENSITY_FK AND (CONCAT('GUDMAP:',EXP_SUBMISSION_FK) = ?)";
+
+    final static String name287 = "NGD_SPECIES";
+    final static String query287 = "SELECT NGS_SPECIES FROM NGD_SAMPLE LEFT JOIN ISH_SUBMISSION ON  SUB_OID = NGS_SUBMISSION_FK WHERE SUB_ACCESSION_ID = ?";
+	
 	
   final static String name = "";
   final static String query = "";
@@ -2379,8 +2383,9 @@ final static String NGD_ORDER_BY_LAB_AND_EXPERIMENT = " ORDER BY PER_SURNAME";
       new ParamQuery(name283,query283),
       new ParamQuery(name284,query284),
       new ParamQuery(name285,query285),
-      new ParamQuery(name286,query286)
-     };
+      new ParamQuery(name286,query286),
+      new ParamQuery(name287,query287)
+    };
 
   // finds ParamQuery object by name and returns
   public static ParamQuery getParamQuery(String name) {
