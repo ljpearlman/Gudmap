@@ -219,10 +219,15 @@ public class ISHBrowseAssembler extends OffMemoryTableAssembler{
 			
 			
 			if ("IHC".equalsIgnoreCase(row[4])){
-				if (row[5].contains("MGI:"))
-					formatedRow[ 5] = new DataItem(row[5], "Antibody Details", "http://www.informatics.jax.org/accession/"+row[5], 10);
-				else
-					formatedRow[ 5] = new DataItem(row[5], "Antibody Details", "antibody.html?antibody="+row[5], 10);	
+				if (row[5] == null || row[5] == ""){
+					formatedRow[ 5] = new DataItem(null);
+				}
+				else {
+					if (row[5].contains("MGI:"))
+						formatedRow[ 5] = new DataItem(row[5], "Antibody Details", "http://www.informatics.jax.org/accession/"+row[5], 10);
+					else
+						formatedRow[ 5] = new DataItem(row[5], "Antibody Details", "antibody.html?antibody="+row[5], 10);	
+				}
 			}
 			else
 				formatedRow[ 5] = new DataItem(row[5], "Probe Details", "probe.html?probe="+row[5], 10);
