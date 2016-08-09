@@ -1,16 +1,23 @@
 package gmerg.beans;
 
 import gmerg.assemblers.NGDSubmissionAssembler;
+import gmerg.entities.Globals;
 import gmerg.entities.submission.array.GeneListBrowseSubmission;
 import gmerg.entities.submission.nextgen.NGDSubmission;
 import gmerg.utils.FacesUtil;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.Map;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.ArrayDataModel;
 import javax.faces.model.DataModel;
+import javax.servlet.http.HttpServletResponse;
 
 
 public class NGDSingleSubmissionBean {
@@ -263,4 +270,43 @@ public class NGDSingleSubmissionBean {
         }
         return renderPage;
     }
+    
+    public void downloadFileFromUrl() throws IOException
+	   {
+		  String downloadFilename = Globals.getParameterValue("filetodownload");
+		  String filename = Globals.getParameterValue("filename");
+		  FacesContext fc = FacesContext.getCurrentInstance();
+		  HttpServletResponse response = (HttpServletResponse)fc.getExternalContext().getResponse();
+
+		  response.reset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand. We want to get rid of them, else it may collide.
+		  response.setContentType("application/octet-stream"); // Check http://www.iana.org/assignments/media-types for all types. Use if necessary ExternalContext#getMimeType() for auto-detection based on filename.
+//		  response.setContentLength(length); // Set it with the file size. This header is optional. It will work if it's omitted, but the download progress will be unknown.
+		  response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\""); // The Save As popup magic is done here. You can give it any file name you want, this only won't work in MSIE, it will use current request URL as file name instead.
+
+		    OutputStream output = response.getOutputStream();
+		    // Now you can write the InputStream of the file to the above OutputStream the usual way.
+		    BufferedInputStream in = null;
+		    try {
+		        in = new BufferedInputStream(new URL(downloadFilename).openStream());
+		       // output = new FileOutputStream(filename);
+
+		        final byte data[] = new byte[1024];
+		        int count;
+		        while ((count = in.read(data, 0, 1024)) != -1) {
+		        	output.write(data, 0, count);
+		        }
+		    } finally {
+		        if (in != null) {
+		            in.close();
+		        }
+		        if (output != null) {
+		        	output.close();
+		        }
+		    }
+
+		    fc.responseComplete(); // Important! Otherwise JSF will attempt to render the response which obviously will fail since it's already written with a file and closed.
+		}
+    
+    
+    
 }
