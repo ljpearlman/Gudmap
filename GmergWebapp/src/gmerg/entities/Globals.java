@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import gmerg.model.EntriesCollectionBrowseHelper;
@@ -461,4 +462,20 @@ public class Globals {
 	    //	    	    new SelectItem("Disease", "Disease")
 	};
     }
+    
+	public static String getParameterValue (String paramName) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if(facesContext.getExternalContext().getRequestParameterMap().get(paramName)!=null) 
+			return facesContext.getExternalContext().getRequestParameterMap().get(paramName);
+		
+		return null;
+	}
+	
+	public static void setParameterValue (String key, Object value) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		facesContext.getExternalContext().getRequestMap().put(key,value);
+		
+	}
+    
+    
 }

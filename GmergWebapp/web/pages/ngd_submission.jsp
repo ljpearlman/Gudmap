@@ -73,9 +73,16 @@
 				<h:outputText value="Raw file:" rendered="#{not empty NGDSingleSubmissionBean.submission.rawFile}"/>
 					<h:dataTable  columnClasses="text-normal,text-top"  value="#{NGDSingleSubmissionBean.submission.rawFile}" var="rfile" rendered="#{not empty NGDSingleSubmissionBean.submission.rawFile}">
 						<h:column>
+<%--						
+							<h:commandLink styleClass="datatext" value="#{rfile.filename}" action="#{NGDSingleSubmissionBean.downloadFileFromUrl()}">
+							<f:param name="filetodownload" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/raw/#{rfile.filename}"/>
+							<f:param name="filename" value = "#{rfile.filename}"/>	
+							</h:commandLink>	
+--%>												
 							<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/raw/#{rfile.filename}">
 								<h:outputText value="#{rfile.filename}"/>
 							</h:outputLink>
+							
 						</h:column>
 						<h:column>
 							<h:outputText value="#{rfile.filesize}" rendered="#{not empty rfile.filesize}"/>
@@ -84,9 +91,16 @@
 				<h:outputText value="Processed file:"  rendered="#{not empty NGDSingleSubmissionBean.submission.processedFile}"/>
 				<h:dataTable  columnClasses="text-normal,text-top"  value="#{NGDSingleSubmissionBean.submission.processedFile}" var="pfile"  rendered="#{not empty NGDSingleSubmissionBean.submission.processedFile}">
 					<h:column>
+<%-- 					
+						<h:commandLink styleClass="datatext" value="#{pfile.filename}" action="#{NGDSingleSubmissionBean.downloadFileFromUrl()}">
+							<f:param name="filetodownload" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/processed/#{pfile.filename}"/>
+							<f:param name="filename" value = "#{pfile.filename}"/>
+						</h:commandLink>
+ --%> 						
 						<h:outputLink styleClass="datatext" value="http://www.gudmap.org/Gudmap/ngsData/#{NGDSingleSubmissionBean.submission.oid}/processed/#{pfile.filename}">
 							<h:outputText value="#{pfile.filename}"/>
 						</h:outputLink>
+ 						
 					</h:column>
 					<h:column>
 							<h:outputText value="#{pfile.filesize}" rendered="#{not empty pfile.filesize}"/>
