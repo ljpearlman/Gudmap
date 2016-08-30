@@ -504,11 +504,12 @@ function findExpressionNotes(){
 					       <h:outputText title="#{ISHSingleSubmissionBean.submission.submitter.fullAddress}" styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.submitter.displayAddress}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Mus musculus'}"/>
 					       <h:outputText styleClass="datatext" value="#{ISHSingleSubmissionBean.submission.sourceLab}" rendered="#{ISHSingleSubmissionBean.submission.specimen.species == 'Homo sapiens'}"/>
 					</h:panelGroup>
-			
+			<%-- 
 			<h:outputText value="Archive ID:" rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}"/>
 			<h:outputLink value="http://www.gudmap.org/Submission_Archive/index.html##{ISHSingleSubmissionBean.submission.archiveId}" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}">
 				<h:outputText value="#{ISHSingleSubmissionBean.submission.archiveId}"    rendered="#{ISHSingleSubmissionBean.submission.archiveId > 0}"/>
 			</h:outputLink>
+			--%>
 			<h:outputText value="Batch ID:"  rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}"/>
 			<h:outputLink value="/gudmap/pages/focus_insitu_browse.html?batchId=#{ISHSingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}">
 				<h:outputText value="#{ISHSingleSubmissionBean.submission.batchId}"  rendered="#{ISHSingleSubmissionBean.submission.batchId > 0}"/>

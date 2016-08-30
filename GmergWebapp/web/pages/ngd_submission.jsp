@@ -95,6 +95,7 @@
 			</h:panelGrid>	
         </h:panelGrid>
  		
+ 		<%-- 
         <h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty NGDSingleSubmissionBean.submission.archiveId && NGDSingleSubmissionBean.submission.archiveId > 0}">
 			
 			<h:outputText value="Archive ID:" rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}"/>
@@ -102,6 +103,8 @@
 				<h:outputText value="#{NGDSingleSubmissionBean.submission.archiveId}"    rendered="#{NGDSingleSubmissionBean.submission.archiveId > 0}"/>
 			</h:outputLink>
 		</h:panelGrid>
+		--%>
+		
 		<h:panelGrid columns="2" width="100%" columnClasses="arrayLCol,arrayRCol" styleClass="block-stripey" rendered="#{not empty NGDSingleSubmissionBean.submission.batchId && NGDSingleSubmissionBean.submission.batchId > 0 }">
 			<h:outputText value="Batch ID:"  rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}"/>
 			<h:outputLink value="/gudmap/pages/focus_ngd_browse.html?batchId=#{NGDSingleSubmissionBean.submission.batchId}" styleClass="plaintext" rendered="#{NGDSingleSubmissionBean.submission.batchId > 0}">
